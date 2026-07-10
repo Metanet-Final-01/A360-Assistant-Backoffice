@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# 환경변수
+.env
+.env.*
+!.env.example
+
+# RAG 수집 산출물 (크롤링 원본, 파싱된 스키마 등 — 로컬 아티팩트)
+backend/data/
+
+# RAG 적재 파이프라인 로그
+backend/app/rag/logs/

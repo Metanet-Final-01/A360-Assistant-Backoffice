@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+
+# RAG 수집(적재) 파이프라인 — A360-Assistant-Backend/app/rag 이식본이 쓰는 의존성
+httpx
+beautifulsoup4
+psycopg[binary]
+python-dotenv
+langchain-text-splitters
+opensearch-py
