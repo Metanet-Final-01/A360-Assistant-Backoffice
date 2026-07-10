@@ -1,62 +1,59 @@
 # a360-assistant-backoffice
 
-프론트(Streamlit)와 백엔드(FastAPI)를 분리한 최소 튜토리얼 구조. 각각 따로 배포할 예정이라
-폴더도 완전히 독립적(가상환경/requirements.txt 각자 보유)으로 구성했다.
+A360-Assistant 운영 도구. Streamlit(프론트) + FastAPI(백엔드), 각각 독립된
+가상환경/requirements.txt로 따로 배포 가능하게 구성.
 
 ```
 A360-Assistant-Ops/
-  backend/            # FastAPI
-    app/main.py
-    app/rag/          # A360-Assistant-Backend의 RAG "적재" 파이프라인 이식본
-    requirements.txt
-    .env              # DB/임베딩 설정 (백엔드와 동일한 DB를 가리킴, git 미포함)
-  frontend/           # Streamlit
-    app.py
-    requirements.txt
+  backend/
+    app/main.py     # API 진입점
+    app/rag/        # RAG 데이터 적재 (A360-Assistant-Backend와 같은 DB에 반영)
+    app/eval/        # 워크플로우 평가 결과 로그/조회/비교
+    .env            # DB/임베딩 설정 (git 미포함, 아래 참고)
+  frontend/
+    app.py          # Streamlit 화면
 ```
 
 ## 실행 방법
 
-### 백엔드
+**백엔드** (먼저 실행)
 
 ```bash
 cd backend
 python -m venv .venv
-.venv\Scripts\activate        # Windows
-source .venv/bin/activate     # macOS/Linux
+.venv\Scripts\activate        # Windows / source .venv/bin/activate (macOS/Linux)
 pip install -r requirements.txt
 uvicorn app.main:app --reload --port 8100
 ```
 
-> 8000번 포트는 A360-Assistant-Backend(메인 백엔드)가 이미 쓰고 있어서 8100번을 쓴다.
+`.env`는 `A360-Assistant-Backend`와 동일한 DB(Postgres/OpenSearch)를 가리키도록
+설정한다 (`DATABASE_*`, `OPENSEARCH_*`, `EMBEDDING_*`, `VOYAGE_API_KEY`/`OPENAI_API_KEY`).
+8000번 포트는 메인 백엔드가 쓰고 있어서 여기는 8100번을 쓴다.
 
-### 프론트엔드
+**프론트엔드**
 
 ```bash
 cd frontend
 python -m venv .venv
-.venv\Scripts\activate        # Windows
-source .venv/bin/activate     # macOS/Linux
+.venv\Scripts\activate
 pip install -r requirements.txt
 streamlit run app.py
 ```
 
-백엔드를 먼저 켠 뒤 프론트엔드에서 "백엔드 상태 확인" 버튼을 누르면 `GET /health` 호출 결과가 표시된다.
+## 무엇을 할 수 있는지
 
-## RAG 데이터 적재
+- **백엔드 상태 확인**: `GET /health` 호출 결과 표시.
+- **RAG 데이터 적재**: 옵션 1(JAR 있는 패키지만)/옵션 2(+ JAR 없는 패키지 리프 참고용)
+  버튼 → `POST /rag/ingest?option=` → 백그라운드로 crawl→build→ingest 실행,
+  "진행 상태 확인" 버튼으로 완료 여부 확인. 여기서 적재한 데이터는 메인 백엔드
+  실서비스에 그대로 반영된다.
+- **평가 결과 기록·조회·비교**: "평가 결과" 섹션에서 결과 기록(폼) → 조회(필터 테이블)
+  → 여러 건 선택해 비교. 채점 방법(수작업/자동화 채점기 등)은 안 가림 — `source`
+  필드로만 구분.
 
-`app/rag/`는 A360-Assistant-Backend의 RAG 수집 파이프라인 중 **적재(crawl→build→ingest) 부분만**
-그대로 옮겨온 것이다. 검색/서빙(hybrid_search, rerank)은 옮기지 않았다 — 그건 A360-Assistant-Backend가
-실시간 에이전트 추천에 계속 쓰는 코드라 원본에 그대로 남아있다. `.env`가 백엔드와 같은
-로컬 Postgres(pgvector)/OpenSearch를 가리키므로, 여기서 적재한 데이터는 실제 서비스에
-그대로 반영된다.
+## 더 자세히 알아보려면
 
-Streamlit에서 "옵션 1"/"옵션 2" 버튼을 누르면 백엔드가 `POST /rag/ingest?option=1|2`를 받아
-백그라운드로 파이프라인을 실행한다(`GET /rag/ingest/status`로 진행 상태 확인). CLI로 직접
-실행할 수도 있다:
-
-```bash
-cd backend
-python -m app.rag.pipeline --help
-```
-
+- RAG 적재/평가 인프라를 왜 이렇게 설계했는지, 평가를 실제로 돌리려면 어떤
+  입력(scoring.yaml, actual.json 등)을 준비해야 하는지는
+  `A360-Session-Notes/`(리포 상위 폴더) 참고.
+- CLI로 직접 실행: `cd backend && python -m app.rag.pipeline --help`

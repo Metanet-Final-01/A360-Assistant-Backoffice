@@ -4,6 +4,9 @@ from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException
 
+from app.eval.log_schema import EvalRunRecord
+from app.eval.log_store import append_run, get_run, load_runs
+
 app = FastAPI(title="A360 Assistant Ops Backend")
 
 _REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -58,3 +61,25 @@ def trigger_rag_ingest(option: int, background_tasks: BackgroundTasks) -> dict:
 @app.get("/rag/ingest/status")
 def rag_ingest_status() -> dict:
     return _run_state
+
+
+@app.post("/eval/runs")
+def record_eval_run(record: EvalRunRecord) -> EvalRunRecord:
+    """평가 결과 한 건을 로그에 기록한다. 채점 방법(rule_check/pm4py/수작업 등)은
+    가리지 않는다 — record.source에 어떤 방법인지만 남기면 된다."""
+    return append_run(record)
+
+
+@app.get("/eval/runs")
+def list_eval_runs(
+    case_id: str | None = None, source: str | None = None, agent_label: str | None = None
+) -> list[EvalRunRecord]:
+    return load_runs(case_id=case_id, source=source, agent_label=agent_label)
+
+
+@app.get("/eval/runs/{run_id}")
+def get_eval_run(run_id: str) -> EvalRunRecord:
+    record = get_run(run_id)
+    if record is None:
+        raise HTTPException(404, f"run_id={run_id} 없음")
+    return record

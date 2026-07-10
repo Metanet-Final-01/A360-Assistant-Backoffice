@@ -14,3 +14,6 @@ backend/data/
 
 # RAG 적재 파이프라인 로그
 backend/app/rag/logs/
+
+# 카탈로그 산출물 (build_catalog.py로 재생성 가능)
+backend/app/eval/workflow/catalog_actions.json

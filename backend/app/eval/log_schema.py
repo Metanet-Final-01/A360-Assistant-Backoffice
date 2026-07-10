@@ -1,0 +1,31 @@
+"""평가 결과 로그 레코드 — 채점 방법(rule_check/pm4py/worfbench/수작업 등)에 무관하게
+같은 형태로 저장·조회·비교할 수 있게 하는 최소 공통 스키마.
+
+지금 단계에서는 어떤 채점 엔진을 최종 채택할지 정해지지 않았다(둘 다 아직 신뢰 검증
+전) — 그래서 채점 로직 자체는 옮기지 않고, "채점 결과가 이 형태로만 들어오면 조회·
+비교가 된다"는 그릇만 먼저 만든다. raw에 원본 결과를 그대로 보존해 나중에 어떤
+엔진이 맞는지 판단할 때 원본을 다시 들여다볼 수 있게 한다.
+"""
+
+from datetime import datetime, timezone
+from typing import Any
+
+from pydantic import BaseModel, Field
+
+
+class EvalMetric(BaseModel):
+    name: str = Field(description="예: pass_rate, pm4py_fitness, worfbench_f1")
+    value: float
+    note: str | None = None
+
+
+class EvalRunRecord(BaseModel):
+    run_id: str = Field(description="이 기록 고유 id — 없으면 저장 시 자동 생성")
+    logged_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    case_id: str = Field(description="평가 케이스 id, 예: web_excel_email_001")
+    source: str = Field(description="채점 방법 이름, 예: rule_check | pm4py | worfbench | manual")
+    agent_label: str | None = Field(None, description="평가 대상 에이전트/버전, 예: dev, rpa27")
+    passed: bool | None = Field(None, description="있으면 pass/fail 결과")
+    score: float | None = Field(None, description="있으면 0~1 사이 대표 점수 하나")
+    metrics: list[EvalMetric] = Field(default_factory=list)
+    raw: dict[str, Any] | None = Field(None, description="채점 엔진의 원본 출력 전체 보존")

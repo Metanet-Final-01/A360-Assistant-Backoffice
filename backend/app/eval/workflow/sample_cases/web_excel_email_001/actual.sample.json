@@ -1,0 +1,102 @@
+{
+  "schema_version": "1.0",
+  "variables": [
+    {
+      "name": "vPriceTable",
+      "type": "TABLE",
+      "direction": "local",
+      "description": "최근 3일치 시세 조회 결과"
+    },
+    {
+      "name": "vSavePath",
+      "type": "STRING",
+      "direction": "input",
+      "description": "사용자가 지정한 파일 경로"
+    }
+  ],
+  "steps": [
+    {
+      "step_id": "step-1",
+      "actions": [
+        {
+          "order": 1,
+          "package": "Excel_MS",
+          "action": "CreateSpreadsheet",
+          "parameters": [],
+          "rationale": "결과를 저장할 엑셀 파일을 준비한다."
+        },
+        {
+          "order": 2,
+          "package": "Browser",
+          "action": "openbrowser",
+          "parameters": [
+            {
+              "name": "url",
+              "value": "https://example.com/gold-price",
+              "value_source": "llm"
+            }
+          ],
+          "rationale": "시세 조회 페이지에 접속한다."
+        },
+        {
+          "order": 3,
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "parameters": [
+            {
+              "name": "times",
+              "value": 3,
+              "value_source": "llm"
+            }
+          ],
+          "children": [
+            {
+              "order": 1,
+              "package": "Excel_MS",
+              "action": "writeDataTableToWorksheet",
+              "parameters": [],
+              "rationale": "조회한 날짜와 시세를 엑셀 행에 기록한다."
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "step_id": "step-2",
+      "actions": [
+        {
+          "order": 4,
+          "package": "Excel_MS",
+          "action": "SaveSpreadSheet",
+          "parameters": [
+            {
+              "name": "filePath",
+              "value": "$vSavePath",
+              "value_source": "user"
+            }
+          ],
+          "rationale": "사용자가 지정한 경로에 저장한다."
+        },
+        {
+          "order": 5,
+          "package": "Email",
+          "action": "sendMail",
+          "parameters": [
+            {
+              "name": "recipient",
+              "value": "manager@example.com",
+              "value_source": "user"
+            },
+            {
+              "name": "attachment",
+              "value": "$vSavePath",
+              "value_source": "llm"
+            }
+          ],
+          "rationale": "저장된 결과 파일을 담당자에게 보낸다."
+        }
+      ]
+    }
+  ],
+  "notes": "결과가 없을 때는 If 분기로 오류 안내 메일을 보내도록 보완 필요."
+}

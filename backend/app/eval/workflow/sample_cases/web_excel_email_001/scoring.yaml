@@ -1,0 +1,76 @@
+case_id: web_excel_email_001
+title: 웹 시세 조회 후 엑셀 저장 및 메일 발송
+
+# package.action 이름은 모두 evals/catalog_actions.json(=data/ingest/packages.json,
+# 실제 A360 패키지 jar의 package.json)과 대조해 검증됨.
+# `python evals/validate_catalog_refs.py --scoring evals/cases/web_excel_email_001/scoring.yaml`
+# 로 재검증할 수 있다.
+
+must_have_concepts:
+  - 웹 페이지 접속
+  - 최근 3일치 데이터 처리
+  - 엑셀 저장
+  - 이메일 발송
+  - 결과 없음 예외 처리
+
+must_have_actions:
+  - name: web_access
+    any_of:
+      - Browser.openbrowser
+      - Recorder.capture
+      - WebAutomation.StartSessionWebAutomation
+  - name: loop_or_filter
+    any_of:
+      - Loop.loop.commands.start
+      - If.if
+  - name: excel_open_or_create
+    any_of:
+      - Excel_MS.CreateSpreadsheet
+      - Excel_MS.OpenSpreadsheet
+      - Excel.OpenSpreadsheet
+  - name: excel_write
+    any_of:
+      - Excel_MS.writeDataTableToWorksheet
+      - Excel_MS.SetCell
+      - Excel.SetCell
+  - name: email_send
+    any_of:
+      - Email.sendMail
+
+order_rules:
+  - name: web_before_excel_write
+    before_any:
+      - Browser.openbrowser
+      - Recorder.capture
+      - WebAutomation.StartSessionWebAutomation
+    after_any:
+      - Excel_MS.writeDataTableToWorksheet
+      - Excel_MS.SetCell
+      - Excel.SetCell
+  - name: save_before_email
+    before_any:
+      - Excel_MS.SaveSpreadSheet
+      - Excel.SaveSpreadSheet
+    after_any:
+      - Email.sendMail
+
+must_have_variables:
+  - type: TABLE
+    purpose_any:
+      - 시세
+      - 조회 결과
+      - result
+  - type: STRING
+    purpose_any:
+      - 파일 경로
+      - 저장 경로
+      - path
+
+forbidden_actions:
+  # Database 패키지는 로컬에 수집된 57개 jar 표본(evals/catalog_actions.json)에는
+  # 없다 — Control Room 내장 1st-party 패키지라 GitHub 커뮤니티 jar로는 안 올라온 것으로
+  # 보인다. 실제 존재 여부를 확인 못했지만("웹 조회 결과를 굳이 DB 왕복 없이 엑셀로 처리"
+  # 라는 본래 취지는 유효하므로) 규칙은 남겨두되, 카탈로그 검증기에서는 항상
+  # "패키지 없음" 경고가 뜬다는 점을 알고 있을 것.
+  - Database.ExecuteQuery
+  - "Slack.Post Message to Channel"
