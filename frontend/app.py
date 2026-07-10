@@ -1,146 +1,16 @@
-import pandas as pd
-import requests
 import streamlit as st
 
-BACKEND_URL = "http://localhost:8100"
+from components.sidebar import render_sidebar
+from views import eval_results, home, rag_ingest
 
-st.title("A360 Assistant Ops")
-st.write("최소 튜토리얼 화면입니다.")
+st.set_page_config(page_title="A360 Assistant Ops", layout="wide")
 
-if st.button("백엔드 상태 확인"):
-    try:
-        resp = requests.get(f"{BACKEND_URL}/health", timeout=5)
-        st.success(resp.json())
-    except requests.RequestException as e:
-        st.error(f"백엔드 연결 실패: {e}")
+render_sidebar()
 
-st.divider()
-st.subheader("RAG 데이터 적재")
-st.caption("버튼을 누르면 백엔드가 크롤링→빌드→pgvector/OpenSearch 적재를 순서대로 실행합니다 (몇 분~몇십 분 소요).")
+pages = [
+    st.Page(home.render, title="홈", url_path="home", default=True),
+    st.Page(rag_ingest.render, title="RAG 데이터 적재", url_path="rag-ingest"),
+    st.Page(eval_results.render, title="평가 결과", url_path="eval-results"),
+]
 
-col1, col2 = st.columns(2)
-with col1:
-    run_option1 = st.button("옵션 1: JAR 있는 패키지만 적재", use_container_width=True)
-with col2:
-    run_option2 = st.button("옵션 2: + JAR 없는 패키지 리프도 참고용 적재", use_container_width=True)
-
-if run_option1 or run_option2:
-    option = 1 if run_option1 else 2
-    try:
-        resp = requests.post(f"{BACKEND_URL}/rag/ingest", params={"option": option}, timeout=5)
-        if resp.status_code == 200:
-            st.success(f"옵션 {option} 시작됨 — 아래 '진행 상태 확인'으로 완료 여부를 확인하세요.")
-        else:
-            st.warning(resp.json().get("detail", resp.text))
-    except requests.RequestException as e:
-        st.error(f"백엔드 연결 실패: {e}")
-
-if st.button("진행 상태 확인"):
-    try:
-        resp = requests.get(f"{BACKEND_URL}/rag/ingest/status", timeout=5)
-        status = resp.json()
-        if status["running"]:
-            st.info(f"옵션 {status['option']} 실행 중...")
-        elif status["returncode"] is None:
-            st.write("아직 실행한 적 없음.")
-        elif status["returncode"] == 0:
-            st.success("마지막 실행 성공적으로 완료됨.")
-        else:
-            st.error(f"마지막 실행 실패 (종료 코드 {status['returncode']}).")
-        if status["log"]:
-            with st.expander("로그 보기"):
-                st.text(status["log"][-5000:])
-    except requests.RequestException as e:
-        st.error(f"백엔드 연결 실패: {e}")
-
-st.divider()
-st.subheader("평가 결과 (워크플로우 평가)")
-st.caption("채점 방법(rule_check/pm4py/수작업 등)은 가리지 않는다 — 결과를 아래 형식으로 기록하면 조회·비교된다.")
-
-with st.expander("결과 기록하기"):
-    with st.form("record_eval_run"):
-        case_id = st.text_input("case_id", placeholder="예: web_excel_email_001")
-        source = st.text_input("source (채점 방법)", placeholder="예: rule_check, pm4py, manual")
-        agent_label = st.text_input("agent_label (평가 대상 버전, 선택)", placeholder="예: dev")
-        passed = st.selectbox("passed", ["(선택 안 함)", "True", "False"])
-        score = st.number_input("score (0~1, 선택)", min_value=0.0, max_value=1.0, value=0.0, step=0.01)
-        raw_text = st.text_area("raw (원본 결과 JSON, 선택)", placeholder="{}")
-        submitted = st.form_submit_button("기록")
-
-    if submitted:
-        import json as _json
-
-        try:
-            raw = _json.loads(raw_text) if raw_text.strip() else None
-        except _json.JSONDecodeError:
-            st.error("raw는 올바른 JSON이어야 합니다.")
-            raw = None
-            submitted = False
-
-        if submitted and case_id and source:
-            payload = {
-                "run_id": "",
-                "case_id": case_id,
-                "source": source,
-                "agent_label": agent_label or None,
-                "passed": {"True": True, "False": False}.get(passed),
-                "score": score if score > 0 else None,
-                "metrics": [],
-                "raw": raw,
-            }
-            try:
-                resp = requests.post(f"{BACKEND_URL}/eval/runs", json=payload, timeout=5)
-                if resp.status_code == 200:
-                    st.success(f"기록됨: run_id={resp.json()['run_id']}")
-                else:
-                    st.error(resp.text)
-            except requests.RequestException as e:
-                st.error(f"백엔드 연결 실패: {e}")
-        elif submitted:
-            st.warning("case_id와 source는 필수입니다.")
-
-col_a, col_b, col_c = st.columns(3)
-filter_case_id = col_a.text_input("case_id로 필터", key="filter_case_id")
-filter_source = col_b.text_input("source로 필터", key="filter_source")
-filter_agent = col_c.text_input("agent_label로 필터", key="filter_agent")
-
-if st.button("평가 로그 조회"):
-    try:
-        params = {k: v for k, v in {
-            "case_id": filter_case_id, "source": filter_source, "agent_label": filter_agent,
-        }.items() if v}
-        resp = requests.get(f"{BACKEND_URL}/eval/runs", params=params, timeout=5)
-        runs = resp.json()
-        st.session_state["eval_runs"] = runs
-    except requests.RequestException as e:
-        st.error(f"백엔드 연결 실패: {e}")
-
-runs = st.session_state.get("eval_runs", [])
-if runs:
-    df = pd.DataFrame([
-        {
-            "run_id": r["run_id"], "logged_at": r["logged_at"], "case_id": r["case_id"],
-            "source": r["source"], "agent_label": r["agent_label"],
-            "passed": r["passed"], "score": r["score"],
-        }
-        for r in runs
-    ])
-    st.dataframe(df, use_container_width=True)
-
-    st.markdown("**비교할 run_id 선택**")
-    selected_ids = st.multiselect("run_id", options=[r["run_id"] for r in runs])
-    if selected_ids:
-        selected_runs = [r for r in runs if r["run_id"] in selected_ids]
-        compare_rows = []
-        for r in selected_runs:
-            row = {"run_id": r["run_id"], "case_id": r["case_id"], "source": r["source"], "score": r["score"]}
-            for m in r.get("metrics", []):
-                row[f"metric:{m['name']}"] = m["value"]
-            compare_rows.append(row)
-        st.dataframe(pd.DataFrame(compare_rows), use_container_width=True)
-
-        for r in selected_runs:
-            with st.expander(f"{r['run_id']} 원본(raw) 보기"):
-                st.json(r.get("raw") or {})
-else:
-    st.write("조회된 로그가 없습니다.")
+st.navigation(pages, position="sidebar").run()
