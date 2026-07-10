@@ -11,7 +11,10 @@ A360-Assistant-Ops/
     app/eval/        # 워크플로우 평가 결과 로그/조회/비교
     .env            # DB/임베딩 설정 (git 미포함, 아래 참고)
   frontend/
-    app.py          # Streamlit 화면
+    app.py               # 진입점 — 사이드바 + 페이지 네비게이션만
+    components/          # 사이드바, 공통 스타일(page_header 등)
+    views/               # 화면별 로직 (홈 / RAG 적재 / 평가 결과)
+    .streamlit/config.toml  # 브랜드 컬러(네이비/틸) 테마 — A360-Assistant-Frontend와 톤 통일
 ```
 
 ## 실행 방법

@@ -2,13 +2,19 @@ import streamlit as st
 
 
 def apply_global_styles() -> None:
-    """페이지 전체에 적용할 최소한의 스타일: 여백을 살짝 넓히고, 제목 위 라벨(kicker) 색을 강조색으로."""
+    """페이지 전체에 적용할 스타일.
+    - 한글이 또렷하게 보이도록 폰트를 시스템 한글 폰트 우선으로.
+    - 제목 위 라벨(kicker) 색을 강조색으로, 제목 아래에 틸→네이비 그라데이션 바.
+    - card()로 감싼 영역은 옅은 회색 배경 위에 흰 카드+그림자로 떠 보이게(가시성 개선의 핵심)."""
     st.markdown(
         """
         <style>
+        .stApp {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Malgun Gothic", "Pretendard", sans-serif;
+        }
         .block-container {
-            max-width: 1100px;
-            padding-top: 3rem;
+            max-width: 1600px;
+            padding: 2.5rem 3rem 3rem;
         }
         .app-kicker {
             color: var(--primary-color);
@@ -17,6 +23,22 @@ def apply_global_styles() -> None:
             letter-spacing: 0.12em;
             text-transform: uppercase;
         }
+        .app-accent-bar {
+            height: 4px;
+            width: 64px;
+            border-radius: 999px;
+            background: linear-gradient(135deg, #2f9ab2, #172026);
+            margin: 0.3rem 0 1.2rem;
+        }
+        div[data-testid="stButton"] button,
+        div[data-testid="stFormSubmitButton"] button {
+            border-radius: 9px;
+            font-weight: 700;
+        }
+        div[class*="st-key-card_"] {
+            border-radius: 14px !important;
+            box-shadow: 0 12px 28px rgba(23, 32, 38, 0.08);
+        }
         </style>
         """,
         unsafe_allow_html=True,
@@ -24,6 +46,13 @@ def apply_global_styles() -> None:
 
 
 def page_header(kicker: str, title: str) -> None:
-    """제목 위에 작은 라벨을 붙여서 지금 어떤 페이지인지 한눈에 보이게 한다."""
+    """제목 위에 작은 라벨을, 제목 아래에 브랜드 그라데이션 바를 붙여서 지금 어떤 페이지인지 한눈에 보이게 한다."""
     st.markdown(f'<div class="app-kicker">{kicker}</div>', unsafe_allow_html=True)
     st.title(title)
+    st.markdown('<div class="app-accent-bar"></div>', unsafe_allow_html=True)
+
+
+def card(key: str):
+    """섹션을 흰 카드처럼 감싸는 컨테이너. 옅은 회색 페이지 배경 위에서 카드가 또렷하게 보이도록
+    apply_global_styles()의 그림자 스타일과 짝을 이룬다. 사용법: with card("rag_ingest"): ..."""
+    return st.container(border=True, key=f"card_{key}")
