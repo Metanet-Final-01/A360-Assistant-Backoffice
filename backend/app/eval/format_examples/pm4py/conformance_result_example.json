@@ -1,0 +1,7 @@
+{
+  "source_bot": "RSSFeedReaderBot",
+  "gold_action_count": 16,
+  "predicted_action_count": 7,
+  "fitness": 0.2,
+  "precision": 0.0
+}

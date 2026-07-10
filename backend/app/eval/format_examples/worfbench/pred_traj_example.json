@@ -1,0 +1,157 @@
+{
+  "query": {
+    "source": "a360_rpa",
+    "id": "gh:AAillustrates_RSS_FeedReader:RSSFeedReaderBot",
+    "conversations": [
+      {
+        "role": "system",
+        "content": "You are a helpful and intelligent task planner, and your target is to decompose the assigned task into multiple subtasks for task completion and analyze the precedence relationships among subtasks.\nAt the beginning of your interactions, you will be given the task description and actions list you can take to finish the task, and you should decompose the given task into subtasks that can be accomplished using the provided actions or APIs. And then, you should analyze the precedence relationships among these subtasks, ensuring that each subtask is sequenced correctly relative to others. Based on the analysis, you should construct a workflow consisting of the identified subtasks to complete the task. You should use \"Node: \\n1. <subtask 1>\\n2. <subtask 2>\" to denote subtasks, and use (x,y) to denote that <subtask x> is a predecessor of <subtask y>, (START,x) to indicate the beginning with <subtask x>, and (x,END) to signify the conclusion with <subtask x>. Remember that x, y are numbers.\nYour response should use the following format:\n\nNode:\n1.<subtask 1>\n2.<subtask 2>\n...\nEdges:(START,1) ... (n,END)"
+      },
+      {
+        "role": "user",
+        "content": "Task: 다음 업무를 수행하는 RPA 워크플로우를 계획하라: RSSFeed Reader Bot\napi_list:[{\"name\": \"Datetime.add\", \"description\": \"날짜/시간 변수의 값을 지정된 시간 값 및 단위만큼 증가시킵니다. 예를 들어 날짜/시간 변수 값을 3시간 또는 3일 늘립니다.\", \"parameters\": [{\"name\": \"source\", \"type\": \"DATETIME\", \"required\": true}, {\"name\": \"val\", \"type\": \"NUMBER\", \"required\": true}, {\"name\": \"unit\", \"type\": \"SELECT\", \"required\": true}]}, {\"name\": \"Datetime.assign\", \"description\": \"선택한 날짜/시간 형식으로 문자열 변수를 할당하거나 날짜/시간 값을 수동으로 할당하거나 기존 날짜/시간 변수를 날짜/시간 변수에 할당합니다.\", \"parameters\": [{\"name\": \"option\", \"type\": \"RADIO\", \"required\": true}]}, {\"name\": \"Datetime.isAfter\", \"description\": \"두 날짜/시간 변수를 비교하고 원본 변수의 값이 비교 변수의 값 이후인지 확인하고 출력을 부울 변수에 저장합니다.\", \"parameters\": [{\"name\": \"source\", \"type\": \"DATETIME\", \"required\": true}, {\"name\": \"other\", \"type\": \"DATETIME\", \"required\": true}]}, {\"name\": \"Datetime.isBefore\", \"description\": \"두 날짜/시간 변수를 비교하고 원본 변수의 값이 비교 변수의 값 이전인지 확인하고 출력을 부울 변수에 저장합니다.\", \"parameters\": [{\"name\": \"source\", \"type\": \"DATETIME\", \"required\": true}, {\"name\": \"other\", \"type\": \"DATETIME\", \"required\": true}]}, {\"name\": \"Datetime.isEqual\", \"description\": \"두 날짜/시간 변수를 비교하고 원본 변수의 값이 비교 변수의 값과 같은지 확인하고 출력을 부울 변수에 저장합니다.\", \"parameters\": [{\"name\": \"source\", \"type\": \"DATETIME\", \"required\": true}, {\"name\": \"other\", \"type\": \"DATETIME\", \"required\": true}]}, {\"name\": \"Datetime.subtract\", \"description\": \"날짜/시간 변수의 값을 지정된 시간 값 및 단위만큼 감소시킵니다. 예를 들어 날짜/시간 변수 값을 3시간 또는 3일 줄입니다.\", \"parameters\": [{\"name\": \"source\", \"type\": \"DATETIME\", \"required\": true}, {\"name\": \"val\", \"type\": \"NUMBER\", \"required\": true}, {\"name\": \"unit\", \"type\": \"SELECT\", \"required\": true}]}, {\"name\": \"Datetime.toString\", \"description\": \"날짜/시간 값을 문자열 값으로 변환하고 미리 정의된 형식을 선택하거나 출력 값에 대한 사용자 지정 형식을 지정할 수 있습니다.\", \"parameters\": [{\"name\": \"source\", \"type\": \"DATETIME\", \"required\": true}, {\"name\": \"selectPattern\", \"type\": \"RADIO\", \"required\": true}]}, {\"name\": \"Dictionary.assign\", \"description\": \"소스 사전 변수의 값을 대상 사전 변수에 지정\", \"parameters\": [{\"name\": \"sourceDictionary\", \"type\": \"VARIABLE\", \"required\": true}]}, {\"name\": \"Dictionary.get\", \"description\": \"사전에서 키와 관련된 항목을 반환합니다.\", \"parameters\": [{\"name\": \"sourceMap\", \"type\": \"VARIABLE\", \"required\": true}, {\"name\": \"key\", \"type\": \"TEXT\", \"required\": true}]}, {\"name\": \"Dictionary.put\", \"description\": \"사용자가 사전 변수를 보고 삽입할 수 있게 허용합니다.\", \"parameters\": [{\"name\": \"sourceMap\", \"type\": \"VARIABLE\", \"required\": true}, {\"name\": \"key\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"newValue\", \"type\": \"VARIABLE\", \"required\": true}]}, {\"name\": \"Dictionary.remove\", \"description\": \"사용자가 사전 변수를 보고 삭제할 수 있게 허용합니다.\", \"parameters\": [{\"name\": \"sourceMap\", \"type\": \"VARIABLE\", \"required\": true}, {\"name\": \"key\", \"type\": \"TEXT\", \"required\": true}]}, {\"name\": \"Dictionary.size\", \"description\": \"사전의 항목의 수를 반환합니다.\", \"parameters\": [{\"name\": \"sourceMap\", \"type\": \"VARIABLE\", \"required\": true}]}, {\"name\": \"LogToFile.logToFile\", \"description\": \"TaskBot이 실행될 때 발생하는 이벤트에 대한 데이터로 로그 파일을 생성합니다.\", \"parameters\": [{\"name\": \"filePath\", \"type\": \"FILE\", \"required\": true}, {\"name\": \"logContent\", \"type\": \"TEXTAREA\", \"required\": true}, {\"name\": \"appendTimestamp\", \"type\": \"CHECKBOX\", \"required\": true}, {\"name\": \"logOption\", \"type\": \"RADIO\", \"required\": true}, {\"name\": \"encodingValue\", \"type\": \"SELECT\", \"required\": true}]}, {\"name\": \"LogToFile.logVariablesToFile\", \"description\": \"사용자 정의 변수로 로그 파일 생성\", \"parameters\": [{\"name\": \"filePath\", \"type\": \"FILE\", \"required\": true}, {\"name\": \"logOption\", \"type\": \"RADIO\", \"required\": true}, {\"name\": \"appendTimestamp\", \"type\": \"CHECKBOX\", \"required\": true}, {\"name\": \"variables\", \"type\": \"VARIABLEMAP2\", \"required\": true}]}, {\"name\": \"Loop.loop.commands.start\", \"description\": \"중단까지 반복적으로 동작 반복\", \"parameters\": [{\"name\": \"loopType\", \"type\": \"RADIO\", \"required\": true}]}, {\"name\": \"Loop.loop.commands.continue\", \"description\": \"현재 반복을 종료하고 루프의 다음 반복으로 계속\", \"parameters\": []}, {\"name\": \"Loop.loop.commands.break\", \"description\": \"현재 루프를 종료하고 루프 뒤의 다음 동작으로 이동\", \"parameters\": []}, {\"name\": \"Rest.restDelete\", \"description\": \"삭제 방법은 요청 URI에 의해 식별된 정보(개체의 형태로)를 삭제합니다.\", \"parameters\": [{\"name\": \"uri\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"authenticationMode\", \"type\": \"SELECT\", \"required\": true}, {\"name\": \"group1\", \"type\": \"GROUP\", \"required\": false}]}, {\"name\": \"Rest.restGet\", \"description\": \"가져오기 방법은 요청 URI에 의해 식별된 정보(개체의 형태로)를 가져옵니다(읽음).\", \"parameters\": [{\"name\": \"uri\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"authenticationMode\", \"type\": \"SELECT\", \"required\": true}, {\"name\": \"group1\", \"type\": \"GROUP\", \"required\": false}]}, {\"name\": \"Rest.restPatch\", \"description\": \"패치 방법은 요청 URI에 의해 식별된 정보(개체의 형태로)를 일부 바꿉니다.\", \"parameters\": [{\"name\": \"uri\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"authenticationMode\", \"type\": \"SELECT\", \"required\": true}, {\"name\": \"group1\", \"type\": \"GROUP\", \"required\": false}]}, {\"name\": \"Rest.restPost\", \"description\": \"게시 방법(생성)은 요청 URI에 의해 식별된 정보(개체의 형태로)에 추가합니다.\", \"parameters\": [{\"name\": \"uri\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"authenticationMode\", \"type\": \"SELECT\", \"required\": true}, {\"name\": \"group1\", \"type\": \"GROUP\", \"required\": false}]}, {\"name\": \"Rest.restPut\", \"description\": \"올리기 방법은 요청 URI에 의해 식별된 정보(개체의 형태로)를 바꿉니다.\", \"parameters\": [{\"name\": \"uri\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"authenticationMode\", \"type\": \"SELECT\", \"required\": true}, {\"name\": \"group1\", \"type\": \"GROUP\", \"required\": false}]}, {\"name\": \"Step.step\", \"description\": \"일련의 명령을 실행합니다.\", \"parameters\": [{\"name\": \"title\", \"type\": \"TEXT\", \"required\": false}]}, {\"name\": \"XML.deleteNode\", \"description\": \"xml로부터 특정 노드 삭제\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"xPath\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"attributeName\", \"type\": \"TEXT\", \"required\": false}]}, {\"name\": \"XML.endSession\", \"description\": \"XML 세션 종료\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}]}, {\"name\": \"XML.executeXPath\", \"description\": \"XML에서 XPath 기능 실행\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"xPath\", \"type\": \"TEXT\", \"required\": true}]}, {\"name\": \"XML.getMultipleNode\", \"description\": \"여러 xml 노드에서 값 가져오기\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"xPath\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"typeToReturn\", \"type\": \"RADIO\", \"required\": true}]}, {\"name\": \"XML.getSingleNode\", \"description\": \"xml로부터 특정 노드 값 가져오기\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"xPath\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"attributeName\", \"type\": \"TEXT\", \"required\": false}]}, {\"name\": \"XML.insertNode\", \"description\": \"xml 내에 노드 삽입\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"xPath\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"nodeName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"nodeValue\", \"type\": \"TEXTAREA\", \"required\": false}, {\"name\": \"insertType\", \"type\": \"SELECT\", \"required\": true}, {\"name\": \"position\", \"type\": \"SELECT\", \"required\": true}, {\"name\": \"defaultNamespace\", \"type\": \"TEXT\", \"required\": false}, {\"name\": \"attributes\", \"type\": \"DICTIONARY\", \"required\": false}, {\"name\": \"namespaces\", \"type\": \"DICTIONARY\", \"required\": false}]}, {\"name\": \"XML.saveXML\", \"description\": \"XML 세션 데이터 저장\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"writeToFile\", \"type\": \"CHECKBOX\", \"required\": true}]}, {\"name\": \"XML.startSession\", \"description\": \"xml 세션 시작\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"inputType\", \"type\": \"RADIO\", \"required\": true}]}, {\"name\": \"XML.updateNode\", \"description\": \"xml에서 특정 노드 업데이트\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"xPath\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"value\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"updateAttribute\", \"type\": \"CHECKBOX\", \"required\": true}]}, {\"name\": \"XML.validateXML\", \"description\": \"XML 문서 유효성 검사\", \"parameters\": [{\"name\": \"sessionName\", \"type\": \"TEXT\", \"required\": true}, {\"name\": \"validationType\", \"type\": \"RADIO\", \"required\": true}]}]"
+      },
+      {
+        "role": "assistant",
+        "content": "Node:\n1: Create Start of HTML File\n2: Retrieve Wired Feed\n3: Get Count of Wired Items\n4: Loop Through Items\n5: Save HTML doc\nEdges:\n(START,1) (1,2) (2,3) (3,4) (4,5) (5,END)"
+      }
+    ],
+    "meta": {
+      "source_bot": "RSSFeedReaderBot",
+      "packages": [
+        "Datetime",
+        "Dictionary",
+        "LogToFile",
+        "Loop",
+        "Rest",
+        "Step",
+        "XML"
+      ],
+      "packages_in_catalog": [
+        "Datetime",
+        "Dictionary",
+        "LogToFile",
+        "Loop",
+        "Rest",
+        "Step",
+        "XML"
+      ],
+      "actions": [
+        {
+          "package": "Step",
+          "action": "step",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Step",
+          "action": "step",
+          "in_catalog": true
+        },
+        {
+          "package": "Rest",
+          "action": "restGet",
+          "in_catalog": true
+        },
+        {
+          "package": "Dictionary",
+          "action": "get",
+          "in_catalog": true
+        },
+        {
+          "package": "Step",
+          "action": "step",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "startSession",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "executeXPath",
+          "in_catalog": true
+        },
+        {
+          "package": "Step",
+          "action": "step",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "Step",
+          "action": "step",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Step",
+          "action": "step",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        }
+      ],
+      "catalog_coverage": 1.0,
+      "scoreable": true,
+      "node_count": 5
+    }
+  },
+  "workflow": "Node:\n1: Create Start of HTML File\n2: Retrieve Wired Feed\n3: Get Count of Wired Items\n4: Loop Through Items\n5: Save HTML doc\nEdges:\n(START,1) (1,2) (2,3) (3,4) (4,5) (5,END)"
+}

@@ -3,6 +3,11 @@ __pycache__/
 *.py[cod]
 .venv/
 venv/
+.pytest_cache/
+
+# 테스트/스모크 테스트 산출물 (일회성 검증용 — 리포에는 안 올림)
+backend/app/eval/**/test_output/
+**/*.smoketest.json
 
 # 환경변수
 .env
