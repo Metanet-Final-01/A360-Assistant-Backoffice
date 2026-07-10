@@ -1,10 +1,12 @@
 import streamlit as st
 
+from components.layout import apply_global_styles
 from components.sidebar import render_sidebar
 from views import eval_results, home, rag_ingest
 
 st.set_page_config(page_title="A360 Assistant Ops", layout="wide")
 
+apply_global_styles()
 render_sidebar()
 
 pages = [

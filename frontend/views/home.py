@@ -1,11 +1,12 @@
 import requests
 import streamlit as st
 
+from components.layout import page_header
 from config import BACKEND_URL
 
 
 def render() -> None:
-    st.title("A360 Assistant Ops")
+    page_header("HOME", "A360 Assistant Ops")
     st.write("최소 튜토리얼 화면입니다.")
 
     if st.button("백엔드 상태 확인"):

@@ -4,11 +4,12 @@ import pandas as pd
 import requests
 import streamlit as st
 
+from components.layout import page_header
 from config import BACKEND_URL
 
 
 def render() -> None:
-    st.subheader("평가 결과 (워크플로우 평가)")
+    page_header("EVAL", "평가 결과 (워크플로우 평가)")
     st.caption("채점 방법(rule_check/pm4py/수작업 등)은 가리지 않는다 — 결과를 아래 형식으로 기록하면 조회·비교된다.")
 
     with st.expander("결과 기록하기"):
