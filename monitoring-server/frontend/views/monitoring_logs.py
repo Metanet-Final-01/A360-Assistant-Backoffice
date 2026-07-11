@@ -4,7 +4,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, page_header, section_header
-from config import BACKEND_URL
+from config import MONITORING_BACKEND_URL
 
 # 워크플로우(Recommendation)를 만드는 호출 경로 표시용 — 아직 이 화면은 요청 메타데이터만
 # 다루지만, 어떤 요청이 실제 워크플로우 생성으로 이어졌는지는 표시해 둔다.
@@ -82,11 +82,11 @@ def _render_refresh_and_table() -> None:
 
 def _collect_and_load(limit: int) -> None:
     try:
-        collect_resp = requests.post(f"{BACKEND_URL}/observability/rag-logs/collect", params={"limit": limit}, timeout=15)
+        collect_resp = requests.post(f"{MONITORING_BACKEND_URL}/observability/rag-logs/collect", params={"limit": limit}, timeout=15)
         if collect_resp.status_code != 200:
             st.error(f"로그 수집 실패: {collect_resp.text}")
             return
-        resp = requests.get(f"{BACKEND_URL}/observability/rag-logs", params={"limit": limit}, timeout=10)
+        resp = requests.get(f"{MONITORING_BACKEND_URL}/observability/rag-logs", params={"limit": limit}, timeout=10)
         st.session_state["obs_rag_logs"] = resp.json()
     except requests.RequestException as e:
         st.error(f"백엔드 연결 실패: {e}")

@@ -10,7 +10,10 @@ from .log_store import append_run
 from .metrics import metrics_from_raw
 
 _BACKEND_ROOT = Path(__file__).resolve().parents[2]
-_DEFAULT_SANDBOX = _BACKEND_ROOT.parents[1] / "a360-eval-sandbox"
+# a360-eval-sandbox는 backoffice 레포의 형제 폴더(예: Desktop 아래)다. 백엔드가
+# monitoring-server/backend로 한 단계 깊어졌으므로 parents[2](= backoffice의 부모)에서
+# 형제를 찾는다. 샌드박스가 다른 위치면 A360_EVAL_SANDBOX로 명시 지정한다.
+_DEFAULT_SANDBOX = _BACKEND_ROOT.parents[2] / "a360-eval-sandbox"
 SANDBOX_ROOT = Path(os.getenv("A360_EVAL_SANDBOX", str(_DEFAULT_SANDBOX))).resolve()
 METADATA_DIR = SANDBOX_ROOT / "Metadata"
 PYTHON = SANDBOX_ROOT / ".venv-verify" / "Scripts" / "python.exe"

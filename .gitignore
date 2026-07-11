@@ -6,7 +6,7 @@ venv/
 .pytest_cache/
 
 # 테스트/스모크 테스트 산출물 (일회성 검증용 — 리포에는 안 올림)
-backend/app/eval/**/test_output/
+monitoring-server/backend/app/eval/**/test_output/
 **/*.smoketest.json
 
 # 환경변수
@@ -14,11 +14,14 @@ backend/app/eval/**/test_output/
 .env.*
 !.env.example
 
+# ── rag-server ──
 # RAG 수집 산출물 (크롤링 원본, 파싱된 스키마 등 — 로컬 아티팩트)
-backend/data/
-
+rag-server/data/
 # RAG 적재 파이프라인 로그
-backend/app/rag/logs/
+rag-server/app/rag/logs/
 
+# ── monitoring-server ──
+# 로컬 데이터 (observability 로그·eval 로그/데이터셋, worfbench용 packages.json 복사본 등)
+monitoring-server/backend/data/
 # 카탈로그 산출물 (build_catalog.py로 재생성 가능)
-backend/app/eval/workflow/catalog_actions.json
+monitoring-server/backend/app/eval/workflow/catalog_actions.json

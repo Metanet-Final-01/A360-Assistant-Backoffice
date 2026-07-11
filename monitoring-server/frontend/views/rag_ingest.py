@@ -2,7 +2,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, page_header
-from config import BACKEND_URL
+from config import RAG_SERVER_URL
 
 
 def render() -> None:
@@ -20,7 +20,7 @@ def render() -> None:
         if run_option1 or run_option2:
             option = 1 if run_option1 else 2
             try:
-                resp = requests.post(f"{BACKEND_URL}/rag/ingest", params={"option": option}, timeout=5)
+                resp = requests.post(f"{RAG_SERVER_URL}/rag/ingest", params={"option": option}, timeout=5)
                 if resp.status_code == 200:
                     st.success(f"옵션 {option} 시작됨 — 아래 '진행 상태 확인'으로 완료 여부를 확인하세요.")
                 else:
@@ -30,7 +30,7 @@ def render() -> None:
 
         if st.button("진행 상태 확인"):
             try:
-                resp = requests.get(f"{BACKEND_URL}/rag/ingest/status", timeout=5)
+                resp = requests.get(f"{RAG_SERVER_URL}/rag/ingest/status", timeout=5)
                 status = resp.json()
                 if status["running"]:
                     st.info(f"옵션 {status['option']} 실행 중...")

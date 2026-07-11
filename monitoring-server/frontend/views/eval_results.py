@@ -4,7 +4,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, metric_strip, page_header, section_header
-from config import BACKEND_URL
+from config import MONITORING_BACKEND_URL
 
 FIXED_METRICS = (
     "pm4py_fitness",
@@ -31,7 +31,7 @@ def _load_runs() -> list[dict]:
         st.session_state.pop("eval_runs", None)
     if "eval_runs" not in st.session_state:
         try:
-            response = requests.get(f"{BACKEND_URL}/eval/runs", timeout=5)
+            response = requests.get(f"{MONITORING_BACKEND_URL}/eval/runs", timeout=5)
             response.raise_for_status()
             st.session_state["eval_runs"] = response.json()
         except (requests.RequestException, ValueError) as exc:
@@ -160,7 +160,7 @@ def _render_delta_table(names: list[str], a: dict, b: dict, label_a: str, label_
 def _render_export(label_a: str, label_b: str) -> None:
     if st.button("Excel 보고서 생성"):
         try:
-            response = requests.get(f"{BACKEND_URL}/eval/export/comparison-xlsx", params={"label_a": label_a, "label_b": label_b}, timeout=15)
+            response = requests.get(f"{MONITORING_BACKEND_URL}/eval/export/comparison-xlsx", params={"label_a": label_a, "label_b": label_b}, timeout=15)
             response.raise_for_status()
             st.session_state["xlsx_export"] = (label_a, label_b, response.content)
         except requests.RequestException as exc:

@@ -2,7 +2,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, page_header
-from config import BACKEND_URL
+from config import MONITORING_BACKEND_URL
 
 
 def render() -> None:
@@ -12,7 +12,7 @@ def render() -> None:
     with card("home_health"):
         if st.button("백엔드 상태 확인"):
             try:
-                resp = requests.get(f"{BACKEND_URL}/health", timeout=5)
+                resp = requests.get(f"{MONITORING_BACKEND_URL}/health", timeout=5)
                 st.success(resp.json())
             except requests.RequestException as e:
                 st.error(f"백엔드 연결 실패: {e}")

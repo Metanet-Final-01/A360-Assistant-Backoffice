@@ -1,0 +1,18 @@
+# 모니터링 서버 — 백엔드(FastAPI)와 프론트(Streamlit)가 한 requirements를 공유한다.
+
+# ── 프론트엔드 (Streamlit UI) ──
+streamlit
+requests
+pandas
+altair
+
+# ── 백엔드 (FastAPI — observability 수집/조회, eval, 스케줄러) ──
+fastapi
+uvicorn[standard]
+httpx
+python-dotenv
+
+# ── 평가(eval) 결과 정리·조회 ──
+pydantic
+pyyaml
+openpyxl

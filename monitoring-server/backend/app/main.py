@@ -1,6 +1,11 @@
-import subprocess
-import sys
-from pathlib import Path
+"""모니터링 서버 백엔드 진입점 (FastAPI).
+
+- /observability/*: A360-Assistant-Backend의 감사 로그·LLM 사용량·RAG 요청 로그 수집/조회.
+- /eval/*: 평가 데이터셋·결과 로그·pm4py/WorFBench 변환·A/B 비교·xlsx 내보내기.
+
+RAG 적재 트리거(/rag/ingest)는 여기 없다 — 별도 rag-server가 담당하고, 프론트의 '적재'
+버튼과 (향후) app/scheduler가 rag-server로 직접 요청을 보낸다.
+"""
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException
 from fastapi.responses import Response
@@ -19,30 +24,7 @@ from app.eval.workflow.recommendation import Recommendation
 from app.eval.xlsx_report import build_comparison_xlsx
 from app.observability import backend_client, collector, log_store as obs_log_store
 
-app = FastAPI(title="A360 Assistant Ops Backend")
-
-_REPO_ROOT = Path(__file__).resolve().parents[1]
-_OPTION_SCRIPTS = {
-    1: _REPO_ROOT / "app" / "rag" / "scripts" / "run_option1_jar_only.py",
-    2: _REPO_ROOT / "app" / "rag" / "scripts" / "run_option2_with_naive_actions.py",
-}
-
-# 파이프라인은 실행에 몇 분~몇십 분이 걸릴 수 있어 백그라운드로 돌린다 — 프로세스 재시작하면
-# 사라지는 인메모리 상태로 충분하다(가벼운 운영 도구 용도, 별도 job 큐 불필요).
-_run_state: dict = {"running": False, "option": None, "returncode": None, "log": ""}
-
-
-def _run_pipeline(option: int) -> None:
-    _run_state.update(running=True, option=option, returncode=None, log="")
-    proc = subprocess.run(
-        [sys.executable, str(_OPTION_SCRIPTS[option])],
-        cwd=_REPO_ROOT,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-    )
-    _run_state.update(running=False, returncode=proc.returncode, log=proc.stdout + proc.stderr)
+app = FastAPI(title="A360 Assistant Monitoring Server")
 
 
 @app.get("/health")
@@ -52,27 +34,7 @@ def health() -> dict:
 
 @app.get("/")
 def root() -> dict:
-    return {"message": "A360 Assistant Ops backend가 살아있습니다."}
-
-
-@app.post("/rag/ingest")
-def trigger_rag_ingest(option: int, background_tasks: BackgroundTasks) -> dict:
-    """RAG 수집 파이프라인 실행 (A360-Assistant-Backend와 같은 DB에 적재).
-
-    옵션 1: JAR 있는 패키지만 action_schema로 적재.
-    옵션 2: 옵션 1 + JAR 없는 패키지 리프도 action_candidate로 참고용 적재.
-    """
-    if option not in _OPTION_SCRIPTS:
-        raise HTTPException(400, "option은 1 또는 2여야 합니다")
-    if _run_state["running"]:
-        raise HTTPException(409, "이미 실행 중입니다 — /rag/ingest/status로 확인하세요")
-    background_tasks.add_task(_run_pipeline, option)
-    return {"status": "started", "option": option}
-
-
-@app.get("/rag/ingest/status")
-def rag_ingest_status() -> dict:
-    return _run_state
+    return {"message": "A360 Assistant Monitoring Server가 살아있습니다."}
 
 
 @app.post("/eval/runs")
@@ -128,7 +90,7 @@ def get_eval_run(run_id: str) -> EvalRunRecord:
 @app.get("/eval/format-guide")
 def eval_format_guide() -> dict:
     """pm4py/WorFBench가 요구하는 입력·출력 형식 안내 + 예시 데이터셋
-    (backend/app/eval/format_examples/)을 그대로 보여준다."""
+    (app/eval/format_examples/)을 그대로 보여준다."""
     return build_format_guide()
 
 
