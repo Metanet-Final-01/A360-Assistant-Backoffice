@@ -215,6 +215,39 @@ def get_rag_logs(event: str | None = None, path_contains: str | None = None, lim
     return obs_log_store.load_rag_logs(event=event, path_contains=path_contains, limit=limit)
 
 
+@app.post("/observability/metrics-daily/collect")
+def collect_metrics_daily(days: int = 7, method: str | None = None, path: str | None = None) -> dict:
+    """A360-Assistant-Backend의 GET /api/admin/metrics-daily(RPA-104 롤업)를 가져와 저장한다."""
+    return _run_collect(collector.collect_metrics_daily, days=days, method=method, path=path)
+
+
+@app.get("/observability/metrics-daily")
+def get_metrics_daily(method: str | None = None, path_contains: str | None = None, limit: int = 500) -> list:
+    return obs_log_store.load_metrics_daily(method=method, path_contains=path_contains, limit=limit)
+
+
+@app.post("/observability/usage-daily/collect")
+def collect_usage_daily(days: int = 30, component: str | None = None, model: str | None = None) -> dict:
+    """A360-Assistant-Backend의 GET /api/admin/usage-daily(RPA-104 롤업)를 가져와 저장한다."""
+    return _run_collect(collector.collect_usage_daily, days=days, component=component, model=model)
+
+
+@app.get("/observability/usage-daily")
+def get_usage_daily(component: str | None = None, limit: int = 500) -> list:
+    return obs_log_store.load_usage_daily(component=component, limit=limit)
+
+
+@app.post("/observability/turn-events/collect")
+def collect_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
+    """A360-Assistant-Backend의 GET /api/admin/turn-events(RPA-105)를 가져와 저장한다."""
+    return _run_collect(collector.collect_turn_events, session_id=session_id, limit=limit)
+
+
+@app.get("/observability/turn-events")
+def get_turn_events(session_id: str | None = None, limit: int = 200) -> list:
+    return obs_log_store.load_turn_events(session_id=session_id, limit=limit)
+
+
 @app.get("/observability/status")
 def observability_status() -> dict:
     return collector.status()

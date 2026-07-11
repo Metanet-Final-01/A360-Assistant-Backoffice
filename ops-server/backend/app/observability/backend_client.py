@@ -93,6 +93,21 @@ def fetch_llm_usage_stats(days: int = 30, group_by: str = "component") -> dict:
     return _authed_get("/api/admin/llm-usage/stats", {"days": days, "group_by": group_by})
 
 
+def fetch_metrics_daily(days: int = 7, method: str | None = None, path: str | None = None) -> dict:
+    params = {k: v for k, v in {"days": days, "method": method, "path": path}.items() if v is not None}
+    return _authed_get("/api/admin/metrics-daily", params)
+
+
+def fetch_usage_daily(days: int = 30, component: str | None = None, model: str | None = None) -> dict:
+    params = {k: v for k, v in {"days": days, "component": component, "model": model}.items() if v is not None}
+    return _authed_get("/api/admin/usage-daily", params)
+
+
+def fetch_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
+    params = {k: v for k, v in {"session_id": session_id, "limit": limit}.items() if v is not None}
+    return _authed_get("/api/admin/turn-events", params)
+
+
 def fetch_rag_logs_recent(limit: int = 100) -> dict:
     with _client() as client:
         try:

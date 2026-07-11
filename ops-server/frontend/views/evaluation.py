@@ -1,6 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
 
-import altair as alt
 import pandas as pd
 import requests
 import streamlit as st
@@ -230,9 +229,6 @@ def _render_delta_table(names: list[str], a: dict, b: dict, label_a: str, label_
                      "변화율": f"{delta / a[name] * 100:+.1f}%" if a[name] else "n/a"})
     frame = pd.DataFrame(rows)
     st.dataframe(frame.style.map(lambda value: "color:#17845b;font-weight:700" if isinstance(value, float) and value > 0 else ("color:#c33d32;font-weight:700" if isinstance(value, float) and value < 0 else ""), subset=["Δ B-A"]), width="stretch", hide_index=True)
-    chart_rows = [{"지표": name, "버전": label, "값": values[name]} for name in names for label, values in ((label_a, a), (label_b, b))]
-    chart = alt.Chart(pd.DataFrame(chart_rows)).mark_bar().encode(x=alt.X("버전:N", title=None), y=alt.Y("값:Q"), color=alt.Color("버전:N"), column=alt.Column("지표:N", title=None), tooltip=["지표", "버전", "값"]).properties(width=120)
-    st.altair_chart(chart, width="content")
 
 
 def _render_export(label_a: str, label_b: str) -> None:
