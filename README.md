@@ -67,6 +67,11 @@ streamlit run app.py
 - **평가 준비**: 데이터셋을 `dataset_id + version + case_id 목록`으로 등록하고 pm4py/
   WorFBench 입력·출력 예시를 확인한다. 데이터셋 정의는 로컬 전용
   `backend/data/evaluation_datasets.json`에 저장된다.
+- **평가 실행**: `a360-eval-sandbox/Metadata/predictions_from_agent_<label>.json`을 골라
+  "평가 시작"을 누르면 샌드박스의 pm4py와 WorFBench 채점기를 백그라운드에서 순서대로
+  실행한다. 진행 단계와 로그를 화면에서 확인할 수 있고, 완료되면 선택한 데이터셋의
+  case 결과만 `evaluation_id`와 버전 메타데이터를 붙여 자동 저장한다. 샌드박스 경로가
+  기본 형제 폴더가 아니면 backend `.env`의 `A360_EVAL_SANDBOX`로 지정한다.
 - **평가 결과 조회·비교**: 외부 채점 결과를 `POST /eval/runs`로 기록하면 페이지 진입 시
   로그 목록을 보여준다. pm4py/WorFBench `raw`는 엄격 검증하며, 알려진 원본 지표는
   비교용 `metrics`와 대표 `score`로 자동 정규화한다. 결과에는 `evaluation_id`,

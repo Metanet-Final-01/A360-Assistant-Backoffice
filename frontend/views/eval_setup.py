@@ -1,5 +1,3 @@
-import json
-
 import requests
 import streamlit as st
 
@@ -10,7 +8,7 @@ from config import BACKEND_URL
 def render() -> None:
     page_header("EVALUATION", "평가 준비", "데이터셋을 버전별로 등록하고 채점 입력 형식을 확인합니다.")
     datasets = _render_dataset_registry()
-    _render_result_registration(datasets)
+    _render_evaluation_execution(datasets)
     _render_format_guide()
 
 
@@ -57,63 +55,74 @@ def _load_datasets() -> list[dict]:
     return st.session_state["eval_datasets"]
 
 
-def _render_result_registration(datasets: list[dict]) -> None:
-    with card("result_registration"):
-        section_header("평가 결과 등록", "실행과 데이터셋 정보를 함께 남기면 이후 결과를 재현하고 비교하기 쉽습니다.")
+def _render_evaluation_execution(datasets: list[dict]) -> None:
+    with card("evaluation_execution"):
+        section_header("평가 실행", "pm4py와 WorFBench를 순서대로 실행하고 선택한 데이터셋 결과를 자동 저장합니다.")
         if not datasets:
             st.info("먼저 평가 데이터셋을 등록하세요.")
             return
+        try:
+            options_response = requests.get(f"{BACKEND_URL}/eval/execution/options", timeout=5)
+            options_response.raise_for_status()
+            prediction_labels = options_response.json().get("prediction_labels", [])
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"평가 입력 목록을 불러오지 못했습니다: {exc}")
+            return
+        if not prediction_labels:
+            st.info("a360-eval-sandbox/Metadata에 predictions_from_agent_<label>.json 파일이 없습니다.")
+            return
 
-        options = {f"{item['name']} · {item['dataset_id']}@{item['version']}": item for item in datasets}
-        with st.form("result_form"):
-            selected_name = st.selectbox("데이터셋", list(options))
-            selected = options[selected_name]
-            case_id = st.selectbox("case_id", selected["case_ids"])
-            top = st.columns(3)
-            evaluation_id = top[0].text_input("evaluation_id", placeholder="eval-2026-07-11-a")
-            agent_label = top[1].text_input("agent_label", placeholder="dev-v2")
-            source = top[2].selectbox("채점 방식", ["pm4py", "worfbench", "manual", "rule_check"])
-            meta = st.columns(2)
-            commit_sha = meta[0].text_input("commit SHA", placeholder="선택")
-            config_text = meta[1].text_input("실행 설정 JSON", value="{}")
-            passed_value = st.selectbox("통과 여부", ["기록 안 함", "통과", "실패"])
-            use_score = st.checkbox("대표 점수를 직접 기록")
-            score = st.number_input("대표 점수", min_value=0.0, max_value=1.0, value=0.0, step=0.01, disabled=not use_score)
-            raw_text = st.text_area("채점 원본 JSON", value="{}", height=180)
-            submitted = st.form_submit_button("결과 저장", type="primary")
+        dataset_options = {f"{item['name']} · {item['dataset_id']}@{item['version']}": item for item in datasets}
+        with st.form("execution_form"):
+            selected_dataset_name = st.selectbox("평가 데이터셋", list(dataset_options), key="execute_dataset")
+            prediction_label = st.selectbox("예측 입력", prediction_labels, format_func=lambda value: f"predictions_from_agent_{value}.json")
+            cols = st.columns(3)
+            evaluation_id = cols[0].text_input("evaluation_id", placeholder="eval-2026-07-11-v2", key="execute_id")
+            agent_label = cols[1].text_input("결과 버전", value=prediction_label, key="execute_agent")
+            commit_sha = cols[2].text_input("commit SHA", placeholder="선택", key="execute_commit")
+            start = st.form_submit_button("평가 시작", type="primary", use_container_width=True)
 
-        if submitted:
-            try:
-                raw = json.loads(raw_text)
-                config = json.loads(config_text)
-                if not isinstance(raw, dict) or not isinstance(config, dict):
-                    raise ValueError("원본과 실행 설정은 JSON 객체여야 합니다")
-            except (json.JSONDecodeError, ValueError) as exc:
-                st.error(f"JSON 형식을 확인하세요: {exc}")
-                return
+        if start:
+            dataset = dataset_options[selected_dataset_name]
             payload = {
-                "evaluation_id": evaluation_id or None,
-                "dataset_id": selected["dataset_id"],
-                "dataset_version": selected["version"],
-                "case_id": case_id,
-                "source": source,
-                "agent_label": agent_label or None,
+                "prediction_label": prediction_label,
+                "evaluation_id": evaluation_id,
+                "dataset_id": dataset["dataset_id"],
+                "dataset_version": dataset["version"],
+                "agent_label": agent_label,
                 "commit_sha": commit_sha or None,
-                "config": config,
-                "passed": {"통과": True, "실패": False}.get(passed_value),
-                "score": score if use_score else None,
-                "raw": raw or None,
             }
             try:
-                response = requests.post(f"{BACKEND_URL}/eval/runs", json=payload, timeout=5)
+                response = requests.post(f"{BACKEND_URL}/eval/execution", json=payload, timeout=5)
                 if response.status_code == 200:
-                    st.session_state.pop("eval_runs", None)
-                    st.success(f"결과를 저장했습니다: {response.json()['run_id']}")
+                    st.success("평가를 시작했습니다. 아래 상태 새로고침으로 진행 상황을 확인하세요.")
                 else:
-                    detail = response.json().get("detail", response.text)
-                    st.error(detail if isinstance(detail, str) else json.dumps(detail, ensure_ascii=False))
+                    st.error(response.json().get("detail", response.text))
             except (requests.RequestException, ValueError) as exc:
-                st.error(f"결과 저장 실패: {exc}")
+                st.error(f"평가 시작 실패: {exc}")
+
+        if st.button("평가 상태 새로고침", key="execution_refresh"):
+            st.session_state.pop("eval_execution_status", None)
+        try:
+            status_response = requests.get(f"{BACKEND_URL}/eval/execution/status", timeout=5)
+            status_response.raise_for_status()
+            status = status_response.json()
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"평가 상태를 불러오지 못했습니다: {exc}")
+            return
+
+        if status.get("running"):
+            stage_labels = {"pm4py": "pm4py 채점", "worfbench": "WorFBench 채점", "saving": "결과 저장"}
+            st.info(f"실행 중 · {stage_labels.get(status.get('stage'), status.get('stage'))}")
+        elif status.get("returncode") == 0:
+            st.success(f"평가 완료 · 결과 {status.get('saved', 0)}건 저장")
+        elif status.get("returncode"):
+            st.error(f"평가 실패: {status.get('error')}")
+        else:
+            st.caption("아직 실행한 평가가 없습니다.")
+        if status.get("log"):
+            with st.expander("평가 로그"):
+                st.code(status["log"][-8000:], language="text")
 
 
 def _render_format_guide() -> None:

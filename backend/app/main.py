@@ -10,6 +10,7 @@ from app.eval.format_guide import build_format_guide
 from app.eval.format_schemas import validate_format
 from app.eval.dataset_schema import EvaluationDataset
 from app.eval.dataset_store import load_datasets, save_dataset
+from app.eval import executor
 from app.eval.log_schema import EvalRunRecord
 from app.eval.log_store import append_run, get_run, load_runs
 from app.eval.metrics import metrics_from_raw
@@ -137,6 +138,15 @@ class ConvertRequest(BaseModel):
     task_description: str | None = None
 
 
+class ExecuteEvaluationRequest(BaseModel):
+    prediction_label: str
+    evaluation_id: str
+    dataset_id: str
+    dataset_version: str
+    agent_label: str
+    commit_sha: str | None = None
+
+
 @app.post("/eval/convert/pm4py")
 def convert_to_pm4py(req: ConvertRequest) -> dict:
     """agent가 만든 추천안(Recommendation)을 pm4py 채점 입력 형식으로 변환한다."""
@@ -157,6 +167,46 @@ def convert_to_worfbench(req: ConvertRequest) -> dict:
         )
     except (MissingCatalogError, FileNotFoundError) as e:
         raise HTTPException(409, str(e)) from e
+
+
+@app.get("/eval/execution/options")
+def evaluation_execution_options() -> dict:
+    return {"prediction_labels": executor.available_prediction_labels()}
+
+
+@app.post("/eval/execution")
+def start_evaluation(req: ExecuteEvaluationRequest, background_tasks: BackgroundTasks) -> dict:
+    if executor.state["running"]:
+        raise HTTPException(409, "이미 평가가 실행 중입니다")
+    datasets = [
+        item for item in load_datasets()
+        if item.dataset_id == req.dataset_id and item.version == req.dataset_version
+    ]
+    if not datasets:
+        raise HTTPException(404, "등록된 데이터셋 버전을 찾지 못했습니다")
+    try:
+        executor.validate_prediction_label(req.prediction_label)
+    except (ValueError, FileNotFoundError) as exc:
+        raise HTTPException(400, str(exc)) from exc
+    if not req.evaluation_id.strip() or not req.agent_label.strip():
+        raise HTTPException(400, "evaluation_id와 agent_label은 필수입니다")
+    dataset = datasets[0]
+    background_tasks.add_task(
+        executor.execute,
+        req.prediction_label,
+        req.evaluation_id.strip(),
+        dataset.dataset_id,
+        dataset.version,
+        dataset.case_ids,
+        req.agent_label.strip(),
+        req.commit_sha.strip() if req.commit_sha else None,
+    )
+    return {"status": "started", "evaluation_id": req.evaluation_id.strip()}
+
+
+@app.get("/eval/execution/status")
+def evaluation_execution_status() -> dict:
+    return executor.state
 
 
 def _run_collect(fn, *args, **kwargs) -> dict:
