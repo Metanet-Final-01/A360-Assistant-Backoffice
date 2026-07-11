@@ -12,3 +12,4 @@ opensearch-py
 # 평가(eval) 결과 정리·조회 — app/eval이 쓰는 의존성
 pydantic
 pyyaml
+openpyxl

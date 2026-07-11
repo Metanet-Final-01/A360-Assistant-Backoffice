@@ -3,6 +3,7 @@ import sys
 from pathlib import Path
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException
+from fastapi.responses import Response
 from pydantic import BaseModel
 
 from app.eval.format_guide import build_format_guide
@@ -11,6 +12,8 @@ from app.eval.log_schema import EvalRunRecord
 from app.eval.log_store import append_run, get_run, load_runs
 from app.eval.workflow.adapters import MissingCatalogError, to_pm4py_predicted_actions, to_worfbench_pred_traj
 from app.eval.workflow.recommendation import Recommendation
+from app.eval.xlsx_report import build_comparison_xlsx
+from app.observability import backend_client, collector, log_store as obs_log_store
 
 app = FastAPI(title="A360 Assistant Ops Backend")
 
@@ -130,3 +133,69 @@ def convert_to_worfbench(req: ConvertRequest) -> dict:
         )
     except MissingCatalogError as e:
         raise HTTPException(409, str(e)) from e
+
+
+def _run_collect(fn, *args, **kwargs) -> dict:
+    """backend_client 예외를 사람이 읽을 수 있는 HTTPException으로 변환."""
+    try:
+        return fn(*args, **kwargs)
+    except backend_client.BackendAuthError as e:
+        raise HTTPException(403, str(e)) from e
+    except backend_client.BackendUnavailableError as e:
+        raise HTTPException(502, str(e)) from e
+
+
+@app.post("/observability/audit-logs/collect")
+def collect_audit_logs(limit: int = 500, method: str | None = None, status_code: int | None = None, user_id: str | None = None) -> dict:
+    """A360-Assistant-Backend의 GET /api/admin/audit-logs를 호출해 가져온 뒤 로컬에 저장한다."""
+    return _run_collect(collector.collect_audit_logs, limit=limit, method=method, status_code=status_code, user_id=user_id)
+
+
+@app.get("/observability/audit-logs")
+def get_audit_logs(limit: int = 200, method: str | None = None, status_code: int | None = None, user_id: str | None = None) -> list:
+    return obs_log_store.load_audit_logs(limit=limit, method=method, status_code=status_code, user_id=user_id)
+
+
+@app.post("/observability/llm-usage/collect")
+def collect_llm_usage(days: int = 30, group_by: str = "component") -> dict:
+    """A360-Assistant-Backend의 GET /api/admin/llm-usage/stats를 호출해 스냅샷으로 저장한다."""
+    return _run_collect(collector.collect_llm_usage, days=days, group_by=group_by)
+
+
+@app.get("/observability/llm-usage/snapshots")
+def get_llm_usage_snapshots(group_by: str | None = None, limit: int = 50) -> list:
+    return obs_log_store.load_llm_usage_snapshots(group_by=group_by, limit=limit)
+
+
+@app.post("/observability/rag-logs/collect")
+def collect_rag_logs(limit: int = 100) -> dict:
+    """A360-Assistant-Backend의 GET /api/rag/logs/recent를 호출해 http_request 이벤트만
+    가져와 저장한다(파이프라인 단계별 이벤트는 텍스트 미리보기가 섞여 있어 기본 제외)."""
+    return _run_collect(collector.collect_rag_logs, limit=limit)
+
+
+@app.get("/observability/rag-logs")
+def get_rag_logs(event: str | None = None, path_contains: str | None = None, limit: int = 200) -> list:
+    return obs_log_store.load_rag_logs(event=event, path_contains=path_contains, limit=limit)
+
+
+@app.get("/observability/status")
+def observability_status() -> dict:
+    return collector.status()
+
+
+@app.get("/eval/export/comparison-xlsx")
+def export_comparison_xlsx(label_a: str, label_b: str) -> Response:
+    """AB_comparison_report.xlsx(a360-eval-sandbox)와 같은 스타일로 두 버전(agent_label)
+    비교를 엑셀로 내보낸다."""
+    runs_a = load_runs(agent_label=label_a)
+    runs_b = load_runs(agent_label=label_b)
+    if not runs_a or not runs_b:
+        raise HTTPException(404, f"agent_label={label_a!r} 또는 {label_b!r}에 해당하는 로그가 없습니다")
+    content = build_comparison_xlsx(runs_a, runs_b, label_a, label_b)
+    filename = f"comparison_{label_a}_vs_{label_b}.xlsx"
+    return Response(
+        content=content,
+        media_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        headers={"Content-Disposition": f'attachment; filename="{filename}"'},
+    )

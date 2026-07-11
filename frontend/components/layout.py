@@ -52,54 +52,10 @@ def apply_global_styles() -> None:
             margin-bottom: 0.9rem;
         }
 
-        /* A360-Assistant-Frontend의 confidence-badge와 같은 배색 — badge()가 그린다. */
-        .op-badge {
-            display: inline-block;
-            padding: 3px 10px;
-            border-radius: 999px;
-            font-size: 0.72rem;
-            font-weight: 800;
-            white-space: nowrap;
-        }
-        .op-badge--success { color: #1f9d55; background: #e8f8ee; }
-        .op-badge--mid { color: #2f6fa8; background: #eaf1fb; }
-        .op-badge--warning { color: #b7791f; background: #fdf3e2; }
-        .op-badge--danger { color: #d84a3a; background: #fbeceb; }
-        .op-badge--neutral { color: #66727e; background: #eef2f6; }
-
-        /* archive-chat__item(카드형 목록)과 톤을 맞춘 평가 결과 1건 표시 */
-        .op-run-card__title { font-weight: 800; font-size: 0.92rem; color: #172026; }
-        .op-run-card__meta { font-size: 0.78rem; color: #66727e; margin-top: 2px; }
         </style>
         """,
         unsafe_allow_html=True,
     )
-
-
-_BADGE_KINDS = {"success", "mid", "warning", "danger", "neutral"}
-
-
-def badge(text: str, kind: str = "neutral") -> str:
-    """A360-Assistant-Frontend의 confidence-badge와 같은 배색의 뱃지 HTML 조각을 만든다.
-    st.markdown(..., unsafe_allow_html=True)로 렌더링해서 쓴다."""
-    if kind not in _BADGE_KINDS:
-        kind = "neutral"
-    return f'<span class="op-badge op-badge--{kind}">{text}</span>'
-
-
-def score_badge_kind(passed: bool | None, score: float | None) -> str:
-    """pass/fail이 있으면 그걸 우선, 없으면 score 구간으로 판정한다."""
-    if passed is True:
-        return "success"
-    if passed is False:
-        return "danger"
-    if score is None:
-        return "neutral"
-    if score >= 0.7:
-        return "success"
-    if score >= 0.4:
-        return "mid"
-    return "warning"
 
 
 def section_header(text: str) -> None:
