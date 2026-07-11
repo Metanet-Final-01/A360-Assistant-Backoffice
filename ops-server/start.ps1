@@ -1,7 +1,7 @@
-# monitoring-server 통합 실행 — 백엔드(FastAPI :8100)와 프론트(Streamlit :8501)를 함께 띄운다.
+# ops-server 통합 실행 — 백엔드(FastAPI :8100)와 프론트(Streamlit :8501)를 함께 띄운다.
 #
 # 사용법:
-#   cd monitoring-server
+#   cd ops-server
 #   python -m venv .venv ; .\.venv\Scripts\Activate.ps1   # (최초 1회) 가상환경
 #   pip install -r requirements.txt
 #   copy backend\.env.example backend\.env                # 값 채우기

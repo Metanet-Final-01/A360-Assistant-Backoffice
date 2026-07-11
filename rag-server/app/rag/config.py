@@ -51,7 +51,7 @@ LOG_DIR = Path(os.getenv("RAG_LOG_DIR") or "app/rag/logs")
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1200"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "200"))
 
-OPENSEARCH_HOST = os.getenv("OPENSEARCH_HOST") or "http://localhost:9200"
+OPENSEARCH_HOST = os.getenv("OPENSEARCH_HOST") or "http://127.0.0.1:9200"
 OPENSEARCH_INDEX = os.getenv("OPENSEARCH_INDEX", "rag_documents")
 OPENSEARCH_USERNAME = os.getenv("OPENSEARCH_USERNAME", "")
 OPENSEARCH_PASSWORD = os.getenv("OPENSEARCH_PASSWORD", "")
@@ -70,7 +70,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 def database_dsn() -> str:
     # os.getenv(key, default)는 .env에 키가 "빈 값"으로라도 존재하면 default를 안 쓴다 —
     # `or`로 빈 문자열도 default로 폴백되게 한다 (DATABASE_HOST= 처럼 빈 채로 커밋된 .env.example 대응).
-    host = os.getenv("DATABASE_HOST") or "localhost"
+    host = os.getenv("DATABASE_HOST") or "127.0.0.1"
     port = os.getenv("DATABASE_PORT") or "5432"
     name = os.getenv("DATABASE_NAME") or "a360"
     user = os.getenv("DATABASE_USERNAME") or "a360_admin"
