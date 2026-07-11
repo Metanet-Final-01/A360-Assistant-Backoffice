@@ -145,7 +145,7 @@ def validate_format(source: str, raw: dict | None) -> list[str]:
     if raw is None:
         return [
             f"source={source!r}는 raw에 채점 엔진 원본 출력이 있어야 합니다 "
-            f"(backend/app/eval/format_examples/{source}/ 참고)"
+            f"(app/eval/format_examples/{source}/ 참고)"
         ]
     try:
         model.model_validate(raw)

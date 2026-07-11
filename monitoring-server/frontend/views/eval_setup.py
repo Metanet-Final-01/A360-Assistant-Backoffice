@@ -2,7 +2,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, page_header, section_header
-from config import BACKEND_URL
+from config import MONITORING_BACKEND_URL
 
 
 def render() -> None:
@@ -31,7 +31,7 @@ def _render_dataset_registry() -> list[dict]:
                 payload = {"dataset_id": dataset_id, "name": name, "version": version, "description": description or None,
                            "case_ids": [line.strip() for line in case_text.splitlines() if line.strip()]}
                 try:
-                    response = requests.post(f"{BACKEND_URL}/eval/datasets", json=payload, timeout=5)
+                    response = requests.post(f"{MONITORING_BACKEND_URL}/eval/datasets", json=payload, timeout=5)
                     if response.status_code == 200:
                         st.session_state.pop("eval_datasets", None)
                         st.success("데이터셋을 등록했습니다.")
@@ -46,7 +46,7 @@ def _render_dataset_registry() -> list[dict]:
 def _load_datasets() -> list[dict]:
     if "eval_datasets" not in st.session_state:
         try:
-            response = requests.get(f"{BACKEND_URL}/eval/datasets", timeout=5)
+            response = requests.get(f"{MONITORING_BACKEND_URL}/eval/datasets", timeout=5)
             response.raise_for_status()
             st.session_state["eval_datasets"] = response.json()
         except (requests.RequestException, ValueError) as exc:
@@ -62,7 +62,7 @@ def _render_evaluation_execution(datasets: list[dict]) -> None:
             st.info("먼저 평가 데이터셋을 등록하세요.")
             return
         try:
-            options_response = requests.get(f"{BACKEND_URL}/eval/execution/options", timeout=5)
+            options_response = requests.get(f"{MONITORING_BACKEND_URL}/eval/execution/options", timeout=5)
             options_response.raise_for_status()
             prediction_labels = options_response.json().get("prediction_labels", [])
         except (requests.RequestException, ValueError) as exc:
@@ -93,7 +93,7 @@ def _render_evaluation_execution(datasets: list[dict]) -> None:
                 "commit_sha": commit_sha or None,
             }
             try:
-                response = requests.post(f"{BACKEND_URL}/eval/execution", json=payload, timeout=5)
+                response = requests.post(f"{MONITORING_BACKEND_URL}/eval/execution", json=payload, timeout=5)
                 if response.status_code == 200:
                     st.success("평가를 시작했습니다. 아래 상태 새로고침으로 진행 상황을 확인하세요.")
                 else:
@@ -104,7 +104,7 @@ def _render_evaluation_execution(datasets: list[dict]) -> None:
         if st.button("평가 상태 새로고침", key="execution_refresh"):
             st.session_state.pop("eval_execution_status", None)
         try:
-            status_response = requests.get(f"{BACKEND_URL}/eval/execution/status", timeout=5)
+            status_response = requests.get(f"{MONITORING_BACKEND_URL}/eval/execution/status", timeout=5)
             status_response.raise_for_status()
             status = status_response.json()
         except (requests.RequestException, ValueError) as exc:
@@ -129,7 +129,7 @@ def _render_format_guide() -> None:
     with card("format_guide"):
         section_header("채점 입력·출력 형식", "외부 채점 결과를 저장할 때는 아래 원본 형식을 유지합니다.")
         try:
-            response = requests.get(f"{BACKEND_URL}/eval/format-guide", timeout=5)
+            response = requests.get(f"{MONITORING_BACKEND_URL}/eval/format-guide", timeout=5)
             response.raise_for_status()
             guide = response.json()
         except (requests.RequestException, ValueError) as exc:
