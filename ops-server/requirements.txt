@@ -16,3 +16,14 @@ python-dotenv
 pydantic
 pyyaml
 openpyxl
+
+# ── RAG 검색 품질 평가(RAGAS) ──
+# ragas>=0.3은 langchain-community 최신판과 임포트 충돌(ragas.llms.base가
+# langchain_community.chat_models.vertexai를 무조건 임포트하는데, 그 서브모듈이
+# langchain-community 0.4+에서 별도 패키지로 분리돼 없어짐). ragas 0.2.15 +
+# langchain-community 0.3.19 + langchain<0.4 조합에서 실제로 동작 확인함(2026-07-12).
+ragas==0.2.15
+langchain-community==0.3.19
+langchain<0.4
+langchain-openai
+openai

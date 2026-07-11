@@ -67,13 +67,17 @@ def render() -> None:
         ("등록된 데이터셋", len(datasets)),
     ])
 
-    tab_results, tab_run, tab_datasets = st.tabs(["결과 조회 · 비교", "평가 실행", "데이터셋 관리"])
+    tab_results, tab_run, tab_datasets, tab_ragas = st.tabs(
+        ["결과 조회 · 비교", "평가 실행", "데이터셋 관리", "RAG 품질(RAGAS)"]
+    )
     with tab_results:
         _render_results_tab(runs)
     with tab_run:
         _render_execution_tab(datasets)
     with tab_datasets:
         _render_datasets_tab(datasets)
+    with tab_ragas:
+        _render_ragas_tab(runs)
 
 
 # st.fragment로 탭별 재실행을 분리한다 — 이게 없으면 위젯 하나만 건드려도(예: 결과
@@ -95,6 +99,12 @@ def _render_execution_tab(datasets: list[dict]) -> None:
 @st.fragment
 def _render_datasets_tab(datasets: list[dict]) -> None:
     _render_dataset_registry(datasets)
+
+
+@st.fragment
+def _render_ragas_tab(runs: list[dict]) -> None:
+    _render_ragas_execution()
+    _render_ragas_results(runs)
 
 
 # ── 결과 조회 · 비교 (구 eval_results.py) ──────────────────────────────
@@ -399,3 +409,89 @@ def _render_dataset_registry(datasets: list[dict]) -> None:
                         st.error(response.json().get("detail", response.text))
                 except (requests.RequestException, ValueError) as exc:
                     st.error(f"등록 실패: {exc}")
+
+
+# ── RAG 품질(RAGAS) ─────────────────────────────────────────────────
+
+_RAGAS_METRICS = ("ragas_faithfulness", "ragas_answer_relevancy", "ragas_context_precision", "ragas_context_recall")
+
+
+def _render_ragas_execution() -> None:
+    with card("ragas_execution"):
+        section_header(
+            "RAG 검색 품질 평가 실행",
+            "실제 색인 문서 기반 골드셋(10개)으로 Backend RAG 검색 → 답변 생성 → RAGAS 4개 지표(faithfulness/answer_relevancy/context_precision/context_recall) 채점.",
+        )
+        try:
+            cases_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/ragas/cases", timeout=5)
+            cases_resp.raise_for_status()
+            n_cases = len(cases_resp.json())
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"골드셋을 불러오지 못했습니다: {exc}")
+            n_cases = 0
+        st.caption(f"골드셋 케이스 {n_cases}개")
+
+        with st.form("ragas_execution_form"):
+            agent_label = st.text_input("결과 버전(agent_label)", value="rag-default", key="ragas_agent_label")
+            start = st.form_submit_button("RAGAS 평가 시작", type="primary")
+        if start:
+            try:
+                resp = _SESSION.post(
+                    f"{OPS_BACKEND_URL}/eval/ragas/execution", json={"agent_label": agent_label.strip() or "rag-default"}, timeout=5,
+                )
+                if resp.status_code == 200:
+                    st.success("RAGAS 평가를 시작했습니다 — OpenAI 호출이 여러 번 나가서 1~2분 걸립니다. 아래 새로고침으로 확인하세요.")
+                else:
+                    st.error(resp.json().get("detail", resp.text))
+            except (requests.RequestException, ValueError) as exc:
+                st.error(f"평가 시작 실패: {exc}")
+
+        if st.button("RAGAS 상태 새로고침", key="ragas_status_refresh"):
+            st.session_state.pop("ragas_status_cache", None)
+        try:
+            status_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/ragas/execution/status", timeout=5)
+            status_resp.raise_for_status()
+            status = status_resp.json()
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"상태를 불러오지 못했습니다: {exc}")
+            return
+
+        if status.get("running"):
+            st.info("실행 중...")
+        elif status.get("error"):
+            st.error(f"평가 실패: {status['error']}")
+        elif status.get("finished_at"):
+            st.success(f"평가 완료 · {status.get('saved', 0)}/{status.get('cases', 0)}건 저장")
+        else:
+            st.caption("아직 실행한 RAGAS 평가가 없습니다.")
+
+
+def _render_ragas_results(runs: list[dict]) -> None:
+    with card("ragas_results"):
+        section_header("RAG 품질 결과", "버전(agent_label)별 평균 — 지표는 전부 0~1, 높을수록 좋음.")
+        ragas_runs = [r for r in runs if r.get("source") == "ragas"]
+        if not ragas_runs:
+            st.info("아직 RAGAS 결과가 없습니다 — 위에서 평가를 실행하세요.")
+            return
+
+        labels = sorted({r["agent_label"] for r in ragas_runs if r.get("agent_label")})
+        rows = []
+        for label in labels:
+            label_runs = [r for r in ragas_runs if r.get("agent_label") == label]
+            row = {"버전": label, "케이스 수": len(label_runs)}
+            for metric_name in _RAGAS_METRICS:
+                values = [m["value"] for r in label_runs for m in r.get("metrics", []) if m["name"] == metric_name]
+                row[metric_name] = round(sum(values) / len(values), 3) if values else None
+            rows.append(row)
+        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
+
+        with st.expander("케이스별 원본 보기"):
+            case_rows = []
+            for r in ragas_runs:
+                metrics_by_name = {m["name"]: m["value"] for m in r.get("metrics", [])}
+                case_rows.append({
+                    "case_id": r["case_id"], "버전": r.get("agent_label") or "-",
+                    **{name: round(metrics_by_name.get(name, 0), 3) if name in metrics_by_name else None for name in _RAGAS_METRICS},
+                    "질문": (r.get("raw") or {}).get("question", ""),
+                })
+            st.dataframe(pd.DataFrame(case_rows), width="stretch", hide_index=True)
