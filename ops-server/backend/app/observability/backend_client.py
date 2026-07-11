@@ -20,7 +20,7 @@ try:
 except ImportError:
     pass
 
-BACKEND_URL = (os.getenv("A360_BACKEND_URL") or "http://localhost:8000").rstrip("/")
+BACKEND_URL = (os.getenv("A360_BACKEND_URL") or "http://127.0.0.1:8000").rstrip("/")
 _ADMIN_EMAIL = os.getenv("A360_BACKEND_ADMIN_EMAIL", "")
 _ADMIN_PASSWORD = os.getenv("A360_BACKEND_ADMIN_PASSWORD", "")
 
