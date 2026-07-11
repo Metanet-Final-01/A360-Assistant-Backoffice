@@ -8,7 +8,7 @@ A360-Assistant-Ops/
   backend/
     app/main.py     # API 진입점
     app/rag/        # RAG 데이터 적재 (A360-Assistant-Backend와 같은 DB에 반영)
-    app/eval/        # 워크플로우 평가 결과 로그/조회/비교
+    app/eval/        # 평가 데이터셋·결과 로그·동일 케이스 A/B 비교
       format_schemas.py     # pm4py/worfbench 입력·출력 형식 엄격 검증 스키마
       format_guide.py       # GET /eval/format-guide가 돌려줄 안내 데이터
       format_examples/      # pm4py/worfbench가 요구하는 형식의 예시 데이터셋(커밋됨, README 참고)
@@ -20,7 +20,7 @@ A360-Assistant-Ops/
   frontend/
     app.py               # 진입점 — 사이드바 + 페이지 네비게이션만
     components/          # 사이드바, 공통 스타일(page_header/badge/section_header 등)
-    views/               # 화면별 로직 (홈 / RAG 적재 / 평가 결과 / 모니터링 로그)
+    views/               # 화면별 로직 (홈 / RAG 적재 / 평가 준비 / 평가 결과 / 모니터링 로그)
     .streamlit/config.toml  # 브랜드 컬러(네이비/틸) 테마 — A360-Assistant-Frontend와 톤 통일
 ```
 
@@ -64,17 +64,16 @@ streamlit run app.py
   버튼 → `POST /rag/ingest?option=` → 백그라운드로 crawl→build→ingest 실행,
   "진행 상태 확인" 버튼으로 완료 여부 확인. 여기서 적재한 데이터는 메인 백엔드
   실서비스에 그대로 반영된다.
-- **평가 결과 기록·조회·비교**: "평가 결과" 섹션에서 결과 기록(폼) → 페이지 진입 시
-  자동으로 로그 목록을 표(행 체크 가능)로 보여준다 → 행을 2개 체크하면 그 자리에서
-  지표별 비교 차트(막대 그래프 + A/B 델타 색상 표시)가 그려진다. 채점 방법(수작업/
-  자동화 채점기 등)은 안 가림 — `source` 필드로만 구분하되, `source`가 `pm4py`/
-  `worfbench`처럼 이미 알려진 채점 엔진이면 `raw`를 그 엔진의 실제 출력 형식으로
-  엄격 검증한다(`backend/app/eval/format_schemas.py`).
-- **개선사항 비교(버전 A vs 버전 B)**: 같은 화면 아래쪽 — 지금까지 쌓인 `agent_label`
-  목록을 건수와 함께 보여주고, 두 버전을 고르면 공통 `case_id`끼리 짝지어 고정 지표
-  세트(pm4py_fitness/precision, worfbench_precision/recall/f1_score — 값이 있는
-  것만 표시)의 평균과 변화율(%)을 비교한다. 개별 로그 2건이 아니라 "버전 전체"를
-  통째로 비교하고 싶을 때(예: RAG 파이프라인 개편 전후) 쓴다.
+- **평가 준비**: 데이터셋을 `dataset_id + version + case_id 목록`으로 등록하고 pm4py/
+  WorFBench 입력·출력 예시를 확인한다. 데이터셋 정의는 로컬 전용
+  `backend/data/evaluation_datasets.json`에 저장된다.
+- **평가 결과 조회·비교**: 외부 채점 결과를 `POST /eval/runs`로 기록하면 페이지 진입 시
+  로그 목록을 보여준다. pm4py/WorFBench `raw`는 엄격 검증하며, 알려진 원본 지표는
+  비교용 `metrics`와 대표 `score`로 자동 정규화한다. 결과에는 `evaluation_id`,
+  `dataset_id/version`, `commit_sha`, 실행 `config`를 함께 기록할 수 있다.
+- **개선사항 비교(버전 A vs 버전 B)**: 지표마다 A와 B 양쪽에 값이 있는 동일
+  `case_id`만 짝지어 평균과 변화율을 계산한다. 화면에 지표별 실제 paired-case 수를
+  표시해 표본 범위를 확인할 수 있다.
 - **Excel로 내보내기**: 개선사항 비교에서 두 버전을 고르면 `AB_comparison_report.xlsx`
   (a360-eval-sandbox)와 같은 스타일(Overview 집계표 + Per-Case 비교, 델타 색상)의
   엑셀 파일을 `GET /eval/export/comparison-xlsx?label_a=&label_b=`로 내려받을 수
@@ -97,10 +96,9 @@ streamlit run app.py
   <a360-eval-sandbox의 eval_runs 폴더 경로> [--dry-run]`. 가져온 데이터는
   `backend/data/eval_runs.jsonl`(로컬 전용, git 미포함)에 쌓인다 — sandbox 원본이
   이 리포에 커밋되는 게 아니라 조회용 파생 데이터만 로컬에 남는다.
-- **모니터링 로그 수집·조회**: "모니터링 로그" 페이지에서 메인 백엔드의 감사 로그
-  (`GET /api/admin/audit-logs`)·LLM 사용량(`GET /api/admin/llm-usage/stats`)·RAG
-  파이프라인 로그(`GET /api/rag/logs/recent`)를 수집 버튼으로 가져와 로컬에 저장하고,
-  종류별로 카드 목록 + 차트(경로별 요청 수, 컴포넌트별 비용, 평균 응답시간)로 조회한다.
+- **모니터링 로그 수집·조회**: 현재 화면은 메인 백엔드의 RAG 요청 로그
+  (`GET /api/rag/logs/recent`)를 가져와 경로·상태·평균 응답시간을 조회한다. 감사 로그와
+  LLM 사용량 수집 API는 백엔드에 준비되어 있으나 관리자 계정 연동 UI는 아직 제공하지 않는다.
   요청 메타데이터만 다루며 agent가 만든 실제 워크플로우 내용은 포함하지 않는다 —
   워크플로우 생성 호출(`/turn` 경로)은 배지로 표시만 해 둔다. 데이터는
   `backend/data/observability_*.jsonl`(로컬 전용, git 미포함)에 쌓인다.

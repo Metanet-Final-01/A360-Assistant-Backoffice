@@ -7,4 +7,4 @@ def render_sidebar() -> None:
     with st.sidebar:
         st.markdown('<div class="app-kicker">A360 ASSISTANT</div>', unsafe_allow_html=True)
         st.markdown("### Ops")
-        st.caption("RAG 적재 · 평가 결과 · 모니터링 로그 조회 도구")
+        st.caption("RAG 적재 · 평가 준비/결과 · 모니터링 도구")

@@ -11,14 +11,7 @@ from openpyxl.utils import get_column_letter
 from openpyxl.worksheet.worksheet import Worksheet
 
 from .log_schema import EvalRunRecord
-
-# frontend/views/eval_results.py의 _FIXED_METRICS와 값을 맞춰뒀다 — 화면에서 본
-# "개선사항 비교"와 여기서 내려받는 엑셀이 서로 다른 지표 집합을 보여주면 안 되므로.
-# 프론트/백엔드가 별도 프로세스라 리스트를 import로 공유할 수 없어 값만 동일하게 유지한다.
-FIXED_METRICS = {
-    "pm4py_fitness", "pm4py_precision",
-    "worfbench_precision", "worfbench_recall", "worfbench_f1_score",
-}
+from .metrics import paired_metric_values
 
 NAVY = "1F2A44"
 TEAL = "0E7C7B"
@@ -55,37 +48,12 @@ def _delta_fill(delta: float | None) -> PatternFill | None:
     return None
 
 
-def _metrics_of(r: EvalRunRecord) -> dict[str, float]:
-    """EvalRunRecord.score는 채점 엔진마다 다른 지표를 대표값으로 복사해 넣은 별칭이라
-    (예: pm4py 행은 score=fitness) 일부러 안 씀 — FIXED_METRICS로 이름이 고정된
-    metrics만 비교 대상으로 쓴다(자세한 이유는 frontend/views/eval_results.py의
-    _FIXED_METRICS 주석 참고)."""
-    return {m.name: m.value for m in r.metrics if m.name in FIXED_METRICS}
-
-
-def _group_by_case(runs: list[EvalRunRecord]) -> dict[str, dict[str, float]]:
-    """case_id별로 묶어 지표를 평균 낸다. 같은 case_id로 여러 번 기록된 로그(예: 같은
-    케이스를 재실행)가 있어도 마지막 것만 조용히 채택하지 않고 전부 반영한다."""
-    sums: dict[str, dict[str, list[float]]] = {}
-    for r in runs:
-        bucket = sums.setdefault(r.case_id, {})
-        for name, value in _metrics_of(r).items():
-            bucket.setdefault(name, []).append(value)
-    return {
-        case_id: {name: sum(vals) / len(vals) for name, vals in metrics.items()}
-        for case_id, metrics in sums.items()
-    }
-
-
 def build_comparison_xlsx(
     runs_a: list[EvalRunRecord], runs_b: list[EvalRunRecord], label_a: str, label_b: str
 ) -> bytes:
-    by_case_a = _group_by_case(runs_a)
-    by_case_b = _group_by_case(runs_b)
-    common_cases = sorted(set(by_case_a) & set(by_case_b))
-    metric_names = sorted(
-        set().union(*(by_case_a[c].keys() & by_case_b[c].keys() for c in common_cases))
-    ) if common_cases else []
+    paired = paired_metric_values(runs_a, runs_b)
+    metric_names = list(paired)
+    common_cases = sorted({case_id for rows in paired.values() for case_id, _, _ in rows})
 
     wb = Workbook()
 
@@ -109,12 +77,10 @@ def build_comparison_xlsx(
     _style_header_row(ws, r, len(headers) + 1, fill=NAVY)
     r += 1
 
-    def avg(metrics_by_case: dict[str, dict[str, float]], key: str) -> float | None:
-        vals = [metrics_by_case[c][key] for c in common_cases if key in metrics_by_case[c]]
-        return round(sum(vals) / len(vals), 4) if vals else None
-
     for name in metric_names:
-        a_val, b_val = avg(by_case_a, name), avg(by_case_b, name)
+        rows = paired[name]
+        a_val = round(sum(a for _, a, _ in rows) / len(rows), 4)
+        b_val = round(sum(b for _, _, b in rows) / len(rows), 4)
         delta = round(b_val - a_val, 4) if a_val is not None and b_val is not None else None
         pct = f"{delta / a_val * 100:+.1f}%" if delta is not None and a_val else "n/a"
         ws.cell(row=r, column=2, value=name).border = BORDER
@@ -142,11 +108,11 @@ def build_comparison_xlsx(
 
     row = 2
     for case_id in common_cases:
-        ma, mb = by_case_a[case_id], by_case_b[case_id]
         ws2.cell(row=row, column=1, value=case_id).border = BORDER
         col = 2
         for name in metric_names:
-            va, vb = ma.get(name), mb.get(name)
+            pair = next(((a, b) for cid, a, b in paired[name] if cid == case_id), None)
+            va, vb = pair if pair else (None, None)
             delta = round(vb - va, 4) if va is not None and vb is not None else None
             ws2.cell(row=row, column=col, value=va).border = BORDER
             ws2.cell(row=row, column=col + 1, value=vb).border = BORDER

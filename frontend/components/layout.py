@@ -30,6 +30,25 @@ def apply_global_styles() -> None:
             background: linear-gradient(135deg, #2f9ab2, #172026);
             margin: 0.3rem 0 1.2rem;
         }
+        .page-subtitle {
+            color: #667085;
+            font-size: 1rem;
+            margin: -0.55rem 0 0.8rem;
+        }
+        .metric-strip {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 12px;
+            margin: 0 0 1.2rem;
+        }
+        .metric-strip__item {
+            background: #ffffff;
+            border: 1px solid #e4e7ec;
+            border-radius: 12px;
+            padding: 14px 16px;
+        }
+        .metric-strip__label { color: #667085; font-size: 0.78rem; font-weight: 700; }
+        .metric-strip__value { color: #172026; font-size: 1.45rem; font-weight: 800; margin-top: 3px; }
         div[data-testid="stButton"] button,
         div[data-testid="stFormSubmitButton"] button {
             border-radius: 9px;
@@ -58,16 +77,29 @@ def apply_global_styles() -> None:
     )
 
 
-def section_header(text: str) -> None:
+def section_header(text: str, description: str | None = None) -> None:
     """panel__header 톤(틸→네이비 그라데이션)의 섹션 라벨."""
     st.markdown(f'<div class="op-section-header">{text}</div>', unsafe_allow_html=True)
+    if description:
+        st.caption(description)
 
 
-def page_header(kicker: str, title: str) -> None:
+def page_header(kicker: str, title: str, subtitle: str | None = None) -> None:
     """제목 위에 작은 라벨을, 제목 아래에 브랜드 그라데이션 바를 붙여서 지금 어떤 페이지인지 한눈에 보이게 한다."""
     st.markdown(f'<div class="app-kicker">{kicker}</div>', unsafe_allow_html=True)
     st.title(title)
+    if subtitle:
+        st.markdown(f'<div class="page-subtitle">{subtitle}</div>', unsafe_allow_html=True)
     st.markdown('<div class="app-accent-bar"></div>', unsafe_allow_html=True)
+
+
+def metric_strip(items: list[tuple[str, object]]) -> None:
+    blocks = "".join(
+        f'<div class="metric-strip__item"><div class="metric-strip__label">{label}</div>'
+        f'<div class="metric-strip__value">{value}</div></div>'
+        for label, value in items
+    )
+    st.markdown(f'<div class="metric-strip">{blocks}</div>', unsafe_allow_html=True)
 
 
 def card(key: str):

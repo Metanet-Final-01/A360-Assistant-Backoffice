@@ -22,7 +22,9 @@ CATALOG_PATH = Path(__file__).resolve().parent / "catalog_actions.json"
 
 def load_catalog() -> dict[str, set[str]]:
     if not CATALOG_PATH.exists():
-        raise SystemExit(f"{CATALOG_PATH} 가 없습니다. 먼저 `python evals/build_catalog.py`를 실행하세요.")
+        raise FileNotFoundError(
+            f"{CATALOG_PATH}가 없습니다. 먼저 `python -m app.eval.workflow.build_catalog`를 실행하세요."
+        )
     raw = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
     return {pkg: set(info["actions"].keys()) for pkg, info in raw.items()}
 

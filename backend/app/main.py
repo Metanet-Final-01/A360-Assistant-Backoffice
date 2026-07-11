@@ -8,8 +8,11 @@ from pydantic import BaseModel
 
 from app.eval.format_guide import build_format_guide
 from app.eval.format_schemas import validate_format
+from app.eval.dataset_schema import EvaluationDataset
+from app.eval.dataset_store import load_datasets, save_dataset
 from app.eval.log_schema import EvalRunRecord
 from app.eval.log_store import append_run, get_run, load_runs
+from app.eval.metrics import metrics_from_raw
 from app.eval.workflow.adapters import MissingCatalogError, to_pm4py_predicted_actions, to_worfbench_pred_traj
 from app.eval.workflow.recommendation import Recommendation
 from app.eval.xlsx_report import build_comparison_xlsx
@@ -82,7 +85,28 @@ def record_eval_run(record: EvalRunRecord) -> EvalRunRecord:
     errors = validate_format(record.source, record.raw)
     if errors:
         raise HTTPException(400, {"message": f"source={record.source} 형식 검증 실패", "errors": errors})
+    if not record.metrics:
+        derived = metrics_from_raw(record.source, record.raw)
+        if derived:
+            score = record.score
+            if score is None:
+                preferred = "pm4py_fitness" if record.source == "pm4py" else "worfbench_f1_score"
+                score = next((metric.value for metric in derived if metric.name == preferred), None)
+            record = record.model_copy(update={"metrics": derived, "score": score})
     return append_run(record)
+
+
+@app.get("/eval/datasets")
+def list_eval_datasets() -> list[EvaluationDataset]:
+    return load_datasets()
+
+
+@app.post("/eval/datasets")
+def create_eval_dataset(dataset: EvaluationDataset) -> EvaluationDataset:
+    try:
+        return save_dataset(dataset)
+    except ValueError as exc:
+        raise HTTPException(409, str(exc)) from exc
 
 
 @app.get("/eval/runs")
@@ -131,7 +155,7 @@ def convert_to_worfbench(req: ConvertRequest) -> dict:
             task_description=req.task_description,
             source_id=f"a360:{req.source_bot}",
         )
-    except MissingCatalogError as e:
+    except (MissingCatalogError, FileNotFoundError) as e:
         raise HTTPException(409, str(e)) from e
 
 

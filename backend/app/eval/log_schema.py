@@ -10,7 +10,7 @@
 from datetime import datetime, timezone
 from typing import Any
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 
 class EvalMetric(BaseModel):
@@ -20,12 +20,25 @@ class EvalMetric(BaseModel):
 
 
 class EvalRunRecord(BaseModel):
-    run_id: str = Field(description="이 기록 고유 id — 없으면 저장 시 자동 생성")
+    run_id: str | None = Field(None, description="이 기록 고유 id — 없으면 저장 시 자동 생성")
     logged_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+    evaluation_id: str | None = Field(None, description="한 번의 배치 평가 실행을 묶는 id")
+    dataset_id: str | None = Field(None, description="평가 데이터셋 id")
+    dataset_version: str | None = Field(None, description="평가 데이터셋 버전")
     case_id: str = Field(description="평가 케이스 id, 예: web_excel_email_001")
     source: str = Field(description="채점 방법 이름, 예: rule_check | pm4py | worfbench | manual")
     agent_label: str | None = Field(None, description="평가 대상 에이전트/버전, 예: dev, rpa27")
+    commit_sha: str | None = Field(None, description="평가 대상 코드 커밋")
+    config: dict[str, Any] = Field(default_factory=dict, description="모델·프롬프트·RAG 등 실행 설정")
     passed: bool | None = Field(None, description="있으면 pass/fail 결과")
     score: float | None = Field(None, description="있으면 0~1 사이 대표 점수 하나")
     metrics: list[EvalMetric] = Field(default_factory=list)
     raw: dict[str, Any] | None = Field(None, description="채점 엔진의 원본 출력 전체 보존")
+
+    @field_validator("source")
+    @classmethod
+    def normalize_source(cls, value: str) -> str:
+        value = value.strip().lower()
+        if not value:
+            raise ValueError("source는 비어 있을 수 없습니다")
+        return value

@@ -33,7 +33,10 @@ def load_runs(
             line = line.strip()
             if not line:
                 continue
-            record = EvalRunRecord.model_validate_json(line)
+            try:
+                record = EvalRunRecord.model_validate_json(line)
+            except (ValueError, json.JSONDecodeError):
+                continue
             if case_id and record.case_id != case_id:
                 continue
             if source and record.source != source:
