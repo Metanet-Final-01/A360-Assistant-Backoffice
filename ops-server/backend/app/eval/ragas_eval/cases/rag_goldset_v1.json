@@ -1,0 +1,62 @@
+[
+  {
+    "case_id": "excel_open_spreadsheet",
+    "question": "Excel 스프레드시트를 여는 액션은 무엇이고, 필수 파라미터는 무엇인가요?",
+    "ground_truth": "Excel 기본 패키지의 '열기'(OpenSpreadsheet) 액션입니다. 필수 파라미터는 파일 경로(filePath)이며, 특정 시트를 열지 여부(isSpecificSheet), 읽기전용/편집 모드(fileAccessMode), 비밀번호 필요 여부(isSecure) 등을 옵션으로 설정할 수 있습니다.",
+    "reference_doc_ids": ["97b74de0e11a7b70"]
+  },
+  {
+    "case_id": "excel_get_single_cell",
+    "question": "Excel에서 셀 하나의 값을 가져오려면 어떤 액션을 쓰나요?",
+    "ground_truth": "Excel 기본 패키지의 '단일 셀 가져오기'(GetSingleCell) 액션을 사용합니다. 활성 셀 옵션과 세션 이름을 지정하면 셀 내용을 STRING 타입 변수로 반환합니다.",
+    "reference_doc_ids": ["ce2534865f703e5d"]
+  },
+  {
+    "case_id": "excel_save_spreadsheet",
+    "question": "Excel 통합 문서를 저장하는 액션은 무엇인가요?",
+    "ground_truth": "Excel 기본 패키지의 '통합 문서 저장'(SaveSpreadSheet) 액션입니다. 세션 이름만 지정하면 열었던 위치에 그대로 저장하며, 리턴값은 없습니다.",
+    "reference_doc_ids": ["6ad51d5c7d44c5a6"]
+  },
+  {
+    "case_id": "email_send_mail",
+    "question": "이메일을 보내는 액션에서 필수 파라미터는 무엇인가요?",
+    "ground_truth": "이메일 패키지의 '보내기'(sendMail) 액션에서 필수 파라미터는 받는사람 주소(toAddress), 제목(subject), 메시지 본문(message)입니다. 참조(cc), 숨은참조(bcc), 첨부파일은 선택 항목입니다.",
+    "reference_doc_ids": ["ba20a932f13d8897"]
+  },
+  {
+    "case_id": "file_copy",
+    "question": "파일을 다른 위치로 복사하는 액션의 이름과 필수 파라미터는 무엇인가요?",
+    "ground_truth": "파일 패키지의 '복사'(copyFiles) 액션입니다. 필수 파라미터는 소스 파일 경로(sourceFilePath), 대상 경로(destinationPath), 기존 파일 덮어쓰기 여부(isOverwrite)입니다.",
+    "reference_doc_ids": ["234fb25918e9cd74"]
+  },
+  {
+    "case_id": "file_delete",
+    "question": "파일을 삭제하는 액션은 어떤 필수 파라미터를 받나요?",
+    "ground_truth": "파일 패키지의 '삭제'(deleteFiles) 액션이며, 필수 파라미터는 삭제할 파일 경로(filePath)입니다. 리턴값은 없습니다.",
+    "reference_doc_ids": ["38bc6bdc97d23a3f"]
+  },
+  {
+    "case_id": "delay_wait",
+    "question": "자동화 실행 중 특정 시간만큼 대기하려면 어떤 액션을 쓰나요?",
+    "ground_truth": "지연 패키지의 '지연'(delay) 액션을 사용합니다. 지연 유형(REGULAR/RANDOM)과 시간 단위(MILLISECONDS/SECONDS)를 지정할 수 있고, 리턴값은 없습니다.",
+    "reference_doc_ids": ["f260dd84b9e57084"]
+  },
+  {
+    "case_id": "datetime_add",
+    "question": "날짜/시간 변수에 특정 값을 더하는 액션의 필수 파라미터는 무엇인가요?",
+    "ground_truth": "날짜 시간 패키지의 '추가'(add) 액션입니다. 소스 날짜/시간 변수(source), 추가할 시간 값(val), 시간 단위(unit: MILLIS/SECONDS/MINUTES/HOURS/DAYS/WEEKS/MONTHS/YEARS)가 필수 파라미터이며, 결과는 DATETIME 타입으로 반환됩니다.",
+    "reference_doc_ids": ["533cee55b028eb69"]
+  },
+  {
+    "case_id": "dictionary_get",
+    "question": "사전 변수에서 특정 키에 해당하는 값을 가져오려면 어떤 액션을 쓰나요?",
+    "ground_truth": "사전 패키지의 '가져오기'(get) 액션을 사용합니다. 사전 변수(sourceMap)와 키(key)가 필수 파라미터이며, 해당 키의 값을 ANY 타입으로 반환합니다.",
+    "reference_doc_ids": ["b9b7bd3e8919c4f2"]
+  },
+  {
+    "case_id": "browser_launch_website",
+    "question": "브라우저에서 특정 웹사이트를 여는 레거시 액션은 무엇인가요?",
+    "ground_truth": "브라우저 패키지의 '웹사이트 열기(레거시)'(launchWebsite) 액션입니다. 열 URL(url)이 필수 파라미터이고, 사용할 브라우저 종류(DEFAULT/INTERNET_EXPLORER/FIREFOX/CHROME/EDGE)를 선택할 수 있습니다.",
+    "reference_doc_ids": ["8683971736fd8d99"]
+  }
+]

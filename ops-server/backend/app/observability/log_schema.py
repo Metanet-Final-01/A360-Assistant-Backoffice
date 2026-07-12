@@ -48,3 +48,51 @@ class RagLogRecord(BaseModel):
 
     raw: dict[str, Any]
     fetched_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+class MetricsDailyRecord(BaseModel):
+    """/api/admin/metrics-daily 레코드 1건(일자×method×path 롤업) — 이미 집계된 값이라
+    LlmUsageSnapshot과 같은 이유로 수집 시각 붙여 스냅샷으로 쌓는다(개별 중복 제거 없음 —
+    같은 날짜·경로가 재수집될 때마다 최신 집계로 덮어써야 의미 있는데, 그건 조회 시
+    day+method+path 최신 fetched_at만 남기는 방식으로 처리한다)."""
+
+    day: str
+    method: str
+    path: str
+    calls: int
+    err_4xx: int
+    err_5xx: int
+    p50_ms: int | None = None
+    p95_ms: int | None = None
+    avg_ms: int | None = None
+    max_ms: int | None = None
+    fetched_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+class UsageDailyRecord(BaseModel):
+    """/api/admin/usage-daily 레코드 1건(일자×component×purpose×model 롤업)."""
+
+    day: str
+    component: str
+    purpose: str
+    model: str
+    calls: int
+    input_tokens: int
+    output_tokens: int
+    cost_usd: float | None = None
+    fetched_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
+class TurnEventRecord(BaseModel):
+    """/api/admin/turn-events 레코드 1건 — 에이전트 턴 노드 타임라인."""
+
+    session_id: str | None = None
+    request_id: str | None = None
+    seq: int
+    kind: str
+    stage: str | None = None
+    message: str | None = None
+    detail: str | None = None
+    elapsed_ms: int
+    created_at: str | None = None
+    fetched_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())

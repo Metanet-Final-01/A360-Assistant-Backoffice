@@ -5,11 +5,12 @@
 "모니터링 서버"가 아니라 "ops-server"로 뒀다. **화면 있음.** 내부적으로 **2개
 프로세스**로 구성된다:
 
-- **백엔드 (FastAPI, :8100)** — `/observability/*`(감사·LLM·RAG 로그 수집/조회),
-  `/eval/*`(데이터셋·결과·pm4py/WorFBench 변환·A/B·xlsx), 그리고 `app/scheduler`
-  (rag-server로 주기 트리거 — 현재 stub).
+- **백엔드 (FastAPI, :8100)** — `/observability/*`(감사·LLM·RAG 로그 수집/조회,
+  metrics-daily/usage-daily/turn-events 롤업 조회), `/eval/*`(데이터셋·결과·
+  pm4py/WorFBench 변환·A/B·xlsx, RAGAS 기반 RAG 검색 품질 평가), 그리고
+  `app/scheduler`(rag-server로 주기 트리거 — 현재 stub).
 - **프론트 (Streamlit, :8501)** — 홈(대시보드) / RAG 데이터 적재 / 평가(결과 조회·비교,
-  실행, 데이터셋 관리 3탭으로 통합된 한 페이지) / 모니터링 로그.
+  실행, 데이터셋 관리, RAG 품질(RAGAS) 4탭으로 통합된 한 페이지) / 모니터링 로그.
 
 ```
 ops-server/

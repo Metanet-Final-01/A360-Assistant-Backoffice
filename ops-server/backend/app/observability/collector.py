@@ -5,12 +5,15 @@
 from datetime import datetime, timezone
 
 from . import backend_client, log_store
-from .log_schema import AuditLogRecord, RagLogRecord
+from .log_schema import AuditLogRecord, MetricsDailyRecord, RagLogRecord, TurnEventRecord, UsageDailyRecord
 
 _collect_state: dict[str, dict] = {
     "audit_logs": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
     "llm_usage": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
     "rag_logs": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
+    "metrics_daily": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
+    "usage_daily": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
+    "turn_events": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
 }
 
 
@@ -57,6 +60,39 @@ def collect_rag_logs(limit: int = 100) -> dict:
         return _record_result("rag_logs", len(records), new_count)
     except Exception as e:  # noqa: BLE001 - collect_audit_logs와 같은 이유
         _record_result("rag_logs", 0, 0, error=str(e))
+        raise
+
+
+def collect_metrics_daily(days: int = 7, method: str | None = None, path: str | None = None) -> dict:
+    try:
+        data = backend_client.fetch_metrics_daily(days=days, method=method, path=path)
+        records = [MetricsDailyRecord(**r) for r in data.get("rows", [])]
+        new_count = log_store.append_metrics_daily(records)
+        return _record_result("metrics_daily", len(records), new_count)
+    except Exception as e:  # noqa: BLE001 - collect_audit_logs와 같은 이유
+        _record_result("metrics_daily", 0, 0, error=str(e))
+        raise
+
+
+def collect_usage_daily(days: int = 30, component: str | None = None, model: str | None = None) -> dict:
+    try:
+        data = backend_client.fetch_usage_daily(days=days, component=component, model=model)
+        records = [UsageDailyRecord(**r) for r in data.get("rows", [])]
+        new_count = log_store.append_usage_daily(records)
+        return _record_result("usage_daily", len(records), new_count)
+    except Exception as e:  # noqa: BLE001 - collect_audit_logs와 같은 이유
+        _record_result("usage_daily", 0, 0, error=str(e))
+        raise
+
+
+def collect_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
+    try:
+        data = backend_client.fetch_turn_events(session_id=session_id, limit=limit)
+        records = [TurnEventRecord(**r) for r in data.get("events", [])]
+        new_count = log_store.append_turn_events(records)
+        return _record_result("turn_events", len(records), new_count)
+    except Exception as e:  # noqa: BLE001 - collect_audit_logs와 같은 이유
+        _record_result("turn_events", 0, 0, error=str(e))
         raise
 
 
