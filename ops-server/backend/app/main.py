@@ -19,6 +19,7 @@ from app.eval.dataset_schema import EvaluationDataset
 from app.eval.dataset_store import load_datasets, save_dataset
 from app.eval import executor
 from app.eval.ragas_eval import runner as ragas_runner
+from app.eval.bfcl_eval import runner as bfcl_runner
 from app.eval.log_schema import EvalRunRecord
 from app.eval.log_store import append_run, get_run, load_runs
 from app.eval.metrics import metrics_from_raw
@@ -205,6 +206,32 @@ def start_ragas_evaluation(req: ExecuteRagasRequest, background_tasks: Backgroun
 @app.get("/eval/ragas/execution/status")
 def ragas_evaluation_status() -> dict:
     return ragas_runner.state
+
+
+class ExecuteBfclRequest(BaseModel):
+    agent_label: str = "bfcl-default"
+
+
+@app.get("/eval/bfcl/cases")
+def bfcl_cases() -> list:
+    """골드셋 케이스 목록(채점 실행 전 미리보기용)."""
+    try:
+        return [c.model_dump() for c in bfcl_runner.load_cases()]
+    except bfcl_runner.BFCLGoldsetError as e:
+        raise HTTPException(500, str(e)) from e
+
+
+@app.post("/eval/bfcl/execution")
+def start_bfcl_evaluation(req: ExecuteBfclRequest, background_tasks: BackgroundTasks) -> dict:
+    if not bfcl_runner.reserve():
+        raise HTTPException(409, "이미 BFCL 평가가 실행 중입니다")
+    background_tasks.add_task(bfcl_runner.execute_and_save, req.agent_label.strip())
+    return {"status": "started"}
+
+
+@app.get("/eval/bfcl/execution/status")
+def bfcl_evaluation_status() -> dict:
+    return bfcl_runner.state
 
 
 def _run_collect(fn, *args, **kwargs) -> dict:

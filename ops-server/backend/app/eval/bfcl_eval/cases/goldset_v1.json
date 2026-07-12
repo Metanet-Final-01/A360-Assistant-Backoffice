@@ -1,0 +1,276 @@
+[
+  {
+    "case_id": "email_send_html",
+    "category": "simple",
+    "document_text": "kim@example.com에게 제목 '주간 보고'로 이메일을 보내줘. 본문 내용은 아무거나 괜찮고, HTML 형식으로 보내줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Email",
+            "action": "sendMail",
+            "params": [
+              {"name": "toAddress", "check": "exact", "expected": "kim@example.com"},
+              {"name": "subject", "check": "contains", "expected": "주간 보고"},
+              {"name": "bodyFormat", "check": "enum", "expected": ["HTML"]},
+              {"name": "message", "check": "nonempty"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "email_send_attachment_check",
+    "category": "simple",
+    "document_text": "team@company.com로 이메일을 보내되, 첨부파일이 없으면 실행이 실패하도록 첨부파일 존재 확인 옵션을 켜줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Email",
+            "action": "sendMail",
+            "params": [
+              {"name": "toAddress", "check": "exact", "expected": "team@company.com"},
+              {"name": "ensureAttachmentsExist", "check": "bool_true"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "file_copy_overwrite",
+    "category": "simple",
+    "document_text": "C:\\data\\report.xlsx 파일을 D:\\backup 폴더로 복사해줘. 기존 파일이 있으면 덮어써.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "File",
+            "action": "copyFiles",
+            "params": [
+              {"name": "sourceFilePath", "check": "contains", "expected": "report.xlsx"},
+              {"name": "destinationPath", "check": "contains", "expected": "backup"},
+              {"name": "isOverwrite", "check": "bool_true"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "messagebox_show",
+    "category": "simple",
+    "document_text": "작업이 다 끝나면 '처리 완료'라는 내용의 메시지 박스를 화면에 띄워줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "MessageBox",
+            "action": "messageBox",
+            "params": [
+              {"name": "content", "check": "contains", "expected": "처리 완료"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "browser_open_newtab",
+    "category": "simple",
+    "document_text": "새 탭에서 https://example.com 페이지를 열어줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Browser",
+            "action": "openbrowser",
+            "params": [
+              {"name": "openOption", "check": "enum", "expected": ["NEW_TAB"]},
+              {"name": "url", "check": "contains", "expected": "example.com"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "excel_setcell_specific",
+    "category": "multiple",
+    "document_text": "엑셀에서 특정 셀을 직접 지정해서 그 셀에 '완료'라는 값을 입력해줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Excel",
+            "action": "SetCell",
+            "params": [
+              {"name": "setCellType", "check": "enum", "expected": ["CELL"]},
+              {"name": "value", "check": "contains", "expected": "완료"}
+            ]
+          },
+          {
+            "package": "Excel_MS",
+            "action": "SetCell",
+            "params": [
+              {"name": "cellOption", "check": "enum", "expected": ["SPECIFIC_CELL"]},
+              {"name": "value", "check": "contains", "expected": "완료"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "excel_setcell_active",
+    "category": "multiple",
+    "document_text": "엑셀에서 지금 선택된 셀(활성 셀)에 숫자 100을 입력해줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Excel",
+            "action": "SetCell",
+            "params": [
+              {"name": "setCellType", "check": "enum", "expected": ["ACTIVE_CELL"]},
+              {"name": "value", "check": "contains", "expected": "100"}
+            ]
+          },
+          {
+            "package": "Excel_MS",
+            "action": "SetCell",
+            "params": [
+              {"name": "cellOption", "check": "enum", "expected": ["ACTIVE_CELL"]},
+              {"name": "value", "check": "contains", "expected": "100"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "datetime_add_days",
+    "category": "missing_parameters",
+    "document_text": "오늘 날짜에서 7일 뒤 날짜를 계산해줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Datetime",
+            "action": "add",
+            "params": [
+              {"name": "val", "check": "exact", "expected": "7"},
+              {"name": "unit", "check": "enum", "expected": ["DAYS"]}
+            ]
+          }
+        ],
+        "missing_params_expected_empty": ["source"]
+      }
+    ]
+  },
+  {
+    "case_id": "datetime_add_minutes",
+    "category": "missing_parameters",
+    "document_text": "지금 시각에서 30분 뒤 시각을 계산해줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Datetime",
+            "action": "add",
+            "params": [
+              {"name": "val", "check": "exact", "expected": "30"},
+              {"name": "unit", "check": "enum", "expected": ["MINUTES"]}
+            ]
+          }
+        ],
+        "missing_params_expected_empty": ["source"]
+      }
+    ]
+  },
+  {
+    "case_id": "tesla_remote_start",
+    "category": "missing_functions",
+    "document_text": "테슬라 자동차 원격 시동을 걸어줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expect_no_action": true
+      }
+    ]
+  },
+  {
+    "case_id": "excel_open_and_setcell",
+    "category": "response_based",
+    "document_text": "엑셀 파일 C:\\data\\sales.xlsx를 열어서 지금 선택된 셀에 '완료'라고 입력해줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Excel_MS",
+            "action": "SetCell",
+            "params": [
+              {"name": "cellOption", "check": "enum", "expected": ["ACTIVE_CELL"]},
+              {"name": "value", "check": "contains", "expected": "완료"}
+            ],
+            "require_no_prereq_violation": true
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "email_change_recipient",
+    "category": "multi_turn_state",
+    "document_text": "kim@example.com에게 제목 '주간 회의 안내'로 이메일을 보내줘. 본문은 '내일 오후 2시에 회의가 있습니다.'로 해줘.",
+    "turns": [
+      {
+        "message": "이 업무를 분석해서 자동화 워크플로우로 추천해줘.",
+        "expected_targets": [
+          {
+            "package": "Email",
+            "action": "sendMail",
+            "params": [
+              {"name": "toAddress", "check": "exact", "expected": "kim@example.com"}
+            ]
+          }
+        ]
+      },
+      {
+        "message": "받는 사람을 lee@example.com으로 바꿔줘.",
+        "expected_targets": [
+          {
+            "package": "Email",
+            "action": "sendMail",
+            "params": [
+              {"name": "toAddress", "check": "exact", "expected": "lee@example.com"}
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "case_id": "irrelevance_no_tool_needed",
+    "category": "irrelevance",
+    "document_text": null,
+    "turns": [
+      {
+        "message": "오늘 기분이 좀 별로인데 위로되는 말 좀 해줘.",
+        "expect_no_action": true
+      }
+    ]
+  }
+]
