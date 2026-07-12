@@ -25,5 +25,8 @@ openpyxl
 ragas==0.2.15
 langchain-community==0.3.19
 langchain<0.4
-langchain-openai
-openai
+# langchain-openai/openai도 명시 고정 — 안 그러면 신규 설치 시 이 조합으로 검증 안 된
+# 최신 버전이 풀려서 위 vertexai 충돌과 별개로 또 다른 호환성 문제가 날 수 있다
+# (CodeRabbit 지적). 2026-07-12 기준 실제 동작 확인된 버전.
+langchain-openai==1.3.3
+openai==2.44.0
