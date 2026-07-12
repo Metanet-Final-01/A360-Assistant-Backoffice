@@ -1,0 +1,35 @@
+name: "🐛 버그 리포트"
+description: "동작하지 않거나 예상과 다른 동작"
+title: "[bug] "
+labels: ["type:bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: 어떤 문제인가요?
+      placeholder: "감사 로그 수집 버튼을 누르면 502가 뜸"
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 재현 방법
+      placeholder: |
+        1. 모니터링 화면 → 모니터링 로그 탭
+        2. "감사 로그 수집" 클릭
+        3. BackendUnavailableError 표시
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: 기대 동작
+    validations:
+      required: false
+  - type: textarea
+    id: env
+    attributes:
+      label: 환경 / 로그
+      placeholder: "OS, Python 버전, 서버 콘솔 로그 붙여넣기 (크레덴셜은 가리고)"
+    validations:
+      required: false
