@@ -1,9 +1,13 @@
 """로그 EDA — 수집된 관측 로그를 직접 필터링·탐색하는 화면.
 
 2026-07-12 밤에 로컬 스크립트(pandas)로 수동으로 했던 EDA(감사 로그 상태코드 분포,
-RAG 검색 지연시간, 롤업 엔드포인트별 성능 등)를 반복 가능한 화면으로 만든다. 다른
-관측 페이지(monitoring_logs.py)는 "운영자 조작판" 성격이라 표 위주로 두지만, 여기는
-탐색·분석이 목적이라 필터·차트를 적극적으로 쓴다.
+RAG 검색 지연시간, 롤업 엔드포인트별 성능 등)를 반복 가능한 화면으로 만든다.
+
+처음엔 X/Y를 사용자가 직접 골라 차트까지 만드는 범용 빌더를 붙였는데, 어떤 질문에
+답하는지 미리 정해진 게 없는 범용 차트는 인사이트를 못 준다는 피드백으로 뺐다 —
+Ops 다른 관측 페이지(monitoring_logs.py)와 같은 "표 위주" 철학으로 통일. 실제
+분석·차트가 필요하면(예: 오늘 밤 찾은 RAG 검색 병목처럼) 그때그때 구체적인 질문에
+맞춰 별도로 만드는 게 범용 빌더보다 낫다.
 
 고정된 뷰가 아니라 자유 탐색형 — 컬럼 dtype에 따라 필터를 자동 생성한다(범주형은
 multiselect, 숫자는 범위 슬라이더, 시각 컬럼은 날짜 범위). 소스가 늘어도 이 로직은
@@ -11,7 +15,6 @@ multiselect, 숫자는 범위 슬라이더, 시각 컬럼은 날짜 범위). 소
 """
 
 import pandas as pd
-import altair as alt
 import requests
 import streamlit as st
 
@@ -54,11 +57,7 @@ def render() -> None:
         section_header(f"필터 ({len(df)}건 로드됨)")
         view = _apply_filters(df)
         st.caption(f"필터 적용 후 {len(view)}건")
-        st.dataframe(view, width="stretch", hide_index=True, height=320)
-
-    with card("eda_chart"):
-        section_header("차트")
-        _render_chart(view)
+        st.dataframe(view, width="stretch", hide_index=True, height=480)
 
 
 def _load(source_label: str, limit: int) -> pd.DataFrame:
@@ -118,32 +117,3 @@ def _apply_filters(df: pd.DataFrame) -> pd.DataFrame:
                 selected = st.multiselect(col, sorted(uniques, key=str), default=sorted(uniques, key=str), key=f"eda_cat_{col}")
                 view = view[series.isin(selected)]
     return view
-
-
-def _render_chart(view: pd.DataFrame) -> None:
-    if view.empty:
-        st.info("필터 결과가 없어 차트를 그릴 수 없습니다.")
-        return
-    numeric_cols = [c for c in view.columns if pd.api.types.is_numeric_dtype(view[c])]
-    category_cols = [c for c in view.columns if c not in _EXCLUDE_COLS and not pd.api.types.is_numeric_dtype(view[c])]
-    if not category_cols:
-        st.info("집계 기준(X축)으로 쓸 범주형/시각 컬럼이 없습니다.")
-        return
-
-    cols = st.columns(3)
-    x_col = cols[0].selectbox("X축(집계 기준)", category_cols)
-    agg = cols[1].selectbox("집계", ["건수"] + numeric_cols)
-    chart_type = cols[2].selectbox("차트 종류", ["막대", "선"])
-
-    if agg == "건수":
-        grouped = view.groupby(x_col, dropna=False).size().reset_index(name="값")
-        y_field = "값"
-    else:
-        grouped = view.groupby(x_col, dropna=False)[agg].mean().reset_index()
-        y_field = agg
-
-    is_datetime = pd.api.types.is_datetime64_any_dtype(view[x_col])
-    x_enc = alt.X(f"{x_col}:T" if is_datetime else f"{x_col}:N", title=x_col, sort=None if is_datetime else "-y")
-    mark = alt.Chart(grouped).mark_bar() if chart_type == "막대" else alt.Chart(grouped).mark_line(point=True)
-    chart = mark.encode(x=x_enc, y=alt.Y(f"{y_field}:Q"), tooltip=[x_col, y_field]).properties(height=320)
-    st.altair_chart(chart, width="stretch")
