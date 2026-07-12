@@ -94,23 +94,14 @@ def _render_refresh_and_table() -> None:
         st.altair_chart(chart, width="stretch")
 
 
-def _collect_and_load(limit: int) -> None:
-    try:
-        collect_resp = requests.post(f"{OPS_BACKEND_URL}/observability/rag-logs/collect", params={"limit": limit}, timeout=15)
-        if collect_resp.status_code != 200:
-            st.error(f"로그 수집 실패: {collect_resp.text}")
-            return
-        resp = requests.get(f"{OPS_BACKEND_URL}/observability/rag-logs", params={"limit": limit}, timeout=10)
-        st.session_state["obs_rag_logs"] = resp.json()
-    except requests.RequestException as e:
-        st.error(f"백엔드 연결 실패: {e}")
-
-
 def _render_metrics_daily() -> None:
     col_btn, col_days = st.columns([1, 3])
     days = col_days.number_input("최근 며칠", min_value=1, max_value=90, value=7, key="metrics_daily_days", label_visibility="collapsed")
     if col_btn.button("새로고침", key="metrics_daily_refresh_btn") or "obs_metrics_daily" not in st.session_state:
-        _collect_and_load("metrics-daily", {"days": days}, "obs_metrics_daily")
+        # GET /observability/metrics-daily는 days를 받지 않는다(method/path_contains/limit만) —
+        # collect(수집 범위)와 get(조회)에 같은 params를 그대로 재사용하면 "최근 며칠" 입력이
+        # 조회 결과엔 반영되지 않는다(CodeRabbit 지적). collect엔 days, get엔 limit을 따로 준다.
+        _collect_and_load("metrics-daily", {"days": days}, "obs_metrics_daily", get_params={"limit": 2000})
 
     rows = st.session_state.get("obs_metrics_daily", [])
     if not rows:
@@ -125,7 +116,8 @@ def _render_usage_daily() -> None:
     col_btn, col_days = st.columns([1, 3])
     days = col_days.number_input("최근 며칠", min_value=1, max_value=365, value=30, key="usage_daily_days", label_visibility="collapsed")
     if col_btn.button("새로고침", key="usage_daily_refresh_btn") or "obs_usage_daily" not in st.session_state:
-        _collect_and_load("usage-daily", {"days": days}, "obs_usage_daily")
+        # metrics-daily와 같은 이유로 get엔 days 대신 limit을 준다.
+        _collect_and_load("usage-daily", {"days": days}, "obs_usage_daily", get_params={"limit": 2000})
 
     rows = st.session_state.get("obs_usage_daily", [])
     if not rows:
@@ -152,15 +144,23 @@ def _render_turn_events() -> None:
     st.dataframe(df[["created_at", "session_id", "seq", "kind", "stage", "message", "elapsed_ms"]], width="stretch", hide_index=True)
 
 
-def _collect_and_load(source: str, params: dict, state_key: str) -> None:
+def _collect_and_load(source: str, collect_params: dict, state_key: str, get_params: dict | None = None) -> None:
+    """collect_params는 수집(POST .../collect) 범위 지정용, get_params는 조회(GET) 필터용 —
+    둘의 파라미터 셋이 다른 엔드포인트(metrics-daily/usage-daily의 days 등)가 있어 분리한다.
+    get_params가 없으면 collect_params를 그대로 재사용(rag-logs처럼 둘 다 limit만 쓰는 경우)."""
     try:
-        collect_resp = requests.post(f"{OPS_BACKEND_URL}/observability/{source}/collect", params=params, timeout=15)
+        collect_resp = requests.post(f"{OPS_BACKEND_URL}/observability/{source}/collect", params=collect_params, timeout=15)
         if collect_resp.status_code != 200:
             st.error(f"수집 실패: {collect_resp.text}")
             return
-        resp = requests.get(f"{OPS_BACKEND_URL}/observability/{source}", params=params, timeout=10)
-        st.session_state[state_key] = resp.json()
-    except requests.RequestException as e:
+        resp = requests.get(f"{OPS_BACKEND_URL}/observability/{source}", params=get_params if get_params is not None else collect_params, timeout=10)
+        resp.raise_for_status()
+        data = resp.json()
+        if not isinstance(data, list):
+            st.error(f"조회 응답 형식이 예상과 다릅니다: {data}")
+            return
+        st.session_state[state_key] = data
+    except (requests.RequestException, ValueError) as e:
         st.error(f"백엔드 연결 실패: {e}")
 
 
