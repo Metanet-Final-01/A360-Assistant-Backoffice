@@ -10,8 +10,9 @@
 
 - `case_id` — 케이스 고유 id.
 - `question` — 사용자가 물어볼 법한 자연어 질문.
-- `ground_truth` — 사람이 검증한 정답 요약(RAGAS의 `context_recall`/`answer_relevancy`
-  계산에 참조로 쓰임).
+- `ground_truth` — 사람이 검증한 정답 요약(RAGAS의 `context_recall`/`context_precision`
+  계산에 참조로 쓰임 — `answer_relevancy`/`faithfulness`는 참조 없이 질문·답변·검색된
+  문서만으로 계산되므로 여기 안 쓰인다).
 - `reference_doc_ids` — 참고용(이상적으로 검색돼야 할 문서 id). RAGAS 지표 계산에는
   안 쓰인다(LLM judge가 검색된 문서의 관련성을 직접 판단하는 방식이라) — 사람이 결과를
   검토할 때 "실제로 이 문서가 검색됐는지" 대조하는 용도.

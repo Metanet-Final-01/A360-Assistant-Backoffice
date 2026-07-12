@@ -40,8 +40,9 @@ Ops "평가" 페이지 → "RAG 품질(RAGAS)" 탭. `OPENAI_API_KEY`가 `ops-ser
 - 골드셋 10개 → 더 다양한 패키지·복합 질문으로 확장.
 - 지금은 매번 새 골드셋 전체를 돌린다 — 버전(agent_label) 간 A/B 비교 UI는 아직 없음
   (기존 pm4py/worfbench "버전 비교" 탭과 같은 방식으로 나중에 붙일 수 있음).
-- judge 모델 고정(`gpt-4o-mini`) — 실행 폼에 이미 파라미터로 노출은 해뒀지만 프리셋
-  선택 UI는 없음.
+- judge 모델 고정(`gpt-4o-mini`) — API(`ExecuteRagasRequest.judge_model`)엔 파라미터로
+  이미 있지만, 실행 폼(`evaluation.py`)은 `agent_label`만 입력받고 이 값을 안 보내
+  항상 기본값이 쓰인다. 프론트에 선택 UI를 붙이는 건 다음 단계.
 - 검색 `mode`(vector/hybrid/hybrid_rerank) 비교는 아직 없음 — 지금은 기본값
   `hybrid_rerank`만 씀. RAG 아키텍처 변경(리랭커 on/off 등)의 효과를 이 골드셋으로
   바로 비교할 수 있다는 게 이 기능의 핵심 가치라, 다음 단계로 자연스럽게 이어짐.
