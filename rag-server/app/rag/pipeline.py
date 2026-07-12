@@ -218,30 +218,10 @@ def _discover_packages(docs: list[dict], en_docs: list[dict]) -> dict[str, "Pack
     return result
 
 
-def _fuzzy_find(name: str, candidates) -> str | None:
-    """공백 무시 + 접두 포함으로 느슨하게 name과 일치하는 candidates 중 하나를 찾는다.
-    정확히 1개로 안 좁혀지면(모호하거나 전혀 없으면) None — 애매하면 추측으로 메우지
-    않는다.
-
-    문서 사이트 개요 페이지 제목에서 뽑은 이름과 bots.jsonl의 실제 packageName 표기가
-    다른 실측 사례들을 잡기 위한 것 — 대소문자 차이가 아니라 아예 다른 문자열이라
-    단순 소문자 비교로는 못 잡는다:
-    - "Python"(실제 이름) <-> "Python Script"(개요 페이지 제목에서 뽑은 이름)
-    - "DataTable"(실제 이름, 공백 없음) <-> "Data Table"(개요 페이지 제목, 공백 있음)
-    양방향(실제 이름 -> 발견된 이름 교정, 발견된 이름 -> 실제 이름 교정)에 똑같이 쓴다.
-    """
-    if name in candidates:
-        return name
-    target_norm = name.lower().replace(" ", "")
-    matches = [
-        c for c in candidates
-        if (c_norm := c.lower().replace(" ", "")).startswith(target_norm) or target_norm.startswith(c_norm)
-    ]
-    return matches[0] if len(matches) == 1 else None
-
-
 def _find_package_tree(pkg_name: str, discovered: dict[str, "PackageActionTree"]) -> "PackageActionTree | None":
-    match = _fuzzy_find(pkg_name, discovered)
+    from .build.doc_action_match import fuzzy_find_name
+
+    match = fuzzy_find_name(pkg_name, discovered)
     return discovered[match] if match else None
 
 
@@ -306,6 +286,54 @@ def cmd_export_for_agent(args: argparse.Namespace) -> None:
             print(f"  [{pkg_name}] 리프 {len(tree.leaves)}개 (카테고리 경유 {len(tree.category_docs)}개)")
 
     print(f"저장 → {config.AGENT_HANDOFF_JSONL} ({written}개 리프)")
+
+
+def cmd_parse_docs_agent(args: argparse.Namespace) -> None:
+    """JAR 없는 패키지의 리프 문서(agent_handoff.jsonl)를 LLM으로 파싱해 액션 스키마를 추출,
+    packages.json에 병합한다(schema_source="llm_agent"). JAR로 이미 커버된 패키지는 건드리지
+    않는다 — JAR이 항상 우선(추출 신뢰도가 높으므로).
+
+    선행: export-for-agent로 agent_handoff.jsonl을 먼저 만들어야 한다.
+    이후 build가 이 packages.json을 읽어 action_schema를 만들고, ingest가 적재한다.
+    """
+    from .agents import package_parser
+
+    if not config.AGENT_HANDOFF_JSONL.exists():
+        sys.exit(
+            f"{config.AGENT_HANDOFF_JSONL}이 없습니다. 먼저 export-for-agent를 실행하세요."
+        )
+
+    existing: dict[str, dict] = {}
+    if config.PACKAGES_JSON.exists():
+        for pkg in json.loads(config.PACKAGES_JSON.read_text(encoding="utf-8")):
+            existing[pkg["package_name"]] = pkg
+    # JAR(또는 비-에이전트) 출처 패키지는 보호 — 에이전트 출력이 절대 덮어쓰지 않는다.
+    # (schema_source가 없는 기존 packages.json 항목은 JAR로 간주해 보호한다.)
+    # 이름 리스트로 넘겨 run()이 퍼지 매칭으로 보호한다 — 문서 사이트 표기가 JAR 이름과
+    # 달라도(예: "Python Script" vs "Python", "Data Table" vs "DataTable") 같은 패키지면
+    # 다시 파싱하지 않는다. 단순 exact 비교면 이 변형들이 새 패키지로 잘못 파싱돼 JAR과
+    # 중복된 미검증 action_schema가 실서비스에 유입된다(RPA 리뷰 확인).
+    jar_names = [name for name, p in existing.items() if p.get("schema_source") != "llm_agent"]
+
+    model = args.model or config.AGENT_PARSE_MODEL
+    limit = args.limit if args.limit is not None else config.AGENT_PARSE_LIMIT
+    print(f"문서 파싱 에이전트 실행 (model={model}, JAR 커버 {len(jar_names)}개 제외)...")
+    parsed = package_parser.run(
+        config.AGENT_HANDOFF_JSONL,
+        jar_package_names=jar_names,
+        model=model,
+        limit=limit,
+    )
+
+    for pkg in parsed:
+        existing[pkg["package_name"]] = pkg  # 에이전트 출력끼리는 최신 실행이 갱신
+        print(f"  {pkg['package_name']}: 액션 {len(pkg['actions'])}개 (llm_agent)")
+
+    config.PACKAGES_JSON.parent.mkdir(parents=True, exist_ok=True)
+    config.PACKAGES_JSON.write_text(
+        json.dumps(list(existing.values()), ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+    print(f"저장: 패키지 총 {len(existing)}개 (에이전트 파싱 {len(parsed)}개 반영) → {config.PACKAGES_JSON}")
 
 
 def cmd_build_action_tree(args: argparse.Namespace) -> None:
@@ -510,6 +538,17 @@ def main() -> None:
         help="대상 패키지명 (기본: 메뉴로 발견된 JAR 미보유 패키지 전체)",
     )
     p_export_agent.set_defaults(func=cmd_export_for_agent)
+
+    p_parse_agent = sub.add_parser(
+        "parse-docs-agent",
+        help="JAR 없는 패키지의 리프 문서를 LLM으로 파싱해 액션 스키마 추출 → packages.json 병합(schema_source=llm_agent)",
+    )
+    p_parse_agent.add_argument("--model", default=None, help="파싱에 쓸 챗 모델 (기본: AGENT_PARSE_MODEL)")
+    p_parse_agent.add_argument(
+        "--limit", type=int, default=None,
+        help="처리할 리프 총수 상한 (기본: AGENT_PARSE_LIMIT, 0이면 무제한)",
+    )
+    p_parse_agent.set_defaults(func=cmd_parse_docs_agent)
 
     sub.add_parser(
         "build-action-tree",

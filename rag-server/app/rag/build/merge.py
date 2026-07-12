@@ -184,6 +184,10 @@ def build_rag_documents(
     for package in packages:
         package_docs = match_package_docs(package, docs)
         action_names = [a.get("label") or a.get("name") for a in package["actions"]]
+        # 스키마 출처(신뢰 등급): JAR 파서는 표시가 없어 "jar", 문서 파싱 에이전트는
+        # package dict에 "llm_agent"를 실어 보낸다(미검증). merge는 이 값을 action_schema/
+        # package_overview metadata에 그대로 전파해 소비자(추천 메뉴 등)가 구분할 수 있게 한다.
+        schema_source = package.get("schema_source", "jar")
 
         rag_docs.append(
             {
@@ -200,7 +204,10 @@ def build_rag_documents(
                     f"설명: {package.get('package_description')}\n"
                     f"포함된 액션 ({len(action_names)}개): {', '.join(str(n) for n in action_names)}"
                 ),
-                "metadata": {"package_version": package.get("package_version")},
+                "metadata": {
+                    "package_version": package.get("package_version"),
+                    "schema_source": schema_source,
+                },
             }
         )
 
@@ -233,7 +240,7 @@ def build_rag_documents(
                     "metadata": {
                         "package_version": package.get("package_version"),
                         "schema": action,
-                        "schema_source": "jar",
+                        "schema_source": schema_source,
                     },
                 }
             )

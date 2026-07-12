@@ -11,14 +11,17 @@ def render() -> None:
     with card("rag_ingest"):
         st.caption("버튼을 누르면 백엔드가 크롤링→빌드→pgvector/OpenSearch 적재를 순서대로 실행합니다 (몇 분~몇십 분 소요).")
 
-        col1, col2 = st.columns(2)
+        col1, col2, col3 = st.columns(3)
         with col1:
             run_option1 = st.button("옵션 1: JAR 있는 패키지만 적재", use_container_width=True)
         with col2:
             run_option2 = st.button("옵션 2: + JAR 없는 패키지 리프도 참고용 적재", use_container_width=True)
+        with col3:
+            run_option3 = st.button("옵션 3: + LLM 파싱 에이전트로 액션 스키마화", use_container_width=True)
+        st.caption("옵션 3은 JAR 없는 패키지의 문서를 LLM으로 파싱해 액션·파라미터를 추출합니다 (OPENAI_API_KEY 필요, LLM 비용 발생).")
 
-        if run_option1 or run_option2:
-            option = 1 if run_option1 else 2
+        if run_option1 or run_option2 or run_option3:
+            option = 1 if run_option1 else 2 if run_option2 else 3
             try:
                 resp = requests.post(f"{RAG_SERVER_URL}/rag/ingest", params={"option": option}, timeout=5)
                 if resp.status_code == 200:

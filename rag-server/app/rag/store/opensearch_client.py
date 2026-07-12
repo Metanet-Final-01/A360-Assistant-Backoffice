@@ -30,6 +30,9 @@ _INDEX_BODY = {
             "source_type": {"type": "keyword"},
             "package_name": {"type": "keyword"},
             "action_name": {"type": "keyword"},
+            # 스키마 출처/신뢰 등급(jar=검증됨 / llm_agent=문서 파싱 미검증). BM25 후보 단계에서도
+            # 신뢰 등급으로 필터할 수 있게 keyword로 색인한다(권위 있는 값은 pgvector metadata에도 있음).
+            "schema_source": {"type": "keyword"},
             "locale": {"type": "keyword"},
             "title": {"type": "text", "analyzer": "korean_cjk", "fields": {"raw": {"type": "keyword"}}},
             "url": {"type": "keyword", "index": False},
@@ -75,6 +78,7 @@ def bulk_index(client: OpenSearch, documents: list[dict]) -> int:
                     "source_type": doc["source_type"],
                     "package_name": doc.get("package_name"),
                     "action_name": doc.get("action_name"),
+                    "schema_source": (doc.get("metadata") or {}).get("schema_source"),
                     "locale": doc.get("locale"),
                     "title": doc["title"],
                     "url": doc.get("url"),

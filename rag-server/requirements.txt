@@ -8,3 +8,8 @@ psycopg[binary]
 python-dotenv
 langchain-text-splitters
 opensearch-py
+
+# 문서 파싱 에이전트 (JAR 없는 패키지의 리프 문서 → 액션 스키마). openai=LLM 클라이언트(백엔드
+# core/llm.py 이식본이 사용), pydantic=구조화 출력 검증(fastapi 전이 의존이지만 명시).
+openai
+pydantic
