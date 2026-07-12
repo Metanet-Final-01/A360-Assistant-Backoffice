@@ -16,9 +16,9 @@ import logging
 import os
 from datetime import datetime, timezone
 from pathlib import Path
+from uuid import uuid4
 
 import httpx
-from pydantic import ValidationError
 
 from ..log_schema import EvalMetric, EvalRunRecord
 from ..log_store import append_run
@@ -39,6 +39,21 @@ state: dict = {
     "error": None,
 }
 
+def reserve() -> bool:
+    """실행을 예약한다 — main.py가 background_tasks.add_task() 전에 호출한다.
+    True를 반환하면 이 호출이 예약에 성공한 것(그 즉시 running=True로 바뀜). False면
+    이미 실행 중이라는 뜻. execute_and_save()가 시작된 뒤에야 running=True가 되던
+    이전 방식은, 응답을 보내기 전(add_task 큐잉)과 실제 태스크 시작 사이에 동시 요청이
+    둘 다 통과할 수 있는 경합 창이 있었다(CodeRabbit 지적) — 단일 워커(이 앱은 원래
+    단일 프로세스 전제)에서는 GIL 덕분에 이 dict 갱신 자체는 원자적이라, 별도 락 없이도
+    check-and-set을 한 함수로 합치는 것만으로 그 창을 없앨 수 있다."""
+    if state["running"]:
+        return False
+    state.update({"running": True, "started_at": datetime.now(timezone.utc).isoformat(),
+                  "finished_at": None, "saved": 0, "cases": 0, "error": None})
+    return True
+
+
 _ANSWER_SYSTEM_PROMPT = (
     "당신은 A360(RPA) 패키지/액션 문서를 근거로 질문에 답하는 어시스턴트입니다. "
     "아래 [검색된 문서]에 있는 내용만 근거로 답하세요. 문서에 없는 내용은 지어내지 말고 "
@@ -50,13 +65,21 @@ class RagasNotConfiguredError(RuntimeError):
     """OPENAI_API_KEY 미설정 — ops-server/backend/.env에 채워야 함."""
 
 
+class RagasGoldsetError(RuntimeError):
+    """골드셋 파일이 없거나 비어 있음 — 패키징/경로 오류를 "0/0건 성공"으로 위장시키지
+    않기 위해 별도 예외로 구분한다(CodeRabbit 지적 반영)."""
+
+
 def load_cases() -> list[RagasCase]:
     if not _CASES_PATH.exists():
-        return []
+        raise RagasGoldsetError(f"골드셋 파일이 없습니다: {_CASES_PATH}")
     import json
 
     raw = json.loads(_CASES_PATH.read_text(encoding="utf-8"))
-    return [RagasCase.model_validate(c) for c in raw]
+    cases = [RagasCase.model_validate(c) for c in raw]
+    if not cases:
+        raise RagasGoldsetError(f"골드셋이 비어 있습니다: {_CASES_PATH}")
+    return cases
 
 
 def _search_backend(backend_url: str, question: str, limit: int = 5) -> list[dict]:
@@ -120,9 +143,11 @@ def run_ragas_eval(backend_url: str | None = None, judge_model: str = "gpt-4o-mi
         try:
             hits = _search_backend(backend_url, case.question)
             contexts = [h.get("content") or "" for h in hits if h.get("content")]
+            doc_ids = [h["id"] for h in hits if h.get("id")]
             if not contexts:
                 results.append(RagasCaseResult(
                     case_id=case.case_id, question=case.question, retrieved_contexts=[],
+                    retrieved_doc_ids=doc_ids, reference_doc_ids=case.reference_doc_ids,
                     response="", ground_truth=case.ground_truth,
                     error="검색 결과가 없습니다(RAG 인덱스가 비어있거나 백엔드 연결 실패 가능성).",
                 ))
@@ -135,11 +160,16 @@ def run_ragas_eval(backend_url: str | None = None, judge_model: str = "gpt-4o-mi
             sample_cases.append(case)
             results.append(RagasCaseResult(
                 case_id=case.case_id, question=case.question, retrieved_contexts=contexts,
+                retrieved_doc_ids=doc_ids, reference_doc_ids=case.reference_doc_ids,
                 response=answer, ground_truth=case.ground_truth,
             ))
-        except (httpx.HTTPError, ValidationError) as e:
+        except Exception as e:  # noqa: BLE001 - 검색 HTTP 오류·JSON 파싱 실패·OpenAI 클라이언트
+            # 오류 등 케이스 하나에서 날 수 있는 어떤 예외든 그 케이스만 실패 처리하고
+            # 나머지 골드셋은 계속 돈다(한 케이스 문제로 전체 배치가 죽으면 안 됨).
+            logger.warning("RAGAS 케이스 실패: %s", case.case_id, exc_info=True)
             results.append(RagasCaseResult(
                 case_id=case.case_id, question=case.question, retrieved_contexts=[],
+                reference_doc_ids=case.reference_doc_ids,
                 response="", ground_truth=case.ground_truth, error=str(e),
             ))
 
@@ -181,20 +211,24 @@ def _to_metrics(result: RagasCaseResult) -> list[EvalMetric]:
 
 def execute_and_save(agent_label: str, judge_model: str = "gpt-4o-mini") -> None:
     """run_ragas_eval()을 돌리고 케이스별로 EvalRunRecord(source="ragas")를 저장한다.
-    BackgroundTasks로 호출되므로 예외를 여기서 삼키고 state.error에 남긴다 — 그러지
-    않으면 FastAPI 백그라운드 태스크 예외가 로그에만 찍히고 프론트는 영원히 "실행 중"
-    으로 보게 된다."""
-    state.update({"running": True, "started_at": datetime.now(timezone.utc).isoformat(),
-                  "finished_at": None, "saved": 0, "cases": 0, "error": None})
+    reserve()가 이미 running=True로 바꿔놨다는 전제로 호출된다(main.py가 add_task 전에
+    reserve() 호출). BackgroundTasks로 호출되므로 예외를 여기서 삼키고 state.error에
+    남긴다 — 그러지 않으면 FastAPI 백그라운드 태스크 예외가 로그에만 찍히고 프론트는
+    영원히 "실행 중"으로 보게 된다."""
     try:
         results = run_ragas_eval(judge_model=judge_model)
+        evaluation_id = uuid4().hex[:12]  # 배치 전체를 하나로 묶는 id — 버전 비교가
+        # agent_label만으로 그룹핑하면 같은 라벨로 재실행할 때마다 케이스가 섞여
+        # 평균·건수가 뒤섞이는 걸 방지한다(CodeRabbit 지적 반영).
         saved = 0
         for r in results:
             record = EvalRunRecord(
+                evaluation_id=evaluation_id,
                 case_id=r.case_id, source="ragas", agent_label=agent_label,
                 metrics=_to_metrics(r),
                 raw={
                     "question": r.question, "retrieved_contexts": r.retrieved_contexts,
+                    "retrieved_doc_ids": r.retrieved_doc_ids, "reference_doc_ids": r.reference_doc_ids,
                     "response": r.response, "ground_truth": r.ground_truth, "error": r.error,
                 },
             )

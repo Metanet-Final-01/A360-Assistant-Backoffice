@@ -28,6 +28,8 @@ class RagasCaseResult(BaseModel):
     case_id: str
     question: str
     retrieved_contexts: list[str]
+    retrieved_doc_ids: list[str] = Field(default_factory=list, description="실제 검색된 문서 id — reference_doc_ids와 대조용")
+    reference_doc_ids: list[str] = Field(default_factory=list)
     response: str
     ground_truth: str
     faithfulness: float | None = None
