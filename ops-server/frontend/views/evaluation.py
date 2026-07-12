@@ -104,15 +104,17 @@ def _render_datasets_tab(datasets: list[dict]) -> None:
 @st.fragment
 def _render_ragas_tab(runs: list[dict]) -> None:
     _render_ragas_execution()
-    _render_ragas_results(runs)
+    # runs 인자는 render() 최초 진입 시점의 스냅샷이라, 이 fragment 안에서 RAGAS
+    # 평가를 새로 실행·저장해도 페이지 전체가 rerun되기 전까진 새 결과가 안 보인다
+    # (CodeRabbit 지적). "RAGAS 상태 새로고침" 클릭 시 eval_runs 캐시를 같이 지우므로
+    # 여기서 _fetch_runs()로 다시 불러오면 최신 결과가 반영된다.
+    _render_ragas_results(_fetch_runs())
 
 
 # ── 결과 조회 · 비교 (구 eval_results.py) ──────────────────────────────
 
 
-def _load_runs() -> list[dict]:
-    if st.button("결과 새로고침", type="secondary"):
-        st.session_state.pop("eval_runs", None)
+def _fetch_runs() -> list[dict]:
     if "eval_runs" not in st.session_state:
         try:
             response = _SESSION.get(f"{OPS_BACKEND_URL}/eval/runs", timeout=5)
@@ -122,6 +124,12 @@ def _load_runs() -> list[dict]:
             st.error(f"평가 결과를 불러오지 못했습니다: {exc}")
             st.session_state["eval_runs"] = []
     return st.session_state["eval_runs"]
+
+
+def _load_runs() -> list[dict]:
+    if st.button("결과 새로고침", type="secondary"):
+        st.session_state.pop("eval_runs", None)
+    return _fetch_runs()
 
 
 def _metrics_of(run: dict) -> dict[str, float]:
@@ -448,6 +456,7 @@ def _render_ragas_execution() -> None:
 
         if st.button("RAGAS 상태 새로고침", key="ragas_status_refresh"):
             st.session_state.pop("ragas_status_cache", None)
+            st.session_state.pop("eval_runs", None)  # 새로 저장된 RAGAS 결과를 반영
         try:
             status_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/ragas/execution/status", timeout=5)
             status_resp.raise_for_status()
@@ -478,7 +487,11 @@ def _render_ragas_results(runs: list[dict]) -> None:
         rows = []
         for label in labels:
             label_runs = [r for r in ragas_runs if r.get("agent_label") == label]
-            row = {"버전": label, "케이스 수": len(label_runs)}
+            # 검색 실패 등으로 raw.error가 있는 케이스는 metrics가 비어 있어 평균에는
+            # 자동으로 안 섞이지만, "케이스 수"만 보면 전부 채점된 것처럼 보였다
+            # (CodeRabbit 지적) — 성공/실패 건수를 분리해 보여준다.
+            failed = sum(1 for r in label_runs if (r.get("raw") or {}).get("error"))
+            row = {"버전": label, "케이스 수": len(label_runs), "성공": len(label_runs) - failed, "실패": failed}
             for metric_name in _RAGAS_METRICS:
                 values = [m["value"] for r in label_runs for m in r.get("metrics", []) if m["name"] == metric_name]
                 row[metric_name] = round(sum(values) / len(values), 3) if values else None
@@ -488,10 +501,12 @@ def _render_ragas_results(runs: list[dict]) -> None:
         with st.expander("케이스별 원본 보기"):
             case_rows = []
             for r in ragas_runs:
+                raw = r.get("raw") or {}
                 metrics_by_name = {m["name"]: m["value"] for m in r.get("metrics", [])}
                 case_rows.append({
                     "case_id": r["case_id"], "버전": r.get("agent_label") or "-",
                     **{name: round(metrics_by_name.get(name, 0), 3) if name in metrics_by_name else None for name in _RAGAS_METRICS},
-                    "질문": (r.get("raw") or {}).get("question", ""),
+                    "질문": raw.get("question", ""),
+                    "오류": raw.get("error") or "",
                 })
             st.dataframe(pd.DataFrame(case_rows), width="stretch", hide_index=True)
