@@ -162,13 +162,25 @@ def load_usage_daily(component: str | None = None, limit: int = 500) -> list[Usa
 
 
 def _turn_event_key(r: TurnEventRecord) -> tuple:
-    return (r.session_id, r.request_id, r.seq)
+    # session_id/request_id가 둘 다 없는(익명) 이벤트는 seq만으로 겹칠 수 있어
+    # kind/stage/elapsed_ms까지 키에 더해 충돌 가능성을 줄인다(CodeRabbit 지적 —
+    # 완벽한 보장은 아니지만, Backend가 실제로는 항상 request_id를 채워 보내므로
+    # 이 경로는 방어적 차원).
+    return (r.session_id, r.request_id, r.seq, r.kind, r.stage, r.elapsed_ms)
 
 
 def append_turn_events(records: list[TurnEventRecord]) -> int:
-    """세션 이벤트는 한 번 생기면 불변이라 audit_logs와 같은 append-only 중복 제거."""
-    existing_keys = {_turn_event_key(TurnEventRecord.model_validate_json(line)) for line in _read_lines(TURN_EVENTS_PATH)}
-    new_lines = [r.model_dump_json() for r in records if _turn_event_key(r) not in existing_keys]
+    """세션 이벤트는 한 번 생기면 불변이라 audit_logs와 같은 append-only 중복 제거.
+    같은 배치(records) 안에서도 겹칠 수 있어 seen을 배치 진행 중에 갱신한다 —
+    기존 파일 스캔 한 번으로 만든 집합만 보면, 이번 배치 안의 중복은 못 잡는다."""
+    seen = {_turn_event_key(TurnEventRecord.model_validate_json(line)) for line in _read_lines(TURN_EVENTS_PATH)}
+    new_lines = []
+    for r in records:
+        key = _turn_event_key(r)
+        if key in seen:
+            continue
+        seen.add(key)
+        new_lines.append(r.model_dump_json())
     _append_lines(TURN_EVENTS_PATH, new_lines)
     return len(new_lines)
 
