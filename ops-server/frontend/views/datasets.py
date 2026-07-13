@@ -6,6 +6,8 @@ BFCL은 스키마가 turns/expected_targets로 중첩돼 있어 폼으로는 흔
 (단일 턴, target 최대 2개 x 파라미터 최대 2개)만 지원한다 — multi_turn_state/
 response_based처럼 턴이 여러 개거나 파라미터가 더 많은 케이스는 업로드를 쓴다."""
 
+import json
+
 import requests
 import streamlit as st
 
@@ -65,6 +67,38 @@ def _post_upload(path: str, file) -> tuple[bool, str]:
         return False, str(exc)
 
 
+def _search_box(card_key: str) -> str:
+    return st.text_input("검색(모든 필드 대상 부분 일치)", key=f"{card_key}_search", placeholder="예: excel, RSS...")
+
+
+def _search_filter(rows: list[dict], query: str) -> list[dict]:
+    if not query.strip():
+        return rows
+    q = query.strip().lower()
+    return [r for r in rows if q in json.dumps(r, ensure_ascii=False).lower()]
+
+
+def _render_delete_section(card_key: str, delete_path_prefix: str, ids: list[str], list_path: str, id_label: str) -> None:
+    with card(f"{card_key}_delete"):
+        section_header("삭제", f"{id_label}를 골라 케이스 하나를 삭제합니다.")
+        if not ids:
+            st.caption("삭제할 케이스가 없습니다.")
+            return
+        target = st.selectbox(id_label, ids, key=f"{card_key}_delete_select")
+        confirmed = st.checkbox("정말 삭제하겠습니다", key=f"{card_key}_delete_confirm")
+        if st.button("삭제", key=f"{card_key}_delete_btn", disabled=not confirmed, type="primary"):
+            try:
+                resp = _SESSION.delete(f"{OPS_BACKEND_URL}{delete_path_prefix}/{target}", timeout=10)
+                if resp.status_code == 200:
+                    st.session_state.pop(list_path, None)
+                    st.success(f"{target} 삭제했습니다.")
+                    st.rerun()
+                else:
+                    st.error(resp.json().get("detail", resp.text))
+            except (requests.RequestException, ValueError) as exc:
+                st.error(f"삭제 실패: {exc}")
+
+
 def _render_upload_section(card_key: str, list_path: str, upload_path: str, help_text: str) -> None:
     with card(card_key):
         section_header("파일 업로드로 교체", help_text)
@@ -89,18 +123,23 @@ _BFCL_CHECKS = ["exact", "enum", "contains", "nonempty", "bool_true", "bool_fals
 
 
 def _render_bfcl_tab() -> None:
+    filtered: list[dict] = []
     with card("bfcl_goldset_view"):
         section_header("조회", "골드셋 케이스 목록 — 채점에 쓰이는 원본 그대로.")
         data, err = _get("/eval/bfcl/cases")
         if err:
             st.warning(f"불러오지 못했습니다: {err}")
         else:
-            st.caption(f"{len(data)}개 케이스")
+            query = _search_box("bfcl")
+            filtered = _search_filter(data, query)
+            st.caption(f"{len(filtered)}/{len(data)}개 케이스")
             st.dataframe(
                 [{"case_id": c["case_id"], "category": c["category"], "turns": len(c["turns"]),
-                  "질문": (c.get("document_text") or c["turns"][0]["message"])[:80]} for c in data],
+                  "질문": (c.get("document_text") or c["turns"][0]["message"])[:80]} for c in filtered],
                 width="stretch", hide_index=True,
             )
+
+    _render_delete_section("bfcl", "/eval/bfcl/cases", [c["case_id"] for c in filtered], "/eval/bfcl/cases", "case_id")
 
     _render_upload_section(
         "bfcl_upload", "/eval/bfcl/cases", "/eval/bfcl/cases/upload",
@@ -166,14 +205,19 @@ def _render_bfcl_tab() -> None:
 
 
 def _render_ragas_tab() -> None:
+    filtered: list[dict] = []
     with card("ragas_goldset_view"):
         section_header("조회", "골드셋 케이스 목록.")
         data, err = _get("/eval/ragas/cases")
         if err:
             st.warning(f"불러오지 못했습니다: {err}")
         else:
-            st.caption(f"{len(data)}개 케이스")
-            st.dataframe(data, width="stretch", hide_index=True)
+            query = _search_box("ragas")
+            filtered = _search_filter(data, query)
+            st.caption(f"{len(filtered)}/{len(data)}개 케이스")
+            st.dataframe(filtered, width="stretch", hide_index=True)
+
+    _render_delete_section("ragas", "/eval/ragas/cases", [c["case_id"] for c in filtered], "/eval/ragas/cases", "case_id")
 
     _render_upload_section(
         "ragas_upload", "/eval/ragas/cases", "/eval/ragas/cases/upload",
@@ -206,18 +250,23 @@ def _render_ragas_tab() -> None:
 
 
 def _render_workflow_goldset_tab() -> None:
+    filtered: list[dict] = []
     with card("workflow_goldset_view"):
         section_header("조회", "실제 커뮤니티 봇 기반 골드셋 — pm4py/WorFBench 채점의 정답(expected).")
         data, err = _get("/eval/workflow/cases")
         if err:
             st.warning(f"불러오지 못했습니다: {err}")
         else:
-            st.caption(f"{len(data)}개 케이스")
+            query = _search_box("workflow_goldset")
+            filtered = _search_filter(data, query)
+            st.caption(f"{len(filtered)}/{len(data)}개 케이스")
             st.dataframe(
                 [{"id": c["id"], "source_bot": c["source_bot"], "difficulty": c.get("difficulty"),
-                  "task": c["input"]["task"][:80], "액션 수": len(c["expected"]["actions"])} for c in data],
+                  "task": c["input"]["task"][:80], "액션 수": len(c["expected"]["actions"])} for c in filtered],
                 width="stretch", hide_index=True,
             )
+
+    _render_delete_section("workflow_goldset", "/eval/workflow/cases", [c["id"] for c in filtered], "/eval/workflow/cases", "id")
 
     _render_upload_section(
         "workflow_goldset_upload", "/eval/workflow/cases", "/eval/workflow/cases/upload",
@@ -272,6 +321,7 @@ def _render_workflow_goldset_tab() -> None:
 
 
 def _render_workflow_input_tab() -> None:
+    filtered_rows: list[dict] = []
     with card("workflow_input_view"):
         section_header(
             "조회", "source_bot별 상세 업무정의서 원문 — Workflow 라이브 러너가 골드셋 한 줄 요약보다 "
@@ -282,11 +332,19 @@ def _render_workflow_input_tab() -> None:
             st.warning(f"불러오지 못했습니다: {err}")
             data = {}
         else:
-            st.caption(f"{len(data)}개 봇")
+            rows = [{"source_bot": k, "text": v} for k, v in data.items()]
+            query = _search_box("workflow_input")
+            filtered_rows = _search_filter(rows, query)
+            st.caption(f"{len(filtered_rows)}/{len(rows)}개 봇")
             st.dataframe(
-                [{"source_bot": k, "길이": len(v), "미리보기": v[:80]} for k, v in data.items()],
+                [{"source_bot": r["source_bot"], "길이": len(r["text"]), "미리보기": r["text"][:80]} for r in filtered_rows],
                 width="stretch", hide_index=True,
             )
+
+    _render_delete_section(
+        "workflow_input", "/eval/workflow/input-dataset",
+        [r["source_bot"] for r in filtered_rows], "/eval/workflow/input-dataset", "source_bot",
+    )
 
     _render_upload_section(
         "workflow_input_upload", "/eval/workflow/input-dataset", "/eval/workflow/input-dataset/upload",

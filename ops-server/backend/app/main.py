@@ -216,6 +216,14 @@ async def upload_workflow_cases(file: UploadFile = File(...)) -> dict:
     return {"saved": count}
 
 
+@app.delete("/eval/workflow/cases/{case_id}")
+def delete_workflow_case(case_id: str) -> dict:
+    deleted = goldset_admin.delete_case(workflow_runner._GOLDSET_PATH, "id", case_id)
+    if not deleted:
+        raise HTTPException(404, f"id={case_id!r} 케이스를 찾을 수 없습니다")
+    return {"deleted": True}
+
+
 @app.get("/eval/workflow/input-dataset")
 def workflow_input_dataset() -> dict:
     """Workflow 입력 데이터셋 — source_bot별 상세 업무정의서 원문
@@ -242,6 +250,14 @@ async def upload_workflow_input_dataset(file: UploadFile = File(...)) -> dict:
     except goldset_admin.GoldsetWriteError as e:
         raise HTTPException(400, str(e)) from e
     return {"saved": count}
+
+
+@app.delete("/eval/workflow/input-dataset/{source_bot}")
+def delete_workflow_input(source_bot: str) -> dict:
+    deleted = goldset_admin.delete_text_key(workflow_runner._DETAILED_TASKS_PATH, source_bot)
+    if not deleted:
+        raise HTTPException(404, f"source_bot={source_bot!r}을 찾을 수 없습니다")
+    return {"deleted": True}
 
 
 @app.post("/eval/workflow/execution")
@@ -277,6 +293,14 @@ def add_ragas_case(case: dict) -> dict:
         return goldset_admin.append_case(ragas_runner._CASES_PATH, RagasCase, case, "case_id").model_dump()
     except goldset_admin.GoldsetWriteError as e:
         raise HTTPException(400, str(e)) from e
+
+
+@app.delete("/eval/ragas/cases/{case_id}")
+def delete_ragas_case(case_id: str) -> dict:
+    deleted = goldset_admin.delete_case(ragas_runner._CASES_PATH, "case_id", case_id)
+    if not deleted:
+        raise HTTPException(404, f"case_id={case_id!r} 케이스를 찾을 수 없습니다")
+    return {"deleted": True}
 
 
 @app.post("/eval/ragas/cases/upload")
@@ -374,6 +398,14 @@ def add_bfcl_case(case: dict) -> dict:
         return goldset_admin.append_case(bfcl_runner._CASES_PATH, BFCLCase, case, "case_id").model_dump()
     except goldset_admin.GoldsetWriteError as e:
         raise HTTPException(400, str(e)) from e
+
+
+@app.delete("/eval/bfcl/cases/{case_id}")
+def delete_bfcl_case(case_id: str) -> dict:
+    deleted = goldset_admin.delete_case(bfcl_runner._CASES_PATH, "case_id", case_id)
+    if not deleted:
+        raise HTTPException(404, f"case_id={case_id!r} 케이스를 찾을 수 없습니다")
+    return {"deleted": True}
 
 
 @app.post("/eval/bfcl/cases/upload")

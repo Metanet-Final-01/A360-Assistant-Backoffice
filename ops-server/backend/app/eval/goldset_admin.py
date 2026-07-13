@@ -40,6 +40,16 @@ def append_case(path: Path, model_cls: type[T], new_item: dict, id_field: str) -
     return validated
 
 
+def delete_case(path: Path, id_field: str, case_id: str) -> bool:
+    """id_field == case_id인 케이스 하나를 지운다. 실제로 지워졌으면 True."""
+    items = read_raw(path)
+    remaining = [item for item in items if item.get(id_field) != case_id]
+    if len(remaining) == len(items):
+        return False
+    _write_raw(path, remaining)
+    return True
+
+
 def replace_from_upload(path: Path, model_cls: type[T], raw_bytes: bytes) -> int:
     try:
         items = json.loads(raw_bytes.decode("utf-8"))
@@ -67,6 +77,16 @@ def upsert_text(path: Path, key: str, text: str) -> None:
     data[key] = text
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def delete_text_key(path: Path, key: str) -> bool:
+    data = read_text_map(path)
+    if key not in data:
+        return False
+    del data[key]
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    return True
 
 
 def replace_text_map_from_upload(path: Path, raw_bytes: bytes) -> int:
