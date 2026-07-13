@@ -3,14 +3,21 @@
 """
 
 import json
+import threading
 import uuid
 from pathlib import Path
+
+# 관측 수집 엔드포인트는 FastAPI sync 함수라 threadpool에서 동시 실행될 수 있다.
+# read-filter-append(중복 제거)가 원자적이지 않으면 동시 호출이 같은 레코드를 중복
+# append하므로, 증분 수집 경로(request_metrics)의 임계구역을 이 락으로 묶는다(CodeRabbit #9).
+_append_lock = threading.Lock()
 
 from .log_schema import (
     AuditLogRecord,
     LlmUsageSnapshot,
     MetricsDailyRecord,
     RagLogRecord,
+    RequestMetricRecord,
     TurnEventRecord,
     UsageDailyRecord,
 )
@@ -22,6 +29,7 @@ RAG_LOG_PATH = _DATA_DIR / "observability_rag_logs.jsonl"
 METRICS_DAILY_PATH = _DATA_DIR / "observability_metrics_daily.jsonl"
 USAGE_DAILY_PATH = _DATA_DIR / "observability_usage_daily.jsonl"
 TURN_EVENTS_PATH = _DATA_DIR / "observability_turn_events.jsonl"
+REQUEST_METRICS_PATH = _DATA_DIR / "observability_request_metrics.jsonl"
 
 
 def _read_lines(path: Path) -> list[str]:
@@ -70,6 +78,92 @@ def load_audit_logs(
         records = [r for r in records if r.user_id == user_id]
     records.sort(key=lambda r: r.created_at, reverse=True)
     return records[:limit]
+
+
+def audit_cursor() -> str | None:
+    """저장된 감사 로그 중 가장 최근 created_at — 다음 증분 수집의 since로 쓴다."""
+    created = [
+        AuditLogRecord.model_validate_json(line).created_at for line in _read_lines(AUDIT_LOG_PATH)
+    ]
+    return max(created) if created else None
+
+
+# ---------------- request metrics (raw, 증분) ----------------
+
+
+def append_request_metrics(records: list[RequestMetricRecord]) -> int:
+    """id(백엔드 PK) 기준 append-only 중복 제거 — 증분 수집이라도 겹침 방어.
+
+    read-filter-append 전체를 락으로 묶는다 — 동시 collect가 같은 existing을 읽고
+    같은 레코드를 중복 append하는 경쟁을 차단(CodeRabbit #9)."""
+    with _append_lock:
+        existing = {RequestMetricRecord.model_validate_json(line).id for line in _read_lines(REQUEST_METRICS_PATH)}
+        new_lines = [r.model_dump_json() for r in records if r.id not in existing]
+        _append_lines(REQUEST_METRICS_PATH, new_lines)
+        return len(new_lines)
+
+
+def load_request_metrics(method: str | None = None, path_contains: str | None = None, limit: int = 500) -> list[RequestMetricRecord]:
+    records = [RequestMetricRecord.model_validate_json(line) for line in _read_lines(REQUEST_METRICS_PATH)]
+    if method:
+        records = [r for r in records if r.method == method.upper()]
+    if path_contains:
+        records = [r for r in records if path_contains in r.path]
+    records.sort(key=lambda r: r.id, reverse=True)
+    return records[:limit]
+
+
+def request_metrics_cursor() -> str | None:
+    """저장된 request_metrics 중 가장 최근 created_at — 다음 증분 수집의 since."""
+    created = [
+        RequestMetricRecord.model_validate_json(line).created_at for line in _read_lines(REQUEST_METRICS_PATH)
+    ]
+    return max(created) if created else None
+
+
+# ---------------- 사건 추적(상관관계) ----------------
+
+
+def trace_by(request_id: str | None = None, session_id: str | None = None) -> dict:
+    """한 사건에 연결된 관측 레코드를 종류별로 모은다 (대시보드 #5).
+
+    - request_id: HTTP 요청 1건 축 — audit·request_metrics·turn_events·rag_logs 전부 연결.
+    - session_id: 대화 축 — turn_events(그 세션의 모든 턴)만 직접 연결(감사/성능/RAG는
+      요청 축이라 세션 키가 없다). 세션의 request_id들은 반환된 turn_events에서 얻는다.
+    """
+    def _audit():
+        rows = [AuditLogRecord.model_validate_json(l) for l in _read_lines(AUDIT_LOG_PATH)]
+        rows = [r for r in rows if request_id and r.request_id == request_id]
+        return [r.model_dump() for r in sorted(rows, key=lambda r: r.created_at)]
+
+    def _metrics():
+        rows = [RequestMetricRecord.model_validate_json(l) for l in _read_lines(REQUEST_METRICS_PATH)]
+        rows = [r for r in rows if request_id and r.request_id == request_id]
+        return [r.model_dump() for r in sorted(rows, key=lambda r: r.created_at)]
+
+    def _rag():
+        rows = [RagLogRecord.model_validate_json(l) for l in _read_lines(RAG_LOG_PATH)]
+        rows = [r for r in rows if request_id and r.raw.get("request_id") == request_id]
+        return [r.model_dump() for r in rows]
+
+    def _turns():
+        rows = [TurnEventRecord.model_validate_json(l) for l in _read_lines(TURN_EVENTS_PATH)]
+        rows = [r for r in rows
+                if (request_id and r.request_id == request_id) or (session_id and r.session_id == session_id)]
+        # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러 요청이
+        # 실제 발생 순서와 어긋난다(CodeRabbit #13). 타임스탬프 없으면 seq로 폴백.
+        return [r.model_dump() for r in sorted(
+            rows, key=lambda r: (r.created_at is None, r.created_at or "", r.seq),
+        )]
+
+    return {
+        "request_id": request_id,
+        "session_id": session_id,
+        "audit_logs": _audit(),
+        "request_metrics": _metrics(),
+        "turn_events": _turns(),
+        "rag_logs": _rag(),
+    }
 
 
 # ---------------- llm usage snapshots ----------------

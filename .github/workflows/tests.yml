@@ -1,0 +1,49 @@
+# pytest 단위 테스트 — PR마다 두 서버(ops-server·rag-server)를 각각 실행한다.
+# 모노레포라 서버별로 requirements·테스트 경로가 달라 matrix로 분리한다.
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+
+permissions:
+  contents: read
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # ops-server: eval 단위 테스트는 executor/metrics만 임포트해 RAGAS 스택(ragas·
+          # langchain·openai)이 불필요하다. 그 핀들은 fresh install 시 서로 충돌(ResolutionImpossible)
+          # 하므로 테스트 잡에선 제외하고 설치한다(RAGAS eval 실행은 별도 환경). pytest도 별도 설치.
+          - name: ops-server
+            install: "grep -ivE '^(ragas|langchain|openai)' ops-server/requirements.txt > req-ops-ci.txt && pip install -r req-ops-ci.txt pytest"
+            workdir: ops-server/backend
+            # `python -m pytest`라야 cwd(=backend)가 sys.path에 들어가 `app` 임포트가 된다
+            # (콘솔 스크립트 `pytest`는 cwd를 넣지 않음 — ModuleNotFoundError: app).
+            test: python -m pytest tests/ -q
+          # rag-server: requirements-dev.txt가 requirements.txt + pytest를 포함. pytest.ini가 설정.
+          - name: rag-server
+            install: pip install -r rag-server/requirements-dev.txt
+            workdir: rag-server
+            test: pytest -q
+    name: pytest (${{ matrix.name }})
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # PR의 파이썬 코드를 실행하는 잡 — 체크아웃 토큰을 .git/config에 남기지 않아
+          # 코드가 토큰을 읽어 유출하는 것 방지(CodeRabbit #9).
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install deps
+        run: ${{ matrix.install }}
+      - name: Run tests
+        working-directory: ${{ matrix.workdir }}
+        run: ${{ matrix.test }}

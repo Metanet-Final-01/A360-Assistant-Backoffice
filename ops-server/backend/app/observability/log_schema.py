@@ -22,6 +22,21 @@ class AuditLogRecord(BaseModel):
     fetched_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
+class RequestMetricRecord(BaseModel):
+    """/api/admin/request-metrics 레코드 1건 — raw HTTP 요청 성능('오늘 실시간' 패널용).
+    id는 백엔드 PK라 증분 수집·중복 제거 키로 쓴다."""
+
+    id: int
+    request_id: str | None = None
+    user_id: str | None = None
+    method: str
+    path: str
+    status_code: int
+    latency_ms: int | None = None
+    created_at: str
+    fetched_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
 class LlmUsageBreakdownItem(BaseModel):
     key: str | None = None
     calls: int

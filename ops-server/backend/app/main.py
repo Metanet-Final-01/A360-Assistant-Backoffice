@@ -389,6 +389,38 @@ def get_turn_events(session_id: str | None = None, limit: int = Query(200, ge=1,
     return obs_log_store.load_turn_events(session_id=session_id, limit=limit)
 
 
+@app.post("/observability/request-metrics/collect")
+def collect_request_metrics(
+    limit: int = Query(500, ge=1, le=2000), method: str | None = None, path: str | None = None,
+) -> dict:
+    """A360-Assistant-Backend의 GET /api/admin/request-metrics(RPA-103 raw)를 증분 수집한다
+    ('오늘 실시간' 패널 — 롤업 60분 지연 보완)."""
+    return _run_collect(collector.collect_request_metrics, limit=limit, method=method, path=path)
+
+
+@app.get("/observability/request-metrics")
+def get_request_metrics(
+    method: str | None = None, path_contains: str | None = None, limit: int = Query(500, ge=1, le=2000),
+) -> list:
+    return obs_log_store.load_request_metrics(method=method, path_contains=path_contains, limit=limit)
+
+
+@app.get("/observability/backend-health")
+def backend_health(probe: bool = True) -> dict:
+    """A360-Assistant-Backend 생존 감시. probe=true면 지금 /health를 찔러 갱신,
+    false면 마지막으로 관측된 상태를 반환한다(무인증 경량 경로 — 데이터 조회와 분리)."""
+    return collector.probe_backend_health() if probe else collector.backend_health()
+
+
+@app.get("/observability/trace")
+def observability_trace(request_id: str | None = None, session_id: str | None = None) -> dict:
+    """한 사건(request_id 또는 session_id)에 연결된 관측 레코드를 모아 반환한다 (대시보드 #5).
+    감사·성능·턴·RAG를 한 화면에서 추적하기 위한 상관관계 조회 — 저장된 수집분에서 필터."""
+    if not (request_id or session_id):
+        raise HTTPException(400, "request_id 또는 session_id 중 하나는 필요합니다")
+    return obs_log_store.trace_by(request_id=request_id, session_id=session_id)
+
+
 @app.get("/observability/status")
 def observability_status() -> dict:
     return collector.status()

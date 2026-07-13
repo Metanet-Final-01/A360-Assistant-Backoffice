@@ -5,7 +5,14 @@
 from datetime import datetime, timezone
 
 from . import backend_client, log_store
-from .log_schema import AuditLogRecord, MetricsDailyRecord, RagLogRecord, TurnEventRecord, UsageDailyRecord
+from .log_schema import (
+    AuditLogRecord,
+    MetricsDailyRecord,
+    RagLogRecord,
+    RequestMetricRecord,
+    TurnEventRecord,
+    UsageDailyRecord,
+)
 
 _collect_state: dict[str, dict] = {
     "audit_logs": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
@@ -14,7 +21,12 @@ _collect_state: dict[str, dict] = {
     "metrics_daily": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
     "usage_daily": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
     "turn_events": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
+    "request_metrics": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
 }
+
+# 백엔드 생존 감시 — 마지막 프로브 결과와 '마지막 정상(UP)' 시각을 기억한다.
+_health_state: dict = {"reachable": False, "status": "unknown", "checks": {},
+                       "checked_at": None, "last_ok_at": None}
 
 
 def _now() -> str:
@@ -26,15 +38,31 @@ def _record_result(source: str, fetched: int, new: int, error: str | None = None
     return _collect_state[source]
 
 
-def collect_audit_logs(limit: int = 500, method: str | None = None, status_code: int | None = None, user_id: str | None = None) -> dict:
+def collect_audit_logs(limit: int = 500, method: str | None = None, status_code: int | None = None, user_id: str | None = None, incremental: bool = True) -> dict:
     try:
-        data = backend_client.fetch_audit_logs(limit=limit, method=method, status_code=status_code, user_id=user_id)
+        # 증분: 저장된 마지막 created_at 이후만 요청 — 매번 최신 500건 재수집을 피한다.
+        # 단, 필터(method/status/user)가 걸리면 커서가 필터별로 어긋나니 전량 조회로 폴백.
+        since = log_store.audit_cursor() if (incremental and not (method or status_code or user_id)) else None
+        data = backend_client.fetch_audit_logs(limit=limit, method=method, status_code=status_code, user_id=user_id, since=since)
         records = [AuditLogRecord(**r) for r in data.get("logs", [])]
         new_count = log_store.append_audit_logs(records)
         return _record_result("audit_logs", len(records), new_count)
     except Exception as e:  # noqa: BLE001 - 백엔드 응답 스키마가 안 맞는 경우(pydantic 검증
         # 실패)도 인증/연결 실패와 마찬가지로 "이번 수집은 실패했다"는 상태로 남겨야 한다.
         _record_result("audit_logs", 0, 0, error=str(e))
+        raise
+
+
+def collect_request_metrics(limit: int = 500, method: str | None = None, path: str | None = None, incremental: bool = True) -> dict:
+    """raw 요청 메트릭 증분 수집 — '오늘 실시간' 패널의 소스(롤업 60분 지연 보완)."""
+    try:
+        since = log_store.request_metrics_cursor() if (incremental and not (method or path)) else None
+        data = backend_client.fetch_request_metrics(since=since, limit=limit, method=method, path=path)
+        records = [RequestMetricRecord(**r) for r in data.get("rows", [])]
+        new_count = log_store.append_request_metrics(records)
+        return _record_result("request_metrics", len(records), new_count)
+    except Exception as e:  # noqa: BLE001 - collect_audit_logs와 같은 이유
+        _record_result("request_metrics", 0, 0, error=str(e))
         raise
 
 
@@ -96,5 +124,31 @@ def collect_turn_events(session_id: str | None = None, limit: int = 200) -> dict
         raise
 
 
+def probe_backend_health() -> dict:
+    """백엔드 생존 감시 프로브 — 결과를 기억하고 '마지막 정상(UP)' 시각을 갱신한다."""
+    result = backend_client.probe_health()
+    up = result.get("reachable") and result.get("status") in ("healthy", "degraded")
+    _health_state.update({
+        "reachable": result.get("reachable", False),
+        "status": result.get("status", "unknown"),
+        "checks": result.get("checks", {}),
+        "http_status": result.get("http_status"),
+        "error": result.get("error"),
+        "checked_at": result.get("checked_at"),
+    })
+    if up:
+        _health_state["last_ok_at"] = result.get("checked_at")
+    return dict(_health_state)
+
+
+def backend_health() -> dict:
+    """마지막으로 관측된 백엔드 생존 상태(프로브 없이 캐시 반환)."""
+    return dict(_health_state)
+
+
 def status() -> dict:
-    return {**_collect_state, "credentials_configured": backend_client.credentials_configured()}
+    return {
+        **_collect_state,
+        "credentials_configured": backend_client.credentials_configured(),
+        "backend_health": dict(_health_state),
+    }
