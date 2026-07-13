@@ -121,6 +121,51 @@ def request_metrics_cursor() -> str | None:
     return max(created) if created else None
 
 
+# ---------------- 사건 추적(상관관계) ----------------
+
+
+def trace_by(request_id: str | None = None, session_id: str | None = None) -> dict:
+    """한 사건에 연결된 관측 레코드를 종류별로 모은다 (대시보드 #5).
+
+    - request_id: HTTP 요청 1건 축 — audit·request_metrics·turn_events·rag_logs 전부 연결.
+    - session_id: 대화 축 — turn_events(그 세션의 모든 턴)만 직접 연결(감사/성능/RAG는
+      요청 축이라 세션 키가 없다). 세션의 request_id들은 반환된 turn_events에서 얻는다.
+    """
+    def _audit():
+        rows = [AuditLogRecord.model_validate_json(l) for l in _read_lines(AUDIT_LOG_PATH)]
+        rows = [r for r in rows if request_id and r.request_id == request_id]
+        return [r.model_dump() for r in sorted(rows, key=lambda r: r.created_at)]
+
+    def _metrics():
+        rows = [RequestMetricRecord.model_validate_json(l) for l in _read_lines(REQUEST_METRICS_PATH)]
+        rows = [r for r in rows if request_id and r.request_id == request_id]
+        return [r.model_dump() for r in sorted(rows, key=lambda r: r.created_at)]
+
+    def _rag():
+        rows = [RagLogRecord.model_validate_json(l) for l in _read_lines(RAG_LOG_PATH)]
+        rows = [r for r in rows if request_id and r.raw.get("request_id") == request_id]
+        return [r.model_dump() for r in rows]
+
+    def _turns():
+        rows = [TurnEventRecord.model_validate_json(l) for l in _read_lines(TURN_EVENTS_PATH)]
+        rows = [r for r in rows
+                if (request_id and r.request_id == request_id) or (session_id and r.session_id == session_id)]
+        # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러 요청이
+        # 실제 발생 순서와 어긋난다(CodeRabbit #13). 타임스탬프 없으면 seq로 폴백.
+        return [r.model_dump() for r in sorted(
+            rows, key=lambda r: (r.created_at is None, r.created_at or "", r.seq),
+        )]
+
+    return {
+        "request_id": request_id,
+        "session_id": session_id,
+        "audit_logs": _audit(),
+        "request_metrics": _metrics(),
+        "turn_events": _turns(),
+        "rag_logs": _rag(),
+    }
+
+
 # ---------------- llm usage snapshots ----------------
 
 
