@@ -107,7 +107,8 @@ def _render_backend_health_banner(health: dict) -> None:
         result = _safe_get(OPS_BACKEND_URL, "/observability/backend-health?probe=true")
         if result is None:
             st.error("백엔드 상태 프로브 요청에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
-        st.rerun()
+        else:
+            st.rerun()
 
 
 def _get_health(base_url: str) -> dict | None:

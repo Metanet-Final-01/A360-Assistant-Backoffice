@@ -1,5 +1,3 @@
-import time
-
 import pandas as pd
 import requests
 import streamlit as st
@@ -147,35 +145,38 @@ def _render_audit_logs() -> None:
 
 def _render_log_dashboard() -> None:
     st.session_state.setdefault("obs_seed", 42)
-    count = st.session_state.get("obs_log_limit", 100)
     live = st.session_state.get("obs_log_live", False)
-    seed = int(time.time()) if live else st.session_state["obs_seed"]
 
-    df = generate_mock_logs(n=count, seed=seed)
+    # time.sleep()+st.rerun()으로 스크립트 전체를 되돌리는 대신, 이 구역만 fragment로 떼어내
+    # live일 때만 주기적으로 재실행한다(evaluation.py의 _render_live_log와 동일 패턴) — KPI
+    # 카드·차트·표까지 매번 통째로 다시 그리는 전체 재실행을 피한다.
+    @st.fragment(run_every="4s" if live else None)
+    def _dashboard_fragment() -> None:
+        count = st.session_state.get("obs_log_limit", 100)
+        seed = st.session_state["obs_seed"]
+        df = generate_mock_logs(n=count, seed=seed)
 
-    tab_dashboard, tab_table = st.tabs(["대시보드", "로그 테이블"])
-    with tab_dashboard:
-        render_kpi_cards(df)
-        col_chart, col_side = st.columns([3, 2])
-        with col_chart:
-            render_volume_chart(df)
-        with col_side:
-            render_status_distribution(df)
-            st.markdown('<div style="height:12px;"></div>', unsafe_allow_html=True)
-            render_latency_stats(df)
+        tab_dashboard, tab_table = st.tabs(["대시보드", "로그 테이블"])
+        with tab_dashboard:
+            render_kpi_cards(df)
+            col_chart, col_side = st.columns([3, 2])
+            with col_chart:
+                render_volume_chart(df)
+            with col_side:
+                render_status_distribution(df)
+                st.markdown('<div style="height:12px;"></div>', unsafe_allow_html=True)
+                render_latency_stats(df)
 
-    with tab_table:
-        controls = render_table_controls()
-        if controls["refresh_clicked"]:
-            st.session_state["obs_seed"] += 1
-            st.rerun()
+        with tab_table:
+            controls = render_table_controls()
+            if controls["refresh_clicked"]:
+                st.session_state["obs_seed"] += 1
+                st.rerun()
 
-        filtered = render_filters(df)
-        render_table(filtered)
+            filtered = render_filters(df)
+            render_table(filtered)
 
-    if live:
-        time.sleep(4)
-        st.rerun()
+    _dashboard_fragment()
 
 
 def _render_metrics_daily() -> None:

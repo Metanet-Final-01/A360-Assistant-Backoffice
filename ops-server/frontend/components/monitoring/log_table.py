@@ -18,13 +18,13 @@ def render_table_controls() -> dict:
         if col_minus.button("−", key="obs_count_minus", width="stretch"):
             limit = max(_COUNT_MIN, limit - _COUNT_STEP)
             st.session_state["obs_log_limit"] = limit
+        if col_plus.button("+", key="obs_count_plus", width="stretch"):
+            limit = min(_COUNT_MAX, limit + _COUNT_STEP)
+            st.session_state["obs_log_limit"] = limit
         col_value.markdown(
             f'<div style="text-align:center;font-weight:800;font-family:Consolas,monospace;padding-top:8px;">{limit}</div>',
             unsafe_allow_html=True,
         )
-        if col_plus.button("+", key="obs_count_plus", width="stretch"):
-            limit = min(_COUNT_MAX, limit + _COUNT_STEP)
-            st.session_state["obs_log_limit"] = limit
         col_caption.markdown(
             f'<div style="padding-top:10px;color:#8a94a0;font-size:0.82rem;">최근 {limit}건 '
             '(워크플로우 생성 호출은 "WF" 열에 표시)</div>',
