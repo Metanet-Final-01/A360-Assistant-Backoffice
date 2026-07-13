@@ -150,7 +150,11 @@ def trace_by(request_id: str | None = None, session_id: str | None = None) -> di
         rows = [TurnEventRecord.model_validate_json(l) for l in _read_lines(TURN_EVENTS_PATH)]
         rows = [r for r in rows
                 if (request_id and r.request_id == request_id) or (session_id and r.session_id == session_id)]
-        return [r.model_dump() for r in sorted(rows, key=lambda r: (r.request_id or "", r.seq))]
+        # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러 요청이
+        # 실제 발생 순서와 어긋난다(CodeRabbit #13). 타임스탬프 없으면 seq로 폴백.
+        return [r.model_dump() for r in sorted(
+            rows, key=lambda r: (r.created_at is None, r.created_at or "", r.seq),
+        )]
 
     return {
         "request_id": request_id,

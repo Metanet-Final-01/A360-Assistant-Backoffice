@@ -64,6 +64,9 @@ def render() -> None:
             for r in rag:
                 raw = r.get("raw", {})
                 rows.append({"시각": raw.get("started_at") or raw.get("timestamp"), "종류": "RAG", "내용": f'{raw.get("event")} {raw.get("path") or ""}'})
+            for t in turns:  # 에이전트 턴도 통합 타임라인에 포함(CodeRabbit #13)
+                rows.append({"시각": t.get("created_at"), "종류": "턴",
+                             "내용": f'{t.get("stage") or t.get("kind")} · {t.get("message") or ""}'})
             df = pd.DataFrame(rows).sort_values("시각", na_position="last") if rows else pd.DataFrame()
             if not df.empty:
                 st.dataframe(df, use_container_width=True, hide_index=True)

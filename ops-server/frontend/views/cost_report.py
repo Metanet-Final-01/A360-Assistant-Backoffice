@@ -24,28 +24,45 @@ def render() -> None:
         col1, col2 = st.columns([1, 3])
         days = col2.slider("집계 기간(일)", 1, 90, 30, key="cost_days")
         if col1.button("수집", key="cost_collect"):
+            # 축별 수집 성공 여부를 상태코드로 기록 — 실패를 '미집계'로 삼키지 않는다(CodeRabbit #13).
+            status: dict = {}
             for axis in ("user", "session"):
-                requests.post(f"{OPS_BACKEND_URL}/observability/llm-usage/collect",
-                              params={"days": days, "group_by": axis}, timeout=15)
-            st.session_state["cost_collected"] = True
+                try:
+                    resp = requests.post(f"{OPS_BACKEND_URL}/observability/llm-usage/collect",
+                                         params={"days": days, "group_by": axis}, timeout=15)
+                    status[axis] = resp.status_code
+                except requests.RequestException:
+                    status[axis] = None  # 연결 실패
+            st.session_state["cost_axis_status"] = status
 
-    if not st.session_state.get("cost_collected"):
+    status = st.session_state.get("cost_axis_status")
+    if not status:
         st.info("\"수집\"을 눌러 사용량을 가져오세요.")
         return
 
     with card("cost_by_user"):
         section_header("사용자별 비용")
-        _render_axis("user", "user_id")
+        _render_axis("user", "user_id", status.get("user"))
 
     with card("cost_by_session"):
         section_header("세션별 비용", "백엔드 group_by=session(RPA-124) 필요")
-        _render_axis("session", "session_id")
+        _render_axis("session", "session_id", status.get("session"))
 
 
-def _render_axis(axis: str, key_label: str) -> None:
+def _render_axis(axis: str, key_label: str, collect_status: int | None) -> None:
+    # 수집 자체가 실패했으면 데이터를 그리지 않고 상태코드 기반 오류를 표시(원문 미노출).
+    if collect_status is None:
+        st.error(f"{axis} 축 수집 요청이 연결 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
+        return
+    if collect_status != 200:
+        st.error(f"{axis} 축 수집 실패 (HTTP {collect_status}) — 백엔드가 group_by={axis}를 지원하는지·관리자 자격이 유효한지 확인하세요.")
+        return
     snaps = _safe_get(OPS_BACKEND_URL, "/observability/llm-usage/snapshots", {"group_by": axis, "limit": 1})
+    if snaps is None:
+        st.error(f"{axis} 축 조회에 실패했습니다 — 모니터링 백엔드 상태를 확인하세요.")
+        return
     if not snaps:
-        st.warning(f"{axis} 축 집계가 아직 없습니다 — 백엔드가 group_by={axis}를 지원하는지(미지원 시 수집이 403/422로 실패) 확인하세요.")
+        st.info("해당 기간 사용량이 없습니다.")
         return
     snap = snaps[0]
     breakdown = snap.get("breakdown", [])
