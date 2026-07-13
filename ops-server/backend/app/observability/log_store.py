@@ -3,14 +3,21 @@
 """
 
 import json
+import threading
 import uuid
 from pathlib import Path
+
+# 관측 수집 엔드포인트는 FastAPI sync 함수라 threadpool에서 동시 실행될 수 있다.
+# read-filter-append(중복 제거)가 원자적이지 않으면 동시 호출이 같은 레코드를 중복
+# append하므로, 증분 수집 경로(request_metrics)의 임계구역을 이 락으로 묶는다(CodeRabbit #9).
+_append_lock = threading.Lock()
 
 from .log_schema import (
     AuditLogRecord,
     LlmUsageSnapshot,
     MetricsDailyRecord,
     RagLogRecord,
+    RequestMetricRecord,
     TurnEventRecord,
     UsageDailyRecord,
 )
@@ -22,6 +29,7 @@ RAG_LOG_PATH = _DATA_DIR / "observability_rag_logs.jsonl"
 METRICS_DAILY_PATH = _DATA_DIR / "observability_metrics_daily.jsonl"
 USAGE_DAILY_PATH = _DATA_DIR / "observability_usage_daily.jsonl"
 TURN_EVENTS_PATH = _DATA_DIR / "observability_turn_events.jsonl"
+REQUEST_METRICS_PATH = _DATA_DIR / "observability_request_metrics.jsonl"
 
 
 def _read_lines(path: Path) -> list[str]:
@@ -70,6 +78,47 @@ def load_audit_logs(
         records = [r for r in records if r.user_id == user_id]
     records.sort(key=lambda r: r.created_at, reverse=True)
     return records[:limit]
+
+
+def audit_cursor() -> str | None:
+    """저장된 감사 로그 중 가장 최근 created_at — 다음 증분 수집의 since로 쓴다."""
+    created = [
+        AuditLogRecord.model_validate_json(line).created_at for line in _read_lines(AUDIT_LOG_PATH)
+    ]
+    return max(created) if created else None
+
+
+# ---------------- request metrics (raw, 증분) ----------------
+
+
+def append_request_metrics(records: list[RequestMetricRecord]) -> int:
+    """id(백엔드 PK) 기준 append-only 중복 제거 — 증분 수집이라도 겹침 방어.
+
+    read-filter-append 전체를 락으로 묶는다 — 동시 collect가 같은 existing을 읽고
+    같은 레코드를 중복 append하는 경쟁을 차단(CodeRabbit #9)."""
+    with _append_lock:
+        existing = {RequestMetricRecord.model_validate_json(line).id for line in _read_lines(REQUEST_METRICS_PATH)}
+        new_lines = [r.model_dump_json() for r in records if r.id not in existing]
+        _append_lines(REQUEST_METRICS_PATH, new_lines)
+        return len(new_lines)
+
+
+def load_request_metrics(method: str | None = None, path_contains: str | None = None, limit: int = 500) -> list[RequestMetricRecord]:
+    records = [RequestMetricRecord.model_validate_json(line) for line in _read_lines(REQUEST_METRICS_PATH)]
+    if method:
+        records = [r for r in records if r.method == method.upper()]
+    if path_contains:
+        records = [r for r in records if path_contains in r.path]
+    records.sort(key=lambda r: r.id, reverse=True)
+    return records[:limit]
+
+
+def request_metrics_cursor() -> str | None:
+    """저장된 request_metrics 중 가장 최근 created_at — 다음 증분 수집의 since."""
+    created = [
+        RequestMetricRecord.model_validate_json(line).created_at for line in _read_lines(REQUEST_METRICS_PATH)
+    ]
+    return max(created) if created else None
 
 
 # ---------------- llm usage snapshots ----------------

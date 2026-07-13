@@ -30,6 +30,8 @@ def render() -> None:
                 ("RAG 적재 상태", "실행 중" if rag_status.get("running") else ("완료" if rag_status.get("returncode") == 0 else "-")),
             ])
 
+            _render_backend_health_banner(obs_status.get("backend_health") or {})
+
             rag_logs_info = obs_status.get("rag_logs", {})
             last_collected = rag_logs_info.get("last_collected_at")
             st.caption(
@@ -46,6 +48,36 @@ def render() -> None:
             "3. **모니터링 로그** — A360-Assistant-Backend의 RAG 파이프라인 요청 로그(경로·상태·응답시간)를 "
             "가져와 조회합니다."
         )
+
+
+def _fmt_ts(ts: str | None) -> str:
+    return ts[:19].replace("T", " ") if ts else "-"
+
+
+def _render_backend_health_banner(health: dict) -> None:
+    """A360-Assistant-Backend 생존 상태 배너 — 데이터 수집(로그인)과 분리된 무인증 프로브 결과.
+
+    캐시된 상태를 보여주고, 버튼으로 지금 다시 프로브한다. 백엔드가 죽으면 '조회'가
+    아니라 이 배너로 '죽었다는 사실'을 드러내는 게 목적이다.
+    """
+    status = (health or {}).get("status", "unknown")
+    checked_at = _fmt_ts((health or {}).get("checked_at"))
+    last_ok = _fmt_ts((health or {}).get("last_ok_at"))
+
+    if status == "healthy":
+        st.success(f"🟢 백엔드 UP (healthy) · 확인 {checked_at}")
+    elif status == "degraded":
+        st.warning(f"🟡 백엔드 UP·성능저하 (degraded — 관측 DB 등 일부 이상) · 확인 {checked_at}")
+    elif status in ("unhealthy", "unreachable"):
+        st.error(f"🔴 백엔드 DOWN ({status}) · 마지막 정상 {last_ok} · 확인 {checked_at}")
+    else:
+        st.info("⚪ 백엔드 상태 미확인 — 아래 버튼으로 확인하세요.")
+
+    if st.button("백엔드 상태 새로고침", key="probe_backend_health"):
+        result = _safe_get(OPS_BACKEND_URL, "/observability/backend-health?probe=true")
+        if result is None:
+            st.error("백엔드 상태 프로브 요청에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
+        st.rerun()
 
 
 def _get_health(base_url: str) -> dict | None:
