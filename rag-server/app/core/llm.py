@@ -111,7 +111,9 @@ def _get_client():
             raise RuntimeError("OPENAI_API_KEY 환경변수가 필요합니다")
         from openai import OpenAI
 
-        _client = OpenAI(api_key=api_key)
+        # max_retries: 429(TPM/RPM)에 SDK가 지수 백오프 + Retry-After로 재시도 → 동시 파싱의
+        # 순간 한도 초과를 버리지 않고 흡수한다(기본 2는 부족).
+        _client = OpenAI(api_key=api_key, max_retries=config.OPENAI_MAX_RETRIES)
     return _client
 
 

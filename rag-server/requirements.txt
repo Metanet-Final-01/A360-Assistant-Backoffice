@@ -1,15 +1,18 @@
-fastapi
-uvicorn[standard]
+# rag-server 의존성 — 메인 백엔드(A360-Assistant-Backend) requirements.txt 버전에 정렬.
+# Python 3.13 기준, 특정 버전 고정 (2026-07-13).
+fastapi==0.110.0
+uvicorn[standard]==0.23.0
 
 # RAG 수집(적재) 파이프라인 — A360-Assistant-Backend/app/rag 이식본이 쓰는 의존성
-httpx
-beautifulsoup4
-psycopg[binary]
-python-dotenv
-langchain-text-splitters
-opensearch-py
+httpx==0.27.2
+beautifulsoup4==4.12.3
+psycopg[binary]==3.2.3
+python-dotenv==1.0.1
+langchain-text-splitters==1.1.2
+opensearch-py==2.7.1
 
 # 문서 파싱 에이전트 (JAR 없는 패키지의 리프 문서 → 액션 스키마). openai=LLM 클라이언트(백엔드
-# core/llm.py 이식본이 사용), pydantic=구조화 출력 검증(fastapi 전이 의존이지만 명시).
-openai
-pydantic
+# core/llm.py 이식본이 사용), pydantic=구조화 출력 검증. langchain-core=백엔드와 동일 라인 고정.
+openai==2.44.0
+langchain-core==1.4.8
+pydantic==2.13.4

@@ -65,12 +65,21 @@ EMBEDDING_MODEL = os.getenv(
 EMBEDDING_DIM = int(os.getenv("EMBEDDING_DIM", "1024" if EMBEDDING_PROVIDER == "voyage" else "1536"))
 VOYAGE_API_KEY = os.getenv("VOYAGE_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
+# OpenAI 클라이언트 자동 재시도 횟수. 429(TPM/RPM 한도)에 SDK가 지수 백오프 + Retry-After로
+# 대기 후 재시도한다 — 동시 파싱이 순간 한도를 넘겨도 요청을 버리지 않고 흡수한다(기본 2는 부족).
+OPENAI_MAX_RETRIES = int(os.getenv("OPENAI_MAX_RETRIES", "8"))
 
 # ── 문서 파싱 에이전트 (JAR 없는 패키지의 리프 문서 → 액션 스키마) ──
 # 구조화 출력(JSON mode)을 지원하는 챗 모델. 백엔드 OPENAI_MODEL과 같은 기본값을 쓴다.
 AGENT_PARSE_MODEL = os.getenv("AGENT_PARSE_MODEL") or os.getenv("OPENAI_MODEL") or "gpt-5.4-mini"
 # 파싱 대상 리프 수 상한 (비용/시간 통제용). 0 이하면 무제한.
 AGENT_PARSE_LIMIT = int(os.getenv("AGENT_PARSE_LIMIT", "0"))
+# 리프를 몇 개씩 묶어 한 번의 LLM 호출로 파싱할지 (배치). 호출 수·반복 시스템프롬프트 토큰을 줄인다.
+AGENT_PARSE_BATCH_SIZE = int(os.getenv("AGENT_PARSE_BATCH_SIZE", "6"))
+# 배치 파싱을 동시에 몇 개까지 돌릴지 (LLM은 I/O 대기라 병렬로 벽시계 시간을 단축). 1이면 순차.
+# gpt-5.4-mini 200K TPM 기준, 배치당 ~15~25K 토큰이라 3이면 순간 폭주가 한도 아래로 유지된다
+# (초과분은 OPENAI_MAX_RETRIES 백오프가 흡수). 한도가 오르면 올려도 된다.
+AGENT_PARSE_WORKERS = int(os.getenv("AGENT_PARSE_WORKERS", "3"))
 # 관측 전용 DB(llm_usage 기록 대상) — 미설정 시 앱 DB(database_dsn)로 폴백.
 # 백엔드 RPA-90(관측 로그를 팀 공유 DB로 분리)과 동일 계약.
 OBSERVABILITY_DATABASE_URL = os.getenv("OBSERVABILITY_DATABASE_URL", "").strip()
