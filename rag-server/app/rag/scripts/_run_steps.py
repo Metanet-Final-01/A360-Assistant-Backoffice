@@ -10,6 +10,14 @@ from pathlib import Path
 REPO_ROOT = Path(__file__).resolve().parents[3]
 
 
+def wants_clean() -> bool:
+    """run_option*.py가 `--clean` 인자로 실행됐는지 확인한다 — rag-server main.py가
+    `/rag/ingest?clean=true`를 받으면 이 플래그를 붙여 서브프로세스를 띄운다.
+    완전 재적재(clean)와 증분 upsert(기본값) 둘 다 같은 옵션 스크립트로 고를 수 있게
+    (재적재 로직을 스크립트 두 벌로 중복 안 만들고) 하기 위한 최소 인자 파싱."""
+    return "--clean" in sys.argv
+
+
 def run_steps(steps: list[list[str]]) -> None:
     """steps: 각 원소가 `python -m app.rag.pipeline` 뒤에 붙일 인자 리스트.
     한 단계라도 실패하면(0이 아닌 종료 코드) 그 자리에서 멈춘다 — 이전 단계가 실패했는데

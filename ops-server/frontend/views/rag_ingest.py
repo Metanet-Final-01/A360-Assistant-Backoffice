@@ -11,6 +11,13 @@ def render() -> None:
     with card("rag_ingest"):
         st.caption("버튼을 누르면 백엔드가 크롤링→빌드→pgvector/OpenSearch 적재를 순서대로 실행합니다 (몇 분~몇십 분 소요).")
 
+        clean = st.checkbox(
+            "완전 재적재(clean) — 기존 rag_documents/OpenSearch를 전부 지우고 새로 채움",
+            value=False,
+            help="꺼두면(기본값) 기존 것에 upsert만 합니다 — 이번 build에서 빠진 옛 문서가 안 지워질 수 있습니다. "
+                 "켜면 적재 전 전체 삭제 후 다시 채웁니다 — 실행 중 잠깐 RAG 검색이 비거나 불완전할 수 있습니다.",
+        )
+
         col1, col2, col3 = st.columns(3)
         with col1:
             run_option1 = st.button("옵션 1: JAR 있는 패키지만 적재", use_container_width=True)
@@ -23,9 +30,12 @@ def render() -> None:
         if run_option1 or run_option2 or run_option3:
             option = 1 if run_option1 else 2 if run_option2 else 3
             try:
-                resp = requests.post(f"{RAG_SERVER_URL}/rag/ingest", params={"option": option}, timeout=5)
+                resp = requests.post(
+                    f"{RAG_SERVER_URL}/rag/ingest", params={"option": option, "clean": clean}, timeout=5,
+                )
                 if resp.status_code == 200:
-                    st.success(f"옵션 {option} 시작됨 — 아래 '진행 상태 확인'으로 완료 여부를 확인하세요.")
+                    mode = "완전 재적재" if clean else "upsert"
+                    st.success(f"옵션 {option} 시작됨({mode}) — 아래 '진행 상태 확인'으로 완료 여부를 확인하세요.")
                 else:
                     st.warning(resp.json().get("detail", resp.text))
             except requests.RequestException as e:
@@ -36,7 +46,8 @@ def render() -> None:
                 resp = requests.get(f"{RAG_SERVER_URL}/rag/ingest/status", timeout=5)
                 status = resp.json()
                 if status["running"]:
-                    st.info(f"옵션 {status['option']} 실행 중...")
+                    mode = "완전 재적재" if status.get("clean") else "upsert"
+                    st.info(f"옵션 {status['option']} 실행 중... ({mode})")
                 elif status["returncode"] is None:
                     st.write("아직 실행한 적 없음.")
                 elif status["returncode"] == 0:

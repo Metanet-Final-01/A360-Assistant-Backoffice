@@ -10,11 +10,17 @@
 
 ⚠️ 선행 조건: OPENAI_API_KEY가 .env에 있어야 한다. 비용/시간은 AGENT_PARSE_LIMIT(리프 수 상한),
 AGENT_PARSE_MODEL(모델)로 통제한다. JAR로 이미 커버된 패키지는 에이전트가 절대 건드리지 않는다.
+
+`--clean` 인자로 실행하면 마지막 ingest가 완전 재적재(옵션 2와 동일 이유 — 안 그러면
+이전 실행에서 만들어진 action_candidate가, 이번엔 같은 리프가 llm_agent 스키마로
+승격됐는데도 옛 candidate row로 남아 중복·혼선을 일으킨다). 인자 없으면 기존처럼
+upsert만 한다.
 """
 
-from _run_steps import run_steps
+from _run_steps import run_steps, wants_clean
 
 if __name__ == "__main__":
+    ingest_step = ["ingest", "--clean"] if wants_clean() else ["ingest"]
     run_steps([
         ["crawl"],
         # en-US도 크롤링해야 build-action-tree/export-*가 packages.json과 일치하는 진짜 영어
@@ -25,5 +31,5 @@ if __name__ == "__main__":
         ["parse-docs-agent"],       # LLM 파싱 → packages.json 병합(schema_source=llm_agent)
         ["export-naive-leaf-actions"],  # 에이전트가 못 뽑은 나머지 리프는 후보로 폴백
         ["build", "--include-naive-leaf-actions"],
-        ["ingest"],
+        ingest_step,
     ])
