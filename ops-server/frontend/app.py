@@ -4,6 +4,7 @@ from components.layout import apply_global_styles
 from components.sidebar import render_sidebar
 from views import (
     cost_report,
+    datasets,
     evaluation,
     home,
     loadtest,
@@ -22,6 +23,7 @@ pages = [
     st.Page(home.render, title="홈", url_path="home", default=True),
     st.Page(rag_ingest.render, title="RAG 데이터 적재", url_path="rag-ingest"),
     st.Page(evaluation.render, title="평가", url_path="evaluation"),
+    st.Page(datasets.render, title="데이터셋 관리", url_path="datasets"),
     st.Page(monitoring_logs.render, title="모니터링 로그", url_path="monitoring-logs"),
     st.Page(trace.render, title="사건 추적", url_path="trace"),
     st.Page(cost_report.render, title="비용 리포트", url_path="cost-report"),
