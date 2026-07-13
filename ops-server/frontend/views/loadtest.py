@@ -28,7 +28,7 @@ _CLI_EXAMPLE = """k6 run ops-server/backend/app/loadtest/scripts/loadtest.js \\
 
 def render() -> None:
     page_header(
-        "LOADTEST", "부하테스트",
+        "부하테스트",
         "k6는 로컬에서 CLI로 직접 실행합니다 — 끝나면 결과가 자동으로 여기에 쌓입니다.",
     )
     _render_cli_guide()

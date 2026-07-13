@@ -38,7 +38,7 @@ _MAX_CATEGORY_UNIQUES = 30
 
 
 def render() -> None:
-    page_header("EDA", "로그 탐색", "관측 로그를 직접 필터링·집계해봅니다 — 고정된 대시보드가 아니라 자유 탐색용입니다.")
+    page_header("로그 탐색", "관측 로그를 직접 필터링·집계해봅니다 — 고정된 대시보드가 아니라 자유 탐색용입니다.")
 
     with card("eda_source"):
         section_header("데이터 소스")

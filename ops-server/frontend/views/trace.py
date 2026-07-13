@@ -13,7 +13,7 @@ from config import OPS_BACKEND_URL
 
 
 def render() -> None:
-    page_header("TRACE", "사건 추적")
+    page_header("사건 추적")
     st.caption(
         "request_id로 조회하면 한 요청이 남긴 감사·성능·에이전트 턴·RAG 로그를 한 타임라인으로, "
         "session_id로 조회하면 그 대화의 모든 턴을 순서대로 보여줍니다. "

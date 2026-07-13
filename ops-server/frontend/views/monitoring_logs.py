@@ -19,7 +19,7 @@ _WORKFLOW_PATH_MARKER = "/turn"
 
 
 def render() -> None:
-    page_header("OBS", "모니터링 로그")
+    page_header("모니터링 로그")
     st.caption(
         "이렇게 쓰세요: 아래 \"새로고침\"을 누르면 A360-Assistant-Backend의 최근 요청 로그를 "
         "가져와 보여줍니다. 요청 메타데이터(경로·상태·응답시간)만 다루며, agent가 만든 실제 "

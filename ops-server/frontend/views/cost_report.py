@@ -14,7 +14,7 @@ from config import OPS_BACKEND_URL
 
 
 def render() -> None:
-    page_header("COST", "비용 리포트")
+    page_header("비용 리포트")
     st.caption(
         "사용자별·세션별 LLM 비용을 집계합니다. 아래 \"수집\"을 누르면 A360-Assistant-Backend에서 "
         "최근 기간 사용량을 축별로 가져옵니다. (세션별은 백엔드 group_by=session 반영 후 활성화됩니다.)"

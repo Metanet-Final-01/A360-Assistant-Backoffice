@@ -80,7 +80,7 @@ def _render_live_log(status_url_path: str, key: str) -> None:
 
 def render() -> None:
     page_header(
-        "EVALUATION", "평가",
+        "평가",
         "데이터셋을 등록하고 pm4py/WorFBench로 채점한 뒤, 같은 화면에서 결과를 조회·비교합니다.",
     )
     _prefetch_initial_data()
