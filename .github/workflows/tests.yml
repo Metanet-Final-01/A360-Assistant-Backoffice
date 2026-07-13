@@ -1,0 +1,38 @@
+# pytest 단위 테스트 — PR마다 두 서버(ops-server·rag-server)를 각각 실행한다.
+# 모노레포라 서버별로 requirements·테스트 경로가 달라 matrix로 분리한다.
+name: Tests
+
+on:
+  pull_request:
+  push:
+    branches: [main, dev]
+
+jobs:
+  pytest:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # ops-server: requirements.txt엔 pytest가 없어 별도 설치. app 임포트를 위해 backend에서 실행.
+          - name: ops-server
+            install: pip install -r ops-server/requirements.txt pytest
+            workdir: ops-server/backend
+            test: pytest tests/ -q
+          # rag-server: requirements-dev.txt가 requirements.txt + pytest를 포함. pytest.ini가 설정.
+          - name: rag-server
+            install: pip install -r rag-server/requirements-dev.txt
+            workdir: rag-server
+            test: pytest -q
+    name: pytest (${{ matrix.name }})
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - name: Install deps
+        run: ${{ matrix.install }}
+      - name: Run tests
+        working-directory: ${{ matrix.workdir }}
+        run: ${{ matrix.test }}
