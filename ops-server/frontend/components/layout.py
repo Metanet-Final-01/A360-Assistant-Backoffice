@@ -177,7 +177,7 @@ def apply_global_styles() -> None:
             background: rgba(255, 255, 255, 0.08);
         }
 
-        section[data-testid="stSidebar"] li[data-testid="stSidebarNavItems"] {
+        section[data-testid="stSidebar"] [data-testid="stSidebarNavItems"] {
             padding: 10px 12px;
             gap: 3px;
             display: flex;

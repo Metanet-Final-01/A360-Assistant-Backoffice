@@ -19,7 +19,7 @@ apply_global_styles()
 render_sidebar()
 
 pages = [
-    st.Page(home.render, title="홈", url_path="home", icon=":material/home:", default=True),
+    st.Page(home.render, title="홈", icon=":material/home:", default=True),
     st.Page(rag_ingest.render, title="RAG 데이터 적재", url_path="rag-ingest", icon=":material/database:"),
     st.Page(evaluation.render, title="평가", url_path="evaluation", icon=":material/assessment:"),
     st.Page(monitoring_logs.render, title="모니터링 로그", url_path="monitoring-logs", icon=":material/monitoring:"),
