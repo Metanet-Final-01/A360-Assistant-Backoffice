@@ -17,6 +17,7 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 _OPTION_SCRIPTS = {
     1: _REPO_ROOT / "app" / "rag" / "scripts" / "run_option1_jar_only.py",
     2: _REPO_ROOT / "app" / "rag" / "scripts" / "run_option2_with_naive_actions.py",
+    3: _REPO_ROOT / "app" / "rag" / "scripts" / "run_option3_with_doc_agent.py",
 }
 
 # 파이프라인은 실행에 몇 분~몇십 분이 걸릴 수 있어 백그라운드로 돌린다 — 프로세스 재시작하면
@@ -53,9 +54,11 @@ def trigger_rag_ingest(option: int, background_tasks: BackgroundTasks) -> dict:
 
     옵션 1: JAR 있는 패키지만 action_schema로 적재.
     옵션 2: 옵션 1 + JAR 없는 패키지 리프도 action_candidate로 참고용 적재.
+    옵션 3: 옵션 2 + JAR 없는 패키지 리프를 LLM 파싱 에이전트로 action_schema화
+            (schema_source=llm_agent, 미검증 신뢰 등급). OPENAI_API_KEY 필요.
     """
     if option not in _OPTION_SCRIPTS:
-        raise HTTPException(400, "option은 1 또는 2여야 합니다")
+        raise HTTPException(400, "option은 1, 2, 3 중 하나여야 합니다")
     if _run_state["running"]:
         raise HTTPException(409, "이미 실행 중입니다 — /rag/ingest/status로 확인하세요")
     background_tasks.add_task(_run_pipeline, option)

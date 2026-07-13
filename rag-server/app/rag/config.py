@@ -66,6 +66,15 @@ EMBEDDING_DIM = int(os.getenv("EMBEDDING_DIM", "1024" if EMBEDDING_PROVIDER == "
 VOYAGE_API_KEY = os.getenv("VOYAGE_API_KEY", "")
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
 
+# ── 문서 파싱 에이전트 (JAR 없는 패키지의 리프 문서 → 액션 스키마) ──
+# 구조화 출력(JSON mode)을 지원하는 챗 모델. 백엔드 OPENAI_MODEL과 같은 기본값을 쓴다.
+AGENT_PARSE_MODEL = os.getenv("AGENT_PARSE_MODEL") or os.getenv("OPENAI_MODEL") or "gpt-5.4-mini"
+# 파싱 대상 리프 수 상한 (비용/시간 통제용). 0 이하면 무제한.
+AGENT_PARSE_LIMIT = int(os.getenv("AGENT_PARSE_LIMIT", "0"))
+# 관측 전용 DB(llm_usage 기록 대상) — 미설정 시 앱 DB(database_dsn)로 폴백.
+# 백엔드 RPA-90(관측 로그를 팀 공유 DB로 분리)과 동일 계약.
+OBSERVABILITY_DATABASE_URL = os.getenv("OBSERVABILITY_DATABASE_URL", "").strip()
+
 
 def database_dsn() -> str:
     # os.getenv(key, default)는 .env에 키가 "빈 값"으로라도 존재하면 default를 안 쓴다 —

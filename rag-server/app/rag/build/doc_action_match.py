@@ -18,6 +18,27 @@ def normalize_key(s: str) -> str:
     return re.sub(r"[^a-z0-9가-힣]", "", (s or "").lower())
 
 
+def fuzzy_find_name(name: str, candidates) -> str | None:
+    """공백 무시 + 접두 포함으로 느슨하게 name과 일치하는 candidates 중 하나를 찾는다.
+    정확히 1개로 안 좁혀지면(모호하거나 전혀 없으면) None — 애매하면 추측으로 메우지 않는다.
+
+    문서 사이트 개요 페이지 제목에서 뽑은 이름과 실제 packageName 표기가 다른 실측 사례들을
+    잡기 위한 것 — 대소문자 차이가 아니라 아예 다른 문자열이라 단순 소문자 비교로는 못 잡는다:
+    - "Python"(실제 이름) <-> "Python Script"(개요 페이지 제목에서 뽑은 이름)
+    - "DataTable"(실제 이름, 공백 없음) <-> "Data Table"(개요 페이지 제목, 공백 있음)
+    양방향(실제 이름 -> 발견된 이름 교정, 발견된 이름 -> 실제 이름 교정)에 똑같이 쓴다.
+    export-for-agent의 트리 매칭과 parse-docs-agent의 JAR 커버리지 판정이 공유한다.
+    """
+    if name in candidates:
+        return name
+    target_norm = name.lower().replace(" ", "")
+    matches = [
+        c for c in candidates
+        if (c_norm := c.lower().replace(" ", "")).startswith(target_norm) or target_norm.startswith(c_norm)
+    ]
+    return matches[0] if len(matches) == 1 else None
+
+
 def match_package_docs(package: dict, docs: list[dict]) -> list[dict]:
     """패키지명이 breadcrumbs/제목에 등장하는 문서 페이지를 찾는다."""
     keys = {normalize_key(package["package_name"]), normalize_key(package["package_label"])}
