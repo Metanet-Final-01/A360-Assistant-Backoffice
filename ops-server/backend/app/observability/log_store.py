@@ -183,37 +183,60 @@ def delete_rag_events(request_id: str | None = None, event: str | None = None) -
 # ---------------- 사건 추적(상관관계) ----------------
 
 
-def trace_by(request_id: str | None = None, session_id: str | None = None) -> dict:
+def _request_ids_for_user(user_id: str) -> set[str]:
+    """user_id로 찾은 request_id 후보 — audit_logs/request_metrics 둘 다 user_id를
+    가지고 있어서(turn_events는 없음) 이 둘에서 먼저 request_id를 모으고, 그 request_id로
+    나머지(turn_events/rag_logs/rag_events)까지 연결한다."""
+    ids: set[str] = set()
+    for r in (AuditLogRecord.model_validate_json(l) for l in _read_lines(AUDIT_LOG_PATH)):
+        if r.user_id == user_id and r.request_id:
+            ids.add(r.request_id)
+    for r in (RequestMetricRecord.model_validate_json(l) for l in _read_lines(REQUEST_METRICS_PATH)):
+        if r.user_id == user_id and r.request_id:
+            ids.add(r.request_id)
+    return ids
+
+
+def trace_by(request_id: str | None = None, session_id: str | None = None, user_id: str | None = None) -> dict:
     """한 사건에 연결된 관측 레코드를 종류별로 모은다 (대시보드 #5).
 
     - request_id: HTTP 요청 1건 축 — audit·request_metrics·turn_events·rag_logs 전부 연결.
     - session_id: 대화 축 — turn_events(그 세션의 모든 턴)만 직접 연결(감사/성능/RAG는
       요청 축이라 세션 키가 없다). 세션의 request_id들은 반환된 turn_events에서 얻는다.
+    - user_id: request_id/session_id는 사람이 외우기 어려운 opaque id라, 사람이 아는
+      값(user_id)으로 먼저 관련 request_id들을 찾은 뒤 그 request_id 집합 전체를
+      대상으로 조회한다 — request_id 축과 같은 로직을 request_ids 집합에 적용.
     """
+    request_ids = {request_id} if request_id else set()
+    if user_id:
+        request_ids |= _request_ids_for_user(user_id)
+
+    def _in_scope(rid: str | None) -> bool:
+        return bool(rid) and rid in request_ids
+
     def _audit():
         rows = [AuditLogRecord.model_validate_json(l) for l in _read_lines(AUDIT_LOG_PATH)]
-        rows = [r for r in rows if request_id and r.request_id == request_id]
+        rows = [r for r in rows if _in_scope(r.request_id)]
         return [r.model_dump() for r in sorted(rows, key=lambda r: r.created_at)]
 
     def _metrics():
         rows = [RequestMetricRecord.model_validate_json(l) for l in _read_lines(REQUEST_METRICS_PATH)]
-        rows = [r for r in rows if request_id and r.request_id == request_id]
+        rows = [r for r in rows if _in_scope(r.request_id)]
         return [r.model_dump() for r in sorted(rows, key=lambda r: r.created_at)]
 
     def _rag():
         rows = [RagLogRecord.model_validate_json(l) for l in _read_lines(RAG_LOG_PATH)]
-        rows = [r for r in rows if request_id and r.raw.get("request_id") == request_id]
+        rows = [r for r in rows if _in_scope(r.raw.get("request_id"))]
         return [r.model_dump() for r in rows]
 
     def _rag_events():
         rows = [RagEventRecord.model_validate_json(l) for l in _read_lines(RAG_EVENTS_PATH)]
-        rows = [r for r in rows if request_id and r.request_id == request_id]
+        rows = [r for r in rows if _in_scope(r.request_id)]
         return [r.model_dump() for r in sorted(rows, key=lambda r: r.id)]
 
     def _turns():
         rows = [TurnEventRecord.model_validate_json(l) for l in _read_lines(TURN_EVENTS_PATH)]
-        rows = [r for r in rows
-                if (request_id and r.request_id == request_id) or (session_id and r.session_id == session_id)]
+        rows = [r for r in rows if _in_scope(r.request_id) or (session_id and r.session_id == session_id)]
         # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러 요청이
         # 실제 발생 순서와 어긋난다(CodeRabbit #13). 타임스탬프 없으면 seq로 폴백.
         return [r.model_dump() for r in sorted(
@@ -223,6 +246,8 @@ def trace_by(request_id: str | None = None, session_id: str | None = None) -> di
     return {
         "request_id": request_id,
         "session_id": session_id,
+        "user_id": user_id,
+        "matched_request_ids": sorted(request_ids),
         "audit_logs": _audit(),
         "request_metrics": _metrics(),
         "turn_events": _turns(),

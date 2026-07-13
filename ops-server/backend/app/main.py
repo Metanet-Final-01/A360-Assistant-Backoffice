@@ -447,12 +447,14 @@ def backend_health(probe: bool = True) -> dict:
 
 
 @app.get("/observability/trace")
-def observability_trace(request_id: str | None = None, session_id: str | None = None) -> dict:
-    """한 사건(request_id 또는 session_id)에 연결된 관측 레코드를 모아 반환한다 (대시보드 #5).
-    감사·성능·턴·RAG를 한 화면에서 추적하기 위한 상관관계 조회 — 저장된 수집분에서 필터."""
-    if not (request_id or session_id):
-        raise HTTPException(400, "request_id 또는 session_id 중 하나는 필요합니다")
-    return obs_log_store.trace_by(request_id=request_id, session_id=session_id)
+def observability_trace(request_id: str | None = None, session_id: str | None = None, user_id: str | None = None) -> dict:
+    """한 사건(request_id/session_id/user_id)에 연결된 관측 레코드를 모아 반환한다 (대시보드 #5).
+    감사·성능·턴·RAG를 한 화면에서 추적하기 위한 상관관계 조회 — 저장된 수집분에서 필터.
+    user_id는 request_id/session_id처럼 opaque id를 몰라도 조회할 수 있게 하는 축 —
+    audit_logs/request_metrics에서 해당 user_id의 request_id들을 먼저 찾아 확장한다."""
+    if not (request_id or session_id or user_id):
+        raise HTTPException(400, "request_id, session_id, user_id 중 하나는 필요합니다")
+    return obs_log_store.trace_by(request_id=request_id, session_id=session_id, user_id=user_id)
 
 
 @app.get("/observability/status")

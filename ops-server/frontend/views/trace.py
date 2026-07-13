@@ -16,12 +16,13 @@ def render() -> None:
     page_header("TRACE", "사건 추적")
     st.caption(
         "request_id로 조회하면 한 요청이 남긴 감사·성능·에이전트 턴·RAG 로그를 한 타임라인으로, "
-        "session_id로 조회하면 그 대화의 모든 턴을 순서대로 보여줍니다. "
+        "session_id로 조회하면 그 대화의 모든 턴을 순서대로 보여줍니다. request_id/session_id는 "
+        "사람이 외우기 어려운 값이라, user_id로 먼저 찾아 관련된 요청들을 한 번에 볼 수도 있습니다. "
         "(모니터링 로그 화면에서 먼저 로그를 수집해 두어야 조회됩니다.)"
     )
 
     with card("trace_input"):
-        key_type = st.radio("조회 축", ["request_id", "session_id"], horizontal=True, key="trace_key_type")
+        key_type = st.radio("조회 축", ["request_id", "session_id", "user_id"], horizontal=True, key="trace_key_type")
         value = st.text_input(f"{key_type} 입력", key="trace_value", placeholder="예: 5f2a3c309fd1")
         go = st.button("추적", key="trace_go")
 
@@ -34,6 +35,13 @@ def render() -> None:
     if data is None:
         st.error("조회에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
         return
+
+    if key_type == "user_id":
+        matched = data.get("matched_request_ids", [])
+        if not matched:
+            st.warning("이 user_id로 연결된 request_id를 찾지 못했습니다 — 감사 로그·성능 메트릭이 수집돼 있는지 확인하세요.")
+            return
+        st.caption(f"이 user_id의 요청 {len(matched)}건: {', '.join(matched)}")
 
     audit = data.get("audit_logs", [])
     metrics = data.get("request_metrics", [])
@@ -55,9 +63,10 @@ def render() -> None:
             ("RAG 파이프라인 단계", f"{len(rag_events)}건"),
         ])
 
-    if key_type == "request_id":
+    if key_type in ("request_id", "user_id"):
         with card("trace_timeline"):
-            section_header("통합 타임라인", "이 요청이 시스템을 통과한 순서")
+            title = "이 요청이 시스템을 통과한 순서" if key_type == "request_id" else "이 user_id의 요청들이 시스템을 통과한 순서(여러 요청 통합)"
+            section_header("통합 타임라인", title)
             rows = []
             for r in audit:
                 rows.append({"시각": r.get("created_at"), "종류": "감사", "내용": f'{r.get("method")} {r.get("path")} → {r.get("status_code")} ({r.get("latency_ms")}ms)'})
