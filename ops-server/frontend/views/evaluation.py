@@ -121,13 +121,67 @@ def _render_results_tab(runs: list[dict]) -> None:
 @st.fragment
 def _render_workflow_tab(datasets: list[dict]) -> None:
     """pm4py/WorFBench(옛 이름 "평가 실행"+"데이터셋 관리") — RPA-126에서 BFCL/RAGAS와
-    나란한 1급 탭으로 통합. 이 방식은 라이브 Agent 호출이 아니라 미리 만들어둔
-    예측 파일(a360-eval-sandbox/predictions_from_agent_*.json)을 재채점하는 구조라
-    (BFCL/RAGAS 탭 참고: 그쪽은 실시간 로그) 여기는 실행 로그가 없다 — 대신 pm4py/
-    WorFBench 스크립트의 표준출력을 실행 후 한 번에 보여준다(executor.state["log"])."""
+    나란한 1급 탭으로 통합했고, 이후 라이브 실행도 추가했다(예측 파일을 사람이
+    미리 만들어야 했던 걸 실제 Backend Agent 호출로 대체 — workflow_eval/runner.py).
+    기존 "예측 파일 직접 지정" 방식도 그대로 남겨둠(과거 예측 파일을 다시 채점하고
+    싶을 때 유용)."""
+    _render_workflow_live_execution()
     _render_evaluation_execution(datasets)
     _render_dataset_registry(datasets)
     _render_format_guide()
+
+
+def _render_workflow_live_execution() -> None:
+    with card("workflow_live_execution"):
+        section_header(
+            "Workflow 정확도 평가 실행 — 라이브(pm4py·WorFBench)",
+            "실제 커뮤니티 봇 기반 골드셋(17개, a360-eval-sandbox/Metadata/goldset_from_bots.json)으로 "
+            "Backend Agent에 실제 요청을 보내 예측을 만들고, pm4py/WorFBench로 바로 채점합니다.",
+        )
+        try:
+            cases_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/workflow/cases", timeout=5)
+            cases_resp.raise_for_status()
+            n_cases = len(cases_resp.json())
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"골드셋을 불러오지 못했습니다: {exc}")
+            n_cases = 0
+        st.caption(f"골드셋 케이스 {n_cases}개")
+
+        with st.form("workflow_live_execution_form"):
+            agent_label = st.text_input("결과 버전(agent_label)", value="workflow-live", key="workflow_live_agent_label")
+            start = st.form_submit_button("Workflow 평가 시작(라이브)", type="primary")
+        if start:
+            try:
+                resp = _SESSION.post(
+                    f"{OPS_BACKEND_URL}/eval/workflow/execution",
+                    json={"agent_label": agent_label.strip() or "workflow-live"}, timeout=5,
+                )
+                if resp.status_code == 200:
+                    st.success("Workflow 평가를 시작했습니다 — 케이스마다 실제 Agent 턴을 태우고 pm4py/WorFBench 채점까지 하므로 시간이 걸립니다.")
+                else:
+                    st.error(resp.json().get("detail", resp.text))
+            except (requests.RequestException, ValueError) as exc:
+                st.error(f"평가 시작 실패: {exc}")
+
+        if st.button("Workflow 상태 새로고침", key="workflow_live_status_refresh"):
+            st.session_state.pop("eval_runs", None)
+        try:
+            status_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/workflow/execution/status", timeout=5)
+            status_resp.raise_for_status()
+            status = status_resp.json()
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"상태를 불러오지 못했습니다: {exc}")
+            return
+
+        if status.get("running"):
+            st.info("실행 중...")
+        elif status.get("error"):
+            st.error(f"평가 실패: {status['error']}")
+        elif status.get("finished_at"):
+            st.success(f"평가 완료 · {status.get('saved', 0)}건 저장")
+        else:
+            st.caption("아직 실행한 라이브 Workflow 평가가 없습니다.")
+        _render_live_log("/eval/workflow/execution/status", key="workflow_live_log")
 
 
 @st.fragment

@@ -24,8 +24,6 @@ from .runner import _append_log, _to_metrics, run_ragas_eval
 
 logger = logging.getLogger(__name__)
 
-_MAX_LOG_LINES = 200
-
 # "통과" 판정 임계값 — 근거는 모듈 docstring 참고. 필요해지면 여기만 바꾸면 된다.
 PASS_THRESHOLD = 0.7
 

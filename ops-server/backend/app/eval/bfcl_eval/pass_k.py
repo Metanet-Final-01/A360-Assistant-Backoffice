@@ -21,11 +21,10 @@ from uuid import uuid4
 
 from ..log_schema import EvalMetric, EvalRunRecord
 from ..log_store import append_run
+from .reservation import finish_state, reserve_state
 from .runner import _append_log, _to_metrics, run_bfcl_eval
 
 logger = logging.getLogger(__name__)
-
-_MAX_LOG_LINES = 200
 
 state: dict = {
     "running": False, "started_at": None, "finished_at": None,
@@ -35,14 +34,11 @@ state: dict = {
 
 def reserve() -> bool:
     """runner.reserve()와 동일한 원자적 check-and-set."""
-    if state["running"]:
-        return False
-    state.update({
+    return reserve_state(state, {
         "running": True, "started_at": datetime.now(timezone.utc).isoformat(),
         "finished_at": None, "n_repeats": 0, "completed_repeats": 0,
         "evaluation_id": None, "error": None, "log": [],
     })
-    return True
 
 
 def _pass_at_k(n: int, c: int, k: int) -> float:
@@ -103,4 +99,4 @@ def execute_pass_k_and_save(agent_label: str, n_repeats: int) -> None:
         logger.exception("BFCL pass@k 실행 실패")
         state["error"] = str(e)
     finally:
-        state.update({"running": False, "finished_at": datetime.now(timezone.utc).isoformat()})
+        finish_state(state)
