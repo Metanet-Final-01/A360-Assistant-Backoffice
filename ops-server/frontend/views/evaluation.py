@@ -117,6 +117,7 @@ def _render_ragas_tab(runs: list[dict]) -> None:
 def _render_bfcl_tab(runs: list[dict]) -> None:
     _render_bfcl_execution()
     _render_bfcl_results(_fetch_runs())  # RAGAS 탭과 같은 이유로 매번 새로 불러온다
+    _render_bfcl_pass_k()
 
 
 # ── 결과 조회 · 비교 (구 eval_results.py) ──────────────────────────────
@@ -625,3 +626,72 @@ def _render_bfcl_results(runs: list[dict]) -> None:
                     "오류": raw.get("error") or "",
                 })
             st.dataframe(pd.DataFrame(case_rows), width="stretch", hide_index=True)
+
+
+# ── pass@k(반복 일관성) ─────────────────────────────────────────────
+# Codex 논문(Chen et al. 2021, arXiv:2107.03374)의 pass@k. 같은 골드셋을 n번 반복
+# 실행해서 c번 통과했을 때 "k번 시도 중 하나라도 맞을 확률"의 비편향 추정치를 본다.
+# 동기: 실측으로 확인된 문제 — browser_open_newtab이 완전히 같은 입력으로 한 번은
+# 통과, 한 번은 실패했다. 단발 실행 결과만으론 그게 실제 경향인지 우연인지 구분이
+# 안 됐다.
+
+
+def _render_bfcl_pass_k() -> None:
+    with card("bfcl_pass_k"):
+        section_header(
+            "반복 일관성 평가(pass@k)",
+            "같은 골드셋을 n번 반복 실행해 케이스별로 얼마나 일관되게 맞히는지 본다 — "
+            "단발 실행 점수가 우연인지 실제 경향인지 구분하기 위함.",
+        )
+        with st.form("bfcl_pass_k_form"):
+            agent_label = st.text_input("결과 버전(agent_label)", value="bfcl-passk", key="bfcl_passk_agent_label")
+            n_repeats = st.number_input("반복 횟수(n)", min_value=2, max_value=20, value=5, step=1, key="bfcl_passk_n")
+            start = st.form_submit_button("pass@k 평가 시작", type="primary")
+        if start:
+            try:
+                resp = _SESSION.post(
+                    f"{OPS_BACKEND_URL}/eval/bfcl/pass-k/execution",
+                    json={"agent_label": agent_label.strip() or "bfcl-passk", "n_repeats": int(n_repeats)}, timeout=5,
+                )
+                if resp.status_code == 200:
+                    st.success(f"pass@k 평가를 시작했습니다({int(n_repeats)}회 반복 — 케이스 수 × {int(n_repeats)}번 실제 Agent 턴을 태우므로 오래 걸립니다).")
+                else:
+                    st.error(resp.json().get("detail", resp.text))
+            except (requests.RequestException, ValueError) as exc:
+                st.error(f"평가 시작 실패: {exc}")
+
+        if st.button("pass@k 상태 새로고침", key="bfcl_passk_status_refresh"):
+            st.session_state.pop("eval_runs", None)
+        try:
+            status_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/bfcl/pass-k/execution/status", timeout=5)
+            status_resp.raise_for_status()
+            status = status_resp.json()
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"상태를 불러오지 못했습니다: {exc}")
+            return
+
+        if status.get("running"):
+            st.info(f"실행 중... ({status.get('completed_repeats', 0)}/{status.get('n_repeats', 0)}회 반복 완료)")
+        elif status.get("error"):
+            st.error(f"평가 실패: {status['error']}")
+        elif status.get("finished_at"):
+            st.success(f"pass@k 평가 완료 · {status.get('n_repeats', 0)}회 반복")
+        else:
+            st.caption("아직 실행한 pass@k 평가가 없습니다.")
+
+        pass_k_runs = [r for r in _fetch_runs() if r.get("source") == "bfcl_pass_k"]
+        if not pass_k_runs:
+            return
+
+        rows = []
+        for r in sorted(pass_k_runs, key=lambda x: x["case_id"]):
+            raw = r.get("raw") or {}
+            metrics = {m["name"]: m["value"] for m in r.get("metrics", [])}
+            rows.append({
+                "버전": r.get("agent_label") or "-", "case_id": r["case_id"], "카테고리": raw.get("category", ""),
+                "n": raw.get("n"), "c(통과)": raw.get("c"),
+                "pass@1": round(metrics.get("pass_at_1"), 3) if metrics.get("pass_at_1") is not None else None,
+                "pass@3": round(metrics["pass_at_3"], 3) if "pass_at_3" in metrics else None,
+                "pass@5": round(metrics["pass_at_5"], 3) if "pass_at_5" in metrics else None,
+            })
+        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)

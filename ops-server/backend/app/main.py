@@ -11,7 +11,7 @@ import os
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from fastapi.responses import Response
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 from app.eval.format_guide import build_format_guide
 from app.eval.format_schemas import validate_format
@@ -20,6 +20,7 @@ from app.eval.dataset_store import load_datasets, save_dataset
 from app.eval import executor
 from app.eval.ragas_eval import runner as ragas_runner
 from app.eval.bfcl_eval import runner as bfcl_runner
+from app.eval.bfcl_eval import pass_k as bfcl_pass_k
 from app.eval.log_schema import EvalRunRecord
 from app.eval.log_store import append_run, get_run, load_runs
 from app.eval.metrics import metrics_from_raw
@@ -232,6 +233,24 @@ def start_bfcl_evaluation(req: ExecuteBfclRequest, background_tasks: BackgroundT
 @app.get("/eval/bfcl/execution/status")
 def bfcl_evaluation_status() -> dict:
     return bfcl_runner.state
+
+
+class ExecutePassKRequest(BaseModel):
+    agent_label: str = "bfcl-default"
+    n_repeats: int = Field(default=5, ge=2, le=20)
+
+
+@app.post("/eval/bfcl/pass-k/execution")
+def start_bfcl_pass_k(req: ExecutePassKRequest, background_tasks: BackgroundTasks) -> dict:
+    if not bfcl_pass_k.reserve():
+        raise HTTPException(409, "이미 pass@k 평가가 실행 중입니다")
+    background_tasks.add_task(bfcl_pass_k.execute_pass_k_and_save, req.agent_label.strip(), req.n_repeats)
+    return {"status": "started"}
+
+
+@app.get("/eval/bfcl/pass-k/execution/status")
+def bfcl_pass_k_status() -> dict:
+    return bfcl_pass_k.state
 
 
 def _run_collect(fn, *args, **kwargs) -> dict:
