@@ -6,7 +6,7 @@ from config import RAG_SERVER_URL
 
 
 def render() -> None:
-    page_header("RAG", "RAG 데이터 적재")
+    page_header("RAG 데이터 적재")
 
     with card("rag_ingest"):
         st.caption("버튼을 누르면 백엔드가 크롤링→빌드→pgvector/OpenSearch 적재를 순서대로 실행합니다 (몇 분~몇십 분 소요).")

@@ -1,10 +1,34 @@
+import base64
+
 import streamlit as st
+
+# st.logo()는 로고 이미지를 st.navigation 네비게이션과 별도의 행(stSidebarHeader)에 그려서
+# 텍스트·뱃지와 같은 줄에 놓을 수가 없어서, 아이콘·타이틀·뱃지를 전부 진짜 HTML로 한 줄에 직접
+# 그린다. st.markdown(unsafe_allow_html=True)은 내부 래퍼가 콘텐츠 높이를 잘못 계산해 네비
+# 게이션과 겹쳤고(한 줄 텍스트 기준 높이로 고정됨), st.html()로 바꾸면 그 버그는 없어지지만
+# DOMPurify가 <svg> 태그를 통째로 지워버린다 — 그래서 로고는 인라인 SVG 대신 배경 이미지(data
+# URI)로 넣는다.
+_MARK_SVG = (
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 112">'
+    '<rect x="6" y="6" width="100" height="100" rx="18" fill="#22323d" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>'
+    '<path d="M26 74L46 32H58L78 74H66L62 65H42L38 74H26Z" fill="#F6FBFD"/>'
+    '<path d="M46 55H58L52 41L46 55Z" fill="#2F9AB2"/>'
+    '<path d="M82 31H92V81H82V31Z" fill="#F6FBFD"/>'
+    '<path d="M20 82H68" stroke="#2F9AB2" stroke-width="6" stroke-linecap="round"/>'
+    "</svg>"
+)
+_MARK_DATA_URI = "data:image/svg+xml;base64," + base64.b64encode(_MARK_SVG.encode()).decode()
 
 
 def render_sidebar() -> None:
-    """왼쪽 사이드바 맨 위에 표시할 간단한 앱 소개. 페이지 목록은 st.navigation이 자동으로 그 아래에 그린다.
-    app-kicker 클래스는 page_header와 같은 것을 재사용 — 브랜드 라벨 톤을 통일."""
+    """st.navigation이 그리는 페이지 목록 바로 위에 브랜드 행(로고+타이틀+OPS 뱃지)을 한 줄로
+    붙인다. 여기서 그리는 내용(stSidebarUserContent)은 원래 네비게이션보다 아래에 붙지만,
+    apply_global_styles()의 CSS order로 그 사이로 끌어올린다."""
     with st.sidebar:
-        st.markdown('<div class="app-kicker">A360 ASSISTANT</div>', unsafe_allow_html=True)
-        st.markdown("### Ops")
-        st.caption("RAG 적재 · 평가(준비/실행/결과) · 모니터링 도구")
+        st.html(
+            '<div class="app-sidebar-brand">'
+            f'<span class="app-sidebar-brand__mark" style="background-image: url(\'{_MARK_DATA_URI}\')"></span>'
+            '<span class="app-sidebar-brand__title">A360 ASSISTANT</span>'
+            '<span class="app-sidebar-brand__badge">OPS</span>'
+            "</div>"
+        )

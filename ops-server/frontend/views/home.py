@@ -7,7 +7,7 @@ from config import OPS_BACKEND_URL, RAG_SERVER_URL
 
 def render() -> None:
     page_header(
-        "HOME", "A360 Assistant Ops",
+        "A360 Assistant Ops",
         "A360-Assistant-Backend 운영 도구 — RAG 데이터 적재, 워크플로우 평가, 백엔드 모니터링을 여기서 다룹니다.",
     )
 
