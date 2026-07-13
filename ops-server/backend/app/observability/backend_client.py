@@ -148,6 +148,13 @@ def fetch_audit_logs(limit: int = 500, method: str | None = None, status_code: i
     return _authed_get("/api/admin/audit-logs", params)
 
 
+def fetch_rag_events(request_id: str | None = None, limit: int = 500) -> dict:
+    """RAG 파이프라인 단계 로그(RPA-128) — 관측 DB의 rag_events 테이블, 인증 필요.
+    기존 /api/rag/logs/recent(비인증·프로덕션 비활성)와 달리 운영 환경에서도 조회 가능."""
+    params = {k: v for k, v in {"request_id": request_id, "limit": limit}.items() if v is not None}
+    return _authed_get("/api/admin/rag-events", params)
+
+
 def fetch_request_metrics(since: str | None = None, limit: int = 500, method: str | None = None, path: str | None = None) -> dict:
     params = {k: v for k, v in {"since": since, "limit": limit, "method": method, "path": path}.items() if v is not None}
     return _authed_get("/api/admin/request-metrics", params)

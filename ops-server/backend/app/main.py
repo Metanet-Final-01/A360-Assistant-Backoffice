@@ -389,6 +389,18 @@ def get_turn_events(session_id: str | None = None, limit: int = Query(200, ge=1,
     return obs_log_store.load_turn_events(session_id=session_id, limit=limit)
 
 
+@app.post("/observability/rag-events/collect")
+def collect_rag_events(request_id: str | None = None, limit: int = Query(500, ge=1, le=2000)) -> dict:
+    """A360-Assistant-Backend의 GET /api/admin/rag-events(RPA-128)를 가져와 저장한다 —
+    embed/search/rerank 등 RAG 파이프라인 단계별 소요·설정."""
+    return _run_collect(collector.collect_rag_events, request_id=request_id, limit=limit)
+
+
+@app.get("/observability/rag-events")
+def get_rag_events(request_id: str | None = None, event: str | None = None, limit: int = Query(500, ge=1, le=2000)) -> list:
+    return obs_log_store.load_rag_events(request_id=request_id, event=event, limit=limit)
+
+
 @app.post("/observability/request-metrics/collect")
 def collect_request_metrics(
     limit: int = Query(500, ge=1, le=2000), method: str | None = None, path: str | None = None,

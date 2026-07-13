@@ -39,7 +39,8 @@ def render() -> None:
     metrics = data.get("request_metrics", [])
     turns = data.get("turn_events", [])
     rag = data.get("rag_logs", [])
-    total = len(audit) + len(metrics) + len(turns) + len(rag)
+    rag_events = data.get("rag_events", [])
+    total = len(audit) + len(metrics) + len(turns) + len(rag) + len(rag_events)
     if total == 0:
         st.warning("연결된 로그가 없습니다 — 해당 id의 로그가 수집돼 있는지(모니터링 로그 화면), id가 맞는지 확인하세요.")
         return
@@ -51,6 +52,7 @@ def render() -> None:
             ("성능 메트릭", f"{len(metrics)}건"),
             ("에이전트 턴", f"{len(turns)}건"),
             ("RAG 로그", f"{len(rag)}건"),
+            ("RAG 파이프라인 단계", f"{len(rag_events)}건"),
         ])
 
     if key_type == "request_id":
@@ -67,11 +69,15 @@ def render() -> None:
             for t in turns:  # 에이전트 턴도 통합 타임라인에 포함(CodeRabbit #13)
                 rows.append({"시각": t.get("created_at"), "종류": "턴",
                              "내용": f'{t.get("stage") or t.get("kind")} · {t.get("message") or ""}'})
+            for e in rag_events:  # RAG 파이프라인 단계(RPA-128) — embed/search/rerank 병목 확인용
+                rows.append({"시각": e.get("created_at"), "종류": "RAG단계",
+                             "내용": f'{e.get("event")} · {e.get("status")} ({e.get("duration_ms")}ms)'})
             df = pd.DataFrame(rows).sort_values("시각", na_position="last") if rows else pd.DataFrame()
             if not df.empty:
                 st.dataframe(df, use_container_width=True, hide_index=True)
 
     _render_turns(turns)
+    _render_rag_events(rag_events)
 
 
 def _render_turns(turns: list) -> None:
@@ -90,6 +96,24 @@ def _render_turns(turns: list) -> None:
                 "detail": (t.get("detail") or "")[:200],
             }
             for t in turns
+        ])
+        st.dataframe(df, use_container_width=True, hide_index=True)
+
+
+def _render_rag_events(rag_events: list) -> None:
+    if not rag_events:
+        return
+    with card("trace_rag_events"):
+        section_header("RAG 파이프라인 단계", "embed/search/rerank 등 단계별 소요·설정(RPA-128) — duration_ms는 그 단계만의 소요")
+        df = pd.DataFrame([
+            {
+                "event": e.get("event"),
+                "function": e.get("function"),
+                "status": e.get("status"),
+                "duration_ms": e.get("duration_ms"),
+                "detail": (e.get("detail") or "")[:200],
+            }
+            for e in rag_events
         ])
         st.dataframe(df, use_container_width=True, hide_index=True)
 

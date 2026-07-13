@@ -42,6 +42,12 @@ def render() -> None:
         section_header("에이전트 턴 타임라인", "RPA-105 — session_id로 조회, 관리자 계정 필요")
         _render_turn_events()
 
+    with card("obs_rag_events"):
+        section_header(
+            "RAG 파이프라인 단계 로그", "RPA-128 — embed/search/rerank 등 단계별 소요·설정, request_id로 조회, 관리자 계정 필요",
+        )
+        _render_rag_events()
+
 
 def _render_refresh_and_table() -> None:
     col_btn, col_limit = st.columns([1, 3])
@@ -142,6 +148,22 @@ def _render_turn_events() -> None:
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}건")
     st.dataframe(df[["created_at", "session_id", "seq", "kind", "stage", "message", "elapsed_ms"]], width="stretch", hide_index=True)
+
+
+def _render_rag_events() -> None:
+    col_btn, col_rid = st.columns([1, 3])
+    request_id = col_rid.text_input("request_id (비우면 전체 최신순)", key="rag_events_request_id", label_visibility="collapsed")
+    if col_btn.button("새로고침", key="rag_events_refresh_btn") or "obs_rag_events" not in st.session_state:
+        params = {"request_id": request_id} if request_id else {}
+        _collect_and_load("rag-events", params, "obs_rag_events")
+
+    rows = st.session_state.get("obs_rag_events", [])
+    if not rows:
+        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 가져오세요(관리자 계정 필요).")
+        return
+    df = pd.DataFrame(rows)
+    st.caption(f"{len(df)}건 (event별: {', '.join(f'{k} {v}건' for k, v in df['event'].value_counts().items())})")
+    st.dataframe(df[["created_at", "request_id", "event", "function", "status", "duration_ms"]], width="stretch", hide_index=True)
 
 
 def _collect_and_load(source: str, collect_params: dict, state_key: str, get_params: dict | None = None) -> None:

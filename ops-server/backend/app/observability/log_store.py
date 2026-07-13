@@ -16,6 +16,7 @@ from .log_schema import (
     AuditLogRecord,
     LlmUsageSnapshot,
     MetricsDailyRecord,
+    RagEventRecord,
     RagLogRecord,
     RequestMetricRecord,
     TurnEventRecord,
@@ -30,6 +31,7 @@ METRICS_DAILY_PATH = _DATA_DIR / "observability_metrics_daily.jsonl"
 USAGE_DAILY_PATH = _DATA_DIR / "observability_usage_daily.jsonl"
 TURN_EVENTS_PATH = _DATA_DIR / "observability_turn_events.jsonl"
 REQUEST_METRICS_PATH = _DATA_DIR / "observability_request_metrics.jsonl"
+RAG_EVENTS_PATH = _DATA_DIR / "observability_rag_events.jsonl"
 
 
 def _read_lines(path: Path) -> list[str]:
@@ -121,6 +123,28 @@ def request_metrics_cursor() -> str | None:
     return max(created) if created else None
 
 
+# ---------------- RAG 파이프라인 이벤트 (RPA-128, raw, 증분) ----------------
+
+
+def append_rag_events(records: list[RagEventRecord]) -> int:
+    """id(백엔드 PK) 기준 append-only 중복 제거 — request_metrics와 동일한 이유로 락."""
+    with _append_lock:
+        existing = {RagEventRecord.model_validate_json(line).id for line in _read_lines(RAG_EVENTS_PATH)}
+        new_lines = [r.model_dump_json() for r in records if r.id not in existing]
+        _append_lines(RAG_EVENTS_PATH, new_lines)
+        return len(new_lines)
+
+
+def load_rag_events(request_id: str | None = None, event: str | None = None, limit: int = 500) -> list[RagEventRecord]:
+    records = [RagEventRecord.model_validate_json(line) for line in _read_lines(RAG_EVENTS_PATH)]
+    if request_id:
+        records = [r for r in records if r.request_id == request_id]
+    if event:
+        records = [r for r in records if r.event == event]
+    records.sort(key=lambda r: r.id, reverse=True)
+    return records[:limit]
+
+
 # ---------------- 사건 추적(상관관계) ----------------
 
 
@@ -146,6 +170,11 @@ def trace_by(request_id: str | None = None, session_id: str | None = None) -> di
         rows = [r for r in rows if request_id and r.raw.get("request_id") == request_id]
         return [r.model_dump() for r in rows]
 
+    def _rag_events():
+        rows = [RagEventRecord.model_validate_json(l) for l in _read_lines(RAG_EVENTS_PATH)]
+        rows = [r for r in rows if request_id and r.request_id == request_id]
+        return [r.model_dump() for r in sorted(rows, key=lambda r: r.id)]
+
     def _turns():
         rows = [TurnEventRecord.model_validate_json(l) for l in _read_lines(TURN_EVENTS_PATH)]
         rows = [r for r in rows
@@ -163,6 +192,7 @@ def trace_by(request_id: str | None = None, session_id: str | None = None) -> di
         "request_metrics": _metrics(),
         "turn_events": _turns(),
         "rag_logs": _rag(),
+        "rag_events": _rag_events(),
     }
 
 
