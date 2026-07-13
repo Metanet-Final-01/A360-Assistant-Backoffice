@@ -16,6 +16,7 @@ from .log_schema import (
     AuditLogRecord,
     LlmUsageSnapshot,
     MetricsDailyRecord,
+    RagEventRecord,
     RagLogRecord,
     RequestMetricRecord,
     TurnEventRecord,
@@ -30,6 +31,7 @@ METRICS_DAILY_PATH = _DATA_DIR / "observability_metrics_daily.jsonl"
 USAGE_DAILY_PATH = _DATA_DIR / "observability_usage_daily.jsonl"
 TURN_EVENTS_PATH = _DATA_DIR / "observability_turn_events.jsonl"
 REQUEST_METRICS_PATH = _DATA_DIR / "observability_request_metrics.jsonl"
+RAG_EVENTS_PATH = _DATA_DIR / "observability_rag_events.jsonl"
 
 
 def _read_lines(path: Path) -> list[str]:
@@ -46,6 +48,21 @@ def _append_lines(path: Path, lines: list[str]) -> None:
     with open(path, "a", encoding="utf-8") as f:
         for line in lines:
             f.write(line + "\n")
+
+
+def _delete_matching(path: Path, model_cls, matches) -> int:
+    """조건에 맞는 로컬 캐시 레코드만 삭제(append-only 파일 전체 재작성) — Backend
+    원본 관측 DB엔 영향 없음, Ops가 가져온 사본만 지운다. matches(record) -> bool이
+    True인 것만 삭제 대상. 동시 수집(append)과 겹치면 레코드가 섞일 수 있어
+    request_metrics와 같은 이유로 락을 공유한다."""
+    with _append_lock:
+        records = [model_cls.model_validate_json(line) for line in _read_lines(path)]
+        keep = [r for r in records if not matches(r)]
+        deleted = len(records) - len(keep)
+        if deleted:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("".join(r.model_dump_json() + "\n" for r in keep), encoding="utf-8")
+        return deleted
 
 
 # ---------------- audit logs ----------------
@@ -78,6 +95,17 @@ def load_audit_logs(
         records = [r for r in records if r.user_id == user_id]
     records.sort(key=lambda r: r.created_at, reverse=True)
     return records[:limit]
+
+
+def delete_audit_logs(method: str | None = None, status_code: int | None = None, user_id: str | None = None) -> int:
+    """필터 조건에 맞는 로컬 감사 로그 사본을 삭제(조건 없으면 전체 삭제)."""
+    def matches(r: AuditLogRecord) -> bool:
+        return (
+            (method is None or r.method == method.upper())
+            and (status_code is None or r.status_code == status_code)
+            and (user_id is None or r.user_id == user_id)
+        )
+    return _delete_matching(AUDIT_LOG_PATH, AuditLogRecord, matches)
 
 
 def audit_cursor() -> str | None:
@@ -121,35 +149,94 @@ def request_metrics_cursor() -> str | None:
     return max(created) if created else None
 
 
+# ---------------- RAG 파이프라인 이벤트 (RPA-128, raw, 증분) ----------------
+
+
+def append_rag_events(records: list[RagEventRecord]) -> int:
+    """id(백엔드 PK) 기준 append-only 중복 제거 — request_metrics와 동일한 이유로 락."""
+    with _append_lock:
+        existing = {RagEventRecord.model_validate_json(line).id for line in _read_lines(RAG_EVENTS_PATH)}
+        new_lines = [r.model_dump_json() for r in records if r.id not in existing]
+        _append_lines(RAG_EVENTS_PATH, new_lines)
+        return len(new_lines)
+
+
+def load_rag_events(request_id: str | None = None, event: str | None = None, limit: int = 500) -> list[RagEventRecord]:
+    records = [RagEventRecord.model_validate_json(line) for line in _read_lines(RAG_EVENTS_PATH)]
+    if request_id:
+        records = [r for r in records if r.request_id == request_id]
+    if event:
+        records = [r for r in records if r.event == event]
+    records.sort(key=lambda r: r.id, reverse=True)
+    return records[:limit]
+
+
+def delete_rag_events(request_id: str | None = None, event: str | None = None) -> int:
+    def matches(r: RagEventRecord) -> bool:
+        return (
+            (request_id is None or r.request_id == request_id)
+            and (event is None or r.event == event)
+        )
+    return _delete_matching(RAG_EVENTS_PATH, RagEventRecord, matches)
+
+
 # ---------------- 사건 추적(상관관계) ----------------
 
 
-def trace_by(request_id: str | None = None, session_id: str | None = None) -> dict:
+def _request_ids_for_user(user_id: str) -> set[str]:
+    """user_id로 찾은 request_id 후보 — audit_logs/request_metrics 둘 다 user_id를
+    가지고 있어서(turn_events는 없음) 이 둘에서 먼저 request_id를 모으고, 그 request_id로
+    나머지(turn_events/rag_logs/rag_events)까지 연결한다."""
+    ids: set[str] = set()
+    for r in (AuditLogRecord.model_validate_json(l) for l in _read_lines(AUDIT_LOG_PATH)):
+        if r.user_id == user_id and r.request_id:
+            ids.add(r.request_id)
+    for r in (RequestMetricRecord.model_validate_json(l) for l in _read_lines(REQUEST_METRICS_PATH)):
+        if r.user_id == user_id and r.request_id:
+            ids.add(r.request_id)
+    return ids
+
+
+def trace_by(request_id: str | None = None, session_id: str | None = None, user_id: str | None = None) -> dict:
     """한 사건에 연결된 관측 레코드를 종류별로 모은다 (대시보드 #5).
 
     - request_id: HTTP 요청 1건 축 — audit·request_metrics·turn_events·rag_logs 전부 연결.
     - session_id: 대화 축 — turn_events(그 세션의 모든 턴)만 직접 연결(감사/성능/RAG는
       요청 축이라 세션 키가 없다). 세션의 request_id들은 반환된 turn_events에서 얻는다.
+    - user_id: request_id/session_id는 사람이 외우기 어려운 opaque id라, 사람이 아는
+      값(user_id)으로 먼저 관련 request_id들을 찾은 뒤 그 request_id 집합 전체를
+      대상으로 조회한다 — request_id 축과 같은 로직을 request_ids 집합에 적용.
     """
+    request_ids = {request_id} if request_id else set()
+    if user_id:
+        request_ids |= _request_ids_for_user(user_id)
+
+    def _in_scope(rid: str | None) -> bool:
+        return bool(rid) and rid in request_ids
+
     def _audit():
         rows = [AuditLogRecord.model_validate_json(l) for l in _read_lines(AUDIT_LOG_PATH)]
-        rows = [r for r in rows if request_id and r.request_id == request_id]
+        rows = [r for r in rows if _in_scope(r.request_id)]
         return [r.model_dump() for r in sorted(rows, key=lambda r: r.created_at)]
 
     def _metrics():
         rows = [RequestMetricRecord.model_validate_json(l) for l in _read_lines(REQUEST_METRICS_PATH)]
-        rows = [r for r in rows if request_id and r.request_id == request_id]
+        rows = [r for r in rows if _in_scope(r.request_id)]
         return [r.model_dump() for r in sorted(rows, key=lambda r: r.created_at)]
 
     def _rag():
         rows = [RagLogRecord.model_validate_json(l) for l in _read_lines(RAG_LOG_PATH)]
-        rows = [r for r in rows if request_id and r.raw.get("request_id") == request_id]
+        rows = [r for r in rows if _in_scope(r.raw.get("request_id"))]
         return [r.model_dump() for r in rows]
+
+    def _rag_events():
+        rows = [RagEventRecord.model_validate_json(l) for l in _read_lines(RAG_EVENTS_PATH)]
+        rows = [r for r in rows if _in_scope(r.request_id)]
+        return [r.model_dump() for r in sorted(rows, key=lambda r: r.id)]
 
     def _turns():
         rows = [TurnEventRecord.model_validate_json(l) for l in _read_lines(TURN_EVENTS_PATH)]
-        rows = [r for r in rows
-                if (request_id and r.request_id == request_id) or (session_id and r.session_id == session_id)]
+        rows = [r for r in rows if _in_scope(r.request_id) or (session_id and r.session_id == session_id)]
         # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러 요청이
         # 실제 발생 순서와 어긋난다(CodeRabbit #13). 타임스탬프 없으면 seq로 폴백.
         return [r.model_dump() for r in sorted(
@@ -159,10 +246,13 @@ def trace_by(request_id: str | None = None, session_id: str | None = None) -> di
     return {
         "request_id": request_id,
         "session_id": session_id,
+        "user_id": user_id,
+        "matched_request_ids": sorted(request_ids),
         "audit_logs": _audit(),
         "request_metrics": _metrics(),
         "turn_events": _turns(),
         "rag_logs": _rag(),
+        "rag_events": _rag_events(),
     }
 
 
@@ -206,6 +296,15 @@ def load_rag_logs(event: str | None = None, path_contains: str | None = None, li
         records = [r for r in records if path_contains in (r.raw.get("path") or "")]
     records.sort(key=lambda r: r.fetched_at, reverse=True)
     return records[:limit]
+
+
+def delete_rag_logs(event: str | None = None, path_contains: str | None = None) -> int:
+    def matches(r: RagLogRecord) -> bool:
+        return (
+            (event is None or r.raw.get("event") == event)
+            and (path_contains is None or path_contains in (r.raw.get("path") or ""))
+        )
+    return _delete_matching(RAG_LOG_PATH, RagLogRecord, matches)
 
 
 # ---------------- 일별 롤업(metrics_daily/usage_daily) + turn_events ----------------
@@ -287,3 +386,9 @@ def load_turn_events(session_id: str | None = None, limit: int = 200) -> list[Tu
     else:
         records.sort(key=lambda r: r.created_at or "", reverse=True)
     return records[:limit]
+
+
+def delete_turn_events(session_id: str | None = None) -> int:
+    def matches(r: TurnEventRecord) -> bool:
+        return session_id is None or r.session_id == session_id
+    return _delete_matching(TURN_EVENTS_PATH, TurnEventRecord, matches)

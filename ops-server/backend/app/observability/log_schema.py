@@ -98,6 +98,22 @@ class UsageDailyRecord(BaseModel):
     fetched_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 
+class RagEventRecord(BaseModel):
+    """/api/admin/rag-events(RPA-128) 레코드 1건 — RAG 파이프라인 단계(embed/search/
+    rerank) 소요·설정. id는 백엔드 PK라 RequestMetricRecord와 같은 방식으로 증분
+    수집·중복 제거 키로 쓴다. detail은 이미 백엔드에서 마스킹된 JSON 문자열."""
+
+    id: int
+    request_id: str | None = None
+    event: str
+    function: str | None = None
+    status: str | None = None
+    duration_ms: float | None = None
+    detail: str | None = None
+    created_at: str | None = None
+    fetched_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+
 class TurnEventRecord(BaseModel):
     """/api/admin/turn-events 레코드 1건 — 에이전트 턴 노드 타임라인."""
 

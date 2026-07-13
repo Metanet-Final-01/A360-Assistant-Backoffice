@@ -476,6 +476,13 @@ def get_audit_logs(limit: int = 200, method: str | None = None, status_code: int
     return obs_log_store.load_audit_logs(limit=limit, method=method, status_code=status_code, user_id=user_id)
 
 
+@app.delete("/observability/audit-logs")
+def delete_audit_logs(method: str | None = None, status_code: int | None = None, user_id: str | None = None) -> dict:
+    """조건에 맞는 로컬 감사 로그 사본만 삭제한다(Backend 원본 관측 DB는 그대로) —
+    조건을 하나도 안 주면 로컬 사본 전체를 지운다."""
+    return {"deleted": obs_log_store.delete_audit_logs(method=method, status_code=status_code, user_id=user_id)}
+
+
 @app.post("/observability/llm-usage/collect")
 def collect_llm_usage(days: int = 30, group_by: str = "component") -> dict:
     """A360-Assistant-Backend의 GET /api/admin/llm-usage/stats를 호출해 스냅샷으로 저장한다."""
@@ -497,6 +504,11 @@ def collect_rag_logs(limit: int = 100) -> dict:
 @app.get("/observability/rag-logs")
 def get_rag_logs(event: str | None = None, path_contains: str | None = None, limit: int = 200) -> list:
     return obs_log_store.load_rag_logs(event=event, path_contains=path_contains, limit=limit)
+
+
+@app.delete("/observability/rag-logs")
+def delete_rag_logs(event: str | None = None, path_contains: str | None = None) -> dict:
+    return {"deleted": obs_log_store.delete_rag_logs(event=event, path_contains=path_contains)}
 
 
 @app.post("/observability/metrics-daily/collect")
@@ -538,6 +550,28 @@ def get_turn_events(session_id: str | None = None, limit: int = Query(200, ge=1,
     return obs_log_store.load_turn_events(session_id=session_id, limit=limit)
 
 
+@app.delete("/observability/turn-events")
+def delete_turn_events(session_id: str | None = None) -> dict:
+    return {"deleted": obs_log_store.delete_turn_events(session_id=session_id)}
+
+
+@app.post("/observability/rag-events/collect")
+def collect_rag_events(request_id: str | None = None, limit: int = Query(500, ge=1, le=2000)) -> dict:
+    """A360-Assistant-Backend의 GET /api/admin/rag-events(RPA-128)를 가져와 저장한다 —
+    embed/search/rerank 등 RAG 파이프라인 단계별 소요·설정."""
+    return _run_collect(collector.collect_rag_events, request_id=request_id, limit=limit)
+
+
+@app.get("/observability/rag-events")
+def get_rag_events(request_id: str | None = None, event: str | None = None, limit: int = Query(500, ge=1, le=2000)) -> list:
+    return obs_log_store.load_rag_events(request_id=request_id, event=event, limit=limit)
+
+
+@app.delete("/observability/rag-events")
+def delete_rag_events(request_id: str | None = None, event: str | None = None) -> dict:
+    return {"deleted": obs_log_store.delete_rag_events(request_id=request_id, event=event)}
+
+
 @app.post("/observability/request-metrics/collect")
 def collect_request_metrics(
     limit: int = Query(500, ge=1, le=2000), method: str | None = None, path: str | None = None,
@@ -562,12 +596,14 @@ def backend_health(probe: bool = True) -> dict:
 
 
 @app.get("/observability/trace")
-def observability_trace(request_id: str | None = None, session_id: str | None = None) -> dict:
-    """한 사건(request_id 또는 session_id)에 연결된 관측 레코드를 모아 반환한다 (대시보드 #5).
-    감사·성능·턴·RAG를 한 화면에서 추적하기 위한 상관관계 조회 — 저장된 수집분에서 필터."""
-    if not (request_id or session_id):
-        raise HTTPException(400, "request_id 또는 session_id 중 하나는 필요합니다")
-    return obs_log_store.trace_by(request_id=request_id, session_id=session_id)
+def observability_trace(request_id: str | None = None, session_id: str | None = None, user_id: str | None = None) -> dict:
+    """한 사건(request_id/session_id/user_id)에 연결된 관측 레코드를 모아 반환한다 (대시보드 #5).
+    감사·성능·턴·RAG를 한 화면에서 추적하기 위한 상관관계 조회 — 저장된 수집분에서 필터.
+    user_id는 request_id/session_id처럼 opaque id를 몰라도 조회할 수 있게 하는 축 —
+    audit_logs/request_metrics에서 해당 user_id의 request_id들을 먼저 찾아 확장한다."""
+    if not (request_id or session_id or user_id):
+        raise HTTPException(400, "request_id, session_id, user_id 중 하나는 필요합니다")
+    return obs_log_store.trace_by(request_id=request_id, session_id=session_id, user_id=user_id)
 
 
 @app.get("/observability/status")

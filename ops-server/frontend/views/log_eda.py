@@ -23,14 +23,19 @@ from config import OPS_BACKEND_URL
 
 _SESSION = requests.Session()
 
-# (표시 이름, API 경로, limit 파라미터명, 기본 limit, "raw" 평탄화 필요 여부)
+# (표시 이름, API 경로, limit 파라미터명, 기본 limit, "raw" 평탄화 필요 여부, 서버 측 limit 상한)
+# 상한은 각 GET 엔드포인트의 Query(le=...)와 반드시 일치해야 한다 — 안 맞으면 422
+# (turn-events가 1000인데 여기서 2000을 보내 실제로 겪은 버그).
 _SOURCES = {
-    "감사 로그 (audit_logs)": ("audit-logs", "limit", 2000, False),
-    "RAG 요청 로그 (rag_logs)": ("rag-logs", "limit", 2000, True),
-    "요청 성능 롤업 (metrics_daily)": ("metrics-daily", "limit", 2000, False),
-    "LLM 사용량 롤업 (usage_daily)": ("usage-daily", "limit", 2000, False),
-    "에이전트 턴 (turn_events)": ("turn-events", "limit", 2000, False),
+    "감사 로그 (audit_logs)": ("audit-logs", "limit", 2000, False, 10000),
+    "RAG 요청 로그 (rag_logs)": ("rag-logs", "limit", 2000, True, 10000),
+    "요청 성능 롤업 (metrics_daily)": ("metrics-daily", "limit", 2000, False, 2000),
+    "LLM 사용량 롤업 (usage_daily)": ("usage-daily", "limit", 2000, False, 2000),
+    "에이전트 턴 (turn_events)": ("turn-events", "limit", 1000, False, 1000),
+    "RAG 파이프라인 단계 (rag_events)": ("rag-events", "limit", 2000, False, 2000),
 }
+# 감사 로그/RAG 요청 로그는 서버 GET이 limit에 상한이 없다(plain int) — UI 쪽에서만
+# 과도한 조회를 막기 위해 10000을 임의 상한으로 둔다.
 
 # EDA 대상에서 뺄 컬럼 — 값 자체가 길거나(원문 텍스트) 카디널리티가 높아 필터/차트에 안 맞음.
 _EXCLUDE_COLS = {"detail", "message", "raw"}
@@ -43,7 +48,11 @@ def render() -> None:
     with card("eda_source"):
         section_header("데이터 소스")
         source_label = st.selectbox("소스", list(_SOURCES))
-        limit = st.number_input("최대 조회 건수", min_value=100, max_value=10000, value=2000, step=100)
+        _, _, default_limit, _, max_limit = _SOURCES[source_label]
+        limit = st.number_input(
+            f"최대 조회 건수(이 소스는 최대 {max_limit}건)",
+            min_value=100, max_value=max_limit, value=min(default_limit, max_limit), step=100,
+        )
         if st.button("불러오기", type="primary") or f"eda_df_{source_label}" not in st.session_state:
             df = _load(source_label, limit)
             st.session_state[f"eda_df_{source_label}"] = df
@@ -61,7 +70,7 @@ def render() -> None:
 
 
 def _load(source_label: str, limit: int) -> pd.DataFrame:
-    path, limit_param, _, flatten_raw = _SOURCES[source_label]
+    path, limit_param, _, flatten_raw, _max = _SOURCES[source_label]
     try:
         resp = _SESSION.get(f"{OPS_BACKEND_URL}/observability/{path}", params={limit_param: limit}, timeout=15)
         resp.raise_for_status()

@@ -8,6 +8,7 @@ from . import backend_client, log_store
 from .log_schema import (
     AuditLogRecord,
     MetricsDailyRecord,
+    RagEventRecord,
     RagLogRecord,
     RequestMetricRecord,
     TurnEventRecord,
@@ -22,6 +23,7 @@ _collect_state: dict[str, dict] = {
     "usage_daily": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
     "turn_events": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
     "request_metrics": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
+    "rag_events": {"last_collected_at": None, "fetched": 0, "new": 0, "error": None},
 }
 
 # 백엔드 생존 감시 — 마지막 프로브 결과와 '마지막 정상(UP)' 시각을 기억한다.
@@ -121,6 +123,19 @@ def collect_turn_events(session_id: str | None = None, limit: int = 200) -> dict
         return _record_result("turn_events", len(records), new_count)
     except Exception as e:  # noqa: BLE001 - collect_audit_logs와 같은 이유
         _record_result("turn_events", 0, 0, error=str(e))
+        raise
+
+
+def collect_rag_events(request_id: str | None = None, limit: int = 500) -> dict:
+    """RAG 파이프라인 단계 로그(RPA-128) 수집 — turn_events와 동일하게 since 커서 없이
+    최근 limit건을 매번 가져와 id 기준 append-only 중복 제거(log_store.append_rag_events)."""
+    try:
+        data = backend_client.fetch_rag_events(request_id=request_id, limit=limit)
+        records = [RagEventRecord(**r) for r in data.get("events", [])]
+        new_count = log_store.append_rag_events(records)
+        return _record_result("rag_events", len(records), new_count)
+    except Exception as e:  # noqa: BLE001 - collect_audit_logs와 같은 이유
+        _record_result("rag_events", 0, 0, error=str(e))
         raise
 
 
