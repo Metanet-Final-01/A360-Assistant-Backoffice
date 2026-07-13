@@ -26,6 +26,10 @@ def render() -> None:
         "워크플로우 내용은 포함하지 않습니다."
     )
 
+    with card("obs_audit_logs"):
+        section_header("감사 로그", "RPA-109 — 누가 무엇을 바꿨나, 관리자 계정 필요")
+        _render_audit_logs()
+
     with card("obs_rag_logs"):
         section_header("RAG 파이프라인 요청 로그")
         _render_refresh_and_table()
@@ -47,6 +51,63 @@ def render() -> None:
             "RAG 파이프라인 단계 로그", "RPA-128 — embed/search/rerank 등 단계별 소요·설정, request_id로 조회, 관리자 계정 필요",
         )
         _render_rag_events()
+
+
+def _render_delete_widget(source: str, filter_params: dict, state_key: str, key_prefix: str) -> None:
+    """필터 조건(위에서 이미 고른 것)에 맞는 로컬 캐시 로그를 삭제한다 — Backend 원본
+    관측 DB는 그대로, Ops가 가져온 사본만 지운다. 실수 방지로 확인 체크박스를 거친다."""
+    active_filters = {k: v for k, v in filter_params.items() if v not in (None, "")}
+    label = "필터 조건에 맞는 로그 삭제" if active_filters else "⚠ 전체 로그 삭제(필터 없음)"
+    with st.expander(f"🗑 {label}"):
+        if active_filters:
+            st.caption(f"삭제 조건: {active_filters}")
+        else:
+            st.warning("현재 필터가 없어 이 소스의 로컬 로그 전체가 삭제됩니다.")
+        confirmed = st.checkbox("정말 삭제하겠습니다", key=f"{key_prefix}_delete_confirm")
+        if st.button("삭제 실행", key=f"{key_prefix}_delete_btn", disabled=not confirmed, type="primary"):
+            try:
+                resp = requests.delete(f"{OPS_BACKEND_URL}/observability/{source}", params=active_filters, timeout=15)
+                resp.raise_for_status()
+                st.session_state.pop(state_key, None)
+                st.success(f"{resp.json().get('deleted', 0)}건 삭제했습니다.")
+                st.rerun()
+            except (requests.RequestException, ValueError) as e:
+                st.error(f"삭제 실패: {e}")
+
+
+def _render_audit_logs() -> None:
+    col_btn, col_limit = st.columns([1, 3])
+    limit = col_limit.number_input("최근 몇 건", min_value=10, max_value=2000, value=200, label_visibility="collapsed", key="audit_limit")
+    if col_btn.button("새로고침", key="audit_refresh_btn") or "obs_audit_logs" not in st.session_state:
+        _collect_and_load("audit-logs", {"limit": limit}, "obs_audit_logs")
+
+    rows = st.session_state.get("obs_audit_logs", [])
+    if not rows:
+        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 가져오세요(관리자 계정 필요).")
+        return
+    df = pd.DataFrame(rows)
+    st.caption(f"{len(df)}건")
+
+    with st.expander("필터"):
+        cols = st.columns(3)
+        method_filter = cols[0].selectbox("method", ["(전체)"] + sorted(df["method"].dropna().unique().tolist()), key="audit_method_filter")
+        user_filter = cols[1].text_input("user_id", key="audit_user_filter")
+        only_errors = cols[2].checkbox("에러(4xx/5xx)만", key="audit_only_errors")
+
+    view = df
+    if method_filter != "(전체)":
+        view = view[view["method"] == method_filter]
+    if user_filter:
+        view = view[view["user_id"] == user_filter]
+    if only_errors:
+        view = view[view["status_code"] >= 400]
+    st.dataframe(view[["created_at", "user_id", "method", "path", "status_code", "latency_ms"]], width="stretch", hide_index=True)
+
+    _render_delete_widget(
+        "audit-logs",
+        {"method": method_filter if method_filter != "(전체)" else None, "user_id": user_filter or None},
+        "obs_audit_logs", "audit_logs",
+    )
 
 
 def _render_refresh_and_table() -> None:
@@ -99,6 +160,8 @@ def _render_refresh_and_table() -> None:
         )
         st.altair_chart(chart, width="stretch")
 
+    _render_delete_widget("rag-logs", {"path_contains": path_filter or None}, "obs_rag_logs", "rag_logs")
+
 
 def _render_metrics_daily() -> None:
     col_btn, col_days = st.columns([1, 3])
@@ -149,6 +212,8 @@ def _render_turn_events() -> None:
     st.caption(f"{len(df)}건")
     st.dataframe(df[["created_at", "session_id", "seq", "kind", "stage", "message", "elapsed_ms"]], width="stretch", hide_index=True)
 
+    _render_delete_widget("turn-events", {"session_id": session_id or None}, "obs_turn_events", "turn_events")
+
 
 def _render_rag_events() -> None:
     col_btn, col_rid = st.columns([1, 3])
@@ -164,6 +229,8 @@ def _render_rag_events() -> None:
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}건 (event별: {', '.join(f'{k} {v}건' for k, v in df['event'].value_counts().items())})")
     st.dataframe(df[["created_at", "request_id", "event", "function", "status", "duration_ms"]], width="stretch", hide_index=True)
+
+    _render_delete_widget("rag-events", {"request_id": request_id or None}, "obs_rag_events", "rag_events")
 
 
 def _collect_and_load(source: str, collect_params: dict, state_key: str, get_params: dict | None = None) -> None:

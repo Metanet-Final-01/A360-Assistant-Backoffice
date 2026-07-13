@@ -50,6 +50,21 @@ def _append_lines(path: Path, lines: list[str]) -> None:
             f.write(line + "\n")
 
 
+def _delete_matching(path: Path, model_cls, matches) -> int:
+    """조건에 맞는 로컬 캐시 레코드만 삭제(append-only 파일 전체 재작성) — Backend
+    원본 관측 DB엔 영향 없음, Ops가 가져온 사본만 지운다. matches(record) -> bool이
+    True인 것만 삭제 대상. 동시 수집(append)과 겹치면 레코드가 섞일 수 있어
+    request_metrics와 같은 이유로 락을 공유한다."""
+    with _append_lock:
+        records = [model_cls.model_validate_json(line) for line in _read_lines(path)]
+        keep = [r for r in records if not matches(r)]
+        deleted = len(records) - len(keep)
+        if deleted:
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text("".join(r.model_dump_json() + "\n" for r in keep), encoding="utf-8")
+        return deleted
+
+
 # ---------------- audit logs ----------------
 
 
@@ -80,6 +95,17 @@ def load_audit_logs(
         records = [r for r in records if r.user_id == user_id]
     records.sort(key=lambda r: r.created_at, reverse=True)
     return records[:limit]
+
+
+def delete_audit_logs(method: str | None = None, status_code: int | None = None, user_id: str | None = None) -> int:
+    """필터 조건에 맞는 로컬 감사 로그 사본을 삭제(조건 없으면 전체 삭제)."""
+    def matches(r: AuditLogRecord) -> bool:
+        return (
+            (method is None or r.method == method.upper())
+            and (status_code is None or r.status_code == status_code)
+            and (user_id is None or r.user_id == user_id)
+        )
+    return _delete_matching(AUDIT_LOG_PATH, AuditLogRecord, matches)
 
 
 def audit_cursor() -> str | None:
@@ -143,6 +169,15 @@ def load_rag_events(request_id: str | None = None, event: str | None = None, lim
         records = [r for r in records if r.event == event]
     records.sort(key=lambda r: r.id, reverse=True)
     return records[:limit]
+
+
+def delete_rag_events(request_id: str | None = None, event: str | None = None) -> int:
+    def matches(r: RagEventRecord) -> bool:
+        return (
+            (request_id is None or r.request_id == request_id)
+            and (event is None or r.event == event)
+        )
+    return _delete_matching(RAG_EVENTS_PATH, RagEventRecord, matches)
 
 
 # ---------------- 사건 추적(상관관계) ----------------
@@ -238,6 +273,15 @@ def load_rag_logs(event: str | None = None, path_contains: str | None = None, li
     return records[:limit]
 
 
+def delete_rag_logs(event: str | None = None, path_contains: str | None = None) -> int:
+    def matches(r: RagLogRecord) -> bool:
+        return (
+            (event is None or r.raw.get("event") == event)
+            and (path_contains is None or path_contains in (r.raw.get("path") or ""))
+        )
+    return _delete_matching(RAG_LOG_PATH, RagLogRecord, matches)
+
+
 # ---------------- 일별 롤업(metrics_daily/usage_daily) + turn_events ----------------
 #
 # 롤업은 Backend에서 멱등 재집계(DELETE+INSERT)되는 값이라, 여기서도 매번 그냥
@@ -317,3 +361,9 @@ def load_turn_events(session_id: str | None = None, limit: int = 200) -> list[Tu
     else:
         records.sort(key=lambda r: r.created_at or "", reverse=True)
     return records[:limit]
+
+
+def delete_turn_events(session_id: str | None = None) -> int:
+    def matches(r: TurnEventRecord) -> bool:
+        return session_id is None or r.session_id == session_id
+    return _delete_matching(TURN_EVENTS_PATH, TurnEventRecord, matches)
