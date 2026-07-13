@@ -47,7 +47,7 @@ main ← 릴리스 브랜치. dev에서 검증된 것만 머지 (직접 push 금
 예시:
 
 ```
-feat(mon): 수집 실패 시 마지막 성공 시각 표시 (RPA-125)
+feat(obs): 수집 실패 시 마지막 성공 시각 표시 (RPA-125)
 
 수집이 조용히 실패하면 대시보드가 언제 데이터인지 알 수 없어서,
 소스별 last_collected_at과 에러를 화면에 노출한다.
@@ -72,12 +72,16 @@ feat(mon): 수집 실패 시 마지막 성공 시각 표시 (RPA-125)
 | scope | 영역 |
 |---|---|
 | `rag` | rag-server (적재 파이프라인·API) |
-| `mon` | monitoring-server 백엔드 (수집·조회 API) |
-| `eval` | 평가 모듈 (데이터셋·채점·변환·A/B) |
-| `obs` | observability 수집기·백엔드 클라이언트 |
+| `obs` | 관측 — 조회 API(main.py) + 수집기·백엔드 클라이언트(observability/) 전부 |
+| `eval` | 평가 모듈 (데이터셋·채점·변환·A/B, RAGAS 포함) |
+| `load` | 부하테스트 (k6 결과 수집·이력) |
 | `ui` | Streamlit 화면 |
 | `sched` | 스케줄러 |
 | `build` `ci` | 빌드·CI |
+
+`mon`(조회 API)과 `obs`(수집기)는 원래 나눠져 있었는데, 실제로는 거의 항상 같이
+바뀌어서(엔드포인트 하나 추가하면 라우트+수집기 둘 다 손댐) 나눌 이유가 없어
+`obs`로 합쳤다.
 
 ### 규칙
 
@@ -114,7 +118,7 @@ feat(mon): 수집 실패 시 마지막 성공 시각 표시 (RPA-125)
 | 영역 | 폴더 | 담당 |
 |---|---|---|
 | RAG 적재 파이프라인·API | `rag-server/` | RAG 담당 |
-| 모니터링·평가 (백엔드+화면) | `monitoring-server/` | 모니터링·평가 담당 |
+| 모니터링·평가 (백엔드+화면) | `ops-server/` | 모니터링·평가 담당 |
 | 컨벤션·문서 | `.github/`, `docs/` | 공용 |
 
 실서비스 백엔드(A360-Assistant-Backend)의 API 스키마·관측 DB 스키마가 필요하면
