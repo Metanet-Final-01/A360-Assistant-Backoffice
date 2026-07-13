@@ -273,7 +273,9 @@ def run(
 
     from ..config import AGENT_PARSE_BATCH_SIZE, AGENT_PARSE_WORKERS
 
-    batch_size = batch_size or AGENT_PARSE_BATCH_SIZE
+    # max(1, ...): batch_size가 0/음수면 range(0, n, 0)이 ValueError로 run() 전체를 죽인다
+    # (as_completed 보호 밖). 잘못된 설정에도 최소 1로 강등해 파이프라인을 살린다.
+    batch_size = max(1, batch_size or AGENT_PARSE_BATCH_SIZE)
     workers = workers or AGENT_PARSE_WORKERS
     jar_names = list(jar_package_names or [])
     grouped = load_handoff(handoff_path)
