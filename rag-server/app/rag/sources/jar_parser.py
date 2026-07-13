@@ -94,6 +94,11 @@ def _dedupe_actions_by_name(actions: list[dict], package_name: str, source_name:
     많은(더 완전한) 쪽을 그대로 채택한다. downstream(BackendCatalog 등) 전체가
     (package_name, action_name)만으로 액션을 유일 식별하므로, 파싱 시점에 미리
     하나로 정리해 두지 않으면 이후 단계에서 id 충돌로 build가 막힌다.
+
+    진 쪽(파라미터 적은 구버전)은 select_better_version(패키지 버전 충돌)과 같은
+    원칙으로 완전히 버리지 않고 `other_versions_seen`에 남긴다 — action_schema에는
+    채택된 스키마만 반영되지만, 구버전 파라미터 구성이 필요해지면(예: LLM이 대화 중
+    옛 봇의 액션을 이해해야 할 때) 참고할 수 있게.
     """
     by_name: dict[str, dict] = {}
     for action in actions:
@@ -113,8 +118,13 @@ def _dedupe_actions_by_name(actions: list[dict], package_name: str, source_name:
             f"파라미터 {existing_count}개 버전과 {new_count}개 버전 중 "
             f"{max(existing_count, new_count)}개 버전 채택"
         )
-        if new_count > existing_count:
-            by_name[name] = action
+        winner, loser = (action, existing) if new_count > existing_count else (existing, action)
+        winner = dict(winner)
+        seen = list(winner.get("other_versions_seen", []))
+        seen.append({"label": loser.get("label"), "parameters": loser.get("parameters", [])})
+        seen.extend(loser.get("other_versions_seen", []))
+        winner["other_versions_seen"] = seen
+        by_name[name] = winner
     return list(by_name.values())
 
 

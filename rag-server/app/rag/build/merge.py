@@ -207,6 +207,10 @@ def build_rag_documents(
                 "metadata": {
                     "package_version": package.get("package_version"),
                     "schema_source": schema_source,
+                    # select_better_version이 남긴 "채택 안 된 다른 버전들" 기록 — 여기서
+                    # 빠뜨리면 packages.json(중간 산출물)에는 있어도 실제 검색되는 문서엔
+                    # 안 실려서, LLM이 구버전 정보를 대화에서 참고할 방법이 없어진다.
+                    "other_versions_seen": package.get("other_versions_seen", []),
                 },
             }
         )

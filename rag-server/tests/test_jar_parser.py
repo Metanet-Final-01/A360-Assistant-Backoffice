@@ -60,6 +60,23 @@ def test_dedupe_keeps_richer_version_when_action_name_duplicated():
     assert len(close_action["parameters"]) == 0  # 중복 없는 액션은 그대로
 
 
+def test_dedupe_preserves_losing_version_in_other_versions_seen():
+    """select_better_version(패키지 버전 충돌)과 같은 원칙 — 진 쪽(구버전)을 완전히
+    버리지 않고 other_versions_seen에 남겨서, 구버전 파라미터 구성이 필요해지면
+    (예: LLM이 옛 봇의 액션을 대화 중 이해해야 할 때) 참고할 수 있게 한다."""
+    data = _make_jar([
+        _command("openBrowser", "Open (old)", ["url"]),
+        _command("openBrowser", "Open (new)", ["url", "timeout", "headless"]),
+    ])
+    result = parse_jar_bytes(data, "webautomation.jar")
+    assert result is not None
+    open_action = result["actions"][0]
+    seen = open_action["other_versions_seen"]
+    assert len(seen) == 1
+    assert seen[0]["label"] == "Open (old)"
+    assert len(seen[0]["parameters"]) == 1
+
+
 def test_dedupe_handles_multiple_duplicate_groups_independently():
     """여러 액션이 동시에 중복돼도(실측처럼 17개) 서로 안 섞이고 각자 더 풍부한 쪽만 남는다."""
     data = _make_jar([
