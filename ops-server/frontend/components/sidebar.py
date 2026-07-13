@@ -9,12 +9,13 @@ import streamlit as st
 # DOMPurify가 <svg> 태그를 통째로 지워버린다 — 그래서 로고는 인라인 SVG 대신 배경 이미지(data
 # URI)로 넣는다.
 _MARK_SVG = (
-    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 112 112">'
-    '<rect x="6" y="6" width="100" height="100" rx="18" fill="#22323d" stroke="rgba(255,255,255,0.14)" stroke-width="2"/>'
-    '<path d="M26 74L46 32H58L78 74H66L62 65H42L38 74H26Z" fill="#F6FBFD"/>'
-    '<path d="M46 55H58L52 41L46 55Z" fill="#2F9AB2"/>'
-    '<path d="M82 31H92V81H82V31Z" fill="#F6FBFD"/>'
-    '<path d="M20 82H68" stroke="#2F9AB2" stroke-width="6" stroke-linecap="round"/>'
+    '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40">'
+    '<defs><linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">'
+    '<stop offset="0" stop-color="#1f6f8b"/><stop offset="1" stop-color="#172026"/>'
+    "</linearGradient></defs>"
+    '<rect width="40" height="40" rx="11" fill="url(#mark)"/>'
+    '<polyline points="9,22 14,22 17,13 21,29 24,19 29,19" fill="none" stroke="#ffffff" '
+    'stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>'
     "</svg>"
 )
 _MARK_DATA_URI = "data:image/svg+xml;base64," + base64.b64encode(_MARK_SVG.encode()).decode()
@@ -28,7 +29,20 @@ def render_sidebar() -> None:
         st.html(
             '<div class="app-sidebar-brand">'
             f'<span class="app-sidebar-brand__mark" style="background-image: url(\'{_MARK_DATA_URI}\')"></span>'
-            '<span class="app-sidebar-brand__title">A360 ASSISTANT</span>'
-            '<span class="app-sidebar-brand__badge">OPS</span>'
+            '<span class="app-sidebar-brand__text">'
+            '<span class="app-sidebar-brand__title">A360 Assistant</span>'
+            '<span class="app-sidebar-brand__subtitle">Ops Console</span>'
+            "</span>"
+            "</div>"
+        )
+        # 사이드바 맨 아래 고정 설명 블록. stSidebarUserContent는 네비게이션(stSidebarNav)보다
+        # 위에 오도록 CSS order가 이미 고정돼 있어(apply_global_styles), DOM 순서로는 뒤로
+        # 보낼 수 없다 — 그래서 position:absolute; bottom:0으로 사이드바 자체의 바닥에
+        # 붙이고(app-sidebar-footer), 네비게이션 쪽에 그만큼 padding-bottom을 남겨 겹치지
+        # 않게 한다.
+        st.html(
+            '<div class="app-sidebar-footer">'
+            '<div class="app-sidebar-footer__title">OPS</div>'
+            '<div class="app-sidebar-footer__desc">RAG 적재 · 평가(준비/실행/결과) · 모니터링 도구</div>'
             "</div>"
         )

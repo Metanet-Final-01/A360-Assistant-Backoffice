@@ -24,7 +24,7 @@ def render() -> None:
     with card("trace_input"):
         key_type = st.radio("조회 축", ["request_id", "session_id", "user_id"], horizontal=True, key="trace_key_type")
         value = st.text_input(f"{key_type} 입력", key="trace_value", placeholder="예: 5f2a3c309fd1")
-        go = st.button("추적", key="trace_go")
+        go = st.button("추적", key="trace_go", type="primary")
 
     if not (go and value.strip()):
         st.info("조회 축을 고르고 id를 입력한 뒤 \"추적\"을 누르세요.")
