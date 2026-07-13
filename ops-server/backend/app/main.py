@@ -12,7 +12,7 @@ import uuid
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException, Query
 from fastapi.responses import Response
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from app.eval.format_guide import build_format_guide
 from app.eval.format_schemas import validate_format
@@ -184,6 +184,13 @@ def evaluation_execution_status() -> dict:
 
 class ExecuteWorkflowRequest(BaseModel):
     agent_label: str = "workflow-live"
+
+    @field_validator("agent_label")
+    @classmethod
+    def validate_agent_label(cls, value: str) -> str:
+        label = value.strip()
+        executor.validate_prediction_label(label)
+        return label
 
 
 @app.get("/eval/workflow/cases")

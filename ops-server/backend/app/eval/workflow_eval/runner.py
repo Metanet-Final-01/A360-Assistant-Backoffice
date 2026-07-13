@@ -26,6 +26,7 @@ from uuid import uuid4
 import httpx
 
 from .. import executor
+from .reservation import finish_state, reserve_state
 
 logger = logging.getLogger(__name__)
 
@@ -41,13 +42,10 @@ state: dict = {
 
 def reserve() -> bool:
     """BFCL/RAGAS runner와 동일한 원자적 check-and-set."""
-    if state["running"]:
-        return False
-    state.update({
+    return reserve_state(state, {
         "running": True, "started_at": datetime.now(timezone.utc).isoformat(),
         "finished_at": None, "saved": 0, "cases": 0, "error": None, "log": [],
     })
-    return True
 
 
 def _append_log(message: str) -> None:
@@ -126,9 +124,9 @@ def generate_predictions(
 
     with httpx.Client() as client:
         for i, case in enumerate(cases, 1):
-            source_bot = case["source_bot"]
-            task = detailed_tasks.get(source_bot) or case["input"]["task"]
+            source_bot = str(case.get("source_bot") or f"case_{i}")
             try:
+                task = detailed_tasks.get(source_bot) or case["input"]["task"]
                 session = client.post(f"{backend_url}/api/sessions", json={}, timeout=10.0)
                 session.raise_for_status()
                 session_id = session.json()["session_id"]
@@ -196,4 +194,4 @@ def execute_and_save(agent_label: str) -> None:
         state["error"] = str(e)
         _append_log(f"오류: {e}")
     finally:
-        state.update({"running": False, "finished_at": datetime.now(timezone.utc).isoformat()})
+        finish_state(state)
