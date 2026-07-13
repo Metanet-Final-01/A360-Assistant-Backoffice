@@ -83,7 +83,7 @@ class BFCLTurn(BaseModel):
     케이스는 turns[0]이 초기 요청, turns[1]이 후속 수정 지시다.
 
     missing_params_expected_empty: Missing Parameters 카테고리(논문 236~242줄)
-    전용 — "критical parameter를 추론할 수 없으면 채우면 안 된다"가 정답이므로,
+    전용 — "critical parameter를 추론할 수 없으면 채우면 안 된다"가 정답이므로,
     액션을 찾았을 때 이 이름의 파라미터가 '비어 있어야' 통과한다(반대로 값을
     지어냈으면 hallucination으로 실패 처리). 액션 자체를 안 만들었어도(steps 비어
     있음) 통과로 본다 — 둘 다 "critical 정보 없이 확정하지 않음"이라는 같은 정답.

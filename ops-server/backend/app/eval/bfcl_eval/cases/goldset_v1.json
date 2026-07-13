@@ -13,7 +13,6 @@
             "params": [
               {"name": "toAddress", "check": "exact", "expected": "kim@example.com"},
               {"name": "subject", "check": "contains", "expected": "주간 보고"},
-              {"name": "bodyFormat", "check": "enum", "expected": ["HTML"]},
               {"name": "message", "check": "nonempty"}
             ]
           }

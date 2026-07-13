@@ -26,6 +26,7 @@ import httpx
 
 from ..log_schema import EvalMetric, EvalRunRecord
 from ..log_store import append_run
+from .reservation import finish_state, reserve_state
 from .schema import BFCLCase, BFCLCaseResult, BFCLTurn, BFCLTurnResult, ExpectedTarget
 
 logger = logging.getLogger(__name__)
@@ -42,11 +43,10 @@ state: dict = {
 
 def reserve() -> bool:
     """RAGAS runner와 동일한 원자적 check-and-set — 동시 실행 경합 제거."""
-    if state["running"]:
-        return False
-    state.update({"running": True, "started_at": datetime.now(timezone.utc).isoformat(),
-                  "finished_at": None, "saved": 0, "cases": 0, "error": None, "log": []})
-    return True
+    return reserve_state(state, {
+        "running": True, "started_at": datetime.now(timezone.utc).isoformat(),
+        "finished_at": None, "saved": 0, "cases": 0, "error": None, "log": [],
+    })
 
 
 def _append_log(log: list[str], message: str) -> None:
@@ -147,7 +147,7 @@ def _score_target(recommendation: dict | None, target: ExpectedTarget, violation
     """
     occurrences = _find_actions(recommendation, target.package, target.action)
     if not occurrences:
-        return False, False, None, {}
+        return False, False, None, {}, None
     best_action, best_results, best_score = occurrences[0], {}, -1
     for occ in occurrences:
         results = {c.name: _check_param(occ, c) for c in target.params}
@@ -155,6 +155,7 @@ def _score_target(recommendation: dict | None, target: ExpectedTarget, violation
         if score > best_score:
             best_action, best_results, best_score = occ, results, score
     ast_match = all(best_results.values())
+    prereq_ok = None
     if target.require_no_prereq_violation:
         prereq_ok = not any(
             v.get("rule") in ("R7", "R8")
@@ -163,7 +164,7 @@ def _score_target(recommendation: dict | None, target: ExpectedTarget, violation
             for v in violations
         )
         ast_match = ast_match and prereq_ok
-    return True, ast_match, best_action, best_results
+    return True, ast_match, best_action, best_results, prereq_ok
 
 
 def _score_turn(recommendation: dict | None, turn: BFCLTurn, actual_type: str | None,
@@ -178,14 +179,14 @@ def _score_turn(recommendation: dict | None, turn: BFCLTurn, actual_type: str | 
         result.ast_match = ok
         return result
 
-    matched_index, best = None, None  # best = (ast_match, name_match, param_score, action, results)
+    matched_index, best = None, None  # best = (ast_match, action, param_score, results, prereq_ok)
     for i, target in enumerate(turn.expected_targets):
-        name_match, ast_match, action, results = _score_target(recommendation, target, violations)
+        name_match, ast_match, action, results, prereq_ok = _score_target(recommendation, target, violations)
         if not name_match:
             continue
         score = (ast_match, sum(results.values()) if results else 0)
         if best is None or score > (best[0], best[2]):
-            matched_index, best = i, (ast_match, action, sum(results.values()) if results else 0, results)
+            matched_index, best = i, (ast_match, action, sum(results.values()) if results else 0, results, prereq_ok)
 
     if best is None:
         # Missing Parameters(논문 236~242줄)는 액션을 아예 안 만든 것도 "critical 정보
@@ -198,13 +199,14 @@ def _score_turn(recommendation: dict | None, turn: BFCLTurn, actual_type: str | 
         result.ast_match = ok
         return result
 
-    ast_match, action, _score, param_results = best
+    ast_match, action, _score, param_results, prereq_ok = best
     result.matched_target_index = matched_index
     result.name_match = True
     result.actual_package = action.get("package")
     result.actual_action = action.get("action")
     result.actual_params = {p.get("name"): p.get("value") for p in action.get("parameters") or []}
     result.param_results = param_results
+    result.prereq_ok = prereq_ok
 
     if turn.missing_params_expected_empty:
         # Missing Parameters(논문 236~242줄): critical 파라미터를 추론할 수 없으면
@@ -339,4 +341,4 @@ def execute_and_save(agent_label: str) -> None:
         logger.exception("BFCL 평가 실행 실패")
         state["error"] = str(e)
     finally:
-        state.update({"running": False, "finished_at": datetime.now(timezone.utc).isoformat()})
+        finish_state(state)
