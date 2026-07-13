@@ -20,7 +20,9 @@ jobs:
           - name: ops-server
             install: "grep -ivE '^(ragas|langchain|openai)' ops-server/requirements.txt > req-ops-ci.txt && pip install -r req-ops-ci.txt pytest"
             workdir: ops-server/backend
-            test: pytest tests/ -q
+            # `python -m pytest`라야 cwd(=backend)가 sys.path에 들어가 `app` 임포트가 된다
+            # (콘솔 스크립트 `pytest`는 cwd를 넣지 않음 — ModuleNotFoundError: app).
+            test: python -m pytest tests/ -q
           # rag-server: requirements-dev.txt가 requirements.txt + pytest를 포함. pytest.ini가 설정.
           - name: rag-server
             install: pip install -r rag-server/requirements-dev.txt
