@@ -19,6 +19,7 @@ from app.eval.format_schemas import validate_format
 from app.eval.dataset_schema import EvaluationDataset
 from app.eval.dataset_store import load_datasets, save_dataset
 from app.eval import executor
+from app.eval.workflow_eval import runner as workflow_runner
 from app.eval.ragas_eval import runner as ragas_runner
 from app.eval.ragas_eval import pass_k as ragas_pass_k
 from app.eval.bfcl_eval import runner as bfcl_runner
@@ -179,6 +180,32 @@ def start_evaluation(req: ExecuteEvaluationRequest, background_tasks: Background
 @app.get("/eval/execution/status")
 def evaluation_execution_status() -> dict:
     return executor.state
+
+
+class ExecuteWorkflowRequest(BaseModel):
+    agent_label: str = "workflow-live"
+
+
+@app.get("/eval/workflow/cases")
+def workflow_cases() -> list:
+    """골드셋 케이스 목록(채점 실행 전 미리보기용) — 실제 커뮤니티 봇 17개."""
+    try:
+        return workflow_runner.load_cases()
+    except workflow_runner.WorkflowGoldsetError as e:
+        raise HTTPException(500, str(e)) from e
+
+
+@app.post("/eval/workflow/execution")
+def start_workflow_evaluation(req: ExecuteWorkflowRequest, background_tasks: BackgroundTasks) -> dict:
+    if not workflow_runner.reserve():
+        raise HTTPException(409, "이미 Workflow 평가가 실행 중입니다")
+    background_tasks.add_task(workflow_runner.execute_and_save, req.agent_label.strip())
+    return {"status": "started"}
+
+
+@app.get("/eval/workflow/execution/status")
+def workflow_evaluation_status() -> dict:
+    return workflow_runner.state
 
 
 class ExecuteRagasRequest(BaseModel):
