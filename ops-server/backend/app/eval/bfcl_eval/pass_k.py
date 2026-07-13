@@ -21,13 +21,15 @@ from uuid import uuid4
 
 from ..log_schema import EvalMetric, EvalRunRecord
 from ..log_store import append_run
-from .runner import _to_metrics, run_bfcl_eval
+from .runner import _append_log, _to_metrics, run_bfcl_eval
 
 logger = logging.getLogger(__name__)
 
+_MAX_LOG_LINES = 200
+
 state: dict = {
     "running": False, "started_at": None, "finished_at": None,
-    "n_repeats": 0, "completed_repeats": 0, "evaluation_id": None, "error": None,
+    "n_repeats": 0, "completed_repeats": 0, "evaluation_id": None, "error": None, "log": [],
 }
 
 
@@ -38,7 +40,7 @@ def reserve() -> bool:
     state.update({
         "running": True, "started_at": datetime.now(timezone.utc).isoformat(),
         "finished_at": None, "n_repeats": 0, "completed_repeats": 0,
-        "evaluation_id": None, "error": None,
+        "evaluation_id": None, "error": None, "log": [],
     })
     return True
 
@@ -65,7 +67,10 @@ def execute_pass_k_and_save(agent_label: str, n_repeats: int) -> None:
         per_case_category: dict[str, str] = {}
 
         for i in range(n_repeats):
-            results = run_bfcl_eval()
+            _append_log(state["log"], f"=== 반복 {i + 1}/{n_repeats} 시작 ===")
+            results = run_bfcl_eval(
+                on_progress=lambda msg, rep=i: _append_log(state["log"], f"[반복 {rep + 1}/{n_repeats}] {msg}")
+            )
             for r in results:
                 record = EvalRunRecord(
                     evaluation_id=evaluation_id, case_id=r.case_id, source="bfcl",

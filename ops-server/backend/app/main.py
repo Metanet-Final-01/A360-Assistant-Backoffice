@@ -20,6 +20,7 @@ from app.eval.dataset_schema import EvaluationDataset
 from app.eval.dataset_store import load_datasets, save_dataset
 from app.eval import executor
 from app.eval.ragas_eval import runner as ragas_runner
+from app.eval.ragas_eval import pass_k as ragas_pass_k
 from app.eval.bfcl_eval import runner as bfcl_runner
 from app.eval.bfcl_eval import pass_k as bfcl_pass_k
 from app.eval.log_schema import EvalRunRecord
@@ -211,6 +212,29 @@ def start_ragas_evaluation(req: ExecuteRagasRequest, background_tasks: Backgroun
 @app.get("/eval/ragas/execution/status")
 def ragas_evaluation_status() -> dict:
     return ragas_runner.state
+
+
+class ExecuteRagasPassKRequest(BaseModel):
+    agent_label: str = "rag-passk"
+    n_repeats: int = Field(default=5, ge=2, le=20)
+    judge_model: str = "gpt-4o-mini"
+
+
+@app.post("/eval/ragas/pass-k/execution")
+def start_ragas_pass_k(req: ExecuteRagasPassKRequest, background_tasks: BackgroundTasks) -> dict:
+    if not os.getenv("OPENAI_API_KEY"):
+        raise HTTPException(400, "OPENAI_API_KEY가 설정되지 않았습니다 (ops-server/backend/.env)")
+    if not ragas_pass_k.reserve():
+        raise HTTPException(409, "이미 RAGAS pass@k 평가가 실행 중입니다")
+    background_tasks.add_task(
+        ragas_pass_k.execute_pass_k_and_save, req.agent_label.strip(), req.n_repeats, req.judge_model,
+    )
+    return {"status": "started"}
+
+
+@app.get("/eval/ragas/pass-k/execution/status")
+def ragas_pass_k_status() -> dict:
+    return ragas_pass_k.state
 
 
 class UploadLoadTestRequest(BaseModel):

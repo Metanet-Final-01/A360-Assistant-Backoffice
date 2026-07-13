@@ -17,6 +17,7 @@ response_based는 선행관계(R7 세션 생명주기) 위반 여부다.
 import json
 import logging
 import os
+from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
@@ -31,7 +32,12 @@ logger = logging.getLogger(__name__)
 
 _CASES_PATH = Path(__file__).resolve().parent / "cases" / "goldset_v1.json"
 
-state: dict = {"running": False, "started_at": None, "finished_at": None, "saved": 0, "cases": 0, "error": None}
+_MAX_LOG_LINES = 200
+
+state: dict = {
+    "running": False, "started_at": None, "finished_at": None, "saved": 0, "cases": 0,
+    "error": None, "log": [],
+}
 
 
 def reserve() -> bool:
@@ -39,8 +45,16 @@ def reserve() -> bool:
     if state["running"]:
         return False
     state.update({"running": True, "started_at": datetime.now(timezone.utc).isoformat(),
-                  "finished_at": None, "saved": 0, "cases": 0, "error": None})
+                  "finished_at": None, "saved": 0, "cases": 0, "error": None, "log": []})
     return True
+
+
+def _append_log(log: list[str], message: str) -> None:
+    """실행 중 케이스별 진행 상황을 state에 쌓는다 — 프론트가 폴링하며 그대로 보여준다
+    (Streamlit은 진짜 SSE 스트리밍을 못 받으니, 짧은 주기 폴링 + 누적 로그로 "실시간처럼"
+    보이게 하는 현실적인 타협). 무한정 쌓이지 않게 최근 N줄만 유지."""
+    log.append(f"{datetime.now(timezone.utc).strftime('%H:%M:%S')} {message}")
+    del log[:-_MAX_LOG_LINES]
 
 
 class BFCLGoldsetError(RuntimeError):
@@ -232,13 +246,17 @@ def _stream_turn(client: httpx.Client, backend_url: str, session_id: str, messag
     return {"violations": violations, "done": done_data}
 
 
-def run_bfcl_eval(backend_url: str | None = None) -> list[BFCLCaseResult]:
+def run_bfcl_eval(
+    backend_url: str | None = None, on_progress: Callable[[str], None] | None = None,
+) -> list[BFCLCaseResult]:
+    """on_progress: 케이스 하나 끝날 때마다 사람이 읽을 진행 메시지 한 줄을 받는 콜백
+    (실시간 로그 표시용, execute_and_save/pass_k.py가 각자 state["log"]에 쌓는다)."""
     backend_url = (backend_url or os.getenv("A360_BACKEND_URL") or "http://127.0.0.1:8000").rstrip("/")
     cases = load_cases()
     results: list[BFCLCaseResult] = []
 
     with httpx.Client() as client:
-        for case in cases:
+        for i, case in enumerate(cases, 1):
             try:
                 session = client.post(f"{backend_url}/api/sessions", json={}, timeout=10.0)
                 session.raise_for_status()
@@ -260,12 +278,15 @@ def run_bfcl_eval(backend_url: str | None = None) -> list[BFCLCaseResult]:
                     ))
 
                 question = case.document_text or case.turns[0].message
+                name_match = all(t.name_match for t in turn_results)
+                ast_match = all(t.ast_match for t in turn_results)
                 results.append(BFCLCaseResult(
                     case_id=case.case_id, category=case.category, question=question,
-                    turns=turn_results,
-                    name_match=all(t.name_match for t in turn_results),
-                    ast_match=all(t.ast_match for t in turn_results),
+                    turns=turn_results, name_match=name_match, ast_match=ast_match,
                 ))
+                if on_progress:
+                    mark = "✓" if ast_match else ("△" if name_match else "✗")
+                    on_progress(f"[{i}/{len(cases)}] {mark} {case.case_id} ({case.category})")
             except Exception as e:  # noqa: BLE001 — 케이스 하나 실패가 전체를 막지 않는다
                 logger.warning("BFCL 케이스 실패: %s", case.case_id, exc_info=True)
                 results.append(BFCLCaseResult(
@@ -273,6 +294,8 @@ def run_bfcl_eval(backend_url: str | None = None) -> list[BFCLCaseResult]:
                     question=case.document_text or (case.turns[0].message if case.turns else ""),
                     error=str(e),
                 ))
+                if on_progress:
+                    on_progress(f"[{i}/{len(cases)}] ⚠ {case.case_id} 오류: {e}")
 
     return results
 
@@ -293,7 +316,7 @@ def _to_metrics(result: BFCLCaseResult) -> list[EvalMetric]:
 def execute_and_save(agent_label: str) -> None:
     """reserve()가 이미 running=True로 바꿔놨다는 전제로 호출된다."""
     try:
-        results = run_bfcl_eval()
+        results = run_bfcl_eval(on_progress=lambda msg: _append_log(state["log"], msg))
         evaluation_id = uuid4().hex[:12]
         saved = 0
         for r in results:

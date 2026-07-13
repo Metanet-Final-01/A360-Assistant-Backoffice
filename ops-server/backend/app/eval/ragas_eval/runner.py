@@ -14,6 +14,7 @@ OpenAI API 호출)만으로 끝나기 때문. 흐름:
 
 import logging
 import os
+from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
@@ -27,6 +28,7 @@ from .schema import RagasCase, RagasCaseResult
 logger = logging.getLogger(__name__)
 
 _CASES_PATH = Path(__file__).resolve().parent / "cases" / "rag_goldset_v1.json"
+_MAX_LOG_LINES = 200
 
 # app/eval/executor.state와 같은 발상 — 폴링용 실행 상태(subprocess가 아니라
 # BackgroundTasks로 인프로세스 실행되지만, 프론트가 "실행 중/완료" 폴링하는 UX는 동일).
@@ -37,7 +39,16 @@ state: dict = {
     "saved": 0,
     "cases": 0,
     "error": None,
+    "log": [],
 }
+
+
+def _append_log(log: list[str], message: str) -> None:
+    """bfcl_eval.runner._append_log과 같은 발상 — 케이스별 진행 로그를 state에 쌓아
+    프론트가 폴링하며 보여준다."""
+    log.append(f"{datetime.now(timezone.utc).strftime('%H:%M:%S')} {message}")
+    del log[:-_MAX_LOG_LINES]
+
 
 def reserve() -> bool:
     """실행을 예약한다 — main.py가 background_tasks.add_task() 전에 호출한다.
@@ -50,7 +61,7 @@ def reserve() -> bool:
     if state["running"]:
         return False
     state.update({"running": True, "started_at": datetime.now(timezone.utc).isoformat(),
-                  "finished_at": None, "saved": 0, "cases": 0, "error": None})
+                  "finished_at": None, "saved": 0, "cases": 0, "error": None, "log": []})
     return True
 
 
@@ -101,9 +112,15 @@ def _generate_answer(client, model: str, question: str, contexts: list[str]) -> 
     return resp.choices[0].message.content or ""
 
 
-def run_ragas_eval(backend_url: str | None = None, judge_model: str = "gpt-4o-mini") -> list[RagasCaseResult]:
+def run_ragas_eval(
+    backend_url: str | None = None, judge_model: str = "gpt-4o-mini",
+    on_progress: Callable[[str], None] | None = None,
+) -> list[RagasCaseResult]:
     """골드셋 전체를 실행하고 케이스별 결과를 반환한다. 실패한 케이스는 error 필드에
-    이유를 남기고 계속 진행한다(한 케이스 실패가 전체를 막지 않음)."""
+    이유를 남기고 계속 진행한다(한 케이스 실패가 전체를 막지 않음).
+
+    on_progress: 케이스 하나(검색+답변 생성) 끝날 때마다, 그리고 RAGAS 배치 채점
+    전후에 사람이 읽을 진행 메시지를 받는 콜백 — 실시간 로그 표시용."""
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise RagasNotConfiguredError(
@@ -139,7 +156,7 @@ def run_ragas_eval(backend_url: str | None = None, judge_model: str = "gpt-4o-mi
     samples: list[SingleTurnSample] = []
     sample_cases: list[RagasCase] = []
 
-    for case in cases:
+    for i, case in enumerate(cases, 1):
         try:
             hits = _search_backend(backend_url, case.question)
             contexts = [h.get("content") or "" for h in hits if h.get("content")]
@@ -151,6 +168,8 @@ def run_ragas_eval(backend_url: str | None = None, judge_model: str = "gpt-4o-mi
                     response="", ground_truth=case.ground_truth,
                     error="검색 결과가 없습니다(RAG 인덱스가 비어있거나 백엔드 연결 실패 가능성).",
                 ))
+                if on_progress:
+                    on_progress(f"[{i}/{len(cases)}] ⚠ {case.case_id}: 검색 결과 없음")
                 continue
             answer = _generate_answer(client, judge_model, case.question, contexts)
             samples.append(SingleTurnSample(
@@ -163,6 +182,8 @@ def run_ragas_eval(backend_url: str | None = None, judge_model: str = "gpt-4o-mi
                 retrieved_doc_ids=doc_ids, reference_doc_ids=case.reference_doc_ids,
                 response=answer, ground_truth=case.ground_truth,
             ))
+            if on_progress:
+                on_progress(f"[{i}/{len(cases)}] ✓ {case.case_id}: 검색+답변 생성 완료 ({len(contexts)}개 문서)")
         except Exception as e:  # noqa: BLE001 - 검색 HTTP 오류·JSON 파싱 실패·OpenAI 클라이언트
             # 오류 등 케이스 하나에서 날 수 있는 어떤 예외든 그 케이스만 실패 처리하고
             # 나머지 골드셋은 계속 돈다(한 케이스 문제로 전체 배치가 죽으면 안 됨).
@@ -172,11 +193,17 @@ def run_ragas_eval(backend_url: str | None = None, judge_model: str = "gpt-4o-mi
                 reference_doc_ids=case.reference_doc_ids,
                 response="", ground_truth=case.ground_truth, error=str(e),
             ))
+            if on_progress:
+                on_progress(f"[{i}/{len(cases)}] ⚠ {case.case_id} 오류: {e}")
 
     if not samples:
         return results
 
+    if on_progress:
+        on_progress(f"RAGAS 지표 채점 중... ({len(samples)}개 샘플, judge={judge_model})")
     scored = ragas_evaluate(dataset=EvaluationDataset(samples=samples), metrics=metrics)
+    if on_progress:
+        on_progress("RAGAS 지표 채점 완료")
     scored_df = scored.to_pandas()
     for i, case in enumerate(sample_cases):
         row = scored_df.iloc[i]
@@ -216,7 +243,7 @@ def execute_and_save(agent_label: str, judge_model: str = "gpt-4o-mini") -> None
     남긴다 — 그러지 않으면 FastAPI 백그라운드 태스크 예외가 로그에만 찍히고 프론트는
     영원히 "실행 중"으로 보게 된다."""
     try:
-        results = run_ragas_eval(judge_model=judge_model)
+        results = run_ragas_eval(judge_model=judge_model, on_progress=lambda msg: _append_log(state["log"], msg))
         evaluation_id = uuid4().hex[:12]  # 배치 전체를 하나로 묶는 id — 버전 비교가
         # agent_label만으로 그룹핑하면 같은 라벨로 재실행할 때마다 케이스가 섞여
         # 평균·건수가 뒤섞이는 걸 방지한다(CodeRabbit 지적 반영).

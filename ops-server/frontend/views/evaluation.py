@@ -53,6 +53,31 @@ def _prefetch_initial_data() -> None:
             st.session_state[key] = data
 
 
+@st.fragment(run_every="2s")
+def _render_live_log(status_url_path: str, key: str) -> None:
+    """실행 중인 평가(BFCL/RAGAS/pass@k)의 진행 로그를 2초 간격으로 폴링해 보여준다
+    (RPA-126). Streamlit엔 서버→브라우저 진짜 push 스트리밍이 없어서, 짧은 주기
+    자동 재실행으로 "실시간처럼" 보이게 하는 게 현실적 타협 — 대신 이 폴링을 이
+    작은 fragment 하나로 좁혀서(전체 탭이 아니라) 다른 무거운 데이터(결과 테이블 등)
+    까지 매번 다시 불러오는 걸 막는다(이전에 겪은 Streamlit 성능 문제 재발 방지).
+    실행 중이 아닐 때도 계속 폴링되긴 하지만, 이 엔드포인트 자체가 가벼운 상태
+    조회라 비용이 크지 않다."""
+    try:
+        resp = _SESSION.get(f"{OPS_BACKEND_URL}{status_url_path}", timeout=5)
+        resp.raise_for_status()
+        status = resp.json()
+    except (requests.RequestException, ValueError) as exc:
+        st.caption(f"진행 로그를 불러오지 못했습니다: {exc}")
+        return
+
+    log = status.get("log") or []
+    if not log and not status.get("running"):
+        return
+    running_suffix = " (실행 중...)" if status.get("running") else ""
+    with st.expander(f"진행 로그{running_suffix}", expanded=bool(status.get("running"))):
+        st.code("\n".join(log[-100:]) or "(아직 로그 없음)", language="text")
+
+
 def render() -> None:
     page_header(
         "EVALUATION", "평가",
@@ -67,19 +92,20 @@ def render() -> None:
         ("등록된 데이터셋", len(datasets)),
     ])
 
-    tab_results, tab_run, tab_datasets, tab_ragas, tab_bfcl = st.tabs(
-        ["결과 조회 · 비교", "평가 실행", "데이터셋 관리", "RAG 품질(RAGAS)", "액션 호출(BFCL)"]
+    # BFCL/RAGAS/Workflow(pm4py·WorFBench) 3개를 평가 "종류"별 1급 탭으로 명확히 분리
+    # (RPA-126) — 각 탭이 그 평가의 실행·기본 골드셋·결과를 전부 담는다. 전체 결과를
+    # 소스 무관하게 가로질러 보는 화면은 별도 탭("전체 결과 비교")으로 남겨둔다.
+    tab_bfcl, tab_ragas, tab_workflow, tab_all = st.tabs(
+        ["액션 호출(BFCL)", "RAG 품질(RAGAS)", "Workflow(pm4py·WorFBench)", "전체 결과 비교"]
     )
-    with tab_results:
-        _render_results_tab(runs)
-    with tab_run:
-        _render_execution_tab(datasets)
-    with tab_datasets:
-        _render_datasets_tab(datasets)
-    with tab_ragas:
-        _render_ragas_tab(runs)
     with tab_bfcl:
         _render_bfcl_tab(runs)
+    with tab_ragas:
+        _render_ragas_tab(runs)
+    with tab_workflow:
+        _render_workflow_tab(datasets)
+    with tab_all:
+        _render_results_tab(runs)
 
 
 # st.fragment로 탭별 재실행을 분리한다 — 이게 없으면 위젯 하나만 건드려도(예: 결과
@@ -93,14 +119,15 @@ def _render_results_tab(runs: list[dict]) -> None:
 
 
 @st.fragment
-def _render_execution_tab(datasets: list[dict]) -> None:
+def _render_workflow_tab(datasets: list[dict]) -> None:
+    """pm4py/WorFBench(옛 이름 "평가 실행"+"데이터셋 관리") — RPA-126에서 BFCL/RAGAS와
+    나란한 1급 탭으로 통합. 이 방식은 라이브 Agent 호출이 아니라 미리 만들어둔
+    예측 파일(a360-eval-sandbox/predictions_from_agent_*.json)을 재채점하는 구조라
+    (BFCL/RAGAS 탭 참고: 그쪽은 실시간 로그) 여기는 실행 로그가 없다 — 대신 pm4py/
+    WorFBench 스크립트의 표준출력을 실행 후 한 번에 보여준다(executor.state["log"])."""
     _render_evaluation_execution(datasets)
-    _render_format_guide()
-
-
-@st.fragment
-def _render_datasets_tab(datasets: list[dict]) -> None:
     _render_dataset_registry(datasets)
+    _render_format_guide()
 
 
 @st.fragment
@@ -111,6 +138,7 @@ def _render_ragas_tab(runs: list[dict]) -> None:
     # (CodeRabbit 지적). "RAGAS 상태 새로고침" 클릭 시 eval_runs 캐시를 같이 지우므로
     # 여기서 _fetch_runs()로 다시 불러오면 최신 결과가 반영된다.
     _render_ragas_results(_fetch_runs())
+    _render_ragas_pass_k()
 
 
 @st.fragment
@@ -482,6 +510,7 @@ def _render_ragas_execution() -> None:
             st.success(f"평가 완료 · {status.get('saved', 0)}/{status.get('cases', 0)}건 저장")
         else:
             st.caption("아직 실행한 RAGAS 평가가 없습니다.")
+        _render_live_log("/eval/ragas/execution/status", key="ragas_live_log")
 
 
 def _render_ragas_results(runs: list[dict]) -> None:
@@ -519,6 +548,72 @@ def _render_ragas_results(runs: list[dict]) -> None:
                     "오류": raw.get("error") or "",
                 })
             st.dataframe(pd.DataFrame(case_rows), width="stretch", hide_index=True)
+
+
+def _render_ragas_pass_k() -> None:
+    """RAGAS 지표에 pass@k(Codex 논문 기반 반복 일관성 평가) 적용 — BFCL 탭의
+    같은 섹션과 동일 발상(RPA-126). RAGAS 지표는 0~1 연속값이라 "통과" 판정에
+    임계값(기본 0.7, ragas_eval/pass_k.py의 PASS_THRESHOLD)이 하나 더 필요하다는
+    점만 BFCL과 다르다."""
+    with card("ragas_pass_k"):
+        section_header(
+            "반복 일관성 평가(pass@k)",
+            "같은 골드셋을 n번 반복 실행해 케이스별로 얼마나 일관되게 지표를 넘기는지 본다. "
+            "RAGAS 지표(0~1 연속값) 4개가 전부 0.7 이상이면 그 반복은 '통과'로 센다.",
+        )
+        with st.form("ragas_pass_k_form"):
+            agent_label = st.text_input("결과 버전(agent_label)", value="rag-passk", key="ragas_passk_agent_label")
+            n_repeats = st.number_input("반복 횟수(n)", min_value=2, max_value=20, value=5, step=1, key="ragas_passk_n")
+            start = st.form_submit_button("pass@k 평가 시작", type="primary")
+        if start:
+            try:
+                resp = _SESSION.post(
+                    f"{OPS_BACKEND_URL}/eval/ragas/pass-k/execution",
+                    json={"agent_label": agent_label.strip() or "rag-passk", "n_repeats": int(n_repeats)}, timeout=5,
+                )
+                if resp.status_code == 200:
+                    st.success(f"pass@k 평가를 시작했습니다({int(n_repeats)}회 반복 — OpenAI 호출이 케이스 수 × {int(n_repeats)}번 나가므로 오래 걸립니다).")
+                else:
+                    st.error(resp.json().get("detail", resp.text))
+            except (requests.RequestException, ValueError) as exc:
+                st.error(f"평가 시작 실패: {exc}")
+
+        if st.button("pass@k 상태 새로고침", key="ragas_passk_status_refresh"):
+            st.session_state.pop("eval_runs", None)
+        try:
+            status_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/ragas/pass-k/execution/status", timeout=5)
+            status_resp.raise_for_status()
+            status = status_resp.json()
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"상태를 불러오지 못했습니다: {exc}")
+            return
+
+        if status.get("running"):
+            st.info(f"실행 중... ({status.get('completed_repeats', 0)}/{status.get('n_repeats', 0)}회 반복 완료)")
+        elif status.get("error"):
+            st.error(f"평가 실패: {status['error']}")
+        elif status.get("finished_at"):
+            st.success(f"pass@k 평가 완료 · {status.get('n_repeats', 0)}회 반복")
+        else:
+            st.caption("아직 실행한 pass@k 평가가 없습니다.")
+        _render_live_log("/eval/ragas/pass-k/execution/status", key="ragas_passk_live_log")
+
+        pass_k_runs = [r for r in _fetch_runs() if r.get("source") == "ragas_pass_k"]
+        if not pass_k_runs:
+            return
+
+        rows = []
+        for r in sorted(pass_k_runs, key=lambda x: x["case_id"]):
+            raw = r.get("raw") or {}
+            metrics = {m["name"]: m["value"] for m in r.get("metrics", [])}
+            rows.append({
+                "버전": r.get("agent_label") or "-", "case_id": r["case_id"],
+                "n": raw.get("n"), "c(통과)": raw.get("c"), "기준값": raw.get("pass_threshold"),
+                "pass@1": round(metrics.get("pass_at_1"), 3) if metrics.get("pass_at_1") is not None else None,
+                "pass@3": round(metrics["pass_at_3"], 3) if "pass_at_3" in metrics else None,
+                "pass@5": round(metrics["pass_at_5"], 3) if "pass_at_5" in metrics else None,
+            })
+        st.dataframe(pd.DataFrame(rows), width="stretch", hide_index=True)
 
 
 # ── 액션 호출(BFCL) ─────────────────────────────────────────────────
@@ -579,6 +674,7 @@ def _render_bfcl_execution() -> None:
             st.success(f"평가 완료 · {status.get('saved', 0)}/{status.get('cases', 0)}건 저장")
         else:
             st.caption("아직 실행한 BFCL 평가가 없습니다.")
+        _render_live_log("/eval/bfcl/execution/status", key="bfcl_live_log")
 
 
 def _render_bfcl_results(runs: list[dict]) -> None:
@@ -678,6 +774,7 @@ def _render_bfcl_pass_k() -> None:
             st.success(f"pass@k 평가 완료 · {status.get('n_repeats', 0)}회 반복")
         else:
             st.caption("아직 실행한 pass@k 평가가 없습니다.")
+        _render_live_log("/eval/bfcl/pass-k/execution/status", key="bfcl_passk_live_log")
 
         pass_k_runs = [r for r in _fetch_runs() if r.get("source") == "bfcl_pass_k"]
         if not pass_k_runs:
