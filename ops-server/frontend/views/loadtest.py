@@ -61,7 +61,7 @@ def _fetch_runs() -> list[dict]:
 def _render_history() -> None:
     with card("loadtest_history"):
         section_header("실행 이력 · 추세")
-        if st.button("새로고침", key="loadtest_refresh"):
+        if st.button("새로고침", key="loadtest_refresh", type="primary"):
             st.session_state.pop("loadtest_runs", None)
         runs = _fetch_runs()
         if not runs:
