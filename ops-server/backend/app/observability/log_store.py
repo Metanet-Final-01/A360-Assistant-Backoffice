@@ -3,8 +3,14 @@
 """
 
 import json
+import threading
 import uuid
 from pathlib import Path
+
+# 관측 수집 엔드포인트는 FastAPI sync 함수라 threadpool에서 동시 실행될 수 있다.
+# read-filter-append(중복 제거)가 원자적이지 않으면 동시 호출이 같은 레코드를 중복
+# append하므로, 증분 수집 경로(request_metrics)의 임계구역을 이 락으로 묶는다(CodeRabbit #9).
+_append_lock = threading.Lock()
 
 from .log_schema import (
     AuditLogRecord,
@@ -86,11 +92,15 @@ def audit_cursor() -> str | None:
 
 
 def append_request_metrics(records: list[RequestMetricRecord]) -> int:
-    """id(백엔드 PK) 기준 append-only 중복 제거 — 증분 수집이라도 겹침 방어."""
-    existing = {RequestMetricRecord.model_validate_json(line).id for line in _read_lines(REQUEST_METRICS_PATH)}
-    new_lines = [r.model_dump_json() for r in records if r.id not in existing]
-    _append_lines(REQUEST_METRICS_PATH, new_lines)
-    return len(new_lines)
+    """id(백엔드 PK) 기준 append-only 중복 제거 — 증분 수집이라도 겹침 방어.
+
+    read-filter-append 전체를 락으로 묶는다 — 동시 collect가 같은 existing을 읽고
+    같은 레코드를 중복 append하는 경쟁을 차단(CodeRabbit #9)."""
+    with _append_lock:
+        existing = {RequestMetricRecord.model_validate_json(line).id for line in _read_lines(REQUEST_METRICS_PATH)}
+        new_lines = [r.model_dump_json() for r in records if r.id not in existing]
+        _append_lines(REQUEST_METRICS_PATH, new_lines)
+        return len(new_lines)
 
 
 def load_request_metrics(method: str | None = None, path_contains: str | None = None, limit: int = 500) -> list[RequestMetricRecord]:

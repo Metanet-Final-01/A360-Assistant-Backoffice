@@ -12,10 +12,13 @@
 - /health: 인증 불필요 — 생존 감시(probe)용. 503(degraded/unhealthy)도 '도달함'으로 본다.
 """
 
+import logging
 import os
 from pathlib import Path
 
 import httpx
+
+logger = logging.getLogger(__name__)
 
 try:
     from dotenv import load_dotenv
@@ -101,7 +104,9 @@ def _authed_get(path: str, params: dict) -> dict:
             _raise_for_auth(resp)
             resp.raise_for_status()
             return resp.json()
-        except httpx.HTTPError as e:
+        except httpx.RequestError as e:
+            # 전송 실패(네트워크·타임아웃)만 '연결 실패'로. raise_for_status가 던지는
+            # HTTPStatusError(4xx/5xx)는 그대로 전파 — 응답 상태를 '연결 실패'로 오인시키지 않는다.
             raise BackendUnavailableError(f"{BACKEND_URL} 연결 실패: {e}") from e
 
 
@@ -117,9 +122,12 @@ def probe_health() -> dict:
     try:
         with httpx.Client(base_url=BACKEND_URL, timeout=3.0) as client:
             resp = client.get("/health")
-    except httpx.HTTPError as e:
+    except httpx.HTTPError:
+        # 원문 예외(str(e))는 내부 호스트·포트·프록시 등 배포 세부를 노출하므로 상태 응답에
+        # 넣지 않는다 — 고정 코드만(CodeRabbit #9). 상세는 서버 로그로만.
+        logger.warning("백엔드 health 프로브 실패", exc_info=True)
         return {"reachable": False, "status": "unreachable", "checks": {},
-                "http_status": None, "error": str(e), "checked_at": checked_at}
+                "http_status": None, "error": "connection_failed", "checked_at": checked_at}
     body = {}
     try:
         body = resp.json()
@@ -175,5 +183,7 @@ def fetch_rag_logs_recent(limit: int = 100) -> dict:
                 )
             resp.raise_for_status()
             return resp.json()
-        except httpx.HTTPError as e:
+        except httpx.RequestError as e:
+            # 전송 실패(네트워크·타임아웃)만 '연결 실패'로. raise_for_status가 던지는
+            # HTTPStatusError(4xx/5xx)는 그대로 전파 — 응답 상태를 '연결 실패'로 오인시키지 않는다.
             raise BackendUnavailableError(f"{BACKEND_URL} 연결 실패: {e}") from e

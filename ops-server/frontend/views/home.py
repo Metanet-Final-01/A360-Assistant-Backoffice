@@ -74,7 +74,9 @@ def _render_backend_health_banner(health: dict) -> None:
         st.info("⚪ 백엔드 상태 미확인 — 아래 버튼으로 확인하세요.")
 
     if st.button("백엔드 상태 새로고침", key="probe_backend_health"):
-        _safe_get(OPS_BACKEND_URL, "/observability/backend-health?probe=true")
+        result = _safe_get(OPS_BACKEND_URL, "/observability/backend-health?probe=true")
+        if result is None:
+            st.error("백엔드 상태 프로브 요청에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
         st.rerun()
 
 
