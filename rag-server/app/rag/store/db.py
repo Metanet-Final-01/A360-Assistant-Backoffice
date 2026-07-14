@@ -95,7 +95,7 @@ def upsert_documents(conn: psycopg.Connection, documents: list[dict], embeddings
     with conn.cursor() as cur:
         for i, doc in enumerate(documents):
             vector = None
-            if embeddings is not None:
+            if embeddings is not None and embeddings[i] is not None:
                 vector = "[" + ",".join(f"{x:.7f}" for x in embeddings[i]) + "]"
             cur.execute(
                 sql,

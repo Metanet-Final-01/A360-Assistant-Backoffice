@@ -448,28 +448,31 @@ def cmd_ingest(args: argparse.Namespace) -> None:
         if args.clean:
             print("--clean: 기존 rag_documents 전체 삭제")
             db.clear_all(conn)
-            to_process = documents
+            to_embed = documents
         else:
             # 재크롤링/재적재해도 upsert가 id로 덮어써서 row 중복은 안 생기지만, 내용이
             # 하나도 안 바뀐 문서까지 매번 재임베딩하는 건 순수 비용 낭비였다 — content_hash가
-            # 저장된 것과 같은 문서는 건너뛴다(신규/변경분만 임베딩+적재).
+            # 저장된 것과 같은 문서는 임베딩만 건너뛴다. title/url/metadata는 content가 같아도
+            # 바뀔 수 있으므로 DB upsert와 OpenSearch 색인은 전체 문서 기준으로 수행한다.
             existing_hashes = db.get_content_hashes(conn, [d["id"] for d in documents])
-            to_process = [d for d in documents if existing_hashes.get(d["id"]) != db.content_hash(d["content"])]
-            skipped = len(documents) - len(to_process)
+            to_embed = [d for d in documents if existing_hashes.get(d["id"]) != db.content_hash(d["content"])]
+            skipped = len(documents) - len(to_embed)
             if skipped:
-                print(f"내용이 안 바뀐 문서 {skipped}개는 재임베딩/재적재를 건너뜁니다 (전체 {len(documents)}개 중).")
+                print(f"내용이 안 바뀐 문서 {skipped}개는 재임베딩만 건너뜁니다 (전체 {len(documents)}개 중).")
 
         embeddings = None
-        if to_process and not args.skip_embedding:
+        if to_embed and not args.skip_embedding:
             from .retrieval.embed import embed_texts
 
-            print(f"임베딩 생성 중 ({config.EMBEDDING_PROVIDER}/{config.EMBEDDING_MODEL}, {len(to_process)}개)...")
-            embeddings = embed_texts(
-                [d["content"] for d in to_process],
+            print(f"임베딩 생성 중 ({config.EMBEDDING_PROVIDER}/{config.EMBEDDING_MODEL}, {len(to_embed)}개)...")
+            new_embeddings = embed_texts(
+                [d["content"] for d in to_embed],
                 on_progress=lambda done, total: print(f"  {done}/{total}"),
             )
+            embeddings_by_id = {doc["id"]: emb for doc, emb in zip(to_embed, new_embeddings)}
+            embeddings = [embeddings_by_id.get(doc["id"]) for doc in documents]
 
-        count = db.upsert_documents(conn, to_process, embeddings) if to_process else 0
+        count = db.upsert_documents(conn, documents, embeddings) if documents else 0
         print(f"pgvector 적재 완료: {count}개")
     finally:
         conn.close()
@@ -482,7 +485,7 @@ def cmd_ingest(args: argparse.Namespace) -> None:
             print("--clean: 기존 OpenSearch 색인 삭제")
             opensearch_client.delete_index(os_client)
         opensearch_client.ensure_index(os_client)
-        os_count = opensearch_client.bulk_index(os_client, to_process) if to_process else 0
+        os_count = opensearch_client.bulk_index(os_client, documents) if documents else 0
         print(f"OpenSearch 색인 완료: {os_count}개")
 
 
