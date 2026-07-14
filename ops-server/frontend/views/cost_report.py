@@ -23,7 +23,7 @@ def render() -> None:
     with card("cost_controls"):
         col1, col2 = st.columns([1, 3])
         days = col2.slider("집계 기간(일)", 1, 90, 30, key="cost_days")
-        if col1.button("수집", key="cost_collect"):
+        if col1.button("수집", key="cost_collect", type="primary"):
             # 축별 수집 성공 여부를 상태코드로 기록 — 실패를 '미집계'로 삼키지 않는다(CodeRabbit #13).
             status: dict = {}
             for axis in ("user", "session"):
