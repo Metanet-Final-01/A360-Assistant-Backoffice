@@ -637,12 +637,16 @@ def _settings_call(fn, *args, **kwargs) -> dict:
 
 class BudgetLimitsBody(BaseModel):
     """4개 전체 스냅샷 — 부분 갱신이 아니다(백엔드 append-only 이력에 완전한 설정이 남아야 함).
-    null = 그 상한 비활성. 값 검증(0·음수 거부, 월<일 거부)은 백엔드가 단일 진실로 한다."""
+    null = 그 상한 비활성. 값 검증(0·음수 거부, 월<일 거부)은 백엔드가 단일 진실로 한다.
 
-    subject_daily_usd: float | None = None
-    subject_monthly_usd: float | None = None
-    global_daily_usd: float | None = None
-    global_monthly_usd: float | None = None
+    ⚠️ 기본값을 주지 않는다(`... `). 기본값이 있으면 생략 필드가 조용히 null이 돼 백엔드의
+    월<일 검증까지 우회된다(백엔드 #243 리뷰에서 잡힌 버그) — 여기서 막아야 그 요청이 아예 안 간다.
+    """
+
+    subject_daily_usd: float | None = Field(...)
+    subject_monthly_usd: float | None = Field(...)
+    global_daily_usd: float | None = Field(...)
+    global_monthly_usd: float | None = Field(...)
 
 
 class RetrievalParamsBody(BaseModel):
