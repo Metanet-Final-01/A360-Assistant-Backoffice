@@ -611,6 +611,77 @@ def observability_status() -> dict:
     return collector.status()
 
 
+# ─────────────────────────────────────────────────────────────────────────────
+# 런타임 설정 (RPA-174) — 백엔드의 무중단 튜닝 API를 ops 화면에 연결한다.
+#
+# 관측 데이터와 달리 **로컬 사본을 두지 않고 통과(pass-through)한다**: 설정은 "지금 실제로
+# 무엇이 적용 중인가"가 전부라, 수집 시점의 사본을 보여주면 관리자가 옛 값을 보고 조작하게 된다.
+# ─────────────────────────────────────────────────────────────────────────────
+
+
+def _settings_call(fn, *args, **kwargs) -> dict:
+    """backend_client 호출을 HTTP 상태로 옮긴다 — 세 가지 실패를 구분해서.
+
+    화면이 "내 입력이 틀렸다"(422)와 "권한 문제"(403)와 "백엔드가 죽었다"(502)를 다르게
+    보여줄 수 있어야 한다 — 다 500으로 뭉치면 관리자가 뭘 해야 할지 알 수 없다.
+    """
+    try:
+        return fn(*args, **kwargs)
+    except backend_client.BackendValidationError as e:
+        raise HTTPException(422, str(e)) from e
+    except backend_client.BackendAuthError as e:
+        raise HTTPException(403, str(e)) from e
+    except backend_client.BackendUnavailableError as e:
+        raise HTTPException(502, str(e)) from e
+
+
+class BudgetLimitsBody(BaseModel):
+    """4개 전체 스냅샷 — 부분 갱신이 아니다(백엔드 append-only 이력에 완전한 설정이 남아야 함).
+    null = 그 상한 비활성. 값 검증(0·음수 거부, 월<일 거부)은 백엔드가 단일 진실로 한다."""
+
+    subject_daily_usd: float | None = None
+    subject_monthly_usd: float | None = None
+    global_daily_usd: float | None = None
+    global_monthly_usd: float | None = None
+
+
+class RetrievalParamsBody(BaseModel):
+    """5개 전체 스냅샷. 값 검증(범위·nan/inf)은 백엔드가 한다."""
+
+    candidate_pool_size: int
+    rerank_candidates: int
+    rrf_k: int
+    vector_weight: float
+    bm25_weight: float
+
+
+@app.get("/settings/budget-limits")
+def get_budget_limits() -> dict:
+    """현재 활성 LLM 예산 상한 (백엔드 RPA-173). source=db면 누가 바꾼 값, config면 백엔드 .env."""
+    return _settings_call(backend_client.fetch_budget_limits)
+
+
+@app.put("/settings/budget-limits")
+def put_budget_limits(body: BudgetLimitsBody) -> dict:
+    """LLM 예산 상한 갱신 — 재배포 없이 다음 턴부터 반영.
+
+    ⚠️ 서비스를 막는 값이다. 근거는 백엔드 scripts/budget_calibration_report.py로 뽑는다.
+    """
+    return _settings_call(backend_client.update_budget_limits, **body.model_dump())
+
+
+@app.get("/settings/retrieval-params")
+def get_retrieval_params() -> dict:
+    """현재 활성 RAG 검색 파라미터 (백엔드 RPA-149)."""
+    return _settings_call(backend_client.fetch_retrieval_params)
+
+
+@app.put("/settings/retrieval-params")
+def put_retrieval_params(body: RetrievalParamsBody) -> dict:
+    """RAG 검색 파라미터 갱신 — 재시작 없이 다음 검색부터 반영."""
+    return _settings_call(backend_client.update_retrieval_params, **body.model_dump())
+
+
 @app.get("/eval/export/comparison-xlsx")
 def export_comparison_xlsx(label_a: str, label_b: str) -> Response:
     """AB_comparison_report.xlsx(a360-eval-sandbox)와 같은 스타일로 두 버전(agent_label)
