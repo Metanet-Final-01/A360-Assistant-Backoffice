@@ -20,6 +20,22 @@ from config import OPS_BACKEND_URL
 
 _TIMEOUT = 15
 
+# 위젯 key 목록 — 저장 성공·새로고침 시 지워서 DB 최신값으로 재초기화한다.
+_BUDGET_KEYS = ("b_sd", "b_sm", "b_gd", "b_gm")
+_RETRIEVAL_KEYS = ("r_pool", "r_rerank", "r_k", "r_vw", "r_bw")
+
+
+def _reset_widgets(keys: tuple[str, ...]) -> None:
+    """위젯 session_state를 비워 다음 렌더가 GET 값으로 다시 초기화되게 한다 (#38 리뷰).
+
+    **왜 필요한가**: Streamlit은 `key`가 있으면 위젯 값을 session_state에 고정하고 `value=`를
+    첫 렌더에만 쓴다("a key stabilizes the widget's identity and preserves its value"). 그래서
+    다른 관리자가 값을 바꿔도 이 화면의 입력칸은 **옛 값을 계속 들고 있고**, 그대로 저장하면
+    남의 변경을 조용히 되돌린다(lost update). 저장 성공·명시적 새로고침 때 지워야 한다.
+    """
+    for k in keys:
+        st.session_state.pop(k, None)
+
 
 def _get(path: str) -> dict | None:
     """설정 조회. 실패는 화면에 사유별로 보여준다(권한/연결/값) — 조용히 비면 안 된다."""
@@ -59,15 +75,26 @@ def _put(path: str, body: dict) -> dict | None:
     return r.json()
 
 
-def _source_badge(data: dict) -> None:
-    """지금 적용 중인 값이 어디서 왔는지 — 이게 안 보이면 관리자가 옛 값을 보고 조작한다."""
-    if data.get("source") == "db":
-        st.caption(
-            f"🟢 **적용 중: 여기서 바꾼 값** · 마지막 변경 `{data.get('updated_by') or '?'}` "
-            f"· {data.get('updated_at') or '시각 미상'}"
-        )
-    else:
-        st.caption("⚪ **적용 중: 백엔드 .env 기본값** — 아직 여기서 바꾼 적이 없습니다.")
+def _source_badge(data: dict, keys: tuple[str, ...], refresh_key: str) -> None:
+    """지금 적용 중인 값이 어디서 왔는지 + 최신값 다시 불러오기.
+
+    새로고침이 필요한 이유: 입력칸은 session_state에 고정돼 있어(위 _reset_widgets 참고) 다른
+    관리자가 바꾼 값이 자동으로 안 들어온다. 저장 전에 최신 상태를 확인할 수단이 있어야 한다.
+    """
+    col1, col2 = st.columns([5, 1])
+    with col1:
+        if data.get("source") == "db":
+            st.caption(
+                f"🟢 **적용 중: 여기서 바꾼 값** · 마지막 변경 `{data.get('updated_by') or '?'}` "
+                f"· {data.get('updated_at') or '시각 미상'}"
+            )
+        else:
+            st.caption("⚪ **적용 중: 백엔드 .env 기본값** — 아직 여기서 바꾼 적이 없습니다.")
+    with col2:
+        if st.button("↻ 최신값", key=refresh_key,
+                     help="다른 관리자가 바꿨을 수 있습니다 — 입력칸을 현재 적용값으로 되돌립니다"):
+            _reset_widgets(keys)
+            st.rerun()
 
 
 def _num_or_none(label: str, value, key: str, help: str) -> float | None:
@@ -91,7 +118,7 @@ def _render_budget() -> None:
     data = _get("/settings/budget-limits")
     if data is None:
         return
-    _source_badge(data)
+    _source_badge(data, _BUDGET_KEYS, "b_refresh")
 
     st.info(
         "⚠️ **서비스를 막는 값입니다.** 너무 낮으면 정상 사용자가 429를 맞고, 너무 높으면 방어가 "
@@ -122,6 +149,9 @@ def _render_budget() -> None:
             })
             if saved:
                 st.success("저장했습니다 — 재배포 없이 다음 턴부터 반영됩니다.")
+                # 위젯을 비워 다음 렌더가 **DB에서 다시 읽은 값**으로 초기화되게 한다 —
+                # 저장된 게 정말 뭔지 확인시키고, 이후 남의 변경도 제때 반영된다.
+                _reset_widgets(_BUDGET_KEYS)
                 st.rerun()
 
 
@@ -133,7 +163,7 @@ def _render_retrieval() -> None:
     data = _get("/settings/retrieval-params")
     if data is None:
         return
-    _source_badge(data)
+    _source_badge(data, _RETRIEVAL_KEYS, "r_refresh")
 
     with card("retrieval_form"):
         c1, c2 = st.columns(2)
@@ -167,6 +197,7 @@ def _render_retrieval() -> None:
             })
             if saved:
                 st.success("저장했습니다 — 재시작 없이 다음 검색부터 반영됩니다.")
+                _reset_widgets(_RETRIEVAL_KEYS)
                 st.rerun()
 
 

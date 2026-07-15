@@ -1,8 +1,4 @@
-"""A360-Assistant-Backend(실서비스 백엔드)의 모니터링용 admin API를 호출한다.
-
-**읽기 + 런타임 설정 쓰기** (RPA-174). 오랫동안 읽기 전용이었으나, 백엔드가 만들어둔 무중단
-튜닝 API(retrieval-params RPA-149 / budget-limits RPA-173)를 쓸 화면이 없어 놀고 있어서
-쓰기 경로를 연다. 쓰기는 GET과 **같은 인증·에러 처리**를 재사용한다(_authed_request).
+"""A360-Assistant-Backend(실서비스 백엔드)의 모니터링용 읽기 전용 API를 호출한다.
 
 인증 두 방식 (A360_BACKEND_OPS_API_KEY 설정 여부로 자동 선택):
 - **서비스 API 키(권장)**: A360_BACKEND_OPS_API_KEY를 X-API-Key 헤더로 보낸다. 머신(M2M)
@@ -47,15 +43,6 @@ class BackendUnavailableError(RuntimeError):
     """A360-Assistant-Backend에 연결 자체가 안 될 때."""
 
 
-class BackendValidationError(ValueError):
-    """백엔드가 값을 거부했을 때 (400/422) — 백엔드가 준 detail을 그대로 담는다 (RPA-174).
-
-    쓰기 경로에서만 의미가 있다. 인증 실패(BackendAuthError)·연결 실패(BackendUnavailableError)와
-    구분해야 화면이 "내 입력이 틀렸다"와 "시스템이 문제다"를 다르게 보여줄 수 있다 — 예산 상한의
-    '월<일 거부' 같은 규칙 위반은 사용자가 고칠 수 있는 것이므로 원문을 보여줘야 한다.
-    """
-
-
 def credentials_configured() -> bool:
     """API 키 또는 관리자 로그인 자격 중 하나라도 있으면 True."""
     return bool(_OPS_API_KEY) or bool(_ADMIN_EMAIL and _ADMIN_PASSWORD)
@@ -87,44 +74,25 @@ def _raise_for_auth(resp: httpx.Response) -> None:
         raise BackendAuthError(f"권한 없음(403): {resp.text} — {hint} 확인하세요.")
 
 
-def _raise_for_validation(resp: httpx.Response) -> None:
-    """400/422는 사용자가 고칠 수 있는 값 오류 — 백엔드 detail을 그대로 올린다 (RPA-174).
-
-    raise_for_status에 맡기면 HTTPStatusError가 되어 화면이 "시스템 오류"로 오인시킨다.
-    """
-    if resp.status_code in (400, 422):
-        raise BackendValidationError(f"값이 거부됐습니다({resp.status_code}): {resp.text}")
-
-
-def _authed_request(method: str, path: str, params: dict | None = None,
-                    json: dict | None = None) -> dict:
-    """인증된 백엔드 admin 호출. GET/PUT 공용 — 인증·재로그인·에러 분류를 한 곳에 둔다.
-
-    쓰기를 위해 메서드만 파라미터화했다(RPA-174). 이 로직을 PUT용으로 복제하면 토큰 재로그인·
-    403 힌트·연결 실패 구분이 두 벌로 갈려 한쪽만 고치는 사고가 난다.
-    """
+def _authed_get(path: str, params: dict) -> dict:
     global _token_cache
     with _client() as client:
         try:
             if _OPS_API_KEY:
                 # 서비스 키 경로 — 로그인 없이 X-API-Key. 만료/재로그인 개념 없음.
-                resp = client.request(method, path, params=params, json=json,
-                                      headers={"X-API-Key": _OPS_API_KEY})
+                resp = client.get(path, params=params, headers={"X-API-Key": _OPS_API_KEY})
                 if resp.status_code == 401:
                     raise BackendAuthError(f"인증 실패(401): {resp.text}")
                 _raise_for_auth(resp)
-                _raise_for_validation(resp)
                 resp.raise_for_status()
                 return resp.json()
             # 관리자 로그인 폴백 경로
             if _token_cache is None:
                 _token_cache = _login(client)
-            headers = {"Authorization": f"Bearer {_token_cache}"}
-            resp = client.request(method, path, params=params, json=json, headers=headers)
+            resp = client.get(path, params=params, headers={"Authorization": f"Bearer {_token_cache}"})
             if resp.status_code == 401:
                 _token_cache = _login(client)
-                headers = {"Authorization": f"Bearer {_token_cache}"}
-                resp = client.request(method, path, params=params, json=json, headers=headers)
+                resp = client.get(path, params=params, headers={"Authorization": f"Bearer {_token_cache}"})
             if resp.status_code == 401:
                 # 재로그인 직후에도 401이면 토큰 만료가 아니라 자격증명 자체가 틀렸다는
                 # 뜻 — httpx.HTTPError로 흘려보내면 502(연결 실패)로 오인되니 여기서
@@ -134,21 +102,12 @@ def _authed_request(method: str, path: str, params: dict | None = None,
                     "A360_BACKEND_ADMIN_EMAIL/PASSWORD가 올바른지 확인하세요."
                 )
             _raise_for_auth(resp)
-            _raise_for_validation(resp)
             resp.raise_for_status()
             return resp.json()
         except httpx.RequestError as e:
             # 전송 실패(네트워크·타임아웃)만 '연결 실패'로. raise_for_status가 던지는
             # HTTPStatusError(4xx/5xx)는 그대로 전파 — 응답 상태를 '연결 실패'로 오인시키지 않는다.
             raise BackendUnavailableError(f"{BACKEND_URL} 연결 실패: {e}") from e
-
-
-def _authed_get(path: str, params: dict) -> dict:
-    return _authed_request("GET", path, params=params)
-
-
-def _authed_put(path: str, body: dict) -> dict:
-    return _authed_request("PUT", path, json=body)
 
 
 def probe_health() -> dict:
@@ -218,66 +177,6 @@ def fetch_usage_daily(days: int = 30, component: str | None = None, model: str |
 def fetch_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
     params = {k: v for k, v in {"session_id": session_id, "limit": limit}.items() if v is not None}
     return _authed_get("/api/admin/turn-events", params)
-
-
-# ── 런타임 설정 (읽기+쓰기) — 백엔드가 무중단 튜닝용으로 만든 API (RPA-174) ──────────
-# 두 API 모두 DB 오버라이드가 있으면 그 값(source="db"), 없으면 백엔드 .env(source="config")를
-# 준다. PUT은 append-only라 되돌리기 = 이전 값으로 다시 PUT (이력은 updated_by/updated_at).
-
-
-def fetch_budget_limits() -> dict:
-    """현재 활성 LLM 예산 상한 (백엔드 RPA-173).
-
-    반환: {source, subject_daily_usd, subject_monthly_usd, global_daily_usd,
-           global_monthly_usd, updated_by, updated_at}. 값이 null이면 그 상한 비활성.
-    """
-    return _authed_get("/api/admin/budget-limits", {})
-
-
-def update_budget_limits(
-    subject_daily_usd: float | None, subject_monthly_usd: float | None,
-    global_daily_usd: float | None, global_monthly_usd: float | None,
-) -> dict:
-    """LLM 예산 상한 갱신 — 재배포 없이 다음 턴부터 반영 (백엔드 RPA-173).
-
-    ⚠️ **서비스를 막는 값이다.** 잘못 낮추면 정상 사용자가 429를 맞는다 — 백엔드 최초 구현의
-    예시값($1/일)이 실측 최대($2.02/사용자-일)보다 낮아 켰으면 사고였다. 근거는 백엔드
-    scripts/budget_calibration_report.py로 뽑는다.
-    4개 값 전체 스냅샷을 보낸다(부분 갱신 아님 — 감사 이력에 완전한 설정이 남아야 한다).
-    null = 그 상한 비활성. 백엔드가 0·음수와 '월<일'을 거부한다(BackendValidationError).
-    """
-    return _authed_put("/api/admin/budget-limits", {
-        "subject_daily_usd": subject_daily_usd,
-        "subject_monthly_usd": subject_monthly_usd,
-        "global_daily_usd": global_daily_usd,
-        "global_monthly_usd": global_monthly_usd,
-    })
-
-
-def fetch_retrieval_params() -> dict:
-    """현재 활성 RAG 검색 파라미터 (백엔드 RPA-149).
-
-    반환: {source, candidate_pool_size, rerank_candidates, rrf_k, vector_weight,
-           bm25_weight, updated_by, updated_at}.
-    """
-    return _authed_get("/api/admin/retrieval-params", {})
-
-
-def update_retrieval_params(
-    candidate_pool_size: int, rerank_candidates: int, rrf_k: int,
-    vector_weight: float, bm25_weight: float,
-) -> dict:
-    """RAG 검색 파라미터 갱신 — 재시작 없이 다음 검색부터 반영 (백엔드 RPA-149).
-
-    5개 값 전체 스냅샷(부분 갱신 아님). 백엔드가 범위(1 이상)·nan/inf를 거부한다.
-    """
-    return _authed_put("/api/admin/retrieval-params", {
-        "candidate_pool_size": candidate_pool_size,
-        "rerank_candidates": rerank_candidates,
-        "rrf_k": rrf_k,
-        "vector_weight": vector_weight,
-        "bm25_weight": bm25_weight,
-    })
 
 
 def fetch_rag_logs_recent(limit: int = 100) -> dict:
