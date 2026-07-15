@@ -43,6 +43,22 @@ def _raise_for_validation(resp: httpx.Response) -> None:
         raise BackendValidationError(f"값이 거부됐습니다({resp.status_code}): {resp.text}")
 
 
+def _raise_for_backend_5xx(resp: httpx.Response) -> None:
+    """백엔드가 5xx면 "백엔드가 죽었다"로 올린다 (#38 리뷰).
+
+    raise_for_status()가 던지는 httpx.HTTPStatusError는 **httpx.RequestError의 서브클래스가
+    아니라**(실측 확인) 아래 except에 안 잡힌다. 그러면 ops-server가 502가 아니라 500을 뱉고,
+    화면은 "저장 실패(500)"라는 무의미한 메시지를 보여준다 — 502를 만든 이유(백엔드 장애를
+    사용자 입력 오류·권한 문제와 구분)가 무너진다.
+
+    4xx는 여기서 안 잡는다: 401/403/400/422는 위에서 각자 의미를 붙여 이미 처리했고, 남은
+    4xx(404 등)는 "연결 실패"가 아니라 계약 문제라 HTTPStatusError로 그대로 두는 게 정확하다.
+    """
+    if resp.status_code >= 500:
+        raise BackendUnavailableError(
+            f"{BACKEND_URL} 백엔드 오류({resp.status_code}): {resp.text[:200]}")
+
+
 def _authed_request(method: str, path: str, json: dict | None = None) -> dict:
     """인증된 백엔드 admin 호출 (GET/PUT). 인증 흐름은 observability 클라이언트와 동일 규칙.
 
@@ -58,6 +74,7 @@ def _authed_request(method: str, path: str, json: dict | None = None) -> dict:
                     raise BackendAuthError(f"인증 실패(401): {resp.text}")
                 _raise_for_auth(resp)
                 _raise_for_validation(resp)
+                _raise_for_backend_5xx(resp)
                 resp.raise_for_status()
                 return resp.json()
             # 관리자 로그인 폴백 경로
@@ -76,6 +93,7 @@ def _authed_request(method: str, path: str, json: dict | None = None) -> dict:
                 )
             _raise_for_auth(resp)
             _raise_for_validation(resp)
+            _raise_for_backend_5xx(resp)
             resp.raise_for_status()
             return resp.json()
         except httpx.RequestError as e:
