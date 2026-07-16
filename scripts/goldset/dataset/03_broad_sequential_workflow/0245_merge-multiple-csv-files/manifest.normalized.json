@@ -1,0 +1,127 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [
+        "Automation Anywhere\\Bot Store\\Automation 360 – Merge Multiple CSV Files - Automation Anywhere\\Mergedll.dll"
+      ],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Automation 360 – Merge Multiple CSV Files - Automation Anywhere\\Merge Multiple CSV Files",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Automation 360 – Merge Multiple CSV Files - Automation Anywhere\\Source2.csv",
+        "Automation Anywhere\\Bot Store\\Automation 360 – Merge Multiple CSV Files - Automation Anywhere\\Source1.csv",
+        "Automation Anywhere\\Bot Store\\Automation 360 – Merge Multiple CSV Files - Automation Anywhere\\Mergedll.dll"
+      ],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/x-msdownload",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Automation 360 – Merge Multiple CSV Files - Automation Anywhere\\Mergedll.dll",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/vnd.ms-excel",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Automation 360 – Merge Multiple CSV Files - Automation Anywhere\\Source1.csv",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/vnd.ms-excel",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Automation 360 – Merge Multiple CSV Files - Automation Anywhere\\Source2.csv",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.4.0-20210118-185007.jar",
+      "version": "2.4.0-20210118-185007"
+    },
+    {
+      "name": "DLL",
+      "path": "bot-command-rundll-3.4.0-20210118-185806.jar",
+      "version": "3.4.0-20210118-185806"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.2.0-20210118-185018.jar",
+      "version": "2.2.0-20210118-185018"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.4.0-20210118-185029.jar",
+      "version": "2.4.0-20210118-185029"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-3.2.0-20210118-185031.jar",
+      "version": "3.2.0-20210118-185031"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-3.1.0-20210118-185034.jar",
+      "version": "3.1.0-20210118-185034"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.1.0-20210118-185039.jar",
+      "version": "2.1.0-20210118-185039"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.2.0-20210118-185320.jar",
+      "version": "2.2.0-20210118-185320"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.1.0-20210118-185321.jar",
+      "version": "2.1.0-20210118-185321"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.3.0-20210118-185335.jar",
+      "version": "2.3.0-20210118-185335"
+    },
+    {
+      "name": "Screen",
+      "path": "bot-command-screen-2.2.0-20210118-185815.jar",
+      "version": "2.2.0-20210118-185815"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20210128-041514.jar",
+      "version": "2.0.0-20210128-041514"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.2.0-20210118-185827.jar",
+      "version": "3.2.0-20210118-185827"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-3.1.0-20210122-195716.jar",
+      "version": "3.1.0-20210122-195716"
+    },
+    {
+      "name": "TaskBot",
+      "path": "bot-command-task-2.0.1-20210128-041521.jar",
+      "version": "2.0.1-20210128-041521"
+    }
+  ]
+}

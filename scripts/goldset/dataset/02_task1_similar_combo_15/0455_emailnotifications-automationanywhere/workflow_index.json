@@ -1,0 +1,12 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0455_emailnotifications-automationanywhere",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "EmailNotifications-AutomationAnywhere",
+      "manual_dependencies": [],
+      "output_file": "workflows/EmailNotifications-AutomationAnywhere.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

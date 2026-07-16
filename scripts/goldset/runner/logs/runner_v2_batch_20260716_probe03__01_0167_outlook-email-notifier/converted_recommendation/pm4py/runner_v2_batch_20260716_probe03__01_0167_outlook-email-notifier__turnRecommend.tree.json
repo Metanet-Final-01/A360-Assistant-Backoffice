@@ -1,0 +1,106 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "File.filePackageCreateAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "File.filePackageCreateAction",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Excel advanced.cloudExcelOpen",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Error handler.errorHandlerCatch",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Error handler.errorHandlerFinally",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Excel advanced.excelAdvancedPackageGetSingleCellAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Excel advanced.excelAdvancedPackageGetSingleCellAction",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "Message box.usingMessageBoxAction",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Data Table.cloudWriteToFileAction",
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Excel advanced.excelAdvancedPackageCloseAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Task Bot.taskBotPackageStopAction",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

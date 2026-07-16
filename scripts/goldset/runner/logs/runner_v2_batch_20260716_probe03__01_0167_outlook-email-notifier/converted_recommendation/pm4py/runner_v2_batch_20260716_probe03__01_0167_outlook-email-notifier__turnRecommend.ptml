@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="9548439d-a1d9-48f5-a8ac-a0c24f3c5d20" root="7face44a-2807-4fe0-9b95-6c5bf4420719" id="47c95c16-b034-4197-9910-32beba8f3643">
+    <sequence name="" id="7face44a-2807-4fe0-9b95-6c5bf4420719"/>
+    <sequence name="" id="033df4fc-29b3-4448-bfe9-fa5fab3b81ba"/>
+    <automaticTask name="" id="261ea1fb-8707-467b-8c52-b9e7efa90639"/>
+    <sequence name="" id="d53fec7d-45e8-432b-a0a7-5dc641138216"/>
+    <sequence name="" id="a085336e-e49f-4d5b-ac95-c32e8a17d0a6"/>
+    <sequence name="" id="d23bf910-ee92-46a6-8c63-3fd3a4e2b3a3"/>
+    <manualTask name="Message box.usingMessageBoxAction" id="2cea81eb-ba22-486a-80f6-2354452ab13d"/>
+    <manualTask name="Data Table.cloudWriteToFileAction" id="30b93a23-0ef1-422e-bdb4-836acd4663b1"/>
+    <sequence name="" id="2013aba2-4453-4e45-ab78-5ec1722ebd36"/>
+    <manualTask name="File.filePackageCreateAction" id="ba1fefec-8fb2-47db-a125-51e0bc551371"/>
+    <manualTask name="File.filePackageCreateAction" id="184a9805-c176-462c-bdf3-b9945590ca36"/>
+    <manualTask name="Excel advanced.cloudExcelOpen" id="6c2f1322-f783-4198-b006-6ffac061dc84"/>
+    <manualTask name="Error handler.errorHandlerCatch" id="edf8a8a0-dab5-42c1-9eec-f833231f5d60"/>
+    <manualTask name="Error handler.errorHandlerFinally" id="4cdf93ef-6c61-43d1-9a31-50209873e05e"/>
+    <manualTask name="Excel advanced.excelAdvancedPackageGetSingleCellAction" id="27079d8d-500d-4ea5-86ed-5184f66af81b"/>
+    <manualTask name="Excel advanced.excelAdvancedPackageGetSingleCellAction" id="a39db1f8-0dd8-4e5a-a184-a189d56c68b6"/>
+    <manualTask name="Microsoft 365 Outlook.ms365OutlookSaveAllAttachments" id="4ee49e37-f33f-41b5-a625-1a5bf59c4e2d"/>
+    <manualTask name="Microsoft 365 Outlook.ms365OutlookSaveAllAttachments" id="5b00ebf8-d2fc-4963-b052-e7d2478d04c0"/>
+    <manualTask name="Excel advanced.excelAdvancedPackageCloseAction" id="e6fb02bf-8baa-474f-99e4-cbe4cf50d417"/>
+    <manualTask name="Task Bot.taskBotPackageStopAction" id="3f95e1d2-edcc-48ad-aa6e-0c089a4d2d33"/>
+    <parentsNode id="8751a67b-20ee-44d5-afc2-e4b2538ef94d" sourceId="7face44a-2807-4fe0-9b95-6c5bf4420719" targetId="033df4fc-29b3-4448-bfe9-fa5fab3b81ba"/>
+    <parentsNode id="6a89df2d-d85e-4c63-8d44-28957d80dcbd" sourceId="7face44a-2807-4fe0-9b95-6c5bf4420719" targetId="261ea1fb-8707-467b-8c52-b9e7efa90639"/>
+    <parentsNode id="ca0e93b9-03ff-4c06-9953-9b281bbdc489" sourceId="7face44a-2807-4fe0-9b95-6c5bf4420719" targetId="d53fec7d-45e8-432b-a0a7-5dc641138216"/>
+    <parentsNode id="0484412e-2d4c-4227-9309-3d86fa23d5dc" sourceId="7face44a-2807-4fe0-9b95-6c5bf4420719" targetId="a085336e-e49f-4d5b-ac95-c32e8a17d0a6"/>
+    <parentsNode id="1e415da7-1f57-440b-84e9-b5ec1788cb99" sourceId="7face44a-2807-4fe0-9b95-6c5bf4420719" targetId="d23bf910-ee92-46a6-8c63-3fd3a4e2b3a3"/>
+    <parentsNode id="103165e5-28df-4c05-b6cb-1551facf9c23" sourceId="7face44a-2807-4fe0-9b95-6c5bf4420719" targetId="2cea81eb-ba22-486a-80f6-2354452ab13d"/>
+    <parentsNode id="a5f784f5-d66b-4baa-a4d0-4c1cd1ca2c58" sourceId="7face44a-2807-4fe0-9b95-6c5bf4420719" targetId="30b93a23-0ef1-422e-bdb4-836acd4663b1"/>
+    <parentsNode id="aa7ba9f7-fa37-4aa9-8740-e44658ae5d5c" sourceId="7face44a-2807-4fe0-9b95-6c5bf4420719" targetId="2013aba2-4453-4e45-ab78-5ec1722ebd36"/>
+    <parentsNode id="838b6c82-6653-4389-a844-bc4c9f5749da" sourceId="033df4fc-29b3-4448-bfe9-fa5fab3b81ba" targetId="ba1fefec-8fb2-47db-a125-51e0bc551371"/>
+    <parentsNode id="09616bb3-9e3f-417d-8191-279d1cb95a83" sourceId="033df4fc-29b3-4448-bfe9-fa5fab3b81ba" targetId="184a9805-c176-462c-bdf3-b9945590ca36"/>
+    <parentsNode id="558887da-393c-40ca-92c0-293d63295842" sourceId="d53fec7d-45e8-432b-a0a7-5dc641138216" targetId="6c2f1322-f783-4198-b006-6ffac061dc84"/>
+    <parentsNode id="4b0e6bff-3ffc-45b1-ac6f-c752a16dcfac" sourceId="d53fec7d-45e8-432b-a0a7-5dc641138216" targetId="edf8a8a0-dab5-42c1-9eec-f833231f5d60"/>
+    <parentsNode id="956f6ed2-bb99-4b71-a831-fb40cf0293d3" sourceId="d53fec7d-45e8-432b-a0a7-5dc641138216" targetId="4cdf93ef-6c61-43d1-9a31-50209873e05e"/>
+    <parentsNode id="7f7e0940-9580-4ebe-983d-c1f9054b9068" sourceId="a085336e-e49f-4d5b-ac95-c32e8a17d0a6" targetId="27079d8d-500d-4ea5-86ed-5184f66af81b"/>
+    <parentsNode id="27c5f60a-7c24-4154-abf0-acbf40101841" sourceId="a085336e-e49f-4d5b-ac95-c32e8a17d0a6" targetId="a39db1f8-0dd8-4e5a-a184-a189d56c68b6"/>
+    <parentsNode id="46760fb3-1985-4a10-90b2-22c18b39408b" sourceId="d23bf910-ee92-46a6-8c63-3fd3a4e2b3a3" targetId="4ee49e37-f33f-41b5-a625-1a5bf59c4e2d"/>
+    <parentsNode id="e5ffd203-190f-46dd-9a41-0e850eb0068f" sourceId="d23bf910-ee92-46a6-8c63-3fd3a4e2b3a3" targetId="5b00ebf8-d2fc-4963-b052-e7d2478d04c0"/>
+    <parentsNode id="8433ce10-a6e0-4533-8e44-e9f0db1bb331" sourceId="2013aba2-4453-4e45-ab78-5ec1722ebd36" targetId="e6fb02bf-8baa-474f-99e4-cbe4cf50d417"/>
+    <parentsNode id="69d12158-8da1-4f22-9033-31464b098c4f" sourceId="2013aba2-4453-4e45-ab78-5ec1722ebd36" targetId="3f95e1d2-edcc-48ad-aa6e-0c089a4d2d33"/>
+  </processTree>
+</ptml>

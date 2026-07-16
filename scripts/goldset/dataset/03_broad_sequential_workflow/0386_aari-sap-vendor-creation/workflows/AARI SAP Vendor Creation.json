@@ -1,0 +1,5653 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Verify Bot Name and Vendor Name",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Bot Name and Vendor Name will drive logging - and are required to be filled. Additionaly, these values should be passed to a subtask (if subtasks are expected) or passed from a parent task if this bot will be called as a subtask.",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "afecea62-6a63-4c4a-be29-8935c909ab11"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Vendor Creation",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sBotName"
+          },
+          "uid": "4e7a08b5-c652-4b17-8f5f-4af45ea92f98"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Automation Anywhere",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sVendorName"
+          },
+          "uid": "d0e999cc-2bb8-4d3f-bc38-dbbaf0be15f3"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$sBotName$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sNull$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "matchCase",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isIgnoreCarriage",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "name": "condition",
+              "operatorAttribute": {
+                "attributes": [
+                  {
+                    "name": "variable",
+                    "value": {
+                      "expression": "$sVendorName$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "operator",
+                    "value": {
+                      "string": "EQ",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "value",
+                    "value": {
+                      "expression": "$sNull$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "matchCase",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "name": "isIgnoreCarriage",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  }
+                ],
+                "operator": "OR",
+                "value": {
+                  "conditionalName": "stringVariable",
+                  "packageName": "String",
+                  "type": "CONDITIONAL"
+                }
+              },
+              "value": {
+                "conditionalName": "stringVariable",
+                "packageName": "String",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "string": "Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines.",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "messageBox",
+              "disabled": false,
+              "packageName": "MessageBox",
+              "uid": "eb5eec9c-c21a-4d4c-b116-3a92f27181b0"
+            },
+            {
+              "commandName": "stopTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "uid": "2deec4e9-b9c8-44d4-82f3-1ac19785f534"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "2606d85a-7afb-441c-9bcd-11e9e2b748cf"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "1d38902d-a90b-4a5b-994b-315708293833"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Setup Log Folders/Locations",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Bot logging root set by default to logging location used by the bot agent. See the variables pane for sRootLogDirectory.",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "46668bdf-ec28-41c0-889b-f547d7bf0da8"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$sRootLogDirectory$\\$sBotName$-$sVendorName$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sErrorFolder"
+          },
+          "uid": "5de46378-7cae-4f89-83cf-6d505f853b6e"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$sRootLogDirectory$\\$sBotName$-$sVendorName$\\Logs",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sLogFolder"
+          },
+          "uid": "1d53747d-e397-44e4-a9fb-d153a15f9b5e"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$sRootLogDirectory$\\$sBotName$-$sVendorName$\\Snapshots",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sSnapshotsFolder"
+          },
+          "uid": "82f408ac-c1b5-4f04-a3f5-d5bf32d89c92"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Creating default log/error directories specific to this bot",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "16c77789-d6e3-465b-a004-9eb16092ef97"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sRootLogDirectory$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sRootLogDirectory$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "8317e3f9-593d-4774-837a-b587007dafbd"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "ef5f9797-218a-4774-accf-6101a4c6aca9"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sErrorFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sErrorFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "9cfafa9f-4ba0-411a-ab53-4400afc80a15"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "3a6057c0-407d-4e69-b49d-bbbea3778c3c"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "b9ab056a-f9b2-499e-b9a5-6797efdfefdf"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "44cce3f5-f907-40d6-ae1e-8e2f80b4fc43"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "7928b5ad-55f0-4f28-af40-a49c82ae32c0"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "181e8003-ec81-4280-9658-b3cef7dc0f03"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "PREBUILT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "preBuiltPattern",
+              "value": {
+                "string": "ISO_LOCAL_DATE",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "toString",
+          "disabled": false,
+          "packageName": "Datetime",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sCurrentDate"
+          },
+          "uid": "ad97e73e-e190-4678-a5f1-b01c2fbe6f4a"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "3a57a141-a00e-4fad-aef7-cc60130b25f6"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Clear out old logs",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Setting lookback period for how long to keep logs for. Default is 30, can be customized as desired.",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "feded8e8-4483-4e32-8918-7c111f3822f6"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "val",
+              "value": {
+                "expression": "$nLoggingPeriod$",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "unit",
+              "value": {
+                "string": "DAYS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "subtract",
+          "disabled": false,
+          "packageName": "Datetime",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "dtLogCutoffDate"
+          },
+          "uid": "23c883d9-d6e7-4b7b-b61e-73a9d19f9f94"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "dtLogCutoffDate"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "MM/dd/yy",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "toString",
+          "disabled": false,
+          "packageName": "Datetime",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sLogCutoffDate"
+          },
+          "uid": "e8910c63-f0b4-4d40-b6c5-1d1a48bbe67b"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Surrounding delete actions in try handlers as to not cause the bot to fail its run in the case a log file couldnt be deleted. ",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "3357f2a1-1233-4acb-b67f-4b35ee5e69b9"
+        },
+        {
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Deleting all files from logs folder older than nLoggingPeriod days since last modification",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "478b7369-bf15-4abd-b886-570d7c6317c5"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sLogFolder$/*.csv",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "dateValue",
+                  "value": {
+                    "string": "Modified",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "dateRangeValue",
+                  "value": {
+                    "string": "Before",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "beforeDate",
+                  "value": {
+                    "expression": "$sLogCutoffDate$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "deleteFiles",
+              "disabled": false,
+              "packageName": "File",
+              "uid": "d82bf036-c312-447e-8c49-e5731c423573"
+            }
+          ],
+          "commandName": "try",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "d30df56f-2b28-4e99-b5c9-76d15d4ee600"
+        },
+        {
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Deleting all files from snapshots folder older than nLoggingPeriod days since last modification",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "94e48479-01eb-487c-a36a-7d7ea2cfbc5b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sSnapshotsFolder$/*.jpg",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "dateValue",
+                  "value": {
+                    "string": "Modified",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "dateRangeValue",
+                  "value": {
+                    "string": "Before",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "beforeDate",
+                  "value": {
+                    "expression": "$sLogCutoffDate$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "deleteFiles",
+              "disabled": false,
+              "packageName": "File",
+              "uid": "71b7a573-0d18-438b-9fa7-e81a9df8ee01"
+            }
+          ],
+          "commandName": "try",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "4c1ebdbe-6c43-48c3-b277-3109d34fa818"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "a97662fc-f8fe-45b8-a0cd-01071c3b6655"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Logic Runs on Error",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "c081ab04-7d04-4202-a1dc-bf45e44e0049"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Log Error",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceFilePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "fileNotExists",
+                        "packageName": "File",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "Creating file if it doesnt previously exist so that the header row can be created",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "bd7fbab2-45b2-49c6-83ac-4d4b40f23282"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFile",
+                      "disabled": false,
+                      "packageName": "File",
+                      "uid": "d3f9c9b2-776f-4230-bd8e-b86ab1d9d487"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "Date,System,TaskName,ErrorLine,ErrorDescription",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "logToFile",
+                      "disabled": false,
+                      "packageName": "LogToFile",
+                      "uid": "5d64a7a2-3b72-40d4-a54e-80a32034dd9c"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "f07cde43-6dca-4a37-8161-842f5b71251f"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "packageName": "System",
+                        "type": "VARIABLE",
+                        "variableName": "Date"
+                      }
+                    },
+                    {
+                      "name": "selectPattern",
+                      "value": {
+                        "string": "PREBUILT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "preBuiltPattern",
+                      "value": {
+                        "string": "ISO_LOCAL_DATE_TIME",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "toString",
+                  "disabled": false,
+                  "packageName": "Datetime",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sDateTime"
+                  },
+                  "uid": "4901b719-a704-4640-ae3b-ef81b3c6d397"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "$nErrorLineNumber$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "numFormatDigits",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "toString",
+                  "disabled": false,
+                  "packageName": "Number",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sErrorLineNumber"
+                  },
+                  "uid": "e94490df-99f7-443b-a6bf-5fd83778aae0"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Logging error to file matching header row established format",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "9dd3e600-1446-41b4-905a-da479dc8094b"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "$sDateTime$,$System:Machine$,$System:AATaskName$,$sErrorLineNumber$,\"$sErrorDescription$\"",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "logToFile",
+                  "disabled": false,
+                  "packageName": "LogToFile",
+                  "uid": "1314873a-4a34-4bb0-b6ab-76c2bc6ba0fe"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "4b4e04d3-d84a-4561-a0fb-a1de79bc39d7"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Record Snapshot",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Taking snapshot. Please disable/remove this action if your screen could potential contain plain text PII",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "b551d11e-bdae-40a4-83ea-c52ad114150a"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sSnapshotsFolder$/$sCurrentDate$_$sBotName$.jpg",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "isOverwriteFile",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "captureDesktop",
+                  "disabled": false,
+                  "packageName": "Screen",
+                  "uid": "533057c4-354b-4d7d-82a1-ebe86b960a63"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "ed9b5b64-a250-440c-a106-761a1fc83d57"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "nErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "sErrorDescription"
+            }
+          },
+          "uid": "1be2745c-9df6-478c-b114-903ba79f90c4"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Open SAP",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "string": "file:///C:/Program%20Files%20%28x86%29/SAP/FrontEnd/SapGui/saplogon.exe",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "startInPath",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "parameters",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "runApp",
+              "disabled": false,
+              "packageName": "Application",
+              "uid": "e7cca752-a0db-4020-8cdc-816151a50acc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "waitType",
+                  "value": {
+                    "string": "OPEN",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "window",
+                  "value": {
+                    "expression": "$window-1$",
+                    "type": "WINDOW"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "5",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "waitForWindow",
+              "disabled": false,
+              "packageName": "Wait",
+              "uid": "111070bb-5e33-4325-aa96-0fe2fd70564f"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "window",
+                  "value": {
+                    "expression": "$window-1$",
+                    "type": "WINDOW"
+                  }
+                }
+              ],
+              "commandName": "activateWindow",
+              "disabled": false,
+              "packageName": "Window",
+              "uid": "4afb5ed8-9fd8-448d-9326-cbcb27f9b2fa"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Enter SAP Login Details in SAP Connect Command",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "53252aa7-72e4-45b6-8460-2278104f872e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "connectionType",
+                  "value": {
+                    "string": "SAP GUI",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "sapServerName",
+                  "value": {
+                    "string": "AA1",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "clientID",
+                  "value": {
+                    "string": "800",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "secureUser",
+                  "value": {
+                    "string": "Username",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "secureCredential",
+                  "value": {
+                    "string": "Password",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "language",
+                  "value": {
+                    "string": "EN",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "connect",
+              "disabled": false,
+              "packageName": "SAP",
+              "uid": "1bc08b12-b12a-4111-89f0-37333a160484"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": true,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "24",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "48",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "okcd",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/okcd",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiOkCodeField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": true,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "40",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "142",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-2$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "string": "FK01",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "d098ce89-a745-4c3e-86c1-9dde2530e7cf"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": true,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "12",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "/app/con[0]/ses[0]/wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": true,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "40",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-2$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "LEFTCLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "7bee35e1-cb14-455f-a7d6-83901dd12bad"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "waitType",
+                  "value": {
+                    "string": "OPEN",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "window",
+                  "value": {
+                    "expression": "$window-4$",
+                    "type": "WINDOW"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "10",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "isThrowException",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "waitForWindow",
+              "disabled": false,
+              "packageName": "Wait",
+              "uid": "dfea8946-56db-48c6-b9cd-9f7c897baf8c"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "2ad10dea-4570-4445-b8de-7c31ca5e3716"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Create Vendor",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "cd2007b9-5795-47bf-8dc6-1c661e820e09.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 132,
+                          "x": 183,
+                          "y": 194
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "5085801a-a975-4ce6-9d6e-09f5d84af061.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 132,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Vendor Account Number",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "171",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "RF02K-LIFNR",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/ctxtRF02K-LIFNR",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiCTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "52",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "132",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sSupplierName$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "85eb4546-5bf2-4529-9654-7ebfd576a322"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "634b59a0-6769-45c9-bc33-4e86334e70f2.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 34,
+                          "x": 183,
+                          "y": 216
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "00d6b8db-86ce-4f4a-a681-fbbc396d698c.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 34,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Company Code",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "171",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "RF02K-BUKRS",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/ctxtRF02K-BUKRS",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiCTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "74",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "34",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sCompanyCode$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "dcbc1726-1ed9-48e7-900d-14ed685ab30a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "42b707b8-e6e9-4ebd-9249-5a90fdb86f65.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 34,
+                          "x": 183,
+                          "y": 238
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "1748c318-c8e4-420d-aae2-3ffd6800fbce.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 34,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Vendor account group",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "171",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "RF02K-KTOKK",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/ctxtRF02K-KTOKK",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiCTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "96",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "34",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sAccountGroup$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "449ca80e-c657-45d2-9dba-06768b0b067b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "35e166f0-1c58-4556-9089-e36e473fefcf.png",
+                        "screenshotRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 20,
+                          "y": 48
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "7675a2fc-abd9-4fa5-bfea-11787e6cecb6.png",
+                        "thumbnailRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "1779419b-a744-46a0-8181-b1dd204f88d8"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "e7979da4-d374-4266-bf0b-dad1ce68c80b.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 230,
+                          "x": 169,
+                          "y": 238
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "9d56c8bc-2e2a-4f47-bb9f-294468988770.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 230,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "COMBOBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Title text",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "154",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "SZA1_D0100-TITLE_MEDI",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/subADDRESS:SAPLSZA1:0300/subCOUNTRY_SCREEN:SAPLSZA1:0301/cmbSZA1_D0100-TITLE_MEDI",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiComboBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Text": {
+                          "enabled": false,
+                          "value": {
+                            "string": "                                                                                                                                                                                                                                                               ",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "44",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "230",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-5$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "comboboxAction",
+                  "value": {
+                    "string": "SELECTITEMBYTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "string": "Company",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "b40f65fe-b5e3-4c60-bf59-6fe48cfcbfc1"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "c0c702bc-e5b3-41b3-864a-31c909397891.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 286,
+                          "x": 169,
+                          "y": 260
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "b78070c7-745a-4b0f-b5fb-39454564b059.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 286,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Name 1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "154",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ADDR1_DATA-NAME1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/subADDRESS:SAPLSZA1:0300/subCOUNTRY_SCREEN:SAPLSZA1:0301/txtADDR1_DATA-NAME1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "66",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "286",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-5$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sSupplierName$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "335e349f-710e-4cff-945f-7efae021cd9b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "5eeff540-6016-4627-bba5-f4f1fd0d6b16.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 146,
+                          "x": 169,
+                          "y": 348
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "c333f6cc-e644-4a90-8a9d-d07c087da939.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 146,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Search Term 1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "154",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ADDR1_DATA-SORT1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/subADDRESS:SAPLSZA1:0300/subCOUNTRY_SCREEN:SAPLSZA1:0301/txtADDR1_DATA-SORT1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "154",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "146",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-5$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sSupplierName$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "3449e3f8-bcf7-4af7-847c-c271dd311fc1"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "f165d9ea-ad91-41ae-9ee7-9271f31017e8.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 41,
+                          "x": 169,
+                          "y": 458
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "4418e5b0-6151-4db1-9c21-5e450b2b1945.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 41,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Country Key",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "154",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ADDR1_DATA-COUNTRY",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/subADDRESS:SAPLSZA1:0300/subCOUNTRY_SCREEN:SAPLSZA1:0301/ctxtADDR1_DATA-COUNTRY",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiCTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "264",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "41",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-5$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sCountry$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "56ee8008-0836-4e1c-8bf8-50042924f54c"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "138cc236-2b84-4c63-aff1-700b979b39d8.png",
+                        "screenshotRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 20,
+                          "y": 48
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "150a0059-9e2e-4a33-a0d1-6c7870319f9b.png",
+                        "thumbnailRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-5$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "9ee9d91f-f259-4a04-bfb6-6c5ac2a41c2d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "39acb7fb-dab4-4419-b27b-b2e2f60c99cb.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 76,
+                          "x": 365,
+                          "y": 238
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "f1062ab6-0d20-4147-9e51-72efecb436a2.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 76,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Group key",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "353",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "LFA1-KONZS",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/txtLFA1-KONZS",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "96",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "76",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-6$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sCorporateGroup$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "71f4013c-5aaa-4591-a378-8fa3df796e0a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "1b0b3c98-f4b2-46b6-8954-0e83a6467f07.png",
+                        "screenshotRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 20,
+                          "y": 48
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "6b15ada0-a6e5-411b-a2e9-e78a2535e964.png",
+                        "thumbnailRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-6$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "5fed7767-f083-4eb7-a4f5-42480634db8e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "4ca93032-89ef-4d78-848c-0aca9779b391.png",
+                        "screenshotRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 20,
+                          "y": 48
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "dd918246-cfed-4afa-b481-cb475bd334b5.png",
+                        "thumbnailRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-7$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "7b04cdab-f63a-4fda-9916-3b42a814fad6"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "e23cd18a-04db-4a2b-9179-cc02bfe45db3.png",
+                        "screenshotRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 20,
+                          "y": 48
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "b3b849a8-31ab-456b-9c3c-bf9355bbaa07.png",
+                        "thumbnailRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-8$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "e67ac425-67dd-4cb9-9e5b-7dd5b46361c0"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "4286f2e9-ea96-4d25-8485-5086d39f8042.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 90,
+                          "x": 134,
+                          "y": 238
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "fa88323d-c1cc-4980-96af-8bc29b22536c.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 90,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Reconciliation Account in General Ledger",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "122",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "LFB1-AKONT",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/ctxtLFB1-AKONT",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiCTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "96",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "90",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-9$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sReconAccount$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "8cb9a107-ff09-4e07-90a8-e909578e02ba"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "e79474ee-a946-4251-9b88-d6da4f376f81.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 90,
+                          "x": 379,
+                          "y": 282
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "c7da80d6-de3d-4537-aab6-aa9bea4871f4.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 90,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Planning group",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "367",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "LFB1-FDGRV",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/ctxtLFB1-FDGRV",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiCTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Text": {
+                          "enabled": false,
+                          "value": {
+                            "string": "A1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "140",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "90",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-9$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sCashManagementGroup$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "76acae25-dc2b-4bb2-ba77-ebc871e676ce"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "0a4d2b01-32f4-4371-a07e-7d85e51030e1.png",
+                        "screenshotRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 20,
+                          "y": 48
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "090977ff-4f48-466b-9a72-1cedfd9afb14.png",
+                        "thumbnailRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-9$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "8074e91e-ab8c-4bf5-becb-0384f4ae9487"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "6b740078-f118-460f-a3d3-631c33024889.png",
+                        "screenshotRectangle": {
+                          "height": 20,
+                          "width": 48,
+                          "x": 134,
+                          "y": 238
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "62114b7a-229d-43fd-af14-b7bf05a2937f.png",
+                        "thumbnailRectangle": {
+                          "height": 20,
+                          "width": 48,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultTooltip": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Terms of Payment Key",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "20",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "122",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "LFB1-ZTERM",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/usr/ctxtLFB1-ZTERM",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiCTextField",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "96",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "48",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-10$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sPaymentTerms$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "3e139306-c755-49cd-8779-92b53adcc34d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "9bbe676b-1678-4660-b7ef-121421387815.png",
+                        "screenshotRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 20,
+                          "y": 48
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "ae74cc05-58d1-4ed5-afc6-5a459802d3fb.png",
+                        "thumbnailRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-10$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "85a3e891-04f9-44af-badf-89193789aa50"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "9bbe676b-1678-4660-b7ef-121421387815.png",
+                        "screenshotRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 20,
+                          "y": 48
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "ae74cc05-58d1-4ed5-afc6-5a459802d3fb.png",
+                        "thumbnailRectangle": {
+                          "height": 26,
+                          "width": 26,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        },
+                        "IconName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/tbar[0]/btn[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "26",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-11$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "340cb7dd-0d7c-4030-b133-6656e3782537"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "window",
+                      "value": {
+                        "expression": "$window-12$",
+                        "type": "WINDOW"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "3",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "windowExists",
+                    "packageName": "Window",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "uiObject",
+                      "value": {
+                        "type": "UIOBJECT",
+                        "uiObject": {
+                          "blob": "",
+                          "capture": {
+                            "screenshotMetadataPath": "9fe7a4e4-d410-45f0-9933-bdb330c79822.png",
+                            "screenshotRectangle": {
+                              "height": 22,
+                              "width": 83,
+                              "x": 46,
+                              "y": 142
+                            },
+                            "securelyRecorded": false,
+                            "thumbnailMetadataPath": "f37e3984-9969-40a2-9cd4-4419f98b3ad4.png",
+                            "thumbnailRectangle": {
+                              "height": 22,
+                              "width": 83,
+                              "x": 0,
+                              "y": 0
+                            }
+                          },
+                          "controlType": "BUTTON",
+                          "criteria": {
+                            "AccTooltip": {
+                              "enabled": false,
+                              "value": {
+                                "string": "Yes      ",
+                                "type": "STRING"
+                              }
+                            },
+                            "ConnectionId": {
+                              "enabled": false,
+                              "value": {
+                                "string": "0",
+                                "type": "STRING"
+                              }
+                            },
+                            "Height": {
+                              "enabled": false,
+                              "value": {
+                                "string": "22",
+                                "type": "STRING"
+                              }
+                            },
+                            "IsContainerType": {
+                              "enabled": false,
+                              "value": {
+                                "string": "false",
+                                "type": "STRING"
+                              }
+                            },
+                            "Left": {
+                              "enabled": false,
+                              "value": {
+                                "string": "45",
+                                "type": "STRING"
+                              }
+                            },
+                            "Name": {
+                              "enabled": false,
+                              "value": {
+                                "string": "SPOP-OPTION1",
+                                "type": "STRING"
+                              }
+                            },
+                            "Object Id": {
+                              "enabled": true,
+                              "value": {
+                                "string": "wnd[1]/usr/btnSPOP-OPTION1",
+                                "type": "STRING"
+                              }
+                            },
+                            "Role": {
+                              "enabled": true,
+                              "value": {
+                                "string": "GuiButton",
+                                "type": "STRING"
+                              }
+                            },
+                            "SessionId": {
+                              "enabled": false,
+                              "value": {
+                                "string": "0",
+                                "type": "STRING"
+                              }
+                            },
+                            "Text": {
+                              "enabled": false,
+                              "value": {
+                                "string": "Yes",
+                                "type": "STRING"
+                              }
+                            },
+                            "Top": {
+                              "enabled": false,
+                              "value": {
+                                "string": "117",
+                                "type": "STRING"
+                              }
+                            },
+                            "Width": {
+                              "enabled": false,
+                              "value": {
+                                "string": "83",
+                                "type": "STRING"
+                              }
+                            }
+                          },
+                          "technologyType": "SAP"
+                        },
+                        "uiObjectWindow": {
+                          "expression": "$window-12$",
+                          "type": "WINDOW"
+                        }
+                      }
+                    },
+                    {
+                      "name": "buttonAction",
+                      "value": {
+                        "string": "CLICK",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "runInBackground",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "wait",
+                      "value": {
+                        "number": "15",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "capture",
+                  "disabled": false,
+                  "packageName": "Recorder",
+                  "uid": "893c5e55-ceb8-4bf3-ac35-0fb586abf56e"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "d17ca233-8bb7-4783-9619-92a352f30296"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "",
+                      "capture": {
+                        "screenshotMetadataPath": "66e90fb7-380b-4bd8-894e-1d469881cb6f.png",
+                        "screenshotRectangle": {
+                          "height": 29,
+                          "width": 1891,
+                          "x": 16,
+                          "y": 2030
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "3fd2598a-8d4b-4770-9660-ce68c1c20efc.png",
+                        "thumbnailRectangle": {
+                          "height": 11,
+                          "width": 722,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "CLIENT",
+                      "criteria": {
+                        "ConnectionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "29",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsContainerType": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "pane[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Object Id": {
+                          "enabled": true,
+                          "value": {
+                            "string": "wnd[0]/sbar/pane[0]",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": true,
+                          "value": {
+                            "string": "GuiStatusPane",
+                            "type": "STRING"
+                          }
+                        },
+                        "SessionId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Text": {
+                          "enabled": true,
+                          "value": {
+                            "string": "Vendor*",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1891",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "SAP"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "clientAction",
+                  "value": {
+                    "string": "GETPROPERTY",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "string": "Text",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sStatusMessage"
+              },
+              "uid": "f0a176a5-00c5-449b-97b6-0f6d0085582a"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$sStatusMessage$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "INCLUDE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "was created in company code",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceString",
+                          "value": {
+                            "string": "Unsuccessful",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "assign",
+                      "disabled": false,
+                      "packageName": "String",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "sOutput"
+                      },
+                      "uid": "e13d9fe7-2f4a-4306-8a5f-e18af65c94ba"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "f3baf6d2-7cf1-4759-94c8-6060874c7086"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "string": "Successful",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sOutput"
+                  },
+                  "uid": "7d3dbcc6-2a17-4214-a7d8-f7b4c10c6828"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "174ff345-1c2a-4902-a9b0-f381a8cbcc9d"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "5bc1cbab-486b-4689-89d8-385f669eb8cc"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Close SAP",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "disconnect",
+              "disabled": false,
+              "packageName": "SAP",
+              "uid": "185b56a3-b25a-4751-85c6-272dca9314c4"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "window",
+                  "value": {
+                    "expression": "$window-4$",
+                    "type": "WINDOW"
+                  }
+                }
+              ],
+              "commandName": "closeWindow",
+              "disabled": false,
+              "packageName": "Window",
+              "uid": "3a25a98d-b951-49af-ae3f-a9e93e13bda7"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "500",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "5cd2c586-c797-461f-bd8a-749d1967acad"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "window",
+                  "value": {
+                    "expression": "$window-1$",
+                    "type": "WINDOW"
+                  }
+                }
+              ],
+              "commandName": "closeWindow",
+              "disabled": false,
+              "packageName": "Window",
+              "uid": "cf33144c-607a-4d34-bc5a-058bb7985325"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "1817dffb-bb94-4ac8-8768-4b8f25dd0eba"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "a4a856c2-3d42-4926-9d06-68701be0f745"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Application",
+      "version": "2.1.0-20200819-064505"
+    },
+    {
+      "name": "Comment",
+      "version": "2.1.0-20200831-031015"
+    },
+    {
+      "name": "Datetime",
+      "version": "2.2.0-20200831-031025"
+    },
+    {
+      "name": "Delay",
+      "version": "2.2.0-20200831-031026"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.1.0-20200831-031055"
+    },
+    {
+      "name": "File",
+      "version": "2.2.0-20200831-031057"
+    },
+    {
+      "name": "Folder",
+      "version": "2.2.0-20200831-031100"
+    },
+    {
+      "name": "If",
+      "version": "2.1.0-20200825-071156"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.2.0-20200831-031539"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.1.0-20200831-031541"
+    },
+    {
+      "name": "Number",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "Recorder",
+      "version": "2.0.8-20201009-015051"
+    },
+    {
+      "name": "SAP",
+      "version": "2.2.0-20200825-071614"
+    },
+    {
+      "name": "Screen",
+      "version": "2.1.0-20200825-071618"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "String",
+      "version": "3.1.0-20200831-031943"
+    },
+    {
+      "name": "System",
+      "version": "3.0.0-20200831-031944"
+    },
+    {
+      "name": "TaskBot",
+      "version": "2.0.1-20200907-072949"
+    },
+    {
+      "name": "Wait",
+      "version": "3.1.0-20200831-031955"
+    },
+    {
+      "name": "Window",
+      "version": "2.1.0-20200813-181240"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sVendorName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sCompanyCode",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sAccountGroup",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sCountry",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sCorporateGroup",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sReconAccount",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sCashManagementGroup",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "REQUIRED: Bot Name (as listed in Bot Store) of the submitted Bot - doesn't have to match the file name of bot itself",
+      "input": false,
+      "name": "sBotName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Empty value to check for the presence of empty strings",
+      "input": false,
+      "name": "sNull",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Bot Specific Error Folder within Logging Root Directory",
+      "input": false,
+      "name": "sErrorFolder",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\ProgramData\\AutomationAnywhere\\Bots\\Logs",
+        "type": "STRING"
+      },
+      "description": "Root directory for creating bot logs - can be customized or left as default",
+      "input": false,
+      "name": "sRootLogDirectory",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Log Folder Location for Bot Specific Logs",
+      "input": false,
+      "name": "sLogFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Snapshot folder for Bot Specific Snapshots",
+      "input": false,
+      "name": "sSnapshotsFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Current Date used for Logging Purposes",
+      "input": false,
+      "name": "sCurrentDate",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "DATETIME"
+      },
+      "description": "",
+      "input": false,
+      "name": "dtLogCutoffDate",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "DATETIME"
+    },
+    {
+      "defaultValue": {
+        "number": "30",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nLoggingPeriod",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sLogCutoffDate",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorDescription",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "Error Line Number as returned by the Catch Error Handler",
+      "input": false,
+      "name": "nErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Current Date/Time for use inside of Logging files",
+      "input": false,
+      "name": "sDateTime",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "String representation of the Error Line Number returned by the Catch Error Handler",
+      "input": false,
+      "name": "sErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sSupplierName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "#32770",
+          "handle": "1378188",
+          "isChild": false,
+          "location": {
+            "left": 865,
+            "top": 99
+          },
+          "name": "SAP Logon 750",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "size": {
+            "height": 590,
+            "width": 590
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-1",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "657142",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "SAP Easy Access",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-2",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "657142",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Purchase Order",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-3",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2823692",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Vendor:  Initial Screen",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-4",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2823692",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Vendor: Address",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-5",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2823692",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Vendor: Control",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-6",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2823692",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Vendor: Payment transactions",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-7",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2823692",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Vendor: Contact persons",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-8",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2823692",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Vendor: Accounting information Accounting",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-9",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sPaymentTerms",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2823692",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Vendor: Payment transactions Accounting",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-10",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2823692",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "Create Vendor: Correspondence Accounting",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1056,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-11",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "#32770",
+          "handle": "6294856",
+          "isChild": false,
+          "location": {
+            "left": 371,
+            "top": 221
+          },
+          "name": "Last data screen reached",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 172,
+            "width": 336
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-12",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sStatusMessage",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sOutput",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

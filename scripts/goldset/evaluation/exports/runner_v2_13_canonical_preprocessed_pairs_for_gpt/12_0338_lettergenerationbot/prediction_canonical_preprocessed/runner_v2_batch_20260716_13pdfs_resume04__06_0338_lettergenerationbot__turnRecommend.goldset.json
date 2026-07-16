@@ -1,0 +1,3370 @@
+{
+  "answer": "8개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 고객 ID 입력 액션은 브라우저 기반 필드 캡처/클릭 계열 액션의 정확한 카탈로그 스펙을 추가 확인하지 못해 본 추천에서 제외했다. · API 호출용 전용 HTTP/REST 액션을 본 조사에서 확정하지 못해, 계좌 데이터 요청은 별도 API 커넥터/스크립트 우회가 필요하다. · 발송 메일 첨부는 본 조사에서 이메일 패키지의 첨부 파라미터가 있는 액션을 충분히 확정하지 못해, 실제 구현 시 첨부 지원 액션 또는 메일 패키지의 첨부 가능한 액션을 추가 확인해야 한다. · 유효성 문제 기록 및 실행 로그 쓰기, 감사 로그 파일 기록, 스크린샷 저장용 액션은 이번 조사에서 필수 스펙을 확정하지 못해 자동화 흐름에 포함하지 않았다. · 문서에 구체 경로, 파일명 규칙, 이메일 제목/본문 형식, 로그 보존 기준일 계산식이 없어 해당 값들은 런타임 입력 또는 별도 표준 규칙이 필요하다. (검수에서 해소하지 못한 위반 21건이 있어요 — 흐름도에서 확인해 주세요.)",
+  "backend_response_id": "04a170ec-2716-4996-85ed-7f1bc04caa41",
+  "backend_response_version": 2,
+  "backend_step": "turnRecommend",
+  "document_id": "a1cba33c-8dab-4d91-9151-9e2346167a1f",
+  "notes": "고객 ID 입력 액션은 브라우저 기반 필드 캡처/클릭 계열 액션의 정확한 카탈로그 스펙을 추가 확인하지 못해 본 추천에서 제외했다. · API 호출용 전용 HTTP/REST 액션을 본 조사에서 확정하지 못해, 계좌 데이터 요청은 별도 API 커넥터/스크립트 우회가 필요하다. · 발송 메일 첨부는 본 조사에서 이메일 패키지의 첨부 파라미터가 있는 액션을 충분히 확정하지 못해, 실제 구현 시 첨부 지원 액션 또는 메일 패키지의 첨부 가능한 액션을 추가 확인해야 한다. · 유효성 문제 기록 및 실행 로그 쓰기, 감사 로그 파일 기록, 스크린샷 저장용 액션은 이번 조사에서 필수 스펙을 확정하지 못해 자동화 흐름에 포함하지 않았다. · 문서에 구체 경로, 파일명 규칙, 이메일 제목/본문 형식, 로그 보존 기준일 계산식이 없어 해당 값들은 런타임 입력 또는 별도 표준 규칙이 필요하다.",
+  "original_recommendation": {
+    "notes": "고객 ID 입력 액션은 브라우저 기반 필드 캡처/클릭 계열 액션의 정확한 카탈로그 스펙을 추가 확인하지 못해 본 추천에서 제외했다. · API 호출용 전용 HTTP/REST 액션을 본 조사에서 확정하지 못해, 계좌 데이터 요청은 별도 API 커넥터/스크립트 우회가 필요하다. · 발송 메일 첨부는 본 조사에서 이메일 패키지의 첨부 파라미터가 있는 액션을 충분히 확정하지 못해, 실제 구현 시 첨부 지원 액션 또는 메일 패키지의 첨부 가능한 액션을 추가 확인해야 한다. · 유효성 문제 기록 및 실행 로그 쓰기, 감사 로그 파일 기록, 스크린샷 저장용 액션은 이번 조사에서 필수 스펙을 확정하지 못해 자동화 흐름에 포함하지 않았다. · 문서에 구체 경로, 파일명 규칙, 이메일 제목/본문 형식, 로그 보존 기준일 계산식이 없어 해당 값들은 런타임 입력 또는 별도 표준 규칙이 필요하다.",
+    "schema_version": "1.0",
+    "steps": [
+      {
+        "actions": [
+          {
+            "action": "promptForValue",
+            "children": [],
+            "confidence": 0.52,
+            "label": "필수 값 요청",
+            "order": 1,
+            "package": "Prompt",
+            "parameters": [
+              {
+                "label": null,
+                "name": "promptWindowCaption",
+                "value": "LetterGenerationBot / AutomationAnywhere 검증",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "promptMessage",
+                "value": "이번 실행에 필요한 LetterGenerationBot과 AutomationAnywhere 값을 입력하세요. 둘 중 하나라도 비어 있으면 중단됩니다.",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "valueVariable",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "요청 검증 단계에서 필수 입력이 비어 있으면 사용자에게 알리기 위해 프롬프트를 사용한다",
+            "sources": [
+              {
+                "score": 0.515625,
+                "source_type": "action_schema",
+                "title": "Prompt - 프롬프트의 값용 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "usingMessageBoxAction",
+            "children": [],
+            "confidence": 0.59,
+            "label": "누락 시 알림",
+            "order": 2,
+            "package": "Message box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "messageBoxTitle",
+                "value": "입력값 누락",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "message",
+                "value": "LetterGenerationBot과 AutomationAnywhere 값이 모두 필요합니다.",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "필수 값이 비면 외부 시스템 접속 전에 사용자에게 알리고 중단해야 한다",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "taskBotPackageStopAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "자동화 중단",
+            "order": 3,
+            "package": "Task Bot",
+            "parameters": [],
+            "rationale": "필수 입력 누락 시 더 이상 외부 시스템을 수행하지 않도록 봇을 중지한다",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Task Bot - Stop 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-taskbot-command/task-bot-package-stop-action"
+              }
+            ]
+          }
+        ],
+        "description": "필수 입력값을 확인하고 누락 시 사용자에게 알린 뒤 자동화를 중단한다.",
+        "label": "요청 검증 후 중단 판단",
+        "step_id": "step-1"
+      },
+      {
+        "actions": [
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.47,
+            "label": "실행 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "오류, 로그, 스크린샷, 입력, 출력, 처리 완료 산출물을 저장할 폴더 구조를 만든다",
+            "sources": [
+              {
+                "score": 0.62109375,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "오류, 로그, 스크린샷, 입력, 출력, 완료 산출물 폴더를 만들고 감사용 날짜 기준을 준비한다.",
+        "label": "실행 폴더와 로그 준비",
+        "step_id": "step-2"
+      },
+      {
+        "actions": [
+          {
+            "action": "browserPackageOpenAction",
+            "children": [],
+            "confidence": 0.47,
+            "label": "고객 시스템 열기",
+            "order": 1,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "tab",
+                "value": "새 탭",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "windowTitle",
+                "value": "고객용 웹 애플리케이션",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객 요청 정보 수집을 위해 브라우저 기반 고객 시스템을 연다",
+            "sources": [
+              {
+                "score": 0.6328125,
+                "source_type": "action_schema",
+                "title": "Browser - 열기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "고객용 웹 애플리케이션을 열고 고객 ID를 입력한다.",
+        "label": "요청 웹 접속 및 ID 입력",
+        "step_id": "step-3"
+      },
+      {
+        "actions": [
+          {
+            "action": "jsonStartSession",
+            "children": [],
+            "confidence": 0.57,
+            "label": "JSON 세션 시작",
+            "order": 1,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": "텍스트",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "jsonObjectSession",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "계좌 API 응답 JSON을 이후 파싱하기 위해 JSON 세션을 시작한다",
+            "sources": [
+              {
+                "score": 0.7578125,
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON에서 세션 시작 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "jsonValidate",
+            "children": [],
+            "confidence": 0.35,
+            "label": "JSON 유효성 검사",
+            "order": 2,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "validationLevel",
+                "value": "형식",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객 ID나 응답이 유효하지 않으면 문제를 기록하고 이후 편지 생성을 진행하지 않기 위해 JSON 형식을 검증한다",
+            "sources": [
+              {
+                "score": 0.46875,
+                "source_type": "action_schema",
+                "title": "JSON utilities - 작업 유효성 검사",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "jsonGetNodeValue",
+            "children": [],
+            "confidence": 0.56,
+            "label": "고객명 추출",
+            "order": 3,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "jsonNodeKeyOrPath",
+                "value": "customer.name",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputVariable",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "JSON 응답에서 고객명, 계좌번호, 계좌종류, 잔액, 이메일 주소를 파싱해야 한다",
+            "sources": [
+              {
+                "score": 0.7421875,
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "고객 ID로 계좌 데이터를 조회하고 JSON 응답을 저장하며, 유효성 검증 후 오류 시 중단한다.",
+        "label": "계좌 데이터 요청 및 저장",
+        "step_id": "step-4"
+      },
+      {
+        "actions": [
+          {
+            "action": "cloudUsingLoopAction",
+            "children": [
+              {
+                "action": "jsonGetNodeValue",
+                "children": [],
+                "confidence": 0.56,
+                "label": "계좌 항목 추출",
+                "order": 1,
+                "package": "JSON utilities",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "jsonNodeKeyOrPath",
+                    "value": "accounts",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "sessionName",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "outputVariable",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+                "sources": [
+                  {
+                    "score": 0.7421875,
+                    "source_type": "action_schema",
+                    "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.55,
+            "label": "계좌 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "label",
+                "value": "account-loop",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+            "sources": [
+              {
+                "score": 0.546875,
+                "source_type": "action_schema",
+                "title": "Loop - 루프 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "listSize",
+            "children": [],
+            "confidence": 0.31,
+            "label": "매칭 계좌 수 계산",
+            "order": 2,
+            "package": "List",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sourceList",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "생성 편지가 모든 관련 잔액을 반영하도록 매칭 계좌 수를 추적한다",
+            "sources": [
+              {
+                "score": 0.408203125,
+                "source_type": "action_schema",
+                "title": "List - 목록의 크기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "반환된 계좌를 목록으로 만들고 총 잔액과 매칭 계좌 수를 계산한다.",
+        "label": "계좌 목록과 합계 계산",
+        "step_id": "step-5"
+      },
+      {
+        "actions": [
+          {
+            "action": "mswordOpenDocument",
+            "children": [],
+            "confidence": 0.5,
+            "label": "Word 템플릿 열기",
+            "order": 1,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "file",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "openMode",
+                "value": "읽기 및 쓰기 모드",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "wordSession",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "잔고증명서 Word 템플릿을 열어 문서 내용을 채우기 시작한다",
+            "sources": [
+              {
+                "score": 0.66015625,
+                "source_type": "action_schema",
+                "title": "Word - 열기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-open-document"
+              }
+            ]
+          },
+          {
+            "action": "mswordInsertText",
+            "children": [],
+            "confidence": 0.52,
+            "label": "자리표시자 치환",
+            "order": 2,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "insertLocation",
+                "value": "북마크",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textType",
+                "value": "일반 텍스트로",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "text",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객명과 잔액 문구 같은 고객별 자리표시자를 치환한다",
+            "sources": [
+              {
+                "score": 0.6875,
+                "source_type": "action_schema",
+                "title": "Word - 텍스트 삽입 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+              }
+            ]
+          },
+          {
+            "action": "mswordInsertText",
+            "children": [],
+            "confidence": 0.52,
+            "label": "북마크 정보 삽입",
+            "order": 3,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "insertLocation",
+                "value": "북마크",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textType",
+                "value": "일반 텍스트로",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "text",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "날짜, 계좌번호, 계좌종류, 잔액 상세를 지정된 북마크 위치에 삽입한다",
+            "sources": [
+              {
+                "score": 0.6875,
+                "source_type": "action_schema",
+                "title": "Word - 텍스트 삽입 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+              }
+            ]
+          },
+          {
+            "action": "mswordSaveDocumentAs",
+            "children": [],
+            "confidence": 0.43,
+            "label": "편지 저장",
+            "order": 4,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFile",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "생성된 편지를 고객 식별이 가능한 파일명으로 출력 폴더에 저장한다",
+            "sources": [
+              {
+                "score": 0.5703125,
+                "source_type": "action_schema",
+                "title": "Word - 다른 이름으로 저장 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-save-document-as"
+              }
+            ]
+          }
+        ],
+        "description": "Word 템플릿을 열고 고객별 문구와 계좌 상세를 삽입한 뒤 파일로 저장한다.",
+        "label": "잔고증명서 문서 생성",
+        "step_id": "step-6"
+      },
+      {
+        "actions": [
+          {
+            "action": "cloudUsingSendAction",
+            "children": [],
+            "confidence": 0.49,
+            "label": "메일 발송",
+            "order": 1,
+            "package": "Email",
+            "parameters": [
+              {
+                "label": null,
+                "name": "toAddress",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "subject",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "invalidEmailIdError",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객/계좌 데이터에서 가져온 이메일 주소를 수신자로 사용해 메일을 보낸다",
+            "sources": [
+              {
+                "score": 0.65234375,
+                "source_type": "action_schema",
+                "title": "Email - 보내기 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "고객 이메일로 생성된 편지를 첨부해 발송하고 제출 결과를 기록한다.",
+        "label": "발송 메일 전송",
+        "step_id": "step-7"
+      },
+      {
+        "actions": [
+          {
+            "action": "mswordCloseDocument",
+            "children": [],
+            "confidence": 0.52,
+            "label": "Word 닫기",
+            "order": 1,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "saveChangesBeforeClose",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "여는 액션을 썼으므로 흐름 끝에 닫기로 정리한다",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Word - 닫기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-close-document"
+              }
+            ]
+          }
+        ],
+        "description": "열었던 Word 문서를 닫아 세션을 종료한다.",
+        "label": "마무리 정리",
+        "step_id": "step-8"
+      }
+    ],
+    "variables": [
+      {
+        "description": "JSON 응답을 파싱하기 위한 세션 이름",
+        "direction": "local",
+        "name": "jsonSession",
+        "type": "STRING"
+      },
+      {
+        "description": "JSON에서 파싱한 고객명",
+        "direction": "local",
+        "name": "customerName",
+        "type": "STRING"
+      },
+      {
+        "description": "반환된 계좌 목록",
+        "direction": "local",
+        "name": "accountList",
+        "type": "LIST"
+      },
+      {
+        "description": "대상 계좌들의 총 잔액",
+        "direction": "local",
+        "name": "totalBalance",
+        "type": "NUMBER"
+      },
+      {
+        "description": "매칭 계좌 수",
+        "direction": "local",
+        "name": "matchedAccountCount",
+        "type": "NUMBER"
+      },
+      {
+        "description": "Word 템플릿 편집 세션",
+        "direction": "local",
+        "name": "wordSession",
+        "type": "STRING"
+      }
+    ]
+  },
+  "parent_version": 1,
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot",
+  "runner": "runner_v2",
+  "session_id": "4958d170-b26c-4a67-b169-53f6cecafd52",
+  "source": "backend_recommendation",
+  "source_file": "runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.json",
+  "sources": [
+    {
+      "score": 0.515625,
+      "source_type": "action_schema",
+      "title": "Prompt - 프롬프트의 값용 작업",
+      "url": ""
+    },
+    {
+      "score": 0.59375,
+      "source_type": "action_schema",
+      "title": "Message box - 메시지 상자 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.6953125,
+      "source_type": "action_schema",
+      "title": "Task Bot - Stop 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-taskbot-command/task-bot-package-stop-action"
+    },
+    {
+      "score": 0.62109375,
+      "source_type": "action_schema",
+      "title": "Folder - 폴더의 생성 작업",
+      "url": ""
+    },
+    {
+      "score": 0.6328125,
+      "source_type": "action_schema",
+      "title": "Browser - 열기 작업",
+      "url": ""
+    },
+    {
+      "score": 0.7578125,
+      "source_type": "action_schema",
+      "title": "JSON utilities - JSON에서 세션 시작 작업",
+      "url": ""
+    },
+    {
+      "score": 0.46875,
+      "source_type": "action_schema",
+      "title": "JSON utilities - 작업 유효성 검사",
+      "url": ""
+    },
+    {
+      "score": 0.7421875,
+      "source_type": "action_schema",
+      "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+      "url": ""
+    },
+    {
+      "score": 0.546875,
+      "source_type": "action_schema",
+      "title": "Loop - 루프 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.408203125,
+      "source_type": "action_schema",
+      "title": "List - 목록의 크기 작업",
+      "url": ""
+    },
+    {
+      "score": 0.66015625,
+      "source_type": "action_schema",
+      "title": "Word - 열기 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-open-document"
+    },
+    {
+      "score": 0.6875,
+      "source_type": "action_schema",
+      "title": "Word - 텍스트 삽입 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+    },
+    {
+      "score": 0.5703125,
+      "source_type": "action_schema",
+      "title": "Word - 다른 이름으로 저장 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-save-document-as"
+    },
+    {
+      "score": 0.65234375,
+      "source_type": "action_schema",
+      "title": "Email - 보내기 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.6953125,
+      "source_type": "action_schema",
+      "title": "Word - 닫기 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-close-document"
+    }
+  ],
+  "steps": [
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "필수 입력값을 확인하고 누락 시 사용자에게 알린 뒤 자동화를 중단한다.",
+              "label": "요청 검증 후 중단 판단",
+              "step_id": "step-1"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "promptForValue",
+            "children": [],
+            "confidence": 0.52,
+            "label": "필수 값 요청",
+            "order": 1,
+            "package": "Prompt",
+            "parameters": [
+              {
+                "label": null,
+                "name": "promptWindowCaption",
+                "value": "LetterGenerationBot / AutomationAnywhere 검증",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "promptMessage",
+                "value": "이번 실행에 필요한 LetterGenerationBot과 AutomationAnywhere 값을 입력하세요. 둘 중 하나라도 비어 있으면 중단됩니다.",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "valueVariable",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "요청 검증 단계에서 필수 입력이 비어 있으면 사용자에게 알리기 위해 프롬프트를 사용한다",
+            "sources": [
+              {
+                "score": 0.515625,
+                "source_type": "action_schema",
+                "title": "Prompt - 프롬프트의 값용 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "usingMessageBoxAction",
+            "children": [],
+            "confidence": 0.59,
+            "label": "누락 시 알림",
+            "order": 2,
+            "package": "Message box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "messageBoxTitle",
+                "value": "입력값 누락",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "message",
+                "value": "LetterGenerationBot과 AutomationAnywhere 값이 모두 필요합니다.",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "필수 값이 비면 외부 시스템 접속 전에 사용자에게 알리고 중단해야 한다",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "taskBotPackageStopAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "자동화 중단",
+            "order": 3,
+            "package": "Task Bot",
+            "parameters": [],
+            "rationale": "필수 입력 누락 시 더 이상 외부 시스템을 수행하지 않도록 봇을 중지한다",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Task Bot - Stop 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-taskbot-command/task-bot-package-stop-action"
+              }
+            ]
+          }
+        ],
+        "description": "필수 입력값을 확인하고 누락 시 사용자에게 알린 뒤 자동화를 중단한다.",
+        "label": "요청 검증 후 중단 판단",
+        "step_id": "step-1"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "promptForValue",
+          "attributes": [
+            {
+              "label": null,
+              "name": "promptWindowCaption",
+              "original_parameter": {
+                "label": null,
+                "name": "promptWindowCaption",
+                "value": "LetterGenerationBot / AutomationAnywhere 검증",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "LetterGenerationBot / AutomationAnywhere 검증",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "promptMessage",
+              "original_parameter": {
+                "label": null,
+                "name": "promptMessage",
+                "value": "이번 실행에 필요한 LetterGenerationBot과 AutomationAnywhere 값을 입력하세요. 둘 중 하나라도 비어 있으면 중단됩니다.",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "이번 실행에 필요한 LetterGenerationBot과 AutomationAnywhere 값을 입력하세요. 둘 중 하나라도 비어 있으면 중단됩니다.",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "valueVariable",
+              "original_parameter": {
+                "label": null,
+                "name": "valueVariable",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.52,
+                  "label": "필수 값 요청",
+                  "order": 1,
+                  "rationale": "요청 검증 단계에서 필수 입력이 비어 있으면 사용자에게 알리기 위해 프롬프트를 사용한다",
+                  "sources": [
+                    {
+                      "score": 0.515625,
+                      "source_type": "action_schema",
+                      "title": "Prompt - 프롬프트의 값용 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "promptForValue",
+            "children": [],
+            "confidence": 0.52,
+            "label": "필수 값 요청",
+            "order": 1,
+            "package": "Prompt",
+            "parameters": [
+              {
+                "label": null,
+                "name": "promptWindowCaption",
+                "value": "LetterGenerationBot / AutomationAnywhere 검증",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "promptMessage",
+                "value": "이번 실행에 필요한 LetterGenerationBot과 AutomationAnywhere 값을 입력하세요. 둘 중 하나라도 비어 있으면 중단됩니다.",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "valueVariable",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "요청 검증 단계에서 필수 입력이 비어 있으면 사용자에게 알리기 위해 프롬프트를 사용한다",
+            "sources": [
+              {
+                "score": 0.515625,
+                "source_type": "action_schema",
+                "title": "Prompt - 프롬프트의 값용 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Prompt",
+          "type": "action"
+        },
+        {
+          "action": "usingMessageBoxAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "messageBoxTitle",
+              "original_parameter": {
+                "label": null,
+                "name": "messageBoxTitle",
+                "value": "입력값 누락",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "입력값 누락",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "message",
+              "original_parameter": {
+                "label": null,
+                "name": "message",
+                "value": "LetterGenerationBot과 AutomationAnywhere 값이 모두 필요합니다.",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "LetterGenerationBot과 AutomationAnywhere 값이 모두 필요합니다.",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.59,
+                  "label": "누락 시 알림",
+                  "order": 2,
+                  "rationale": "필수 값이 비면 외부 시스템 접속 전에 사용자에게 알리고 중단해야 한다",
+                  "sources": [
+                    {
+                      "score": 0.59375,
+                      "source_type": "action_schema",
+                      "title": "Message box - 메시지 상자 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "usingMessageBoxAction",
+            "children": [],
+            "confidence": 0.59,
+            "label": "누락 시 알림",
+            "order": 2,
+            "package": "Message box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "messageBoxTitle",
+                "value": "입력값 누락",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "message",
+                "value": "LetterGenerationBot과 AutomationAnywhere 값이 모두 필요합니다.",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "필수 값이 비면 외부 시스템 접속 전에 사용자에게 알리고 중단해야 한다",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Message box",
+          "type": "action"
+        },
+        {
+          "action": "taskBotPackageStopAction",
+          "attributes": [
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.7,
+                  "label": "자동화 중단",
+                  "order": 3,
+                  "rationale": "필수 입력 누락 시 더 이상 외부 시스템을 수행하지 않도록 봇을 중지한다",
+                  "sources": [
+                    {
+                      "score": 0.6953125,
+                      "source_type": "action_schema",
+                      "title": "Task Bot - Stop 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-taskbot-command/task-bot-package-stop-action"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "taskBotPackageStopAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "자동화 중단",
+            "order": 3,
+            "package": "Task Bot",
+            "parameters": [],
+            "rationale": "필수 입력 누락 시 더 이상 외부 시스템을 수행하지 않도록 봇을 중지한다",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Task Bot - Stop 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-taskbot-command/task-bot-package-stop-action"
+              }
+            ]
+          },
+          "package": "Task Bot",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "오류, 로그, 스크린샷, 입력, 출력, 완료 산출물 폴더를 만들고 감사용 날짜 기준을 준비한다.",
+              "label": "실행 폴더와 로그 준비",
+              "step_id": "step-2"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.47,
+            "label": "실행 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "오류, 로그, 스크린샷, 입력, 출력, 처리 완료 산출물을 저장할 폴더 구조를 만든다",
+            "sources": [
+              {
+                "score": 0.62109375,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "오류, 로그, 스크린샷, 입력, 출력, 완료 산출물 폴더를 만들고 감사용 날짜 기준을 준비한다.",
+        "label": "실행 폴더와 로그 준비",
+        "step_id": "step-2"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "folderCreate",
+          "attributes": [
+            {
+              "label": null,
+              "name": "folder",
+              "original_parameter": {
+                "label": null,
+                "name": "folder",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "overwriteExistingFolder",
+              "original_parameter": {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.47,
+                  "label": "실행 폴더 생성",
+                  "order": 1,
+                  "rationale": "오류, 로그, 스크린샷, 입력, 출력, 처리 완료 산출물을 저장할 폴더 구조를 만든다",
+                  "sources": [
+                    {
+                      "score": 0.62109375,
+                      "source_type": "action_schema",
+                      "title": "Folder - 폴더의 생성 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.47,
+            "label": "실행 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "오류, 로그, 스크린샷, 입력, 출력, 처리 완료 산출물을 저장할 폴더 구조를 만든다",
+            "sources": [
+              {
+                "score": 0.62109375,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Folder",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "고객용 웹 애플리케이션을 열고 고객 ID를 입력한다.",
+              "label": "요청 웹 접속 및 ID 입력",
+              "step_id": "step-3"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "browserPackageOpenAction",
+            "children": [],
+            "confidence": 0.47,
+            "label": "고객 시스템 열기",
+            "order": 1,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "tab",
+                "value": "새 탭",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "windowTitle",
+                "value": "고객용 웹 애플리케이션",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객 요청 정보 수집을 위해 브라우저 기반 고객 시스템을 연다",
+            "sources": [
+              {
+                "score": 0.6328125,
+                "source_type": "action_schema",
+                "title": "Browser - 열기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "고객용 웹 애플리케이션을 열고 고객 ID를 입력한다.",
+        "label": "요청 웹 접속 및 ID 입력",
+        "step_id": "step-3"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "launchWebsite",
+          "attributes": [
+            {
+              "label": null,
+              "name": "tab",
+              "original_parameter": {
+                "label": null,
+                "name": "tab",
+                "value": "새 탭",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "새 탭",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "windowTitle",
+              "original_parameter": {
+                "label": null,
+                "name": "windowTitle",
+                "value": "고객용 웹 애플리케이션",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "고객용 웹 애플리케이션",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.47,
+                  "label": "고객 시스템 열기",
+                  "order": 1,
+                  "rationale": "고객 요청 정보 수집을 위해 브라우저 기반 고객 시스템을 연다",
+                  "sources": [
+                    {
+                      "score": 0.6328125,
+                      "source_type": "action_schema",
+                      "title": "Browser - 열기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "browserPackageOpenAction",
+            "children": [],
+            "confidence": 0.47,
+            "label": "고객 시스템 열기",
+            "order": 1,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "tab",
+                "value": "새 탭",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "windowTitle",
+                "value": "고객용 웹 애플리케이션",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객 요청 정보 수집을 위해 브라우저 기반 고객 시스템을 연다",
+            "sources": [
+              {
+                "score": 0.6328125,
+                "source_type": "action_schema",
+                "title": "Browser - 열기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Browser",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "고객 ID로 계좌 데이터를 조회하고 JSON 응답을 저장하며, 유효성 검증 후 오류 시 중단한다.",
+              "label": "계좌 데이터 요청 및 저장",
+              "step_id": "step-4"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "jsonStartSession",
+            "children": [],
+            "confidence": 0.57,
+            "label": "JSON 세션 시작",
+            "order": 1,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": "텍스트",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "jsonObjectSession",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "계좌 API 응답 JSON을 이후 파싱하기 위해 JSON 세션을 시작한다",
+            "sources": [
+              {
+                "score": 0.7578125,
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON에서 세션 시작 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "jsonValidate",
+            "children": [],
+            "confidence": 0.35,
+            "label": "JSON 유효성 검사",
+            "order": 2,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "validationLevel",
+                "value": "형식",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객 ID나 응답이 유효하지 않으면 문제를 기록하고 이후 편지 생성을 진행하지 않기 위해 JSON 형식을 검증한다",
+            "sources": [
+              {
+                "score": 0.46875,
+                "source_type": "action_schema",
+                "title": "JSON utilities - 작업 유효성 검사",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "jsonGetNodeValue",
+            "children": [],
+            "confidence": 0.56,
+            "label": "고객명 추출",
+            "order": 3,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "jsonNodeKeyOrPath",
+                "value": "customer.name",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputVariable",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "JSON 응답에서 고객명, 계좌번호, 계좌종류, 잔액, 이메일 주소를 파싱해야 한다",
+            "sources": [
+              {
+                "score": 0.7421875,
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "고객 ID로 계좌 데이터를 조회하고 JSON 응답을 저장하며, 유효성 검증 후 오류 시 중단한다.",
+        "label": "계좌 데이터 요청 및 저장",
+        "step_id": "step-4"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "jsonStartSession",
+          "attributes": [
+            {
+              "label": null,
+              "name": "dataSource",
+              "original_parameter": {
+                "label": null,
+                "name": "dataSource",
+                "value": "텍스트",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "텍스트",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "jsonObjectSession",
+              "original_parameter": {
+                "label": null,
+                "name": "jsonObjectSession",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.57,
+                  "label": "JSON 세션 시작",
+                  "order": 1,
+                  "rationale": "계좌 API 응답 JSON을 이후 파싱하기 위해 JSON 세션을 시작한다",
+                  "sources": [
+                    {
+                      "score": 0.7578125,
+                      "source_type": "action_schema",
+                      "title": "JSON utilities - JSON에서 세션 시작 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "jsonStartSession",
+            "children": [],
+            "confidence": 0.57,
+            "label": "JSON 세션 시작",
+            "order": 1,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": "텍스트",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "jsonObjectSession",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "계좌 API 응답 JSON을 이후 파싱하기 위해 JSON 세션을 시작한다",
+            "sources": [
+              {
+                "score": 0.7578125,
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON에서 세션 시작 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "JSON utilities",
+          "type": "action"
+        },
+        {
+          "action": "jsonValidate",
+          "attributes": [
+            {
+              "label": null,
+              "name": "validationLevel",
+              "original_parameter": {
+                "label": null,
+                "name": "validationLevel",
+                "value": "형식",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "형식",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "dataSource",
+              "original_parameter": {
+                "label": null,
+                "name": "dataSource",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "output",
+              "original_parameter": {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.35,
+                  "label": "JSON 유효성 검사",
+                  "order": 2,
+                  "rationale": "고객 ID나 응답이 유효하지 않으면 문제를 기록하고 이후 편지 생성을 진행하지 않기 위해 JSON 형식을 검증한다",
+                  "sources": [
+                    {
+                      "score": 0.46875,
+                      "source_type": "action_schema",
+                      "title": "JSON utilities - 작업 유효성 검사",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "jsonValidate",
+            "children": [],
+            "confidence": 0.35,
+            "label": "JSON 유효성 검사",
+            "order": 2,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "validationLevel",
+                "value": "형식",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객 ID나 응답이 유효하지 않으면 문제를 기록하고 이후 편지 생성을 진행하지 않기 위해 JSON 형식을 검증한다",
+            "sources": [
+              {
+                "score": 0.46875,
+                "source_type": "action_schema",
+                "title": "JSON utilities - 작업 유효성 검사",
+                "url": ""
+              }
+            ]
+          },
+          "package": "JSON utilities",
+          "type": "action"
+        },
+        {
+          "action": "jsonGetNodeValue",
+          "attributes": [
+            {
+              "label": null,
+              "name": "jsonNodeKeyOrPath",
+              "original_parameter": {
+                "label": null,
+                "name": "jsonNodeKeyOrPath",
+                "value": "customer.name",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "customer.name",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "outputVariable",
+              "original_parameter": {
+                "label": null,
+                "name": "outputVariable",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.56,
+                  "label": "고객명 추출",
+                  "order": 3,
+                  "rationale": "JSON 응답에서 고객명, 계좌번호, 계좌종류, 잔액, 이메일 주소를 파싱해야 한다",
+                  "sources": [
+                    {
+                      "score": 0.7421875,
+                      "source_type": "action_schema",
+                      "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "jsonGetNodeValue",
+            "children": [],
+            "confidence": 0.56,
+            "label": "고객명 추출",
+            "order": 3,
+            "package": "JSON utilities",
+            "parameters": [
+              {
+                "label": null,
+                "name": "jsonNodeKeyOrPath",
+                "value": "customer.name",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputVariable",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "JSON 응답에서 고객명, 계좌번호, 계좌종류, 잔액, 이메일 주소를 파싱해야 한다",
+            "sources": [
+              {
+                "score": 0.7421875,
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "JSON utilities",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "반환된 계좌를 목록으로 만들고 총 잔액과 매칭 계좌 수를 계산한다.",
+              "label": "계좌 목록과 합계 계산",
+              "step_id": "step-5"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "cloudUsingLoopAction",
+            "children": [
+              {
+                "action": "jsonGetNodeValue",
+                "children": [],
+                "confidence": 0.56,
+                "label": "계좌 항목 추출",
+                "order": 1,
+                "package": "JSON utilities",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "jsonNodeKeyOrPath",
+                    "value": "accounts",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "sessionName",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "outputVariable",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+                "sources": [
+                  {
+                    "score": 0.7421875,
+                    "source_type": "action_schema",
+                    "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.55,
+            "label": "계좌 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "label",
+                "value": "account-loop",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+            "sources": [
+              {
+                "score": 0.546875,
+                "source_type": "action_schema",
+                "title": "Loop - 루프 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "listSize",
+            "children": [],
+            "confidence": 0.31,
+            "label": "매칭 계좌 수 계산",
+            "order": 2,
+            "package": "List",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sourceList",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "생성 편지가 모든 관련 잔액을 반영하도록 매칭 계좌 수를 추적한다",
+            "sources": [
+              {
+                "score": 0.408203125,
+                "source_type": "action_schema",
+                "title": "List - 목록의 크기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "반환된 계좌를 목록으로 만들고 총 잔액과 매칭 계좌 수를 계산한다.",
+        "label": "계좌 목록과 합계 계산",
+        "step_id": "step-5"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "cloudUsingLoopAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "label",
+              "original_parameter": {
+                "label": null,
+                "name": "label",
+                "value": "account-loop",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "account-loop",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.55,
+                  "label": "계좌 반복",
+                  "order": 1,
+                  "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+                  "sources": [
+                    {
+                      "score": 0.546875,
+                      "source_type": "action_schema",
+                      "title": "Loop - 루프 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudUsingLoopAction",
+            "children": [
+              {
+                "action": "jsonGetNodeValue",
+                "children": [],
+                "confidence": 0.56,
+                "label": "계좌 항목 추출",
+                "order": 1,
+                "package": "JSON utilities",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "jsonNodeKeyOrPath",
+                    "value": "accounts",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "sessionName",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "outputVariable",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+                "sources": [
+                  {
+                    "score": 0.7421875,
+                    "source_type": "action_schema",
+                    "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.55,
+            "label": "계좌 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "label",
+                "value": "account-loop",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+            "sources": [
+              {
+                "score": 0.546875,
+                "source_type": "action_schema",
+                "title": "Loop - 루프 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Loop",
+          "steps": [
+            {
+              "action": "jsonGetNodeValue",
+              "attributes": [
+                {
+                  "label": null,
+                  "name": "jsonNodeKeyOrPath",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "jsonNodeKeyOrPath",
+                    "value": "accounts",
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "accounts",
+                    "type": "STRING"
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "sessionName",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "sessionName",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "type": "NULL",
+                    "value": null
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "outputVariable",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "outputVariable",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "type": "NULL",
+                    "value": null
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "name": "recommendation_action_meta",
+                  "value": {
+                    "json": {
+                      "confidence": 0.56,
+                      "label": "계좌 항목 추출",
+                      "order": 1,
+                      "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+                      "sources": [
+                        {
+                          "score": 0.7421875,
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                          "url": ""
+                        }
+                      ]
+                    },
+                    "type": "JSON"
+                  }
+                }
+              ],
+              "disabled": false,
+              "original_recommendation_action": {
+                "action": "jsonGetNodeValue",
+                "children": [],
+                "confidence": 0.56,
+                "label": "계좌 항목 추출",
+                "order": 1,
+                "package": "JSON utilities",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "jsonNodeKeyOrPath",
+                    "value": "accounts",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "sessionName",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "outputVariable",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "반환된 각 계좌를 반복 처리해 편지에 들어갈 계좌 목록을 만든다",
+                "sources": [
+                  {
+                    "score": 0.7421875,
+                    "source_type": "action_schema",
+                    "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                    "url": ""
+                  }
+                ]
+              },
+              "package": "JSON utilities",
+              "type": "action"
+            }
+          ],
+          "type": "container"
+        },
+        {
+          "action": "listSize",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sourceList",
+              "original_parameter": {
+                "label": null,
+                "name": "sourceList",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.31,
+                  "label": "매칭 계좌 수 계산",
+                  "order": 2,
+                  "rationale": "생성 편지가 모든 관련 잔액을 반영하도록 매칭 계좌 수를 추적한다",
+                  "sources": [
+                    {
+                      "score": 0.408203125,
+                      "source_type": "action_schema",
+                      "title": "List - 목록의 크기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "listSize",
+            "children": [],
+            "confidence": 0.31,
+            "label": "매칭 계좌 수 계산",
+            "order": 2,
+            "package": "List",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sourceList",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "생성 편지가 모든 관련 잔액을 반영하도록 매칭 계좌 수를 추적한다",
+            "sources": [
+              {
+                "score": 0.408203125,
+                "source_type": "action_schema",
+                "title": "List - 목록의 크기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "List",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "Word 템플릿을 열고 고객별 문구와 계좌 상세를 삽입한 뒤 파일로 저장한다.",
+              "label": "잔고증명서 문서 생성",
+              "step_id": "step-6"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "mswordOpenDocument",
+            "children": [],
+            "confidence": 0.5,
+            "label": "Word 템플릿 열기",
+            "order": 1,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "file",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "openMode",
+                "value": "읽기 및 쓰기 모드",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "wordSession",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "잔고증명서 Word 템플릿을 열어 문서 내용을 채우기 시작한다",
+            "sources": [
+              {
+                "score": 0.66015625,
+                "source_type": "action_schema",
+                "title": "Word - 열기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-open-document"
+              }
+            ]
+          },
+          {
+            "action": "mswordInsertText",
+            "children": [],
+            "confidence": 0.52,
+            "label": "자리표시자 치환",
+            "order": 2,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "insertLocation",
+                "value": "북마크",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textType",
+                "value": "일반 텍스트로",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "text",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객명과 잔액 문구 같은 고객별 자리표시자를 치환한다",
+            "sources": [
+              {
+                "score": 0.6875,
+                "source_type": "action_schema",
+                "title": "Word - 텍스트 삽입 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+              }
+            ]
+          },
+          {
+            "action": "mswordInsertText",
+            "children": [],
+            "confidence": 0.52,
+            "label": "북마크 정보 삽입",
+            "order": 3,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "insertLocation",
+                "value": "북마크",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textType",
+                "value": "일반 텍스트로",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "text",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "날짜, 계좌번호, 계좌종류, 잔액 상세를 지정된 북마크 위치에 삽입한다",
+            "sources": [
+              {
+                "score": 0.6875,
+                "source_type": "action_schema",
+                "title": "Word - 텍스트 삽입 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+              }
+            ]
+          },
+          {
+            "action": "mswordSaveDocumentAs",
+            "children": [],
+            "confidence": 0.43,
+            "label": "편지 저장",
+            "order": 4,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFile",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "생성된 편지를 고객 식별이 가능한 파일명으로 출력 폴더에 저장한다",
+            "sources": [
+              {
+                "score": 0.5703125,
+                "source_type": "action_schema",
+                "title": "Word - 다른 이름으로 저장 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-save-document-as"
+              }
+            ]
+          }
+        ],
+        "description": "Word 템플릿을 열고 고객별 문구와 계좌 상세를 삽입한 뒤 파일로 저장한다.",
+        "label": "잔고증명서 문서 생성",
+        "step_id": "step-6"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "mswordOpenDocument",
+          "attributes": [
+            {
+              "label": null,
+              "name": "file",
+              "original_parameter": {
+                "label": null,
+                "name": "file",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "openMode",
+              "original_parameter": {
+                "label": null,
+                "name": "openMode",
+                "value": "읽기 및 쓰기 모드",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "읽기 및 쓰기 모드",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "wordSession",
+              "original_parameter": {
+                "label": null,
+                "name": "wordSession",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.5,
+                  "label": "Word 템플릿 열기",
+                  "order": 1,
+                  "rationale": "잔고증명서 Word 템플릿을 열어 문서 내용을 채우기 시작한다",
+                  "sources": [
+                    {
+                      "score": 0.66015625,
+                      "source_type": "action_schema",
+                      "title": "Word - 열기 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-open-document"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "mswordOpenDocument",
+            "children": [],
+            "confidence": 0.5,
+            "label": "Word 템플릿 열기",
+            "order": 1,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "file",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "openMode",
+                "value": "읽기 및 쓰기 모드",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "wordSession",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "잔고증명서 Word 템플릿을 열어 문서 내용을 채우기 시작한다",
+            "sources": [
+              {
+                "score": 0.66015625,
+                "source_type": "action_schema",
+                "title": "Word - 열기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-open-document"
+              }
+            ]
+          },
+          "package": "Word",
+          "type": "action"
+        },
+        {
+          "action": "mswordInsertText",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "insertLocation",
+              "original_parameter": {
+                "label": null,
+                "name": "insertLocation",
+                "value": "북마크",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "북마크",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "textType",
+              "original_parameter": {
+                "label": null,
+                "name": "textType",
+                "value": "일반 텍스트로",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "일반 텍스트로",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "text",
+              "original_parameter": {
+                "label": null,
+                "name": "text",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.52,
+                  "label": "자리표시자 치환",
+                  "order": 2,
+                  "rationale": "고객명과 잔액 문구 같은 고객별 자리표시자를 치환한다",
+                  "sources": [
+                    {
+                      "score": 0.6875,
+                      "source_type": "action_schema",
+                      "title": "Word - 텍스트 삽입 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "mswordInsertText",
+            "children": [],
+            "confidence": 0.52,
+            "label": "자리표시자 치환",
+            "order": 2,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "insertLocation",
+                "value": "북마크",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textType",
+                "value": "일반 텍스트로",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "text",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객명과 잔액 문구 같은 고객별 자리표시자를 치환한다",
+            "sources": [
+              {
+                "score": 0.6875,
+                "source_type": "action_schema",
+                "title": "Word - 텍스트 삽입 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+              }
+            ]
+          },
+          "package": "Word",
+          "type": "action"
+        },
+        {
+          "action": "mswordInsertText",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "insertLocation",
+              "original_parameter": {
+                "label": null,
+                "name": "insertLocation",
+                "value": "북마크",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "북마크",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "textType",
+              "original_parameter": {
+                "label": null,
+                "name": "textType",
+                "value": "일반 텍스트로",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "일반 텍스트로",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "text",
+              "original_parameter": {
+                "label": null,
+                "name": "text",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.52,
+                  "label": "북마크 정보 삽입",
+                  "order": 3,
+                  "rationale": "날짜, 계좌번호, 계좌종류, 잔액 상세를 지정된 북마크 위치에 삽입한다",
+                  "sources": [
+                    {
+                      "score": 0.6875,
+                      "source_type": "action_schema",
+                      "title": "Word - 텍스트 삽입 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "mswordInsertText",
+            "children": [],
+            "confidence": 0.52,
+            "label": "북마크 정보 삽입",
+            "order": 3,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "insertLocation",
+                "value": "북마크",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textType",
+                "value": "일반 텍스트로",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "text",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "날짜, 계좌번호, 계좌종류, 잔액 상세를 지정된 북마크 위치에 삽입한다",
+            "sources": [
+              {
+                "score": 0.6875,
+                "source_type": "action_schema",
+                "title": "Word - 텍스트 삽입 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-insert-text"
+              }
+            ]
+          },
+          "package": "Word",
+          "type": "action"
+        },
+        {
+          "action": "mswordSaveDocumentAs",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "overwriteExistingFile",
+              "original_parameter": {
+                "label": null,
+                "name": "overwriteExistingFile",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.43,
+                  "label": "편지 저장",
+                  "order": 4,
+                  "rationale": "생성된 편지를 고객 식별이 가능한 파일명으로 출력 폴더에 저장한다",
+                  "sources": [
+                    {
+                      "score": 0.5703125,
+                      "source_type": "action_schema",
+                      "title": "Word - 다른 이름으로 저장 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-save-document-as"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "mswordSaveDocumentAs",
+            "children": [],
+            "confidence": 0.43,
+            "label": "편지 저장",
+            "order": 4,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFile",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "생성된 편지를 고객 식별이 가능한 파일명으로 출력 폴더에 저장한다",
+            "sources": [
+              {
+                "score": 0.5703125,
+                "source_type": "action_schema",
+                "title": "Word - 다른 이름으로 저장 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-save-document-as"
+              }
+            ]
+          },
+          "package": "Word",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "고객 이메일로 생성된 편지를 첨부해 발송하고 제출 결과를 기록한다.",
+              "label": "발송 메일 전송",
+              "step_id": "step-7"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "cloudUsingSendAction",
+            "children": [],
+            "confidence": 0.49,
+            "label": "메일 발송",
+            "order": 1,
+            "package": "Email",
+            "parameters": [
+              {
+                "label": null,
+                "name": "toAddress",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "subject",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "invalidEmailIdError",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객/계좌 데이터에서 가져온 이메일 주소를 수신자로 사용해 메일을 보낸다",
+            "sources": [
+              {
+                "score": 0.65234375,
+                "source_type": "action_schema",
+                "title": "Email - 보내기 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "고객 이메일로 생성된 편지를 첨부해 발송하고 제출 결과를 기록한다.",
+        "label": "발송 메일 전송",
+        "step_id": "step-7"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "cloudUsingSendAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "toAddress",
+              "original_parameter": {
+                "label": null,
+                "name": "toAddress",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "subject",
+              "original_parameter": {
+                "label": null,
+                "name": "subject",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "invalidEmailIdError",
+              "original_parameter": {
+                "label": null,
+                "name": "invalidEmailIdError",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.49,
+                  "label": "메일 발송",
+                  "order": 1,
+                  "rationale": "고객/계좌 데이터에서 가져온 이메일 주소를 수신자로 사용해 메일을 보낸다",
+                  "sources": [
+                    {
+                      "score": 0.65234375,
+                      "source_type": "action_schema",
+                      "title": "Email - 보내기 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudUsingSendAction",
+            "children": [],
+            "confidence": 0.49,
+            "label": "메일 발송",
+            "order": 1,
+            "package": "Email",
+            "parameters": [
+              {
+                "label": null,
+                "name": "toAddress",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "subject",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "invalidEmailIdError",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "고객/계좌 데이터에서 가져온 이메일 주소를 수신자로 사용해 메일을 보낸다",
+            "sources": [
+              {
+                "score": 0.65234375,
+                "source_type": "action_schema",
+                "title": "Email - 보내기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Email",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "열었던 Word 문서를 닫아 세션을 종료한다.",
+              "label": "마무리 정리",
+              "step_id": "step-8"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "mswordCloseDocument",
+            "children": [],
+            "confidence": 0.52,
+            "label": "Word 닫기",
+            "order": 1,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "saveChangesBeforeClose",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "여는 액션을 썼으므로 흐름 끝에 닫기로 정리한다",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Word - 닫기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-close-document"
+              }
+            ]
+          }
+        ],
+        "description": "열었던 Word 문서를 닫아 세션을 종료한다.",
+        "label": "마무리 정리",
+        "step_id": "step-8"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "mswordCloseDocument",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "saveChangesBeforeClose",
+              "original_parameter": {
+                "label": null,
+                "name": "saveChangesBeforeClose",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.52,
+                  "label": "Word 닫기",
+                  "order": 1,
+                  "rationale": "여는 액션을 썼으므로 흐름 끝에 닫기로 정리한다",
+                  "sources": [
+                    {
+                      "score": 0.6953125,
+                      "source_type": "action_schema",
+                      "title": "Word - 닫기 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-close-document"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "mswordCloseDocument",
+            "children": [],
+            "confidence": 0.52,
+            "label": "Word 닫기",
+            "order": 1,
+            "package": "Word",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "saveChangesBeforeClose",
+                "value": true,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "여는 액션을 썼으므로 흐름 끝에 닫기로 정리한다",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Word - 닫기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/word-pkg/msword-close-document"
+              }
+            ]
+          },
+          "package": "Word",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    }
+  ],
+  "triggers": [],
+  "usage_gauge": {
+    "compact_recommended": false,
+    "compact_required": false,
+    "intake_tokens": 997,
+    "limit_tokens": 6000,
+    "ratio": 0.1662
+  },
+  "variables": [
+    {
+      "description": "JSON 응답을 파싱하기 위한 세션 이름",
+      "direction": "local",
+      "name": "jsonSession",
+      "type": "STRING"
+    },
+    {
+      "description": "JSON에서 파싱한 고객명",
+      "direction": "local",
+      "name": "customerName",
+      "type": "STRING"
+    },
+    {
+      "description": "반환된 계좌 목록",
+      "direction": "local",
+      "name": "accountList",
+      "type": "LIST"
+    },
+    {
+      "description": "대상 계좌들의 총 잔액",
+      "direction": "local",
+      "name": "totalBalance",
+      "type": "NUMBER"
+    },
+    {
+      "description": "매칭 계좌 수",
+      "direction": "local",
+      "name": "matchedAccountCount",
+      "type": "NUMBER"
+    },
+    {
+      "description": "Word 템플릿 편집 세션",
+      "direction": "local",
+      "name": "wordSession",
+      "type": "STRING"
+    }
+  ],
+  "preprocessing": {
+    "side": "prediction",
+    "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.goldset.json",
+    "rules": [
+      "remove browser/webautomation/recorder session lifecycle actions",
+      "remove visible control-flow marker actions from If/Loop/Error handler packages",
+      "apply human-confirmed action_equivalence_rules.json canonical mapping"
+    ],
+    "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+    "action_equivalence_member_count": 61,
+    "excluded_actions": [],
+    "excluded_count": 0,
+    "action_count_after_preprocessing": 16
+  }
+}

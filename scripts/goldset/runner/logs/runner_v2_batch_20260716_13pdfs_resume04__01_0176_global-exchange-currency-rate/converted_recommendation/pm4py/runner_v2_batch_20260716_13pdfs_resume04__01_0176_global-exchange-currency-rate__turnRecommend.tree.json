@@ -1,0 +1,95 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.folderCreate",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "File.filePackageCreateAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Folder.folderCreate",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Logging.cloudInsertingLogToFileCommand",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Browser.browserPackageOpenAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Browser.browserPackageRunJavascriptAction",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "CSV/TXT.cloudOpeningCsvTextFile",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Data Table.dataTablePackageSetValueSinlgeCellAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Data Table.cloudWriteToFileAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Number.numberIncrement",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Logging.cloudInsertingLogToFileCommand",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Logging.cloudInsertingLogToFileCommand",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Browser.browserPackageCloseAction",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

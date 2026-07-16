@@ -1,0 +1,2 @@
+{"received_at": "2026-07-15T17:46:14.374588+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
+{"received_at": "2026-07-15T17:46:14.983057+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "a7b30cb8-3a6b-4c79-a56e-06cb0a5644b7", "session_id": "29697b94-b4fd-4b1f-b1a4-c627e2c85ce3", "filename": "0374_createprojectinjirausingapi__CreateProjectInJIRAusingAPI.pdf", "size_bytes": 60012, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T17:46:12.802525+00:00"}}

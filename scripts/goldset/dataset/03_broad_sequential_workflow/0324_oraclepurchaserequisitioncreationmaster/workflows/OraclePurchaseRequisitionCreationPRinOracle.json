@@ -1,0 +1,3421 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "open temp file",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$excel_file_path_for_oracle$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "EDIT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "loadAddIns",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "OpenSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "3414d628-6612-4087-94fc-fbcdbedae1b1"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "171a9f47-4632-430f-8206-d19b3f3bcbc3"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "open Oracle and Login",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$oracle_ie_path$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "startInPath",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "parameters",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "runApp",
+          "disabled": false,
+          "packageName": "Application",
+          "uid": "f4f456a1-94ea-47f7-b185-0f416c99f091"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiOGMyMDQ4ODYtMTU4OC00NzliLWEzNjQtMzI0NTAwNDJlNmZhIiwiaWQiOiIiLCJuYW1lIjoiQWRkcmVzcyBhbmQgc2VhcmNoIHVzaW5nIEJpbmciLCJ2YWx1ZSI6Imh0dHBzOi8vd3d3Lm1zbi5jb20vZW4taW4vP3BjPUVVUFBfRENURSIsImNsYXNzIjoiRWRpdCIsInBhcmVudCI6IkFkZHJlc3MgYW5kIHNlYXJjaCB1c2luZyBCaW5nIiwid2luZG93VGl0bGUiOiIiLCJwYXRoIjp7Im9ialBhdGgiOlt7ImluZGV4Ijo0fSx7ImluZGV4IjozfSx7ImluZGV4Ijo0fSx7ImluZGV4IjoxfSx7ImluZGV4Ijo0fSx7ImluZGV4IjozfSx7ImluZGV4Ijo0fSx7ImluZGV4IjoyfSx7ImluZGV4Ijo0fV19LCJyb2xlIjo1LCJpbmRleCI6NCwibGVmdCI6MTMyLCJ0b3AiOjUwLCJ3aWR0aCI6MTA4OCwiaGVpZ2h0IjoyMCwiY2xpY2tYIjozNTEsImNsaWNrWSI6OCwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiJGb2N1c2FibGUiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjEsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6WzI0LDUsOSwwLDEsMiwzXSwicHJvcGVydGllcyI6W10sImF0dHJpYnV0ZXMiOltdLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzgsN10sImVycm9yIjpudWxsfQ==",
+                  "capture": {
+                    "screenshotMetadataPath": "76866e68-06c5-49f7-96da-f7ff8a7aaebe.png",
+                    "screenshotRectangle": {
+                      "height": 20,
+                      "width": 1088,
+                      "x": 132,
+                      "y": 50
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "6cb1d4c9-fc51-4d39-bcc7-ded6dff1e84b.png",
+                    "thumbnailRectangle": {
+                      "height": 13,
+                      "width": 696,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "TEXTBOX",
+                  "criteria": {
+                    "Class Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Edit",
+                        "type": "STRING"
+                      }
+                    },
+                    "Default Action": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Description": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "20",
+                        "type": "STRING"
+                      }
+                    },
+                    "ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Index": {
+                      "enabled": false,
+                      "value": {
+                        "string": "4",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "132",
+                        "type": "STRING"
+                      }
+                    },
+                    "Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Address and search using Bing",
+                        "type": "STRING"
+                      }
+                    },
+                    "Parent": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Address and search using Bing",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "4|3|4|1|4|3|4|2|4",
+                        "type": "STRING"
+                      }
+                    },
+                    "States": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Focusable",
+                        "type": "STRING"
+                      }
+                    },
+                    "Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "50",
+                        "type": "STRING"
+                      }
+                    },
+                    "Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "https://www.msn.com/en-in/?pc=EUPP_DCTE",
+                        "type": "STRING"
+                      }
+                    },
+                    "Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "1088",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-1$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "textboxAction",
+              "value": {
+                "string": "SETTEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "runInBackground",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "typeOfInput",
+              "value": {
+                "string": "VALUE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$oracle_link$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "2306a981-9e47-4bee-9843-03d90acbf7ef"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNmQ2MmE2MzUtOThjNS00MjliLTlmOGMtOGE2NWNiY2Y0MzMyIiwiaWQiOiIiLCJuYW1lIjoiR28gdG8g4oCcaHR0cDovL292ZGVicy5vcHN2ZWRhLmNvbTo4MDAwL09BX0hUTUwvQXBwc0xvY2FsTG9naW4uanNw4oCdIChBbHQrRW50ZXIgdG8gb3BlbiBpbiBhIG5ldyB0YWIpIiwidmFsdWUiOiIiLCJjbGFzcyI6IlRvb2xiYXJXaW5kb3czMiIsInBhcmVudCI6IlBhZ2UgQ29udHJvbCIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6M30seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6M30seyJpbmRleCI6NH0seyJpbmRleCI6LTF9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOi0zfV19LCJyb2xlIjoxLCJpbmRleCI6LTMsImxlZnQiOjEyNzIsInRvcCI6NDUsIndpZHRoIjoyNywiaGVpZ2h0IjozMCwiY2xpY2tYIjoxNywiY2xpY2tZIjoxNCwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiJIb3R0cmFja2VkIiwiZGVmYXVsdEFjdGlvbiI6IlByZXNzIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjEsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6WzI0LDAsMSwyLDNdLCJwcm9wZXJ0aWVzIjpbXSwiYXR0cmlidXRlcyI6W10sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbOCw3LDJdLCJlcnJvciI6bnVsbH0=",
+                  "capture": {
+                    "screenshotMetadataPath": "48dc3791-5333-49d3-8863-abe64251aa8f.png",
+                    "screenshotRectangle": {
+                      "height": 30,
+                      "width": 27,
+                      "x": 1272,
+                      "y": 45
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "481af3f6-d521-465e-bca9-e3b432b75853.png",
+                    "thumbnailRectangle": {
+                      "height": 30,
+                      "width": 27,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "BUTTON",
+                  "criteria": {
+                    "Class Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "ToolbarWindow32",
+                        "type": "STRING"
+                      }
+                    },
+                    "Default Action": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Press",
+                        "type": "STRING"
+                      }
+                    },
+                    "Description": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "30",
+                        "type": "STRING"
+                      }
+                    },
+                    "ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Index": {
+                      "enabled": false,
+                      "value": {
+                        "string": "-3",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "1272",
+                        "type": "STRING"
+                      }
+                    },
+                    "Name": {
+                      "enabled": true,
+                      "value": {
+                        "string": "Go to “http://ovdebs.opsveda.com:8000/OA_HTML/AppsLocalLogin.jsp” (Alt+Enter to open in a new tab)",
+                        "type": "STRING"
+                      }
+                    },
+                    "Parent": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Page Control",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "4|3|4|1|4|3|4|-1|4|-3",
+                        "type": "STRING"
+                      }
+                    },
+                    "States": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Hottracked",
+                        "type": "STRING"
+                      }
+                    },
+                    "Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "45",
+                        "type": "STRING"
+                      }
+                    },
+                    "Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "27",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-3$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "buttonAction",
+              "value": {
+                "string": "LEFTCLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "711b80c8-a6ea-4a67-b9d2-f91580281b32"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNzk4ZGQ1ZmUtMTdjNS00NDk2LWIzYzktYTU5MDliYjZhYzYwIiwiaWQiOiIiLCJuYW1lIjoidXNlcm5hbWVGaWVsZCIsInZhbHVlIjoiIiwiY2xhc3MiOiIiLCJwYXJlbnQiOiIiLCJ3aW5kb3dUaXRsZSI6IiIsInBhdGgiOnsib2JqUGF0aCI6W3siaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9XX0sInJvbGUiOjUsImluZGV4IjowLCJsZWZ0Ijo4MjksInRvcCI6MzUxLCJ3aWR0aCI6MjgyLCJoZWlnaHQiOjM1LCJjbGlja1giOjczLCJjbGlja1kiOjE5LCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IlVuY2hlY2tlZCIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjEsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6WzI0LDUsOSwwLDEsMiwzXSwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2lucHV0W0BpZD0ndXNlcm5hbWVGaWVsZCddIn0seyJuYW1lIjoiSFRNTCBJRCIsInZhbHVlIjoidXNlcm5hbWVGaWVsZCJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoidXNlcm5hbWVGaWVsZCJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiSU5QVVQifSx7Im5hbWUiOiJIVE1MIENsYXNzIiwidmFsdWUiOiJpbnAifSx7Im5hbWUiOiJIVE1MIElubmVyVGV4dCIsInZhbHVlIjpudWxsfSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIyMCJ9LHsibmFtZSI6IkhUTUwgSHJlZiIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUeXBlIiwidmFsdWUiOiJ0ZXh0In0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiMjgifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIyMjYifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiIxIn0seyJuYW1lIjoiSFRNTCBUb3AiLCJ2YWx1ZSI6IjE5NCJ9LHsibmFtZSI6IkhUTUwgTGVmdCIsInZhbHVlIjoiNjU2In1dLCJhdHRyaWJ1dGVzIjpbXSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjpudWxsLCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDY3LDU5LDU4LDgwXSwiZXJyb3IiOm51bGx9",
+                  "capture": {
+                    "screenshotMetadataPath": "22261c21-eb02-443f-a0bc-f0bca912171b.png",
+                    "screenshotRectangle": {
+                      "height": 35,
+                      "width": 282,
+                      "x": 829,
+                      "y": 351
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "10c31093-4e41-4c7c-8314-71497753fcff.png",
+                    "thumbnailRectangle": {
+                      "height": 35,
+                      "width": 282,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "TEXTBOX",
+                  "criteria": {
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//input[@id='usernameField']",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "inp",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "28",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": true,
+                      "value": {
+                        "string": "usernameField",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "656",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": true,
+                      "value": {
+                        "string": "usernameField",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "20",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "INPUT",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "1",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "194",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": true,
+                      "value": {
+                        "string": "text",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "226",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "2|1|1|1|2",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-4$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "textboxAction",
+              "value": {
+                "string": "SETTEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "runInBackground",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "typeOfInput",
+              "value": {
+                "string": "CREDENTIAL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "valueCV",
+              "value": {
+                "credential": {
+                  "attributeName": "User",
+                  "lockerName": "Oracle Main",
+                  "name": "Oracle Login"
+                },
+                "type": "CREDENTIAL"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "c8c3aeda-be4b-4e17-92c8-d181a7bef05b"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNTlmMjg1YzItN2U1Ny00YzMxLThjMDUtZDY0MzRjZmViZDNjIiwiaWQiOiIiLCJuYW1lIjoicGFzc3dvcmRGaWVsZCIsInZhbHVlIjoiIiwiY2xhc3MiOiIiLCJwYXJlbnQiOiIiLCJ3aW5kb3dUaXRsZSI6IiIsInBhdGgiOnsib2JqUGF0aCI6W3siaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOjJ9XX0sInJvbGUiOjUsImluZGV4IjowLCJsZWZ0Ijo4MjksInRvcCI6NDMyLCJ3aWR0aCI6MjgyLCJoZWlnaHQiOjM1LCJjbGlja1giOjEwMSwiY2xpY2tZIjoxOCwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiJQcm90ZWN0ZWQiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjoxLCJwcm9jZXNzSUQiOiIiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOlsyNCw1LDksMCwxLDIsM10sInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy9pbnB1dFtAaWQ9J3Bhc3N3b3JkRmllbGQnXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6InBhc3N3b3JkRmllbGQifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6InBhc3N3b3JkRmllbGQifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUYWciLCJ2YWx1ZSI6IklOUFVUIn0seyJuYW1lIjoiSFRNTCBDbGFzcyIsInZhbHVlIjoiaW5wIn0seyJuYW1lIjoiSFRNTCBJbm5lclRleHQiLCJ2YWx1ZSI6bnVsbH0seyJuYW1lIjoiSFRNTCBTb3VyY2VJbmRleCIsInZhbHVlIjoiMjUifSx7Im5hbWUiOiJIVE1MIEhyZWYiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoicGFzc3dvcmQifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgSGVpZ2h0IiwidmFsdWUiOiIyOCJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6IjIyNiJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjIifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMjU5In0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiI2NTYifV0sImF0dHJpYnV0ZXMiOltdLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzcsNjEsNjcsNTksNTgsODBdLCJlcnJvciI6bnVsbH0=",
+                  "capture": {
+                    "screenshotMetadataPath": "14499f96-2172-43af-9b3e-1529f51e0f49.png",
+                    "screenshotRectangle": {
+                      "height": 35,
+                      "width": 282,
+                      "x": 829,
+                      "y": 432
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "43b5a336-672c-419e-9c36-253a48a3f0da.png",
+                    "thumbnailRectangle": {
+                      "height": 35,
+                      "width": 282,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "TEXTBOX",
+                  "criteria": {
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//input[@id='passwordField']",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "inp",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "28",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": true,
+                      "value": {
+                        "string": "passwordField",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "656",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": true,
+                      "value": {
+                        "string": "passwordField",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "25",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "INPUT",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "2",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "259",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": true,
+                      "value": {
+                        "string": "password",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "226",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "2|1|1|3|2",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-4$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "textboxAction",
+              "value": {
+                "string": "SETTEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "runInBackground",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "typeOfInput",
+              "value": {
+                "string": "CREDENTIAL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "valueCV",
+              "value": {
+                "credential": {
+                  "attributeName": "Password",
+                  "lockerName": "Oracle Main",
+                  "name": "Oracle Login"
+                },
+                "type": "CREDENTIAL"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "fc75716a-998a-4068-9c05-54d179c9573c"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNzZmOGE0OTgtNjg3My00N2JjLTk0ZWMtM2RhZTNhN2ViMGI3IiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6Mn0seyJpbmRleCI6MX0seyJpbmRleCI6Mn0seyJpbmRleCI6MX1dfSwicm9sZSI6MSwiaW5kZXgiOjAsImxlZnQiOjg3NiwidG9wIjo0OTksIndpZHRoIjo3MCwiaGVpZ2h0IjozNywiY2xpY2tYIjo0OCwiY2xpY2tZIjoxNiwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiJVbmNoZWNrZWQiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjoxLCJwcm9jZXNzSUQiOiIiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOlsyNCwwLDEsMiwzXSwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2RpdltAaWQ9J0J1dHRvbkJveCddL2J1dHRvblsxXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6bnVsbH0seyJuYW1lIjoiSFRNTCBOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUYWciLCJ2YWx1ZSI6IkJVVFRPTiJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6Ik9yYUJ1dHRvbiBsZWZ0In0seyJuYW1lIjoiSFRNTCBJbm5lclRleHQiLCJ2YWx1ZSI6IkxvZyBJbiJ9LHsibmFtZSI6IkhUTUwgU291cmNlSW5kZXgiLCJ2YWx1ZSI6IjI3In0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6InN1Ym1pdCJ9LHsibmFtZSI6IkhUTUwgVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQ2xhc3NJZCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBIZWlnaHQiLCJ2YWx1ZSI6IjMwIn0seyJuYW1lIjoiSFRNTCBXaWR0aCIsInZhbHVlIjoiNTYifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiIxIn0seyJuYW1lIjoiSFRNTCBUb3AiLCJ2YWx1ZSI6IjMxMiJ9LHsibmFtZSI6IkhUTUwgTGVmdCIsInZhbHVlIjoiNjk0In1dLCJhdHRyaWJ1dGVzIjpbXSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjpudWxsLCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDY3LDgwXSwiZXJyb3IiOm51bGx9",
+                  "capture": {
+                    "screenshotMetadataPath": "d2386677-08a6-4eb3-b1a8-23d12895104a.png",
+                    "screenshotRectangle": {
+                      "height": 37,
+                      "width": 70,
+                      "x": 876,
+                      "y": 499
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "77fd68d3-5ec5-4f0d-8e90-dc9a1fcaa02f.png",
+                    "thumbnailRectangle": {
+                      "height": 37,
+                      "width": 70,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "BUTTON",
+                  "criteria": {
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//div[@id='ButtonBox']/button[1]",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "OraButton left",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "30",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Log In",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "694",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "27",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "BUTTON",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "1",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "312",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": true,
+                      "value": {
+                        "string": "submit",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "56",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "2|1|2|1",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-4$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "buttonAction",
+              "value": {
+                "string": "LEFTCLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "4e700247-1af0-4ed9-af49-e18321eba957"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "26530c5f-0357-4afa-8e73-d298d8521e66"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Navigate to PR form",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiYjVhNzJiMzgtY2FlMy00ZDExLWEzMmYtNWU3NzUzNjMzMmZkIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6Nn0seyJpbmRleCI6Mn0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX1dfSwicm9sZSI6MzEsImluZGV4IjowLCJsZWZ0Ijo5LCJ0b3AiOjExNiwid2lkdGgiOjU1LCJoZWlnaHQiOjMzLCJjbGlja1giOjQ3LCJjbGlja1kiOjEwLCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IlVuY2hlY2tlZCIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjEsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6WzI0LDAsMSwyLDNdLCJwcm9wZXJ0aWVzIjpbeyJuYW1lIjoiRE9NWFBhdGgiLCJ2YWx1ZSI6Ii8vYVtAaWQ9J1NOQVYnXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IlNOQVYifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiQSJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6Ik9yYVVuaXZlcnNhbE5hdmlnYXRvciJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOm51bGx9LHsibmFtZSI6IkhUTUwgU291cmNlSW5kZXgiLCJ2YWx1ZSI6IjUwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiJodHRwOi8vb3ZkZWJzLm9wc3ZlZGEuY29tOjgwMDAvT0FfSFRNTC9PQS5qc3A/T0FGdW5jPU9BU0lNUExFSE9NRVBBR0UjIn0seyJuYW1lIjoiSFRNTCBUeXBlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgSGVpZ2h0IiwidmFsdWUiOiIyNyJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6IjQ0In0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiMiJ9LHsibmFtZSI6IkhUTUwgVG9wIiwidmFsdWUiOiI2In0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIwIn1dLCJhdHRyaWJ1dGVzIjpbXSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjp7InVuaXF1ZUlEIjoiOGMxYTVkNmYtNzhjNi00YjJlLWEzNWYtN2FjYzdlYWQyZTIwIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbXX0sInJvbGUiOjIyLCJpbmRleCI6MCwibGVmdCI6MjAsInRvcCI6Niwid2lkdGgiOjI0LCJoZWlnaHQiOjI0LCJjbGlja1giOjAsImNsaWNrWSI6MCwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiJVbmNoZWNrZWQiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjoxLCJwcm9jZXNzSUQiOiIiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy9hW0BpZD0nU05BViddL2RpdlsxXS9pbWdbMV0ifSx7Im5hbWUiOiJJRUlEIiwidmFsdWUiOm51bGx9LHsibmFtZSI6IklFTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSUVBbHQiLCJ2YWx1ZSI6Ik5hdmlnYXRvciJ9LHsibmFtZSI6IklFVGFnIiwidmFsdWUiOiJJTUcifSx7Im5hbWUiOiJJRUNsYXNzIiwidmFsdWUiOm51bGx9LHsibmFtZSI6IklFSW5uZXJUZXh0IiwidmFsdWUiOm51bGx9LHsibmFtZSI6IklFU291cmNlSW5kZXgiLCJ2YWx1ZSI6IjUyIn0seyJuYW1lIjoiSUVIcmVmIiwidmFsdWUiOiJodHRwOi8vb3ZkZWJzLm9wc3ZlZGEuY29tOjgwMDAvT0FfTUVESUEvbmF2aWdhdG9yLnBuZyJ9LHsibmFtZSI6IklFVHlwZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSUVWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSUVDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJJRVRpdGxlIiwidmFsdWUiOiJOYXZpZ2F0b3IifSx7Im5hbWUiOiJJRUhlaWdodCIsInZhbHVlIjoiMjQifSx7Im5hbWUiOiJJRVdpZHRoIiwidmFsdWUiOiIyNCJ9LHsibmFtZSI6IklFVGFnSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJJRVRvcCIsInZhbHVlIjoiNiJ9LHsibmFtZSI6IklFTGVmdCIsInZhbHVlIjoiMjAifV0sImF0dHJpYnV0ZXMiOltdLCJpc0xpbmtlZCI6ZmFsc2V9LCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDU4LDY1LDgwXSwiZXJyb3IiOm51bGx9",
+                  "capture": {
+                    "screenshotMetadataPath": "9a87521b-bf55-4026-89ca-03aa5a611a84.png",
+                    "screenshotRectangle": {
+                      "height": 33,
+                      "width": 55,
+                      "x": 9,
+                      "y": 116
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "1f8ca716-6b5e-401c-8895-140cdc5fbcc2.png",
+                    "thumbnailRectangle": {
+                      "height": 33,
+                      "width": 55,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "LINK",
+                  "criteria": {
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//a[@id='SNAV']",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "OraUniversalNavigator",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "27",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": true,
+                      "value": {
+                        "string": "http://ovdebs.opsveda.com:8000/OA_HTML/OA.jsp?OAFunc=OASIMPLEHOMEPAGE#",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": true,
+                      "value": {
+                        "string": "SNAV",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "50",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "A",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "2",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "6",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "44",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "6|2|1|4|3|1|1|1|1|1|1|1|1|1|1|1",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-5$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "linkAction",
+              "value": {
+                "string": "LEFTCLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "fa679f19-efc1-4632-ace7-84363089ac07"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "2",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "dd8a1c0f-666f-4f74-8af7-4c5fde593cf1"
+        },
+        {
+          "attributes": [
+            {
+              "name": "windowValue",
+              "value": {
+                "expression": "$window-6$",
+                "type": "WINDOW"
+              }
+            },
+            {
+              "name": "typeOfInputStringToType",
+              "value": {
+                "string": "VALUE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "stringToType",
+              "value": {
+                "string": "[DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][DOWN-ARROW][ENTER]",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delay",
+              "value": {
+                "number": "400",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "Keystrokes",
+          "disabled": false,
+          "packageName": "Keystrokes",
+          "uid": "85263bcc-46bf-4019-be50-a75eb52f0298"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "2",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "6a251db8-163e-49e5-bf0e-2493772bf4ca"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiOTBkMWE0MDUtOTBiMi00NTIwLTllYWItOWIyYjc1OTMxMTc4IiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6Nn0seyJpbmRleCI6Mn0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6Mn0seyJpbmRleCI6M30seyJpbmRleCI6Mn0seyJpbmRleCI6Mn0seyJpbmRleCI6MX0seyJpbmRleCI6MX1dfSwicm9sZSI6MjUsImluZGV4IjowLCJsZWZ0IjoyOTksInRvcCI6MzI3LCJ3aWR0aCI6Mjc1LCJoZWlnaHQiOjUwLCJjbGlja1giOjEyNywiY2xpY2tZIjoyMywiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiJVbmNoZWNrZWQiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjoxLCJwcm9jZXNzSUQiOiIiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOlsyNCwyNSwyNiwwLDEsMiwzXSwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2FbQGlkPSdTTkFWJ10vZGl2WzJdL2RpdlszXS9kaXZbMl0vZGl2WzJdL2RpdlsxXS9kaXZbMV0ifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOm51bGx9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJESVYifSx7Im5hbWUiOiJIVE1MIENsYXNzIiwidmFsdWUiOiJsaXN0RW50cnkifSx7Im5hbWUiOiJIVE1MIElubmVyVGV4dCIsInZhbHVlIjoiXHJcblxyXG5cclxuUmVxdWlzaXRpb25zIn0seyJuYW1lIjoiSFRNTCBTb3VyY2VJbmRleCIsInZhbHVlIjoiMTYzIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQ2xhc3NJZCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBIZWlnaHQiLCJ2YWx1ZSI6IjQwIn0seyJuYW1lIjoiSFRNTCBXaWR0aCIsInZhbHVlIjoiMjIwIn0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiNzMifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMTczIn0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIyMzAifV0sImF0dHJpYnV0ZXMiOltdLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzcsNjEsODBdLCJlcnJvciI6bnVsbH0=",
+                  "capture": {
+                    "screenshotMetadataPath": "7abda49d-8882-4a94-89bc-e06b74184b6d.png",
+                    "screenshotRectangle": {
+                      "height": 50,
+                      "width": 275,
+                      "x": 299,
+                      "y": 327
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "22a60b7d-2ceb-4b4b-b6c3-b3d380d855c2.png",
+                    "thumbnailRectangle": {
+                      "height": 47,
+                      "width": 257,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "CLIENT",
+                  "criteria": {
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//a[@id='SNAV']/div[2]/div[3]/div[2]/div[2]/div[1]/div[1]",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "listEntry",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "40",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "\r\n\r\n\r\nRequisitions",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "230",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "163",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "DIV",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "73",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "173",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "220",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "6|2|1|4|3|1|1|1|1|1|1|1|1|1|2|3|2|2|1|1",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-8$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "clientAction",
+              "value": {
+                "string": "LEFTCLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "04385347-917b-4319-bfad-ebc13615dbee"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "2",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "2e275b2f-387c-4886-b884-97cc4171aa20"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNDRlYWJlMzQtZTE2Yy00MTM0LTlkZWItNDc0NDE1OWNkZWE0IiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6Nn0seyJpbmRleCI6Mn0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6Mn0seyJpbmRleCI6M30seyJpbmRleCI6Mn0seyJpbmRleCI6Mn0seyJpbmRleCI6Mn0seyJpbmRleCI6Mn0seyJpbmRleCI6MX0seyJpbmRleCI6Mn1dfSwicm9sZSI6MjUsImluZGV4IjowLCJsZWZ0Ijo0NzUsInRvcCI6NDQxLCJ3aWR0aCI6Mjc1LCJoZWlnaHQiOjUwLCJjbGlja1giOjE5MiwiY2xpY2tZIjoxNSwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiJVbmNoZWNrZWQiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjoxLCJwcm9jZXNzSUQiOiIiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOlsyNCwyNSwyNiwwLDEsMiwzXSwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2FbQGlkPSdTTkFWJ10vZGl2WzJdL2RpdlszXS9kaXZbMl0vZGl2WzJdL2RpdlsyXS9kaXZbMl0vZGl2WzFdL2RpdlsyXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6bnVsbH0seyJuYW1lIjoiSFRNTCBOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUYWciLCJ2YWx1ZSI6IkRJViJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6Imxpc3RFbnRyeSJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiJcclxuXHJcblxyXG5SZXF1aXNpdGlvbnMifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIyOTEifSx7Im5hbWUiOiJIVE1MIEhyZWYiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiNDAifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIyMjAifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiIxNDkifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMjYzIn0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIzNzAifV0sImF0dHJpYnV0ZXMiOltdLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzcsNjEsODBdLCJlcnJvciI6bnVsbH0=",
+                  "capture": {
+                    "screenshotMetadataPath": "26f2ab80-0187-4980-9e56-296396277fce.png",
+                    "screenshotRectangle": {
+                      "height": 50,
+                      "width": 275,
+                      "x": 475,
+                      "y": 441
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "739272a2-41ad-496e-84a2-ead46059616e.png",
+                    "thumbnailRectangle": {
+                      "height": 47,
+                      "width": 257,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "CLIENT",
+                  "criteria": {
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//a[@id='SNAV']/div[2]/div[3]/div[2]/div[2]/div[2]/div[2]/div[1]/div[2]",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "listEntry",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "40",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "\r\n\r\n\r\nRequisitions",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "370",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "291",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "DIV",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "149",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "263",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "220",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "6|2|1|4|3|1|1|1|1|1|1|1|1|1|2|3|2|2|2|2|1|2",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-8$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "clientAction",
+              "value": {
+                "string": "DOUBLECLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "29957206-f4b6-4256-bf9f-eb42cccca962"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "30",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "e5b72f55-b397-4c77-bb6f-6cb464bb0396"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "13cf9e81-a09e-4371-b500-c9843d729573"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "filter",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "loopSelection",
+              "value": {
+                "string": "ALL_ROWS",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GetMultipleCells",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "tablee"
+          },
+          "uid": "e0aba70f-6580-4880-8c6d-7fc8b628133e"
+        },
+        {
+          "attributes": [
+            {
+              "name": "table",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "tablee"
+              }
+            },
+            {
+              "name": "sortOptions",
+              "value": {
+                "string": "NAME",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "columnName",
+              "value": {
+                "string": "Create PR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "sortType",
+              "value": {
+                "string": "DESCENDING",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "sort",
+          "disabled": false,
+          "packageName": "DataTable",
+          "uid": "472b246c-dfca-4352-8d1f-e8e218472329"
+        },
+        {
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "assignToNumber",
+          "disabled": false,
+          "packageName": "Number",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "temp_iterator"
+          },
+          "uid": "00a38c8b-6a93-40e5-89fd-35045b178f5d"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceTable",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "tablee"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "cur_row"
+              },
+              "value": {
+                "iteratorName": "iteratorTableRow",
+                "packageName": "DataTable",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "expression": "$iterator$",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "assignToNumber",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "temp_iterator"
+              },
+              "uid": "f7947501-ed41-4224-a200-1149903126b3"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "expression": "$temp_iterator$",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "by",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "increment",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "iterator"
+              },
+              "uid": "b01323e3-11e0-47e7-a57b-6cba9f683cdc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "expression": "$cur_row[24]$",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "assignToNumber",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "blah"
+              },
+              "uid": "8cd3204c-347e-412e-a69d-23b4c7dc7ee5"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$blah$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "commandName": "loop.commands.break",
+                  "disabled": false,
+                  "packageName": "Loop",
+                  "uid": "3ccfacbd-d7a5-41ad-af85-9db9e273916d"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "f36d88b1-3434-4465-8136-028911659750"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[5]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "mat_no"
+              },
+              "uid": "b6826dbc-9c1a-4a05-a683-daefb9277cc9"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[10]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "qty_no"
+              },
+              "uid": "da8871d8-4b86-4141-86b3-ac7ad588f528"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[20]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "location_plant"
+              },
+              "uid": "c1688177-05e4-4743-b2e6-991245ac2c74"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[19]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "org_name"
+              },
+              "uid": "52bc226f-6496-4e32-94a9-d86c476c31dc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Create PR Oracle",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$iterator$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "number": "1",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "numberVariable",
+                        "packageName": "Number",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [
+                    {
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowValue",
+                              "value": {
+                                "expression": "$window-11$",
+                                "type": "WINDOW"
+                              }
+                            },
+                            {
+                              "name": "typeOfInputStringToType",
+                              "value": {
+                                "string": "VALUE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "stringToType",
+                              "value": {
+                                "string": "[TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB]",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "delay",
+                              "value": {
+                                "number": "500",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "commandName": "Keystrokes",
+                          "disabled": false,
+                          "packageName": "Keystrokes",
+                          "uid": "f10ee9be-5fbc-48c1-bf32-6b6436267d03"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowValue",
+                              "value": {
+                                "expression": "$window-11$",
+                                "type": "WINDOW"
+                              }
+                            },
+                            {
+                              "name": "typeOfInputStringToType",
+                              "value": {
+                                "string": "VALUE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "stringToType",
+                              "value": {
+                                "string": "[DOWN-ARROW]",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "delay",
+                              "value": {
+                                "number": "500",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "commandName": "Keystrokes",
+                          "disabled": false,
+                          "packageName": "Keystrokes",
+                          "uid": "5ab0b932-d5ad-4d4d-adeb-0e07ca07f052"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowValue",
+                              "value": {
+                                "expression": "$window-11$",
+                                "type": "WINDOW"
+                              }
+                            },
+                            {
+                              "name": "typeOfInputStringToType",
+                              "value": {
+                                "string": "VALUE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "stringToType",
+                              "value": {
+                                "string": "[TAB][TAB]",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "delay",
+                              "value": {
+                                "number": "500",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "commandName": "Keystrokes",
+                          "disabled": false,
+                          "packageName": "Keystrokes",
+                          "uid": "37e76619-c933-4470-940d-062491175e8a"
+                        }
+                      ],
+                      "commandName": "else",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "7539b1b1-1d10-44d8-8ca1-1f3f3afc0eae"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "windowValue",
+                          "value": {
+                            "expression": "$window-9$",
+                            "type": "WINDOW"
+                          }
+                        },
+                        {
+                          "name": "typeOfInputStringToType",
+                          "value": {
+                            "string": "VALUE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "stringToType",
+                          "value": {
+                            "string": "[TAB][TAB][TAB][TAB][TAB]",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "delay",
+                          "value": {
+                            "number": "500",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "commandName": "Keystrokes",
+                      "disabled": false,
+                      "packageName": "Keystrokes",
+                      "uid": "d15fc2db-af22-430a-9e73-2c972defd569"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "b7342dfe-efcf-403e-a372-5ce5a463ee64"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "delayType",
+                      "value": {
+                        "string": "REGULAR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delayTime",
+                      "value": {
+                        "number": "2",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "timeUnit",
+                      "value": {
+                        "string": "SECONDS",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "delay",
+                  "disabled": false,
+                  "packageName": "Delay",
+                  "uid": "17db5d6d-f490-4641-8609-4cf44fc561d5"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "windowValue",
+                      "value": {
+                        "expression": "$window-10$",
+                        "type": "WINDOW"
+                      }
+                    },
+                    {
+                      "name": "typeOfInputStringToType",
+                      "value": {
+                        "string": "VALUE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "stringToType",
+                      "value": {
+                        "expression": "$mat_no$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delay",
+                      "value": {
+                        "number": "10",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "Keystrokes",
+                  "disabled": false,
+                  "packageName": "Keystrokes",
+                  "uid": "a755faf9-1bd9-4fb5-b56e-95c20f43578c"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "windowValue",
+                      "value": {
+                        "expression": "$window-11$",
+                        "type": "WINDOW"
+                      }
+                    },
+                    {
+                      "name": "typeOfInputStringToType",
+                      "value": {
+                        "string": "VALUE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "stringToType",
+                      "value": {
+                        "string": "[TAB][TAB][TAB][TAB][TAB]",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delay",
+                      "value": {
+                        "number": "500",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "Keystrokes",
+                  "disabled": false,
+                  "packageName": "Keystrokes",
+                  "uid": "504af849-710a-4881-8334-6e5af77677ce"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "windowValue",
+                      "value": {
+                        "expression": "$window-11$",
+                        "type": "WINDOW"
+                      }
+                    },
+                    {
+                      "name": "typeOfInputStringToType",
+                      "value": {
+                        "string": "VALUE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "stringToType",
+                      "value": {
+                        "expression": "$qty_no$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delay",
+                      "value": {
+                        "number": "10",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "Keystrokes",
+                  "disabled": false,
+                  "packageName": "Keystrokes",
+                  "uid": "c73d3af5-dd2b-4b20-9871-c1737320fb78"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "windowValue",
+                      "value": {
+                        "expression": "$window-11$",
+                        "type": "WINDOW"
+                      }
+                    },
+                    {
+                      "name": "typeOfInputStringToType",
+                      "value": {
+                        "string": "VALUE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "stringToType",
+                      "value": {
+                        "string": "[TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB][TAB]",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delay",
+                      "value": {
+                        "number": "500",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "Keystrokes",
+                  "disabled": false,
+                  "packageName": "Keystrokes",
+                  "uid": "a8a92e7b-8fe0-4237-8b61-42735ed7dbc3"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "windowValue",
+                      "value": {
+                        "expression": "$window-11$",
+                        "type": "WINDOW"
+                      }
+                    },
+                    {
+                      "name": "typeOfInputStringToType",
+                      "value": {
+                        "string": "VALUE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "stringToType",
+                      "value": {
+                        "expression": "$org_name$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delay",
+                      "value": {
+                        "number": "500",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "Keystrokes",
+                  "disabled": false,
+                  "packageName": "Keystrokes",
+                  "uid": "47519f08-3626-48f4-9dcf-6fcd4cd9cb2d"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "windowValue",
+                      "value": {
+                        "expression": "$window-11$",
+                        "type": "WINDOW"
+                      }
+                    },
+                    {
+                      "name": "typeOfInputStringToType",
+                      "value": {
+                        "string": "VALUE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "stringToType",
+                      "value": {
+                        "string": "[TAB]",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delay",
+                      "value": {
+                        "number": "500",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "Keystrokes",
+                  "disabled": false,
+                  "packageName": "Keystrokes",
+                  "uid": "e0da3ea4-9e64-4c1e-93cd-ffa25c363067"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "windowValue",
+                      "value": {
+                        "expression": "$window-11$",
+                        "type": "WINDOW"
+                      }
+                    },
+                    {
+                      "name": "typeOfInputStringToType",
+                      "value": {
+                        "string": "VALUE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "stringToType",
+                      "value": {
+                        "expression": "$location_plant$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delay",
+                      "value": {
+                        "number": "500",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "Keystrokes",
+                  "disabled": false,
+                  "packageName": "Keystrokes",
+                  "uid": "5515bb2b-d6d9-408b-9dc4-2ea0dda25b71"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "a7537086-dc65-4179-ac98-e262c7d557c5"
+            }
+          ],
+          "commandName": "loop.commands.start",
+          "disabled": false,
+          "packageName": "Loop",
+          "uid": "b9795905-6e68-46c5-a6b2-bc975993aea4"
+        },
+        {
+          "attributes": [
+            {
+              "name": "windowValue",
+              "value": {
+                "expression": "$window-11$",
+                "type": "WINDOW"
+              }
+            },
+            {
+              "name": "typeOfInputStringToType",
+              "value": {
+                "string": "VALUE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "stringToType",
+              "value": {
+                "string": "[CTRL DOWN]s[CTRL UP]",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delay",
+              "value": {
+                "number": "500",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "Keystrokes",
+          "disabled": false,
+          "packageName": "Keystrokes",
+          "uid": "92bf443a-1465-4591-a215-bf33570c1757"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "5a7ae0df-4256-4aa9-a566-f3f29b29c0ea"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "close temp file",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "CloseSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "5f02bfa6-b68d-4151-af01-59ebd0552223"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "d8757fd2-5012-4e24-8aa9-3532ac826a86"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Application",
+      "version": "2.1.0-20200819-064505"
+    },
+    {
+      "name": "DataTable",
+      "version": "2.1.0-20200831-031946"
+    },
+    {
+      "name": "Delay",
+      "version": "2.2.0-20200831-031026"
+    },
+    {
+      "name": "Excel_MS",
+      "version": "5.0.0-20200909-124042"
+    },
+    {
+      "name": "If",
+      "version": "2.1.0-20200825-071156"
+    },
+    {
+      "name": "Loop",
+      "version": "2.1.0-20200831-031540"
+    },
+    {
+      "name": "Number",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "Recorder",
+      "version": "2.0.8-20201009-015051"
+    },
+    {
+      "name": "Keystrokes",
+      "version": "2.3.0-20200901-093759"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "String",
+      "version": "3.1.0-20200831-031943"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "new_range",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "tablee",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "record": {
+          "schema": [],
+          "values": []
+        },
+        "type": "RECORD"
+      },
+      "description": "",
+      "input": false,
+      "name": "cur_row",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "RECORD"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "blah",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sales_ord",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "mat_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "qty_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "val_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "tot_price",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "qty_num",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "price_str",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "iterator",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "temp_iterator",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "oracle_ie_path",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "IEFrame",
+          "handle": "10160572",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "MSN India | Breaking News, Entertainment, Latest Videos, Outlook - Internet Explorer",
+          "path": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-1",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "IEFrame",
+          "handle": "1835464",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "MSN India | Breaking News, Entertainment, Latest Videos, Outlook - Internet Explorer",
+          "path": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-2",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "IEFrame",
+          "handle": "1639238",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "MSN India | Breaking News, Entertainment, Latest Videos, Outlook - Internet Explorer",
+          "path": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-3",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "IEFrame",
+          "handle": "1180668",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "Login - Internet Explorer",
+          "path": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-4",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "IEFrame",
+          "handle": "2032816",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "Home - Internet Explorer",
+          "path": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-5",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "IEFrame",
+          "handle": "3605982",
+          "isChild": false,
+          "location": {
+            "left": -32000,
+            "top": -32000
+          },
+          "name": "Home - Internet Explorer",
+          "path": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 40,
+            "width": 283
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-6",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SunAwtFrame",
+          "handle": "2034466",
+          "isChild": false,
+          "location": {
+            "left": 0,
+            "top": 0
+          },
+          "name": "Oracle Applications - OVDPDB",
+          "path": "C:\\Program Files\\Java\\jre1.8.0_271\\bin\\jp2launcher.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1080,
+            "width": 1920
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-7",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "IEFrame",
+          "handle": "1574390",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "Home - Internet Explorer",
+          "path": "C:\\Program Files\\Internet Explorer\\iexplore.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-8",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "location_plant",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "org_name",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SunAwtFrame",
+          "handle": "11143292",
+          "isChild": false,
+          "location": {
+            "left": 0,
+            "top": 0
+          },
+          "name": "Oracle Applications - OVDPDB",
+          "path": "C:\\Program Files\\Java\\jre1.8.0_271\\bin\\jp2launcher.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1080,
+            "width": 1920
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-9",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SunAwtFrame",
+          "handle": "4131844",
+          "isChild": false,
+          "location": {
+            "left": 0,
+            "top": 0
+          },
+          "name": "Oracle Applications - OVDPDB",
+          "path": "C:\\Program Files\\Java\\jre1.8.0_271\\bin\\jp2launcher.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1080,
+            "width": 1920
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-10",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SunAwtFrame",
+          "handle": "4263034",
+          "isChild": false,
+          "location": {
+            "left": 0,
+            "top": 0
+          },
+          "name": "Oracle Applications - OVDPDB",
+          "path": "C:\\Program Files\\Java\\jre1.8.0_271\\bin\\jp2launcher.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1080,
+            "width": 1920
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-11",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "excel_file_path_for_oracle",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "oracle_link",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

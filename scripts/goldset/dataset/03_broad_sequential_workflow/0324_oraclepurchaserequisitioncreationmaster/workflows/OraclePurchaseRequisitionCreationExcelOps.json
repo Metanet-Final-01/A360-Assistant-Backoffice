@@ -1,0 +1,1867 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "filePath",
+          "value": {
+            "expression": "file://$excel_file_path$",
+            "type": "FILE"
+          }
+        },
+        {
+          "name": "isSpecificSheet",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "fileAccessMode",
+          "value": {
+            "string": "EDIT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isSecure",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "containsHeader",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "loadAddIns",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "OpenSpreadsheet",
+      "disabled": false,
+      "packageName": "Excel_MS",
+      "uid": "3fc8d13e-eb60-43cb-bb10-f7a0b291318b"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "set new cols",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "SpecificCell",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "T1",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GoToCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "1fd411e9-3a0c-4c36-b0ef-c292edf77efd"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "string": "Org",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SetCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "59cd42fb-1400-4049-9c5d-35c84f6923db"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "SpecificCell",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "U1",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GoToCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "e402a2e1-f8ec-4992-bcae-cc10f5e18888"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "string": "Plant",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SetCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "0799286d-791f-462d-a33b-2d174da946ef"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "SpecificCell",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "V1",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GoToCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "c18f34d6-118a-4990-82f1-21f5ce1e016f"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "string": "Today",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SetCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "9b6af0ad-4706-41e5-8963-78610be1d02e"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ActiveCell",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "selection",
+              "value": {
+                "string": "OneCellRight",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GoToCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "3e4b2dd4-9807-44a0-9563-d677679438bf"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "string": "Available time",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SetCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "edbff7c6-a43a-412a-ade2-4f25792d91f6"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ActiveCell",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "selection",
+              "value": {
+                "string": "OneCellRight",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GoToCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "03417516-abf4-4d35-9915-cf35b3c3651c"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "string": "Material length",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SetCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "f56d79e7-e3d1-4041-8851-784762a1cf66"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ActiveCell",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "selection",
+              "value": {
+                "string": "OneCellRight",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GoToCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "aa6e06f5-75f7-4a4b-8c76-f0def7f58bde"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "string": "Create PR",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SetCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "63277e61-0363-4de8-9487-4a01a859e91b"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "set formulas",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellOption",
+                  "value": {
+                    "string": "SpecificCell",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "T2",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GoToCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "ed4a91e6-f529-4cab-ad51-5ae1433c854a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellFormulaToApply",
+                  "value": {
+                    "string": "=\"Vision Operations\"",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "SetCellFormula",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "7be27142-31c7-4e45-8cd8-5de7c0341ffc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "8dcd22b3-243c-468b-8102-b0d05bdfa353"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "windowTitle",
+                  "value": {
+                    "expression": "$window-3$",
+                    "type": "WINDOW"
+                  }
+                },
+                {
+                  "name": "coordinateTo",
+                  "value": {
+                    "coordinate": {
+                      "capture": {
+                        "screenshotHeight": 0,
+                        "screenshotMetadataPath": "e2c04df1-df04-46e1-8bb3-d7a3a526303d.png",
+                        "screenshotPoint": {
+                          "x": 473,
+                          "y": 308
+                        },
+                        "screenshotWidth": 0,
+                        "screenshotX": 0,
+                        "screenshotY": 0,
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "15f44557-e7c6-4e09-bf4d-672be69775ac.png"
+                      },
+                      "x": {
+                        "number": "473",
+                        "type": "NUMBER"
+                      },
+                      "y": {
+                        "number": "308",
+                        "type": "NUMBER"
+                      }
+                    },
+                    "type": "COORDINATE"
+                  }
+                },
+                {
+                  "name": "mouseButton",
+                  "value": {
+                    "string": "LEFT_BUTTON",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "event",
+                  "value": {
+                    "string": "DOUBLE_CLICK",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "mouseClick",
+              "disabled": false,
+              "packageName": "Mouse",
+              "uid": "297d6835-a10b-4ed1-8dda-0d9899738caf"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "420ebe0a-5433-4f0e-a695-f04d0037a0ce"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellOption",
+                  "value": {
+                    "string": "SpecificCell",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "U2",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GoToCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "0b146e87-d030-443f-8045-7aa9fa7f70ae"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellFormulaToApply",
+                  "value": {
+                    "string": "=\"Atlanta\"",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "SetCellFormula",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "70cc6aed-978f-45b7-aa21-d778ff9956a5"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "ea425f07-4408-4dc9-b0c1-70fd37db92b3"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "windowTitle",
+                  "value": {
+                    "expression": "$window-4$",
+                    "type": "WINDOW"
+                  }
+                },
+                {
+                  "name": "coordinateTo",
+                  "value": {
+                    "coordinate": {
+                      "capture": {
+                        "screenshotHeight": 0,
+                        "screenshotMetadataPath": "61021f03-2348-4f4a-ad2d-c66222a98a0a.png",
+                        "screenshotPoint": {
+                          "x": 530,
+                          "y": 309
+                        },
+                        "screenshotWidth": 0,
+                        "screenshotX": 0,
+                        "screenshotY": 0,
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "e860e4dd-d38b-463c-9318-e4f9466ea4c5.png"
+                      },
+                      "x": {
+                        "number": "530",
+                        "type": "NUMBER"
+                      },
+                      "y": {
+                        "number": "309",
+                        "type": "NUMBER"
+                      }
+                    },
+                    "type": "COORDINATE"
+                  }
+                },
+                {
+                  "name": "mouseButton",
+                  "value": {
+                    "string": "LEFT_BUTTON",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "event",
+                  "value": {
+                    "string": "DOUBLE_CLICK",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "mouseClick",
+              "disabled": false,
+              "packageName": "Mouse",
+              "uid": "f881f6e9-daa5-4c99-914f-72f5e3f38c57"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "ef98f8a1-2eb7-4f5d-9b12-b4ba133e0733"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellOption",
+                  "value": {
+                    "string": "SpecificCell",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "V2",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GoToCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "72ca67b9-2587-4488-ba1a-1a44012d2a52"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellFormulaToApply",
+                  "value": {
+                    "string": "=TODAY()",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "SetCellFormula",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "d6304ac9-1f96-48a3-b260-90da25ecebec"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "61dcb98b-258e-4685-bce5-313e3ffa73c1"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "windowTitle",
+                  "value": {
+                    "expression": "$window-5$",
+                    "type": "WINDOW"
+                  }
+                },
+                {
+                  "name": "coordinateTo",
+                  "value": {
+                    "coordinate": {
+                      "capture": {
+                        "screenshotHeight": 0,
+                        "screenshotMetadataPath": "78e2724b-eb2d-4375-91a2-36344b0a515e.png",
+                        "screenshotPoint": {
+                          "x": 587,
+                          "y": 308
+                        },
+                        "screenshotWidth": 0,
+                        "screenshotX": 0,
+                        "screenshotY": 0,
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "e11f146c-6bb7-476c-93aa-36d55c45c3ea.png"
+                      },
+                      "x": {
+                        "number": "587",
+                        "type": "NUMBER"
+                      },
+                      "y": {
+                        "number": "308",
+                        "type": "NUMBER"
+                      }
+                    },
+                    "type": "COORDINATE"
+                  }
+                },
+                {
+                  "name": "mouseButton",
+                  "value": {
+                    "string": "LEFT_BUTTON",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "event",
+                  "value": {
+                    "string": "DOUBLE_CLICK",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "mouseClick",
+              "disabled": false,
+              "packageName": "Mouse",
+              "uid": "0b684794-919f-47ba-8cea-eda53e111d73"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "bd51fa5e-3451-4365-ab85-bca8cc7d515d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellOption",
+                  "value": {
+                    "string": "SpecificCell",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "W2",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GoToCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "c1618566-1727-43d0-b9f6-c2d352d083dc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellFormulaToApply",
+                  "value": {
+                    "string": "=R2-V2",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "SetCellFormula",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "5f12449c-60dc-40be-aa3a-24c1157535af"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "0dbefc8f-f724-486f-8fc0-7fe28a48fcfa"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "windowTitle",
+                  "value": {
+                    "expression": "$window-6$",
+                    "type": "WINDOW"
+                  }
+                },
+                {
+                  "name": "coordinateTo",
+                  "value": {
+                    "coordinate": {
+                      "capture": {
+                        "screenshotHeight": 0,
+                        "screenshotMetadataPath": "cb1967d2-4a12-45b7-8089-f7a0e17ebafe.png",
+                        "screenshotPoint": {
+                          "x": 642,
+                          "y": 309
+                        },
+                        "screenshotWidth": 0,
+                        "screenshotX": 0,
+                        "screenshotY": 0,
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "7fccdeb6-37e3-4dbf-a3e3-d48a174e4889.png"
+                      },
+                      "x": {
+                        "number": "642",
+                        "type": "NUMBER"
+                      },
+                      "y": {
+                        "number": "309",
+                        "type": "NUMBER"
+                      }
+                    },
+                    "type": "COORDINATE"
+                  }
+                },
+                {
+                  "name": "mouseButton",
+                  "value": {
+                    "string": "LEFT_BUTTON",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "event",
+                  "value": {
+                    "string": "DOUBLE_CLICK",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "mouseClick",
+              "disabled": false,
+              "packageName": "Mouse",
+              "uid": "af35b915-8110-41e9-8831-c1acc7ed4066"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "3e18a468-c3a6-4c67-a462-dcde366ccb67"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellOption",
+                  "value": {
+                    "string": "SpecificCell",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "X2",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GoToCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "7b89f81b-5adf-4f52-b2b6-29558029f7df"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellFormulaToApply",
+                  "value": {
+                    "string": "=IF(LEN(TRIM(F2))<9,1,0)",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "SetCellFormula",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "c2083e0c-fd11-4681-86ef-2cb2896b6d76"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "ca5f93ea-fe9d-431d-9952-b756b4206541"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "windowTitle",
+                  "value": {
+                    "expression": "$window-7$",
+                    "type": "WINDOW"
+                  }
+                },
+                {
+                  "name": "coordinateTo",
+                  "value": {
+                    "coordinate": {
+                      "capture": {
+                        "screenshotHeight": 0,
+                        "screenshotMetadataPath": "90b92589-f1be-4ded-8dbe-91a9e66de305.png",
+                        "screenshotPoint": {
+                          "x": 699,
+                          "y": 309
+                        },
+                        "screenshotWidth": 0,
+                        "screenshotX": 0,
+                        "screenshotY": 0,
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "1e9b3f1b-ec74-4ce3-bd0e-d12052f5e395.png"
+                      },
+                      "x": {
+                        "number": "699",
+                        "type": "NUMBER"
+                      },
+                      "y": {
+                        "number": "309",
+                        "type": "NUMBER"
+                      }
+                    },
+                    "type": "COORDINATE"
+                  }
+                },
+                {
+                  "name": "mouseButton",
+                  "value": {
+                    "string": "LEFT_BUTTON",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "event",
+                  "value": {
+                    "string": "DOUBLE_CLICK",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "mouseClick",
+              "disabled": false,
+              "packageName": "Mouse",
+              "uid": "b02a18d7-a303-4b21-8efd-b1a6ffb63dad"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "0dbcd318-e785-41df-8844-fccdb308654e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellOption",
+                  "value": {
+                    "string": "SpecificCell",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "Y2",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GoToCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "76655888-d655-4040-9bbf-9da4e72352b5"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellFormulaToApply",
+                  "value": {
+                    "string": "=IF(AND(X2=1,W2>S2),1,0)",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "SetCellFormula",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "407587e1-d926-4ada-a2d6-0ff177408c54"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "c5703e2d-df81-4e95-83ff-6f96ed00429d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "windowTitle",
+                  "value": {
+                    "expression": "$window-8$",
+                    "type": "WINDOW"
+                  }
+                },
+                {
+                  "name": "coordinateTo",
+                  "value": {
+                    "coordinate": {
+                      "capture": {
+                        "screenshotHeight": 0,
+                        "screenshotMetadataPath": "f5778207-3d2e-4012-a992-851221f02eed.png",
+                        "screenshotPoint": {
+                          "x": 755,
+                          "y": 308
+                        },
+                        "screenshotWidth": 0,
+                        "screenshotX": 0,
+                        "screenshotY": 0,
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "eab8b7cf-4a3c-4413-b2a6-06f1822e46cc.png"
+                      },
+                      "x": {
+                        "number": "755",
+                        "type": "NUMBER"
+                      },
+                      "y": {
+                        "number": "308",
+                        "type": "NUMBER"
+                      }
+                    },
+                    "type": "COORDINATE"
+                  }
+                },
+                {
+                  "name": "mouseButton",
+                  "value": {
+                    "string": "LEFT_BUTTON",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "event",
+                  "value": {
+                    "string": "DOUBLE_CLICK",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "mouseClick",
+              "disabled": false,
+              "packageName": "Mouse",
+              "uid": "323d10ff-2a18-412d-9111-112d2c1e914e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "5",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "98aae475-b5c8-4b79-8067-a2b1ed3e17dd"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cellOption",
+                  "value": {
+                    "string": "SpecificCell",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "A1",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GoToCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "a9234f87-ade7-4f4d-97cf-f34030c9f6d5"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "cbf161a1-e904-47f2-a881-5984521b0c09"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "4f9932fb-0890-4a89-90df-a9c481429faf"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Save and close",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SaveSpreadSheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "ad55b299-9187-463c-bd85-b5658a0a6619"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "CloseSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "fcc94135-c93c-47ea-aad5-73da9eb6aa83"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "05c4184f-950b-4f2c-b2b9-e4692e8b98a3"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Delay",
+      "version": "2.2.0-20200831-031026"
+    },
+    {
+      "name": "Excel_MS",
+      "version": "5.0.0-20200909-124042"
+    },
+    {
+      "name": "Mouse",
+      "version": "2.1.0-20200831-031542"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200907-072944"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "XLMAIN",
+          "handle": "3999854",
+          "isChild": false,
+          "location": {
+            "left": 355,
+            "top": 88
+          },
+          "name": "edit_this - Excel",
+          "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+          "presetType": "NONE",
+          "size": {
+            "height": 855,
+            "width": 1510
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-1",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "XLMAIN",
+          "handle": "3999854",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "edit_this - Excel",
+          "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-2",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "XLMAIN",
+          "handle": "985256",
+          "isChild": false,
+          "location": {
+            "left": 679,
+            "top": 149
+          },
+          "name": "Month Revenue Potential-C Not Covered_Risk _ Conf Not Covered_12102020 12_12_04 - Excel",
+          "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+          "presetType": "NONE",
+          "size": {
+            "height": 855,
+            "width": 1028
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-3",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "XLMAIN",
+          "handle": "591602",
+          "isChild": false,
+          "location": {
+            "left": 679,
+            "top": 149
+          },
+          "name": "Month Revenue Potential-C Not Covered_Risk _ Conf Not Covered_12102020 12_12_04 - Excel",
+          "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+          "presetType": "NONE",
+          "size": {
+            "height": 855,
+            "width": 1028
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-4",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "XLMAIN",
+          "handle": "1705256",
+          "isChild": false,
+          "location": {
+            "left": 679,
+            "top": 149
+          },
+          "name": "Month Revenue Potential-C Not Covered_Risk _ Conf Not Covered_12102020 12_12_04 - Excel",
+          "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+          "presetType": "NONE",
+          "size": {
+            "height": 855,
+            "width": 1028
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-5",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "XLMAIN",
+          "handle": "1378230",
+          "isChild": false,
+          "location": {
+            "left": 679,
+            "top": 149
+          },
+          "name": "Month Revenue Potential-C Not Covered_Risk _ Conf Not Covered_12102020 12_12_04 - Excel",
+          "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+          "presetType": "NONE",
+          "size": {
+            "height": 855,
+            "width": 1028
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-6",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "XLMAIN",
+          "handle": "1509006",
+          "isChild": false,
+          "location": {
+            "left": 679,
+            "top": 149
+          },
+          "name": "Month Revenue Potential-C Not Covered_Risk _ Conf Not Covered_12102020 12_12_04 - Excel",
+          "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+          "presetType": "NONE",
+          "size": {
+            "height": 855,
+            "width": 1028
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-7",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "XLMAIN",
+          "handle": "2754188",
+          "isChild": false,
+          "location": {
+            "left": 679,
+            "top": 149
+          },
+          "name": "Month Revenue Potential-C Not Covered_Risk _ Conf Not Covered_12102020 12_12_04 - Excel",
+          "path": "C:\\Program Files\\Microsoft Office\\root\\Office16\\EXCEL.EXE",
+          "presetType": "NONE",
+          "size": {
+            "height": 855,
+            "width": 1028
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-8",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "download_path",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "path_dict",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": ".xlsx",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "extension",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "excel_file_path",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

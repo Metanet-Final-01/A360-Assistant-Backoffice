@@ -1,0 +1,533 @@
+{
+  "case_id": "02_0419_sendbulkemailswithtemplate",
+  "run_id": "runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate",
+  "normalized": {
+    "gold_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\02_0419_sendbulkemailswithtemplate\\SendBulkEmailsWithTemplate.goldset.json",
+    "prediction_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend.goldset.json",
+    "gold_source_file": "SendBulkEmailsWithTemplate.json",
+    "prediction_source_file": "runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend.json",
+    "preprocessing": {
+      "excluded_rule": "browser_session_lifecycle_action",
+      "excluded_regex": {
+        "package": "^(web\\s*automation|webautomation|browser|recorder)$",
+        "action": "session"
+      },
+      "excluded_gold_actions": [],
+      "excluded_prediction_actions": [],
+      "excluded_gold_count": 0,
+      "excluded_prediction_count": 0,
+      "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+      "action_equivalence_member_count": 61
+    },
+    "gold_action_count": 55,
+    "prediction_action_count": 13,
+    "action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 55,
+      "prediction_count": 13
+    },
+    "action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 55,
+      "prediction_count": 13
+    },
+    "canonical_action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 55,
+      "prediction_count": 13
+    },
+    "canonical_action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 55,
+      "prediction_count": 13
+    },
+    "package_multiset": {
+      "precision": 0.07692307692307693,
+      "recall": 0.01818181818181818,
+      "f1": 0.02941176470588235,
+      "overlap": 1,
+      "gold_count": 55,
+      "prediction_count": 13
+    },
+    "package_family_multiset": {
+      "precision": 0.15384615384615385,
+      "recall": 0.03636363636363636,
+      "f1": 0.0588235294117647,
+      "overlap": 2,
+      "gold_count": 55,
+      "prediction_count": 13
+    },
+    "salient_family_multiset": {
+      "precision": 0.08333333333333333,
+      "recall": 0.1111111111111111,
+      "f1": 0.09523809523809525,
+      "overlap": 1,
+      "gold_count": 9,
+      "prediction_count": 12
+    },
+    "adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 56,
+      "prediction_count": 14
+    },
+    "canonical_adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 56,
+      "prediction_count": 14
+    },
+    "first_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.assign",
+        "prediction": "Message box.usingMessageBoxAction"
+      },
+      {
+        "index": 2,
+        "gold": "String.assign",
+        "prediction": "SharePoint.sharepointGetFolder"
+      },
+      {
+        "index": 3,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 4,
+        "gold": "TaskBot.stopTask",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 5,
+        "gold": "String.assign",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 6,
+        "gold": "String.assign",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 7,
+        "gold": "String.assign",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.createFolder",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 9,
+        "gold": "Folder.createFolder",
+        "prediction": "Google Sheets.googleSheetsCreateWorkbook"
+      },
+      {
+        "index": 10,
+        "gold": "Folder.createFolder",
+        "prediction": "Loop.loop.commands.start"
+      },
+      {
+        "index": 11,
+        "gold": "Folder.createFolder",
+        "prediction": "Email.cloudUsingForwardAction"
+      },
+      {
+        "index": 12,
+        "gold": "Datetime.toString",
+        "prediction": "Error handler.errorHandlerCatch"
+      }
+    ],
+    "first_canonical_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Message box.usingMessageBoxAction"
+      },
+      {
+        "index": 2,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "SharePoint.sharepointGetFolder"
+      },
+      {
+        "index": 3,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 4,
+        "gold": "TaskBot.stopTask",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 5,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 6,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 7,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.folderCreate",
+        "prediction": "Box.boxCrtFldr"
+      },
+      {
+        "index": 9,
+        "gold": "Folder.folderCreate",
+        "prediction": "Google Sheets.googleSheetsCreateWorkbook"
+      },
+      {
+        "index": 10,
+        "gold": "Folder.folderCreate",
+        "prediction": "Loop.loop.commands.start"
+      },
+      {
+        "index": 11,
+        "gold": "Folder.folderCreate",
+        "prediction": "Email.cloudUsingForwardAction"
+      },
+      {
+        "index": 12,
+        "gold": "Datetime.cloudConvertDatetimeToString",
+        "prediction": "Error handler.errorHandlerCatch"
+      }
+    ],
+    "gold_actions_preview": [
+      "String.assign",
+      "String.assign",
+      "MessageBox.messageBox",
+      "TaskBot.stopTask",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Datetime.toString",
+      "Datetime.subtract",
+      "Datetime.toString",
+      "File.deleteFiles",
+      "File.deleteFiles",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "String.assign"
+    ],
+    "gold_canonical_actions_preview": [
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "MessageBox.messageBox",
+      "TaskBot.stopTask",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Datetime.cloudConvertDatetimeToString",
+      "Datetime.usingSubtractAction",
+      "Datetime.cloudConvertDatetimeToString",
+      "File.cloudDeletingFile",
+      "File.cloudDeletingFile",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction"
+    ],
+    "prediction_actions": [
+      "Message box.usingMessageBoxAction",
+      "SharePoint.sharepointGetFolder",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Google Sheets.googleSheetsCreateWorkbook",
+      "Loop.loop.commands.start",
+      "Email.cloudUsingForwardAction",
+      "Error handler.errorHandlerCatch",
+      "Logging.cloudInsertingLogToFileCommand"
+    ],
+    "prediction_canonical_actions": [
+      "Message box.usingMessageBoxAction",
+      "SharePoint.sharepointGetFolder",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Box.boxCrtFldr",
+      "Google Sheets.googleSheetsCreateWorkbook",
+      "Loop.loop.commands.start",
+      "Email.cloudUsingForwardAction",
+      "Error handler.errorHandlerCatch",
+      "Logging.cloudInsertingLogToFileCommand"
+    ],
+    "gold_salient_families": [
+      "excel",
+      "excel",
+      "excel",
+      "excel",
+      "email",
+      "excel",
+      "excel",
+      "excel",
+      "excel"
+    ],
+    "prediction_salient_families": [
+      "message_box",
+      "sharepoint",
+      "box",
+      "box",
+      "box",
+      "box",
+      "box",
+      "box",
+      "google_sheets",
+      "loop",
+      "email",
+      "error_handler"
+    ]
+  },
+  "pm4py": {
+    "mode": "actual_pm4py_alignment_conformance",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\02_0419_sendbulkemailswithtemplate\\SendBulkEmailsWithTemplate.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 55,
+    "prediction_action_count_after_preprocessing": 11,
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [
+      "Loop.loop.commands.start",
+      "Error handler.errorHandlerCatch"
+    ],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "fitness": 0.0,
+    "precision": 0.0,
+    "raw_fitness": {
+      "percFitTraces": 0.0,
+      "averageFitness": 0.0,
+      "percentage_of_fitting_traces": 0.0,
+      "average_trace_fitness": 0.0,
+      "log_fitness": 0.0
+    }
+  },
+  "pm4py_artifact_check": {
+    "gold_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\02_0419_sendbulkemailswithtemplate",
+    "prediction_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate\\converted_recommendation\\pm4py",
+    "gold_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\02_0419_sendbulkemailswithtemplate\\SendBulkEmailsWithTemplate.tree.json",
+      "exists": true,
+      "sha256": "7744086cafcfc88daf09816094760751de68f33dafcba9816f505f72ef139c3f",
+      "leaf_count": 55,
+      "labels": [
+        "String.assign",
+        "String.assign",
+        "MessageBox.messageBox",
+        "TaskBot.stopTask",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Datetime.toString",
+        "Datetime.subtract",
+        "Datetime.toString",
+        "File.deleteFiles",
+        "File.deleteFiles",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "File.downloadTo",
+        "Folder.createFolder",
+        "MessageBox.messageBox",
+        "TaskBot.stopTask",
+        "Excel.OpenSpreadsheet",
+        "Excel.GetMultipleCells",
+        "Excel.OpenSpreadsheet",
+        "Excel.GetMultipleCells",
+        "Number.assignToNumber",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.replace",
+        "String.replace",
+        "String.replace",
+        "String.replace",
+        "Email.sendMail",
+        "Excel.SetCell",
+        "Excel.SaveSpreadSheet",
+        "Excel.SetCell",
+        "Excel.SaveSpreadSheet",
+        "Number.increment",
+        "File.copyFiles",
+        "File.deleteFiles",
+        "File.createFile",
+        "LogToFile.logToFile",
+        "Datetime.toString",
+        "Number.toString",
+        "LogToFile.logToFile",
+        "Screen.captureDesktop"
+      ],
+      "operator_counts": {
+        "loop": 1,
+        "sequence": 8,
+        "xor": 10
+      }
+    },
+    "prediction_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate\\converted_recommendation\\pm4py\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend.tree.json",
+      "exists": true,
+      "sha256": "88c505a48b01215a79b71ca87858bb4a5205bf612f3ce5764406ca57e50f3a43",
+      "leaf_count": 13,
+      "labels": [
+        "Message box.usingMessageBoxAction",
+        "SharePoint.sharepointGetFolder",
+        "Box.boxCrtFldr",
+        "Box.boxCrtFldr",
+        "Box.boxCrtFldr",
+        "Box.boxCrtFldr",
+        "Box.boxCrtFldr",
+        "Box.boxCrtFldr",
+        "Google Sheets.googleSheetsCreateWorkbook",
+        "Loop.loop.commands.start",
+        "Email.cloudUsingForwardAction",
+        "Error handler.errorHandlerCatch",
+        "Logging.cloudInsertingLogToFileCommand"
+      ],
+      "operator_counts": {
+        "sequence": 2
+      }
+    },
+    "gold_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\02_0419_sendbulkemailswithtemplate\\SendBulkEmailsWithTemplate.pnml",
+      "exists": true,
+      "sha256": "f04a4059bc19220d3b2f03fa359b8fd96fa2787466c919741e61107020af93a1",
+      "readable_by_pm4py": true,
+      "places": 55,
+      "transitions": 58,
+      "visible_transitions": 55,
+      "arcs": 116,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "prediction_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate\\converted_recommendation\\pm4py\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend.pnml",
+      "exists": true,
+      "sha256": "e18c23571ec492b2135bf29175fba04f893bc5c44a1ed56fedf8946f68434ff1",
+      "readable_by_pm4py": true,
+      "places": 14,
+      "transitions": 13,
+      "visible_transitions": 13,
+      "arcs": 26,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "tree_leaf_count_delta": -42,
+    "tree_hash_equal": false,
+    "pnml_hash_equal": false
+  },
+  "worfbench": {
+    "mode": "actual_worfbench_t_eval_nodes",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\02_0419_sendbulkemailswithtemplate\\SendBulkEmailsWithTemplate.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 48,
+    "prediction_action_count_after_preprocessing": 11,
+    "gold_worfbench_fidelity": "approximated",
+    "prediction_worfbench_fidelity": "exact",
+    "gold_control_flow_types": [
+      "if",
+      "loop",
+      "try"
+    ],
+    "prediction_control_flow_types": [],
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [
+      "Loop.loop.commands.start",
+      "Error handler.errorHandlerCatch"
+    ],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "precision": 0.1818,
+    "recall": 0.04,
+    "f1_score": 0.0656
+  },
+  "worfbench_diagnostic_artifact_f1": {
+    "gold": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\worfbench_13\\02_0419_sendbulkemailswithtemplate\\SendBulkEmailsWithTemplate.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/02_0419_sendbulkemailswithtemplate/SendBulkEmailsWithTemplate",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "if",
+        "loop",
+        "try"
+      ]
+    },
+    "prediction": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate\\converted_recommendation\\worfbench\\runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend/runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate__turnRecommend",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "container"
+      ]
+    },
+    "node_label_f1": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 48,
+      "prediction_count": 13
+    },
+    "edge_f1": {
+      "precision": 0.9285714285714286,
+      "recall": 0.2653061224489796,
+      "f1": 0.4126984126984127,
+      "overlap": 13,
+      "gold_count": 49,
+      "prediction_count": 14
+    },
+    "gold_node_count": 48,
+    "prediction_node_count": 13,
+    "gold_edge_count": 49,
+    "prediction_edge_count": 14
+  }
+}

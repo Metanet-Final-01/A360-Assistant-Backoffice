@@ -1,0 +1,7 @@
+{
+  "normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate__turnRecommend.goldset.json",
+  "steps": 4,
+  "actions": 11,
+  "pm4py": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate\\converted_recommendation\\pm4py",
+  "worfbench": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate\\converted_recommendation\\worfbench"
+}

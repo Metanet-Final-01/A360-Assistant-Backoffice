@@ -1,0 +1,139 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\Docs\\input.xlsx"
+      ]
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant",
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant\\58b36e81-3e35-4368-89f5-a221cbecbb23.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant",
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant\\5b3e155e-1cd9-4781-ba4f-cae99e7ad5a2.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant",
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant\\7fd69710-2c38-4c13-a007-a6348299c47e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant",
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant\\91987c31-df78-49af-87ef-50574094a6af.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant",
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant\\a8fa982c-1e65-49a0-a2fd-ebb52dcf7a5a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant",
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Microsoft Teams Assistant\\db63986f-f7b2-42c4-bac7-e3cb78b69fa8.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Microsoft Teams Assistant - KLOUDPAD Mobility Research Pvt Ltd\\Docs\\input.xlsx",
+      "scannedDependencies": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "AISense",
+      "path": "bot-command-recorder-2.0.7-20200729-103636.jar",
+      "version": "2.0.7-20200729-103636"
+    },
+    {
+      "name": "Browser",
+      "path": "bot-command-browser-2.0.0-20200721-221938.jar",
+      "version": "2.0.0-20200721-221938"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.0.0-20200721-221958.jar",
+      "version": "2.0.0-20200721-221958"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200721-222009.jar",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-4.0.0-20200723-234413.jar",
+      "version": "4.0.0-20200723-234413"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200721-222021.jar",
+      "version": "2.0.0-20200721-222021"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.1.0-20200721-222212.jar",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200721-222224.jar",
+      "version": "2.0.0-20200721-222224"
+    },
+    {
+      "name": "Recorder",
+      "path": "bot-command-recorder-2.0.5-20200523-020302.jar",
+      "version": "2.0.5-20200523-020302"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200723-201827.jar",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200721-222454.jar",
+      "version": "3.0.0-20200721-222454"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-2.0.0-20200721-222454.jar",
+      "version": "2.0.0-20200721-222454"
+    },
+    {
+      "name": "Wait",
+      "path": "bot-command-wait-3.0.0-20200721-222505.jar",
+      "version": "3.0.0-20200721-222505"
+    }
+  ]
+}

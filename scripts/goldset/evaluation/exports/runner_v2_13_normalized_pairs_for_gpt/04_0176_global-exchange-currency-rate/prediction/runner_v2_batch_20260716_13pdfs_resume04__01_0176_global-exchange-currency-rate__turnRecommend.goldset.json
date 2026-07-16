@@ -1,0 +1,3457 @@
+{
+  "answer": "4개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 브라우저 다운로드 완료 대기 전용 카탈로그 액션을 찾지 못해 별도 대기 단계는 생략했고, 다운로드 파일 읽기는 CSV/TXT 열기 작업으로 대체했다. 웹사이트 URL과 다운로드 버튼/페이지 식별자는 원문에 없어서 예시 값과 JS 클릭 우회를 사용했다. 원문은 최종 출력 형식을 CSV 또는 통합문서 중 확정하지 않아 CSV로 설계했다. download/read/open/close 전체를 세밀하게 제어하는 전용 파일 핸들 액션은 확인되지 않아 파일 정리와 읽기는 CSV/TXT 및 Browser 액션으로 처리했다. (검수에서 해소하지 못한 위반 1건이 있어요 — 흐름도에서 확인해 주세요.)",
+  "backend_response_id": "9deb79eb-19d8-496d-bd38-4e78ed356dd8",
+  "backend_response_version": 2,
+  "backend_step": "turnRecommend",
+  "document_id": "2a774bc9-0ba4-426d-b2aa-fe93a8ca65b8",
+  "notes": "브라우저 다운로드 완료 대기 전용 카탈로그 액션을 찾지 못해 별도 대기 단계는 생략했고, 다운로드 파일 읽기는 CSV/TXT 열기 작업으로 대체했다. 웹사이트 URL과 다운로드 버튼/페이지 식별자는 원문에 없어서 예시 값과 JS 클릭 우회를 사용했다. 원문은 최종 출력 형식을 CSV 또는 통합문서 중 확정하지 않아 CSV로 설계했다. download/read/open/close 전체를 세밀하게 제어하는 전용 파일 핸들 액션은 확인되지 않아 파일 정리와 읽기는 CSV/TXT 및 Browser 액션으로 처리했다.",
+  "original_recommendation": {
+    "notes": "브라우저 다운로드 완료 대기 전용 카탈로그 액션을 찾지 못해 별도 대기 단계는 생략했고, 다운로드 파일 읽기는 CSV/TXT 열기 작업으로 대체했다. 웹사이트 URL과 다운로드 버튼/페이지 식별자는 원문에 없어서 예시 값과 JS 클릭 우회를 사용했다. 원문은 최종 출력 형식을 CSV 또는 통합문서 중 확정하지 않아 CSV로 설계했다. download/read/open/close 전체를 세밀하게 제어하는 전용 파일 핸들 액션은 확인되지 않아 파일 정리와 읽기는 CSV/TXT 및 Browser 액션으로 처리했다.",
+    "schema_version": "1.0",
+    "steps": [
+      {
+        "actions": [
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.88,
+            "label": "Logs 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 진단용 Logs 폴더를 작업 루트 아래에 만든다.",
+            "sources": [
+              {
+                "score": 0.875,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "filePackageCreateAction",
+            "children": [],
+            "confidence": 0.8,
+            "label": "ErrorLogs.csv 생성",
+            "order": 2,
+            "package": "File",
+            "parameters": [
+              {
+                "label": null,
+                "name": "file",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFile",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "오류 기록을 남길 ErrorLogs.csv 파일을 준비한다.",
+            "sources": [
+              {
+                "score": 0.80078125,
+                "source_type": "action_schema",
+                "title": "File - 작업 생성",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.88,
+            "label": "출력 폴더 생성",
+            "order": 3,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Output",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "최종 환율 산출물을 보관할 출력 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.875,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.78,
+            "label": "시작 시각 기록",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": "Execution started",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 행을 감사할 수 있도록 시작 시각을 로그에 남긴다.",
+            "sources": [
+              {
+                "score": 0.77734375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "지정된 로컬 작업 루트 아래에 출력 CSV, Logs 폴더, ErrorLogs.csv, 출력 폴더를 준비하고 실행 시작 시각을 기록한다.",
+        "label": "작업 폴더·출력 경로 준비",
+        "step_id": "step-1"
+      },
+      {
+        "actions": [
+          {
+            "action": "browserPackageOpenAction",
+            "children": [],
+            "confidence": 0.81,
+            "label": "환율 사이트 열기",
+            "order": 1,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "tab",
+                "value": "새 탭",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "windowTitle",
+                "value": "https://example.com",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "브라우저에서 환율 정보 웹사이트를 연다.",
+            "sources": [
+              {
+                "score": 0.80859375,
+                "source_type": "action_schema",
+                "title": "Browser - 열기 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "browserPackageRunJavascriptAction",
+            "children": [],
+            "confidence": 0.52,
+            "label": "다운로드 실행",
+            "order": 2,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "target",
+                "value": "브라우저",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "javascript",
+                "value": "document.querySelector('button, a').click();",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "글로벌 통화 데이터 페이지에서 내보내기/다운로드 동작을 수행하기 위한 웹 상호작용을 실행한다.",
+            "sources": [
+              {
+                "score": 0.51953125,
+                "source_type": "action_schema",
+                "title": "Browser - JavaScript 실행 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "브라우저로 환율 정보 웹사이트를 열고 글로벌 통화 데이터 페이지에서 다운로드를 실행한다.",
+        "label": "환율 사이트 접속·다운로드",
+        "step_id": "step-2"
+      },
+      {
+        "actions": [
+          {
+            "action": "cloudOpeningCsvTextFile",
+            "children": [],
+            "confidence": 0.82,
+            "label": "다운로드 CSV 열기",
+            "order": 1,
+            "package": "CSV/TXT",
+            "parameters": [
+              {
+                "label": null,
+                "name": "source",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/DownloadedCurrency.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "headerIncluded",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "delimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "trimLeadingSpaces",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "trimTrailingSpaces",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "다운로드된 통화 데이터 파일을 읽기 위해 CSV/TXT 열기 작업을 사용한다.",
+            "sources": [
+              {
+                "score": 0.82421875,
+                "source_type": "action_schema",
+                "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+              }
+            ]
+          },
+          {
+            "action": "cloudUsingLoopAction",
+            "children": [
+              {
+                "action": "dataTablePackageSetValueSinlgeCellAction",
+                "children": [],
+                "confidence": 0.55,
+                "label": "선택 필드 기록",
+                "order": 1,
+                "package": "Data Table",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "dataTableName",
+                    "value": "outputRates",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "rowIndex",
+                    "value": 1,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "column",
+                    "value": "이름",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "value",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "반복 중 선택한 환율 값을 출력 데이터에 기록한다.",
+                "sources": [
+                  {
+                    "score": 0.55078125,
+                    "source_type": "action_schema",
+                    "title": "Data Table - 단일 셀의 값 설정 작업",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.66,
+            "label": "환율 레코드 반복",
+            "order": 2,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "iterator",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "환율 레코드를 반복하며 필요한 필드를 수집한다.",
+            "sources": [
+              {
+                "score": 0.66015625,
+                "source_type": "action_schema",
+                "title": "Loop - 루프 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.81,
+            "label": "출력 CSV 쓰기",
+            "order": 3,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputRates",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Exchange Currency.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF-8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "준비된 CSV 출력 파일에 선택한 값을 기록한다.",
+            "sources": [
+              {
+                "score": 0.80859375,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "numberIncrement",
+            "children": [],
+            "confidence": 0.87,
+            "label": "진행 카운터 증가",
+            "order": 4,
+            "package": "Number",
+            "parameters": [
+              {
+                "label": null,
+                "name": "number",
+                "value": 0,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "incrementValue",
+                "value": 1,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputNumberVariable",
+                "value": "recordCount",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "배치 처리 내역을 감사할 수 있도록 카운터를 유지한다.",
+            "sources": [
+              {
+                "score": 0.8671875,
+                "source_type": "action_schema",
+                "title": "Number - 숫자의 증가 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "다운로드된 CSV를 읽어 각 레코드를 순회하며 필요한 값을 출력 CSV에 기록한다.",
+        "label": "다운로드 파일 읽기·출력 생성",
+        "step_id": "step-3"
+      },
+      {
+        "actions": [
+          {
+            "action": "errorHandlerTry",
+            "children": [
+              {
+                "action": "cloudInsertingLogToFileCommand",
+                "children": [],
+                "confidence": 0.78,
+                "label": "완료 상태 기록",
+                "order": 1,
+                "package": "Logging",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Execution completed",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  }
+                ],
+                "rationale": "실행 상태 정보를 로그 파일에 추가한다.",
+                "sources": [
+                  {
+                    "score": 0.77734375,
+                    "source_type": "action_schema",
+                    "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.88,
+            "label": "업무 실행 시도",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [],
+            "rationale": "완료 로그와 후속 정리를 보호된 구간으로 묶는다.",
+            "sources": [
+              {
+                "score": 0.87890625,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 Try 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "errorHandlerCatch",
+            "children": [
+              {
+                "action": "cloudInsertingLogToFileCommand",
+                "children": [],
+                "confidence": 0.78,
+                "label": "오류 로그 기록",
+                "order": 1,
+                "package": "Logging",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Workflow failed",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  }
+                ],
+                "rationale": "웹사이트, 다운로드 또는 출력 쓰기 실패 시 오류 로그에 읽기 쉬운 행을 남긴다.",
+                "sources": [
+                  {
+                    "score": 0.77734375,
+                    "source_type": "action_schema",
+                    "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.64,
+            "label": "오류 시 기록",
+            "order": 2,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "continueOnError",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실패 시 오류 로그에 기록한다.",
+            "sources": [
+              {
+                "score": 0.85546875,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "browserPackageCloseAction",
+            "children": [],
+            "confidence": 0.76,
+            "label": "브라우저 닫기",
+            "order": 3,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "target",
+                "value": "탭",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "작업에서 연 브라우저를 닫아 정리한다.",
+            "sources": [
+              {
+                "score": 0.7578125,
+                "source_type": "action_schema",
+                "title": "Browser - 닫기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "실행 상태를 로그에 남기고, 오류 발생 시 오류 로그를 기록한 뒤 브라우저와 파일을 닫는다.",
+        "label": "완료 로그·정리",
+        "step_id": "step-4"
+      }
+    ],
+    "variables": [
+      {
+        "description": "다운로드한 환율 레코드에서 선택해 기록할 출력 데이터 테이블",
+        "direction": "local",
+        "name": "outputRates",
+        "type": "TABLE"
+      },
+      {
+        "description": "배치 처리 진행 카운터",
+        "direction": "local",
+        "name": "recordCount",
+        "type": "NUMBER"
+      }
+    ]
+  },
+  "parent_version": 1,
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate",
+  "runner": "runner_v2",
+  "session_id": "48c6f36e-9bfc-4b9e-90a8-b0cbac98465e",
+  "source": "backend_recommendation",
+  "source_file": "runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate__turnRecommend.json",
+  "sources": [
+    {
+      "score": 0.875,
+      "source_type": "action_schema",
+      "title": "Folder - 폴더의 생성 작업",
+      "url": ""
+    },
+    {
+      "score": 0.80078125,
+      "source_type": "action_schema",
+      "title": "File - 작업 생성",
+      "url": ""
+    },
+    {
+      "score": 0.77734375,
+      "source_type": "action_schema",
+      "title": "Logging - 파일에 텍스트 기록 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.80859375,
+      "source_type": "action_schema",
+      "title": "Browser - 열기 작업",
+      "url": ""
+    },
+    {
+      "score": 0.51953125,
+      "source_type": "action_schema",
+      "title": "Browser - JavaScript 실행 작업",
+      "url": ""
+    },
+    {
+      "score": 0.82421875,
+      "source_type": "action_schema",
+      "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+    },
+    {
+      "score": 0.66015625,
+      "source_type": "action_schema",
+      "title": "Loop - 루프 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.55078125,
+      "source_type": "action_schema",
+      "title": "Data Table - 단일 셀의 값 설정 작업",
+      "url": ""
+    },
+    {
+      "score": 0.80859375,
+      "source_type": "action_schema",
+      "title": "Data Table - 파일 쓰기 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.8671875,
+      "source_type": "action_schema",
+      "title": "Number - 숫자의 증가 작업",
+      "url": ""
+    },
+    {
+      "score": 0.87890625,
+      "source_type": "action_schema",
+      "title": "Error handler - 오류 처리기의 Try 작업",
+      "url": ""
+    },
+    {
+      "score": 0.85546875,
+      "source_type": "action_schema",
+      "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+      "url": ""
+    },
+    {
+      "score": 0.7578125,
+      "source_type": "action_schema",
+      "title": "Browser - 닫기 작업",
+      "url": ""
+    }
+  ],
+  "steps": [
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "지정된 로컬 작업 루트 아래에 출력 CSV, Logs 폴더, ErrorLogs.csv, 출력 폴더를 준비하고 실행 시작 시각을 기록한다.",
+              "label": "작업 폴더·출력 경로 준비",
+              "step_id": "step-1"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.88,
+            "label": "Logs 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 진단용 Logs 폴더를 작업 루트 아래에 만든다.",
+            "sources": [
+              {
+                "score": 0.875,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "filePackageCreateAction",
+            "children": [],
+            "confidence": 0.8,
+            "label": "ErrorLogs.csv 생성",
+            "order": 2,
+            "package": "File",
+            "parameters": [
+              {
+                "label": null,
+                "name": "file",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFile",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "오류 기록을 남길 ErrorLogs.csv 파일을 준비한다.",
+            "sources": [
+              {
+                "score": 0.80078125,
+                "source_type": "action_schema",
+                "title": "File - 작업 생성",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.88,
+            "label": "출력 폴더 생성",
+            "order": 3,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Output",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "최종 환율 산출물을 보관할 출력 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.875,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.78,
+            "label": "시작 시각 기록",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": "Execution started",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 행을 감사할 수 있도록 시작 시각을 로그에 남긴다.",
+            "sources": [
+              {
+                "score": 0.77734375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "지정된 로컬 작업 루트 아래에 출력 CSV, Logs 폴더, ErrorLogs.csv, 출력 폴더를 준비하고 실행 시작 시각을 기록한다.",
+        "label": "작업 폴더·출력 경로 준비",
+        "step_id": "step-1"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "folderCreate",
+          "attributes": [
+            {
+              "label": null,
+              "name": "folder",
+              "original_parameter": {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "overwriteExistingFolder",
+              "original_parameter": {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.88,
+                  "label": "Logs 폴더 생성",
+                  "order": 1,
+                  "rationale": "실행 진단용 Logs 폴더를 작업 루트 아래에 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.875,
+                      "source_type": "action_schema",
+                      "title": "Folder - 폴더의 생성 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.88,
+            "label": "Logs 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 진단용 Logs 폴더를 작업 루트 아래에 만든다.",
+            "sources": [
+              {
+                "score": 0.875,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Folder",
+          "type": "action"
+        },
+        {
+          "action": "filePackageCreateAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "file",
+              "original_parameter": {
+                "label": null,
+                "name": "file",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "overwriteExistingFile",
+              "original_parameter": {
+                "label": null,
+                "name": "overwriteExistingFile",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.8,
+                  "label": "ErrorLogs.csv 생성",
+                  "order": 2,
+                  "rationale": "오류 기록을 남길 ErrorLogs.csv 파일을 준비한다.",
+                  "sources": [
+                    {
+                      "score": 0.80078125,
+                      "source_type": "action_schema",
+                      "title": "File - 작업 생성",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "filePackageCreateAction",
+            "children": [],
+            "confidence": 0.8,
+            "label": "ErrorLogs.csv 생성",
+            "order": 2,
+            "package": "File",
+            "parameters": [
+              {
+                "label": null,
+                "name": "file",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFile",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "오류 기록을 남길 ErrorLogs.csv 파일을 준비한다.",
+            "sources": [
+              {
+                "score": 0.80078125,
+                "source_type": "action_schema",
+                "title": "File - 작업 생성",
+                "url": ""
+              }
+            ]
+          },
+          "package": "File",
+          "type": "action"
+        },
+        {
+          "action": "folderCreate",
+          "attributes": [
+            {
+              "label": null,
+              "name": "folder",
+              "original_parameter": {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Output",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Output",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "overwriteExistingFolder",
+              "original_parameter": {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.88,
+                  "label": "출력 폴더 생성",
+                  "order": 3,
+                  "rationale": "최종 환율 산출물을 보관할 출력 폴더를 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.875,
+                      "source_type": "action_schema",
+                      "title": "Folder - 폴더의 생성 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.88,
+            "label": "출력 폴더 생성",
+            "order": 3,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Output",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "최종 환율 산출물을 보관할 출력 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.875,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Folder",
+          "type": "action"
+        },
+        {
+          "action": "cloudInsertingLogToFileCommand",
+          "attributes": [
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "textToLog",
+              "original_parameter": {
+                "label": null,
+                "name": "textToLog",
+                "value": "Execution started",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "Execution started",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "addTimestamp",
+              "original_parameter": {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 로그 파일에 추가",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "encoding",
+              "original_parameter": {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "UTF8",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.78,
+                  "label": "시작 시각 기록",
+                  "order": 4,
+                  "rationale": "실행 행을 감사할 수 있도록 시작 시각을 로그에 남긴다.",
+                  "sources": [
+                    {
+                      "score": 0.77734375,
+                      "source_type": "action_schema",
+                      "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.78,
+            "label": "시작 시각 기록",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": "Execution started",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 행을 감사할 수 있도록 시작 시각을 로그에 남긴다.",
+            "sources": [
+              {
+                "score": 0.77734375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Logging",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "브라우저로 환율 정보 웹사이트를 열고 글로벌 통화 데이터 페이지에서 다운로드를 실행한다.",
+              "label": "환율 사이트 접속·다운로드",
+              "step_id": "step-2"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "browserPackageOpenAction",
+            "children": [],
+            "confidence": 0.81,
+            "label": "환율 사이트 열기",
+            "order": 1,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "tab",
+                "value": "새 탭",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "windowTitle",
+                "value": "https://example.com",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "브라우저에서 환율 정보 웹사이트를 연다.",
+            "sources": [
+              {
+                "score": 0.80859375,
+                "source_type": "action_schema",
+                "title": "Browser - 열기 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "browserPackageRunJavascriptAction",
+            "children": [],
+            "confidence": 0.52,
+            "label": "다운로드 실행",
+            "order": 2,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "target",
+                "value": "브라우저",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "javascript",
+                "value": "document.querySelector('button, a').click();",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "글로벌 통화 데이터 페이지에서 내보내기/다운로드 동작을 수행하기 위한 웹 상호작용을 실행한다.",
+            "sources": [
+              {
+                "score": 0.51953125,
+                "source_type": "action_schema",
+                "title": "Browser - JavaScript 실행 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "브라우저로 환율 정보 웹사이트를 열고 글로벌 통화 데이터 페이지에서 다운로드를 실행한다.",
+        "label": "환율 사이트 접속·다운로드",
+        "step_id": "step-2"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "browserPackageOpenAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "tab",
+              "original_parameter": {
+                "label": null,
+                "name": "tab",
+                "value": "새 탭",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "새 탭",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "windowTitle",
+              "original_parameter": {
+                "label": null,
+                "name": "windowTitle",
+                "value": "https://example.com",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "https://example.com",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.81,
+                  "label": "환율 사이트 열기",
+                  "order": 1,
+                  "rationale": "브라우저에서 환율 정보 웹사이트를 연다.",
+                  "sources": [
+                    {
+                      "score": 0.80859375,
+                      "source_type": "action_schema",
+                      "title": "Browser - 열기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "browserPackageOpenAction",
+            "children": [],
+            "confidence": 0.81,
+            "label": "환율 사이트 열기",
+            "order": 1,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "tab",
+                "value": "새 탭",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "windowTitle",
+                "value": "https://example.com",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "브라우저에서 환율 정보 웹사이트를 연다.",
+            "sources": [
+              {
+                "score": 0.80859375,
+                "source_type": "action_schema",
+                "title": "Browser - 열기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Browser",
+          "type": "action"
+        },
+        {
+          "action": "browserPackageRunJavascriptAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "target",
+              "original_parameter": {
+                "label": null,
+                "name": "target",
+                "value": "브라우저",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "브라우저",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "javascript",
+              "original_parameter": {
+                "label": null,
+                "name": "javascript",
+                "value": "document.querySelector('button, a').click();",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "document.querySelector('button, a').click();",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.52,
+                  "label": "다운로드 실행",
+                  "order": 2,
+                  "rationale": "글로벌 통화 데이터 페이지에서 내보내기/다운로드 동작을 수행하기 위한 웹 상호작용을 실행한다.",
+                  "sources": [
+                    {
+                      "score": 0.51953125,
+                      "source_type": "action_schema",
+                      "title": "Browser - JavaScript 실행 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "browserPackageRunJavascriptAction",
+            "children": [],
+            "confidence": 0.52,
+            "label": "다운로드 실행",
+            "order": 2,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "target",
+                "value": "브라우저",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "javascript",
+                "value": "document.querySelector('button, a').click();",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "글로벌 통화 데이터 페이지에서 내보내기/다운로드 동작을 수행하기 위한 웹 상호작용을 실행한다.",
+            "sources": [
+              {
+                "score": 0.51953125,
+                "source_type": "action_schema",
+                "title": "Browser - JavaScript 실행 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Browser",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "다운로드된 CSV를 읽어 각 레코드를 순회하며 필요한 값을 출력 CSV에 기록한다.",
+              "label": "다운로드 파일 읽기·출력 생성",
+              "step_id": "step-3"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "cloudOpeningCsvTextFile",
+            "children": [],
+            "confidence": 0.82,
+            "label": "다운로드 CSV 열기",
+            "order": 1,
+            "package": "CSV/TXT",
+            "parameters": [
+              {
+                "label": null,
+                "name": "source",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/DownloadedCurrency.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "headerIncluded",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "delimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "trimLeadingSpaces",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "trimTrailingSpaces",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "다운로드된 통화 데이터 파일을 읽기 위해 CSV/TXT 열기 작업을 사용한다.",
+            "sources": [
+              {
+                "score": 0.82421875,
+                "source_type": "action_schema",
+                "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+              }
+            ]
+          },
+          {
+            "action": "cloudUsingLoopAction",
+            "children": [
+              {
+                "action": "dataTablePackageSetValueSinlgeCellAction",
+                "children": [],
+                "confidence": 0.55,
+                "label": "선택 필드 기록",
+                "order": 1,
+                "package": "Data Table",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "dataTableName",
+                    "value": "outputRates",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "rowIndex",
+                    "value": 1,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "column",
+                    "value": "이름",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "value",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "반복 중 선택한 환율 값을 출력 데이터에 기록한다.",
+                "sources": [
+                  {
+                    "score": 0.55078125,
+                    "source_type": "action_schema",
+                    "title": "Data Table - 단일 셀의 값 설정 작업",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.66,
+            "label": "환율 레코드 반복",
+            "order": 2,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "iterator",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "환율 레코드를 반복하며 필요한 필드를 수집한다.",
+            "sources": [
+              {
+                "score": 0.66015625,
+                "source_type": "action_schema",
+                "title": "Loop - 루프 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.81,
+            "label": "출력 CSV 쓰기",
+            "order": 3,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputRates",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Exchange Currency.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF-8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "준비된 CSV 출력 파일에 선택한 값을 기록한다.",
+            "sources": [
+              {
+                "score": 0.80859375,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "numberIncrement",
+            "children": [],
+            "confidence": 0.87,
+            "label": "진행 카운터 증가",
+            "order": 4,
+            "package": "Number",
+            "parameters": [
+              {
+                "label": null,
+                "name": "number",
+                "value": 0,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "incrementValue",
+                "value": 1,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputNumberVariable",
+                "value": "recordCount",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "배치 처리 내역을 감사할 수 있도록 카운터를 유지한다.",
+            "sources": [
+              {
+                "score": 0.8671875,
+                "source_type": "action_schema",
+                "title": "Number - 숫자의 증가 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "다운로드된 CSV를 읽어 각 레코드를 순회하며 필요한 값을 출력 CSV에 기록한다.",
+        "label": "다운로드 파일 읽기·출력 생성",
+        "step_id": "step-3"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "cloudOpeningCsvTextFile",
+          "attributes": [
+            {
+              "label": null,
+              "name": "source",
+              "original_parameter": {
+                "label": null,
+                "name": "source",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/DownloadedCurrency.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/DownloadedCurrency.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "headerIncluded",
+              "original_parameter": {
+                "label": null,
+                "name": "headerIncluded",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "delimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "delimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "쉼표",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "trimLeadingSpaces",
+              "original_parameter": {
+                "label": null,
+                "name": "trimLeadingSpaces",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "trimTrailingSpaces",
+              "original_parameter": {
+                "label": null,
+                "name": "trimTrailingSpaces",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "encoding",
+              "original_parameter": {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "UTF8",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.82,
+                  "label": "다운로드 CSV 열기",
+                  "order": 1,
+                  "rationale": "다운로드된 통화 데이터 파일을 읽기 위해 CSV/TXT 열기 작업을 사용한다.",
+                  "sources": [
+                    {
+                      "score": 0.82421875,
+                      "source_type": "action_schema",
+                      "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudOpeningCsvTextFile",
+            "children": [],
+            "confidence": 0.82,
+            "label": "다운로드 CSV 열기",
+            "order": 1,
+            "package": "CSV/TXT",
+            "parameters": [
+              {
+                "label": null,
+                "name": "source",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/DownloadedCurrency.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "headerIncluded",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "delimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "trimLeadingSpaces",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "trimTrailingSpaces",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "다운로드된 통화 데이터 파일을 읽기 위해 CSV/TXT 열기 작업을 사용한다.",
+            "sources": [
+              {
+                "score": 0.82421875,
+                "source_type": "action_schema",
+                "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+              }
+            ]
+          },
+          "package": "CSV/TXT",
+          "type": "action"
+        },
+        {
+          "action": "cloudUsingLoopAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "iterator",
+              "original_parameter": {
+                "label": null,
+                "name": "iterator",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.66,
+                  "label": "환율 레코드 반복",
+                  "order": 2,
+                  "rationale": "환율 레코드를 반복하며 필요한 필드를 수집한다.",
+                  "sources": [
+                    {
+                      "score": 0.66015625,
+                      "source_type": "action_schema",
+                      "title": "Loop - 루프 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudUsingLoopAction",
+            "children": [
+              {
+                "action": "dataTablePackageSetValueSinlgeCellAction",
+                "children": [],
+                "confidence": 0.55,
+                "label": "선택 필드 기록",
+                "order": 1,
+                "package": "Data Table",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "dataTableName",
+                    "value": "outputRates",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "rowIndex",
+                    "value": 1,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "column",
+                    "value": "이름",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "value",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "반복 중 선택한 환율 값을 출력 데이터에 기록한다.",
+                "sources": [
+                  {
+                    "score": 0.55078125,
+                    "source_type": "action_schema",
+                    "title": "Data Table - 단일 셀의 값 설정 작업",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.66,
+            "label": "환율 레코드 반복",
+            "order": 2,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "iterator",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "환율 레코드를 반복하며 필요한 필드를 수집한다.",
+            "sources": [
+              {
+                "score": 0.66015625,
+                "source_type": "action_schema",
+                "title": "Loop - 루프 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Loop",
+          "steps": [
+            {
+              "action": "dataTablePackageSetValueSinlgeCellAction",
+              "attributes": [
+                {
+                  "label": null,
+                  "name": "dataTableName",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "dataTableName",
+                    "value": "outputRates",
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "outputRates",
+                    "type": "STRING"
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "rowIndex",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "rowIndex",
+                    "value": 1,
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "number": 1,
+                    "type": "NUMBER"
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "column",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "column",
+                    "value": "이름",
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "이름",
+                    "type": "STRING"
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "value",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "value",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "type": "NULL",
+                    "value": null
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "name": "recommendation_action_meta",
+                  "value": {
+                    "json": {
+                      "confidence": 0.55,
+                      "label": "선택 필드 기록",
+                      "order": 1,
+                      "rationale": "반복 중 선택한 환율 값을 출력 데이터에 기록한다.",
+                      "sources": [
+                        {
+                          "score": 0.55078125,
+                          "source_type": "action_schema",
+                          "title": "Data Table - 단일 셀의 값 설정 작업",
+                          "url": ""
+                        }
+                      ]
+                    },
+                    "type": "JSON"
+                  }
+                }
+              ],
+              "disabled": false,
+              "original_recommendation_action": {
+                "action": "dataTablePackageSetValueSinlgeCellAction",
+                "children": [],
+                "confidence": 0.55,
+                "label": "선택 필드 기록",
+                "order": 1,
+                "package": "Data Table",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "dataTableName",
+                    "value": "outputRates",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "rowIndex",
+                    "value": 1,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "column",
+                    "value": "이름",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "value",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "반복 중 선택한 환율 값을 출력 데이터에 기록한다.",
+                "sources": [
+                  {
+                    "score": 0.55078125,
+                    "source_type": "action_schema",
+                    "title": "Data Table - 단일 셀의 값 설정 작업",
+                    "url": ""
+                  }
+                ]
+              },
+              "package": "Data Table",
+              "type": "action"
+            }
+          ],
+          "type": "container"
+        },
+        {
+          "action": "cloudWriteToFileAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "dataTableName",
+              "original_parameter": {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputRates",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "outputRates",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "fileName",
+              "original_parameter": {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Exchange Currency.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Exchange Currency.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "createIfMissing",
+              "original_parameter": {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 파일에 덮어쓰기",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "rowDelimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "쉼표",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "columnDelimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "쉼표",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "encoding",
+              "original_parameter": {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF-8",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "UTF-8",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.81,
+                  "label": "출력 CSV 쓰기",
+                  "order": 3,
+                  "rationale": "준비된 CSV 출력 파일에 선택한 값을 기록한다.",
+                  "sources": [
+                    {
+                      "score": 0.80859375,
+                      "source_type": "action_schema",
+                      "title": "Data Table - 파일 쓰기 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.81,
+            "label": "출력 CSV 쓰기",
+            "order": 3,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputRates",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Exchange Currency.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF-8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "준비된 CSV 출력 파일에 선택한 값을 기록한다.",
+            "sources": [
+              {
+                "score": 0.80859375,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Data Table",
+          "type": "action"
+        },
+        {
+          "action": "numberIncrement",
+          "attributes": [
+            {
+              "label": null,
+              "name": "number",
+              "original_parameter": {
+                "label": null,
+                "name": "number",
+                "value": 0,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "number": 0,
+                "type": "NUMBER"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "incrementValue",
+              "original_parameter": {
+                "label": null,
+                "name": "incrementValue",
+                "value": 1,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "number": 1,
+                "type": "NUMBER"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "outputNumberVariable",
+              "original_parameter": {
+                "label": null,
+                "name": "outputNumberVariable",
+                "value": "recordCount",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "recordCount",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.87,
+                  "label": "진행 카운터 증가",
+                  "order": 4,
+                  "rationale": "배치 처리 내역을 감사할 수 있도록 카운터를 유지한다.",
+                  "sources": [
+                    {
+                      "score": 0.8671875,
+                      "source_type": "action_schema",
+                      "title": "Number - 숫자의 증가 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "numberIncrement",
+            "children": [],
+            "confidence": 0.87,
+            "label": "진행 카운터 증가",
+            "order": 4,
+            "package": "Number",
+            "parameters": [
+              {
+                "label": null,
+                "name": "number",
+                "value": 0,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "incrementValue",
+                "value": 1,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputNumberVariable",
+                "value": "recordCount",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "배치 처리 내역을 감사할 수 있도록 카운터를 유지한다.",
+            "sources": [
+              {
+                "score": 0.8671875,
+                "source_type": "action_schema",
+                "title": "Number - 숫자의 증가 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Number",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "실행 상태를 로그에 남기고, 오류 발생 시 오류 로그를 기록한 뒤 브라우저와 파일을 닫는다.",
+              "label": "완료 로그·정리",
+              "step_id": "step-4"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "errorHandlerTry",
+            "children": [
+              {
+                "action": "cloudInsertingLogToFileCommand",
+                "children": [],
+                "confidence": 0.78,
+                "label": "완료 상태 기록",
+                "order": 1,
+                "package": "Logging",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Execution completed",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  }
+                ],
+                "rationale": "실행 상태 정보를 로그 파일에 추가한다.",
+                "sources": [
+                  {
+                    "score": 0.77734375,
+                    "source_type": "action_schema",
+                    "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.88,
+            "label": "업무 실행 시도",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [],
+            "rationale": "완료 로그와 후속 정리를 보호된 구간으로 묶는다.",
+            "sources": [
+              {
+                "score": 0.87890625,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 Try 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "errorHandlerCatch",
+            "children": [
+              {
+                "action": "cloudInsertingLogToFileCommand",
+                "children": [],
+                "confidence": 0.78,
+                "label": "오류 로그 기록",
+                "order": 1,
+                "package": "Logging",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Workflow failed",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  }
+                ],
+                "rationale": "웹사이트, 다운로드 또는 출력 쓰기 실패 시 오류 로그에 읽기 쉬운 행을 남긴다.",
+                "sources": [
+                  {
+                    "score": 0.77734375,
+                    "source_type": "action_schema",
+                    "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.64,
+            "label": "오류 시 기록",
+            "order": 2,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "continueOnError",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실패 시 오류 로그에 기록한다.",
+            "sources": [
+              {
+                "score": 0.85546875,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "browserPackageCloseAction",
+            "children": [],
+            "confidence": 0.76,
+            "label": "브라우저 닫기",
+            "order": 3,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "target",
+                "value": "탭",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "작업에서 연 브라우저를 닫아 정리한다.",
+            "sources": [
+              {
+                "score": 0.7578125,
+                "source_type": "action_schema",
+                "title": "Browser - 닫기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "실행 상태를 로그에 남기고, 오류 발생 시 오류 로그를 기록한 뒤 브라우저와 파일을 닫는다.",
+        "label": "완료 로그·정리",
+        "step_id": "step-4"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "errorHandlerTry",
+          "attributes": [
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.88,
+                  "label": "업무 실행 시도",
+                  "order": 1,
+                  "rationale": "완료 로그와 후속 정리를 보호된 구간으로 묶는다.",
+                  "sources": [
+                    {
+                      "score": 0.87890625,
+                      "source_type": "action_schema",
+                      "title": "Error handler - 오류 처리기의 Try 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "errorHandlerTry",
+            "children": [
+              {
+                "action": "cloudInsertingLogToFileCommand",
+                "children": [],
+                "confidence": 0.78,
+                "label": "완료 상태 기록",
+                "order": 1,
+                "package": "Logging",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Execution completed",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  }
+                ],
+                "rationale": "실행 상태 정보를 로그 파일에 추가한다.",
+                "sources": [
+                  {
+                    "score": 0.77734375,
+                    "source_type": "action_schema",
+                    "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.88,
+            "label": "업무 실행 시도",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [],
+            "rationale": "완료 로그와 후속 정리를 보호된 구간으로 묶는다.",
+            "sources": [
+              {
+                "score": 0.87890625,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 Try 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Error handler",
+          "steps": [
+            {
+              "action": "cloudInsertingLogToFileCommand",
+              "attributes": [
+                {
+                  "label": null,
+                  "name": "filePath",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                    "type": "STRING"
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "textToLog",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Execution completed",
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "Execution completed",
+                    "type": "STRING"
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "addTimestamp",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  },
+                  "value_source": "schema_default"
+                },
+                {
+                  "label": null,
+                  "name": "writeMode",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "기존 로그 파일에 추가",
+                    "type": "STRING"
+                  },
+                  "value_source": "schema_default"
+                },
+                {
+                  "label": null,
+                  "name": "encoding",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "UTF8",
+                    "type": "STRING"
+                  },
+                  "value_source": "schema_default"
+                },
+                {
+                  "name": "recommendation_action_meta",
+                  "value": {
+                    "json": {
+                      "confidence": 0.78,
+                      "label": "완료 상태 기록",
+                      "order": 1,
+                      "rationale": "실행 상태 정보를 로그 파일에 추가한다.",
+                      "sources": [
+                        {
+                          "score": 0.77734375,
+                          "source_type": "action_schema",
+                          "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                          "url": ""
+                        }
+                      ]
+                    },
+                    "type": "JSON"
+                  }
+                }
+              ],
+              "disabled": false,
+              "original_recommendation_action": {
+                "action": "cloudInsertingLogToFileCommand",
+                "children": [],
+                "confidence": 0.78,
+                "label": "완료 상태 기록",
+                "order": 1,
+                "package": "Logging",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Execution completed",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  }
+                ],
+                "rationale": "실행 상태 정보를 로그 파일에 추가한다.",
+                "sources": [
+                  {
+                    "score": 0.77734375,
+                    "source_type": "action_schema",
+                    "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                    "url": ""
+                  }
+                ]
+              },
+              "package": "Logging",
+              "type": "action"
+            }
+          ],
+          "type": "container"
+        },
+        {
+          "action": "errorHandlerCatch",
+          "attributes": [
+            {
+              "label": null,
+              "name": "exception",
+              "original_parameter": {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "continueOnError",
+              "original_parameter": {
+                "label": null,
+                "name": "continueOnError",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.64,
+                  "label": "오류 시 기록",
+                  "order": 2,
+                  "rationale": "실패 시 오류 로그에 기록한다.",
+                  "sources": [
+                    {
+                      "score": 0.85546875,
+                      "source_type": "action_schema",
+                      "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "errorHandlerCatch",
+            "children": [
+              {
+                "action": "cloudInsertingLogToFileCommand",
+                "children": [],
+                "confidence": 0.78,
+                "label": "오류 로그 기록",
+                "order": 1,
+                "package": "Logging",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Workflow failed",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  }
+                ],
+                "rationale": "웹사이트, 다운로드 또는 출력 쓰기 실패 시 오류 로그에 읽기 쉬운 행을 남긴다.",
+                "sources": [
+                  {
+                    "score": 0.77734375,
+                    "source_type": "action_schema",
+                    "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                    "url": ""
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.64,
+            "label": "오류 시 기록",
+            "order": 2,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "continueOnError",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실패 시 오류 로그에 기록한다.",
+            "sources": [
+              {
+                "score": 0.85546875,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Error handler",
+          "steps": [
+            {
+              "action": "cloudInsertingLogToFileCommand",
+              "attributes": [
+                {
+                  "label": null,
+                  "name": "filePath",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                    "type": "STRING"
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "textToLog",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Workflow failed",
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "Workflow failed",
+                    "type": "STRING"
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "addTimestamp",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  },
+                  "value_source": "schema_default"
+                },
+                {
+                  "label": null,
+                  "name": "writeMode",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "기존 로그 파일에 추가",
+                    "type": "STRING"
+                  },
+                  "value_source": "schema_default"
+                },
+                {
+                  "label": null,
+                  "name": "encoding",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "string": "UTF8",
+                    "type": "STRING"
+                  },
+                  "value_source": "schema_default"
+                },
+                {
+                  "name": "recommendation_action_meta",
+                  "value": {
+                    "json": {
+                      "confidence": 0.78,
+                      "label": "오류 로그 기록",
+                      "order": 1,
+                      "rationale": "웹사이트, 다운로드 또는 출력 쓰기 실패 시 오류 로그에 읽기 쉬운 행을 남긴다.",
+                      "sources": [
+                        {
+                          "score": 0.77734375,
+                          "source_type": "action_schema",
+                          "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                          "url": ""
+                        }
+                      ]
+                    },
+                    "type": "JSON"
+                  }
+                }
+              ],
+              "disabled": false,
+              "original_recommendation_action": {
+                "action": "cloudInsertingLogToFileCommand",
+                "children": [],
+                "confidence": 0.78,
+                "label": "오류 로그 기록",
+                "order": 1,
+                "package": "Logging",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "filePath",
+                    "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "textToLog",
+                    "value": "Workflow failed",
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "addTimestamp",
+                    "value": true,
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "writeMode",
+                    "value": "기존 로그 파일에 추가",
+                    "value_source": "schema_default"
+                  },
+                  {
+                    "label": null,
+                    "name": "encoding",
+                    "value": "UTF8",
+                    "value_source": "schema_default"
+                  }
+                ],
+                "rationale": "웹사이트, 다운로드 또는 출력 쓰기 실패 시 오류 로그에 읽기 쉬운 행을 남긴다.",
+                "sources": [
+                  {
+                    "score": 0.77734375,
+                    "source_type": "action_schema",
+                    "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                    "url": ""
+                  }
+                ]
+              },
+              "package": "Logging",
+              "type": "action"
+            }
+          ],
+          "type": "container"
+        },
+        {
+          "action": "browserPackageCloseAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "target",
+              "original_parameter": {
+                "label": null,
+                "name": "target",
+                "value": "탭",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "탭",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.76,
+                  "label": "브라우저 닫기",
+                  "order": 3,
+                  "rationale": "작업에서 연 브라우저를 닫아 정리한다.",
+                  "sources": [
+                    {
+                      "score": 0.7578125,
+                      "source_type": "action_schema",
+                      "title": "Browser - 닫기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "browserPackageCloseAction",
+            "children": [],
+            "confidence": 0.76,
+            "label": "브라우저 닫기",
+            "order": 3,
+            "package": "Browser",
+            "parameters": [
+              {
+                "label": null,
+                "name": "target",
+                "value": "탭",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "작업에서 연 브라우저를 닫아 정리한다.",
+            "sources": [
+              {
+                "score": 0.7578125,
+                "source_type": "action_schema",
+                "title": "Browser - 닫기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Browser",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    }
+  ],
+  "triggers": [],
+  "usage_gauge": {
+    "compact_recommended": false,
+    "compact_required": false,
+    "intake_tokens": 1016,
+    "limit_tokens": 6000,
+    "ratio": 0.1693
+  },
+  "variables": [
+    {
+      "description": "다운로드한 환율 레코드에서 선택해 기록할 출력 데이터 테이블",
+      "direction": "local",
+      "name": "outputRates",
+      "type": "TABLE"
+    },
+    {
+      "description": "배치 처리 진행 카운터",
+      "direction": "local",
+      "name": "recordCount",
+      "type": "NUMBER"
+    }
+  ]
+}

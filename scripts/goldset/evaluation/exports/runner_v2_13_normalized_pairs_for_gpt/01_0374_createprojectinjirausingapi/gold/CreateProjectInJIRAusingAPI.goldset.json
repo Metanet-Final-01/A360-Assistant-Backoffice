@@ -1,0 +1,711 @@
+{
+  "source_file": "CreateProjectInJIRAusingAPI.json",
+  "steps": [
+    {
+      "action": "startSession",
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "inputType",
+          "value": {
+            "string": "file",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "filePath",
+          "value": {
+            "string": "file:///C:/Users/Saakshi%20Gupta/Desktop/A2019/Jira/InputFile/Configuration.xml",
+            "type": "FILE"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "XML",
+      "type": "action",
+      "uid": "5b008563-dd49-4e40-ac93-6406aa9bfef4"
+    },
+    {
+      "action": "getSingleNode",
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "xPath",
+          "value": {
+            "string": "/project/environment[@name='dev']/surl",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "attributeName",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": true,
+      "package": "XML",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "strURL"
+      },
+      "type": "action",
+      "uid": "d62e7f8a-999e-43e3-a0c4-6be58525661f"
+    },
+    {
+      "action": "getSingleNode",
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "xPath",
+          "value": {
+            "string": "/project/environment[@name='dev']/crurl",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "attributeName",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "XML",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "strPostURL"
+      },
+      "type": "action",
+      "uid": "62623069-613b-4985-b3ad-b27931b8f986"
+    },
+    {
+      "action": "getSingleNode",
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "xPath",
+          "value": {
+            "string": "/project/environment[@name='dev']/AttachemntFolderPath",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "attributeName",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "XML",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "strAttachmentFolderPath"
+      },
+      "type": "action",
+      "uid": "1cf894c8-7b70-494c-8ee3-9c19f6d98717"
+    },
+    {
+      "action": "endSession",
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "XML",
+      "type": "action",
+      "uid": "7a889e14-f5f3-4500-b5a8-c1d761058b01"
+    },
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "strErrorlineNo"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "strErrorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "toString",
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "expression": "$strErrorlineNo$",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "numFormatDigits",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Number",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "ErrorLineNo"
+              },
+              "type": "action",
+              "uid": "66df8846-d964-4ad4-8cb9-5f2ab77d4d80"
+            },
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "$strErrorMessage$ $ErrorLineNo$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "ac197c01-c56d-4523-b5cb-b9fc37a56279"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "emailConnect",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "EmailSession",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "serverType",
+              "value": {
+                "string": "OUTLOOK",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Email",
+          "type": "action",
+          "uid": "700f5ac9-3a29-4225-8aba-a8f75b09f216"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "EmailSession",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readStatus",
+                  "value": {
+                    "string": "UNREAD",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "folder",
+                  "value": {
+                    "string": "Inbox",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "subject",
+                  "value": {
+                    "string": "Jira Projects Details",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "from",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "messageFormat",
+                  "value": {
+                    "string": "PLAINTEXT",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "value": {
+                "iteratorName": "loop.iterators.email",
+                "packageName": "Email",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "saveAttachment",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$strAttachmentFolderPath$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "checkOverrwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Email",
+              "type": "action",
+              "uid": "bd6a253c-9e14-4382-a3a9-8ad1d3c97c03"
+            }
+          ],
+          "type": "loop",
+          "uid": "8edbdbac-b1ad-44b8-9892-78d31b28554e"
+        },
+        {
+          "action": "closeEmail",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "EmailSession",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Email",
+          "type": "action",
+          "uid": "06eca3d6-a16d-4940-9636-15a10ec3d89c"
+        },
+        {
+          "action": "OpenSpreadsheet",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "filePath",
+              "value": {
+                "string": "file:///C:/Users/Saakshi%20Gupta/Desktop/A2019/Jira/InputFile/Attachments/JiraProjectsDetails.xlsx",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "EDIT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "loadAddIns",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "7c0bb8e1-5f59-4c62-8649-b88d0789a267"
+        },
+        {
+          "action": "GetMultipleCells",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "loopSelection",
+              "value": {
+                "string": "ALL_ROWS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "strProjectDetails"
+          },
+          "type": "action",
+          "uid": "29baf2b1-1fe6-4406-afa3-cb639ec72cc2"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceTable",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "strProjectDetails"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "strProDetail"
+              },
+              "value": {
+                "iteratorName": "iteratorTableRow",
+                "packageName": "DataTable",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "$strProDetail[0]$  $strProDetail[1]$  $strProDetail[2]$$strProDetail[3]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "2e44c6e7-08bf-43d8-b79f-50d3946c270a"
+            },
+            {
+              "action": "assign",
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "{  \"key\": \"$strProDetail[0]$\",  \"name\": \"$strProDetail[1]$\",  \"description\": \"$strProDetail[2]$\",  \"leadAccountId\": \"$strProDetail[3]$\",  \"url\": \"$strProDetail[4]$\",  \"projectTemplateKey\": \"$strProDetail[5]$\",  \"avatarId\": 10200,  \"assigneeType\": \"$strProDetail[6]$\",  \"projectTypeKey\": \"$strProDetail[7]$\"}",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "String",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "StrBody"
+              },
+              "type": "action",
+              "uid": "69de5501-327d-4af4-888d-baf135964285"
+            },
+            {
+              "action": "restPost",
+              "attributes": [
+                {
+                  "name": "uriOption",
+                  "value": {
+                    "string": "text",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "uri",
+                  "value": {
+                    "expression": "$strPostURL$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "authenticationMode",
+                  "value": {
+                    "string": "NoAuthentication",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "customHeaders",
+                  "value": {
+                    "list": [
+                      {
+                        "dictionary": [
+                          {
+                            "key": "enabled",
+                            "value": {
+                              "boolean": true,
+                              "type": "BOOLEAN"
+                            }
+                          },
+                          {
+                            "key": "name",
+                            "value": {
+                              "string": "Authorization",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "key": "value",
+                            "value": {
+                              "string": "Basic c2Fha3NoaTk5MzVAZ21haWwuY29tOjNtSTJ1YzhvMWhTUGR1R3U3Y2NqMzM4Qw==",
+                              "type": "STRING"
+                            }
+                          }
+                        ],
+                        "type": "DICTIONARY"
+                      }
+                    ],
+                    "type": "LIST"
+                  }
+                },
+                {
+                  "name": "headerContentType",
+                  "value": {
+                    "string": "application/json",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "parameterOption",
+                  "value": {
+                    "string": "text",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "jsonPostParameters",
+                  "value": {
+                    "expression": "$StrBody$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Rest",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "strCreateProjectOutput"
+              },
+              "type": "action",
+              "uid": "2fa9af2a-fc3f-48f7-8198-84fe1a4d88fe"
+            },
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "$strCreateProjectOutput{Body}$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "6ab5e198-496c-4369-b7ac-b3788e5330fb"
+            }
+          ],
+          "type": "loop",
+          "uid": "5365417c-5945-4c39-a9a1-e6aa1e1598e9"
+        },
+        {
+          "action": "CloseSpreadsheet",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "2eefbad7-903a-4e80-9f91-c2881dd9a4ca"
+        }
+      ],
+      "type": "try",
+      "uid": "fc3b47ce-e666-4ac4-a7fe-edd775c0bbc4"
+    }
+  ],
+  "triggers": []
+}

@@ -1,0 +1,109 @@
+{
+  "run_prefix": "runner_v2_batch_20260716_13pdfs_resume04",
+  "base_url": "http://127.0.0.1:8000",
+  "agent_version": "v2",
+  "pdf_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs",
+  "pdf_count": 10,
+  "runs": [
+    {
+      "index": 1,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 2,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0224_extracttablesfrompdftocsv__ExtractTablesfromPDFtoCSV.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 3,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0225_extracttablefromwordtocsv__ExtractTablefromWordtoCSV.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__03_0225_extracttablefromwordtocsv",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__03_0225_extracttablefromwordtocsv\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 4,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0245_merge-multiple-csv-files__Merge Multiple CSV Files.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 5,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0302_a2019-get-current-exchange-rate__A2019 Get Current Exchange Rate.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 6,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0338_lettergenerationbot__LetterGenerationBot+SendPOF_Email.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 7,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0374_createprojectinjirausingapi__CreateProjectInJIRAusingAPI.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 8,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0393_a2019-twilio-integration__A2019 Twilio Integration.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 9,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0410_a2019-invoicely-assistant__A2019-Invoicely Assistant.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__09_0410_a2019-invoicely-assistant",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__09_0410_a2019-invoicely-assistant\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    },
+    {
+      "index": 10,
+      "pdf": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0419_sendbulkemailswithtemplate__SendBulkEmailsWithTemplate.pdf",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__10_0419_sendbulkemailswithtemplate",
+      "manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__10_0419_sendbulkemailswithtemplate\\run_manifest.json",
+      "runner_returncode": 0,
+      "runner_status": "ok",
+      "converter_returncode": 0,
+      "converter_status": "ok"
+    }
+  ]
+}

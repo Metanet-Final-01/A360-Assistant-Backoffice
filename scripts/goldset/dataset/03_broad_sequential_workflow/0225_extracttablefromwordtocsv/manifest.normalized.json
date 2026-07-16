@@ -1,0 +1,59 @@
+{
+  "files": [
+    {
+      "contentType": "application/x-msdownload",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\DocumentFormat.OpenXml.dll",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/x-msdownload",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\ExtractTableFromWordToCSV.dll",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\ExtractTablefromWordtoCSV",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\ExtractTableFromWordToCSV.dll",
+        "Automation Anywhere\\Bot Store\\DocumentFormat.OpenXml.dll"
+      ],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "DLL",
+      "path": "bot-command-rundll-3.3.0-20201126-165850.jar",
+      "version": "3.3.0-20201126-165850"
+    },
+    {
+      "name": "Dictionary",
+      "path": "bot-command-dictionary-3.2.0-20201126-165138.jar",
+      "version": "3.2.0-20201126-165138"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.1.0-20201126-165430.jar",
+      "version": "2.1.0-20201126-165430"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.1.0-20201126-165909.jar",
+      "version": "3.1.0-20201126-165909"
+    }
+  ]
+}

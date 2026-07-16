@@ -1,0 +1,40 @@
+{
+  "files": [
+    {
+      "contentType": "application/x-msdownload",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Send Email using SMTP config - Automation Anywhere\\SendEmailSMTP.dll",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Send Email using SMTP config - Automation Anywhere\\SendEmailUsingSMTP_Demo",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Send Email using SMTP config - Automation Anywhere\\SendEmailSMTP.dll"
+      ],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "DLL",
+      "path": "bot-command-rundll-6.1.0-20211011-142122.jar",
+      "version": "6.1.0-20211011-142122"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.8.0-20211011-141720.jar",
+      "version": "2.8.0-20211011-141720"
+    }
+  ]
+}

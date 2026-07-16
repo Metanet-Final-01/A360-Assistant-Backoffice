@@ -1,0 +1,15 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0224_extracttablesfrompdftocsv",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "ExtractTablesfromPDFtoCSV",
+      "manual_dependencies": [],
+      "output_file": "workflows/ExtractTablesfromPDFtoCSV.json",
+      "scanned_dependencies": [
+        "Aspose.PDF.dll",
+        "ExtractTablesFromPDFToCSV.dll"
+      ]
+    }
+  ]
+}

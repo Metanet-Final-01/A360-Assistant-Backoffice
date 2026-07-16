@@ -1,0 +1,3045 @@
+{
+  "answer": "5개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 확인된 카탈로그 기준으로 Outlook 연결/메일 조회 액션은 찾지 못해 해당 부분은 자동화 불가로 남겼다. 사용자 ID/비밀번호 셀 위치, 최신 메일의 판정 기준, 알림 메시지 포맷, 출력 CSV 상세 컬럼은 원문만으로 확정되지 않아 사용자 입력이 필요하다. (검수에서 해소하지 못한 위반 4건이 있어요 — 흐름도에서 확인해 주세요.)",
+  "backend_response_id": "d078fe6c-a83a-47ee-9113-610e9ce620f5",
+  "backend_response_version": 2,
+  "backend_step": "turnRecommend",
+  "document_id": "885a85d5-2a07-4006-8e81-ff9a2f8fd31f",
+  "notes": "확인된 카탈로그 기준으로 Outlook 연결/메일 조회 액션은 찾지 못해 해당 부분은 자동화 불가로 남겼다. 사용자 ID/비밀번호 셀 위치, 최신 메일의 판정 기준, 알림 메시지 포맷, 출력 CSV 상세 컬럼은 원문만으로 확정되지 않아 사용자 입력이 필요하다.",
+  "original_recommendation": {
+    "notes": "확인된 카탈로그 기준으로 Outlook 연결/메일 조회 액션은 찾지 못해 해당 부분은 자동화 불가로 남겼다. 사용자 ID/비밀번호 셀 위치, 최신 메일의 판정 기준, 알림 메시지 포맷, 출력 CSV 상세 컬럼은 원문만으로 확정되지 않아 사용자 입력이 필요하다.",
+    "schema_version": "1.0",
+    "steps": [
+      {
+        "actions": [
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.63,
+            "label": "logs 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "작업 루트 아래에 logs 폴더를 만드는 요구를 구현한다.",
+            "sources": [
+              {
+                "score": 0.6328125,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "ErrorLog.csv 생성",
+            "order": 2,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "errorLogTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/ErrorLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "오류 로그 파일을 작업 루트에 생성해야 한다는 요구를 반영한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "출력 CSV 생성",
+            "order": 3,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "출력 폴더와 출력 CSV 경로를 준비해야 한다는 요구를 구현한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "실행 시각 기록",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 알림 실행을 추적하기 위해 현재 시각을 로그에 남긴다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "지정된 로컬 경로를 작업 루트로 사용하고 logs 폴더와 ErrorLog.csv를 준비한다.",
+        "label": "작업 루트·로그 준비",
+        "step_id": "step-1"
+      },
+      {
+        "actions": [
+          {
+            "action": "usingOpenWorkbookAction",
+            "children": [],
+            "confidence": 0.68,
+            "label": "자격 증명 Excel 열기",
+            "order": 1,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "microsoft365UserSession",
+                "value": "m365UserSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "microsoft365ExcelSession",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": "credentialWorkbookPath",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일함 자격 증명이 저장된 Excel 통합문서를 열어야 한다.",
+            "sources": [
+              {
+                "score": 0.67578125,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - 열기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "office365ExcelReadColumn",
+            "children": [],
+            "confidence": 0.53,
+            "label": "사용자 ID 읽기",
+            "order": 2,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "cellOption",
+                "value": "특정 셀",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readEntireColumn",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "자격 증명 Excel에서 사용자 ID 셀을 읽어야 한다.",
+            "sources": [
+              {
+                "score": 0.7109375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "office365ExcelReadColumn",
+            "children": [],
+            "confidence": 0.53,
+            "label": "비밀번호 읽기",
+            "order": 3,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "cellOption",
+                "value": "특정 셀",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readEntireColumn",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "자격 증명 Excel에서 비밀번호 셀을 읽어야 한다.",
+            "sources": [
+              {
+                "score": 0.7109375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "경로 유지 로그",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "감사를 위해 Excel 파일 경로나 출력 경로를 로그로 유지한다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "메일함 로그인 정보가 들어 있는 Excel 통합문서를 연다.",
+        "label": "자격 증명 Excel 열기",
+        "step_id": "step-2"
+      },
+      {
+        "actions": [],
+        "description": "읽어온 자격 증명으로 Outlook 메일함에 접속하고 최신 메일의 상세를 읽는다.",
+        "label": "Outlook 접속·최신 메일 확인",
+        "step_id": "step-3"
+      },
+      {
+        "actions": [
+          {
+            "action": "usingMessageBoxAction",
+            "children": [],
+            "confidence": 0.57,
+            "label": "데스크톱 알림 표시",
+            "order": 1,
+            "package": "Message box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "messageBoxTitle",
+                "value": "메일 알림",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "message",
+                "value": "latestMailSummary",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일 정보를 사용자에게 데스크톱 알림으로 표시해야 한다.",
+            "sources": [
+              {
+                "score": 0.57421875,
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "실행 상태 CSV 기록",
+            "order": 2,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 상태나 실패 상세를 출력 CSV에 기록해야 한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "실행 로그 기록",
+            "order": 3,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 상태나 실패 상세를 로그 파일에 기록해야 한다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "읽은 메일 정보를 알림으로 보여주고 실행 결과를 CSV/로그에 남긴다.",
+        "label": "알림·결과 기록",
+        "step_id": "step-4"
+      },
+      {
+        "actions": [
+          {
+            "action": "ms365OutlookDisconnect",
+            "children": [],
+            "confidence": 0.47,
+            "label": "Outlook 세션 종료",
+            "order": 1,
+            "package": "Microsoft 365 Outlook",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "ms365OutlookSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionVariable",
+                "value": "ms365OutlookSessionVar",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "알림 표시가 끝나면 메일함 세션을 닫아야 한다.",
+            "sources": [
+              {
+                "score": 0.62890625,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Outlook - Microsoft 365 Outlook 패키지의 작업 연결 끊기",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-disconnect"
+              }
+            ]
+          },
+          {
+            "action": "office365ExcelClose",
+            "children": [],
+            "confidence": 0.47,
+            "label": "Excel 닫기",
+            "order": 2,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "통합문서를 닫고 파일 리소스를 해제해야 한다.",
+            "sources": [
+              {
+                "score": 0.625,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 닫기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "메일함 세션과 Excel 통합문서를 닫아 리소스를 해제한다.",
+        "label": "리소스 종료",
+        "step_id": "step-5"
+      }
+    ],
+    "variables": [
+      {
+        "description": "Microsoft 365 사용자 세션 이름",
+        "direction": "input",
+        "name": "m365UserSession",
+        "type": "STRING"
+      },
+      {
+        "description": "Excel 통합문서 세션 이름",
+        "direction": "local",
+        "name": "m365ExcelSession",
+        "type": "STRING"
+      },
+      {
+        "description": "메일함 자격 증명이 저장된 Excel 파일 경로",
+        "direction": "input",
+        "name": "credentialWorkbookPath",
+        "type": "STRING"
+      },
+      {
+        "description": "최신 메일 발신자·제목·본문 미리보기 요약",
+        "direction": "local",
+        "name": "latestMailSummary",
+        "type": "STRING"
+      },
+      {
+        "description": "출력 CSV로 저장할 실행 결과 테이블",
+        "direction": "local",
+        "name": "outputTable",
+        "type": "TABLE"
+      },
+      {
+        "description": "ErrorLog.csv에 기록할 오류 테이블",
+        "direction": "local",
+        "name": "errorLogTable",
+        "type": "TABLE"
+      },
+      {
+        "description": "Outlook 세션",
+        "direction": "local",
+        "name": "ms365OutlookSession",
+        "type": "SESSION"
+      },
+      {
+        "description": "Outlook 세션 변수",
+        "direction": "local",
+        "name": "ms365OutlookSessionVar",
+        "type": "SESSION"
+      },
+      {
+        "description": "실행 시각",
+        "direction": "local",
+        "name": "executionTimestamp",
+        "type": "DATETIME"
+      },
+      {
+        "description": "알림 실행 결과를 저장하는 출력 CSV 경로",
+        "direction": "output",
+        "name": "outputCsvPath",
+        "type": "STRING"
+      }
+    ]
+  },
+  "parent_version": 1,
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume03__01_0167_outlook-email-notifier",
+  "runner": "runner_v2",
+  "session_id": "5470b793-6e34-4bae-867d-8ce73cb8604b",
+  "source": "backend_recommendation",
+  "source_file": "runner_v2_batch_20260716_13pdfs_resume03__01_0167_outlook-email-notifier__turnRecommend.json",
+  "sources": [
+    {
+      "score": 0.6328125,
+      "source_type": "action_schema",
+      "title": "Folder - 폴더의 생성 작업",
+      "url": ""
+    },
+    {
+      "score": 0.6953125,
+      "source_type": "action_schema",
+      "title": "Data Table - 파일 쓰기 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.59375,
+      "source_type": "action_schema",
+      "title": "Logging - 파일에 변수 기록 작업 사용하기",
+      "url": ""
+    },
+    {
+      "score": 0.67578125,
+      "source_type": "action_schema",
+      "title": "Microsoft 365 Excel package in Automation 360 - 열기 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.7109375,
+      "source_type": "action_schema",
+      "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+      "url": ""
+    },
+    {
+      "score": 0.57421875,
+      "source_type": "action_schema",
+      "title": "Message box - 메���지 상자 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.62890625,
+      "source_type": "action_schema",
+      "title": "Microsoft 365 Outlook - Microsoft 365 Outlook 패키지의 작업 연결 끊기",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-disconnect"
+    },
+    {
+      "score": 0.625,
+      "source_type": "action_schema",
+      "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 닫기 작업",
+      "url": ""
+    }
+  ],
+  "steps": [
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "지정된 로컬 경로를 작업 루트로 사용하고 logs 폴더와 ErrorLog.csv를 준비한다.",
+              "label": "작업 루트·로그 준비",
+              "step_id": "step-1"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.63,
+            "label": "logs 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "작업 루트 아래에 logs 폴더를 만드는 요구를 구현한다.",
+            "sources": [
+              {
+                "score": 0.6328125,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "ErrorLog.csv 생성",
+            "order": 2,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "errorLogTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/ErrorLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "오류 로그 파일을 작업 루트에 생성해야 한다는 요구를 반영한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "출력 CSV 생성",
+            "order": 3,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "출력 폴더와 출력 CSV 경로를 준비해야 한다는 요구를 구현한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "실행 시각 기록",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 알림 실행을 추적하기 위해 현재 시각을 로그에 남긴다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "지정된 로컬 경로를 작업 루트로 사용하고 logs 폴더와 ErrorLog.csv를 준비한다.",
+        "label": "작업 루트·로그 준비",
+        "step_id": "step-1"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "folderCreate",
+          "attributes": [
+            {
+              "label": null,
+              "name": "folder",
+              "original_parameter": {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "overwriteExistingFolder",
+              "original_parameter": {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.63,
+                  "label": "logs 폴더 생성",
+                  "order": 1,
+                  "rationale": "작업 루트 아래에 logs 폴더를 만드는 요구를 구현한다.",
+                  "sources": [
+                    {
+                      "score": 0.6328125,
+                      "source_type": "action_schema",
+                      "title": "Folder - 폴더의 생성 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.63,
+            "label": "logs 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "작업 루트 아래에 logs 폴더를 만드는 요구를 구현한다.",
+            "sources": [
+              {
+                "score": 0.6328125,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Folder",
+          "type": "action"
+        },
+        {
+          "action": "cloudWriteToFileAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "dataTableName",
+              "original_parameter": {
+                "label": null,
+                "name": "dataTableName",
+                "value": "errorLogTable",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "errorLogTable",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "fileName",
+              "original_parameter": {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/ErrorLog.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/ErrorLog.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "createIfMissing",
+              "original_parameter": {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 파일에 덮어쓰기",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "rowDelimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "새 줄",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "columnDelimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "쉼표",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.7,
+                  "label": "ErrorLog.csv 생성",
+                  "order": 2,
+                  "rationale": "오류 로그 파일을 작업 루트에 생성해야 한다는 요구를 반영한다.",
+                  "sources": [
+                    {
+                      "score": 0.6953125,
+                      "source_type": "action_schema",
+                      "title": "Data Table - 파일 쓰기 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "ErrorLog.csv 생성",
+            "order": 2,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "errorLogTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/ErrorLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "오류 로그 파일을 작업 루트에 생성해야 한다는 요구를 반영한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Data Table",
+          "type": "action"
+        },
+        {
+          "action": "cloudWriteToFileAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "dataTableName",
+              "original_parameter": {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputTable",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "outputTable",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "fileName",
+              "original_parameter": {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "createIfMissing",
+              "original_parameter": {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 파일에 덮어쓰기",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "rowDelimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "새 줄",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "columnDelimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "쉼표",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.7,
+                  "label": "출력 CSV 생성",
+                  "order": 3,
+                  "rationale": "출력 폴더와 출력 CSV 경로를 준비해야 한다는 요구를 구현한다.",
+                  "sources": [
+                    {
+                      "score": 0.6953125,
+                      "source_type": "action_schema",
+                      "title": "Data Table - 파일 쓰기 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "출력 CSV 생성",
+            "order": 3,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 덮어쓰기",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "출력 폴더와 출력 CSV 경로를 준비해야 한다는 요구를 구현한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Data Table",
+          "type": "action"
+        },
+        {
+          "action": "logToFileLogVariablesToFile",
+          "attributes": [
+            {
+              "label": null,
+              "name": "outputFilePath",
+              "original_parameter": {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 로그 파일에 추가",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "addTimestamp",
+              "original_parameter": {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "variableSelection",
+              "original_parameter": {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "사용자 지정 선택",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.59,
+                  "label": "실행 시각 기록",
+                  "order": 4,
+                  "rationale": "각 알림 실행을 추적하기 위해 현재 시각을 로그에 남긴다.",
+                  "sources": [
+                    {
+                      "score": 0.59375,
+                      "source_type": "action_schema",
+                      "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "실행 시각 기록",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 알림 실행을 추적하기 위해 현재 시각을 로그에 남긴다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Logging",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "메일함 로그인 정보가 들어 있는 Excel 통합문서를 연다.",
+              "label": "자격 증명 Excel 열기",
+              "step_id": "step-2"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "usingOpenWorkbookAction",
+            "children": [],
+            "confidence": 0.68,
+            "label": "자격 증명 Excel 열기",
+            "order": 1,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "microsoft365UserSession",
+                "value": "m365UserSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "microsoft365ExcelSession",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": "credentialWorkbookPath",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일함 자격 증명이 저장된 Excel 통합문서를 열어야 한다.",
+            "sources": [
+              {
+                "score": 0.67578125,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - 열기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "office365ExcelReadColumn",
+            "children": [],
+            "confidence": 0.53,
+            "label": "사용자 ID 읽기",
+            "order": 2,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "cellOption",
+                "value": "특정 셀",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readEntireColumn",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "자격 증명 Excel에서 사용자 ID 셀을 읽어야 한다.",
+            "sources": [
+              {
+                "score": 0.7109375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "office365ExcelReadColumn",
+            "children": [],
+            "confidence": 0.53,
+            "label": "비밀번호 읽기",
+            "order": 3,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "cellOption",
+                "value": "특정 셀",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readEntireColumn",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "자격 증명 Excel에서 비밀번호 셀을 읽어야 한다.",
+            "sources": [
+              {
+                "score": 0.7109375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "경로 유지 로그",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "감사를 위해 Excel 파일 경로나 출력 경로를 로그로 유지한다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "메일함 로그인 정보가 들어 있는 Excel 통합문서를 연다.",
+        "label": "자격 증명 Excel 열기",
+        "step_id": "step-2"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "usingOpenWorkbookAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "microsoft365UserSession",
+              "original_parameter": {
+                "label": null,
+                "name": "microsoft365UserSession",
+                "value": "m365UserSession",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "m365UserSession",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "microsoft365ExcelSession",
+              "original_parameter": {
+                "label": null,
+                "name": "microsoft365ExcelSession",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "m365ExcelSession",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": "credentialWorkbookPath",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "credentialWorkbookPath",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.68,
+                  "label": "자격 증명 Excel 열기",
+                  "order": 1,
+                  "rationale": "메일함 자격 증명이 저장된 Excel 통합문서를 열어야 한다.",
+                  "sources": [
+                    {
+                      "score": 0.67578125,
+                      "source_type": "action_schema",
+                      "title": "Microsoft 365 Excel package in Automation 360 - 열기 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "usingOpenWorkbookAction",
+            "children": [],
+            "confidence": 0.68,
+            "label": "자격 증명 Excel 열기",
+            "order": 1,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "microsoft365UserSession",
+                "value": "m365UserSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "microsoft365ExcelSession",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": "credentialWorkbookPath",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일함 자격 증명이 저장된 Excel 통합문서를 열어야 한다.",
+            "sources": [
+              {
+                "score": 0.67578125,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - 열기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Microsoft 365 Excel package in Automation 360",
+          "type": "action"
+        },
+        {
+          "action": "office365ExcelReadColumn",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "m365ExcelSession",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "cellOption",
+              "original_parameter": {
+                "label": null,
+                "name": "cellOption",
+                "value": "특정 셀",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "특정 셀",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "readEntireColumn",
+              "original_parameter": {
+                "label": null,
+                "name": "readEntireColumn",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.53,
+                  "label": "사용자 ID 읽기",
+                  "order": 2,
+                  "rationale": "자격 증명 Excel에서 사용자 ID 셀을 읽어야 한다.",
+                  "sources": [
+                    {
+                      "score": 0.7109375,
+                      "source_type": "action_schema",
+                      "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "office365ExcelReadColumn",
+            "children": [],
+            "confidence": 0.53,
+            "label": "사용자 ID 읽기",
+            "order": 2,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "cellOption",
+                "value": "특정 셀",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readEntireColumn",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "자격 증명 Excel에서 사용자 ID 셀을 읽어야 한다.",
+            "sources": [
+              {
+                "score": 0.7109375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Microsoft 365 Excel package in Automation 360",
+          "type": "action"
+        },
+        {
+          "action": "office365ExcelReadColumn",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "m365ExcelSession",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "cellOption",
+              "original_parameter": {
+                "label": null,
+                "name": "cellOption",
+                "value": "특정 셀",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "특정 셀",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "readEntireColumn",
+              "original_parameter": {
+                "label": null,
+                "name": "readEntireColumn",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.53,
+                  "label": "비밀번호 읽기",
+                  "order": 3,
+                  "rationale": "자격 증명 Excel에서 비밀번호 셀을 읽어야 한다.",
+                  "sources": [
+                    {
+                      "score": 0.7109375,
+                      "source_type": "action_schema",
+                      "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "office365ExcelReadColumn",
+            "children": [],
+            "confidence": 0.53,
+            "label": "비밀번호 읽기",
+            "order": 3,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "cellOption",
+                "value": "특정 셀",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readEntireColumn",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "자격 증명 Excel에서 비밀번호 셀을 읽어야 한다.",
+            "sources": [
+              {
+                "score": 0.7109375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 열 읽기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Microsoft 365 Excel package in Automation 360",
+          "type": "action"
+        },
+        {
+          "action": "logToFileLogVariablesToFile",
+          "attributes": [
+            {
+              "label": null,
+              "name": "outputFilePath",
+              "original_parameter": {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 로그 파일에 추가",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "addTimestamp",
+              "original_parameter": {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "variableSelection",
+              "original_parameter": {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "사용자 지정 선택",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.59,
+                  "label": "경로 유지 로그",
+                  "order": 4,
+                  "rationale": "감사를 위해 Excel 파일 경로나 출력 경로를 로그로 유지한다.",
+                  "sources": [
+                    {
+                      "score": 0.59375,
+                      "source_type": "action_schema",
+                      "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "경로 유지 로그",
+            "order": 4,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "감사를 위해 Excel 파일 경로나 출력 경로를 로그로 유지한다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Logging",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "읽어온 자격 증명으로 Outlook 메일함에 접속하고 최신 메일의 상세를 읽는다.",
+              "label": "Outlook 접속·최신 메일 확인",
+              "step_id": "step-3"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": "읽어온 자격 증명으로 Outlook 메일함에 접속하고 최신 메일의 상세를 읽는다.",
+        "label": "Outlook 접속·최신 메일 확인",
+        "step_id": "step-3"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "읽은 메일 정보를 알림으로 보여주고 실행 결과를 CSV/로그에 남긴다.",
+              "label": "알림·결과 기록",
+              "step_id": "step-4"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "usingMessageBoxAction",
+            "children": [],
+            "confidence": 0.57,
+            "label": "데스크톱 알림 표시",
+            "order": 1,
+            "package": "Message box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "messageBoxTitle",
+                "value": "메일 알림",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "message",
+                "value": "latestMailSummary",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일 정보를 사용자에게 데스크톱 알림으로 표시해야 한다.",
+            "sources": [
+              {
+                "score": 0.57421875,
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "실행 상태 CSV 기록",
+            "order": 2,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 상태나 실패 상세를 출력 CSV에 기록해야 한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "실행 로그 기록",
+            "order": 3,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 상태나 실패 상세를 로그 파일에 기록해야 한다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "읽은 메일 정보를 알림으로 보여주고 실행 결과를 CSV/로그에 남긴다.",
+        "label": "알림·결과 기록",
+        "step_id": "step-4"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "usingMessageBoxAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "messageBoxTitle",
+              "original_parameter": {
+                "label": null,
+                "name": "messageBoxTitle",
+                "value": "메일 알림",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "메일 알림",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "message",
+              "original_parameter": {
+                "label": null,
+                "name": "message",
+                "value": "latestMailSummary",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "latestMailSummary",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.57,
+                  "label": "데스크톱 알림 표시",
+                  "order": 1,
+                  "rationale": "메일 정보를 사용자에게 데스크톱 알림으로 표시해야 한다.",
+                  "sources": [
+                    {
+                      "score": 0.57421875,
+                      "source_type": "action_schema",
+                      "title": "Message box - 메시지 상자 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "usingMessageBoxAction",
+            "children": [],
+            "confidence": 0.57,
+            "label": "데스크톱 알림 표시",
+            "order": 1,
+            "package": "Message box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "messageBoxTitle",
+                "value": "메일 알림",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "message",
+                "value": "latestMailSummary",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일 정보를 사용자에게 데스크톱 알림으로 표시해야 한다.",
+            "sources": [
+              {
+                "score": 0.57421875,
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Message box",
+          "type": "action"
+        },
+        {
+          "action": "cloudWriteToFileAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "dataTableName",
+              "original_parameter": {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputTable",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "outputTable",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "fileName",
+              "original_parameter": {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "createIfMissing",
+              "original_parameter": {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 추가",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 파일에 추가",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "rowDelimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "새 줄",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "columnDelimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "쉼표",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.7,
+                  "label": "실행 상태 CSV 기록",
+                  "order": 2,
+                  "rationale": "실행 상태나 실패 상세를 출력 CSV에 기록해야 한다.",
+                  "sources": [
+                    {
+                      "score": 0.6953125,
+                      "source_type": "action_schema",
+                      "title": "Data Table - 파일 쓰기 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudWriteToFileAction",
+            "children": [],
+            "confidence": 0.7,
+            "label": "실행 상태 CSV 기록",
+            "order": 2,
+            "package": "Data Table",
+            "parameters": [
+              {
+                "label": null,
+                "name": "dataTableName",
+                "value": "outputTable",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileName",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/output/output.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "createIfMissing",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "rowDelimiter",
+                "value": "새 줄",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "columnDelimiter",
+                "value": "쉼표",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 상태나 실패 상세를 출력 CSV에 기록해야 한다.",
+            "sources": [
+              {
+                "score": 0.6953125,
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Data Table",
+          "type": "action"
+        },
+        {
+          "action": "logToFileLogVariablesToFile",
+          "attributes": [
+            {
+              "label": null,
+              "name": "outputFilePath",
+              "original_parameter": {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 로그 파일에 추가",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "addTimestamp",
+              "original_parameter": {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "variableSelection",
+              "original_parameter": {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "사용자 지정 선택",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.59,
+                  "label": "실행 로그 기록",
+                  "order": 3,
+                  "rationale": "실행 상태나 실패 상세를 로그 파일에 기록해야 한다.",
+                  "sources": [
+                    {
+                      "score": 0.59375,
+                      "source_type": "action_schema",
+                      "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "logToFileLogVariablesToFile",
+            "children": [],
+            "confidence": 0.59,
+            "label": "실행 로그 기록",
+            "order": 3,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "outputFilePath",
+                "value": "C:/ProgramData/AutomationAnywhere/Bots/Outlook Email Notifier/logs/ExecutionLog.csv",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": true,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "variableSelection",
+                "value": "사용자 지정 선택",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "실행 상태나 실패 상세를 로그 파일에 기록해야 한다.",
+            "sources": [
+              {
+                "score": 0.59375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 변수 기록 작업 사용하기",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Logging",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": "메일함 세션과 Excel 통합문서를 닫아 리소스를 해제한다.",
+              "label": "리소스 종료",
+              "step_id": "step-5"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "ms365OutlookDisconnect",
+            "children": [],
+            "confidence": 0.47,
+            "label": "Outlook 세션 종료",
+            "order": 1,
+            "package": "Microsoft 365 Outlook",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "ms365OutlookSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionVariable",
+                "value": "ms365OutlookSessionVar",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "알림 표시가 끝나면 메일함 세션을 닫아야 한다.",
+            "sources": [
+              {
+                "score": 0.62890625,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Outlook - Microsoft 365 Outlook 패키지의 작업 연결 끊기",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-disconnect"
+              }
+            ]
+          },
+          {
+            "action": "office365ExcelClose",
+            "children": [],
+            "confidence": 0.47,
+            "label": "Excel 닫기",
+            "order": 2,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "통합문서를 닫고 파일 리소스를 해제해야 한다.",
+            "sources": [
+              {
+                "score": 0.625,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 닫기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": "메일함 세션과 Excel 통합문서를 닫아 리소스를 해제한다.",
+        "label": "리소스 종료",
+        "step_id": "step-5"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "ms365OutlookDisconnect",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": "ms365OutlookSession",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "ms365OutlookSession",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "sessionVariable",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionVariable",
+                "value": "ms365OutlookSessionVar",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "ms365OutlookSessionVar",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.47,
+                  "label": "Outlook 세션 종료",
+                  "order": 1,
+                  "rationale": "알림 표시가 끝나면 메일함 세션을 닫아야 한다.",
+                  "sources": [
+                    {
+                      "score": 0.62890625,
+                      "source_type": "action_schema",
+                      "title": "Microsoft 365 Outlook - Microsoft 365 Outlook 패키지의 작업 연결 끊기",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-disconnect"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "ms365OutlookDisconnect",
+            "children": [],
+            "confidence": 0.47,
+            "label": "Outlook 세션 종료",
+            "order": 1,
+            "package": "Microsoft 365 Outlook",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "ms365OutlookSession",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionVariable",
+                "value": "ms365OutlookSessionVar",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "알림 표시가 끝나면 메일함 세션을 닫아야 한다.",
+            "sources": [
+              {
+                "score": 0.62890625,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Outlook - Microsoft 365 Outlook 패키지의 작업 연결 끊기",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-disconnect"
+              }
+            ]
+          },
+          "package": "Microsoft 365 Outlook",
+          "type": "action"
+        },
+        {
+          "action": "office365ExcelClose",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "m365ExcelSession",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.47,
+                  "label": "Excel 닫기",
+                  "order": 2,
+                  "rationale": "통합문서를 닫고 파일 리소스를 해제해야 한다.",
+                  "sources": [
+                    {
+                      "score": 0.625,
+                      "source_type": "action_schema",
+                      "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 닫기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "office365ExcelClose",
+            "children": [],
+            "confidence": 0.47,
+            "label": "Excel 닫기",
+            "order": 2,
+            "package": "Microsoft 365 Excel package in Automation 360",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "m365ExcelSession",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "통합문서를 닫고 파일 리소스를 해제해야 한다.",
+            "sources": [
+              {
+                "score": 0.625,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Excel package in Automation 360 - Microsoft 365 Excel의 닫기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Microsoft 365 Excel package in Automation 360",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    }
+  ],
+  "triggers": [],
+  "usage_gauge": {
+    "compact_recommended": false,
+    "compact_required": false,
+    "intake_tokens": 926,
+    "limit_tokens": 6000,
+    "ratio": 0.1543
+  },
+  "variables": [
+    {
+      "description": "Microsoft 365 사용자 세션 이름",
+      "direction": "input",
+      "name": "m365UserSession",
+      "type": "STRING"
+    },
+    {
+      "description": "Excel 통합문서 세션 이름",
+      "direction": "local",
+      "name": "m365ExcelSession",
+      "type": "STRING"
+    },
+    {
+      "description": "메일함 자격 증명이 저장된 Excel 파일 경로",
+      "direction": "input",
+      "name": "credentialWorkbookPath",
+      "type": "STRING"
+    },
+    {
+      "description": "최신 메일 발신자·제목·본문 미리보기 요약",
+      "direction": "local",
+      "name": "latestMailSummary",
+      "type": "STRING"
+    },
+    {
+      "description": "출력 CSV로 저장할 실행 결과 테이블",
+      "direction": "local",
+      "name": "outputTable",
+      "type": "TABLE"
+    },
+    {
+      "description": "ErrorLog.csv에 기록할 오류 테이블",
+      "direction": "local",
+      "name": "errorLogTable",
+      "type": "TABLE"
+    },
+    {
+      "description": "Outlook 세션",
+      "direction": "local",
+      "name": "ms365OutlookSession",
+      "type": "SESSION"
+    },
+    {
+      "description": "Outlook 세션 변수",
+      "direction": "local",
+      "name": "ms365OutlookSessionVar",
+      "type": "SESSION"
+    },
+    {
+      "description": "실행 시각",
+      "direction": "local",
+      "name": "executionTimestamp",
+      "type": "DATETIME"
+    },
+    {
+      "description": "알림 실행 결과를 저장하는 출력 CSV 경로",
+      "direction": "output",
+      "name": "outputCsvPath",
+      "type": "STRING"
+    }
+  ]
+}

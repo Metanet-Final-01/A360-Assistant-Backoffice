@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784137568.9016025" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784137568.9016025</text>
+    </name>
+    <page id="n0">
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_16">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <place id="p_17">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <transition id="ce7289b8-d856-4b62-b460-64b6b4baa3d7">
+        <name>
+          <text>Prompt.promptForValue</text>
+        </name>
+      </transition>
+      <transition id="0b1e9696-b5fb-4a26-92bb-d9b0c52371dd">
+        <name>
+          <text>Folder.folderCreate</text>
+        </name>
+      </transition>
+      <transition id="06a661b1-914d-4445-8f9a-b6a1310e7604">
+        <name>
+          <text>JSON utilities.jsonValidate</text>
+        </name>
+      </transition>
+      <transition id="200e511a-7200-4824-ac1a-edc7ac74f964">
+        <name>
+          <text>Word.mswordOpenDocument</text>
+        </name>
+      </transition>
+      <transition id="ae85a58b-6339-4f09-8e8e-688a0665411f">
+        <name>
+          <text>Email.cloudUsingSendAction</text>
+        </name>
+      </transition>
+      <transition id="d49d6f5b-da3c-47a8-bbf7-fe8737446e0e">
+        <name>
+          <text>Word.mswordCloseDocument</text>
+        </name>
+      </transition>
+      <transition id="7df3547f-329c-4a24-abff-7357d7974e0a">
+        <name>
+          <text>Task Bot.taskBotPackageStopAction</text>
+        </name>
+      </transition>
+      <transition id="e8f894c6-de98-4cf4-b530-b966cc482562">
+        <name>
+          <text>Browser.browserPackageOpenAction</text>
+        </name>
+      </transition>
+      <transition id="0c01be2e-95af-4c93-8a31-4a84d118c4f9">
+        <name>
+          <text>Message box.usingMessageBoxAction</text>
+        </name>
+      </transition>
+      <transition id="d56041a5-6417-49b5-aff3-02b275af0743">
+        <name>
+          <text>JSON utilities.jsonStartSession</text>
+        </name>
+      </transition>
+      <transition id="336af45c-4ccc-47af-a879-254569dc45e2">
+        <name>
+          <text>JSON utilities.jsonGetNodeValue</text>
+        </name>
+      </transition>
+      <transition id="55362950-ff9e-4aca-bac3-83c0ef49bd00">
+        <name>
+          <text>JSON utilities.jsonGetNodeValue</text>
+        </name>
+      </transition>
+      <transition id="f74455dd-7363-4c68-b5d4-dc25bc0f1484">
+        <name>
+          <text>List.listSize</text>
+        </name>
+      </transition>
+      <transition id="08e7aabd-3416-44da-bf5a-51cd2c3d6d3b">
+        <name>
+          <text>Word.mswordInsertText</text>
+        </name>
+      </transition>
+      <transition id="e521c596-7761-49a1-9f7a-ede845f96750">
+        <name>
+          <text>Word.mswordInsertText</text>
+        </name>
+      </transition>
+      <transition id="0af9d705-3428-43b2-aa03-fb521b34eb6f">
+        <name>
+          <text>Word.mswordSaveDocumentAs</text>
+        </name>
+      </transition>
+      <arc id="1359696473216" source="e521c596-7761-49a1-9f7a-ede845f96750" target="p_16"/>
+      <arc id="1359696116240" source="55362950-ff9e-4aca-bac3-83c0ef49bd00" target="p_12"/>
+      <arc id="1359696076048" source="p_4" target="0c01be2e-95af-4c93-8a31-4a84d118c4f9"/>
+      <arc id="1359696075408" source="ce7289b8-d856-4b62-b460-64b6b4baa3d7" target="p_4"/>
+      <arc id="1359695950992" source="p_5" target="7df3547f-329c-4a24-abff-7357d7974e0a"/>
+      <arc id="1359696473104" source="p_16" target="0af9d705-3428-43b2-aa03-fb521b34eb6f"/>
+      <arc id="1359696474784" source="p_15" target="e521c596-7761-49a1-9f7a-ede845f96750"/>
+      <arc id="1359696472992" source="p_17" target="d49d6f5b-da3c-47a8-bbf7-fe8737446e0e"/>
+      <arc id="1359696365616" source="7df3547f-329c-4a24-abff-7357d7974e0a" target="p_3"/>
+      <arc id="1359695734704" source="d56041a5-6417-49b5-aff3-02b275af0743" target="p_9"/>
+      <arc id="1359696297520" source="200e511a-7200-4824-ac1a-edc7ac74f964" target="p_14"/>
+      <arc id="1359696472880" source="ae85a58b-6339-4f09-8e8e-688a0665411f" target="p_17"/>
+      <arc id="1359696473776" source="d49d6f5b-da3c-47a8-bbf7-fe8737446e0e" target="sink"/>
+      <arc id="1359695734464" source="p_7" target="d56041a5-6417-49b5-aff3-02b275af0743"/>
+      <arc id="1361245733712" source="336af45c-4ccc-47af-a879-254569dc45e2" target="p_8"/>
+      <arc id="1359696740432" source="source" target="ce7289b8-d856-4b62-b460-64b6b4baa3d7"/>
+      <arc id="1359696300368" source="p_6" target="e8f894c6-de98-4cf4-b530-b966cc482562"/>
+      <arc id="1359696300880" source="e8f894c6-de98-4cf4-b530-b966cc482562" target="p_7"/>
+      <arc id="1359696327888" source="06a661b1-914d-4445-8f9a-b6a1310e7604" target="p_10"/>
+      <arc id="1359695871440" source="p_8" target="55362950-ff9e-4aca-bac3-83c0ef49bd00"/>
+      <arc id="1359696574928" source="f74455dd-7363-4c68-b5d4-dc25bc0f1484" target="p_11"/>
+      <arc id="1359696786640" source="p_14" target="08e7aabd-3416-44da-bf5a-51cd2c3d6d3b"/>
+      <arc id="1359696786768" source="08e7aabd-3416-44da-bf5a-51cd2c3d6d3b" target="p_15"/>
+      <arc id="1359695950688" source="0c01be2e-95af-4c93-8a31-4a84d118c4f9" target="p_5"/>
+      <arc id="1359695928032" source="p_3" target="0b1e9696-b5fb-4a26-92bb-d9b0c52371dd"/>
+      <arc id="1359696097760" source="p_10" target="336af45c-4ccc-47af-a879-254569dc45e2"/>
+      <arc id="1359696473440" source="0af9d705-3428-43b2-aa03-fb521b34eb6f" target="p_13"/>
+      <arc id="1359696116592" source="p_12" target="f74455dd-7363-4c68-b5d4-dc25bc0f1484"/>
+      <arc id="1359695928304" source="0b1e9696-b5fb-4a26-92bb-d9b0c52371dd" target="p_6"/>
+      <arc id="1359696327664" source="p_9" target="06a661b1-914d-4445-8f9a-b6a1310e7604"/>
+      <arc id="1359696575728" source="p_11" target="200e511a-7200-4824-ac1a-edc7ac74f964"/>
+      <arc id="1359696473328" source="p_13" target="ae85a58b-6339-4f09-8e8e-688a0665411f"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

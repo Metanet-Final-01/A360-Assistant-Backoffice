@@ -1,0 +1,18 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0245_merge-multiple-csv-files",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Merge Multiple CSV Files",
+      "manual_dependencies": [
+        "Mergedll.dll"
+      ],
+      "output_file": "workflows/Merge Multiple CSV Files.json",
+      "scanned_dependencies": [
+        "Source2.csv",
+        "Source1.csv",
+        "Mergedll.dll"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,1653 @@
+{
+  "breakpoints": [
+    "586156b6-de7b-4670-a065-48888632f220",
+    "7b9d9bd1-4691-4183-a2ac-db884ff3d04b",
+    "9c50907f-66ab-4354-9fd1-cff157c7776a"
+  ],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Author, Description and Change History Section",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Author : Soumya Das",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "bc9d1c73-12e5-4c2b-ac5a-2a5b498af279"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Created on :  25 Oct 2021",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "d4a1de59-59cf-435e-87c1-079f3058868c"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Descrition : This prepare the search parameter for job reques nos.",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "05da79fd-2111-4938-9520-c837511ccc64"
+        }
+      ],
+      "commandName": "step",
+      "disabled": true,
+      "packageName": "Step",
+      "uid": "e9a4cb93-ba56-4255-af8d-83ee7281e255"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dicConfig{IsExceptionOn}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "True",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "taskbot",
+                      "value": {
+                        "taskbotFile": {
+                          "string": "repository:///Automation%20Anywhere/Bot%20Store/ESSPL%20-%20Contribution/HR_TA_Process/Business%20Bots/EssplLogBot",
+                          "type": "FILE"
+                        },
+                        "taskbotInput": {
+                          "dictionary": [
+                            {
+                              "key": "i_config",
+                              "value": {
+                                "expression": "$dicConfig$",
+                                "type": "DICTIONARY"
+                              }
+                            },
+                            {
+                              "key": "i_ErrorLineNo",
+                              "value": {
+                                "expression": "$numErrorLineNumber$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "key": "i_LogType",
+                              "value": {
+                                "string": "EXCEPTION",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "key": "i_IsSendEmail",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "key": "i_IsScreenShot",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "key": "i_BotName",
+                              "value": {
+                                "expression": "$strBotName$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "key": "i_ErrorMessage",
+                              "value": {
+                                "expression": "$strErrorMessage$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "type": "DICTIONARY"
+                        },
+                        "type": "TASKBOT"
+                      }
+                    },
+                    {
+                      "name": "repeatOption",
+                      "value": {
+                        "string": "DO_NOT_REPEAT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delayNextRepetition",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "continueOnError",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "runTask",
+                  "disabled": false,
+                  "packageName": "TaskBot",
+                  "uid": "fcbbdf82-9198-487f-b77c-55e947b50ab3"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "9c50907f-66ab-4354-9fd1-cff157c7776a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "string": "constant",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "userDefined",
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "Boolean",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "isSuccess"
+              },
+              "uid": "25e6ebd0-8a59-4cfd-8366-b7cf342fdb2b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "Line number : $numErrorLineNumber.Number:toString$ Messgae: $strErrorMessage$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "strErrorMessage"
+              },
+              "uid": "2bba2fcc-2b5c-4603-89e9-bce58733ee61"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "numErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "strErrorMessage"
+            }
+          },
+          "uid": "586156b6-de7b-4670-a065-48888632f220"
+        },
+        {
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dicConfig{IsDebugOn}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "True",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "taskbot",
+                      "value": {
+                        "taskbotFile": {
+                          "string": "repository:///Automation%20Anywhere/Bot%20Store/ESSPL%20-%20Contribution/HR_TA_Process/Business%20Bots/EssplLogBot",
+                          "type": "FILE"
+                        },
+                        "taskbotInput": {
+                          "dictionary": [
+                            {
+                              "key": "i_config",
+                              "value": {
+                                "expression": "$dicConfig$",
+                                "type": "DICTIONARY"
+                              }
+                            },
+                            {
+                              "key": "i_ErrorLineNo",
+                              "value": {
+                                "number": "0",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "key": "i_LogType",
+                              "value": {
+                                "string": "DEBUG",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "key": "i_IsSendEmail",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "key": "i_IsScreenShot",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "key": "i_BotName",
+                              "value": {
+                                "expression": "$strBotName$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "key": "i_ErrorMessage",
+                              "value": {
+                                "string": "Bot Ended",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "type": "DICTIONARY"
+                        },
+                        "type": "TASKBOT"
+                      }
+                    },
+                    {
+                      "name": "repeatOption",
+                      "value": {
+                        "string": "DO_NOT_REPEAT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delayNextRepetition",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "continueOnError",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "runTask",
+                  "disabled": false,
+                  "packageName": "TaskBot",
+                  "uid": "0d37910a-623f-4cc6-a87f-316b879fcb92"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "157fc0ba-a258-4021-b3d2-510ff87481f0"
+            }
+          ],
+          "commandName": "finally",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "46c20068-7c65-4b6c-b85d-2664ec438655"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$dicConfig{IsDebugOn}$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "string": "True",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "matchCase",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isIgnoreCarriage",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "stringVariable",
+                "packageName": "String",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "taskbot",
+                  "value": {
+                    "taskbotFile": {
+                      "string": "repository:///Automation%20Anywhere/Bot%20Store/ESSPL%20-%20Contribution/HR_TA_Process/Business%20Bots/EssplLogBot",
+                      "type": "FILE"
+                    },
+                    "taskbotInput": {
+                      "dictionary": [
+                        {
+                          "key": "i_config",
+                          "value": {
+                            "expression": "$dicConfig$",
+                            "type": "DICTIONARY"
+                          }
+                        },
+                        {
+                          "key": "i_ErrorLineNo",
+                          "value": {
+                            "expression": "$numErrorLineNumber$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "key": "i_LogType",
+                          "value": {
+                            "string": "DEBUG",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "i_IsSendEmail",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "key": "i_IsScreenShot",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "key": "i_BotName",
+                          "value": {
+                            "expression": "$strBotName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "i_ErrorMessage",
+                          "value": {
+                            "string": "Bot Started",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "type": "DICTIONARY"
+                    },
+                    "type": "TASKBOT"
+                  }
+                },
+                {
+                  "name": "repeatOption",
+                  "value": {
+                    "string": "DO_NOT_REPEAT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayNextRepetition",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "continueOnError",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "runTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "uid": "7ce9c400-989d-43b1-96a5-2c88cf9979bb"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "471622f5-d838-426d-ac45-dc93c5fd2f1d"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Get JobRequestNo which are \"Open\" or \"ReOpen\"",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "taskbot",
+                  "value": {
+                    "taskbotFile": {
+                      "string": "repository:///Automation%20Anywhere/Bot%20Store/ESSPL%20-%20Contribution/HR_TA_Process/Business%20Bots/EssplExcelDB",
+                      "type": "FILE"
+                    },
+                    "taskbotInput": {
+                      "dictionary": [
+                        {
+                          "key": "IN_FileFullPath",
+                          "value": {
+                            "expression": "$dicConfig{OpenPositionExcelFilePath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "IN_OLEConnection",
+                          "value": {
+                            "string": "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='[FILE_FULL_PATH]';Extended Properties='Excel 12.0 Xml;HDR=YES'",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "IN_OperationType",
+                          "value": {
+                            "string": "GET",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "IN_QueryString",
+                          "value": {
+                            "string": "select * from [OpenPosition$] where Status not in ('Closed','Pending','OnHold')",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "type": "DICTIONARY"
+                    },
+                    "type": "TASKBOT"
+                  }
+                },
+                {
+                  "name": "repeatOption",
+                  "value": {
+                    "string": "DO_NOT_REPEAT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayNextRepetition",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "continueOnError",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "runTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dicChildbotResult"
+              },
+              "uid": "ec4dc9df-b565-419f-8815-3730f2339b00"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "dicChildbotResult"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "OUT_DtData",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "get",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dtJobRequestNo"
+              },
+              "uid": "4ce2f2c6-a756-4e88-8f8b-09058c6ae831"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "dicChildbotResult"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "OUT_IsSuccess",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "get",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "isChildbotRunSuccess"
+              },
+              "uid": "8cb017fa-8a05-4752-8dc8-6d6c0cfd3b0b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "dicChildbotResult"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "OUT_Message",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "get",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "strErrorMessage"
+              },
+              "uid": "ed04c0ff-6a01-470e-9c6d-0b4d440a90b2"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$isChildbotRunSuccess$",
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "booleanVariable",
+                    "packageName": "Boolean",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "commandName": "stopTask",
+                  "disabled": false,
+                  "packageName": "TaskBot",
+                  "uid": "079a6925-6f4e-4be4-8148-afb7f09a1dfd"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "a2da604c-18cb-4174-817b-251a4a11798e"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "eaa40c3f-b906-4dc2-ab3d-734d1f2ca4d1"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Concatenate all \"Open\" and \"ReOpen\"  jobRequestNo ",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "loopType",
+                  "value": {
+                    "string": "ITERATOR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceTable",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "dtJobRequestNo"
+                      }
+                    }
+                  ],
+                  "name": "iterator",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "recEach"
+                  },
+                  "value": {
+                    "iteratorName": "iteratorTableRow",
+                    "packageName": "DataTable",
+                    "type": "ITERATOR"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$strJobRequestNos$,'$recEach{JobRequestNo}$'",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "strJobRequestNos"
+                  },
+                  "uid": "154ab643-cf6e-4379-9fa1-0e8ff0f52518"
+                }
+              ],
+              "commandName": "loop.commands.start",
+              "disabled": false,
+              "packageName": "Loop",
+              "uid": "99dc1c02-af8a-42f4-a4fe-1fcdcbb2ee96"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "7b9d9bd1-4691-4183-a2ac-db884ff3d04b"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$strJobRequestNos$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "find",
+              "value": {
+                "string": ",",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isCaseSensitive",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isRegularExpression",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "startIndex",
+              "value": {
+                "number": "1",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "count",
+              "value": {
+                "number": "1",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "replaceWith",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "replace",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "strJobRequestNos"
+          },
+          "uid": "4df6946d-e63d-4d66-b991-5f0e4538aac5"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Get Search parameter from the SearchFilter Sheet",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "taskbot",
+                  "value": {
+                    "taskbotFile": {
+                      "string": "repository:///Automation%20Anywhere/Bot%20Store/ESSPL%20-%20Contribution/HR_TA_Process/Business%20Bots/EssplExcelDB",
+                      "type": "FILE"
+                    },
+                    "taskbotInput": {
+                      "dictionary": [
+                        {
+                          "key": "IN_FileFullPath",
+                          "value": {
+                            "expression": "$dicConfig{OpenPositionExcelFilePath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "IN_OLEConnection",
+                          "value": {
+                            "string": "Provider=Microsoft.ACE.OLEDB.12.0;Data Source='[FILE_FULL_PATH]';Extended Properties='Excel 12.0 Xml;HDR=YES'",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "IN_OperationType",
+                          "value": {
+                            "string": "GET",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "IN_QueryString",
+                          "value": {
+                            "expression": "select * from [SearchFilter$$] where JobRequestNo in ($strJobRequestNos.String:trim$)",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "type": "DICTIONARY"
+                    },
+                    "type": "TASKBOT"
+                  }
+                },
+                {
+                  "name": "repeatOption",
+                  "value": {
+                    "string": "DO_NOT_REPEAT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayNextRepetition",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "continueOnError",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "runTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dicChildbotResult"
+              },
+              "uid": "909cc60a-61d4-467a-bc62-b1fc96cabbce"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "dicChildbotResult"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "OUT_DtData",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "get",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dtSearchParameter"
+              },
+              "uid": "6aebf3fe-a724-4044-aab2-df0736cf75ba"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "dicChildbotResult"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "OUT_IsSuccess",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "get",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "isChildbotRunSuccess"
+              },
+              "uid": "10c8519b-d981-4bfc-a03c-d9b7f80c0ce2"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "dicChildbotResult"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "OUT_Message",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "get",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "strErrorMessage"
+              },
+              "uid": "b4c2eebd-1ec3-47c5-8a64-c5476afc90b5"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$isChildbotRunSuccess$",
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "booleanVariable",
+                    "packageName": "Boolean",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "commandName": "stopTask",
+                  "disabled": false,
+                  "packageName": "TaskBot",
+                  "uid": "d5ec3c6c-49fe-46f5-a5f1-19bb44615a48"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "97d92921-0a32-456a-8c9d-7ed0925640d8"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "294880e4-2d8d-4439-bc81-555009d064ce"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "string": "constant",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "userDefined",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "Boolean",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "isSuccess"
+          },
+          "uid": "04f1768a-6c21-4bf3-a56c-1a282a599be5"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "602ef20b-f70e-45c8-9a38-efca56b7f52d"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Boolean",
+      "version": "2.1.0-20210722-143718"
+    },
+    {
+      "name": "Comment",
+      "version": "2.7.0-20210722-143743"
+    },
+    {
+      "name": "DataTable",
+      "version": "3.0.0-20210722-144817"
+    },
+    {
+      "name": "Dictionary",
+      "version": "3.3.0-20210722-143810"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.7.0-20210722-143834"
+    },
+    {
+      "name": "If",
+      "version": "3.0.0-20210722-143856"
+    },
+    {
+      "name": "Loop",
+      "version": "3.0.0-20210722-144335"
+    },
+    {
+      "name": "Number",
+      "version": "3.1.1-20210821-042642"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.2-20210716-100543"
+    },
+    {
+      "name": "String",
+      "version": "4.3.0-20210722-144812"
+    },
+    {
+      "name": "TaskBot",
+      "version": "2.1.0-20210716-100552"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "2",
+    "improvedNumberSupport": true,
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dicBaseParams",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dicChildbotResult",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [
+          {
+            "key": "LogFilePath",
+            "value": {
+              "string": "D:\\Projects\\Automation_COE\\trunk\\Source Code\\HR\\Log",
+              "type": "STRING"
+            }
+          },
+          {
+            "key": "OpenPositionExcelFilePath",
+            "value": {
+              "string": "D:\\Projects\\Automation_COE\\trunk\\Source Code\\HR\\ExcelDatabase\\ESSPL_Reports_TA.xlsm",
+              "type": "STRING"
+            }
+          },
+          {
+            "key": "IsDebugOn",
+            "value": {
+              "string": "False",
+              "type": "STRING"
+            }
+          }
+        ],
+        "type": "DICTIONARY"
+      },
+      "description": "Stores the Configuration Data",
+      "input": true,
+      "name": "dicConfig",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dicEmpty",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dicExtractCandidateMasterConfig",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dicSearchParams",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "holds all jobRequestNos whose status are open",
+      "input": false,
+      "name": "dtJobRequestNo",
+      "output": false,
+      "readOnly": false,
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "dtResult",
+      "output": false,
+      "readOnly": false,
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "dtSearchParameter",
+      "output": true,
+      "readOnly": false,
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "boolean": true,
+        "type": "BOOLEAN"
+      },
+      "description": "",
+      "input": false,
+      "name": "isChildbotRunSuccess",
+      "output": false,
+      "readOnly": false,
+      "type": "BOOLEAN"
+    },
+    {
+      "defaultValue": {
+        "boolean": false,
+        "type": "BOOLEAN"
+      },
+      "description": "Returns the status of the Bot, True for Success or False for Failed",
+      "input": false,
+      "name": "isSuccess",
+      "output": true,
+      "readOnly": false,
+      "type": "BOOLEAN"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "numErrorLineNo",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "Stores the Error Line Number from the Catch block",
+      "input": false,
+      "name": "numErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "numTemp",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "record": {
+          "schema": [],
+          "values": []
+        },
+        "type": "RECORD"
+      },
+      "description": "",
+      "input": false,
+      "name": "recEach",
+      "output": false,
+      "readOnly": false,
+      "type": "RECORD"
+    },
+    {
+      "defaultValue": {
+        "string": "PrepareSearchParameter",
+        "type": "STRING"
+      },
+      "description": "Stores the Bot Name",
+      "input": false,
+      "name": "strBotName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "CandidateInformation",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strCandidateInfoSheetName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strChildBotErrorMsg",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "Entire Resume",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strEmpty",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Stores the error message from catch block",
+      "input": false,
+      "name": "strErrorMessage",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strEXCEL_PATH",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strJobRequestNos",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strOpenPositionSheetName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "SearchFilter",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strSearchFilterSheetName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strTemp",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

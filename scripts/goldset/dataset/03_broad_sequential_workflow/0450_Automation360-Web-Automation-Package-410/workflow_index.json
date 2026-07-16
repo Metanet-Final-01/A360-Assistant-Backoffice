@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0450_Automation360-Web-Automation-Package-410",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Automation360-Web_Automation_Package",
+      "manual_dependencies": [],
+      "output_file": "workflows/Automation360-Web_Automation_Package.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

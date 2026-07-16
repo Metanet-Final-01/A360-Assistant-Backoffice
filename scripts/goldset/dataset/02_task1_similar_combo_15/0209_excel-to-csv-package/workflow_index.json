@@ -1,0 +1,12 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0209_excel-to-csv-package",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Excel to CSV Package",
+      "manual_dependencies": [],
+      "output_file": "workflows/Excel to CSV Package.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

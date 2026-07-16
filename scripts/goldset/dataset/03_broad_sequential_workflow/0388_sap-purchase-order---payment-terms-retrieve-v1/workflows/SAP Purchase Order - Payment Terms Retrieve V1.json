@@ -1,0 +1,810 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$PO_Number$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "startIndex",
+          "value": {
+            "number": "3",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "commandName": "subString",
+      "disabled": false,
+      "packageName": "String",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "PO_Number"
+      },
+      "uid": "31bb1d03-de86-4a47-9bec-8eae2b0f22fa"
+    },
+    {
+      "attributes": [
+        {
+          "name": "filePath",
+          "value": {
+            "string": "file://Saplogon.exe",
+            "type": "FILE"
+          }
+        },
+        {
+          "name": "startInPath",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "parameters",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "runApp",
+      "disabled": false,
+      "packageName": "Application",
+      "uid": "2a466f42-339a-49c0-b96a-098fa7edd956"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "3",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "3a60df5e-3697-4b7e-a183-18aeaa9ad238"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "connectionType",
+          "value": {
+            "string": "SAP GUI",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "sapServerName",
+          "value": {
+            "string": "AA1",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "clientID",
+          "value": {
+            "string": "800",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "secureUser",
+          "value": {
+            "string": "SE2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "secureCredential",
+          "value": {
+            "string": "Automation@12345",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "language",
+          "value": {
+            "string": "EN",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "connect",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "e1b0f807-b94a-4bb5-b620-221c3a7229d1"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[0]/tbar[0]/okcd",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldValue",
+          "value": {
+            "string": "me23n",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isAppendTextEnabled",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "setText",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "35317058-ec4f-4981-b623-aba5a41da7b8"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "3",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "bb7cc89a-7df6-4463-ad1a-f70f58cd9ba1"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[0]/tbar[0]/btn[0]",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "click",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "ee438c9c-54d8-4a0b-b5c3-6ece2b48fae7"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "3",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "c0f29a01-2cc1-4547-bc44-6212c8f83146"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[0]/tbar[1]/btn[17]",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "click",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "04893f48-f0fd-4f9d-8f66-1e52fc0ccad6"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "3",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "6162f239-eb88-44f6-972e-bd874a70eac4"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[1]/usr/subSUB0:SAPLMEGUI:0003/ctxtMEPO_SELECT-EBELN",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldValue",
+          "value": {
+            "expression": "$PO_Number$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isAppendTextEnabled",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "setText",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "25c7dded-91c9-4507-b1bc-b5dd81c04ee8"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "3",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "a77b0aba-5df6-498c-8153-7749e5602bc7"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[1]/tbar[0]/btn[0]",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "click",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "782e6e5b-9b0b-428f-9a55-c0ceddf33bd5"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "Purchase Order:$PO_Number$ Found in SAP",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "assign",
+      "disabled": false,
+      "packageName": "String",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "PO_Status"
+      },
+      "uid": "595721de-a4c7-43d9-8f6d-4877e7338d45"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB1:SAPLMEVIEWS:1100/subSUB1:SAPLMEVIEWS:4000/btnDYN_4000-BUTTON",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "click",
+      "disabled": true,
+      "packageName": "SAP",
+      "uid": "44d2a97b-db5d-4207-902d-8bb8626f256d"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "3",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "5cc6a321-87cf-44ed-85d3-e8414b2fc2bb"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB1:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1102/tabsHEADER_DETAIL/tabpTABHDT1/ssubTABSTRIPCONTROL2SUB:SAPLMEGUI:1226/ctxtMEPO1226-ZTERM",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "getText",
+      "disabled": false,
+      "packageName": "SAP",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "Payment_Term"
+      },
+      "uid": "989d248f-5f31-4e15-9709-df4bae391ad2"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "Purchase Order has Payment Terms:$Payment_Term$",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "assign",
+      "disabled": false,
+      "packageName": "String",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "Payment_Term"
+      },
+      "uid": "8c29d10e-c773-4c61-a793-fb44846a1776"
+    },
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "Adding Dependency",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "2c8889c2-6906-44d7-baf5-c32c5d75635b"
+    },
+    {
+      "attributes": [
+        {
+          "name": "formVar",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "Initial_Form"
+          }
+        },
+        {
+          "name": "alwaysOnTop",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "uiFormDisplay",
+      "disabled": false,
+      "packageName": "Forms",
+      "uid": "d62c4a85-96b9-4959-91f2-81eecc1c01bb"
+    },
+    {
+      "attributes": [
+        {
+          "name": "formVar",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "Payment_Term_Form"
+          }
+        },
+        {
+          "name": "alwaysOnTop",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "uiFormDisplay",
+      "disabled": false,
+      "packageName": "Forms",
+      "uid": "ca8181c1-80a2-46f5-96ea-ad9c57ccb294"
+    },
+    {
+      "attributes": [
+        {
+          "name": "formVar",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "Second_Form"
+          }
+        },
+        {
+          "name": "alwaysOnTop",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "uiFormDisplay",
+      "disabled": false,
+      "packageName": "Forms",
+      "uid": "4057a7d9-028c-4a33-b0f6-8bcd168f2601"
+    },
+    {
+      "attributes": [
+        {
+          "name": "taskbot",
+          "value": {
+            "taskbotFile": {
+              "string": "repository:///Automation%20Anywhere/Bot%20Store/SAP%20PO%27s%20Change%20Payment%20Term%20V1/Update%20Payment%20Terms%20in%20SAP%20V1",
+              "type": "FILE"
+            },
+            "taskbotInput": {
+              "dictionary": [
+                {
+                  "key": "Payment_Term",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "type": "DICTIONARY"
+            },
+            "type": "TASKBOT"
+          }
+        },
+        {
+          "name": "repeatOption",
+          "value": {
+            "string": "DO_NOT_REPEAT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayNextRepetition",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "continueOnError",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "runTask",
+      "disabled": false,
+      "packageName": "TaskBot",
+      "uid": "1e827b1e-781c-494b-9b7c-f2181c8b2ebf"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Application",
+      "version": "2.0.0-20200721-221935"
+    },
+    {
+      "name": "Comment",
+      "version": "2.1.0-20200831-031015"
+    },
+    {
+      "name": "Delay",
+      "version": "2.1.0-20200721-221959"
+    },
+    {
+      "name": "Forms",
+      "version": "2.16.0-20200914-151814"
+    },
+    {
+      "name": "SAP",
+      "version": "2.1.0-20200723-234637"
+    },
+    {
+      "name": "String",
+      "version": "3.0.0-20200721-222454"
+    },
+    {
+      "name": "TaskBot",
+      "version": "2.0.1-20200907-072949"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "PO_Number",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "PO_Status",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "#32770",
+          "handle": "394924",
+          "isChild": false,
+          "location": {
+            "left": 142,
+            "top": 57
+          },
+          "name": "SAP Logon 750",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 590,
+            "width": 590
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-2",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "Payment_Term",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "Payment_Term_Update",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "file": {
+          "string": "repository:///Automation%20Anywhere/Bot%20Store/SAP%20PO%27s%20Change%20Payment%20Term%20V1/Initial_Form1",
+          "type": "FILE"
+        },
+        "type": "FORM"
+      },
+      "description": "",
+      "input": false,
+      "name": "Initial_Form",
+      "output": false,
+      "readOnly": false,
+      "type": "FORM"
+    },
+    {
+      "defaultValue": {
+        "file": {
+          "string": "repository:///Automation%20Anywhere/Bot%20Store/SAP%20PO%27s%20Change%20Payment%20Term%20V1/Payment_Term_details%20V1",
+          "type": "FILE"
+        },
+        "type": "FORM"
+      },
+      "description": "",
+      "input": false,
+      "name": "Payment_Term_Form",
+      "output": false,
+      "readOnly": false,
+      "type": "FORM"
+    },
+    {
+      "defaultValue": {
+        "file": {
+          "string": "repository:///Automation%20Anywhere/Bot%20Store/SAP%20PO%27s%20Change%20Payment%20Term%20V1/Second_Form%20V1",
+          "type": "FILE"
+        },
+        "type": "FORM"
+      },
+      "description": "",
+      "input": false,
+      "name": "Second_Form",
+      "output": false,
+      "readOnly": false,
+      "type": "FORM"
+    }
+  ],
+  "workItemTemplateName": null
+}

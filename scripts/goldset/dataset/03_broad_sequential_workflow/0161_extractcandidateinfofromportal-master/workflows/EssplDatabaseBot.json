@@ -1,0 +1,2726 @@
+{
+  "breakpoints": [],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Author, Description and Change History Section",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Author : Banabihari Pradhan",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "240ba8f9-3970-4e29-adce-76db450760d9"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Created on : 7 Jan 2021",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "ea8b3d37-a44e-47b9-9377-df0572e6de56"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "This bot does CRUD Operationg on a table with Bulk insert and update.",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "094bf6db-a763-4204-9679-8cb15b0c6adb"
+        }
+      ],
+      "commandName": "step",
+      "disabled": true,
+      "packageName": "Step",
+      "uid": "1cee5d81-38ce-4f1e-bf62-7a7ded202fdf"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "call EssLogBot.",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "150b64c9-e92f-412c-8c00-5177c8585404"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "Line Number : $o_ErrorLineNo.Number:toString$. Error Message : $o_ErrorMessage$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "o_ErrorMessage"
+              },
+              "uid": "c76c5346-4755-4be3-b00c-762347ad80ec"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "string": "constant",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "userDefined",
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "Boolean",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "o_IsSuccess"
+              },
+              "uid": "c47bb6fd-84e8-4b6b-8544-dbb1a189f77b"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "o_ErrorLineNo"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "o_ErrorMessage"
+            }
+          },
+          "uid": "27b96c46-436b-46ac-ad8b-0458bf32f639"
+        },
+        {
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$bIsDBConencted$",
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "booleanVariable",
+                    "packageName": "Boolean",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "session",
+                      "value": {
+                        "expression": "$strDBSession$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "dosaveData",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "disconnect",
+                  "disabled": false,
+                  "packageName": "Database",
+                  "uid": "f1acec83-9dd3-4720-b967-fe8483e0bba2"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "a297b853-6ef7-4daa-b99d-9021c30860ff"
+            }
+          ],
+          "commandName": "finally",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "821b512d-ad4a-49cd-85ea-6833e14e18ac"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "expression": "$strDBSession$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "connectionMode",
+              "value": {
+                "string": "USER",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "databaseProvider",
+              "value": {
+                "string": "SQLOLEDB.1",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "server",
+              "value": {
+                "expression": "$i_Config{\"DBServerName\"}$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "database",
+              "value": {
+                "expression": "$i_Config{\"DBName\"}$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "user",
+              "value": {
+                "expression": "$i_Config{\"DBUserId\"}$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "auth",
+              "value": {
+                "expression": "$i_Config{\"DBPassword\"}$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "instance",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isUserDefinedDriver",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "connect",
+          "disabled": false,
+          "packageName": "Database",
+          "uid": "6b0297b2-bf17-4eb5-bdf1-bba5e6a0d3de"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "string": "constant",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "userDefined",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "Boolean",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "bIsDBConencted"
+          },
+          "uid": "183b0193-9fc6-45d1-b9fc-37b541481249"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "CRUD Operations on database",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$i_OperationType.String:trim$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "INSERT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$i_OperationType.String:trim$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "DELETE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "For Delete",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "begin",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "f1a4e356-4b2a-4a4e-bdf2-4faade7e0f6f"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "query",
+                              "value": {
+                                "expression": "$i_Query$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "insertUpdateDelete",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "c7ae311e-865f-4d09-be9e-911c6ae125d6"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "commit",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "a7762ec6-8140-4808-a8d8-93ed7b2dff38"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "d97f7e88-43b6-4cff-8510-f64f4d0174f6"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "21b02057-e1ad-4602-a993-0b8c223fe365"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$i_OperationType.String:trim$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "GET",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "For Get",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "begin",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "fa5b6c71-23a9-40ce-86bf-0f22e8d34517"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "query",
+                              "value": {
+                                "expression": "$i_Query$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "exportToDataTable",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "o_ResultSet"
+                          },
+                          "uid": "00984cae-78ae-4754-b4c0-81b4b9f9c495"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "commit",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "f1e2546e-f72f-4699-8239-1ed19bf16dc4"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "ecd3c824-194f-4537-ab3c-6979d011b559"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "e58cf283-c94a-4384-b118-b04d647b7ca9"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$i_OperationType.String:trim$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "UPDATE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "For Update",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "variable",
+                                  "value": {
+                                    "expression": "$i_KeyName.String:trim$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "operator",
+                                  "value": {
+                                    "string": "EQ",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "value",
+                                  "value": {
+                                    "expression": "$strEmpty$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "matchCase",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                },
+                                {
+                                  "name": "isIgnoreCarriage",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "name": "condition",
+                              "value": {
+                                "conditionalName": "stringVariable",
+                                "packageName": "String",
+                                "type": "CONDITIONAL"
+                              }
+                            }
+                          ],
+                          "branches": [
+                            {
+                              "children": [
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "sourceString",
+                                      "value": {
+                                        "expression": "$i_UpdateColumns$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "delimiter",
+                                      "value": {
+                                        "expression": "$strDelimeter$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "isCaseSensitive",
+                                      "value": {
+                                        "string": "false",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "substrings",
+                                      "value": {
+                                        "string": "ALL",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "split",
+                                  "disabled": false,
+                                  "packageName": "String",
+                                  "returnTo": {
+                                    "type": "VARIABLE",
+                                    "variableName": "lstColumns"
+                                  },
+                                  "uid": "3cb2d539-73df-48f3-bba1-0e4b1820f34e"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "session",
+                                      "value": {
+                                        "expression": "$strDBSession$",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "begin",
+                                  "disabled": false,
+                                  "packageName": "Database",
+                                  "uid": "7cf430f2-0613-4dfd-9d17-a35bca2ce4b1"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "loopType",
+                                      "value": {
+                                        "string": "ITERATOR",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "sourceTable",
+                                          "value": {
+                                            "type": "VARIABLE",
+                                            "variableName": "i_InputTable"
+                                          }
+                                        }
+                                      ],
+                                      "name": "iterator",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "recEach"
+                                      },
+                                      "value": {
+                                        "iteratorName": "iteratorTableRow",
+                                        "packageName": "DataTable",
+                                        "type": "ITERATOR"
+                                      }
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "sourceString",
+                                          "value": {
+                                            "expression": "UPDATE $i_TableName$ SET",
+                                            "type": "STRING"
+                                          }
+                                        }
+                                      ],
+                                      "commandName": "assign",
+                                      "disabled": false,
+                                      "packageName": "String",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "i_Query"
+                                      },
+                                      "uid": "8d7b53da-9bce-4cf6-b306-f68c705a5b51"
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "loopType",
+                                          "value": {
+                                            "string": "ITERATOR",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "attributes": [
+                                            {
+                                              "name": "list",
+                                              "value": {
+                                                "type": "VARIABLE",
+                                                "variableName": "lstColumns"
+                                              }
+                                            },
+                                            {
+                                              "name": "forOptions",
+                                              "value": {
+                                                "string": "all",
+                                                "type": "STRING"
+                                              }
+                                            }
+                                          ],
+                                          "name": "iterator",
+                                          "returnTo": {
+                                            "type": "VARIABLE",
+                                            "variableName": "prompt-assignment"
+                                          },
+                                          "value": {
+                                            "iteratorName": "list.iterators.list",
+                                            "packageName": "List",
+                                            "type": "ITERATOR"
+                                          }
+                                        }
+                                      ],
+                                      "children": [
+                                        {
+                                          "attributes": [
+                                            {
+                                              "name": "sourceString",
+                                              "value": {
+                                                "expression": "$i_Query$ $prompt-assignment$ = '$recEach{$prompt-assignment$}$', ",
+                                                "type": "STRING"
+                                              }
+                                            }
+                                          ],
+                                          "commandName": "assign",
+                                          "disabled": false,
+                                          "packageName": "String",
+                                          "returnTo": {
+                                            "type": "VARIABLE",
+                                            "variableName": "i_Query"
+                                          },
+                                          "uid": "e6c5af80-2054-4e45-adfa-469f1fa414e7"
+                                        }
+                                      ],
+                                      "commandName": "loop.commands.start",
+                                      "disabled": false,
+                                      "packageName": "Loop",
+                                      "uid": "c88aae9a-d617-494a-a87a-8b3033729b67"
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "sourceString",
+                                          "value": {
+                                            "expression": "$i_Query$",
+                                            "type": "STRING"
+                                          }
+                                        }
+                                      ],
+                                      "commandName": "reverse",
+                                      "disabled": false,
+                                      "packageName": "String",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "i_Query"
+                                      },
+                                      "uid": "f22c76a3-ebc8-427d-8895-a32d6f5f0acd"
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "sourceString",
+                                          "value": {
+                                            "expression": "$i_Query$",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "find",
+                                          "value": {
+                                            "string": ",",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "isCaseSensitive",
+                                          "value": {
+                                            "string": "false",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "isRegularExpression",
+                                          "value": {
+                                            "string": "false",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "startIndex",
+                                          "value": {
+                                            "number": "1",
+                                            "type": "NUMBER"
+                                          }
+                                        },
+                                        {
+                                          "name": "count",
+                                          "value": {
+                                            "number": "1",
+                                            "type": "NUMBER"
+                                          }
+                                        },
+                                        {
+                                          "name": "replaceWith",
+                                          "value": {
+                                            "expression": "$strEmpty$",
+                                            "type": "STRING"
+                                          }
+                                        }
+                                      ],
+                                      "commandName": "replace",
+                                      "disabled": false,
+                                      "packageName": "String",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "i_Query"
+                                      },
+                                      "uid": "f54a0e69-c6ee-4073-97f2-9976c22ec3a5"
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "sourceString",
+                                          "value": {
+                                            "expression": "$i_Query$",
+                                            "type": "STRING"
+                                          }
+                                        }
+                                      ],
+                                      "commandName": "reverse",
+                                      "disabled": false,
+                                      "packageName": "String",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "i_Query"
+                                      },
+                                      "uid": "bade8423-eac0-42d2-a90c-077ab52dde6a"
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "sourceString",
+                                          "value": {
+                                            "expression": "$i_Query$ WHERE $i_KeyName$ = '$recEach{$i_KeyName$}$'",
+                                            "type": "STRING"
+                                          }
+                                        }
+                                      ],
+                                      "commandName": "assign",
+                                      "disabled": false,
+                                      "packageName": "String",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "i_Query"
+                                      },
+                                      "uid": "ef15f30b-9968-4743-bb01-cf9ee7a70389"
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "session",
+                                          "value": {
+                                            "expression": "$strDBSession$",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "query",
+                                          "value": {
+                                            "expression": "$i_Query$",
+                                            "type": "STRING"
+                                          }
+                                        }
+                                      ],
+                                      "commandName": "insertUpdateDelete",
+                                      "disabled": false,
+                                      "packageName": "Database",
+                                      "uid": "39402df6-c67b-4c98-9488-94ed9093152d"
+                                    }
+                                  ],
+                                  "commandName": "loop.commands.start",
+                                  "disabled": false,
+                                  "packageName": "Loop",
+                                  "uid": "7b552ad7-6a63-43b7-b91d-054f354b89f3"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "session",
+                                      "value": {
+                                        "expression": "$strDBSession$",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "commit",
+                                  "disabled": false,
+                                  "packageName": "Database",
+                                  "uid": "1345aaf6-c025-49ed-9514-a672b7ee7461"
+                                }
+                              ],
+                              "commandName": "else",
+                              "disabled": false,
+                              "packageName": "If",
+                              "uid": "af72daca-e8dd-4d4d-821d-d9a2b46086a0"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "session",
+                                  "value": {
+                                    "expression": "$strDBSession$",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "begin",
+                              "disabled": false,
+                              "packageName": "Database",
+                              "uid": "c4efe924-ab7d-4b3c-bd13-1f92db3959d8"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "session",
+                                  "value": {
+                                    "expression": "$strDBSession$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "query",
+                                  "value": {
+                                    "expression": "$i_Query$",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "insertUpdateDelete",
+                              "disabled": false,
+                              "packageName": "Database",
+                              "uid": "d02eac46-9f9d-4ff1-b40d-798ec6bef56d"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "session",
+                                  "value": {
+                                    "expression": "$strDBSession$",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "commit",
+                              "disabled": false,
+                              "packageName": "Database",
+                              "uid": "93440195-e525-4a66-a26c-9e6fffcc10fd"
+                            }
+                          ],
+                          "commandName": "if",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "ebf1b654-91a4-4bfc-8f7d-a78af24dc60f"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "41f8e574-fb76-4fae-b965-b97baf99c352"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "10b7f3d7-5c7b-4f8b-8f2d-f9fe4d28c0b6"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$i_OperationType.String:trim$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "EXECUTE_SP",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "Folder location for SP_Output table storage",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "3bc9fd68-d1f3-4529-a307-bbd3d35b884e"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "folderPath",
+                              "value": {
+                                "expression": "$sRootLogDirectory$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "waitTimeout",
+                              "value": {
+                                "number": "0",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "name": "condition",
+                          "value": {
+                            "conditionalName": "folderDoesNotExists",
+                            "packageName": "Folder",
+                            "type": "CONDITIONAL"
+                          }
+                        }
+                      ],
+                      "branches": [],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "folderPath",
+                              "value": {
+                                "expression": "$sRootLogDirectory$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "isOverwrite",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "createFolder",
+                          "disabled": false,
+                          "packageName": "Folder",
+                          "uid": "7500b9a2-7f9a-4351-9104-3478a2a9ebd3"
+                        }
+                      ],
+                      "commandName": "if",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "34f8c850-bed4-4430-875b-564777dd2fb3"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sRootLogDirectory$/Datatable_SP.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFile",
+                      "disabled": false,
+                      "packageName": "File",
+                      "uid": "3e80cbd5-0a57-49ba-8133-e4a0c1ff7cd1"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "For Running SP",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "begin",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "b5d083a9-5bc2-499a-8113-0f26d2ce67f7"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "query",
+                              "value": {
+                                "expression": "$i_spName$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "entryList",
+                              "value": {
+                                "list": [
+                                  {
+                                    "dictionary": [
+                                      {
+                                        "key": "inOrOutParamter",
+                                        "value": {
+                                          "string": "Input",
+                                          "type": "STRING"
+                                        }
+                                      },
+                                      {
+                                        "key": "parametername",
+                                        "value": {
+                                          "string": "Params",
+                                          "type": "STRING"
+                                        }
+                                      },
+                                      {
+                                        "key": "parametervalue",
+                                        "value": {
+                                          "expression": "$i_spParams$",
+                                          "type": "STRING"
+                                        }
+                                      },
+                                      {
+                                        "key": "outputParamType",
+                                        "value": {
+                                          "string": "VARCHAR",
+                                          "type": "STRING"
+                                        }
+                                      }
+                                    ],
+                                    "type": "DICTIONARY"
+                                  }
+                                ],
+                                "type": "LIST"
+                              }
+                            },
+                            {
+                              "name": "doExport",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "withHeader",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$sRootLogDirectory$/Datatable_SP.csv",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "encodingType",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTo",
+                              "value": {
+                                "string": "false",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "store",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "0dc073ff-15c1-48c0-8506-373b6f0f7a59"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "commit",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "c0c86a4a-19eb-4e44-b0b6-3f10a88b7e81"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "string": "Default",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$sRootLogDirectory$/Datatable_SP.csv",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "containsHeader",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "delimeter",
+                              "value": {
+                                "string": "comma",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "trimLeadingSpace",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "trimTrailingSpace",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "encoding",
+                              "value": {
+                                "string": "UTF-8",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "OpenCSVTXT",
+                          "disabled": false,
+                          "packageName": "CsvTxt",
+                          "uid": "b52ee839-3670-4400-ba9a-cbb82b064a01"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "string": "Default",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "ReadFromCsvTxt",
+                          "disabled": false,
+                          "packageName": "CsvTxt",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "o_ResultSet"
+                          },
+                          "uid": "25f917f7-4081-41bd-96aa-a815697933b7"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "string": "Default",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "CloseCsvTxt",
+                          "disabled": false,
+                          "packageName": "CsvTxt",
+                          "uid": "dfc87170-2ee2-4119-8a38-bcc942d2fc0e"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "2b478186-f941-48c2-a949-196a20a27ebe"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "305f2c86-b3be-4185-8098-97cb9c97e466"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "For Insert",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "variable",
+                              "value": {
+                                "expression": "$i_Query.String:trim$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "operator",
+                              "value": {
+                                "string": "NEQ",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "value",
+                              "value": {
+                                "expression": "$strEmpty$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "matchCase",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "isIgnoreCarriage",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "name": "condition",
+                          "value": {
+                            "conditionalName": "stringVariable",
+                            "packageName": "String",
+                            "type": "CONDITIONAL"
+                          }
+                        }
+                      ],
+                      "branches": [
+                        {
+                          "children": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "session",
+                                  "value": {
+                                    "expression": "$strDBSession$",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "begin",
+                              "disabled": false,
+                              "packageName": "Database",
+                              "uid": "8e0da408-be88-49cf-9182-900cc60aa06c"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "session",
+                                  "value": {
+                                    "expression": "$strDBSession$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "query",
+                                  "value": {
+                                    "expression": "Select COLUMN_NAME from INFORMATION_SCHEMA.COLUMNS where TABLE_NAME='$i_TableName$' and Ordinal_position>3",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "exportToDataTable",
+                              "disabled": false,
+                              "packageName": "Database",
+                              "returnTo": {
+                                "type": "VARIABLE",
+                                "variableName": "dtColumNames"
+                              },
+                              "uid": "ac4d2f28-74cc-499e-94fa-f52e1056c4f1"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "sourceString",
+                                  "value": {
+                                    "expression": "Insert into $i_TableName$ (",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "assign",
+                              "disabled": false,
+                              "packageName": "String",
+                              "returnTo": {
+                                "type": "VARIABLE",
+                                "variableName": "strInsertColumns"
+                              },
+                              "uid": "b37d3cd6-6eb8-427a-a56a-2482e88986d8"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "loopType",
+                                  "value": {
+                                    "string": "ITERATOR",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "sourceTable",
+                                      "value": {
+                                        "type": "VARIABLE",
+                                        "variableName": "dtColumNames"
+                                      }
+                                    }
+                                  ],
+                                  "name": "iterator",
+                                  "returnTo": {
+                                    "type": "VARIABLE",
+                                    "variableName": "recEach"
+                                  },
+                                  "value": {
+                                    "iteratorName": "iteratorTableRow",
+                                    "packageName": "DataTable",
+                                    "type": "ITERATOR"
+                                  }
+                                }
+                              ],
+                              "children": [
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "sourceString",
+                                      "value": {
+                                        "expression": "$strInsertColumns$  $recEach{\"COLUMN_NAME\"}$ ,",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "assign",
+                                  "disabled": false,
+                                  "packageName": "String",
+                                  "returnTo": {
+                                    "type": "VARIABLE",
+                                    "variableName": "strInsertColumns"
+                                  },
+                                  "uid": "85a8e86d-8e85-401c-bd5e-db46e4f00837"
+                                }
+                              ],
+                              "commandName": "loop.commands.start",
+                              "disabled": false,
+                              "packageName": "Loop",
+                              "uid": "11cfd5a2-5c93-40c0-b3a1-49077c329535"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "sourceString",
+                                  "value": {
+                                    "expression": "$strInsertColumns$",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "reverse",
+                              "disabled": false,
+                              "packageName": "String",
+                              "returnTo": {
+                                "type": "VARIABLE",
+                                "variableName": "strInsertColumns"
+                              },
+                              "uid": "8d0970a0-0eb6-4af8-b3f9-c4a2464af5da"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "sourceString",
+                                  "value": {
+                                    "expression": "$strInsertColumns$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "find",
+                                  "value": {
+                                    "string": ",",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "isCaseSensitive",
+                                  "value": {
+                                    "string": "false",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "isRegularExpression",
+                                  "value": {
+                                    "string": "false",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "startIndex",
+                                  "value": {
+                                    "number": "1",
+                                    "type": "NUMBER"
+                                  }
+                                },
+                                {
+                                  "name": "count",
+                                  "value": {
+                                    "number": "1",
+                                    "type": "NUMBER"
+                                  }
+                                },
+                                {
+                                  "name": "replaceWith",
+                                  "value": {
+                                    "string": ")",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "replace",
+                              "disabled": false,
+                              "packageName": "String",
+                              "returnTo": {
+                                "type": "VARIABLE",
+                                "variableName": "strInsertColumns"
+                              },
+                              "uid": "768f51b4-2c91-4a0c-a456-419effad4e74"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "sourceString",
+                                  "value": {
+                                    "expression": "$strInsertColumns$",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "reverse",
+                              "disabled": false,
+                              "packageName": "String",
+                              "returnTo": {
+                                "type": "VARIABLE",
+                                "variableName": "strInsertColumns"
+                              },
+                              "uid": "8048ddd3-6983-40f0-8a15-dc322ef31666"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "sourceString",
+                                  "value": {
+                                    "expression": "$strInsertColumns$  Values (",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "assign",
+                              "disabled": false,
+                              "packageName": "String",
+                              "returnTo": {
+                                "type": "VARIABLE",
+                                "variableName": "strInsertColumns"
+                              },
+                              "uid": "296fe7f0-e4b1-45e7-9df4-bafbb262c623"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "loopType",
+                                  "value": {
+                                    "string": "ITERATOR",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "sourceTable",
+                                      "value": {
+                                        "type": "VARIABLE",
+                                        "variableName": "i_InputTable"
+                                      }
+                                    }
+                                  ],
+                                  "name": "iterator",
+                                  "returnTo": {
+                                    "type": "VARIABLE",
+                                    "variableName": "recEach"
+                                  },
+                                  "value": {
+                                    "iteratorName": "iteratorTableRow",
+                                    "packageName": "DataTable",
+                                    "type": "ITERATOR"
+                                  }
+                                }
+                              ],
+                              "children": [
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "sourceString",
+                                      "value": {
+                                        "expression": "$strInsertColumns$",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "assign",
+                                  "disabled": false,
+                                  "packageName": "String",
+                                  "returnTo": {
+                                    "type": "VARIABLE",
+                                    "variableName": "i_Query"
+                                  },
+                                  "uid": "871d60bb-1d0a-4060-8516-07182c91975f"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "loopType",
+                                      "value": {
+                                        "string": "ITERATOR",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "record",
+                                          "value": {
+                                            "type": "VARIABLE",
+                                            "variableName": "recEach"
+                                          }
+                                        }
+                                      ],
+                                      "name": "iterator",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "prompt-assignment"
+                                      },
+                                      "value": {
+                                        "iteratorName": "iterator.table.record",
+                                        "packageName": "Loop",
+                                        "type": "ITERATOR"
+                                      }
+                                    }
+                                  ],
+                                  "children": [
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "sourceString",
+                                          "value": {
+                                            "expression": "$prompt-assignment$",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "find",
+                                          "value": {
+                                            "string": "'",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "isCaseSensitive",
+                                          "value": {
+                                            "string": "false",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "isRegularExpression",
+                                          "value": {
+                                            "string": "false",
+                                            "type": "STRING"
+                                          }
+                                        },
+                                        {
+                                          "name": "startIndex",
+                                          "value": {
+                                            "number": "1",
+                                            "type": "NUMBER"
+                                          }
+                                        },
+                                        {
+                                          "name": "count",
+                                          "value": {
+                                            "number": "-1",
+                                            "type": "NUMBER"
+                                          }
+                                        },
+                                        {
+                                          "name": "replaceWith",
+                                          "value": {
+                                            "string": "''",
+                                            "type": "STRING"
+                                          }
+                                        }
+                                      ],
+                                      "commandName": "replace",
+                                      "disabled": false,
+                                      "packageName": "String",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "prompt-assignment"
+                                      },
+                                      "uid": "e8984124-bfb9-46a1-9aa4-8f7cb42338da"
+                                    },
+                                    {
+                                      "attributes": [
+                                        {
+                                          "name": "sourceString",
+                                          "value": {
+                                            "expression": "$i_Query$ '$prompt-assignment$' ,",
+                                            "type": "STRING"
+                                          }
+                                        }
+                                      ],
+                                      "commandName": "assign",
+                                      "disabled": false,
+                                      "packageName": "String",
+                                      "returnTo": {
+                                        "type": "VARIABLE",
+                                        "variableName": "i_Query"
+                                      },
+                                      "uid": "1babcfab-bd4e-4f30-b088-bf184e4f01ad"
+                                    }
+                                  ],
+                                  "commandName": "loop.commands.start",
+                                  "disabled": false,
+                                  "packageName": "Loop",
+                                  "uid": "89cb560d-ce82-4b3a-8c0f-4e34c97b1e5d"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "sourceString",
+                                      "value": {
+                                        "expression": "$i_Query$",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "reverse",
+                                  "disabled": false,
+                                  "packageName": "String",
+                                  "returnTo": {
+                                    "type": "VARIABLE",
+                                    "variableName": "i_Query"
+                                  },
+                                  "uid": "b683675c-78d2-4402-84b3-32992ef9240e"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "sourceString",
+                                      "value": {
+                                        "expression": "$i_Query$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "find",
+                                      "value": {
+                                        "string": ",",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "isCaseSensitive",
+                                      "value": {
+                                        "string": "false",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "isRegularExpression",
+                                      "value": {
+                                        "string": "false",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "startIndex",
+                                      "value": {
+                                        "number": "1",
+                                        "type": "NUMBER"
+                                      }
+                                    },
+                                    {
+                                      "name": "count",
+                                      "value": {
+                                        "number": "1",
+                                        "type": "NUMBER"
+                                      }
+                                    },
+                                    {
+                                      "name": "replaceWith",
+                                      "value": {
+                                        "string": ")",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "replace",
+                                  "disabled": false,
+                                  "packageName": "String",
+                                  "returnTo": {
+                                    "type": "VARIABLE",
+                                    "variableName": "i_Query"
+                                  },
+                                  "uid": "93a7a5e3-991c-4d08-ba9f-a9303e1563fd"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "sourceString",
+                                      "value": {
+                                        "expression": "$i_Query$",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "reverse",
+                                  "disabled": false,
+                                  "packageName": "String",
+                                  "returnTo": {
+                                    "type": "VARIABLE",
+                                    "variableName": "i_Query"
+                                  },
+                                  "uid": "eb550b2f-7f30-412a-bb19-1f17cf072f64"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "title",
+                                      "value": {
+                                        "string": "Automation Anywhere Enterprise Client",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "content",
+                                      "value": {
+                                        "expression": "$i_Query$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "scrollLines",
+                                      "value": {
+                                        "number": "30",
+                                        "type": "NUMBER"
+                                      }
+                                    },
+                                    {
+                                      "name": "closeMsgBox",
+                                      "value": {
+                                        "boolean": false,
+                                        "type": "BOOLEAN"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "messageBox",
+                                  "disabled": true,
+                                  "packageName": "MessageBox",
+                                  "uid": "c52cabc7-13ac-417b-87a3-d46a88be12f4"
+                                },
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "session",
+                                      "value": {
+                                        "expression": "$strDBSession$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "query",
+                                      "value": {
+                                        "expression": "$i_Query$",
+                                        "type": "STRING"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "insertUpdateDelete",
+                                  "disabled": false,
+                                  "packageName": "Database",
+                                  "uid": "9a87bbfd-5bf0-4d14-8a41-a429653b10c0"
+                                }
+                              ],
+                              "commandName": "loop.commands.start",
+                              "disabled": false,
+                              "packageName": "Loop",
+                              "uid": "e57979f1-3766-47d7-bb6a-2eafeead7177"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "session",
+                                  "value": {
+                                    "expression": "$strDBSession$",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "commit",
+                              "disabled": false,
+                              "packageName": "Database",
+                              "uid": "5d1be6c6-692f-427d-b4d1-9a3a3415451a"
+                            }
+                          ],
+                          "commandName": "else",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "3e27f091-0f62-4fab-8e3e-a1c0a08e958e"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "begin",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "4373adf0-57d4-4b19-bdc9-bcf32c15786d"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "query",
+                              "value": {
+                                "expression": "$i_Query$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "insertUpdateDelete",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "d48d9355-ec3a-4564-8138-c8e2f3cb8f82"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "expression": "$strDBSession$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "commit",
+                          "disabled": false,
+                          "packageName": "Database",
+                          "uid": "eb849b11-43d0-475d-bcc0-1fd08a83f70e"
+                        }
+                      ],
+                      "commandName": "if",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "8ad4e121-83f3-497e-a830-70db1e790372"
+                    }
+                  ],
+                  "commandName": "step",
+                  "disabled": false,
+                  "packageName": "Step",
+                  "uid": "e78b8f7b-f471-4fad-8697-b65ceb9cd29b"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "7747ff29-0ef7-47f6-853f-d6a43689f50a"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "d523eef5-94c2-414d-af61-7e8696abfd8e"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "string": "constant",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "userDefined",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "Boolean",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "o_IsSuccess"
+          },
+          "uid": "5cbadf05-87e7-43a7-aa3d-a480f74bd5db"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "SUCCESS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "o_ErrorMessage"
+          },
+          "uid": "8c9717ca-5d4b-440f-a1da-83019b808872"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "fda713f8-46c9-49f0-b3ab-bbf48ed3f52f"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Boolean",
+      "version": "2.1.0-20210722-143718"
+    },
+    {
+      "name": "CsvTxt",
+      "version": "2.5.0-20210722-143746"
+    },
+    {
+      "name": "Comment",
+      "version": "2.7.0-20210722-143743"
+    },
+    {
+      "name": "DataTable",
+      "version": "3.0.0-20210722-144817"
+    },
+    {
+      "name": "Database",
+      "version": "4.1.1-20210821-042230"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.7.0-20210722-143834"
+    },
+    {
+      "name": "File",
+      "version": "5.0.0-20210727-180900"
+    },
+    {
+      "name": "Folder",
+      "version": "5.0.0-20210722-143841"
+    },
+    {
+      "name": "If",
+      "version": "3.0.0-20210722-143856"
+    },
+    {
+      "name": "List",
+      "version": "2.4.0-20210722-144333"
+    },
+    {
+      "name": "Loop",
+      "version": "3.0.0-20210722-144335"
+    },
+    {
+      "name": "MessageBox",
+      "version": "3.0.0-20210722-144335"
+    },
+    {
+      "name": "Number",
+      "version": "3.1.1-20210821-042642"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.2-20210716-100543"
+    },
+    {
+      "name": "String",
+      "version": "4.3.0-20210722-144812"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "1",
+    "improvedNumberSupport": false,
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "defaultValue": {
+        "string": "S1",
+        "type": "STRING"
+      },
+      "description": "Used for Session name",
+      "input": false,
+      "name": "strDBSession",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "Holds database credentials and some other configurations. Refer this bot's manual document",
+      "input": true,
+      "name": "i_Config",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "boolean": false,
+        "type": "BOOLEAN"
+      },
+      "description": "This holds whether the DB Connectivity is up or not",
+      "input": false,
+      "name": "bIsDBConencted",
+      "output": false,
+      "readOnly": false,
+      "type": "BOOLEAN"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Opertation types are GET , INSERT , UPDATE , DELETE , EXECUTE_SP ",
+      "input": true,
+      "name": "i_OperationType",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Provide get, insert, update and delete query statement.",
+      "input": true,
+      "name": "i_Query",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Empty String",
+      "input": false,
+      "name": "strEmpty",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "dtColumNames",
+      "output": false,
+      "readOnly": false,
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "It is the table name where insert and update will be made. Use in bulk update/insert  and update data provided in an input data table which schema is same as database table schema",
+      "input": true,
+      "name": "i_TableName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strInsertColumns",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "record": {
+          "schema": [],
+          "values": []
+        },
+        "type": "RECORD"
+      },
+      "description": "",
+      "input": false,
+      "name": "recEach",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "RECORD"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "Holds data which to be inserted/updated to table",
+      "input": true,
+      "name": "i_InputTable",
+      "output": false,
+      "readOnly": false,
+      "type": "TABLE"
+    },
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "Output result in datatable",
+      "input": false,
+      "name": "o_ResultSet",
+      "output": true,
+      "readOnly": false,
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "It is the key column by which update will be made.",
+      "input": true,
+      "name": "i_KeyName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "list": [],
+        "type": "LIST"
+      },
+      "description": "",
+      "input": false,
+      "name": "lstColumns",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "LIST"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Holds all columns which will be updated by column separator ( â ). ",
+      "input": true,
+      "name": "i_UpdateColumns",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "â",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "strDelimeter",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\ProgramData\\AutomationAnywhere\\Bots\\Logs",
+        "type": "STRING"
+      },
+      "description": "Root directory for creating bot logs - can be customized or left as default",
+      "input": false,
+      "name": "sRootLogDirectory",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "When using SP then provide this value",
+      "input": true,
+      "name": "i_spName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "give parameters  month=4 and year=2021  in the format . 'monthâ4ôyearâ2021'",
+      "input": true,
+      "name": "i_spParams",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "boolean": false,
+        "type": "BOOLEAN"
+      },
+      "description": "",
+      "input": false,
+      "name": "o_IsSuccess",
+      "output": true,
+      "readOnly": false,
+      "type": "BOOLEAN"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Stores the error message from catch block",
+      "input": false,
+      "name": "o_ErrorMessage",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "o_ErrorLineNo",
+      "output": true,
+      "readOnly": false,
+      "type": "NUMBER"
+    }
+  ],
+  "workItemTemplateName": null
+}

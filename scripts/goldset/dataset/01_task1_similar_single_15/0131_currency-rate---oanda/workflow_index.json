@@ -1,0 +1,14 @@
+{
+  "bot_dir": "01_task1_similar_single_15\\0131_currency-rate---oanda",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Currency Rate - Oanda",
+      "manual_dependencies": [],
+      "output_file": "workflows/Currency Rate - Oanda.json",
+      "scanned_dependencies": [
+        "Input.xlsx"
+      ]
+    }
+  ]
+}

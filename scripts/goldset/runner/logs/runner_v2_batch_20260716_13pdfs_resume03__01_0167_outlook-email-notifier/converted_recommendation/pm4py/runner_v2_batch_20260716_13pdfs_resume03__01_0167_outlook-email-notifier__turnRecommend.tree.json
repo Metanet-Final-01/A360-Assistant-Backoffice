@@ -1,0 +1,100 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.folderCreate",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Data Table.cloudWriteToFileAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Data Table.cloudWriteToFileAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Logging.logToFileLogVariablesToFile",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Microsoft 365 Excel package in Automation 360.usingOpenWorkbookAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Microsoft 365 Excel package in Automation 360.office365ExcelReadColumn",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Microsoft 365 Excel package in Automation 360.office365ExcelReadColumn",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Logging.logToFileLogVariablesToFile",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Message box.usingMessageBoxAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Data Table.cloudWriteToFileAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Logging.logToFileLogVariablesToFile",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Microsoft 365 Outlook.ms365OutlookDisconnect",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Microsoft 365 Excel package in Automation 360.office365ExcelClose",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

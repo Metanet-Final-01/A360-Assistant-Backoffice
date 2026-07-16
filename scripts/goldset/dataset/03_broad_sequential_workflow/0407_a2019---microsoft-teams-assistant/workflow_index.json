@@ -1,0 +1,14 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0407_a2019---microsoft-teams-assistant",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "A2019 - Microsoft Teams Assistant",
+      "manual_dependencies": [],
+      "output_file": "workflows/A2019 - Microsoft Teams Assistant.json",
+      "scanned_dependencies": [
+        "input.xlsx"
+      ]
+    }
+  ]
+}

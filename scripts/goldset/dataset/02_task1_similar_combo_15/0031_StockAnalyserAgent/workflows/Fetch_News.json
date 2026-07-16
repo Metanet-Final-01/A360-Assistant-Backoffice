@@ -1,0 +1,723 @@
+{
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "An API task to fetch news about a stock from api portal and provide results in a string variable",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "branches": [
+            {
+              "attributes": [
+                {
+                  "name": "exceptionType",
+                  "value": {
+                    "exceptionName": "BotException",
+                    "packageName": "ErrorHandler",
+                    "type": "EXCEPTION"
+                  }
+                },
+                {
+                  "name": "continueOnError",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$sErrorMessage$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sStockNews"
+                  },
+                  "uid": "f9e11cef-08f5-40bf-8742-15856cbe2373"
+                }
+              ],
+              "commandName": "catch",
+              "disabled": false,
+              "packageName": "ErrorHandler",
+              "returns": {
+                "errorMessage": {
+                  "type": "VARIABLE",
+                  "variableName": "sErrorMessage"
+                }
+              },
+              "uid": "3f46cf26-3005-4fcf-8ce2-aea2a2745e49"
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Fetch news about a stock from the API. Provide the API endpoint, headers (e.g., API key, content type), and configure authentication if required. Assign the response to a dictionary variable named 'ApiResponse'. #Placeholder: your-api-key",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "0e6905c7-7937-4cc9-83a9-bf75d32bd331"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$sAPIURL$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "find",
+                  "value": {
+                    "string": "{{Ticker}}",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isCaseSensitive",
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isRegularExpression",
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "startIndex",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "count",
+                  "value": {
+                    "number": "-1",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "replaceWith",
+                  "value": {
+                    "expression": "$sTicker$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "replace",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sAPIURL"
+              },
+              "uid": "a43aeaf3-1982-496c-bc2c-e45ecf1590fb"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uriOption",
+                  "value": {
+                    "string": "text",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "uri",
+                  "value": {
+                    "expression": "$sAPIURL$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "proxyType",
+                  "value": {
+                    "string": "SYSTEM",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "authenticationMode",
+                  "value": {
+                    "string": "NoAuthentication",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "captureFailureResponse",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "allowInsecureConnection",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "acceptCookies",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "downloadFile",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "timeOut",
+                  "value": {
+                    "number": "60000",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "restGet",
+              "disabled": false,
+              "packageName": "Rest",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "ApiResponse"
+              },
+              "uid": "2af4cee0-9fb9-4ea1-b872-180c6c6c7411"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Extract the response body from the 'ApiResponse' dictionary using the key 'Body'. Assign the extracted response body to a string variable named 'ApiResponseBody'.",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "69bc013b-07c7-4333-bd5b-34a09f15bfd6"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "ApiResponse"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "Body",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "get",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "ApiResponseBody"
+              },
+              "uid": "13dcc41b-0868-4a3d-8e73-5ff42b82d3cc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Assign the extracted response body from 'ApiResponseBody' to a string variable named 'StockNews' for further use.",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "319ff8e4-44d9-4ecf-895f-57a3b614f238"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$ApiResponseBody$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sStockNews"
+              },
+              "uid": "3d69822c-ccc1-4f3f-93c5-6061b3a12805"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "promptData",
+                  "value": {
+                    "automation": {
+                      "file": {
+                        "string": "repository:///Automation%20Anywhere/Bot%20Store/Stock%20Analyser%20Agent/Tools/Prompts/Generate_Sentiment",
+                        "type": "FILE"
+                      },
+                      "inputData": [
+                        {
+                          "key": "api_key",
+                          "value": {
+                            "boolean": "",
+                            "conditionalId": "",
+                            "conditionalName": "",
+                            "credential": {
+                              "attributeName": "Open AI",
+                              "lockerName": "Pathfinder Summit Model Connections",
+                              "name": "Open AI"
+                            },
+                            "dictionary": [],
+                            "exceptionName": "",
+                            "expression": "",
+                            "formElementId": "",
+                            "formElementType": "",
+                            "formInstanceId": "",
+                            "iteratorId": "",
+                            "iteratorName": "",
+                            "list": [],
+                            "number": "",
+                            "packageId": "",
+                            "packageName": "",
+                            "properties": [],
+                            "queueName": "",
+                            "repository": "",
+                            "screenshotMetadataPath": "",
+                            "securelyRecorded": false,
+                            "sessionTarget": "NONE",
+                            "string": "",
+                            "taskbotSelf": false,
+                            "thumbnailMetadataPath": "",
+                            "triggerName": "",
+                            "type": "CREDENTIAL",
+                            "variableMapFilter": [],
+                            "variableMapNames": [],
+                            "variableName": ""
+                          }
+                        },
+                        {
+                          "key": "FilePath",
+                          "value": {
+                            "boolean": "",
+                            "conditionalId": "",
+                            "conditionalName": "",
+                            "dictionary": [],
+                            "exceptionName": "",
+                            "expression": "",
+                            "formElementId": "",
+                            "formElementType": "",
+                            "formInstanceId": "",
+                            "iteratorId": "",
+                            "iteratorName": "",
+                            "list": [],
+                            "number": "",
+                            "packageId": "",
+                            "packageName": "",
+                            "properties": [],
+                            "queueName": "",
+                            "repository": "",
+                            "screenshotMetadataPath": "",
+                            "securelyRecorded": false,
+                            "sessionTarget": "NONE",
+                            "string": "Automation Anywhere\\Bot Store\\Stock Analyser Agent\\Tools\\Prompts\\Generate_Sentiment",
+                            "taskbotSelf": false,
+                            "thumbnailMetadataPath": "",
+                            "triggerName": "",
+                            "type": "STRING",
+                            "variableMapFilter": [],
+                            "variableMapNames": [],
+                            "variableName": ""
+                          }
+                        }
+                      ],
+                      "inputOptions": [],
+                      "inputVariables": [
+                        {
+                          "key": "sJsonNewsData",
+                          "value": {
+                            "expression": "$sStockNews$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "key": "sTargetLangugae",
+                          "value": {
+                            "expression": "$sTargetLanguage$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "outputAnnotations": [],
+                      "previewData": [
+                        {
+                          "key": "prompt",
+                          "value": {
+                            "boolean": "",
+                            "conditionalId": "",
+                            "conditionalName": "",
+                            "dictionary": [],
+                            "exceptionName": "",
+                            "expression": "",
+                            "formElementId": "",
+                            "formElementType": "",
+                            "formInstanceId": "",
+                            "iteratorId": "",
+                            "iteratorName": "",
+                            "list": [],
+                            "number": "",
+                            "packageId": "",
+                            "packageName": "",
+                            "properties": [],
+                            "queueName": "",
+                            "repository": "",
+                            "screenshotMetadataPath": "",
+                            "securelyRecorded": false,
+                            "sessionTarget": "NONE",
+                            "string": "\n {\n  \"news_data\": $sJsonNewsData$,\n  \"target_language\": $sTargetLangugae$\n} ",
+                            "taskbotSelf": false,
+                            "thumbnailMetadataPath": "",
+                            "triggerName": "",
+                            "type": "STRING",
+                            "variableMapFilter": [],
+                            "variableMapNames": [],
+                            "variableName": ""
+                          }
+                        },
+                        {
+                          "key": "systemPrompt",
+                          "value": {
+                            "boolean": "",
+                            "conditionalId": "",
+                            "conditionalName": "",
+                            "dictionary": [],
+                            "exceptionName": "",
+                            "expression": "",
+                            "formElementId": "",
+                            "formElementType": "",
+                            "formInstanceId": "",
+                            "iteratorId": "",
+                            "iteratorName": "",
+                            "list": [],
+                            "number": "",
+                            "packageId": "",
+                            "packageName": "",
+                            "properties": [],
+                            "queueName": "",
+                            "repository": "",
+                            "screenshotMetadataPath": "",
+                            "securelyRecorded": false,
+                            "sessionTarget": "NONE",
+                            "string": "### Role\nYou are a Senior Financial Analyst and Linguist. Your task is to analyze financial news data, determine a trading signal (Buy or Sell), and translate your findings into a target language specified by the user.\n\n### Input Format\nYou will receive a JSON input containing:\n1. \"news_data\": A list or string of news headlines/articles from an API.\n2. \"target_language\": The language in which you must provide the translated recommendation and reasoning.\n\n### Analysis Guidelines\n1. **Sentiment Analysis:** Analyze the provided news for market sentiment. Look for keywords indicating growth, profit, partnerships, or regulatory approval (Positive/Buy) versus lawsuits, losses, sanctions, or poor earnings (Negative/Sell).\n2. **Recommendation Logic:**\n   - If sentiment is net positive -> Recommendation: \"Buy\"\n   - If sentiment is net negative -> Recommendation: \"Sell\"\n   - If sentiment is neutral/unclear -> default to \"Hold\" (or \"Sell\" if strict Buy/Sell is required).\n3. **Translation:** Accurately translate the Recommendation and Reason into the language specified in the \"target_language\" field.\n\n### Output Format\nYou must output **ONLY** a valid JSON object with no additional text or markdown formatting (no ```json blocks). No commas or semicolons as well. Use the exact keys below:\n\n{\n\"Ticker\" : \"{Ticker}\",\n  \"English Recommendation\": \"{Buy/Sell}\",\n  \"English Reason\": \"{A concise explanation in English based on the news analysis}\",\n  \"Translated Recommendation\": \"{Buy/Sell translated into target_language}\",\n  \"Translated Reason\": \"{Reason translated into target_language}\"\n}\n\n### Example\n**User Input:**\n{\n  \"news_data\": \"Company XYZ reports record-breaking Q3 profits and announces a new strategic partnership.\",\n  \"target_language\": \"Spanish\"\n}\n\n**Your Output:**\n{\n\"Ticker\" : \"XYZ\",\n  \"English Recommendation\": \"Buy\",\n  \"English Reason\": \"The company reported record profits and a strategic partnership, indicating strong future growth.\",\n  \"Translated Recommendation\": \"Comprar\",\n  \"Translated Reason\": \"La empresa reportó ganancias récord y una asociación estratégica, lo que indica un fuerte crecimiento futuro.\"\n}",
+                            "taskbotSelf": false,
+                            "thumbnailMetadataPath": "",
+                            "triggerName": "",
+                            "type": "STRING",
+                            "variableMapFilter": [],
+                            "variableMapNames": [],
+                            "variableName": ""
+                          }
+                        }
+                      ],
+                      "variables": [
+                        {
+                          "defaultValue": {
+                            "boolean": "",
+                            "conditionalId": "",
+                            "conditionalName": "",
+                            "dictionary": [],
+                            "exceptionName": "",
+                            "expression": "",
+                            "formElementId": "",
+                            "formElementType": "",
+                            "formInstanceId": "",
+                            "iteratorId": "",
+                            "iteratorName": "",
+                            "list": [],
+                            "number": "",
+                            "packageId": "",
+                            "packageName": "",
+                            "properties": [],
+                            "queueName": "",
+                            "repository": "",
+                            "screenshotMetadataPath": "",
+                            "securelyRecorded": false,
+                            "sessionTarget": "NONE",
+                            "string": "Input JSON News data provided from external system",
+                            "taskbotSelf": false,
+                            "thumbnailMetadataPath": "",
+                            "triggerName": "",
+                            "type": "STRING",
+                            "variableMapFilter": [],
+                            "variableMapNames": [],
+                            "variableName": ""
+                          },
+                          "description": "",
+                          "input": true,
+                          "inputRequired": true,
+                          "key": "",
+                          "name": "sJsonNewsData",
+                          "output": false,
+                          "schema": [],
+                          "sessionType": "",
+                          "subtype": "UNDEFINED",
+                          "type": "STRING",
+                          "workItem": false
+                        },
+                        {
+                          "defaultValue": {
+                            "boolean": "",
+                            "conditionalId": "",
+                            "conditionalName": "",
+                            "dictionary": [],
+                            "exceptionName": "",
+                            "expression": "",
+                            "formElementId": "",
+                            "formElementType": "",
+                            "formInstanceId": "",
+                            "iteratorId": "",
+                            "iteratorName": "",
+                            "list": [],
+                            "number": "",
+                            "packageId": "",
+                            "packageName": "",
+                            "properties": [],
+                            "queueName": "",
+                            "repository": "",
+                            "screenshotMetadataPath": "",
+                            "securelyRecorded": false,
+                            "sessionTarget": "NONE",
+                            "string": "Langauge in which translation has to be done",
+                            "taskbotSelf": false,
+                            "thumbnailMetadataPath": "",
+                            "triggerName": "",
+                            "type": "STRING",
+                            "variableMapFilter": [],
+                            "variableMapNames": [],
+                            "variableName": ""
+                          },
+                          "description": "",
+                          "input": true,
+                          "inputRequired": true,
+                          "key": "",
+                          "name": "sTargetLangugae",
+                          "output": false,
+                          "schema": [],
+                          "sessionType": "",
+                          "subtype": "UNDEFINED",
+                          "type": "STRING",
+                          "workItem": false
+                        }
+                      ]
+                    },
+                    "type": "AUTOMATION"
+                  }
+                }
+              ],
+              "commandName": "GenAIPromptCommand",
+              "disabled": false,
+              "packageName": "GenAIPrompt",
+              "returns": {
+                "topChoice": {
+                  "type": "VARIABLE",
+                  "variableName": "sJSONFinalOutput"
+                }
+              },
+              "uid": "cafe9979-9c36-4430-a544-d043fbc517bf"
+            }
+          ],
+          "commandName": "try",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "cf31c9bf-5bda-4452-9ce7-433860a12760"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "0d916782-09a2-4146-801e-d816efd84f78"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "settingsAttributes": [],
+      "version": "2.17.0"
+    },
+    {
+      "name": "Dictionary",
+      "settingsAttributes": [],
+      "version": "3.15.0"
+    },
+    {
+      "name": "ErrorHandler",
+      "settingsAttributes": [],
+      "version": "2.13.0-20241115-120032"
+    },
+    {
+      "name": "GenAIPrompt",
+      "settingsAttributes": [],
+      "version": "8.0.2"
+    },
+    {
+      "name": "Rest",
+      "settingsAttributes": [],
+      "version": "3.24.1"
+    },
+    {
+      "name": "Step",
+      "settingsAttributes": [],
+      "version": "2.7.0"
+    },
+    {
+      "name": "String",
+      "settingsAttributes": [],
+      "version": "5.11.3"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "7",
+    "improvedNumberSupport": true,
+    "runInChildWindow": false,
+    "runInChildWindowMode": "DESKTOP",
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "String storing final response from the AI Skill",
+      "input": false,
+      "name": "sJSONFinalOutput",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "input": false,
+      "name": "ApiResponse",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "input": false,
+      "name": "ApiResponseBody",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "ANY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sStockNews",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sTicker",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorMessage",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "URL of API to Fetch data",
+      "input": true,
+      "name": "sAPIURL",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Language in which translation has to happen",
+      "input": true,
+      "name": "sTargetLanguage",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

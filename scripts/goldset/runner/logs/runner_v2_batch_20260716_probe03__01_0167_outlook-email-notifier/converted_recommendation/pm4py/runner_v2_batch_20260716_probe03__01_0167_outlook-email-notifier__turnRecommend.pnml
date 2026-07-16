@@ -1,0 +1,181 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784135364.451233" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784135364.451233</text>
+    </name>
+    <page id="n0">
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <transition id="8ea8361f-c95a-453c-afe8-f3214ee8016b">
+        <name>
+          <text>File.filePackageCreateAction</text>
+        </name>
+      </transition>
+      <transition id="7bf1c735-163e-4962-b845-cd9ace621352">
+        <name>
+          <text>Excel advanced.cloudExcelOpen</text>
+        </name>
+      </transition>
+      <transition id="2ba3d4b5-e805-4455-a0e3-d40e4b0f083e">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageGetSingleCellAction</text>
+        </name>
+      </transition>
+      <transition id="e980771c-c097-4d39-b97d-506a0a761939">
+        <name>
+          <text>Message box.usingMessageBoxAction</text>
+        </name>
+      </transition>
+      <transition id="ed5ec109-c9c6-4ff2-b293-906243294fcd">
+        <name>
+          <text>Error handler.errorHandlerCatch</text>
+        </name>
+      </transition>
+      <transition id="02cd6c33-4a29-4e62-8374-1170d3bfff36">
+        <name>
+          <text>File.filePackageCreateAction</text>
+        </name>
+      </transition>
+      <transition id="d02d385b-4165-4a28-8ac0-0923515a399f">
+        <name>
+          <text>Error handler.errorHandlerFinally</text>
+        </name>
+      </transition>
+      <transition id="8d1333cd-de5c-457c-b155-07f119c8fe8d">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageGetSingleCellAction</text>
+        </name>
+      </transition>
+      <transition id="72ee3693-b15a-4ec1-b65f-024b6028e3fc">
+        <name>
+          <text>Microsoft 365 Outlook.ms365OutlookSaveAllAttachments</text>
+        </name>
+      </transition>
+      <transition id="60929696-399e-47ce-9448-ece3b5d1f3a0">
+        <name>
+          <text>Microsoft 365 Outlook.ms365OutlookSaveAllAttachments</text>
+        </name>
+      </transition>
+      <transition id="62456f23-0e64-4f98-920e-ca921976593f">
+        <name>
+          <text>Data Table.cloudWriteToFileAction</text>
+        </name>
+      </transition>
+      <transition id="340d2572-c14a-4802-a906-c341636238cb">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageCloseAction</text>
+        </name>
+      </transition>
+      <transition id="2b40e857-f9e9-4ec0-9800-9cb04db2316a">
+        <name>
+          <text>Task Bot.taskBotPackageStopAction</text>
+        </name>
+      </transition>
+      <arc id="1985038343424" source="7bf1c735-163e-4962-b845-cd9ace621352" target="p_7"/>
+      <arc id="1985038511360" source="p_10" target="8d1333cd-de5c-457c-b155-07f119c8fe8d"/>
+      <arc id="1985038490896" source="p_4" target="02cd6c33-4a29-4e62-8374-1170d3bfff36"/>
+      <arc id="1985038490256" source="8ea8361f-c95a-453c-afe8-f3214ee8016b" target="p_4"/>
+      <arc id="1985039167952" source="62456f23-0e64-4f98-920e-ca921976593f" target="p_14"/>
+      <arc id="1985038531616" source="p_12" target="60929696-399e-47ce-9448-ece3b5d1f3a0"/>
+      <arc id="1985036052400" source="d02d385b-4165-4a28-8ac0-0923515a399f" target="p_6"/>
+      <arc id="1985038892208" source="340d2572-c14a-4802-a906-c341636238cb" target="p_15"/>
+      <arc id="1985036052160" source="p_8" target="d02d385b-4165-4a28-8ac0-0923515a399f"/>
+      <arc id="1985038892096" source="p_14" target="340d2572-c14a-4802-a906-c341636238cb"/>
+      <arc id="1985038888512" source="p_15" target="2b40e857-f9e9-4ec0-9800-9cb04db2316a"/>
+      <arc id="1985038531792" source="72ee3693-b15a-4ec1-b65f-024b6028e3fc" target="p_12"/>
+      <arc id="1984450102096" source="p_9" target="72ee3693-b15a-4ec1-b65f-024b6028e3fc"/>
+      <arc id="1985039073360" source="source" target="8ea8361f-c95a-453c-afe8-f3214ee8016b"/>
+      <arc id="1985038715216" source="p_7" target="ed5ec109-c9c6-4ff2-b293-906243294fcd"/>
+      <arc id="1985038715728" source="ed5ec109-c9c6-4ff2-b293-906243294fcd" target="p_8"/>
+      <arc id="1985038742736" source="2ba3d4b5-e805-4455-a0e3-d40e4b0f083e" target="p_10"/>
+      <arc id="1985038286288" source="8d1333cd-de5c-457c-b155-07f119c8fe8d" target="p_9"/>
+      <arc id="1985038989776" source="60929696-399e-47ce-9448-ece3b5d1f3a0" target="p_11"/>
+      <arc id="1985038711504" source="e980771c-c097-4d39-b97d-506a0a761939" target="p_13"/>
+      <arc id="1985039165392" source="p_13" target="62456f23-0e64-4f98-920e-ca921976593f"/>
+      <arc id="1985038888288" source="02cd6c33-4a29-4e62-8374-1170d3bfff36" target="p_5"/>
+      <arc id="1985038742512" source="p_6" target="2ba3d4b5-e805-4455-a0e3-d40e4b0f083e"/>
+      <arc id="1985038343152" source="p_5" target="7bf1c735-163e-4962-b845-cd9ace621352"/>
+      <arc id="1985038989936" source="p_11" target="e980771c-c097-4d39-b97d-506a0a761939"/>
+      <arc id="1985038888400" source="2b40e857-f9e9-4ec0-9800-9cb04db2316a" target="sink"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

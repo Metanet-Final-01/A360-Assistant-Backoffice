@@ -1,0 +1,394 @@
+{
+  "breakpoints": [],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "This example shows the action of retrieving a list of records\nfrom ServiceNow. Just enter your credentials and hit run!\nMessage boxes will show the record details retrieved for \n3 incidents created between the beginning of last week\nand now.\nTry out the other actions from the ServiceNow package!",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "98d52369-723a-4bfb-b1f5-c6de5ff3ff47"
+    },
+    {
+      "attributes": [
+        {
+          "name": "name",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "url",
+          "value": {
+            "expression": "$sNowUrl$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "clientId",
+          "value": {
+            "credential": {
+              "attributeName": "client id",
+              "lockerName": "API Tokens",
+              "name": "ServiceNow"
+            },
+            "type": "CREDENTIAL"
+          }
+        },
+        {
+          "name": "clientSecret",
+          "value": {
+            "credential": {
+              "attributeName": "client secret",
+              "lockerName": "API Tokens",
+              "name": "ServiceNow"
+            },
+            "type": "CREDENTIAL"
+          }
+        },
+        {
+          "name": "username",
+          "value": {
+            "credential": {
+              "attributeName": "username",
+              "lockerName": "API Tokens",
+              "name": "ServiceNow"
+            },
+            "type": "CREDENTIAL"
+          }
+        },
+        {
+          "name": "password",
+          "value": {
+            "credential": {
+              "attributeName": "password",
+              "lockerName": "API Tokens",
+              "name": "ServiceNow"
+            },
+            "type": "CREDENTIAL"
+          }
+        }
+      ],
+      "commandName": "startSnowSession",
+      "disabled": false,
+      "packageName": "ServiceNow",
+      "uid": "f4c89c1c-25f9-497a-9107-3ba428a26065"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "table",
+          "value": {
+            "string": "incident",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "values",
+          "value": {
+            "dictionary": [
+              {
+                "key": "number",
+                "value": {
+                  "string": "number",
+                  "type": "STRING"
+                }
+              },
+              {
+                "key": "description",
+                "value": {
+                  "string": "short_description",
+                  "type": "STRING"
+                }
+              },
+              {
+                "key": "opened",
+                "value": {
+                  "string": "opened_at",
+                  "type": "STRING"
+                }
+              }
+            ],
+            "type": "DICTIONARY"
+          }
+        },
+        {
+          "name": "limit",
+          "value": {
+            "number": "4",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "query",
+          "value": {
+            "string": "active=true^opened_at>=javascript:gs.beginningOfLastWeek()",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "GetRecords",
+      "disabled": false,
+      "packageName": "ServiceNow",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "listRecords"
+      },
+      "uid": "25657b69-66b3-41b0-96b4-5894991dc71c"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "EndSnowSession",
+      "disabled": false,
+      "packageName": "ServiceNow",
+      "uid": "23c8015d-00c9-4c61-8ad4-c2c833db09de"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Automation Anywhere Enterprise Client",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "content",
+          "value": {
+            "string": "Here is a list of 4 active records created \nafter the beginning of last week:",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "scrollLines",
+          "value": {
+            "number": "30",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "closeMsgBox",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "timeOut",
+          "value": {
+            "number": "5",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "commandName": "messageBox",
+      "disabled": false,
+      "packageName": "MessageBox",
+      "uid": "7c510daa-5e88-47fe-bad6-c071289caf79"
+    },
+    {
+      "attributes": [
+        {
+          "name": "loopType",
+          "value": {
+            "string": "ITERATOR",
+            "type": "STRING"
+          }
+        },
+        {
+          "attributes": [
+            {
+              "name": "list",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "listRecords"
+              }
+            },
+            {
+              "name": "forOptions",
+              "value": {
+                "string": "all",
+                "type": "STRING"
+              }
+            }
+          ],
+          "name": "iterator",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "dictIncident"
+          },
+          "value": {
+            "iteratorName": "list.iterators.list",
+            "packageName": "List",
+            "type": "ITERATOR"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Automation Anywhere Enterprise Client",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "content",
+              "value": {
+                "expression": "Number: $dictIncident{number}$\nDescription: $dictIncident{description}$\nOpened: $dictIncident{opened}$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "scrollLines",
+              "value": {
+                "number": "30",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "closeMsgBox",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "timeOut",
+              "value": {
+                "number": "8",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "messageBox",
+          "disabled": false,
+          "packageName": "MessageBox",
+          "uid": "3214f9df-d619-4eb5-b628-c506445b14b0"
+        }
+      ],
+      "commandName": "loop.commands.start",
+      "disabled": false,
+      "packageName": "Loop",
+      "uid": "025bd88d-b670-4055-86ee-24b68657bfaa"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.10.0-20220118-153626"
+    },
+    {
+      "name": "List",
+      "version": "2.8.0-20220118-153952"
+    },
+    {
+      "name": "Loop",
+      "version": "3.4.0-20220127-062837"
+    },
+    {
+      "name": "MessageBox",
+      "version": "3.3.0-20220118-133818"
+    },
+    {
+      "name": "ServiceNow",
+      "version": "1.1.0-20220413-154147"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "2",
+    "improvedNumberSupport": true,
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "list": [],
+        "type": "LIST"
+      },
+      "description": "",
+      "input": false,
+      "name": "listRecords",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "LIST"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "Incident",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "ANY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dictIncident",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "https://dev81802.service-now.com/",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sNowUrl",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

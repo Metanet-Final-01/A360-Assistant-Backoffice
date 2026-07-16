@@ -1,0 +1,532 @@
+{
+  "case_id": "05_0393_a2019-twilio-integration",
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration",
+  "normalized": {
+    "gold_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\05_0393_a2019-twilio-integration\\A2019 Twilio Integration.goldset.json",
+    "prediction_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.goldset.json",
+    "gold_source_file": "A2019 Twilio Integration.json",
+    "prediction_source_file": "runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.json",
+    "preprocessing": {
+      "excluded_rule": "browser_session_lifecycle_action",
+      "excluded_regex": {
+        "package": "^(web\\s*automation|webautomation|browser|recorder)$",
+        "action": "session"
+      },
+      "excluded_gold_actions": [],
+      "excluded_prediction_actions": [],
+      "excluded_gold_count": 0,
+      "excluded_prediction_count": 0,
+      "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+      "action_equivalence_member_count": 61
+    },
+    "gold_action_count": 47,
+    "prediction_action_count": 16,
+    "action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 47,
+      "prediction_count": 16
+    },
+    "action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 47,
+      "prediction_count": 16
+    },
+    "canonical_action_sequence": {
+      "lcs": 2,
+      "precision": 0.125,
+      "recall": 0.0425531914893617,
+      "f1": 0.06349206349206349,
+      "gold_count": 47,
+      "prediction_count": 16
+    },
+    "canonical_action_multiset": {
+      "precision": 0.125,
+      "recall": 0.0425531914893617,
+      "f1": 0.06349206349206349,
+      "overlap": 2,
+      "gold_count": 47,
+      "prediction_count": 16
+    },
+    "package_multiset": {
+      "precision": 0.3125,
+      "recall": 0.10638297872340426,
+      "f1": 0.15873015873015872,
+      "overlap": 5,
+      "gold_count": 47,
+      "prediction_count": 16
+    },
+    "package_family_multiset": {
+      "precision": 0.3125,
+      "recall": 0.10638297872340426,
+      "f1": 0.15873015873015872,
+      "overlap": 5,
+      "gold_count": 47,
+      "prediction_count": 16
+    },
+    "salient_family_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 13,
+      "prediction_count": 11
+    },
+    "adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 48,
+      "prediction_count": 17
+    },
+    "canonical_adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 48,
+      "prediction_count": 17
+    },
+    "first_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.assign",
+        "prediction": "Message box.usingMessageBoxAction"
+      },
+      {
+        "index": 2,
+        "gold": "String.assign",
+        "prediction": "Task Bot.taskBotPackageStopAction"
+      },
+      {
+        "index": 3,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Datetime.getActionInDatetime"
+      },
+      {
+        "index": 4,
+        "gold": "TaskBot.stopTask",
+        "prediction": "Folder.cloudZipFilesAndFolders"
+      },
+      {
+        "index": 5,
+        "gold": "String.assign",
+        "prediction": "String.stringPackageAssignAction"
+      },
+      {
+        "index": 6,
+        "gold": "String.assign",
+        "prediction": "REST Web Services.cloudUsingGetAction"
+      },
+      {
+        "index": 7,
+        "gold": "String.assign",
+        "prediction": "JSON utilities.jsonValidate"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.createFolder",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 9,
+        "gold": "Folder.createFolder",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 10,
+        "gold": "Folder.createFolder",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 11,
+        "gold": "Folder.createFolder",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 12,
+        "gold": "Datetime.toString",
+        "prediction": "String.stringPackageAssignAction"
+      }
+    ],
+    "first_canonical_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Message box.usingMessageBoxAction"
+      },
+      {
+        "index": 2,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Task Bot.taskBotPackageStopAction"
+      },
+      {
+        "index": 3,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Datetime.getActionInDatetime"
+      },
+      {
+        "index": 4,
+        "gold": "TaskBot.stopTask",
+        "prediction": "Folder.cloudZipFilesAndFolders"
+      },
+      {
+        "index": 6,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "REST Web Services.cloudUsingGetAction"
+      },
+      {
+        "index": 7,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "JSON utilities.jsonValidate"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.folderCreate",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 9,
+        "gold": "Folder.folderCreate",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 10,
+        "gold": "Folder.folderCreate",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 11,
+        "gold": "Folder.folderCreate",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 12,
+        "gold": "Datetime.cloudConvertDatetimeToString",
+        "prediction": "String.stringPackageAssignAction"
+      },
+      {
+        "index": 13,
+        "gold": "Datetime.usingSubtractAction",
+        "prediction": "Data Table.cloudWriteToFileAction"
+      }
+    ],
+    "gold_actions_preview": [
+      "String.assign",
+      "String.assign",
+      "MessageBox.messageBox",
+      "TaskBot.stopTask",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Datetime.toString",
+      "Datetime.subtract",
+      "Datetime.toString",
+      "File.deleteFiles",
+      "File.deleteFiles",
+      "Twilio.Send SMS from Twilio",
+      "Twilio.Place a call from Twilio",
+      "MessageBox.messageBox",
+      "String.assign"
+    ],
+    "gold_canonical_actions_preview": [
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "MessageBox.messageBox",
+      "TaskBot.stopTask",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Datetime.cloudConvertDatetimeToString",
+      "Datetime.usingSubtractAction",
+      "Datetime.cloudConvertDatetimeToString",
+      "File.cloudDeletingFile",
+      "File.cloudDeletingFile",
+      "Twilio.Send SMS from Twilio",
+      "Twilio.Place a call from Twilio",
+      "MessageBox.messageBox",
+      "String.stringPackageAssignAction"
+    ],
+    "prediction_actions": [
+      "Message box.usingMessageBoxAction",
+      "Task Bot.taskBotPackageStopAction",
+      "Datetime.getActionInDatetime",
+      "Folder.cloudZipFilesAndFolders",
+      "String.stringPackageAssignAction",
+      "REST Web Services.cloudUsingGetAction",
+      "JSON utilities.jsonValidate",
+      "JSON utilities.jsonGetNodeValue",
+      "JSON utilities.jsonGetNodeValue",
+      "JSON utilities.jsonGetNodeValue",
+      "JSON utilities.jsonGetNodeValue",
+      "String.stringPackageAssignAction",
+      "Data Table.cloudWriteToFileAction",
+      "Data Table.cloudWriteToFileAction",
+      "Screen.cloudUsingScreenCaptureWindow",
+      "Error handler.errorHandlerFinally"
+    ],
+    "prediction_canonical_actions": [
+      "Message box.usingMessageBoxAction",
+      "Task Bot.taskBotPackageStopAction",
+      "Datetime.getActionInDatetime",
+      "Folder.cloudZipFilesAndFolders",
+      "String.stringPackageAssignAction",
+      "REST Web Services.cloudUsingGetAction",
+      "JSON utilities.jsonValidate",
+      "JSON utilities.jsonGetNodeValue",
+      "JSON utilities.jsonGetNodeValue",
+      "JSON utilities.jsonGetNodeValue",
+      "JSON utilities.jsonGetNodeValue",
+      "String.stringPackageAssignAction",
+      "Data Table.cloudWriteToFileAction",
+      "Data Table.cloudWriteToFileAction",
+      "Screen.cloudUsingScreenCaptureWindow",
+      "Error handler.errorHandlerFinally"
+    ],
+    "gold_salient_families": [
+      "twilio",
+      "twilio",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler"
+    ],
+    "prediction_salient_families": [
+      "message_box",
+      "task_bot",
+      "rest_web_services",
+      "json_utilities",
+      "json_utilities",
+      "json_utilities",
+      "json_utilities",
+      "json_utilities",
+      "data_table",
+      "data_table",
+      "error_handler"
+    ]
+  },
+  "pm4py": {
+    "mode": "actual_pm4py_alignment_conformance",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\05_0393_a2019-twilio-integration\\A2019 Twilio Integration.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 47,
+    "prediction_action_count_after_preprocessing": 15,
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [
+      "Error handler.errorHandlerFinally"
+    ],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "fitness": 0.1081,
+    "precision": 0.0,
+    "raw_fitness": {
+      "percFitTraces": 0.0,
+      "averageFitness": 0.10810810810810811,
+      "percentage_of_fitting_traces": 0.0,
+      "average_trace_fitness": 0.10810810810810811,
+      "log_fitness": 0.10810810810810811
+    }
+  },
+  "pm4py_artifact_check": {
+    "gold_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\05_0393_a2019-twilio-integration",
+    "prediction_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\pm4py",
+    "gold_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\05_0393_a2019-twilio-integration\\A2019 Twilio Integration.tree.json",
+      "exists": true,
+      "sha256": "ee2be22b3cb691e74b6224597dfbc76ccdf83ba4c163a3b9e29769cad6c8497f",
+      "leaf_count": 47,
+      "labels": [
+        "String.assign",
+        "String.assign",
+        "MessageBox.messageBox",
+        "TaskBot.stopTask",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Datetime.toString",
+        "Datetime.subtract",
+        "Datetime.toString",
+        "File.deleteFiles",
+        "File.deleteFiles",
+        "Twilio.Send SMS from Twilio",
+        "Twilio.Place a call from Twilio",
+        "MessageBox.messageBox",
+        "String.assign",
+        "JSONHandler.Initialize",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "JSONHandler.Set",
+        "JSONHandler.Query",
+        "MessageBox.messageBox",
+        "MessageBox.messageBox",
+        "File.createFile",
+        "LogToFile.logToFile",
+        "Datetime.toString",
+        "Number.toString",
+        "LogToFile.logToFile",
+        "Screen.captureDesktop"
+      ],
+      "operator_counts": {
+        "sequence": 6,
+        "xor": 8
+      }
+    },
+    "prediction_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\pm4py\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.tree.json",
+      "exists": true,
+      "sha256": "c13aa19b5f1e0adc039595faf1d068aada632bb41440cdf489ccffa5a991fe63",
+      "leaf_count": 16,
+      "labels": [
+        "Message box.usingMessageBoxAction",
+        "Task Bot.taskBotPackageStopAction",
+        "Datetime.getActionInDatetime",
+        "Folder.cloudZipFilesAndFolders",
+        "String.stringPackageAssignAction",
+        "REST Web Services.cloudUsingGetAction",
+        "JSON utilities.jsonValidate",
+        "JSON utilities.jsonGetNodeValue",
+        "JSON utilities.jsonGetNodeValue",
+        "JSON utilities.jsonGetNodeValue",
+        "JSON utilities.jsonGetNodeValue",
+        "String.stringPackageAssignAction",
+        "Data Table.cloudWriteToFileAction",
+        "Data Table.cloudWriteToFileAction",
+        "Screen.cloudUsingScreenCaptureWindow",
+        "Error handler.errorHandlerFinally"
+      ],
+      "operator_counts": {
+        "sequence": 6
+      }
+    },
+    "gold_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\05_0393_a2019-twilio-integration\\A2019 Twilio Integration.pnml",
+      "exists": true,
+      "sha256": "c783cb8fec853559d9920d1125130846fdd771b592d5ec83963acc08ec54ecf6",
+      "readable_by_pm4py": true,
+      "places": 46,
+      "transitions": 47,
+      "visible_transitions": 47,
+      "arcs": 94,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "prediction_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\pm4py\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.pnml",
+      "exists": true,
+      "sha256": "e7c67cbeb1104e9c63a5e821cc2d3e23b783e51db4a0d2a07f2f7244bd391672",
+      "readable_by_pm4py": true,
+      "places": 17,
+      "transitions": 16,
+      "visible_transitions": 16,
+      "arcs": 32,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "tree_leaf_count_delta": -31,
+    "tree_hash_equal": false,
+    "pnml_hash_equal": false
+  },
+  "worfbench": {
+    "mode": "actual_worfbench_t_eval_nodes",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\05_0393_a2019-twilio-integration\\A2019 Twilio Integration.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 40,
+    "prediction_action_count_after_preprocessing": 15,
+    "gold_worfbench_fidelity": "approximated",
+    "prediction_worfbench_fidelity": "exact",
+    "gold_control_flow_types": [
+      "if",
+      "try"
+    ],
+    "prediction_control_flow_types": [],
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [
+      "Error handler.errorHandlerFinally"
+    ],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "precision": 0.2667,
+    "recall": 0.0952,
+    "f1_score": 0.1404
+  },
+  "worfbench_diagnostic_artifact_f1": {
+    "gold": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\worfbench_13\\05_0393_a2019-twilio-integration\\A2019 Twilio Integration.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/05_0393_a2019-twilio-integration/A2019 Twilio Integration",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "if",
+        "try"
+      ]
+    },
+    "prediction": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\worfbench\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend/runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "container"
+      ]
+    },
+    "node_label_f1": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 40,
+      "prediction_count": 16
+    },
+    "edge_f1": {
+      "precision": 0.9411764705882353,
+      "recall": 0.3902439024390244,
+      "f1": 0.5517241379310345,
+      "overlap": 16,
+      "gold_count": 41,
+      "prediction_count": 17
+    },
+    "gold_node_count": 40,
+    "prediction_node_count": 16,
+    "gold_edge_count": 41,
+    "prediction_edge_count": 17
+  }
+}

@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="c2df2f8e-ccf2-465f-a1da-d8e3de141fa1" root="8b273502-7c03-434a-8cfd-8c02e1424e99" id="f4013433-0231-44a5-963d-105eb90a684a">
+    <sequence name="" id="8b273502-7c03-434a-8cfd-8c02e1424e99"/>
+    <sequence name="" id="17c0547c-d7f8-4d17-b61f-01a7f297d3e6"/>
+    <sequence name="" id="303cb048-b80a-4343-925e-f08900c92b20"/>
+    <manualTask name="Excel advanced.cloudExcelOpen" id="ecb96642-63ae-41eb-9e3b-a965bb880177"/>
+    <sequence name="" id="44711d27-4b71-42e0-addf-ae6e5796a636"/>
+    <manualTask name="XML.xmlStartSession" id="ca6671e2-65c7-4f30-b1a5-45ce785a04ad"/>
+    <manualTask name="XML.xmlGetSingleNode" id="87c67478-6c76-40f5-a2e1-8fedcc42af1d"/>
+    <manualTask name="XML.xmlGetSingleNode" id="6544b39d-b5db-4f20-949a-873b8806cdfd"/>
+    <manualTask name="Microsoft 365 Outlook.ms365OutlookSaveAllAttachments" id="bfbcda45-bc43-4dc8-90f6-92256290f284"/>
+    <manualTask name="Microsoft 365 Outlook.ms365OutlookDisconnect" id="8182d3a6-ef00-494b-8e75-3cfa7b183131"/>
+    <sequence name="" id="b06664a5-e070-453b-9948-21e6f43622b5"/>
+    <manualTask name="Message box.usingMessageBoxAction" id="ad27f667-3f7e-442e-8fc7-e7d8a3b0a842"/>
+    <manualTask name="Excel advanced.excelAdvancedPackageCloseAction" id="20e433c9-d8fd-4ecc-b360-52e69a89d0d3"/>
+    <manualTask name="Excel advanced.excelAdvancedPackageReadRowAction" id="aac11a58-622c-4c3e-9643-6e0646122b49"/>
+    <manualTask name="Jira.jiraCreateIssue" id="905f1706-d3da-40c0-bc6b-85c0d9b7c0eb"/>
+    <manualTask name="JSON utilities.jsonStartSession" id="45ebaa4c-bd10-468d-a4b1-b4c2a69c4d9e"/>
+    <manualTask name="JSON utilities.convertJsonToDictionary" id="51ef8a3e-75bf-450a-a677-ee5eb65d0a96"/>
+    <parentsNode id="ea203814-7bb9-486f-83fd-738d96268bab" sourceId="8b273502-7c03-434a-8cfd-8c02e1424e99" targetId="17c0547c-d7f8-4d17-b61f-01a7f297d3e6"/>
+    <parentsNode id="15e1c299-1eea-4ce8-a673-576d636ee45b" sourceId="8b273502-7c03-434a-8cfd-8c02e1424e99" targetId="303cb048-b80a-4343-925e-f08900c92b20"/>
+    <parentsNode id="64274b4e-e2b1-45a7-95c8-de0f02287c98" sourceId="8b273502-7c03-434a-8cfd-8c02e1424e99" targetId="ecb96642-63ae-41eb-9e3b-a965bb880177"/>
+    <parentsNode id="d7fff32b-92a3-4d13-9397-96c09e0ab1d0" sourceId="8b273502-7c03-434a-8cfd-8c02e1424e99" targetId="44711d27-4b71-42e0-addf-ae6e5796a636"/>
+    <parentsNode id="639ea886-fcd5-4232-90c1-da91d41efa39" sourceId="17c0547c-d7f8-4d17-b61f-01a7f297d3e6" targetId="ca6671e2-65c7-4f30-b1a5-45ce785a04ad"/>
+    <parentsNode id="893f0414-7e2e-4cb5-9ad8-fc51843c196e" sourceId="17c0547c-d7f8-4d17-b61f-01a7f297d3e6" targetId="87c67478-6c76-40f5-a2e1-8fedcc42af1d"/>
+    <parentsNode id="d1505cfe-ea0b-47f6-a5e2-a09cb8069eb3" sourceId="17c0547c-d7f8-4d17-b61f-01a7f297d3e6" targetId="6544b39d-b5db-4f20-949a-873b8806cdfd"/>
+    <parentsNode id="5f875a3a-6692-4e14-9695-6d8a0de52306" sourceId="303cb048-b80a-4343-925e-f08900c92b20" targetId="bfbcda45-bc43-4dc8-90f6-92256290f284"/>
+    <parentsNode id="2cf9de53-b9e3-4ac5-b984-9f80350cfdbf" sourceId="303cb048-b80a-4343-925e-f08900c92b20" targetId="8182d3a6-ef00-494b-8e75-3cfa7b183131"/>
+    <parentsNode id="a42e9b5e-9d3f-4b1e-a8e9-4808553b9c62" sourceId="44711d27-4b71-42e0-addf-ae6e5796a636" targetId="b06664a5-e070-453b-9948-21e6f43622b5"/>
+    <parentsNode id="d2deec1e-121f-4771-93ad-b9350c951092" sourceId="44711d27-4b71-42e0-addf-ae6e5796a636" targetId="ad27f667-3f7e-442e-8fc7-e7d8a3b0a842"/>
+    <parentsNode id="6b26bf4f-7a7d-46ee-b258-258efe2c4a4f" sourceId="44711d27-4b71-42e0-addf-ae6e5796a636" targetId="20e433c9-d8fd-4ecc-b360-52e69a89d0d3"/>
+    <parentsNode id="eff293be-31cd-4d56-afbc-954e44176bd5" sourceId="b06664a5-e070-453b-9948-21e6f43622b5" targetId="aac11a58-622c-4c3e-9643-6e0646122b49"/>
+    <parentsNode id="b9b382b6-acbe-4909-b496-f42f28250dba" sourceId="b06664a5-e070-453b-9948-21e6f43622b5" targetId="905f1706-d3da-40c0-bc6b-85c0d9b7c0eb"/>
+    <parentsNode id="f973ce4c-c6b4-4d78-ad25-3c4636ff2d3d" sourceId="b06664a5-e070-453b-9948-21e6f43622b5" targetId="45ebaa4c-bd10-468d-a4b1-b4c2a69c4d9e"/>
+    <parentsNode id="9f4c880d-ad30-4ec5-9bc8-690c8d2a85e2" sourceId="b06664a5-e070-453b-9948-21e6f43622b5" targetId="51ef8a3e-75bf-450a-a677-ee5eb65d0a96"/>
+  </processTree>
+</ptml>

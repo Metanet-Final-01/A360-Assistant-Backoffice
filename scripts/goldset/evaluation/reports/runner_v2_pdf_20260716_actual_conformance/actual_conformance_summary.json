@@ -1,0 +1,161 @@
+{
+  "label": "runner_v2_pdf_20260716_actual",
+  "case_count": 13,
+  "averages": {
+    "pm4py_fitness": 0.0,
+    "pm4py_precision": 0.0,
+    "worfbench_precision": 0.2687,
+    "worfbench_recall": 0.16,
+    "worfbench_f1": 0.1873
+  },
+  "rows": [
+    {
+      "source_bot": "0374_createprojectinjirausingapi",
+      "pred_actions": 15,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.2667,
+      "worfbench_recall": 0.2353,
+      "worfbench_f1": 0.25,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0419_sendbulkemailswithtemplate",
+      "pred_actions": 13,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.2308,
+      "worfbench_recall": 0.06,
+      "worfbench_f1": 0.0952,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0131_currency-rate---oanda",
+      "pred_actions": 20,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.15,
+      "worfbench_recall": 0.0698,
+      "worfbench_f1": 0.0952,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0176_global-exchange-currency-rate",
+      "pred_actions": 16,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.25,
+      "worfbench_recall": 0.16,
+      "worfbench_f1": 0.1951,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0393_a2019-twilio-integration",
+      "pred_actions": 19,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.1053,
+      "worfbench_recall": 0.0476,
+      "worfbench_f1": 0.0656,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0224_extracttablesfrompdftocsv",
+      "pred_actions": 6,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.5,
+      "worfbench_recall": 0.25,
+      "worfbench_f1": 0.3333,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0225_extracttablefromwordtocsv",
+      "pred_actions": 9,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.3333,
+      "worfbench_recall": 0.25,
+      "worfbench_f1": 0.2857,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0137_sendemailusingsmtp-demo",
+      "pred_actions": 5,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.2,
+      "worfbench_recall": 0.3333,
+      "worfbench_f1": 0.25,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0245_merge-multiple-csv-files",
+      "pred_actions": 8,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.375,
+      "worfbench_recall": 0.12,
+      "worfbench_f1": 0.1818,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0302_a2019-get-current-exchange-rate",
+      "pred_actions": 16,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.3125,
+      "worfbench_recall": 0.2778,
+      "worfbench_f1": 0.2941,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0167_outlook-email-notifier",
+      "pred_actions": 14,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.2857,
+      "worfbench_recall": 0.16,
+      "worfbench_f1": 0.2051,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0338_lettergenerationbot",
+      "pred_actions": 17,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.4118,
+      "worfbench_recall": 0.0833,
+      "worfbench_f1": 0.1386,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    },
+    {
+      "source_bot": "0410_a2019-invoicely-assistant",
+      "pred_actions": 14,
+      "pm4py_fitness": 0.0,
+      "pm4py_precision": 0.0,
+      "worfbench_precision": 0.0714,
+      "worfbench_recall": 0.0333,
+      "worfbench_f1": 0.0455,
+      "pm4py_status": "ok",
+      "worfbench_status": "ok"
+    }
+  ],
+  "source_files": {
+    "predictions": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\a360-eval-sandbox\\Metadata\\predictions_from_agent_runner_v2_pdf_20260716_actual.json",
+    "pm4py": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\a360-eval-sandbox\\Metadata\\pm4py_agent_conformance_results_runner_v2_pdf_20260716_actual.json",
+    "worfbench": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\a360-eval-sandbox\\Metadata\\worfbench_openai_results_runner_v2_pdf_20260716_actual.json"
+  }
+}

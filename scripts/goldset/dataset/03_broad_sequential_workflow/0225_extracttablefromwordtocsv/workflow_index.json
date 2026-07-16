@@ -1,0 +1,15 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0225_extracttablefromwordtocsv",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "ExtractTablefromWordtoCSV",
+      "manual_dependencies": [],
+      "output_file": "workflows/ExtractTablefromWordtoCSV.json",
+      "scanned_dependencies": [
+        "ExtractTableFromWordToCSV.dll",
+        "DocumentFormat.OpenXml.dll"
+      ]
+    }
+  ]
+}

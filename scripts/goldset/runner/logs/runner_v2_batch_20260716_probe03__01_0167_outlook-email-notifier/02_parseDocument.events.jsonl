@@ -1,0 +1,2 @@
+{"received_at": "2026-07-15T17:04:13.642390+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
+{"received_at": "2026-07-15T17:04:14.297681+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "519fe7a4-4eef-42c4-b3e9-f73f036a9f3b", "session_id": "551a94ee-e5b5-46e6-818b-40d9bf855a81", "filename": "0167_outlook-email-notifier__Outlook Email Notifier.pdf", "size_bytes": 48233, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T17:04:11.575373+00:00"}}

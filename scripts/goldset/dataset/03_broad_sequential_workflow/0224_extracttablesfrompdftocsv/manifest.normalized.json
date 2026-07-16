@@ -1,0 +1,59 @@
+{
+  "files": [
+    {
+      "contentType": "application/x-msdownload",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Aspose.PDF.dll",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/x-msdownload",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\ExtractTablesFromPDFToCSV.dll",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\ExtractTablesfromPDFtoCSV",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Aspose.PDF.dll",
+        "Automation Anywhere\\Bot Store\\ExtractTablesFromPDFToCSV.dll"
+      ],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "DLL",
+      "path": "bot-command-rundll-5.0.0-20210426-170653.jar",
+      "version": "5.0.0-20210426-170653"
+    },
+    {
+      "name": "Dictionary",
+      "path": "bot-command-dictionary-3.3.0-20210504-152817.jar",
+      "version": "3.3.0-20210504-152817"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-3.0.0-20210504-152941.jar",
+      "version": "3.0.0-20210504-152941"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-4.1.0-20210427-194725.jar",
+      "version": "4.1.0-20210427-194725"
+    }
+  ]
+}

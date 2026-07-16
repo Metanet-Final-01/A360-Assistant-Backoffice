@@ -1,0 +1,85 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784152387.9337285" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784152387.9337285</text>
+    </name>
+    <page id="n0">
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <transition id="07fe8492-a99a-4f5e-97e1-97bebefecbc0">
+        <name>
+          <text>Jira.jiraCreateIssue</text>
+        </name>
+      </transition>
+      <transition id="8c174998-d79e-40c6-b214-a579b3b6f6c6">
+        <name>
+          <text>IQ Bot Extraction.cloudExtractionAction</text>
+        </name>
+      </transition>
+      <transition id="45ecac66-aa34-473c-8d36-520fa37440c9">
+        <name>
+          <text>CSV/TXT.cloudOpeningCsvTextFile</text>
+        </name>
+      </transition>
+      <transition id="a1a025ce-4ccb-4514-8576-c17b0fcec31d">
+        <name>
+          <text>PDF.cloudExtractingField</text>
+        </name>
+      </transition>
+      <transition id="0751f321-6794-443e-a4c2-ec05263fcbf9">
+        <name>
+          <text>Process Composer.processComposerAssignHumanTask</text>
+        </name>
+      </transition>
+      <arc id="2057374547328" source="p_11" target="0751f321-6794-443e-a4c2-ec05263fcbf9"/>
+      <arc id="2057374902528" source="45ecac66-aa34-473c-8d36-520fa37440c9" target="p_5"/>
+      <arc id="2057374521520" source="p_9" target="a1a025ce-4ccb-4514-8576-c17b0fcec31d"/>
+      <arc id="2058935750224" source="p_6" target="8c174998-d79e-40c6-b214-a579b3b6f6c6"/>
+      <arc id="2057374902864" source="source" target="45ecac66-aa34-473c-8d36-520fa37440c9"/>
+      <arc id="2057375023184" source="0751f321-6794-443e-a4c2-ec05263fcbf9" target="sink"/>
+      <arc id="2057374358240" source="p_5" target="07fe8492-a99a-4f5e-97e1-97bebefecbc0"/>
+      <arc id="2057374902752" source="a1a025ce-4ccb-4514-8576-c17b0fcec31d" target="p_11"/>
+      <arc id="2057374358512" source="07fe8492-a99a-4f5e-97e1-97bebefecbc0" target="p_6"/>
+      <arc id="2057374902640" source="8c174998-d79e-40c6-b214-a579b3b6f6c6" target="p_9"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

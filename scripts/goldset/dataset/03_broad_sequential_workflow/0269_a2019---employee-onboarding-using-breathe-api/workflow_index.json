@@ -1,0 +1,14 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0269_a2019---employee-onboarding-using-breathe-api",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "A2019 - Employee Onboarding Using Breathe API",
+      "manual_dependencies": [],
+      "output_file": "workflows/A2019 - Employee Onboarding Using Breathe API.json",
+      "scanned_dependencies": [
+        "Employee Details.xlsx"
+      ]
+    }
+  ]
+}

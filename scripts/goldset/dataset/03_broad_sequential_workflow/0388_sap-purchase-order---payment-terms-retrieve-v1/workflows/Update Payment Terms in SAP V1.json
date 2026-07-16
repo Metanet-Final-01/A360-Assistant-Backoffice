@@ -1,0 +1,239 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "connectionType",
+          "value": {
+            "string": "Automatic",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "connect",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "f477cb36-1dfd-46ce-a19d-5eb7ad837aae"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[0]/tbar[1]/btn[7]",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "click",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "93fc4452-4c2d-4d17-9c5f-307bd3af9cc1"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "10",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "b657b12f-cb1e-421d-b876-ae546fd95f00"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldPath",
+          "value": {
+            "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB1:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1102/tabsHEADER_DETAIL/tabpTABHDT1/ssubTABSTRIPCONTROL2SUB:SAPLMEGUI:1226/ctxtMEPO1226-ZTERM",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fieldValue",
+          "value": {
+            "string": "ZB02",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isAppendTextEnabled",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "setText",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "9c03f37a-3a22-4a7e-a676-0142c22d4144"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "10",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "7c46566c-dae2-4bcf-8880-e1d49f49606f"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "disconnect",
+      "disabled": false,
+      "packageName": "SAP",
+      "uid": "dc190af7-b5d8-42b1-a9f4-2ef3e61c4bdb"
+    },
+    {
+      "attributes": [
+        {
+          "name": "window",
+          "value": {
+            "expression": "$window-1$",
+            "type": "WINDOW"
+          }
+        }
+      ],
+      "commandName": "closeWindow",
+      "disabled": false,
+      "packageName": "Window",
+      "uid": "c8ef8b17-bd13-4f3c-93a9-e23c59707d26"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Delay",
+      "version": "2.1.0-20200721-221959"
+    },
+    {
+      "name": "SAP",
+      "version": "2.1.0-20200723-234637"
+    },
+    {
+      "name": "Window",
+      "version": "2.1.0-20200813-181240"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "Payment_Term",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "SAP_FRONTEND_SESSION",
+          "handle": "2232174",
+          "isChild": false,
+          "location": {
+            "left": 324,
+            "top": 74
+          },
+          "name": "Standard PO 4500006374 Created by KUERSTEN",
+          "path": "C:\\Program Files (x86)\\SAP\\FrontEnd\\SapGui\\saplogon.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 550,
+            "width": 750
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-1",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    }
+  ],
+  "workItemTemplateName": null
+}

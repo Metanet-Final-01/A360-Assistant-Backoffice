@@ -1,0 +1,390 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784123786.383242" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784123786.383242</text>
+    </name>
+    <page id="n0">
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_16">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="p_21">
+        <name>
+          <text>p_21</text>
+        </name>
+      </place>
+      <place id="p_23">
+        <name>
+          <text>p_23</text>
+        </name>
+      </place>
+      <place id="p_17">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <place id="p_19">
+        <name>
+          <text>p_19</text>
+        </name>
+      </place>
+      <place id="p_24">
+        <name>
+          <text>p_24</text>
+        </name>
+      </place>
+      <place id="p_27">
+        <name>
+          <text>p_27</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <place id="p_25">
+        <name>
+          <text>p_25</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="p_18">
+        <name>
+          <text>p_18</text>
+        </name>
+      </place>
+      <place id="p_20">
+        <name>
+          <text>p_20</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_26">
+        <name>
+          <text>p_26</text>
+        </name>
+      </place>
+      <transition id="1713f717-a533-4464-83b8-3d5c18d97fcd">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="d54ce736-0059-4b9d-97ab-1f0332ef2e7e">
+        <name>
+          <text>Email.emailConnect</text>
+        </name>
+      </transition>
+      <transition id="348d9ec7-0b6a-4b2d-9a20-84c5c19bbf69">
+        <name>
+          <text>Email.closeEmail</text>
+        </name>
+      </transition>
+      <transition id="17566246-86bf-46ed-ab47-94ab5eca50ed">
+        <name>
+          <text>Excel_MS.CloseSpreadsheet</text>
+        </name>
+      </transition>
+      <transition id="46280fd1-8094-4c99-9ef5-03dfcd5c6cdf">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="763db23e-31e1-453b-9837-4468f4b7c719">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="skip_2">
+        <name>
+          <text>skip_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="ab367d7a-5c08-463c-a51a-4497b73a494d"/>
+      </transition>
+      <transition id="c9264ee4-2c9a-45f1-8fb9-195f93a29b23">
+        <name>
+          <text>LogToFile.logToFile</text>
+        </name>
+      </transition>
+      <transition id="4522f22a-9137-43d3-a226-c397bfb70353">
+        <name>
+          <text>LogToFile.logToFile</text>
+        </name>
+      </transition>
+      <transition id="724b320e-25ce-4ad9-9889-efe126ff90cb">
+        <name>
+          <text>MessageBox.messageBox</text>
+        </name>
+      </transition>
+      <transition id="6df63ffc-a726-4f63-b06b-02c187bc4a7e">
+        <name>
+          <text>MessageBox.messageBox</text>
+        </name>
+      </transition>
+      <transition id="269b9aa7-a8a5-4fac-a1d1-4ae60a64e1a3">
+        <name>
+          <text>Excel_MS.readExcelRow</text>
+        </name>
+      </transition>
+      <transition id="47b8eb92-ffe9-4534-9f91-91fb76decd30">
+        <name>
+          <text>LogToFile.logToFile</text>
+        </name>
+      </transition>
+      <transition id="f7cda597-a095-4fb4-a061-e82ad923990c">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="92f0496c-714b-4512-b3fa-6d0d4dc8f541">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="skip_1">
+        <name>
+          <text>skip_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="4cee1bee-84da-4b46-a78b-1bae1c481028"/>
+      </transition>
+      <transition id="3eb5a71d-f9ec-4ac8-be89-f813b9cb4d01">
+        <name>
+          <text>Excel_MS.readExcelRow</text>
+        </name>
+      </transition>
+      <transition id="3925ac07-a2cc-4d0c-b24c-15429875f639">
+        <name>
+          <text>File.createFile</text>
+        </name>
+      </transition>
+      <transition id="skip_7">
+        <name>
+          <text>skip_7</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="eaa12651-76bb-456c-b5ca-5aef19b79797"/>
+      </transition>
+      <transition id="3af73ba2-3a21-4949-8231-961ffea9500f">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <transition id="loop_6">
+        <name>
+          <text>loop_6</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="156dd3be-a575-41a2-8675-ce15e11c1cc5"/>
+      </transition>
+      <transition id="skip_10">
+        <name>
+          <text>skip_10</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="d5798bcb-e882-4ca5-8a7a-d6ffacb94551"/>
+      </transition>
+      <transition id="ff4650f3-3aa5-4a25-869a-6f1abfa5705f">
+        <name>
+          <text>Datetime.toString</text>
+        </name>
+      </transition>
+      <transition id="9d9e907f-cd71-487b-8918-90d986e22366">
+        <name>
+          <text>File.createFile</text>
+        </name>
+      </transition>
+      <transition id="e69d2428-07ad-4708-98cc-fe9bc247a702">
+        <name>
+          <text>Excel_MS.readExcelRow</text>
+        </name>
+      </transition>
+      <transition id="init_loop_5">
+        <name>
+          <text>init_loop_5</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="5a5ad6d9-436a-4a23-baee-7f72178709f9"/>
+      </transition>
+      <transition id="skip_8">
+        <name>
+          <text>skip_8</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="3072fd55-a98c-47b6-9039-2d8fc26b1d60"/>
+      </transition>
+      <transition id="b219ef5d-3988-4c5a-8620-e25dfb49988c">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <transition id="4aaa4496-7ec2-4e4f-8dae-5a27d24bb734">
+        <name>
+          <text>Excel_MS.OpenSpreadsheet</text>
+        </name>
+      </transition>
+      <transition id="skip_4">
+        <name>
+          <text>skip_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="07e7e62e-fd5b-4f7e-97f1-ba76276b6edc"/>
+      </transition>
+      <transition id="3acfdf2d-8f0e-4cf7-a18e-08e1ec84b0a5">
+        <name>
+          <text>LogToFile.logToFile</text>
+        </name>
+      </transition>
+      <transition id="bea31866-6635-4e4c-bac3-49b0dd335672">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <transition id="skip_3">
+        <name>
+          <text>skip_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="34199533-8cc1-46a8-823c-708888fdfae9"/>
+      </transition>
+      <arc id="1561467643264" source="p_6" target="46280fd1-8094-4c99-9ef5-03dfcd5c6cdf"/>
+      <arc id="1561467648640" source="p_8" target="3af73ba2-3a21-4949-8231-961ffea9500f"/>
+      <arc id="1561467649536" source="skip_1" target="p_9"/>
+      <arc id="1561467644160" source="p_9" target="skip_2"/>
+      <arc id="1561467839872" source="p_23" target="724b320e-25ce-4ad9-9889-efe126ff90cb"/>
+      <arc id="1561467841664" source="p_25" target="47b8eb92-ffe9-4534-9f91-91fb76decd30"/>
+      <arc id="1561467834496" source="p_24" target="348d9ec7-0b6a-4b2d-9a20-84c5c19bbf69"/>
+      <arc id="1561467649424" source="p_9" target="b219ef5d-3988-4c5a-8620-e25dfb49988c"/>
+      <arc id="1561467648528" source="skip_2" target="p_10"/>
+      <arc id="1561467845136" source="p_11" target="bea31866-6635-4e4c-bac3-49b0dd335672"/>
+      <arc id="1561467643936" source="p_4" target="92f0496c-714b-4512-b3fa-6d0d4dc8f541"/>
+      <arc id="1561467649312" source="p_8" target="skip_1"/>
+      <arc id="1561467648416" source="9d9e907f-cd71-487b-8918-90d986e22366" target="p_12"/>
+      <arc id="1561467844128" source="bea31866-6635-4e4c-bac3-49b0dd335672" target="p_13"/>
+      <arc id="1561467845024" source="p_15" target="e69d2428-07ad-4708-98cc-fe9bc247a702"/>
+      <arc id="1561467841440" source="p_18" target="d54ce736-0059-4b9d-97ab-1f0332ef2e7e"/>
+      <arc id="1561467843232" source="d54ce736-0059-4b9d-97ab-1f0332ef2e7e" target="p_19"/>
+      <arc id="1561467839648" source="4522f22a-9137-43d3-a226-c397bfb70353" target="p_20"/>
+      <arc id="1561467838752" source="348d9ec7-0b6a-4b2d-9a20-84c5c19bbf69" target="p_27"/>
+      <arc id="1561467643824" source="p_3" target="f7cda597-a095-4fb4-a061-e82ad923990c"/>
+      <arc id="1561467649200" source="92f0496c-714b-4512-b3fa-6d0d4dc8f541" target="p_5"/>
+      <arc id="1561467844016" source="3eb5a71d-f9ec-4ac8-be89-f813b9cb4d01" target="p_18"/>
+      <arc id="1561467839536" source="3925ac07-a2cc-4d0c-b24c-15429875f639" target="p_21"/>
+      <arc id="1561467842224" source="724b320e-25ce-4ad9-9889-efe126ff90cb" target="p_25"/>
+      <arc id="1561467836848" source="p_27" target="17566246-86bf-46ed-ab47-94ab5eca50ed"/>
+      <arc id="1561467835952" source="skip_10" target="sink"/>
+      <arc id="1561470402752" source="1713f717-a533-4464-83b8-3d5c18d97fcd" target="p_3"/>
+      <arc id="1561467649088" source="ff4650f3-3aa5-4a25-869a-6f1abfa5705f" target="p_8"/>
+      <arc id="1561467843904" source="p_12" target="c9264ee4-2c9a-45f1-8fb9-195f93a29b23"/>
+      <arc id="1561467845696" source="p_13" target="4aaa4496-7ec2-4e4f-8dae-5a27d24bb734"/>
+      <arc id="1561467839424" source="skip_4" target="p_20"/>
+      <arc id="1561467838528" source="p_24" target="skip_7"/>
+      <arc id="1561467837632" source="skip_8" target="p_26"/>
+      <arc id="1561467843008" source="p_26" target="loop_6"/>
+      <arc id="1561467840320" source="loop_6" target="p_23"/>
+      <arc id="1561467836736" source="6df63ffc-a726-4f63-b06b-02c187bc4a7e" target="p_14"/>
+      <arc id="1561467836400" source="p_14" target="skip_10"/>
+      <arc id="1561470402640" source="source" target="1713f717-a533-4464-83b8-3d5c18d97fcd"/>
+      <arc id="1561467643600" source="p_5" target="763db23e-31e1-453b-9837-4468f4b7c719"/>
+      <arc id="1561467648080" source="p_7" target="ff4650f3-3aa5-4a25-869a-6f1abfa5705f"/>
+      <arc id="1561467649872" source="3af73ba2-3a21-4949-8231-961ffea9500f" target="p_9"/>
+      <arc id="1561467843792" source="p_10" target="skip_3"/>
+      <arc id="1561467845584" source="4aaa4496-7ec2-4e4f-8dae-5a27d24bb734" target="p_15"/>
+      <arc id="1561467842896" source="p_16" target="269b9aa7-a8a5-4fac-a1d1-4ae60a64e1a3"/>
+      <arc id="1561467839312" source="269b9aa7-a8a5-4fac-a1d1-4ae60a64e1a3" target="p_17"/>
+      <arc id="1561467840208" source="p_19" target="skip_4"/>
+      <arc id="1561467842000" source="p_20" target="init_loop_5"/>
+      <arc id="1561467836624" source="3acfdf2d-8f0e-4cf7-a18e-08e1ec84b0a5" target="sink"/>
+      <arc id="1561467643488" source="763db23e-31e1-453b-9837-4468f4b7c719" target="p_6"/>
+      <arc id="1561467644384" source="46280fd1-8094-4c99-9ef5-03dfcd5c6cdf" target="p_7"/>
+      <arc id="1561467844576" source="c9264ee4-2c9a-45f1-8fb9-195f93a29b23" target="p_11"/>
+      <arc id="1561467843680" source="skip_3" target="p_11"/>
+      <arc id="1561467842784" source="p_21" target="4522f22a-9137-43d3-a226-c397bfb70353"/>
+      <arc id="1561467838304" source="p_24" target="skip_8"/>
+      <arc id="1561467836512" source="p_13" target="6df63ffc-a726-4f63-b06b-02c187bc4a7e"/>
+      <arc id="1561467643376" source="f7cda597-a095-4fb4-a061-e82ad923990c" target="p_4"/>
+      <arc id="1561467649648" source="b219ef5d-3988-4c5a-8620-e25dfb49988c" target="p_10"/>
+      <arc id="1561467644272" source="p_10" target="9d9e907f-cd71-487b-8918-90d986e22366"/>
+      <arc id="1561467845360" source="e69d2428-07ad-4708-98cc-fe9bc247a702" target="p_16"/>
+      <arc id="1561467842672" source="p_17" target="3eb5a71d-f9ec-4ac8-be89-f813b9cb4d01"/>
+      <arc id="1561467839088" source="p_19" target="3925ac07-a2cc-4d0c-b24c-15429875f639"/>
+      <arc id="1561467840880" source="init_loop_5" target="p_23"/>
+      <arc id="1561467839984" source="47b8eb92-ffe9-4534-9f91-91fb76decd30" target="p_24"/>
+      <arc id="1561467838192" source="skip_7" target="p_26"/>
+      <arc id="1561467836960" source="17566246-86bf-46ed-ab47-94ab5eca50ed" target="p_14"/>
+      <arc id="1561467837520" source="p_14" target="3acfdf2d-8f0e-4cf7-a18e-08e1ec84b0a5"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

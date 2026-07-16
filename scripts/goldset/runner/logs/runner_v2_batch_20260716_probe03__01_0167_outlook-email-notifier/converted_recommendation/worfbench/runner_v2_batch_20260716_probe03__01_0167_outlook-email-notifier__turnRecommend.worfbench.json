@@ -1,0 +1,78 @@
+{
+  "source": "a360_rpa_goldset",
+  "id": "03_broad_sequential_workflow/runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier__turnRecommend/runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier__turnRecommend",
+  "conversations": [
+    {
+      "role": "system",
+      "content": "You are a helpful and intelligent task planner, and your target is to decompose the assigned task into multiple subtasks for task completion and analyze the precedence relationships among subtasks.\nAt the beginning of your interactions, you will be given the task description and actions list you can take to finish the task, and you should decompose the given task into subtasks that can be accomplished using the provided actions or APIs. And then, you should analyze the precedence relationships among these subtasks, ensuring that each subtask is sequenced correctly relative to others. Based on the analysis, you should construct a workflow consisting of the identified subtasks to complete the task. You should use \"Node: \\n1. <subtask 1>\\n2. <subtask 2>\" to denote subtasks, and use (x,y) to denote that <subtask x> is a predecessor of <subtask y>, (START,x) to indicate the beginning with <subtask x>, and (x,END) to signify the conclusion with <subtask x>. Remember that x, y are numbers.\nYour response should use the following format:\n\nNode:\n1.<subtask 1>\n2.<subtask 2>\n...\nEdges:(START,1) ... (n,END)"
+    },
+    {
+      "role": "user",
+      "content": "Task: runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier__turnRecommend.json"
+    },
+    {
+      "role": "assistant",
+      "content": "Node:\n1: File.filePackageCreateAction\n2: File.filePackageCreateAction\n3: Excel advanced.cloudExcelOpen\n4: Error handler.errorHandlerCatch\n5: Error handler.errorHandlerFinally\n6: Excel advanced.excelAdvancedPackageGetSingleCellAction\n7: Excel advanced.excelAdvancedPackageGetSingleCellAction\n8: Microsoft 365 Outlook.ms365OutlookSaveAllAttachments\n9: Microsoft 365 Outlook.ms365OutlookSaveAllAttachments\n10: Message box.usingMessageBoxAction\n11: Data Table.cloudWriteToFileAction\n12: Excel advanced.excelAdvancedPackageCloseAction\n13: Task Bot.taskBotPackageStopAction\nEdges:\n(START,1) (1,2) (2,3) (3,4) (4,5) (5,6) (6,7) (7,8) (8,9) (9,10) (10,11) (11,12) (12,13) (13,END)"
+    }
+  ],
+  "meta": {
+    "worfbench_fidelity": "approximated",
+    "control_flow_types": [
+      "container"
+    ],
+    "actions": [
+      {
+        "package": "File",
+        "action": "filePackageCreateAction"
+      },
+      {
+        "package": "File",
+        "action": "filePackageCreateAction"
+      },
+      {
+        "package": "Excel advanced",
+        "action": "cloudExcelOpen"
+      },
+      {
+        "package": "Error handler",
+        "action": "errorHandlerCatch"
+      },
+      {
+        "package": "Error handler",
+        "action": "errorHandlerFinally"
+      },
+      {
+        "package": "Excel advanced",
+        "action": "excelAdvancedPackageGetSingleCellAction"
+      },
+      {
+        "package": "Excel advanced",
+        "action": "excelAdvancedPackageGetSingleCellAction"
+      },
+      {
+        "package": "Microsoft 365 Outlook",
+        "action": "ms365OutlookSaveAllAttachments"
+      },
+      {
+        "package": "Microsoft 365 Outlook",
+        "action": "ms365OutlookSaveAllAttachments"
+      },
+      {
+        "package": "Message box",
+        "action": "usingMessageBoxAction"
+      },
+      {
+        "package": "Data Table",
+        "action": "cloudWriteToFileAction"
+      },
+      {
+        "package": "Excel advanced",
+        "action": "excelAdvancedPackageCloseAction"
+      },
+      {
+        "package": "Task Bot",
+        "action": "taskBotPackageStopAction"
+      }
+    ]
+  }
+}

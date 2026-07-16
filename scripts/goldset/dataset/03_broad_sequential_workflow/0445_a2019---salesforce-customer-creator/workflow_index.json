@@ -1,0 +1,15 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0445_a2019---salesforce-customer-creator",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "A2019 - Salesforce Customer Creator",
+      "manual_dependencies": [],
+      "output_file": "workflows/A2019 - Salesforce Customer Creator.json",
+      "scanned_dependencies": [
+        "Customer Details.xlsx",
+        "Login Credentials.xlsx"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0346_sappurchaserequisitioncreationmaster",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SAPPurchaseRequisitionCreationPRinSAP",
+      "manual_dependencies": [],
+      "output_file": "workflows/SAPPurchaseRequisitionCreationPRinSAP.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SAPPurchaseRequisitionCreationVPNLogin",
+      "manual_dependencies": [],
+      "output_file": "workflows/SAPPurchaseRequisitionCreationVPNLogin.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SAPPurchaseRequisitionCreationExcelOps",
+      "manual_dependencies": [],
+      "output_file": "workflows/SAPPurchaseRequisitionCreationExcelOps.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SAPPurchaseRequisitionCreationAFXLogin",
+      "manual_dependencies": [],
+      "output_file": "workflows/SAPPurchaseRequisitionCreationAFXLogin.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SAPPurchaseRequisitionCreationMain",
+      "manual_dependencies": [],
+      "output_file": "workflows/SAPPurchaseRequisitionCreationMain.json",
+      "scanned_dependencies": [
+        "SAPPurchaseRequisitionCreationVPNLogin",
+        "SAPPurchaseRequisitionCreationExcelOps",
+        "SAPPurchaseRequisitionCreationRRM",
+        "SAPPurchaseRequisitionCreationPRinSAP"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SAPPurchaseRequisitionCreationRRM",
+      "manual_dependencies": [],
+      "output_file": "workflows/SAPPurchaseRequisitionCreationRRM.json",
+      "scanned_dependencies": [
+        "SAPPurchaseRequisitionCreationAFXLogin"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SAPPurchaseRequisitionCreationMaster",
+      "manual_dependencies": [],
+      "output_file": "workflows/SAPPurchaseRequisitionCreationMaster.json",
+      "scanned_dependencies": [
+        "SAPPurchaseRequisitionCreationMain"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+{"received_at": "2026-07-15T17:36:32.493052+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
+{"received_at": "2026-07-15T17:36:33.068452+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "a1cba33c-8dab-4d91-9151-9e2346167a1f", "session_id": "4958d170-b26c-4a67-b169-53f6cecafd52", "filename": "0338_lettergenerationbot__LetterGenerationBot+SendPOF_Email.pdf", "size_bytes": 65625, "status": "parsed", "error": null, "page_count": 3, "warnings": [], "created_at": "2026-07-15T17:36:30.938946+00:00"}}

@@ -1,0 +1,2162 @@
+{
+  "answer": "16개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 로컬 파일 시스템에서 단순히 작업 루트 경로를 지정하는 전용 액션이 후보 카탈로그에 없음. 제공된 후보는 Databricks 파일 전송 및 Process Composer 스토리지 파일 가져오기뿐이라, 이 단계는 액션 없이 처리할 수 없음. · 로컬 파일 시스템에서 폴더 생성에 직접 쓸 수 있는 후보 액션이 없다. 제공된 후보는 Box, Google Drive, OneDrive, FTP/SFTP용이며 로컬 경로 생성 기능이 없다. · 액션1.source: 작업 루트 경로를 어떤 소스(Control Room 파일/바탕화면 파일/변수)로 전달할지 필요 · 로컬 파일 시스템에서 출력 폴더 생성 및 출력 CSV 경로 문자열 조합을 수행할 수 있는 후보 액션이 카탈로그에 없음 · 액션1.filePath: CSV 로그 파일의 정확한 경로가 필요함 · 액션1.textToLog: 기록할 현재 날짜/시간 문자열 형식이 필요함 · 액션1.sessionName: Excel 세션 이름이 필요함 · 액션1.filePath: 열어야 할 메일함 로그인 정보 Excel 파일 경로가 필요함 · 액션1.sessionType: 로컬 세션/글로벌 세션 중 선택이 필요함 · Excel 통합문서에서 특정 셀의 값을 읽는 카탈로그 액션이 없어 이 단계를 직접 자동화할 수 없음 · 액션1.Excel advanced/excelAdvancedAccessPasswordProtectedWorksheet.password: 워크시트에 접근하려면 보호된 시트의 비밀번호가 필요함 · 후보 카탈로그에 '셀 읽기' 또는 '값 추출'에 해당하는 액션이 없고, 통합문서/워크시트 보호 관련 액션만 있어 현재 단계(열린 Excel 통합문서에서 비밀번호 셀을 읽기)를 직접 자동화할 수 없음 · 후보 카탈로그에는 경로를 '유지/보관'만 하는 전용 액션이 없고, 제공된 Excel 생성 액션은 새 통합 문서를 만드는 기능이어서 이 단계의 목적과 맞지 않는다. · 액션1.sessionName: Outlook 세션 이름이 문서에 없어 연결 세션 식별값이 필요함 · 액션1.mailbox: 접속할 메일함 주소/계정이 문서에 없어 대상 메일함 식별값이 필요함 · 후보 액션 카탈로그에 메일 상세 읽기/메일 선택/메일 내용 조회에 해당하는 액션이 없어 이 단계는 자동화 액션으로 설계할 수 없다. · 후보 액션 카탈로그에 데스크톱 알림 표시를 직접 수행하는 액션이 없다. 이메일 회신/사용자 생성/캘린더 알림은 대체가 아니므로 이 단계는 자동화 액션으로 표현할 수 없다. · action1.session: Databricks 세션 이름 또는 변수 필요 · action1.runId: 상태 조회 대상 작업 실행 ID 필요 · 실행 상태나 실패 상세를 출력 CSV 또는 CSV 로그 파일에 기록하는 액션이 후보 카탈로그에 없다. · action1.sessionName: 닫을 Outlook 메일함 세션 이름이 필요하다 · 액션1.sessionName: 닫을 열린 Excel 통합문서 세션 이름이 필요함 · action1.exception: 오류 처리기에서 전달받을 예외 객체/변수명이 필요함 · 실제 오류 로그 파일에 내용을 추가하는 Logging/logToFileLogVariablesToFile 액션은 조건부로 실행되어야 하나, 본 단계 설명만으로는 기록할 변수 선택과 outputFilePath를 특정할 수 없음. · Task 3. 메일함 확인 및 알림은 상위 제목이지만, 세부 작업은 Task 1~4로 분리되어 있어 이를 하나의 단일 업무로 묶을지 여부는 문서 구조상 해석이 필요하다. · 2페이지의 '관련 최신 메일'이 어떤 기준으로 최신인지(읽지 않은 메일, 특정 발신자, 받은편지함의 가장 최근 메일 등)는 문서에 명시되어 있지 않다. · 1페이지의 '출력 폴더'와 2페이지의 '출력 CSV'가 같은 대상인지 별도 대상인지 문서만으로 확정할 수 없다. · 1페이지 Task 2의 '자격 증명은 자동화 요청서에 하드코딩하지 않는다'는 구현 원칙이며 별도 단계로 분해하지 않았다. · 1페이지 Task 4의 '종료 전에 오류 로그에 기록'은 실패 조건에 따라 수행되는 예외 처리로 분해했으나, 어떤 오류 항목을 어떤 형식으로 남기는지는 문서에 없다. (검수에서 해소하지 못한 위반 12건이 있어요 — 흐름도에서 확인해 주세요.)",
+  "backend_response_id": "88a2a019-0b65-4ff2-b28d-2d4b86f0dc82",
+  "backend_response_version": 2,
+  "backend_step": "turnRecommend",
+  "document_id": "2052d1f0-da31-4fda-b866-2971fabf1c4d",
+  "notes": "로컬 파일 시스템에서 단순히 작업 루트 경로를 지정하는 전용 액션이 후보 카탈로그에 없음. 제공된 후보는 Databricks 파일 전송 및 Process Composer 스토리지 파일 가져오기뿐이라, 이 단계는 액션 없이 처리할 수 없음. · 로컬 파일 시스템에서 폴더 생성에 직접 쓸 수 있는 후보 액션이 없다. 제공된 후보는 Box, Google Drive, OneDrive, FTP/SFTP용이며 로컬 경로 생성 기능이 없다. · 액션1.source: 작업 루트 경로를 어떤 소스(Control Room 파일/바탕화면 파일/변수)로 전달할지 필요 · 로컬 파일 시스템에서 출력 폴더 생성 및 출력 CSV 경로 문자열 조합을 수행할 수 있는 후보 액션이 카탈로그에 없음 · 액션1.filePath: CSV 로그 파일의 정확한 경로가 필요함 · 액션1.textToLog: 기록할 현재 날짜/시간 문자열 형식이 필요함 · 액션1.sessionName: Excel 세션 이름이 필요함 · 액션1.filePath: 열어야 할 메일함 로그인 정보 Excel 파일 경로가 필요함 · 액션1.sessionType: 로컬 세션/글로벌 세션 중 선택이 필요함 · Excel 통합문서에서 특정 셀의 값을 읽는 카탈로그 액션이 없어 이 단계를 직접 자동화할 수 없음 · 액션1.Excel advanced/excelAdvancedAccessPasswordProtectedWorksheet.password: 워크시트에 접근하려면 보호된 시트의 비밀번호가 필요함 · 후보 카탈로그에 '셀 읽기' 또는 '값 추출'에 해당하는 액션이 없고, 통합문서/워크시트 보호 관련 액션만 있어 현재 단계(열린 Excel 통합문서에서 비밀번호 셀을 읽기)를 직접 자동화할 수 없음 · 후보 카탈로그에는 경로를 '유지/보관'만 하는 전용 액션이 없고, 제공된 Excel 생성 액션은 새 통합 문서를 만드는 기능이어서 이 단계의 목적과 맞지 않는다. · 액션1.sessionName: Outlook 세션 이름이 문서에 없어 연결 세션 식별값이 필요함 · 액션1.mailbox: 접속할 메일함 주소/계정이 문서에 없어 대상 메일함 식별값이 필요함 · 후보 액션 카탈로그에 메일 상세 읽기/메일 선택/메일 내용 조회에 해당하는 액션이 없어 이 단계는 자동화 액션으로 설계할 수 없다. · 후보 액션 카탈로그에 데스크톱 알림 표시를 직접 수행하는 액션이 없다. 이메일 회신/사용자 생성/캘린더 알림은 대체가 아니므로 이 단계는 자동화 액션으로 표현할 수 없다. · action1.session: Databricks 세션 이름 또는 변수 필요 · action1.runId: 상태 조회 대상 작업 실행 ID 필요 · 실행 상태나 실패 상세를 출력 CSV 또는 CSV 로그 파일에 기록하는 액션이 후보 카탈로그에 없다. · action1.sessionName: 닫을 Outlook 메일함 세션 이름이 필요하다 · 액션1.sessionName: 닫을 열린 Excel 통합문서 세션 이름이 필요함 · action1.exception: 오류 처리기에서 전달받을 예외 객체/변수명이 필요함 · 실제 오류 로그 파일에 내용을 추가하는 Logging/logToFileLogVariablesToFile 액션은 조건부로 실행되어야 하나, 본 단계 설명만으로는 기록할 변수 선택과 outputFilePath를 특정할 수 없음. · Task 3. 메일함 확인 및 알림은 상위 제목이지만, 세부 작업은 Task 1~4로 분리되어 있어 이를 하나의 단일 업무로 묶을지 여부는 문서 구조상 해석이 필요하다. · 2페이지의 '관련 최신 메일'이 어떤 기준으로 최신인지(읽지 않은 메일, 특정 발신자, 받은편지함의 가장 최근 메일 등)는 문서에 명시되어 있지 않다. · 1페이지의 '출력 폴더'와 2페이지의 '출력 CSV'가 같은 대상인지 별도 대상인지 문서만으로 확정할 수 없다. · 1페이지 Task 2의 '자격 증명은 자동화 요청서에 하드코딩하지 않는다'는 구현 원칙이며 별도 단계로 분해하지 않았다. · 1페이지 Task 4의 '종료 전에 오류 로그에 기록'은 실패 조건에 따라 수행되는 예외 처리로 분해했으나, 어떤 오류 항목을 어떤 형식으로 남기는지는 문서에 없다.",
+  "original_recommendation": {
+    "notes": "로컬 파일 시스템에서 단순히 작업 루트 경로를 지정하는 전용 액션이 후보 카탈로그에 없음. 제공된 후보는 Databricks 파일 전송 및 Process Composer 스토리지 파일 가져오기뿐이라, 이 단계는 액션 없이 처리할 수 없음. · 로컬 파일 시스템에서 폴더 생성에 직접 쓸 수 있는 후보 액션이 없다. 제공된 후보는 Box, Google Drive, OneDrive, FTP/SFTP용이며 로컬 경로 생성 기능이 없다. · 액션1.source: 작업 루트 경로를 어떤 소스(Control Room 파일/바탕화면 파일/변수)로 전달할지 필요 · 로컬 파일 시스템에서 출력 폴더 생성 및 출력 CSV 경로 문자열 조합을 수행할 수 있는 후보 액션이 카탈로그에 없음 · 액션1.filePath: CSV 로그 파일의 정확한 경로가 필요함 · 액션1.textToLog: 기록할 현재 날짜/시간 문자열 형식이 필요함 · 액션1.sessionName: Excel 세션 이름이 필요함 · 액션1.filePath: 열어야 할 메일함 로그인 정보 Excel 파일 경로가 필요함 · 액션1.sessionType: 로컬 세션/글로벌 세션 중 선택이 필요함 · Excel 통합문서에서 특정 셀의 값을 읽는 카탈로그 액션이 없어 이 단계를 직접 자동화할 수 없음 · 액션1.Excel advanced/excelAdvancedAccessPasswordProtectedWorksheet.password: 워크시트에 접근하려면 보호된 시트의 비밀번호가 필요함 · 후보 카탈로그에 '셀 읽기' 또는 '값 추출'에 해당하는 액션이 없고, 통합문서/워크시트 보호 관련 액션만 있어 현재 단계(열린 Excel 통합문서에서 비밀번호 셀을 읽기)를 직접 자동화할 수 없음 · 후보 카탈로그에는 경로를 '유지/보관'만 하는 전용 액션이 없고, 제공된 Excel 생성 액션은 새 통합 문서를 만드는 기능이어서 이 단계의 목적과 맞지 않는다. · 액션1.sessionName: Outlook 세션 이름이 문서에 없어 연결 세션 식별값이 필요함 · 액션1.mailbox: 접속할 메일함 주소/계정이 문서에 없어 대상 메일함 식별값이 필요함 · 후보 액션 카탈로그에 메일 상세 읽기/메일 선택/메일 내용 조회에 해당하는 액션이 없어 이 단계는 자동화 액션으로 설계할 수 없다. · 후보 액션 카탈로그에 데스크톱 알림 표시를 직접 수행하는 액션이 없다. 이메일 회신/사용자 생성/캘린더 알림은 대체가 아니므로 이 단계는 자동화 액션으로 표현할 수 없다. · action1.session: Databricks 세션 이름 또는 변수 필요 · action1.runId: 상태 조회 대상 작업 실행 ID 필요 · 실행 상태나 실패 상세를 출력 CSV 또는 CSV 로그 파일에 기록하는 액션이 후보 카탈로그에 없다. · action1.sessionName: 닫을 Outlook 메일함 세션 이름이 필요하다 · 액션1.sessionName: 닫을 열린 Excel 통합문서 세션 이름이 필요함 · action1.exception: 오류 처리기에서 전달받을 예외 객체/변수명이 필요함 · 실제 오류 로그 파일에 내용을 추가하는 Logging/logToFileLogVariablesToFile 액션은 조건부로 실행되어야 하나, 본 단계 설명만으로는 기록할 변수 선택과 outputFilePath를 특정할 수 없음. · Task 3. 메일함 확인 및 알림은 상위 제목이지만, 세부 작업은 Task 1~4로 분리되어 있어 이를 하나의 단일 업무로 묶을지 여부는 문서 구조상 해석이 필요하다. · 2페이지의 '관련 최신 메일'이 어떤 기준으로 최신인지(읽지 않은 메일, 특정 발신자, 받은편지함의 가장 최근 메일 등)는 문서에 명시되어 있지 않다. · 1페이지의 '출력 폴더'와 2페이지의 '출력 CSV'가 같은 대상인지 별도 대상인지 문서만으로 확정할 수 없다. · 1페이지 Task 2의 '자격 증명은 자동화 요청서에 하드코딩하지 않는다'는 구현 원칙이며 별도 단계로 분해하지 않았다. · 1페이지 Task 4의 '종료 전에 오류 로그에 기록'은 실패 조건에 따라 수행되는 예외 처리로 분해했으나, 어떤 오류 항목을 어떤 형식으로 남기는지는 문서에 없다.",
+    "schema_version": "1.0",
+    "steps": [
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-1"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-2"
+      },
+      {
+        "actions": [
+          {
+            "action": "cloudOpeningCsvTextFile",
+            "children": [],
+            "confidence": 0.45,
+            "label": "ErrorLog.csv 파일 열기",
+            "order": 1,
+            "package": "CSV/TXT",
+            "parameters": [
+              {
+                "label": null,
+                "name": "source",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "delimiter",
+                "value": "쉼표",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "작업 루트 아래에 ErrorLog.csv 파일을 만들기 위해 CSV/TXT 파일 열기 작업을 사용한다.",
+            "sources": [
+              {
+                "score": 0.44921875,
+                "source_type": "action_schema",
+                "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-3"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-4"
+      },
+      {
+        "actions": [
+          {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.59,
+            "label": "CSV 로그에 실행 시각 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "CSV 로그 파일에 현재 날짜와 시간을 기록해 각 알림 실행을 추적한다.",
+            "sources": [
+              {
+                "score": 0.58984375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-5"
+      },
+      {
+        "actions": [
+          {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.56,
+            "label": "Excel 통합 문서 열기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일함 로그인 정보가 저장된 Excel 통합문서를 열어야 하는 단계이므로 해당 파일을 기준으로 Excel 세션을 연다.",
+            "sources": [
+              {
+                "score": 0.55859375,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-6"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-7"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-8"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-9"
+      },
+      {
+        "actions": [
+          {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.5,
+            "label": "Outlook 메일함 접속",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "mailbox",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "Excel 통합문서에서 읽은 자격 증명으로 Outlook 메일함에 접속해야 하므로 Outlook 연결 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.5,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-10"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-11"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-12"
+      },
+      {
+        "actions": [
+          {
+            "action": "getjobstatusDbricks",
+            "children": [],
+            "confidence": 0.57,
+            "label": "실행 상태 조회",
+            "order": 1,
+            "package": "Databricks",
+            "parameters": [
+              {
+                "label": null,
+                "name": "session",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "runId",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "실행 상태 또는 실패 상세를 기록하기 위해 먼저 Databricks 작업 실행 상태를 조회한다.",
+            "sources": [
+              {
+                "score": 0.5703125,
+                "source_type": "action_schema",
+                "title": "Databricks - 작업 실행 상태 가져오기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/databricks-package/getjobstatus-dbricks"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-13"
+      },
+      {
+        "actions": [
+          {
+            "action": "emailDisconnectAction",
+            "children": [],
+            "confidence": 0.54,
+            "label": "메일함 세션 닫기",
+            "order": 1,
+            "package": "Email",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "알림 표시가 끝나면 Outlook 메일함 세션을 닫아 종료된 메일함 세션으로 만든다.",
+            "sources": [
+              {
+                "score": 0.53515625,
+                "source_type": "action_schema",
+                "title": "Email - 연결 끊기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-14"
+      },
+      {
+        "actions": [
+          {
+            "action": "excelAdvPkgBrkWrbkLinks",
+            "children": [],
+            "confidence": 0.54,
+            "label": "통합 문서 링크 끊기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "workbookLinkBreak",
+                "value": "all",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "통합문서를 닫고 파일 리소스를 해제하려면 열린 통합문서의 링크를 끊어 리소스를 해제한다.",
+            "sources": [
+              {
+                "score": 0.5390625,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 링크 끊기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-15"
+      },
+      {
+        "actions": [
+          {
+            "action": "errorHandlerCatch",
+            "children": [],
+            "confidence": 0.42,
+            "label": "오류 시 기록",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "접속 또는 자격 증명 조회 실패 시 종료 전에 오류를 기록하는 단계이므로 오류 처리기에서 예외를 받아 후속 기록 작업을 수행한다.",
+            "sources": [
+              {
+                "score": 0.423828125,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-16"
+      }
+    ],
+    "variables": [
+      {
+        "description": "지정된 로컬 경로를 작업 루트로 사용해 이후 단계에서 참조할 경로",
+        "direction": "local",
+        "name": "작업 루트 경로",
+        "type": "STRING"
+      },
+      {
+        "description": "작업 루트 경로",
+        "direction": "input",
+        "name": "workRootPath",
+        "type": "STRING"
+      },
+      {
+        "description": "실행 시각을 기록할 대상 CSV 파일 경로",
+        "direction": "input",
+        "name": "CSV 로그 파일",
+        "type": "STRING"
+      },
+      {
+        "description": "열린 Excel 통합문서",
+        "direction": "output",
+        "name": "openedWorkbook",
+        "type": "STRING"
+      },
+      {
+        "description": "Excel 통합문서에서 읽어낸 사용자 ID",
+        "direction": "output",
+        "name": "userId",
+        "type": "STRING"
+      },
+      {
+        "description": "열린 Excel 통합문서에서 읽어낸 메일 세션용 비밀번호",
+        "direction": "output",
+        "name": "password",
+        "type": "STRING"
+      },
+      {
+        "description": "유지할 Excel 파일 경로",
+        "direction": "input",
+        "name": "excelFilePath",
+        "type": "STRING"
+      },
+      {
+        "description": "유지할 출력 경로",
+        "direction": "input",
+        "name": "outputPath",
+        "type": "STRING"
+      },
+      {
+        "description": "Outlook 메일함 접속 결과 세션",
+        "direction": "local",
+        "name": "outlookSession",
+        "type": "SESSION"
+      },
+      {
+        "description": "최신 메일의 발신자, 제목, 본문 미리보기 등 상세 정보",
+        "direction": "output",
+        "name": "latestMailDetail",
+        "type": "STRING"
+      },
+      {
+        "description": "읽은 이메일의 상세 정보",
+        "direction": "input",
+        "name": "mailDetails",
+        "type": "STRING"
+      },
+      {
+        "description": "Databricks 세션",
+        "direction": "input",
+        "name": "session",
+        "type": "SESSION"
+      },
+      {
+        "description": "작업 실행 ID",
+        "direction": "input",
+        "name": "runId",
+        "type": "STRING"
+      },
+      {
+        "description": "닫을 Outlook 메일함 세션",
+        "direction": "input",
+        "name": "Outlook 메일함 세션",
+        "type": "SESSION"
+      },
+      {
+        "description": "열린 Excel 통합문서 세션",
+        "direction": "input",
+        "name": "sessionName",
+        "type": "SESSION"
+      },
+      {
+        "description": "오류 로그에 남길 접속 실패 내용",
+        "direction": "input",
+        "name": "접속 실패 정보",
+        "type": "STRING"
+      },
+      {
+        "description": "오류 로그에 남길 자격 증명 조회 실패 내용",
+        "direction": "input",
+        "name": "자격 증명 조회 실패 정보",
+        "type": "STRING"
+      },
+      {
+        "description": "오류 내용을 기록할 로그 파일 경로 또는 로그 대상",
+        "direction": "input",
+        "name": "오류 로그",
+        "type": "STRING"
+      }
+    ]
+  },
+  "parent_version": 1,
+  "run_id": "runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier",
+  "runner": "runner_v2",
+  "session_id": "0484a5a1-8bbe-413d-9c6f-7461e328274e",
+  "source": "backend_recommendation",
+  "source_file": "runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend.json",
+  "sources": [
+    {
+      "score": 0.44921875,
+      "source_type": "action_schema",
+      "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+    },
+    {
+      "score": 0.58984375,
+      "source_type": "action_schema",
+      "title": "Logging - 파일에 텍스트 기록 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.55859375,
+      "source_type": "action_schema",
+      "title": "Excel advanced - 통합 문서 생성",
+      "url": ""
+    },
+    {
+      "score": 0.5,
+      "source_type": "action_schema",
+      "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+    },
+    {
+      "score": 0.5703125,
+      "source_type": "action_schema",
+      "title": "Databricks - 작업 실행 상태 가져오기 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/databricks-package/getjobstatus-dbricks"
+    },
+    {
+      "score": 0.53515625,
+      "source_type": "action_schema",
+      "title": "Email - 연결 끊기 작업",
+      "url": ""
+    },
+    {
+      "score": 0.5390625,
+      "source_type": "action_schema",
+      "title": "Excel advanced - 통합 문서 링크 끊기 작업",
+      "url": ""
+    },
+    {
+      "score": 0.423828125,
+      "source_type": "action_schema",
+      "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+      "url": ""
+    }
+  ],
+  "steps": [
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-1"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-1"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-2"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-2"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-3"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "cloudOpeningCsvTextFile",
+            "children": [],
+            "confidence": 0.45,
+            "label": "ErrorLog.csv 파일 열기",
+            "order": 1,
+            "package": "CSV/TXT",
+            "parameters": [
+              {
+                "label": null,
+                "name": "source",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "delimiter",
+                "value": "쉼표",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "작업 루트 아래에 ErrorLog.csv 파일을 만들기 위해 CSV/TXT 파일 열기 작업을 사용한다.",
+            "sources": [
+              {
+                "score": 0.44921875,
+                "source_type": "action_schema",
+                "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-3"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "cloudOpeningCsvTextFile",
+          "attributes": [
+            {
+              "label": null,
+              "name": "source",
+              "original_parameter": {
+                "label": null,
+                "name": "source",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "delimiter",
+              "original_parameter": {
+                "label": null,
+                "name": "delimiter",
+                "value": "쉼표",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "쉼표",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "encoding",
+              "original_parameter": {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "UTF8",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.45,
+                  "label": "ErrorLog.csv 파일 열기",
+                  "order": 1,
+                  "rationale": "작업 루트 아래에 ErrorLog.csv 파일을 만들기 위해 CSV/TXT 파일 열기 작업을 사용한다.",
+                  "sources": [
+                    {
+                      "score": 0.44921875,
+                      "source_type": "action_schema",
+                      "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudOpeningCsvTextFile",
+            "children": [],
+            "confidence": 0.45,
+            "label": "ErrorLog.csv 파일 열기",
+            "order": 1,
+            "package": "CSV/TXT",
+            "parameters": [
+              {
+                "label": null,
+                "name": "source",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "delimiter",
+                "value": "쉼표",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "작업 루트 아래에 ErrorLog.csv 파일을 만들기 위해 CSV/TXT 파일 열기 작업을 사용한다.",
+            "sources": [
+              {
+                "score": 0.44921875,
+                "source_type": "action_schema",
+                "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file"
+              }
+            ]
+          },
+          "package": "CSV/TXT",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-4"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-4"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-5"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.59,
+            "label": "CSV 로그에 실행 시각 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "CSV 로그 파일에 현재 날짜와 시간을 기록해 각 알림 실행을 추적한다.",
+            "sources": [
+              {
+                "score": 0.58984375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-5"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "cloudInsertingLogToFileCommand",
+          "attributes": [
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "textToLog",
+              "original_parameter": {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "addTimestamp",
+              "original_parameter": {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 로그 파일에 추가",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "encoding",
+              "original_parameter": {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "UTF8",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.59,
+                  "label": "CSV 로그에 실행 시각 기록",
+                  "order": 1,
+                  "rationale": "CSV 로그 파일에 현재 날짜와 시간을 기록해 각 알림 실행을 추적한다.",
+                  "sources": [
+                    {
+                      "score": 0.58984375,
+                      "source_type": "action_schema",
+                      "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.59,
+            "label": "CSV 로그에 실행 시각 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "CSV 로그 파일에 현재 날짜와 시간을 기록해 각 알림 실행을 추적한다.",
+            "sources": [
+              {
+                "score": 0.58984375,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Logging",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-6"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.56,
+            "label": "Excel 통합 문서 열기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일함 로그인 정보가 저장된 Excel 통합문서를 열어야 하는 단계이므로 해당 파일을 기준으로 Excel 세션을 연다.",
+            "sources": [
+              {
+                "score": 0.55859375,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-6"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "excelAdvancedPackageCreateWorkbookAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "sessionType",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionType",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.56,
+                  "label": "Excel 통합 문서 열기",
+                  "order": 1,
+                  "rationale": "메일함 로그인 정보가 저장된 Excel 통합문서를 열어야 하는 단계이므로 해당 파일을 기준으로 Excel 세션을 연다.",
+                  "sources": [
+                    {
+                      "score": 0.55859375,
+                      "source_type": "action_schema",
+                      "title": "Excel advanced - 통합 문서 생성",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.56,
+            "label": "Excel 통합 문서 열기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "메일함 로그인 정보가 저장된 Excel 통합문서를 열어야 하는 단계이므로 해당 파일을 기준으로 Excel 세션을 연다.",
+            "sources": [
+              {
+                "score": 0.55859375,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Excel advanced",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-7"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-7"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-8"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-8"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-9"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-9"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-10"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.5,
+            "label": "Outlook 메일함 접속",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "mailbox",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "Excel 통합문서에서 읽은 자격 증명으로 Outlook 메일함에 접속해야 하므로 Outlook 연결 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.5,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-10"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "macMsOutlookConnectDisconnect",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "mailbox",
+              "original_parameter": {
+                "label": null,
+                "name": "mailbox",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.5,
+                  "label": "Outlook 메일함 접속",
+                  "order": 1,
+                  "rationale": "Excel 통합문서에서 읽은 자격 증명으로 Outlook 메일함에 접속해야 하므로 Outlook 연결 액션을 사용한다.",
+                  "sources": [
+                    {
+                      "score": 0.5,
+                      "source_type": "action_schema",
+                      "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.5,
+            "label": "Outlook 메일함 접속",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "mailbox",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "Excel 통합문서에서 읽은 자격 증명으로 Outlook 메일함에 접속해야 하므로 Outlook 연결 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.5,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          },
+          "package": "Microsoft Outlook (macOS)",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-11"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-11"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-12"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-12"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-13"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "getjobstatusDbricks",
+            "children": [],
+            "confidence": 0.57,
+            "label": "실행 상태 조회",
+            "order": 1,
+            "package": "Databricks",
+            "parameters": [
+              {
+                "label": null,
+                "name": "session",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "runId",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "실행 상태 또는 실패 상세를 기록하기 위해 먼저 Databricks 작업 실행 상태를 조회한다.",
+            "sources": [
+              {
+                "score": 0.5703125,
+                "source_type": "action_schema",
+                "title": "Databricks - 작업 실행 상태 가져오기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/databricks-package/getjobstatus-dbricks"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-13"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "getjobstatusDbricks",
+          "attributes": [
+            {
+              "label": null,
+              "name": "session",
+              "original_parameter": {
+                "label": null,
+                "name": "session",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "runId",
+              "original_parameter": {
+                "label": null,
+                "name": "runId",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.57,
+                  "label": "실행 상태 조회",
+                  "order": 1,
+                  "rationale": "실행 상태 또는 실패 상세를 기록하기 위해 먼저 Databricks 작업 실행 상태를 조회한다.",
+                  "sources": [
+                    {
+                      "score": 0.5703125,
+                      "source_type": "action_schema",
+                      "title": "Databricks - 작업 실행 상태 가져오기 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/databricks-package/getjobstatus-dbricks"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "getjobstatusDbricks",
+            "children": [],
+            "confidence": 0.57,
+            "label": "실행 상태 조회",
+            "order": 1,
+            "package": "Databricks",
+            "parameters": [
+              {
+                "label": null,
+                "name": "session",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "runId",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "실행 상태 또는 실패 상세를 기록하기 위해 먼저 Databricks 작업 실행 상태를 조회한다.",
+            "sources": [
+              {
+                "score": 0.5703125,
+                "source_type": "action_schema",
+                "title": "Databricks - 작업 실행 상태 가져오기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/databricks-package/getjobstatus-dbricks"
+              }
+            ]
+          },
+          "package": "Databricks",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-14"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "emailDisconnectAction",
+            "children": [],
+            "confidence": 0.54,
+            "label": "메일함 세션 닫기",
+            "order": 1,
+            "package": "Email",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "알림 표시가 끝나면 Outlook 메일함 세션을 닫아 종료된 메일함 세션으로 만든다.",
+            "sources": [
+              {
+                "score": 0.53515625,
+                "source_type": "action_schema",
+                "title": "Email - 연결 끊기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-14"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "emailDisconnectAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.54,
+                  "label": "메일함 세션 닫기",
+                  "order": 1,
+                  "rationale": "알림 표시가 끝나면 Outlook 메일함 세션을 닫아 종료된 메일함 세션으로 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.53515625,
+                      "source_type": "action_schema",
+                      "title": "Email - 연결 끊기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "emailDisconnectAction",
+            "children": [],
+            "confidence": 0.54,
+            "label": "메일함 세션 닫기",
+            "order": 1,
+            "package": "Email",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "알림 표시가 끝나면 Outlook 메일함 세션을 닫아 종료된 메일함 세션으로 만든다.",
+            "sources": [
+              {
+                "score": 0.53515625,
+                "source_type": "action_schema",
+                "title": "Email - 연결 끊기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Email",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-15"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "excelAdvPkgBrkWrbkLinks",
+            "children": [],
+            "confidence": 0.54,
+            "label": "통합 문서 링크 끊기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "workbookLinkBreak",
+                "value": "all",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "통합문서를 닫고 파일 리소스를 해제하려면 열린 통합문서의 링크를 끊어 리소스를 해제한다.",
+            "sources": [
+              {
+                "score": 0.5390625,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 링크 끊기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-15"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "excelAdvPkgBrkWrbkLinks",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "workbookLinkBreak",
+              "original_parameter": {
+                "label": null,
+                "name": "workbookLinkBreak",
+                "value": "all",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "all",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.54,
+                  "label": "통합 문서 링크 끊기",
+                  "order": 1,
+                  "rationale": "통합문서를 닫고 파일 리소스를 해제하려면 열린 통합문서의 링크를 끊어 리소스를 해제한다.",
+                  "sources": [
+                    {
+                      "score": 0.5390625,
+                      "source_type": "action_schema",
+                      "title": "Excel advanced - 통합 문서 링크 끊기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "excelAdvPkgBrkWrbkLinks",
+            "children": [],
+            "confidence": 0.54,
+            "label": "통합 문서 링크 끊기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "workbookLinkBreak",
+                "value": "all",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "통합문서를 닫고 파일 리소스를 해제하려면 열린 통합문서의 링크를 끊어 리소스를 해제한다.",
+            "sources": [
+              {
+                "score": 0.5390625,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 링크 끊기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Excel advanced",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-16"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "errorHandlerCatch",
+            "children": [],
+            "confidence": 0.42,
+            "label": "오류 시 기록",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "접속 또는 자격 증명 조회 실패 시 종료 전에 오류를 기록하는 단계이므로 오류 처리기에서 예외를 받아 후속 기록 작업을 수행한다.",
+            "sources": [
+              {
+                "score": 0.423828125,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-16"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "errorHandlerCatch",
+          "attributes": [
+            {
+              "label": null,
+              "name": "exception",
+              "original_parameter": {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.42,
+                  "label": "오류 시 기록",
+                  "order": 1,
+                  "rationale": "접속 또는 자격 증명 조회 실패 시 종료 전에 오류를 기록하는 단계이므로 오류 처리기에서 예외를 받아 후속 기록 작업을 수행한다.",
+                  "sources": [
+                    {
+                      "score": 0.423828125,
+                      "source_type": "action_schema",
+                      "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "errorHandlerCatch",
+            "children": [],
+            "confidence": 0.42,
+            "label": "오류 시 기록",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "접속 또는 자격 증명 조회 실패 시 종료 전에 오류를 기록하는 단계이므로 오류 처리기에서 예외를 받아 후속 기록 작업을 수행한다.",
+            "sources": [
+              {
+                "score": 0.423828125,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Error handler",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    }
+  ],
+  "triggers": [],
+  "usage_gauge": {
+    "compact_recommended": false,
+    "compact_required": false,
+    "intake_tokens": 1924,
+    "limit_tokens": 6000,
+    "ratio": 0.3207
+  },
+  "variables": [
+    {
+      "description": "지정된 로컬 경로를 작업 루트로 사용해 이후 단계에서 참조할 경로",
+      "direction": "local",
+      "name": "작업 루트 경로",
+      "type": "STRING"
+    },
+    {
+      "description": "작업 루트 경로",
+      "direction": "input",
+      "name": "workRootPath",
+      "type": "STRING"
+    },
+    {
+      "description": "실행 시각을 기록할 대상 CSV 파일 경로",
+      "direction": "input",
+      "name": "CSV 로그 파일",
+      "type": "STRING"
+    },
+    {
+      "description": "열린 Excel 통합문서",
+      "direction": "output",
+      "name": "openedWorkbook",
+      "type": "STRING"
+    },
+    {
+      "description": "Excel 통합문서에서 읽어낸 사용자 ID",
+      "direction": "output",
+      "name": "userId",
+      "type": "STRING"
+    },
+    {
+      "description": "열린 Excel 통합문서에서 읽어낸 메일 세션용 비밀번호",
+      "direction": "output",
+      "name": "password",
+      "type": "STRING"
+    },
+    {
+      "description": "유지할 Excel 파일 경로",
+      "direction": "input",
+      "name": "excelFilePath",
+      "type": "STRING"
+    },
+    {
+      "description": "유지할 출력 경로",
+      "direction": "input",
+      "name": "outputPath",
+      "type": "STRING"
+    },
+    {
+      "description": "Outlook 메일함 접속 결과 세션",
+      "direction": "local",
+      "name": "outlookSession",
+      "type": "SESSION"
+    },
+    {
+      "description": "최신 메일의 발신자, 제목, 본문 미리보기 등 상세 정보",
+      "direction": "output",
+      "name": "latestMailDetail",
+      "type": "STRING"
+    },
+    {
+      "description": "읽은 이메일의 상세 정보",
+      "direction": "input",
+      "name": "mailDetails",
+      "type": "STRING"
+    },
+    {
+      "description": "Databricks 세션",
+      "direction": "input",
+      "name": "session",
+      "type": "SESSION"
+    },
+    {
+      "description": "작업 실행 ID",
+      "direction": "input",
+      "name": "runId",
+      "type": "STRING"
+    },
+    {
+      "description": "닫을 Outlook 메일함 세션",
+      "direction": "input",
+      "name": "Outlook 메일함 세션",
+      "type": "SESSION"
+    },
+    {
+      "description": "열린 Excel 통합문서 세션",
+      "direction": "input",
+      "name": "sessionName",
+      "type": "SESSION"
+    },
+    {
+      "description": "오류 로그에 남길 접속 실패 내용",
+      "direction": "input",
+      "name": "접속 실패 정보",
+      "type": "STRING"
+    },
+    {
+      "description": "오류 로그에 남길 자격 증명 조회 실패 내용",
+      "direction": "input",
+      "name": "자격 증명 조회 실패 정보",
+      "type": "STRING"
+    },
+    {
+      "description": "오류 내용을 기록할 로그 파일 경로 또는 로그 대상",
+      "direction": "input",
+      "name": "오류 로그",
+      "type": "STRING"
+    }
+  ]
+}

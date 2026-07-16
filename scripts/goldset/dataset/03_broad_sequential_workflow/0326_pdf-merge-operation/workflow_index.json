@@ -1,0 +1,14 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0326_pdf-merge-operation",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "PDF Merge Operation",
+      "manual_dependencies": [],
+      "output_file": "workflows/PDF Merge Operation.json",
+      "scanned_dependencies": [
+        "Configuration.txt"
+      ]
+    }
+  ]
+}

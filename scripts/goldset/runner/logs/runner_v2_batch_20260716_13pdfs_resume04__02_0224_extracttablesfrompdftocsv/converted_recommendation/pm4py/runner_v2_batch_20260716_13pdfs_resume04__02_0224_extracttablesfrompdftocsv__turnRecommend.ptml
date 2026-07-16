@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="c7717612-98d5-4324-8245-f9cd286b7b6e" root="560aa453-1bca-4f27-a699-267ad075bb38" id="2b841783-bc38-47c6-bb81-3e3a113e1529">
+    <sequence name="" id="560aa453-1bca-4f27-a699-267ad075bb38"/>
+    <sequence name="" id="82b2b1b7-1a88-4dc2-91ea-9947f335f7f9"/>
+    <manualTask name="Application.applicationPackageOpenProgramFileAction" id="8123b936-e093-404f-9e61-1e2dc843fc35"/>
+    <sequence name="" id="9a11d234-7ec7-42f3-8806-545fef39b8d8"/>
+    <manualTask name="Dictionary.dictionaryPut" id="5d3e9470-f2d5-4af2-888c-852c9a00573a"/>
+    <manualTask name="Dictionary.dictionaryPut" id="13b625e0-191a-4bd0-a7df-42b55ae39856"/>
+    <manualTask name="Dictionary.dictionaryPut" id="c51a3b05-cba4-4e62-b38c-c066fe713e86"/>
+    <manualTask name="Message box.usingMessageBoxAction" id="b807655e-681d-4abd-b4d5-10b7eb972fda"/>
+    <manualTask name="Browser.browserPackageCloseAction" id="af72d947-c842-4a9d-bac7-c6175b9481c9"/>
+    <parentsNode id="6c4e7737-4b08-4417-95ed-49d4cd52c00c" sourceId="560aa453-1bca-4f27-a699-267ad075bb38" targetId="82b2b1b7-1a88-4dc2-91ea-9947f335f7f9"/>
+    <parentsNode id="f65d2ba6-11fb-4e80-b33d-58895eb95c9b" sourceId="560aa453-1bca-4f27-a699-267ad075bb38" targetId="8123b936-e093-404f-9e61-1e2dc843fc35"/>
+    <parentsNode id="9234869c-62f5-4bfd-800c-c0e6cab93245" sourceId="560aa453-1bca-4f27-a699-267ad075bb38" targetId="9a11d234-7ec7-42f3-8806-545fef39b8d8"/>
+    <parentsNode id="7df88136-d79d-4634-97b5-bae7f6b3cd7e" sourceId="82b2b1b7-1a88-4dc2-91ea-9947f335f7f9" targetId="5d3e9470-f2d5-4af2-888c-852c9a00573a"/>
+    <parentsNode id="a2de1733-5def-4e8e-84e0-7ece558c5101" sourceId="82b2b1b7-1a88-4dc2-91ea-9947f335f7f9" targetId="13b625e0-191a-4bd0-a7df-42b55ae39856"/>
+    <parentsNode id="4296d189-c5c9-4237-8865-6a7a9c9c4d89" sourceId="82b2b1b7-1a88-4dc2-91ea-9947f335f7f9" targetId="c51a3b05-cba4-4e62-b38c-c066fe713e86"/>
+    <parentsNode id="5d83fb79-532a-4444-9aaa-2272eede0927" sourceId="9a11d234-7ec7-42f3-8806-545fef39b8d8" targetId="b807655e-681d-4abd-b4d5-10b7eb972fda"/>
+    <parentsNode id="c77ee758-f2fd-4e24-821a-fb36b43ea895" sourceId="9a11d234-7ec7-42f3-8806-545fef39b8d8" targetId="af72d947-c842-4a9d-bac7-c6175b9481c9"/>
+  </processTree>
+</ptml>

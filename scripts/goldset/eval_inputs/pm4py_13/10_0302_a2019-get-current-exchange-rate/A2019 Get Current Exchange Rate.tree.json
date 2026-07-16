@@ -1,0 +1,120 @@
+{
+  "operator": "xor",
+  "label": null,
+  "children": [
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "System.systemInformation",
+          "children": []
+        },
+        {
+          "operator": "xor",
+          "label": null,
+          "children": [
+            {
+              "operator": null,
+              "label": "Folder.createFolder",
+              "children": []
+            }
+          ]
+        },
+        {
+          "operator": "xor",
+          "label": null,
+          "children": [
+            {
+              "operator": null,
+              "label": "Folder.createFolder",
+              "children": []
+            }
+          ]
+        },
+        {
+          "operator": null,
+          "label": "String.assign",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "String.assign",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "String.assign",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Dictionary.put",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Dictionary.put",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Dictionary.put",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Dictionary.put",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "DLL.Open",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "DLL.Open",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "DLL.Run function",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "MessageBox.messageBox",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "DLL.Close",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "DLL.Close",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Number.toString",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "LogToFile.logToFile",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

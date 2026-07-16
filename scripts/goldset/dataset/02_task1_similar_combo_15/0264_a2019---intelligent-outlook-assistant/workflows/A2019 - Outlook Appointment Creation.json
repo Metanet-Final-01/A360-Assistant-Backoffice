@@ -1,0 +1,484 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "formVar",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "fAppointementSelect"
+          }
+        },
+        {
+          "name": "alwaysOnTop",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "uiFormDisplay",
+      "disabled": false,
+      "packageName": "Forms",
+      "uid": "693ba9bb-7b83-4ce1-ad19-2321ccf88e10"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "formId",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "fAppointementSelect"
+                  }
+                },
+                {
+                  "name": "formElementId",
+                  "value": {
+                    "formElementId": "Button0",
+                    "formElementType": "Button",
+                    "type": "FORMELEMENT"
+                  }
+                },
+                {
+                  "name": "clickAction",
+                  "value": {
+                    "string": "onclick",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "trigger",
+              "value": {
+                "packageName": "Forms",
+                "triggerName": "formEvents",
+                "type": "TRIGGER"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "formVar",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "fAppointementSelect"
+                  }
+                },
+                {
+                  "name": "formElementId",
+                  "value": {
+                    "formElementId": "TextBox0",
+                    "formElementType": "TextBox",
+                    "type": "FORMELEMENT"
+                  }
+                }
+              ],
+              "commandName": "uiformGetValue",
+              "disabled": false,
+              "packageName": "Forms",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sAppTime"
+              },
+              "uid": "52c695ab-abab-45a3-a746-b86453464bde"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "formVar",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "fAppointementSelect"
+                  }
+                },
+                {
+                  "name": "formElementId",
+                  "value": {
+                    "formElementId": "TextBox1",
+                    "formElementType": "TextBox",
+                    "type": "FORMELEMENT"
+                  }
+                }
+              ],
+              "commandName": "uiformGetValue",
+              "disabled": false,
+              "packageName": "Forms",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sApptSub"
+              },
+              "uid": "88140a25-3204-489d-a412-1878d8b2cf20"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "formVar",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "fAppointementSelect"
+                  }
+                },
+                {
+                  "name": "formElementId",
+                  "value": {
+                    "formElementId": "TextBox2",
+                    "formElementType": "TextBox",
+                    "type": "FORMELEMENT"
+                  }
+                }
+              ],
+              "commandName": "uiformGetValue",
+              "disabled": false,
+              "packageName": "Forms",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sApptDurn"
+              },
+              "uid": "b7cbc89b-1cc5-4dcc-b6db-fe981d257ffd"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "formVar",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "fAppointementSelect"
+                  }
+                },
+                {
+                  "name": "formElementId",
+                  "value": {
+                    "formElementId": "TextArea0",
+                    "formElementType": "TextArea",
+                    "type": "FORMELEMENT"
+                  }
+                }
+              ],
+              "commandName": "uiformGetValue",
+              "disabled": false,
+              "packageName": "Forms",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sApptEmail"
+              },
+              "uid": "6ca4d11d-84b2-478f-8a6d-11dac596a104"
+            },
+            {
+              "commandName": "TriggerLoop.commands.break",
+              "disabled": false,
+              "packageName": "TriggerLoop",
+              "uid": "c2fd98de-7e28-4d10-a686-2a5ff11d8572"
+            }
+          ],
+          "commandName": "TriggerLoop.commands.handle",
+          "disabled": false,
+          "packageName": "TriggerLoop",
+          "uid": "aeec80e8-d3b6-4994-b6de-c17a9b3bf3d5"
+        }
+      ],
+      "commandName": "TriggerLoop.commands.loop",
+      "disabled": false,
+      "packageName": "TriggerLoop",
+      "uid": "a7e7dfd8-deb9-4b1f-8a17-18a5cf4f588a"
+    },
+    {
+      "attributes": [
+        {
+          "name": "source",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "dAppDate"
+          }
+        },
+        {
+          "name": "selectPattern",
+          "value": {
+            "string": "CUSTOM",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "patternInput",
+          "value": {
+            "string": "YYYY, MM, dd  hh:mm",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "toString",
+      "disabled": true,
+      "packageName": "Datetime",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "sAppTime"
+      },
+      "uid": "a69fccd7-ce81-4299-9a4c-0b68efe37793"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sourceDictionary",
+          "value": {
+            "dictionary": [
+              {
+                "key": "sub",
+                "value": {
+                  "expression": "$sApptSub$",
+                  "type": "STRING"
+                }
+              },
+              {
+                "key": "dur",
+                "value": {
+                  "expression": "$sApptDurn$",
+                  "type": "STRING"
+                }
+              },
+              {
+                "key": "loc",
+                "value": {
+                  "expression": "$sAppLoc$",
+                  "type": "STRING"
+                }
+              },
+              {
+                "key": "send_email",
+                "value": {
+                  "expression": "$sApptEmail$",
+                  "type": "STRING"
+                }
+              },
+              {
+                "key": "app_date",
+                "value": {
+                  "expression": "$sAppTime$",
+                  "type": "STRING"
+                }
+              }
+            ],
+            "type": "DICTIONARY"
+          }
+        }
+      ],
+      "commandName": "assign",
+      "disabled": false,
+      "packageName": "Dictionary",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "dInput"
+      },
+      "uid": "b1ded30d-06a4-4a76-a6e7-70fe4708055c"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "scriptOption",
+          "value": {
+            "string": "SCRIPT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "script",
+          "value": {
+            "string": "import win32com.client\ndef appointment(dateapp):\n    oOutlook = win32com.client.Dispatch(\"Outlook.Application\")\n    appt = oOutlook.CreateItem(1) # 1 - olAppointmentItem\n    appt.Start = dateapp['app_date']\n    appt.Subject = dateapp['sub']\n    appt.Duration = dateapp['dur']\n    appt.Location = dateapp['loc']\n    appt.MeetingStatus = 1 # 1 - olMeeting; Changing the appointment to meeting\n    #only after changing the meeting status recipients can be added\n    appt.Recipients.Add(dateapp['send_email'])\n    appt.Save()\n    appt.Send()\n    appt.Save()\n\n\n",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "version",
+          "value": {
+            "string": "3",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "python.commands.openScript",
+      "disabled": false,
+      "packageName": "Python",
+      "uid": "37152de9-6546-4526-b11b-ebf1b2189240"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "functionName",
+          "value": {
+            "string": "appointment",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "argument",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "dInput"
+          }
+        }
+      ],
+      "commandName": "python.commands.executeFunction",
+      "disabled": false,
+      "packageName": "Python",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "prompt-assignment"
+      },
+      "uid": "9ed427cb-81e4-45b0-9f31-d48b4f2d5c98"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Datetime",
+      "version": "2.2.0-20200831-031025"
+    },
+    {
+      "name": "Dictionary",
+      "version": "3.2.0-20200831-031027"
+    },
+    {
+      "name": "Forms",
+      "version": "2.16.0-20200914-151814"
+    },
+    {
+      "name": "Python",
+      "version": "2.1.0-20200831-031850"
+    },
+    {
+      "name": "TriggerLoop",
+      "version": "0.5.0-20200907-072955"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sApptSub",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sApptDurn",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sAppLoc",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sApptEmail",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sAppTime",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "2020-10-24T19:15:00+05:30[Asia/Calcutta]",
+        "type": "DATETIME"
+      },
+      "description": "",
+      "input": false,
+      "name": "dAppDate",
+      "output": false,
+      "readOnly": false,
+      "type": "DATETIME"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dInput",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "file": {
+          "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20Intelligent%20Outlook%20Assistant%20-%20KLOUDPAD%20Mobility%20Research%20Pvt%20Ltd/Appointment%20Selector",
+          "type": "FILE"
+        },
+        "type": "FORM"
+      },
+      "description": "",
+      "input": false,
+      "name": "fAppointementSelect",
+      "output": false,
+      "readOnly": false,
+      "type": "FORM"
+    }
+  ],
+  "workItemTemplateName": null
+}

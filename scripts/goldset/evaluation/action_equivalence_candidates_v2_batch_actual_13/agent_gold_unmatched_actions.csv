@@ -1,0 +1,46 @@
+﻿agent_action,agent_count,agent_family,agent_semantics
+Application.applicationPackageOpenProgramFileAction,2,application,open
+Browser.browserPackageCloseAction,4,browser,close
+Browser.browserPackageRunJavascriptAction,6,browser,run
+CSV/TXT.cloudOpeningCsvTextFile,1,csvtxt,open
+Data Table.cloudWriteToFileAction,6,datatable,
+Data Table.dataTablePackageSetValueSinlgeCellAction,1,datatable,
+Datetime.cloudUsingAddAction,1,datetime,
+Datetime.getActionInDatetime,3,datetime,read
+Email.emailDisconnectAction,1,email,
+Excel advanced.excelAdvancedGetWorksheetAsDataTable,1,excel,
+Excel advanced.excelAdvancedPackageGetSingleCellAction,2,excel,
+File.filePackageCopyControlRoomFileAction,2,file,
+Folder.cloudZipFilesAndFolders,1,folder,
+JSON utilities.convertJsonToDictionary,1,jsonutilities,
+JSON utilities.jsonGetNodeValue,6,jsonutilities,
+JSON utilities.jsonStartSession,2,jsonutilities,
+JSON utilities.jsonValidate,2,jsonutilities,
+Jira.jiraCreateIssue,1,jira,write
+List.listSize,1,list,
+Logging.cloudInsertingLogToFileCommand,5,logging,
+Message box.usingMessageBoxAction,11,messagebox,
+Microsoft 365 Excel package in Automation 360.getWorksheetAsDataTableIn,2,microsoft365excelpackageinautomation360,read
+Microsoft 365 Excel package in Automation 360.office365ExcelClose,2,microsoft365excelpackageinautomation360,close
+Microsoft 365 Excel package in Automation 360.office365ExcelSetCell,1,microsoft365excelpackageinautomation360,write
+Microsoft 365 Excel package in Automation 360.usingOpenWorkbookAction,2,microsoft365excelpackageinautomation360,open
+Microsoft 365 Excel package in Automation 360.writeFromDataTableIn,1,microsoft365excelpackageinautomation360,
+Microsoft 365 Outlook.ms365OutlookDisconnect,1,microsoft365outlook,
+Microsoft 365 Outlook.ms365OutlookSaveAllAttachments,3,microsoft365outlook,
+Number.numberToString,1,number,
+Prompt.promptForFile,1,prompt,
+Prompt.promptForValue,5,prompt,
+Python Script.pythonCloseAction,1,pythonscript,close
+Python Script.pythonOpenAction,1,pythonscript,open
+REST Web Services.cloudUsingGetAction,1,restwebservices,
+System.usingTheGetEnvironmentVariableAction,1,system,
+Task Bot.taskBotPackageStopAction,6,taskbot,
+Wait.waitPackageWaitForConditionAction,1,wait,
+Window.windowClose,1,window,close
+Word.mswordCloseDocument,1,word,close
+Word.mswordInsertText,2,word,
+Word.mswordOpenDocument,1,word,open
+Word.mswordReadTable,1,word,
+Word.mswordSaveDocumentAs,1,word,
+XML.xmlGetSingleNode,2,xml,
+XML.xmlStartSession,1,xml,

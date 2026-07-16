@@ -1,0 +1,187 @@
+{
+  "source": "a360_rpa_goldset",
+  "id": "03_broad_sequential_workflow/05_0393_a2019-twilio-integration/A2019 Twilio Integration",
+  "conversations": [
+    {
+      "role": "system",
+      "content": "You are a helpful and intelligent task planner, and your target is to decompose the assigned task into multiple subtasks for task completion and analyze the precedence relationships among subtasks.\nAt the beginning of your interactions, you will be given the task description and actions list you can take to finish the task, and you should decompose the given task into subtasks that can be accomplished using the provided actions or APIs. And then, you should analyze the precedence relationships among these subtasks, ensuring that each subtask is sequenced correctly relative to others. Based on the analysis, you should construct a workflow consisting of the identified subtasks to complete the task. You should use \"Node: \\n1. <subtask 1>\\n2. <subtask 2>\" to denote subtasks, and use (x,y) to denote that <subtask x> is a predecessor of <subtask y>, (START,x) to indicate the beginning with <subtask x>, and (x,END) to signify the conclusion with <subtask x>. Remember that x, y are numbers.\nYour response should use the following format:\n\nNode:\n1.<subtask 1>\n2.<subtask 2>\n...\nEdges:(START,1) ... (n,END)"
+    },
+    {
+      "role": "user",
+      "content": "Task: A2019 Twilio Integration.json"
+    },
+    {
+      "role": "assistant",
+      "content": "Node:\n1: String.assign\n2: String.assign\n3: MessageBox.messageBox\n4: TaskBot.stopTask\n5: String.assign\n6: String.assign\n7: String.assign\n8: Folder.createFolder\n9: Folder.createFolder\n10: Folder.createFolder\n11: Folder.createFolder\n12: Datetime.toString\n13: Datetime.subtract\n14: Datetime.toString\n15: File.deleteFiles\n16: File.deleteFiles\n17: Twilio.Send SMS from Twilio\n18: Twilio.Place a call from Twilio\n19: MessageBox.messageBox\n20: String.assign\n21: JSONHandler.Initialize\n22: JSONHandler.Query\n23: MessageBox.messageBox\n24: JSONHandler.Query\n25: MessageBox.messageBox\n26: JSONHandler.Query\n27: MessageBox.messageBox\n28: JSONHandler.Query\n29: MessageBox.messageBox\n30: JSONHandler.Query\n31: MessageBox.messageBox\n32: JSONHandler.Query\n33: MessageBox.messageBox\n34: JSONHandler.Query\n35: MessageBox.messageBox\n36: JSONHandler.Query\n37: MessageBox.messageBox\n38: JSONHandler.Set\n39: JSONHandler.Query\n40: MessageBox.messageBox\nEdges:\n(START,1) (1,2) (2,3) (3,4) (4,5) (5,6) (6,7) (7,8) (8,9) (9,10) (10,11) (11,12) (12,13) (13,14) (14,15) (15,16) (16,17) (17,18) (18,19) (19,20) (20,21) (21,22) (22,23) (23,24) (24,25) (25,26) (26,27) (27,28) (28,29) (29,30) (30,31) (31,32) (32,33) (33,34) (34,35) (35,36) (36,37) (37,38) (38,39) (39,40) (40,END)"
+    }
+  ],
+  "meta": {
+    "worfbench_fidelity": "approximated",
+    "control_flow_types": [
+      "if",
+      "try"
+    ],
+    "actions": [
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "TaskBot",
+        "action": "stopTask"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Datetime",
+        "action": "toString"
+      },
+      {
+        "package": "Datetime",
+        "action": "subtract"
+      },
+      {
+        "package": "Datetime",
+        "action": "toString"
+      },
+      {
+        "package": "File",
+        "action": "deleteFiles"
+      },
+      {
+        "package": "File",
+        "action": "deleteFiles"
+      },
+      {
+        "package": "Twilio",
+        "action": "Send SMS from Twilio"
+      },
+      {
+        "package": "Twilio",
+        "action": "Place a call from Twilio"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Initialize"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Set"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      }
+    ]
+  }
+}

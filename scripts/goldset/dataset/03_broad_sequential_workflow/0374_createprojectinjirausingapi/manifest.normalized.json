@@ -1,0 +1,68 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\CreateProjectInJIRAusingAPI",
+      "scannedDependencies": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "DataTable",
+      "path": "bot-command-table-2.0.0-20200624-042148.jar",
+      "version": "2.0.0-20200624-042148"
+    },
+    {
+      "name": "Email",
+      "path": "bot-command-email-2.0.0-20200624-041631.jar",
+      "version": "2.0.0-20200624-041631"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200624-041636.jar",
+      "version": "2.0.0-20200624-041636"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-4.0.0-20200630-062036.jar",
+      "version": "4.0.0-20200630-062036"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-2.0.0-20200624-041924.jar",
+      "version": "2.0.0-20200624-041924"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200624-041925.jar",
+      "version": "2.0.0-20200624-041925"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200624-041934.jar",
+      "version": "2.0.0-20200624-041934"
+    },
+    {
+      "name": "Rest",
+      "path": "bot-command-rest-webservice-3.1.0-20200824-092129.jar",
+      "version": "3.1.0-20200824-092129"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200624-103754.jar",
+      "version": "2.0.0-20200624-103754"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200624-042145.jar",
+      "version": "3.0.0-20200624-042145"
+    },
+    {
+      "name": "XML",
+      "path": "bot-command-xml-2.0.0-20200624-042200.jar",
+      "version": "2.0.0-20200624-042200"
+    }
+  ]
+}

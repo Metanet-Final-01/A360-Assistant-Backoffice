@@ -1,0 +1,24 @@
+String.stringPackageAssignAction
+String.stringPackageAssignAction
+String.stringPackageAssignAction
+String.stringPackageAssignAction
+String.stringPackageAssignAction
+Datetime.cloudConvertDatetimeToString
+Folder.folderCreate
+Folder.folderCreate
+File.filePackageCreateAction
+LogToFile.logToFile
+Folder.folderCreate
+Browser.launchWebsite
+File.downloadTo
+Excel advanced.cloudExcelOpen
+Recorder.capture
+Recorder.capture
+Recorder.capture
+Recorder.capture
+Recorder.capture
+MessageBox.messageBox
+Excel advanced.excelAdvancedPackageSetCellAction
+Number.numberIncrement
+MessageBox.messageBox
+LogToFile.logToFile

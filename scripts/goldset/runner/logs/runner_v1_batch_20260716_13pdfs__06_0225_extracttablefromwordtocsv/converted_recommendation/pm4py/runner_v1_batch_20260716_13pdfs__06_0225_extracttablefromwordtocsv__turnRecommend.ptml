@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="0aad28da-c3a8-485b-954f-e94bc40d7cac" root="531df528-c9b2-422f-9a05-2bb50be2ed17" id="41db763c-3be9-4328-8990-d4079fdf7047">
+    <sequence name="" id="531df528-c9b2-422f-9a05-2bb50be2ed17"/>
+    <manualTask name="Word.mswordOpenDocument" id="a58f608a-2b96-42ed-95fc-e908bde934aa"/>
+    <manualTask name="CSV/TXT.cloudOpeningCsvTextFile" id="5c3fbe03-fd59-462c-9224-8135db2d1dcd"/>
+    <manualTask name="File.filePackageGetPathAction" id="ab722410-c54a-40cd-84e6-51019d7e1635"/>
+    <automaticTask name="" id="12f668ad-9e46-4390-b27b-3171a7d1e470"/>
+    <automaticTask name="" id="dece002f-4b06-4ccc-9f4a-53bb362082ee"/>
+    <automaticTask name="" id="d605f32d-5c7b-4c0d-be1e-739b634eb6c6"/>
+    <automaticTask name="" id="0e5e1695-26d7-4a1a-a188-7dbc217f99c5"/>
+    <sequence name="" id="1eabb223-c2a2-4173-b2ac-9ac49d47d54f"/>
+    <manualTask name="Word.mswordReadText" id="03bca031-a43d-45b2-b9f4-631de1db9d3a"/>
+    <automaticTask name="" id="a90cd196-fb73-47d4-9143-eabf214d03eb"/>
+    <automaticTask name="" id="4321e2f0-0c38-4922-8878-202b227f6745"/>
+    <manualTask name="Word.mswordReadTable" id="3587f227-8882-4572-891f-f704e09710ff"/>
+    <manualTask name="CSV/TXT.cloudOpeningCsvTextFile" id="3d3e4f07-2646-42e2-b039-cfb40accad12"/>
+    <parentsNode id="258bed85-0f80-457a-bbbb-5e112379c819" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="a58f608a-2b96-42ed-95fc-e908bde934aa"/>
+    <parentsNode id="802d7abf-5779-43e9-8b4c-a633d34ce655" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="5c3fbe03-fd59-462c-9224-8135db2d1dcd"/>
+    <parentsNode id="3819533d-fcda-491b-8ba3-93d28e47c4f1" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="ab722410-c54a-40cd-84e6-51019d7e1635"/>
+    <parentsNode id="da9e9e79-68f4-47ba-aef4-e0c11e3d67b3" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="12f668ad-9e46-4390-b27b-3171a7d1e470"/>
+    <parentsNode id="6368bdf3-7ae5-4677-bd7e-073b3c4647e0" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="dece002f-4b06-4ccc-9f4a-53bb362082ee"/>
+    <parentsNode id="83fcb444-959c-49e2-8268-8fa509a08e3f" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="d605f32d-5c7b-4c0d-be1e-739b634eb6c6"/>
+    <parentsNode id="0b88aa2d-28ad-484f-a040-e8635ce29c24" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="0e5e1695-26d7-4a1a-a188-7dbc217f99c5"/>
+    <parentsNode id="0cf585ba-f106-4feb-978e-544b777be046" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="1eabb223-c2a2-4173-b2ac-9ac49d47d54f"/>
+    <parentsNode id="fe651f21-2f3b-44e3-b857-9b7ce19391f7" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="03bca031-a43d-45b2-b9f4-631de1db9d3a"/>
+    <parentsNode id="4924a3df-b108-46d3-8fcc-69181312d5b2" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="a90cd196-fb73-47d4-9143-eabf214d03eb"/>
+    <parentsNode id="87b904aa-2761-482e-81ee-12b69d500056" sourceId="531df528-c9b2-422f-9a05-2bb50be2ed17" targetId="4321e2f0-0c38-4922-8878-202b227f6745"/>
+    <parentsNode id="6cd3d918-1500-448f-aa88-a019ebfbef40" sourceId="1eabb223-c2a2-4173-b2ac-9ac49d47d54f" targetId="3587f227-8882-4572-891f-f704e09710ff"/>
+    <parentsNode id="b07b32f3-b6a8-4dc9-b683-478a3aabc53f" sourceId="1eabb223-c2a2-4173-b2ac-9ac49d47d54f" targetId="3d3e4f07-2646-42e2-b039-cfb40accad12"/>
+  </processTree>
+</ptml>

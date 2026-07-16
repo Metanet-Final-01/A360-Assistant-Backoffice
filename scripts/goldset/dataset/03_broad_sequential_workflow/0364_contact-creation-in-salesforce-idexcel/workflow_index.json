@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0364_contact-creation-in-salesforce-idexcel",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Contact Creation in Salesforce-Idexcel",
+      "manual_dependencies": [],
+      "output_file": "workflows/Contact Creation in Salesforce-Idexcel.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,169 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784137940.7776752" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784137940.7776752</text>
+    </name>
+    <page id="n0">
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <transition id="36f8acf8-5f01-4d38-bb25-8113a869e15c">
+        <name>
+          <text>Microsoft 365 Outlook.ms365OutlookSaveAllAttachments</text>
+        </name>
+      </transition>
+      <transition id="c2367794-e2d4-407d-b4c2-88e7775c77e2">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageReadRowAction</text>
+        </name>
+      </transition>
+      <transition id="186290cd-782b-4fd5-8762-307669f050d4">
+        <name>
+          <text>Message box.usingMessageBoxAction</text>
+        </name>
+      </transition>
+      <transition id="01eb05a7-b2d2-4a87-bf61-c44b824cd81e">
+        <name>
+          <text>XML.xmlStartSession</text>
+        </name>
+      </transition>
+      <transition id="048224d7-7f20-479f-aa29-d497819514db">
+        <name>
+          <text>XML.xmlGetSingleNode</text>
+        </name>
+      </transition>
+      <transition id="622bf3e4-54b8-4139-96b6-9d92a9e31795">
+        <name>
+          <text>XML.xmlGetSingleNode</text>
+        </name>
+      </transition>
+      <transition id="ee3888c2-6bf4-4d2e-ae67-be176d62cc78">
+        <name>
+          <text>Microsoft 365 Outlook.ms365OutlookDisconnect</text>
+        </name>
+      </transition>
+      <transition id="33d00d34-207a-4071-ba05-8dc16b715a91">
+        <name>
+          <text>Excel advanced.cloudExcelOpen</text>
+        </name>
+      </transition>
+      <transition id="5c7ad8bd-6fcb-4b18-9ab7-0fb0e61ebf65">
+        <name>
+          <text>Jira.jiraCreateIssue</text>
+        </name>
+      </transition>
+      <transition id="0e06f001-8956-4fd4-9ebb-2bad2159a7a2">
+        <name>
+          <text>JSON utilities.jsonStartSession</text>
+        </name>
+      </transition>
+      <transition id="f7ad851e-b0d6-42a6-b1f3-feea24894082">
+        <name>
+          <text>JSON utilities.convertJsonToDictionary</text>
+        </name>
+      </transition>
+      <transition id="3837cd44-8514-4808-95ca-a7b286706016">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageCloseAction</text>
+        </name>
+      </transition>
+      <arc id="2614957792512" source="36f8acf8-5f01-4d38-bb25-8113a869e15c" target="p_7"/>
+      <arc id="2614958161024" source="186290cd-782b-4fd5-8762-307669f050d4" target="p_13"/>
+      <arc id="2614957814928" source="p_5" target="048224d7-7f20-479f-aa29-d497819514db"/>
+      <arc id="2614958703008" source="source" target="01eb05a7-b2d2-4a87-bf61-c44b824cd81e"/>
+      <arc id="2614957980704" source="p_12" target="f7ad851e-b0d6-42a6-b1f3-feea24894082"/>
+      <arc id="2614958229552" source="048224d7-7f20-479f-aa29-d497819514db" target="p_3"/>
+      <arc id="2614955501488" source="33d00d34-207a-4071-ba05-8dc16b715a91" target="p_8"/>
+      <arc id="2614955501248" source="p_6" target="33d00d34-207a-4071-ba05-8dc16b715a91"/>
+      <arc id="2614957962944" source="p_10" target="5c7ad8bd-6fcb-4b18-9ab7-0fb0e61ebf65"/>
+      <arc id="2614370599760" source="p_11" target="0e06f001-8956-4fd4-9ebb-2bad2159a7a2"/>
+      <arc id="2614957939024" source="01eb05a7-b2d2-4a87-bf61-c44b824cd81e" target="p_4"/>
+      <arc id="2614957939664" source="p_4" target="622bf3e4-54b8-4139-96b6-9d92a9e31795"/>
+      <arc id="2614958164304" source="p_7" target="ee3888c2-6bf4-4d2e-ae67-be176d62cc78"/>
+      <arc id="2614958164816" source="ee3888c2-6bf4-4d2e-ae67-be176d62cc78" target="p_6"/>
+      <arc id="2614958191824" source="c2367794-e2d4-407d-b4c2-88e7775c77e2" target="p_10"/>
+      <arc id="2614957735376" source="5c7ad8bd-6fcb-4b18-9ab7-0fb0e61ebf65" target="p_11"/>
+      <arc id="2614958439504" source="p_9" target="186290cd-782b-4fd5-8762-307669f050d4"/>
+      <arc id="2614958318928" source="p_13" target="3837cd44-8514-4808-95ca-a7b286706016"/>
+      <arc id="2614958319440" source="3837cd44-8514-4808-95ca-a7b286706016" target="sink"/>
+      <arc id="2614957814624" source="622bf3e4-54b8-4139-96b6-9d92a9e31795" target="p_5"/>
+      <arc id="2614957980528" source="0e06f001-8956-4fd4-9ebb-2bad2159a7a2" target="p_12"/>
+      <arc id="2614957792240" source="p_3" target="36f8acf8-5f01-4d38-bb25-8113a869e15c"/>
+      <arc id="2614958191600" source="p_8" target="c2367794-e2d4-407d-b4c2-88e7775c77e2"/>
+      <arc id="2614958439664" source="f7ad851e-b0d6-42a6-b1f3-feea24894082" target="p_9"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

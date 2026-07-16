@@ -1,0 +1,1192 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "*******Contract Creation Process******************",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "2cd97e25-efb3-4e89-839c-3ac6e96c66e6"
+    },
+    {
+      "attributes": [
+        {
+          "name": "input",
+          "value": {
+            "number": "0",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "commandName": "assignToNumber",
+      "disabled": false,
+      "packageName": "Number",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "nErrorFlag"
+      },
+      "uid": "4523b9a5-ceb0-4802-b347-62da9ad23f57"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$System:AATaskName$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "find",
+          "value": {
+            "string": "^(.*[\\\\\\/])",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isCaseSensitive",
+          "value": {
+            "string": "false",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isRegularExpression",
+          "value": {
+            "string": "true",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "startIndex",
+          "value": {
+            "number": "1",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "count",
+          "value": {
+            "number": "-1",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "replaceWith",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "replace",
+      "disabled": false,
+      "packageName": "String",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "sMasterTaskBot"
+      },
+      "uid": "71cb4008-221f-4cce-a4a3-331240e5c7c8"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "*Error Logging has been handled in subtask",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "4917cf89-49d2-4d91-904f-e21d96ef4358"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "nErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "sErrorMessage"
+            }
+          },
+          "uid": "19845caa-9fd5-4602-b068-c86f2872e0ad"
+        },
+        {
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "SubTask : Send Mail",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "taskbot",
+                      "value": {
+                        "taskbotFile": {
+                          "string": "repository:///Automation%20Anywhere/Bot%20Store/Contract%20Creation%20using%20PS%20Activity%20Guide/SubTask_SendMail",
+                          "type": "FILE"
+                        },
+                        "taskbotInput": {
+                          "dictionary": [
+                            {
+                              "key": "nErrorFlag",
+                              "value": {
+                                "expression": "$dSubTask{nErrorFlag}$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "key": "dUserConfig",
+                              "value": {
+                                "expression": "$dUserConfig$",
+                                "type": "DICTIONARY"
+                              }
+                            },
+                            {
+                              "key": "sErrorMessage",
+                              "value": {
+                                "expression": "$dSubTask{sErrorMessage}$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "type": "DICTIONARY"
+                        },
+                        "type": "TASKBOT"
+                      }
+                    },
+                    {
+                      "name": "repeatOption",
+                      "value": {
+                        "string": "DO_NOT_REPEAT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delayNextRepetition",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "continueOnError",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "runTask",
+                  "disabled": false,
+                  "packageName": "TaskBot",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "dSubTask"
+                  },
+                  "uid": "a093c613-aa4c-4e60-89b9-faf8691824a6"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "4518359a-186a-41f1-a531-839613e5cdaf"
+            }
+          ],
+          "commandName": "finally",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "54a6cd76-494b-4f85-9405-7551701c03dd"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Inital Cleanup - Excel",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "string": "file://taskkill.exe",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "startInPath",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "parameters",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "runApp",
+              "disabled": false,
+              "packageName": "Application",
+              "uid": "300ccc86-4bfc-4bbf-951d-18704a764829"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "f054ae61-a3bb-41a9-be6c-555df1d631f8"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "a13293ce-cb3a-4b57-a800-137b7e32fdce"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "SubTask : 3.ReadUserConfig.atmx",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "taskbot",
+                  "value": {
+                    "taskbotFile": {
+                      "string": "repository:///Automation%20Anywhere/Bot%20Store/Contract%20Creation%20using%20PS%20Activity%20Guide/SubTask_ReadUserConfig",
+                      "type": "FILE"
+                    },
+                    "taskbotInput": {
+                      "type": "DICTIONARY"
+                    },
+                    "type": "TASKBOT"
+                  }
+                },
+                {
+                  "name": "repeatOption",
+                  "value": {
+                    "string": "DO_NOT_REPEAT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayNextRepetition",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "continueOnError",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "runTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dSubTask"
+              },
+              "uid": "5d8fe5f1-d1f4-44e9-bbc5-530203d27a18"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "dSubTask"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "dUserConfig",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "get",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dUserConfig"
+              },
+              "uid": "85675839-4f15-47d8-9482-183e91933b05"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dSubTask{nErrorFlag}$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "message",
+                      "value": {
+                        "expression": "Error Message  : $dSubTask{sErrorMessage}$      Error Line : $dSubTask{nErrorLineNumber}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "exceptionType",
+                      "value": {
+                        "exceptionName": "BotException",
+                        "packageName": "ErrorHandler",
+                        "type": "EXCEPTION"
+                      }
+                    }
+                  ],
+                  "commandName": "throw",
+                  "disabled": false,
+                  "packageName": "ErrorHandler",
+                  "uid": "3155facc-26aa-4da4-8f3c-5c8c2ab6a0b4"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "6a641051-5cf6-445c-b69a-dcb2afd4447d"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "0617bf19-66b9-4917-929f-e771ef1cb865"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Subtask : 4.CreateFolderStructure.atmx",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "taskbot",
+                  "value": {
+                    "taskbotFile": {
+                      "string": "repository:///Automation%20Anywhere/Bot%20Store/Contract%20Creation%20using%20PS%20Activity%20Guide/SubTask_CreateFolderStructure",
+                      "type": "FILE"
+                    },
+                    "taskbotInput": {
+                      "dictionary": [
+                        {
+                          "key": "dUserConfig",
+                          "value": {
+                            "expression": "$dUserConfig$",
+                            "type": "DICTIONARY"
+                          }
+                        }
+                      ],
+                      "type": "DICTIONARY"
+                    },
+                    "type": "TASKBOT"
+                  }
+                },
+                {
+                  "name": "repeatOption",
+                  "value": {
+                    "string": "DO_NOT_REPEAT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayNextRepetition",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "continueOnError",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "runTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dSubTask"
+              },
+              "uid": "91ef7bc3-f15b-438b-a270-d00716341ec9"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dSubTask{nErrorFlag}$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "message",
+                      "value": {
+                        "expression": "Error Message  : $dSubTask{sErrorMessage}$      Error Line : $dSubTask{nErrorLineNumber}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "exceptionType",
+                      "value": {
+                        "exceptionName": "BotException",
+                        "packageName": "ErrorHandler",
+                        "type": "EXCEPTION"
+                      }
+                    }
+                  ],
+                  "commandName": "throw",
+                  "disabled": false,
+                  "packageName": "ErrorHandler",
+                  "uid": "04eb69ad-2d13-447c-91c9-87dd30d2a8bb"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "f4ce0734-4f0a-4251-95ea-d8b164add6fd"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "bb35adc9-ba44-4511-9314-03a7d65e4f70"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Subtask : 5.LoginBot.atmx",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "taskbot",
+                  "value": {
+                    "taskbotFile": {
+                      "string": "repository:///Automation%20Anywhere/Bot%20Store/Contract%20Creation%20using%20PS%20Activity%20Guide/SubTask_LoginBot",
+                      "type": "FILE"
+                    },
+                    "taskbotInput": {
+                      "dictionary": [
+                        {
+                          "key": "dUserConfig",
+                          "value": {
+                            "expression": "$dUserConfig$",
+                            "type": "DICTIONARY"
+                          }
+                        }
+                      ],
+                      "type": "DICTIONARY"
+                    },
+                    "type": "TASKBOT"
+                  }
+                },
+                {
+                  "name": "repeatOption",
+                  "value": {
+                    "string": "DO_NOT_REPEAT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayNextRepetition",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "continueOnError",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "runTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dSubTask"
+              },
+              "uid": "99eba322-ac32-48a8-9f8a-3e54001a1538"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dSubTask{nErrorFlag}$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "message",
+                      "value": {
+                        "expression": "Error Message  : $dSubTask{sErrorMessage}$      Error Line : $dSubTask{nErrorLineNumber}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "exceptionType",
+                      "value": {
+                        "exceptionName": "BotException",
+                        "packageName": "ErrorHandler",
+                        "type": "EXCEPTION"
+                      }
+                    }
+                  ],
+                  "commandName": "throw",
+                  "disabled": false,
+                  "packageName": "ErrorHandler",
+                  "uid": "95c7b91f-7376-4c5a-ae51-07153b1b6820"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "3132dccd-3c8e-4a0a-9909-e00be1f8ba66"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "f9dbf06a-1d22-48af-a7e3-7cae6df4e79b"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "SubTask: 6. Read Input File",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "taskbot",
+                  "value": {
+                    "taskbotFile": {
+                      "string": "repository:///Automation%20Anywhere/Bot%20Store/Contract%20Creation%20using%20PS%20Activity%20Guide/SubTask_ReadInputFile",
+                      "type": "FILE"
+                    },
+                    "taskbotInput": {
+                      "dictionary": [
+                        {
+                          "key": "dUserConfig",
+                          "value": {
+                            "expression": "$dUserConfig$",
+                            "type": "DICTIONARY"
+                          }
+                        }
+                      ],
+                      "type": "DICTIONARY"
+                    },
+                    "type": "TASKBOT"
+                  }
+                },
+                {
+                  "name": "repeatOption",
+                  "value": {
+                    "string": "DO_NOT_REPEAT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayNextRepetition",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "continueOnError",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "runTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dSubTask"
+              },
+              "uid": "939350c5-dfc5-4ef9-830b-3ffc656b0832"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dSubTask{nErrorFlag}$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "message",
+                      "value": {
+                        "expression": "Error Message  : $dSubTask{sErrorMessage}$      Error Line : $dSubTask{nErrorLineNumber}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "exceptionType",
+                      "value": {
+                        "exceptionName": "BotException",
+                        "packageName": "ErrorHandler",
+                        "type": "EXCEPTION"
+                      }
+                    }
+                  ],
+                  "commandName": "throw",
+                  "disabled": false,
+                  "packageName": "ErrorHandler",
+                  "uid": "4d1f80df-9a37-4abe-8124-e259864ad15f"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "adbb28db-0773-4d54-9729-0b51b0488c66"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "78ae396d-d8e6-458a-be69-e4ce8265b06d"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "7002289e-4b3e-40ff-8b08-9fc237eb50a5"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Application",
+      "version": "2.0.0-20200721-221935"
+    },
+    {
+      "name": "Comment",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "Delay",
+      "version": "2.1.0-20200721-221959"
+    },
+    {
+      "name": "Dictionary",
+      "version": "3.0.1-20200721-222000"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "If",
+      "version": "2.0.0-20200721-222021"
+    },
+    {
+      "name": "Number",
+      "version": "2.0.0-20200721-222224"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "version": "3.0.0-20200721-222454"
+    },
+    {
+      "name": "System",
+      "version": "2.0.0-20200721-222454"
+    },
+    {
+      "name": "TaskBot",
+      "version": "2.0.1-20200728-235256"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorFlag",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sMasterTaskBot",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dMainConfig",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dUser",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dUserConfig",
+      "output": true,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dFolder",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dLogin",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dGeneralInformation",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorMessage",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dContractInput",
+      "output": true,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dContractLines",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dAccountDistribution",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dAmountAllocation",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dContractTerms",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dReadInput",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sTaskName",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "ContractNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dSubTask",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    }
+  ],
+  "workItemTemplateName": null
+}

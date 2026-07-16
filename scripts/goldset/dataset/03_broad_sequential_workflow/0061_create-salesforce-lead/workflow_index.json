@@ -1,0 +1,14 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0061_create-salesforce-lead",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Create Salesforce Lead",
+      "manual_dependencies": [],
+      "output_file": "workflows/Create Salesforce Lead.json",
+      "scanned_dependencies": [
+        "Config.xml"
+      ]
+    }
+  ]
+}

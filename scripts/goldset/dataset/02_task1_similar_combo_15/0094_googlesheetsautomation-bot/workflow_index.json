@@ -1,0 +1,12 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0094_googlesheetsautomation-bot",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "GoogleSheetsAutomation_Bot",
+      "manual_dependencies": [],
+      "output_file": "workflows/GoogleSheetsAutomation_Bot.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

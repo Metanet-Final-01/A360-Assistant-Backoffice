@@ -1,0 +1,69 @@
+{
+  "breakpoints": [],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "teamsURL",
+          "value": {
+            "string": "https://~~~.webhook.office.com/~~~",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "message",
+          "value": {
+            "string": "Teamsに投稿します。",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "TeamsNotification",
+      "disabled": false,
+      "packageName": "Microsoft Teams Message Sender",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "Result"
+      },
+      "uid": "6d8e270b-2edf-48f3-ac4f-d3cc3a64332e"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Microsoft Teams Message Sender",
+      "version": "2.0.5-20220112-135817"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "2",
+    "improvedNumberSupport": true
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "boolean": false,
+        "type": "BOOLEAN"
+      },
+      "description": "",
+      "input": false,
+      "name": "Result",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "BOOLEAN"
+    }
+  ],
+  "workItemTemplateName": null
+}

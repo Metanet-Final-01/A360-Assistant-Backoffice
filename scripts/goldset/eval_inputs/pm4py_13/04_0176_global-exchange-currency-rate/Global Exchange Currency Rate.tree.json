@@ -1,0 +1,227 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Datetime.toString",
+      "children": []
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.createFolder",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": null,
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.createFolder",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": null,
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": "sequence",
+          "label": null,
+          "children": [
+            {
+              "operator": null,
+              "label": "File.createFile",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "LogToFile.logToFile",
+              "children": []
+            }
+          ]
+        },
+        {
+          "operator": null,
+          "label": null,
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.createFolder",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": null,
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": "xor",
+          "label": null,
+          "children": [
+            {
+              "operator": "sequence",
+              "label": null,
+              "children": [
+                {
+                  "operator": null,
+                  "label": "Browser.openbrowser",
+                  "children": []
+                },
+                {
+                  "operator": null,
+                  "label": "File.downloadTo",
+                  "children": []
+                },
+                {
+                  "operator": null,
+                  "label": "Excel_MS.OpenSpreadsheet",
+                  "children": []
+                },
+                {
+                  "operator": "loop",
+                  "label": null,
+                  "children": [
+                    {
+                      "operator": "sequence",
+                      "label": null,
+                      "children": [
+                        {
+                          "operator": null,
+                          "label": "Recorder.capture",
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": "Recorder.capture",
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": "Recorder.capture",
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": "Recorder.capture",
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": "Recorder.capture",
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": "MessageBox.messageBox",
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": "Excel_MS.SetCell",
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": "Number.increment",
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "operator": null,
+                      "label": null,
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": null,
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "operator": null,
+              "label": "MessageBox.messageBox",
+              "children": []
+            }
+          ]
+        },
+        {
+          "operator": "xor",
+          "label": null,
+          "children": [
+            {
+              "operator": null,
+              "label": "LogToFile.logToFile",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": null,
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

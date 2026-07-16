@@ -1,0 +1,2 @@
+{"received_at": "2026-07-15T22:09:46.281087+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
+{"received_at": "2026-07-15T22:09:46.608293+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "c15d953e-1a65-41a5-8421-4d674d599a47", "session_id": "c9afed2f-a5a9-43cc-84d7-9888121ad663", "filename": "0410_a2019-invoicely-assistant__A2019-Invoicely Assistant.pdf", "size_bytes": 58923, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T22:09:44.922490+00:00"}}

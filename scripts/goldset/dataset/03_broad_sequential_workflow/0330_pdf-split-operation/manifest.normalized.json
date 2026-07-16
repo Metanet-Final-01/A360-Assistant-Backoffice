@@ -1,0 +1,98 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Manav.Pamrar\\PDF_Split_Operation\\PDF_Split_Operation",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Manav.Pamrar\\PDF_Split_Operation\\SplitPDF_Configuration.txt"
+      ],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "text/plain",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Manav.Pamrar\\PDF_Split_Operation\\SplitPDF_Configuration.txt",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.3.0-20201126-165125.jar",
+      "version": "2.3.0-20201126-165125"
+    },
+    {
+      "name": "CsvTxt",
+      "path": "bot-command-csvtxt-2.3.0-20201126-165126.jar",
+      "version": "2.3.0-20201126-165126"
+    },
+    {
+      "name": "Dictionary",
+      "path": "bot-command-dictionary-3.2.0-20201126-165138.jar",
+      "version": "3.2.0-20201126-165138"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.3.0-20201126-165148.jar",
+      "version": "2.3.0-20201126-165148"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-3.2.0-20201126-165151.jar",
+      "version": "3.2.0-20201126-165151"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-3.1.0-20201126-165154.jar",
+      "version": "3.1.0-20201126-165154"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.1.0-20201126-165201.jar",
+      "version": "2.1.0-20201126-165201"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.2.0-20201126-165428.jar",
+      "version": "2.2.0-20201126-165428"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-2.1.0-20201126-165429.jar",
+      "version": "2.1.0-20201126-165429"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.1.0-20201126-165430.jar",
+      "version": "2.1.0-20201126-165430"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.1.0-20201126-165444.jar",
+      "version": "2.1.0-20201126-165444"
+    },
+    {
+      "name": "PDF",
+      "path": "bot-command-pdf-2.6.0-20201126-165555.jar",
+      "version": "2.6.0-20201126-165555"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.1.0-20201126-165909.jar",
+      "version": "3.1.0-20201126-165909"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-3.0.0-20200921-090225.jar",
+      "version": "3.0.0-20200921-090225"
+    }
+  ]
+}

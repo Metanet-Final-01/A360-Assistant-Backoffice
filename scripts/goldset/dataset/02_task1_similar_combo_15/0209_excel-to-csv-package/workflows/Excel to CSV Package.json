@@ -1,0 +1,986 @@
+{
+  "breakpoints": [],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Approot creation",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "C:\\Automation 360\\Bots\\ExcelToCsv Package",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "cf99f2d0-8051-4796-828e-eba35893ddbd"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "PREBUILT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "preBuiltPattern",
+              "value": {
+                "string": "ISO_LOCAL_DATE_TIME",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "toString",
+          "disabled": false,
+          "packageName": "Datetime",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sCurrentDate"
+          },
+          "uid": "227d1c11-1317-4e8d-9848-d1b519707b8c"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sAppRoot$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [
+            {
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "App root is already exists",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "ca648b9e-7d39-417e-b9f6-5b6802c0f841"
+                }
+              ],
+              "commandName": "else",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "45e6d599-3cba-4535-8915-6d5f5082a3df"
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Creating Approot folder",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "718b0ee9-80a8-492e-b251-f79477876e6b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sAppRoot$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "d274915b-053f-40b8-82af-6e9545778b45"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "d176a44a-eb0c-4a11-b2cd-c0957bef0856"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Log file creation",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "34be86bf-3abe-4aea-9388-88a79a4989e9"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sAppRoot$/Error log",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [
+            {
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Folder already exists",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "3a0e4313-4ad0-42e9-9feb-53e1974f9049"
+                }
+              ],
+              "commandName": "else",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "2ce30483-6846-4618-a249-bc6712f60667"
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sAppRoot$/Error log",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "76bbd755-36ab-43ac-9c41-3dfe3f9fc99a"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "c4e1be1e-731a-4385-abeb-d103747949c2"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$sAppRoot$/Error%20log/Log_File.csv",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [
+            {
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "File already exists",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "3582c6aa-4ad7-489e-a192-f2af6ede2847"
+                }
+              ],
+              "commandName": "else",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "d2afdd3c-a42c-4788-a851-e3e40ed569e0"
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sAppRoot$/Error%20log/Log_File.csv",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFile",
+              "disabled": false,
+              "packageName": "File",
+              "uid": "686d7730-61e9-4da8-889f-298091764386"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sAppRoot$/Error%20log/Log_File.csv",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "string": "Date,System,TaskName,ErrorLine,ErrorDescription",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "logToFile",
+              "disabled": false,
+              "packageName": "LogToFile",
+              "uid": "d4e3bfce-7008-4378-ab29-84e567394aab"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "a8524d37-dbd1-4513-9001-5f20ea34dde0"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "2200d461-e203-4f8d-bf42-7ea759fd22bb"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Error Handling",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "branches": [
+            {
+              "attributes": [
+                {
+                  "name": "exceptionType",
+                  "value": {
+                    "exceptionName": "BotException",
+                    "packageName": "ErrorHandler",
+                    "type": "EXCEPTION"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Catching All Errors",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "badae6e8-4456-4957-870e-92fac8fe0c61"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "expression": "Error Message : $sErrorMessage$\nError Line Number : $nErrorLineNumber.Number:toString$\n\n",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "messageBox",
+                  "disabled": false,
+                  "packageName": "MessageBox",
+                  "uid": "08da0f3b-68a3-474b-845e-9e43c39be28e"
+                }
+              ],
+              "commandName": "catch",
+              "disabled": false,
+              "packageName": "ErrorHandler",
+              "returns": {
+                "errorLineNumber": {
+                  "type": "VARIABLE",
+                  "variableName": "nErrorLineNumber"
+                },
+                "errorMessage": {
+                  "type": "VARIABLE",
+                  "variableName": "sErrorMessage"
+                }
+              },
+              "uid": "8ab894c4-07a3-4a39-9dbd-fbfdba2f234a"
+            },
+            {
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Log to file",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "variable",
+                              "value": {
+                                "expression": "$nErrorLineNumber$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "operator",
+                              "value": {
+                                "string": "EQ",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "value",
+                              "value": {
+                                "number": "0",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "name": "condition",
+                          "value": {
+                            "conditionalName": "numberVariable",
+                            "packageName": "Number",
+                            "type": "CONDITIONAL"
+                          }
+                        }
+                      ],
+                      "branches": [
+                        {
+                          "children": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "input",
+                                  "value": {
+                                    "expression": "$nErrorLineNumber$",
+                                    "type": "NUMBER"
+                                  }
+                                },
+                                {
+                                  "name": "numFormatDigits",
+                                  "value": {
+                                    "number": "0",
+                                    "type": "NUMBER"
+                                  }
+                                }
+                              ],
+                              "commandName": "toString",
+                              "disabled": false,
+                              "packageName": "Number",
+                              "returnTo": {
+                                "type": "VARIABLE",
+                                "variableName": "sErrorLineNumber"
+                              },
+                              "uid": "1993133a-6bf1-4b58-9445-e56291c177d4"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "comment",
+                                  "value": {
+                                    "string": "Logging error to file matching header row established format",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "Comment",
+                              "disabled": false,
+                              "packageName": "Comment",
+                              "uid": "1020036a-bbf7-44ff-9cdb-8ddf0d0c2e3f"
+                            },
+                            {
+                              "attributes": [
+                                {
+                                  "name": "filePath",
+                                  "value": {
+                                    "expression": "file://$sAppRoot$/Error%20log/Log_File.csv",
+                                    "type": "FILE"
+                                  }
+                                },
+                                {
+                                  "name": "logContent",
+                                  "value": {
+                                    "expression": "$sCurrentDate$,$System:Machine$,$System:AATaskName$,$sErrorLineNumber$,\"$sErrormessage$\"",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "appendTimestamp",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                },
+                                {
+                                  "name": "logOption",
+                                  "value": {
+                                    "string": "APPEND_FILE",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "encodingValue",
+                                  "value": {
+                                    "string": "ANSI",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "commandName": "logToFile",
+                              "disabled": false,
+                              "packageName": "LogToFile",
+                              "uid": "75c0610c-8907-4319-bcb4-dcc777dc53d8"
+                            }
+                          ],
+                          "commandName": "else",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "f6890b06-df67-47ab-b6df-b6da7d955178"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "$nErrorLineNumber$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "numFormatDigits",
+                              "value": {
+                                "number": "0",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "commandName": "toString",
+                          "disabled": false,
+                          "packageName": "Number",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "sErrorLineNumber"
+                          },
+                          "uid": "2d5d0dc5-f0ac-4886-b42a-51c82ee82171"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "comment",
+                              "value": {
+                                "string": "Logging error to file matching header row established format",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "Comment",
+                          "disabled": false,
+                          "packageName": "Comment",
+                          "uid": "cb384f5d-89b0-48ee-8f8e-3f21a584ae03"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$sAppRoot$/Error%20log/Log_File.csv",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "$sCurrentDate$,$System:Machine$,$System:AATaskName$,$sErrorLineNumber$,All actions are completed",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "logToFile",
+                          "disabled": false,
+                          "packageName": "LogToFile",
+                          "uid": "22cbf7b8-665b-4256-909a-3be0561885ba"
+                        }
+                      ],
+                      "commandName": "if",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "6fd5636f-2c12-451d-8d6d-781a3e28ecc7"
+                    }
+                  ],
+                  "commandName": "step",
+                  "disabled": false,
+                  "packageName": "Step",
+                  "uid": "60a857bc-cfbb-47ec-bc4e-5924529649e5"
+                }
+              ],
+              "commandName": "finally",
+              "disabled": false,
+              "packageName": "ErrorHandler",
+              "uid": "51a824db-59da-4671-92b7-4c2bc6414a65"
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Bot Logic Here",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "loopType",
+                      "value": {
+                        "string": "ITERATOR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$sInputFile$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "name": "iterator",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "FilesInFolder"
+                      },
+                      "value": {
+                        "iteratorName": "loop.iterators.files",
+                        "packageName": "File",
+                        "type": "ITERATOR"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "vInputFilePath",
+                          "value": {
+                            "expression": "file://$sInputFile$/$FilesInFolder{name}$.$FilesInFolder{extension}$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "vOutputFilePath",
+                          "value": {
+                            "string": "file:///C:/Automation%20360/Bots/Excel%20to%20CSV%20Package/Output%20folder",
+                            "type": "FILE"
+                          }
+                        }
+                      ],
+                      "commandName": "ExcelToCsv",
+                      "disabled": false,
+                      "packageName": "Exceltocsv",
+                      "uid": "696c5d94-9774-4eaf-9323-b48320058eea"
+                    }
+                  ],
+                  "commandName": "loop.commands.start",
+                  "disabled": false,
+                  "packageName": "Loop",
+                  "uid": "f4239266-c960-44ea-9540-e316872d37f1"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "a216203d-7322-4b1f-bbb1-4c87b0d195b2"
+            }
+          ],
+          "commandName": "try",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "4370e212-b699-460a-bd13-931d7491d4ee"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "e8f769ea-710a-4e05-8e70-860b4df5ace2"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.1.0-20200831-031015"
+    },
+    {
+      "name": "Datetime",
+      "version": "2.2.0-20200831-031025"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.1.0-20200831-031055"
+    },
+    {
+      "name": "Exceltocsv",
+      "version": "2.1.0-20210722-003011"
+    },
+    {
+      "name": "File",
+      "version": "2.2.0-20200831-031057"
+    },
+    {
+      "name": "Folder",
+      "version": "2.2.0-20200831-031100"
+    },
+    {
+      "name": "If",
+      "version": "2.1.0-20200825-071156"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.2.0-20200831-031539"
+    },
+    {
+      "name": "Loop",
+      "version": "2.2.0-20210227-025721"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.1.0-20200831-031541"
+    },
+    {
+      "name": "Number",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "System",
+      "version": "3.0.0-20200831-031944"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sCurrentDate",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\Automation 360\\Bots\\Excel to CSV Package",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sAppRoot",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorMessage",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [
+          {
+            "key": "name",
+            "value": {
+              "string": "",
+              "type": "STRING"
+            }
+          },
+          {
+            "key": "extension",
+            "value": {
+              "string": "",
+              "type": "STRING"
+            }
+          }
+        ],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "FilesInFolder",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\Automation 360\\Bots\\Excel to CSV Package\\Input folder",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sInputFile",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

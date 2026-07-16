@@ -1,0 +1,1872 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "open temp file",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$excel_file_path_for_sap$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "EDIT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "loadAddIns",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "OpenSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "3414d628-6612-4087-94fc-fbcdbedae1b1"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "171a9f47-4632-430f-8206-d19b3f3bcbc3"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "open SAP and login",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$sap_path$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "startInPath",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "parameters",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "runApp",
+          "disabled": false,
+          "packageName": "Application",
+          "uid": "f4f456a1-94ea-47f7-b185-0f416c99f091"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "pr",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "connectionType",
+              "value": {
+                "string": "SAP GUI",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "sapServerName",
+              "value": {
+                "expression": "$sap_gui_name$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "clientID",
+              "value": {
+                "expression": "$sap_identifier$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "secureUser",
+              "value": {
+                "credential": {
+                  "attributeName": "Username",
+                  "lockerName": "MAIN",
+                  "name": "SAP Logon 740"
+                },
+                "type": "CREDENTIAL"
+              }
+            },
+            {
+              "name": "secureCredential",
+              "value": {
+                "credential": {
+                  "attributeName": "Password",
+                  "lockerName": "MAIN",
+                  "name": "SAP Logon 740"
+                },
+                "type": "CREDENTIAL"
+              }
+            },
+            {
+              "name": "language",
+              "value": {
+                "expression": "$sap_language$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "connect",
+          "disabled": false,
+          "packageName": "SAP",
+          "uid": "15da824c-f9d4-41c9-af88-318a5f5cdf9c"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "26530c5f-0357-4afa-8e73-d298d8521e66"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "filter",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "loopSelection",
+              "value": {
+                "string": "ALL_ROWS",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GetMultipleCells",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "tablee"
+          },
+          "uid": "e0aba70f-6580-4880-8c6d-7fc8b628133e"
+        },
+        {
+          "attributes": [
+            {
+              "name": "table",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "tablee"
+              }
+            },
+            {
+              "name": "sortOptions",
+              "value": {
+                "string": "NAME",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "columnName",
+              "value": {
+                "string": "Create PR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "sortType",
+              "value": {
+                "string": "DESCENDING",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "sort",
+          "disabled": false,
+          "packageName": "DataTable",
+          "uid": "472b246c-dfca-4352-8d1f-e8e218472329"
+        },
+        {
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "assignToNumber",
+          "disabled": false,
+          "packageName": "Number",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "temp_iterator"
+          },
+          "uid": "00a38c8b-6a93-40e5-89fd-35045b178f5d"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "pr",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "fieldPath",
+              "value": {
+                "string": "wnd[0]/tbar[0]/okcd",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "fieldValue",
+              "value": {
+                "string": "ME51N",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isAppendTextEnabled",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "setText",
+          "disabled": false,
+          "packageName": "SAP",
+          "uid": "4d6e89fe-7022-44a6-877c-d75e0b794b3f"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "pr",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "fieldPath",
+              "value": {
+                "string": "wnd[0]/tbar[0]/btn[0]",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "leftClick",
+          "disabled": false,
+          "packageName": "SAP",
+          "uid": "970297a4-d635-4eaa-bdd2-7b52951ea7cb"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceTable",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "tablee"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "cur_row"
+              },
+              "value": {
+                "iteratorName": "iteratorTableRow",
+                "packageName": "DataTable",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "expression": "$iterator$",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "assignToNumber",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "temp_iterator"
+              },
+              "uid": "f7947501-ed41-4224-a200-1149903126b3"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "expression": "$temp_iterator$",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "by",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "increment",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "iterator"
+              },
+              "uid": "b01323e3-11e0-47e7-a57b-6cba9f683cdc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "expression": "$cur_row[24]$",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "assignToNumber",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "blah"
+              },
+              "uid": "8cd3204c-347e-412e-a69d-23b4c7dc7ee5"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$blah$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "commandName": "loop.commands.break",
+                  "disabled": false,
+                  "packageName": "Loop",
+                  "uid": "3ccfacbd-d7a5-41ad-af85-9db9e273916d"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "f36d88b1-3434-4465-8136-028911659750"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[1]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sales_ord"
+              },
+              "uid": "9d0d7b1e-7691-4545-8fc6-48aa17865cf6"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[5]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "mat_no"
+              },
+              "uid": "b6826dbc-9c1a-4a05-a683-daefb9277cc9"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[10]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "qty_no"
+              },
+              "uid": "da8871d8-4b86-4141-86b3-ac7ad588f528"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[20]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "plant_no"
+              },
+              "uid": "c1688177-05e4-4743-b2e6-991245ac2c74"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[19]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "act_no"
+              },
+              "uid": "52bc226f-6496-4e32-94a9-d86c476c31dc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[11]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "price_str"
+              },
+              "uid": "6a6643fe-9415-4312-be2c-df46b00e327b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$qty_no$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "toNumber",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "qty_num"
+              },
+              "uid": "20085637-11ba-4f91-a232-1524146c33d2"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$price_str$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "toNumber",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "tot_price"
+              },
+              "uid": "85a91475-15fb-4214-a661-53bd993d7a58"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "expression": "$tot_price$/$qty_num$",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "numFormatDigits",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "toString",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "val_no"
+              },
+              "uid": "0f8795ea-0bb9-4561-97a8-24fab4139eb1"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "enter code ME51N",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$iterator$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "number": "1",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "numberVariable",
+                        "packageName": "Number",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [
+                    {
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "sessionName",
+                              "value": {
+                                "string": "pr",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "fieldPath",
+                              "value": {
+                                "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:3212/cntlGRIDCONTROL/shellcont[2]/shell",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "setTextBy",
+                              "value": {
+                                "string": "INDEX",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "row",
+                              "value": {
+                                "expression": "$iterator$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "column",
+                              "value": {
+                                "number": "5",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "setText",
+                              "value": {
+                                "expression": "$mat_no$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "setTableCellText",
+                          "disabled": false,
+                          "packageName": "SAP",
+                          "uid": "84018e6c-fd52-4e3e-9dcd-d1cf0fd7fd94"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "sessionName",
+                              "value": {
+                                "string": "pr",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "fieldPath",
+                              "value": {
+                                "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:3212/cntlGRIDCONTROL/shellcont[2]/shell",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "setTextBy",
+                              "value": {
+                                "string": "INDEX",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "row",
+                              "value": {
+                                "expression": "$iterator$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "column",
+                              "value": {
+                                "number": "7",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "setText",
+                              "value": {
+                                "expression": "$qty_no$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "setTableCellText",
+                          "disabled": false,
+                          "packageName": "SAP",
+                          "uid": "81de0d65-9dbb-4aab-a560-926573a4fad9"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "sessionName",
+                              "value": {
+                                "string": "pr",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "fieldPath",
+                              "value": {
+                                "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:3212/cntlGRIDCONTROL/shellcont[2]/shell",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "setTextBy",
+                              "value": {
+                                "string": "INDEX",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "row",
+                              "value": {
+                                "expression": "$iterator$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "column",
+                              "value": {
+                                "number": "12",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "setText",
+                              "value": {
+                                "expression": "$plant_no$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "setTableCellText",
+                          "disabled": false,
+                          "packageName": "SAP",
+                          "uid": "47bab52f-c9f1-45cd-be25-d654aa02711f"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "sessionName",
+                              "value": {
+                                "string": "pr",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "fieldPath",
+                              "value": {
+                                "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:3212/cntlGRIDCONTROL/shellcont[2]/shell",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "setTextBy",
+                              "value": {
+                                "string": "INDEX",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "row",
+                              "value": {
+                                "expression": "$iterator$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "column",
+                              "value": {
+                                "number": "3",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "setText",
+                              "value": {
+                                "expression": "$act_no$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "setTableCellText",
+                          "disabled": false,
+                          "packageName": "SAP",
+                          "uid": "6a372627-1ca4-40bb-b41a-fb4c6b6a9b5b"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "sessionName",
+                              "value": {
+                                "string": "pr",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "virtualKeyToSend",
+                              "value": {
+                                "string": "0",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "sendVirtualkey",
+                          "disabled": false,
+                          "packageName": "SAP",
+                          "uid": "92867990-9c73-48a1-9377-8743d371b2aa"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "delayType",
+                              "value": {
+                                "string": "REGULAR",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "delayTime",
+                              "value": {
+                                "number": "2",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "timeUnit",
+                              "value": {
+                                "string": "SECONDS",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "delay",
+                          "disabled": false,
+                          "packageName": "Delay",
+                          "uid": "8f3c959c-f43b-47d3-b1d8-6804b52adf63"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "sessionName",
+                              "value": {
+                                "string": "pr",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "fieldPath",
+                              "value": {
+                                "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB3:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1301/subSUB2:SAPLMEGUI:3303/tabsREQ_ITEM_DETAIL/tabpTABREQDT6/ssubTABSTRIPCONTROL1SUB:SAPLMEGUI:3320/txtMEREQ3320-PREIS",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "fieldValue",
+                              "value": {
+                                "expression": "$val_no$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "isAppendTextEnabled",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "setText",
+                          "disabled": false,
+                          "packageName": "SAP",
+                          "uid": "8c84b955-8adf-4557-95bb-5c78f5a28d06"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "delayType",
+                              "value": {
+                                "string": "REGULAR",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "delayTime",
+                              "value": {
+                                "number": "2",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "timeUnit",
+                              "value": {
+                                "string": "SECONDS",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "delay",
+                          "disabled": false,
+                          "packageName": "Delay",
+                          "uid": "fc8e68c5-d0cb-4b98-90fb-0787ad294207"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "sessionName",
+                              "value": {
+                                "string": "pr",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "virtualKeyToSend",
+                              "value": {
+                                "string": "0",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "sendVirtualkey",
+                          "disabled": false,
+                          "packageName": "SAP",
+                          "uid": "af327e93-32c9-4628-b848-302a28c82ff9"
+                        }
+                      ],
+                      "commandName": "else",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "4c083af4-106f-422e-9275-b4b927c570a5"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "sessionName",
+                          "value": {
+                            "string": "pr",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "fieldPath",
+                          "value": {
+                            "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0013/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:3212/cntlGRIDCONTROL/shellcont[2]/shell",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "setTextBy",
+                          "value": {
+                            "string": "INDEX",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "row",
+                          "value": {
+                            "expression": "$iterator$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "column",
+                          "value": {
+                            "number": "5",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "setText",
+                          "value": {
+                            "expression": "$mat_no$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "setTableCellText",
+                      "disabled": false,
+                      "packageName": "SAP",
+                      "uid": "ed129536-46a2-4f7b-aa3d-861af406d2db"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sessionName",
+                          "value": {
+                            "string": "pr",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "fieldPath",
+                          "value": {
+                            "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0013/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:3212/cntlGRIDCONTROL/shellcont[2]/shell",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "setTextBy",
+                          "value": {
+                            "string": "INDEX",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "row",
+                          "value": {
+                            "expression": "$iterator$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "column",
+                          "value": {
+                            "number": "7",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "setText",
+                          "value": {
+                            "expression": "$qty_no$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "setTableCellText",
+                      "disabled": false,
+                      "packageName": "SAP",
+                      "uid": "58cf721a-832a-496e-ab38-4e9fddfc2c5a"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sessionName",
+                          "value": {
+                            "string": "pr",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "fieldPath",
+                          "value": {
+                            "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0013/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:3212/cntlGRIDCONTROL/shellcont[2]/shell",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "setTextBy",
+                          "value": {
+                            "string": "INDEX",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "row",
+                          "value": {
+                            "expression": "$iterator$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "column",
+                          "value": {
+                            "number": "12",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "setText",
+                          "value": {
+                            "expression": "$plant_no$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "setTableCellText",
+                      "disabled": false,
+                      "packageName": "SAP",
+                      "uid": "9307f3ca-b445-4950-8526-43e1a753d7ff"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sessionName",
+                          "value": {
+                            "string": "pr",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "fieldPath",
+                          "value": {
+                            "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0013/subSUB2:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:3212/cntlGRIDCONTROL/shellcont[2]/shell",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "setTextBy",
+                          "value": {
+                            "string": "INDEX",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "row",
+                          "value": {
+                            "expression": "$iterator$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "column",
+                          "value": {
+                            "number": "3",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "setText",
+                          "value": {
+                            "expression": "$act_no$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "setTableCellText",
+                      "disabled": false,
+                      "packageName": "SAP",
+                      "uid": "9011008c-d8af-49f9-813c-4a45a28a84b8"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sessionName",
+                          "value": {
+                            "string": "pr",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "virtualKeyToSend",
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "sendVirtualkey",
+                      "disabled": false,
+                      "packageName": "SAP",
+                      "uid": "ed713cd9-8d4d-482b-bdb6-dfe58ea9a460"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "delayType",
+                          "value": {
+                            "string": "REGULAR",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "delayTime",
+                          "value": {
+                            "number": "2",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "timeUnit",
+                          "value": {
+                            "string": "SECONDS",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "delay",
+                      "disabled": false,
+                      "packageName": "Delay",
+                      "uid": "52fa0894-752f-4ef3-82f0-9722533198e5"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sessionName",
+                          "value": {
+                            "string": "pr",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "fieldPath",
+                          "value": {
+                            "string": "wnd[0]/usr/subSUB0:SAPLMEGUI:0010/subSUB3:SAPLMEVIEWS:1100/subSUB2:SAPLMEVIEWS:1200/subSUB1:SAPLMEGUI:1301/subSUB2:SAPLMEGUI:3303/tabsREQ_ITEM_DETAIL/tabpTABREQDT6/ssubTABSTRIPCONTROL1SUB:SAPLMEGUI:3320/txtMEREQ3320-PREIS",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "fieldValue",
+                          "value": {
+                            "expression": "$val_no$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isAppendTextEnabled",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "setText",
+                      "disabled": false,
+                      "packageName": "SAP",
+                      "uid": "1d80a5ae-0a28-493b-b97b-80b0309c648c"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "delayType",
+                          "value": {
+                            "string": "REGULAR",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "delayTime",
+                          "value": {
+                            "number": "2",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "timeUnit",
+                          "value": {
+                            "string": "SECONDS",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "delay",
+                      "disabled": false,
+                      "packageName": "Delay",
+                      "uid": "35151b84-cc07-4710-80fb-c7a042c7a43d"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sessionName",
+                          "value": {
+                            "string": "pr",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "virtualKeyToSend",
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "sendVirtualkey",
+                      "disabled": false,
+                      "packageName": "SAP",
+                      "uid": "527bb865-d447-4153-9107-484b1fd9477e"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "7b70ebb7-e824-4beb-a759-af89629ac3a2"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "b9f14a91-2050-4c7d-8740-cc49a730aba9"
+            }
+          ],
+          "commandName": "loop.commands.start",
+          "disabled": false,
+          "packageName": "Loop",
+          "uid": "b9795905-6e68-46c5-a6b2-bc975993aea4"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "pr",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "fieldPath",
+              "value": {
+                "string": "wnd[0]/tbar[1]/btn[6]",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "leftClick",
+          "disabled": false,
+          "packageName": "SAP",
+          "uid": "26ffcb48-f67e-4e20-9cdd-8fd614ed569d"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "2",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "9941ba2e-dd76-4680-8cbb-013d35680ceb"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "pr",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "fieldPath",
+              "value": {
+                "string": "wnd[1]/usr/btnSPOP-OPTION1",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "leftClick",
+          "disabled": false,
+          "packageName": "SAP",
+          "uid": "2647c793-f381-47bd-898a-553af0906de3"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "5a7ae0df-4256-4aa9-a566-f3f29b29c0ea"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "close temp file",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "CloseSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "5f02bfa6-b68d-4151-af01-59ebd0552223"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "d8757fd2-5012-4e24-8aa9-3532ac826a86"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Application",
+      "version": "2.1.0-20200819-064505"
+    },
+    {
+      "name": "DataTable",
+      "version": "2.1.0-20200831-031946"
+    },
+    {
+      "name": "Delay",
+      "version": "2.2.0-20200831-031026"
+    },
+    {
+      "name": "Excel_MS",
+      "version": "5.0.0-20200909-124042"
+    },
+    {
+      "name": "If",
+      "version": "2.1.0-20200825-071156"
+    },
+    {
+      "name": "Loop",
+      "version": "2.1.0-20200831-031540"
+    },
+    {
+      "name": "Number",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "SAP",
+      "version": "2.2.0-20200825-071614"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "String",
+      "version": "3.1.0-20200831-031943"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "new_range",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "tablee",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "record": {
+          "schema": [],
+          "values": []
+        },
+        "type": "RECORD"
+      },
+      "description": "",
+      "input": false,
+      "name": "cur_row",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "RECORD"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "blah",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sales_ord",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "mat_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "qty_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "plant_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "act_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "val_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "tot_price",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "qty_num",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "price_str",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "iterator",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "temp_iterator",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "excel_file_path_for_sap",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sap_path",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sap_gui_name",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sap_identifier",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sap_language",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

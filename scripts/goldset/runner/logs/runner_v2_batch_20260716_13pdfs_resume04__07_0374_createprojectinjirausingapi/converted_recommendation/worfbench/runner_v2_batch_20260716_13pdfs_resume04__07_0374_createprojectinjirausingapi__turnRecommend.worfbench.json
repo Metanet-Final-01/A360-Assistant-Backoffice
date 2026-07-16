@@ -1,0 +1,74 @@
+{
+  "source": "a360_rpa_goldset",
+  "id": "03_broad_sequential_workflow/runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend/runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend",
+  "conversations": [
+    {
+      "role": "system",
+      "content": "You are a helpful and intelligent task planner, and your target is to decompose the assigned task into multiple subtasks for task completion and analyze the precedence relationships among subtasks.\nAt the beginning of your interactions, you will be given the task description and actions list you can take to finish the task, and you should decompose the given task into subtasks that can be accomplished using the provided actions or APIs. And then, you should analyze the precedence relationships among these subtasks, ensuring that each subtask is sequenced correctly relative to others. Based on the analysis, you should construct a workflow consisting of the identified subtasks to complete the task. You should use \"Node: \\n1. <subtask 1>\\n2. <subtask 2>\" to denote subtasks, and use (x,y) to denote that <subtask x> is a predecessor of <subtask y>, (START,x) to indicate the beginning with <subtask x>, and (x,END) to signify the conclusion with <subtask x>. Remember that x, y are numbers.\nYour response should use the following format:\n\nNode:\n1.<subtask 1>\n2.<subtask 2>\n...\nEdges:(START,1) ... (n,END)"
+    },
+    {
+      "role": "user",
+      "content": "Task: runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.json"
+    },
+    {
+      "role": "assistant",
+      "content": "Node:\n1: XML.xmlStartSession\n2: XML.xmlGetSingleNode\n3: XML.xmlGetSingleNode\n4: Microsoft 365 Outlook.ms365OutlookSaveAllAttachments\n5: Microsoft 365 Outlook.ms365OutlookDisconnect\n6: Excel advanced.cloudExcelOpen\n7: Excel advanced.excelAdvancedPackageReadRowAction\n8: Jira.jiraCreateIssue\n9: JSON utilities.jsonStartSession\n10: JSON utilities.convertJsonToDictionary\n11: Message box.usingMessageBoxAction\n12: Excel advanced.excelAdvancedPackageCloseAction\nEdges:\n(START,1) (1,2) (2,3) (3,4) (4,5) (5,6) (6,7) (7,8) (8,9) (9,10) (10,11) (11,12) (12,END)"
+    }
+  ],
+  "meta": {
+    "worfbench_fidelity": "approximated",
+    "control_flow_types": [
+      "container"
+    ],
+    "actions": [
+      {
+        "package": "XML",
+        "action": "xmlStartSession"
+      },
+      {
+        "package": "XML",
+        "action": "xmlGetSingleNode"
+      },
+      {
+        "package": "XML",
+        "action": "xmlGetSingleNode"
+      },
+      {
+        "package": "Microsoft 365 Outlook",
+        "action": "ms365OutlookSaveAllAttachments"
+      },
+      {
+        "package": "Microsoft 365 Outlook",
+        "action": "ms365OutlookDisconnect"
+      },
+      {
+        "package": "Excel advanced",
+        "action": "cloudExcelOpen"
+      },
+      {
+        "package": "Excel advanced",
+        "action": "excelAdvancedPackageReadRowAction"
+      },
+      {
+        "package": "Jira",
+        "action": "jiraCreateIssue"
+      },
+      {
+        "package": "JSON utilities",
+        "action": "jsonStartSession"
+      },
+      {
+        "package": "JSON utilities",
+        "action": "convertJsonToDictionary"
+      },
+      {
+        "package": "Message box",
+        "action": "usingMessageBoxAction"
+      },
+      {
+        "package": "Excel advanced",
+        "action": "excelAdvancedPackageCloseAction"
+      }
+    ]
+  }
+}

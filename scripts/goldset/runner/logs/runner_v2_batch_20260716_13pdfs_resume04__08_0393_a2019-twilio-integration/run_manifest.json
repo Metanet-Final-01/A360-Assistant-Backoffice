@@ -1,0 +1,2359 @@
+{
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration",
+  "created_at": "2026-07-15T17:52:23.031188+00:00",
+  "runner": "runner_v2",
+  "base_url": "http://127.0.0.1:8000",
+  "agent_version": "v2",
+  "input": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0393_a2019-twilio-integration__A2019 Twilio Integration.pdf",
+  "frontend_equivalent_flow": [
+    "POST /api/documents",
+    "POST /api/documents/{id}/parse",
+    "POST /api/sessions/{session_id}/turn analyze",
+    "POST /api/sessions/{session_id}/turn recommend"
+  ],
+  "finished_at": "2026-07-15T17:59:12.787806+00:00",
+  "status": "ok",
+  "session_id": "e59287ed-bdfc-4345-9212-b76f0e29f473",
+  "document_id": "b6d1ac7a-ac93-4264-9b95-921592f61d5d",
+  "steps": [
+    {
+      "name": "uploadDocument",
+      "started_at": "2026-07-15T17:52:23.031263+00:00",
+      "finished_at": "2026-07-15T17:52:24.543432+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents",
+        "file": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0393_a2019-twilio-integration__A2019 Twilio Integration.pdf"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:52:22 GMT",
+          "server": "uvicorn",
+          "content-length": "302",
+          "content-type": "application/json",
+          "x-request-id": "65a9f0864abc",
+          "connection": "close"
+        },
+        "data": {
+          "id": "b6d1ac7a-ac93-4264-9b95-921592f61d5d",
+          "session_id": "e59287ed-bdfc-4345-9212-b76f0e29f473",
+          "filename": "0393_a2019-twilio-integration__A2019 Twilio Integration.pdf",
+          "size_bytes": 60959,
+          "status": "uploaded",
+          "error": null,
+          "page_count": null,
+          "warnings": [],
+          "created_at": "2026-07-15T17:52:23.832226+00:00"
+        }
+      },
+      "events_log": null,
+      "error": null
+    },
+    {
+      "name": "parseDocument",
+      "started_at": "2026-07-15T17:52:24.547986+00:00",
+      "finished_at": "2026-07-15T17:52:25.926128+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents/b6d1ac7a-ac93-4264-9b95-921592f61d5d/parse"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:52:24 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "c5c382056eac",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 1,
+          "done": 1
+        },
+        "duration_seconds": 1.377,
+        "final_event": {
+          "event": "done",
+          "stage": "parsing",
+          "message": "파싱 완료",
+          "data": {
+            "id": "b6d1ac7a-ac93-4264-9b95-921592f61d5d",
+            "session_id": "e59287ed-bdfc-4345-9212-b76f0e29f473",
+            "filename": "0393_a2019-twilio-integration__A2019 Twilio Integration.pdf",
+            "size_bytes": 60959,
+            "status": "parsed",
+            "error": null,
+            "page_count": 2,
+            "warnings": [],
+            "created_at": "2026-07-15T17:52:23.832226+00:00"
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\02_parseDocument.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnAnalyze",
+      "started_at": "2026-07-15T17:52:25.930326+00:00",
+      "finished_at": "2026-07-15T17:56:48.190413+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/e59287ed-bdfc-4345-9212-b76f0e29f473/turn",
+        "json": {
+          "message": "이 업무정의서를 분석해서 자동화 흐름도까지 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:52:25 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "bca7cc3a4785",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 16,
+          "partial": 38,
+          "done": 1
+        },
+        "duration_seconds": 262.259,
+        "final_event": {
+          "event": "done",
+          "stage": "agent",
+          "message": "완료",
+          "data": {
+            "type": "recommendation",
+            "answer": "7개 업무 단계의 자동화 흐름도를 만들었어요. 참고: REST Web Services의 Twilio 전용 액션은 카탈로그 확인 결과 없었으므로 Twilio 발신 요청은 REST Web Services/cloudFileUploadUsingPost로 우회 설계했다. 이는 실제 Twilio API의 요청 형식에 맞는 URI·인증·본문 파일 준비가 전제되어야 한다. '두 번째 통신 요청'은 조건부 재전송/추가 발신으로 해석했으나 구체 조건은 문서상 불명확하여 별도 분기 없이 후속 확장 가능 지점으로 남겼다. JSON 필드명(status, serviceId, messageId, errorDetail)은 문서의 예시 요구를 반영한 것이며 실제 Twilio 응답 스키마에 맞게 조정이 필요할 수 있다. 오류 메시지 표시와 실행 중단은 Message box와 오류 처리기로 구성했으며, 실제 '중단' 동작은 환경에 따라 추가 종료 액션이 필요할 수 있다. (검수에서 해소하지 못한 위반 14건이 있어요 — 흐름도에서 확인해 주세요.)",
+            "sources": [
+              {
+                "source_type": "action_schema",
+                "title": "If - Else if(선택사항) 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-if-command/if-package-else-if-optional-action",
+                "score": 0.859375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": "",
+                "score": 0.77734375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "If - Else 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-if-command/if-package-else-action",
+                "score": 0.859375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": "",
+                "score": 0.875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "System - 환경 변수 가져오기 작업",
+                "url": "",
+                "score": 0.55078125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Prompt - 프롬프트의 값용 작업",
+                "url": "",
+                "score": 0.59375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Dictionary - 작업의 놓기 사전",
+                "url": "",
+                "score": 0.5
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 Try 작업",
+                "url": "",
+                "score": 0.80078125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "REST Web Services - Post 메서드로 파일 업로드",
+                "url": "",
+                "score": 0.69921875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": "",
+                "score": 0.8671875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 최종 작업",
+                "url": "",
+                "score": 0.83984375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON에서 세션 시작 작업",
+                "url": "",
+                "score": 0.54296875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "JSON utilities - 작업 유효성 검사",
+                "url": "",
+                "score": 0.53125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON을 사전으로 변환",
+                "url": "",
+                "score": 0.609375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Dictionary - 사전의 가져오기 작업",
+                "url": "",
+                "score": 0.8671875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": "",
+                "score": 0.78515625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Logging - API 태스크에서 서버에 기록 작업 구성",
+                "url": "",
+                "score": 0.4921875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Screen - 화면의 바탕화면 캡처 작업",
+                "url": "",
+                "score": 0.74609375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Browser - 닫기 작업",
+                "url": "",
+                "score": 0.62109375
+              }
+            ],
+            "session_id": "e59287ed-bdfc-4345-9212-b76f0e29f473",
+            "analysis_id": "85a3a5b0-fb8c-41d6-a80c-7967a26c6ef9",
+            "analysis_result": {
+              "schema_version": "1.0",
+              "document_title": "업무 정의서",
+              "summary": "Automation Anywhere의 Twilio 연동 시나리오에서 실행 식별값을 검증해 작업 폴더와 로그 준비를 하고, Twilio 발신 요청을 전송한 뒤 JSON 응답을 파싱하여 필요한 필드를 추출하고 기본값을 적용하며 결과를 기록합니다. 또한 성공·실패 시도와 예외 상황을 외부 대조가 가능하도록 운영 증적으로 남기고 안전하게 종료하는 흐름입니다.",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "order": 1,
+                  "name": "봇 및 벤더 식별값 확인",
+                  "description": "이번 실행이 Automation Anywhere의 Twilio 연동 시나리오인지 확인하고, 봇과 벤더 식별값이 존재하는지 점검한다.",
+                  "inputs": [
+                    "봇 식별값",
+                    "벤더 식별값"
+                  ],
+                  "outputs": [
+                    "식별값 검증 결과"
+                  ],
+                  "systems": [
+                    "Automation Anywhere"
+                  ],
+                  "branching": "두 식별값 중 하나라도 없으면 차단 메시지를 보여주고 실행을 중단한다.",
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "1. 이번 실행은 Automation Anywhere의 Twilio 연동 시나리오이며 봇과 벤더 식별값이 있어야 한다.\n2. 두 식별값 중 하나라도 없으면 차단 메시지를 보여주고 실행을 중단한다."
+                  }
+                },
+                {
+                  "step_id": "step-2",
+                  "order": 2,
+                  "name": "차단 메시지 표시 및 실행 중단",
+                  "description": "봇 또는 벤더 식별값이 없을 때 사용자 알림 창으로 차단 메시지를 보여주고 실행을 멈춘다.",
+                  "inputs": [
+                    "식별값 검증 결과"
+                  ],
+                  "outputs": [
+                    "차단 메시지",
+                    "중단된 실행"
+                  ],
+                  "systems": [
+                    "사용자 알림 창"
+                  ],
+                  "branching": "식별값이 없는 경우에만 수행한다.",
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "2. 두 식별값 중 하나라도 없으면 차단 메시지를 보여주고 실행을 중단한다."
+                  }
+                },
+                {
+                  "step_id": "step-3",
+                  "order": 3,
+                  "name": "운영 폴더 생성",
+                  "description": "오류, 로그, 스크린샷, 입력, 출력, 처리 완료 데이터를 위한 운영 폴더를 만든다.",
+                  "inputs": [
+                    "운영 폴더 구조"
+                  ],
+                  "outputs": [
+                    "운영 폴더"
+                  ],
+                  "systems": [
+                    "폴더 구조"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "3. 오류, 로그, 스크린샷, 입력, 출력, 처리 완료 데이터를 위한 운영 폴더를 만든다."
+                  }
+                },
+                {
+                  "step_id": "step-4",
+                  "order": 4,
+                  "name": "실행 로그 날짜 정보 준비",
+                  "description": "실행 로그에 사용할 현재 날짜와 보존 기준일을 준비한다.",
+                  "inputs": [
+                    "현재 날짜",
+                    "보존 기준일"
+                  ],
+                  "outputs": [
+                    "로그용 날짜 정보"
+                  ],
+                  "systems": [
+                    "로그 파일"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "4. 실행 로그에 사용할 현재 날짜와 보존 기준일을 준비한다."
+                  }
+                },
+                {
+                  "step_id": "step-5",
+                  "order": 5,
+                  "name": "Twilio 발신 요청 세부값 준비",
+                  "description": "수신자, 발신자, 메시지 또는 통화 내용 등 Twilio 발신 요청에 필요한 세부값을 준비한다.",
+                  "inputs": [
+                    "수신자",
+                    "발신자",
+                    "메시지 또는 통화 내용"
+                  ],
+                  "outputs": [
+                    "Twilio 발신 요청 세부값"
+                  ],
+                  "systems": [
+                    "통신 요청 데이터"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "1. 수신자, 발신자, 메시지 또는 통화 내용 등 Twilio 발신 요청 세부값을 준비한다."
+                  }
+                },
+                {
+                  "step_id": "step-6",
+                  "order": 6,
+                  "name": "첫 번째 Twilio 통신 요청 전송",
+                  "description": "준비된 세부값으로 첫 번째 통신 요청을 전송하고 서비스 응답을 저장한다.",
+                  "inputs": [
+                    "Twilio 발신 요청 세부값"
+                  ],
+                  "outputs": [
+                    "서비스 응답"
+                  ],
+                  "systems": [
+                    "Twilio 서비스"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "2. 첫 번째 통신 요청을 전송하고 서비스 응답을 저장한다."
+                  }
+                },
+                {
+                  "step_id": "step-7",
+                  "order": 7,
+                  "name": "필요 시 두 번째 통신 요청 전송",
+                  "description": "시나리오상 문자와 음성 형태의 연락이 모두 필요한 경우 두 번째 통신 요청도 전송한다.",
+                  "inputs": [
+                    "Twilio 발신 요청 세부값"
+                  ],
+                  "outputs": [
+                    "두 번째 서비스 응답"
+                  ],
+                  "systems": [
+                    "Twilio 서비스"
+                  ],
+                  "branching": "문자와 음성 형태의 연락이 모두 필요한 경우에만 수행한다.",
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "3. 시나리오상 문자와 음성 형태의 연락이 모두 필요한 경우 두 번째 통신 요청도 전송한다."
+                  }
+                },
+                {
+                  "step_id": "step-8",
+                  "order": 8,
+                  "name": "서비스 응답을 JSON으로 취급",
+                  "description": "서비스 응답을 성공 보고 전에 검사해야 하는 JSON 형태 데이터로 취급한다.",
+                  "inputs": [
+                    "서비스 응답"
+                  ],
+                  "outputs": [
+                    "JSON 응답"
+                  ],
+                  "systems": [
+                    "Twilio 서비스"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "4. 서비스 응답은 성공 보고 전에 검사해야 하는 JSON 형태 데이터로 취급한다."
+                  }
+                },
+                {
+                  "step_id": "step-9",
+                  "order": 9,
+                  "name": "응답 본문 JSON 컨텍스트로 읽기",
+                  "description": "응답 본문을 JSON 객체 처리 컨텍스트로 읽는다.",
+                  "inputs": [
+                    "JSON 응답"
+                  ],
+                  "outputs": [
+                    "JSON 객체 처리 컨텍스트"
+                  ],
+                  "systems": [
+                    "JSON 응답"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "1. 응답 본문을 JSON 객체 처리 컨텍스트로 읽는다."
+                  }
+                },
+                {
+                  "step_id": "step-10",
+                  "order": 10,
+                  "name": "응답 필드 추출",
+                  "description": "상태, 서비스 ID, 메시지 ID, 오류 상세 등 필요한 필드를 추출한다.",
+                  "inputs": [
+                    "JSON 객체 처리 컨텍스트"
+                  ],
+                  "outputs": [
+                    "추출된 응답 필드"
+                  ],
+                  "systems": [
+                    "JSON 응답"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "2. 상태, 서비스 ID, 메시지 ID, 오류 상세 등 필요한 필드를 추출한다."
+                  }
+                },
+                {
+                  "step_id": "step-11",
+                  "order": 11,
+                  "name": "누락 필드 기본값 적용",
+                  "description": "기대 필드가 없으면 전체 실행을 실패시키지 않고 정의된 기본값을 사용한다.",
+                  "inputs": [
+                    "추출된 응답 필드"
+                  ],
+                  "outputs": [
+                    "기본값이 반영된 응답 필드"
+                  ],
+                  "systems": [
+                    "JSON 응답"
+                  ],
+                  "branching": "기대 필드가 없을 때만 수행한다.",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "3. 기대 필드가 없으면 전체 실행을 실패시키기보다  정의된 기본값을  사용한다."
+                  }
+                },
+                {
+                  "step_id": "step-12",
+                  "order": 12,
+                  "name": "응답 상세 로그 또는 출력 기록",
+                  "description": "파싱된 응답 상세를 사후 검토용 로그 또는 출력 영역에 기록한다.",
+                  "inputs": [
+                    "기본값이 반영된 응답 필드"
+                  ],
+                  "outputs": [
+                    "기록된 응답 상세"
+                  ],
+                  "systems": [
+                    "출력 폴더",
+                    "로그 파일"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "4. 파싱된 응답 상세를 사후 검토용 로그 또는 출력 영역에  기록한다."
+                  }
+                },
+                {
+                  "step_id": "step-13",
+                  "order": 13,
+                  "name": "Twilio 시도 상세 기록",
+                  "description": "성공과 실패 Twilio 시도 모두 외부 대조가 가능할 정도로 상세히 기록한다.",
+                  "inputs": [
+                    "Twilio 시도 결과"
+                  ],
+                  "outputs": [
+                    "상세 기록"
+                  ],
+                  "systems": [
+                    "Twilio 서비스",
+                    "로그 파일"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "1. 성공과 실패 Twilio 시도 모두 외부 대조가 가능할 정도로 상세히 기록한다."
+                  }
+                },
+                {
+                  "step_id": "step-14",
+                  "order": 14,
+                  "name": "예외 시 스크린샷 또는 진단 표시 남기기",
+                  "description": "예외가 발생하면 스크린샷이나 진단 표시를 남긴다.",
+                  "inputs": [
+                    "예외 발생 정보"
+                  ],
+                  "outputs": [
+                    "스크린샷 또는 진단 표시"
+                  ],
+                  "systems": [
+                    "스크린샷 폴더"
+                  ],
+                  "branching": "예외가 발생한 경우에만 수행한다.",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "2. 예외가 발생하면 스크린샷이나 진단 표시를 남긴다."
+                  }
+                },
+                {
+                  "step_id": "step-15",
+                  "order": 15,
+                  "name": "권장 흐름에 따라 종료 준비",
+                  "description": "요청 준비, Twilio 호출, JSON 파싱, 상태 기록, 오류에 안전한 종료가 포함되도록 흐름을 정리한다.",
+                  "inputs": [
+                    "요청 준비 결과",
+                    "Twilio 호출 결과",
+                    "JSON 파싱 결과",
+                    "상태 기록"
+                  ],
+                  "outputs": [
+                    "오류에 안전한 종료 흐름"
+                  ],
+                  "systems": [
+                    "Twilio 서비스",
+                    "로그 파일"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "3. 권장 흐름에는 요청 준비, Twilio 호출, JSON 파싱, 상태 기록, 오류에 안전한 종료가 포함되어야 한다."
+                  }
+                }
+              ],
+              "ambiguities": [
+                "문서 제목이 별도로 명시되지 않아 첫 행의 '업무 정의서'를 문서 제목으로 보았으나, 실제 공식 제목인지 불확실하다.",
+                "1페이지의 'Task 3. 응답 파싱 및 검증'은 상위 표제처럼 보이지만 상세 작업 순서는 2페이지에 있으며, Task 3 내에 Task 1, Task 2가 함께 배치되어 있어 문서 구조가 다소 혼재되어 있다.",
+                "2페이지의 '서비스 응답'과 'JSON 응답'이 동일 대상을 의미하는지 문서상 명확하지 않다.",
+                "3번째 작업의 '두 번째 통신 요청'이 문자와 음성 각각을 의미하는지, 또는 다른 조건의 재전송인지 문서만으로는 확정할 수 없다.",
+                "1페이지의 '실행 로그에 사용할 현재 날짜와 보존 기준일'에서 보존 기준일의 산정 방식은 문서에 없다.",
+                "4페이지에 해당하는 세부 종료 절차나 실제 종료 동작은 문서에 구체적으로 나오지 않는다."
+              ]
+            },
+            "id": "7aa473aa-07c1-4b9a-8521-0e0d32bd9530",
+            "version": 1,
+            "parent_version": null,
+            "source": "chat",
+            "change_summary": null,
+            "created_at": "2026-07-15T17:56:47.765566+00:00",
+            "recommendation": {
+              "schema_version": "1.0",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "label": "실행 식별값 확인",
+                  "description": "이번 실행이 Twilio 연동 시나리오인지 확인하고 봇·벤더 식별값의 존재 여부에 따라 분기한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "If",
+                      "action": "ifPackageElseIfOptionalAction",
+                      "label": "식별값 존재 여부 확인",
+                      "parameters": [
+                        {
+                          "name": "condition",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Message box",
+                          "action": "usingMessageBoxAction",
+                          "label": "차단 메시지 표시",
+                          "parameters": [
+                            {
+                              "name": "messageBoxTitle",
+                              "label": null,
+                              "value": "실행 차단",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "message",
+                              "label": null,
+                              "value": "봇 또는 벤더 식별값이 없어 Twilio 연동 시나리오를 실행할 수 없습니다.",
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "식별값이 없을 때 사용자 알림 창으로 차단 메시지를 보여달라는 요구를 반영",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Message box - 메시지 상자 작업 사용",
+                              "url": "",
+                              "score": 0.77734375
+                            }
+                          ],
+                          "confidence": 0.78
+                        }
+                      ],
+                      "rationale": "식별값이 없을 때 차단 메시지를 보여주기 위한 분기",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "If - Else if(선택사항) 작업",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-if-command/if-package-else-if-optional-action",
+                          "score": 0.859375
+                        }
+                      ],
+                      "confidence": 0.64
+                    },
+                    {
+                      "order": 2,
+                      "package": "If",
+                      "action": "ifPackageElseAction",
+                      "label": "식별값 없으면 종료",
+                      "parameters": [],
+                      "children": [],
+                      "rationale": "식별값이 없을 때의 대체 흐름을 정의",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "If - Else 작업",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-if-command/if-package-else-action",
+                          "score": 0.859375
+                        }
+                      ],
+                      "confidence": 0.86
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-2",
+                  "label": "운영 폴더와 기준일 준비",
+                  "description": "오류, 로그, 스크린샷, 입력, 출력, 처리완료용 폴더를 만들고 로그 기준일을 준비한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Folder",
+                      "action": "folderCreate",
+                      "label": "운영 폴더 생성",
+                      "parameters": [
+                        {
+                          "name": "folder",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "overwriteExistingFolder",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "운영 폴더 생성 요구를 반영",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Folder - 폴더의 생성 작업",
+                          "url": "",
+                          "score": 0.875
+                        }
+                      ],
+                      "confidence": 0.66
+                    },
+                    {
+                      "order": 2,
+                      "package": "System",
+                      "action": "usingTheGetEnvironmentVariableAction",
+                      "label": "기준 경로 준비",
+                      "parameters": [
+                        {
+                          "name": "environmentVariable",
+                          "label": null,
+                          "value": "OneDrive",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "운영 폴더의 기준 경로를 잡기 위한 시스템 변수 확인",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "System - 환경 변수 가져오기 작업",
+                          "url": "",
+                          "score": 0.55078125
+                        }
+                      ],
+                      "confidence": 0.55
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-3",
+                  "label": "Twilio 요청 데이터 준비",
+                  "description": "Twilio 발신 요청에 필요한 수신자, 발신자, 메시지 또는 통화 내용을 준비한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Prompt",
+                      "action": "promptForValue",
+                      "label": "요청값 입력",
+                      "parameters": [
+                        {
+                          "name": "promptWindowCaption",
+                          "label": null,
+                          "value": "Twilio 요청값 입력",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "promptMessage",
+                          "label": null,
+                          "value": "수신자, 발신자, 메시지/통화 내용을 입력하세요.",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "Twilio 발신 요청 세부값을 준비해야 한다는 요구를 반영",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Prompt - 프롬프트의 값용 작업",
+                          "url": "",
+                          "score": 0.59375
+                        }
+                      ],
+                      "confidence": 0.59
+                    },
+                    {
+                      "order": 2,
+                      "package": "Dictionary",
+                      "action": "dictionaryPut",
+                      "label": "요청값 저장",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "twilioRequest",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "value",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "발신 요청 세부값을 이후 호출에 재사용하기 위해 저장",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 작업의 놓기 사전",
+                          "url": "",
+                          "score": 0.5
+                        }
+                      ],
+                      "confidence": 0.38
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-4",
+                  "label": "Twilio 호출 및 응답 검증",
+                  "description": "Twilio 서비스에 요청을 전송하고 응답 JSON을 검증한 뒤 파싱 준비를 한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Error handler",
+                      "action": "errorHandlerTry",
+                      "label": "Twilio 요청 전송 시도",
+                      "parameters": [],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "REST Web Services",
+                          "action": "cloudFileUploadUsingPost",
+                          "label": "Twilio 요청 전송",
+                          "parameters": [
+                            {
+                              "name": "uri",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "contentType",
+                              "label": null,
+                              "value": "multipart/form-data",
+                              "value_source": "schema_default"
+                            },
+                            {
+                              "name": "file",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "additionalParameters",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "준비된 세부값으로 첫 번째 Twilio 통신 요청을 전송한다",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "REST Web Services - Post 메서드로 파일 업로드",
+                              "url": "",
+                              "score": 0.69921875
+                            }
+                          ],
+                          "confidence": 0.52
+                        }
+                      ],
+                      "rationale": null,
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 Try 작업",
+                          "url": "",
+                          "score": 0.80078125
+                        }
+                      ],
+                      "confidence": 0.8
+                    },
+                    {
+                      "order": 2,
+                      "package": "Error handler",
+                      "action": "errorHandlerCatch",
+                      "label": "Twilio 오류 기록",
+                      "parameters": [
+                        {
+                          "name": "exception",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "continueOnError",
+                          "label": null,
+                          "value": true,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "assignExceptionMessageTo",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "assignLineNumberTo",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "Twilio 시도 실패를 외부 대조 가능하도록 남기기 위함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                          "url": "",
+                          "score": 0.8671875
+                        }
+                      ],
+                      "confidence": 0.65
+                    },
+                    {
+                      "order": 3,
+                      "package": "Error handler",
+                      "action": "errorHandlerFinally",
+                      "label": "호출 정리",
+                      "parameters": [],
+                      "children": [],
+                      "rationale": "Twilio 호출 후 정리 동작을 보장",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 최종 작업",
+                          "url": "",
+                          "score": 0.83984375
+                        }
+                      ],
+                      "confidence": 0.84
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-5",
+                  "label": "JSON 응답 파싱",
+                  "description": "Twilio 응답을 JSON 세션으로 읽고 필요한 필드를 추출한 뒤 기본값을 적용한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "JSON utilities",
+                      "action": "jsonStartSession",
+                      "label": "JSON 세션 시작",
+                      "parameters": [
+                        {
+                          "name": "dataSource",
+                          "label": null,
+                          "value": "텍스트",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "jsonObjectSession",
+                          "label": null,
+                          "value": "로컬 세션",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "서비스 응답을 JSON 객체 처리 컨텍스트로 읽기 위함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - JSON에서 세션 시작 작업",
+                          "url": "",
+                          "score": 0.54296875
+                        }
+                      ],
+                      "confidence": 0.54
+                    },
+                    {
+                      "order": 2,
+                      "package": "JSON utilities",
+                      "action": "jsonValidate",
+                      "label": "JSON 유효성 확인",
+                      "parameters": [
+                        {
+                          "name": "validationLevel",
+                          "label": null,
+                          "value": "형식",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "dataSource",
+                          "label": null,
+                          "value": "텍스트",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "schemaDefinition",
+                          "label": null,
+                          "value": "JSON 스키마 초안 2020-12",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "output",
+                          "label": null,
+                          "value": "유효성검사결과",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "서비스 응답은 성공 보고 전에 검사해야 하는 JSON 데이터이므로 유효성 검사를 수행",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - 작업 유효성 검사",
+                          "url": "",
+                          "score": 0.53125
+                        }
+                      ],
+                      "confidence": 0.53
+                    },
+                    {
+                      "order": 3,
+                      "package": "JSON utilities",
+                      "action": "convertJsonToDictionary",
+                      "label": "JSON을 사전으로 변환",
+                      "parameters": [
+                        {
+                          "name": "sessionName",
+                          "label": null,
+                          "value": "로컬 세션",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "output",
+                          "label": null,
+                          "value": "사전",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "JSON 응답의 노드를 사전 형태로 읽기 위함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - JSON을 사전으로 변환",
+                          "url": "",
+                          "score": 0.609375
+                        }
+                      ],
+                      "confidence": 0.46
+                    },
+                    {
+                      "order": 4,
+                      "package": "Dictionary",
+                      "action": "dictionaryGet",
+                      "label": "상태 추출",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "사전",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "status",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "output",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "상태, 서비스 ID, 메시지 ID, 오류 상세 등 필요한 필드를 추출하는 요구를 반영",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 사전의 가져오기 작업",
+                          "url": "",
+                          "score": 0.8671875
+                        }
+                      ],
+                      "confidence": 0.87
+                    },
+                    {
+                      "order": 5,
+                      "package": "Dictionary",
+                      "action": "dictionaryGet",
+                      "label": "서비스 ID 추출",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "사전",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "serviceId",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "output",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "필요 필드 중 서비스 ID를 추출",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 사전의 가져오기 작업",
+                          "url": "",
+                          "score": 0.8671875
+                        }
+                      ],
+                      "confidence": 0.87
+                    },
+                    {
+                      "order": 6,
+                      "package": "Dictionary",
+                      "action": "dictionaryGet",
+                      "label": "메시지 ID 추출",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "사전",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "messageId",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "output",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "필요 필드 중 메시지 ID를 추출",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 사전의 가져오기 작업",
+                          "url": "",
+                          "score": 0.8671875
+                        }
+                      ],
+                      "confidence": 0.87
+                    },
+                    {
+                      "order": 7,
+                      "package": "Dictionary",
+                      "action": "dictionaryGet",
+                      "label": "오류 상세 추출",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "사전",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "errorDetail",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "output",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "오류 상세를 대조 가능하게 추출",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 사전의 가져오기 작업",
+                          "url": "",
+                          "score": 0.8671875
+                        }
+                      ],
+                      "confidence": 0.87
+                    },
+                    {
+                      "order": 8,
+                      "package": "Dictionary",
+                      "action": "dictionaryGet",
+                      "label": "기본값 적용",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "사전",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "defaultValue",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "output",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "기대 필드가 없으면 전체 실행을 실패시키지 않고 정의된 기본값을 사용하기 위함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 사전의 가져오기 작업",
+                          "url": "",
+                          "score": 0.8671875
+                        }
+                      ],
+                      "confidence": 0.87
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-6",
+                  "label": "응답 로그 기록",
+                  "description": "파싱된 응답 상세와 Twilio 시도 결과를 로그 또는 출력 파일에 기록한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Data Table",
+                      "action": "cloudWriteToFileAction",
+                      "label": "응답 상세 기록",
+                      "parameters": [
+                        {
+                          "name": "dataTableName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "fileName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "createIfMissing",
+                          "label": null,
+                          "value": true,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "writeMode",
+                          "label": null,
+                          "value": "기존 파일에 추가",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "rowDelimiter",
+                          "label": null,
+                          "value": "새 줄",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "columnDelimiter",
+                          "label": null,
+                          "value": "탭",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "encoding",
+                          "label": null,
+                          "value": "UTF-8",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "파싱된 응답 상세를 사후 검토용 로그 또는 출력 영역에 기록",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Data Table - 파일 쓰기 작업 사용",
+                          "url": "",
+                          "score": 0.78515625
+                        }
+                      ],
+                      "confidence": 0.59
+                    },
+                    {
+                      "order": 2,
+                      "package": "Logging",
+                      "action": "cloudLogToServerAction",
+                      "label": "시도 상세 전송",
+                      "parameters": [
+                        {
+                          "name": "siemServerEndpoint",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "httpMethod",
+                          "label": null,
+                          "value": "POST",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "eventProperty",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "성공과 실패 Twilio 시도 모두 외부 대조가 가능하도록 상세 기록",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Logging - API 태스크에서 서버에 기록 작업 구성",
+                          "url": "",
+                          "score": 0.4921875
+                        }
+                      ],
+                      "confidence": 0.37
+                    },
+                    {
+                      "order": 3,
+                      "package": "Screen",
+                      "action": "screenCaptureDesktop",
+                      "label": "진단 스크린샷 저장",
+                      "parameters": [
+                        {
+                          "name": "filePath",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "overwrite",
+                          "label": null,
+                          "value": true,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "예외 발생 시 스크린샷이나 진단 표시를 남기기 위함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Screen - 화면의 바탕화면 캡처 작업",
+                          "url": "",
+                          "score": 0.74609375
+                        }
+                      ],
+                      "confidence": 0.56
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-7",
+                  "label": "안전 종료",
+                  "description": "작업을 마친 뒤 브라우저나 관련 창을 정리하며 종료한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Browser",
+                      "action": "browserPackageCloseAction",
+                      "label": "브라우저 닫기",
+                      "parameters": [
+                        {
+                          "name": "target",
+                          "label": null,
+                          "value": "탭",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "timeout",
+                          "label": null,
+                          "value": 9,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "여는 액션을 사용한 경우 흐름 끝에 닫아 정리해야 한다는 규칙을 반영",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Browser - 닫기 작업",
+                          "url": "",
+                          "score": 0.62109375
+                        }
+                      ],
+                      "confidence": 0.47
+                    }
+                  ]
+                }
+              ],
+              "variables": [
+                {
+                  "name": "operatingFolderPath",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "운영 폴더 기본 경로"
+                },
+                {
+                  "name": "twilioRequestData",
+                  "type": "DICTIONARY",
+                  "direction": "local",
+                  "description": "Twilio 발신 요청 세부값"
+                },
+                {
+                  "name": "twilioResponseJsonSession",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "Twilio 응답 JSON 세션 이름"
+                },
+                {
+                  "name": "twilioResponseDictionary",
+                  "type": "DICTIONARY",
+                  "direction": "local",
+                  "description": "파싱한 응답 사전"
+                },
+                {
+                  "name": "twilioStatus",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "응답 상태"
+                },
+                {
+                  "name": "twilioServiceId",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "서비스 ID"
+                },
+                {
+                  "name": "twilioMessageId",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "메시지 ID"
+                },
+                {
+                  "name": "twilioErrorDetail",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "오류 상세"
+                },
+                {
+                  "name": "twilioDefaultValue",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "누락 필드 기본값"
+                },
+                {
+                  "name": "twilioValidationResult",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "JSON 유효성 검사 결과"
+                },
+                {
+                  "name": "twilioResponseLogTable",
+                  "type": "TABLE",
+                  "direction": "local",
+                  "description": "응답 상세 기록용 테이블"
+                },
+                {
+                  "name": "siemEventProperty",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "외부 대조용 로그 이벤트 속성"
+                },
+                {
+                  "name": "screenshotPath",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "예외 진단 스크린샷 저장 경로"
+                }
+              ],
+              "notes": "REST Web Services의 Twilio 전용 액션은 카탈로그 확인 결과 없었으므로 Twilio 발신 요청은 REST Web Services/cloudFileUploadUsingPost로 우회 설계했다. 이는 실제 Twilio API의 요청 형식에 맞는 URI·인증·본문 파일 준비가 전제되어야 한다. '두 번째 통신 요청'은 조건부 재전송/추가 발신으로 해석했으나 구체 조건은 문서상 불명확하여 별도 분기 없이 후속 확장 가능 지점으로 남겼다. JSON 필드명(status, serviceId, messageId, errorDetail)은 문서의 예시 요구를 반영한 것이며 실제 Twilio 응답 스키마에 맞게 조정이 필요할 수 있다. 오류 메시지 표시와 실행 중단은 Message box와 오류 처리기로 구성했으며, 실제 '중단' 동작은 환경에 따라 추가 종료 액션이 필요할 수 있다."
+            },
+            "usage_gauge": {
+              "intake_tokens": 777,
+              "limit_tokens": 6000,
+              "ratio": 0.1295,
+              "compact_recommended": false,
+              "compact_required": false
+            }
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\03_turn_analyze.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnRecommend",
+      "started_at": "2026-07-15T17:56:48.198350+00:00",
+      "finished_at": "2026-07-15T17:59:12.776262+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/e59287ed-bdfc-4345-9212-b76f0e29f473/turn",
+        "json": {
+          "message": "이 업무정의서로 자동화 흐름도 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:56:46 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "d285c720958f",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 10,
+          "partial": 8,
+          "done": 1
+        },
+        "duration_seconds": 144.577,
+        "final_event": {
+          "event": "done",
+          "stage": "agent",
+          "message": "완료",
+          "data": {
+            "type": "recommendation",
+            "answer": "7개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 카탈로그에서 Twilio 전용 발신 액션과 운영 폴더 생성 전용 액션은 확인되지 않아, Twilio 호출과 폴더 생성은 REST Web Services 및 폴더 우회 수단으로 표현했다. · REST Web Services의 POST 전용 액션이 카탈로그에서 확인되지 않아, 실제 Twilio 발신은 카탈로그에 확인된 액션만으로 완전 명시하기 어렵다. · getActionInDatetime는 연도/월/일 등 개별 값 추출만 확인되어 보존 기준일 산정 로직은 사용자 정의 계산이 추가로 필요하다. · JSON 응답의 정확한 키 경로(status, serviceId, messageId, errorDetail)는 문서 기준 해석이므로 실제 Twilio 응답 스키마에 맞춰 조정이 필요할 수 있다. (검수에서 해소하지 못한 위반 23건이 있어요 — 흐름도에서 확인해 주세요.)",
+            "sources": [
+              {
+                "source_type": "action_schema",
+                "title": "If - Else if(선택사항) 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-if-command/if-package-else-if-optional-action",
+                "score": 0.51953125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": "",
+                "score": 0.515625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Task Bot - Stop 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-taskbot-command/task-bot-package-stop-action",
+                "score": 0.6953125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Datetime - 날짜 시간에서 가져오기 작업",
+                "url": "",
+                "score": 0.5078125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Folder - 압축 작업",
+                "url": "",
+                "score": 0.388671875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "String - 지정 작업",
+                "url": "",
+                "score": 0.5390625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "REST Web Services - Get 메소드 사용",
+                "url": "",
+                "score": 0.498046875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "JSON utilities - 작업 유효성 검사",
+                "url": "",
+                "score": 0.404296875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                "url": "",
+                "score": 0.62890625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": "",
+                "score": 0.55078125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": "",
+                "score": 0.65625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Screen - 화면 패키지의 창 캡처 작업 사용",
+                "url": "",
+                "score": 0.56640625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 최종 작업",
+                "url": "",
+                "score": 0.76953125
+              }
+            ],
+            "session_id": "e59287ed-bdfc-4345-9212-b76f0e29f473",
+            "id": "8f53b128-c59d-4c37-bdcc-8c64efbd4f4f",
+            "version": 2,
+            "parent_version": 1,
+            "source": "chat",
+            "change_summary": null,
+            "created_at": "2026-07-15T17:59:12.362195+00:00",
+            "recommendation": {
+              "schema_version": "1.0",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "label": "실행 식별 확인",
+                  "description": "봇과 벤더 식별값이 있는지 확인하고 없으면 차단 메시지를 띄운 뒤 실행을 중단한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "If",
+                      "action": "ifPackageElseIfOptionalAction",
+                      "label": "식별값 누락 확인",
+                      "parameters": [
+                        {
+                          "name": "condition",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Message box",
+                          "action": "usingMessageBoxAction",
+                          "label": "차단 메시지 표시",
+                          "parameters": [
+                            {
+                              "name": "messageBoxTitle",
+                              "label": null,
+                              "value": "실행 중단",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "message",
+                              "label": null,
+                              "value": "봇 또는 벤더 식별값이 없어 실행을 중단합니다.",
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "식별값이 없을 때 사용자 알림 창으로 차단 메시지를 보여줘야 함",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Message box - 메시지 상자 작업 사용",
+                              "url": "",
+                              "score": 0.515625
+                            }
+                          ],
+                          "confidence": 0.52
+                        },
+                        {
+                          "order": 2,
+                          "package": "Task Bot",
+                          "action": "taskBotPackageStopAction",
+                          "label": "실행 중단",
+                          "parameters": [],
+                          "children": [],
+                          "rationale": "식별값이 없으면 실행을 멈추라는 요구를 충족",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Task Bot - Stop 작업",
+                              "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-taskbot-command/task-bot-package-stop-action",
+                              "score": 0.6953125
+                            }
+                          ],
+                          "confidence": 0.7
+                        }
+                      ],
+                      "rationale": "이번 실행이 Twilio 연동 시나리오이며 식별값이 반드시 있어야 한다는 업무를 검증",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "If - Else if(선택사항) 작업",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-if-command/if-package-else-if-optional-action",
+                          "score": 0.51953125
+                        }
+                      ],
+                      "confidence": 0.39
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-2",
+                  "label": "운영 폴더와 날짜 준비",
+                  "description": "운영 증적을 담을 폴더 경로를 준비하고 현재 날짜를 계산해 로그와 파일명에 사용할 값을 만든다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Datetime",
+                      "action": "getActionInDatetime",
+                      "label": "현재 연도 추출",
+                      "parameters": [
+                        {
+                          "name": "dateTimeVariable",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "valueToGet",
+                          "label": null,
+                          "value": "연도",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "outputVariable",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "실행 로그에 사용할 현재 날짜 정보를 준비해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Datetime - 날짜 시간에서 가져오기 작업",
+                          "url": "",
+                          "score": 0.5078125
+                        }
+                      ],
+                      "confidence": 0.38
+                    },
+                    {
+                      "order": 2,
+                      "package": "Folder",
+                      "action": "cloudZipFilesAndFolders",
+                      "label": "운영 폴더 준비",
+                      "parameters": [
+                        {
+                          "name": "source",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "targetFileNameAndLocation",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "카탈로그에서 운영 폴더 생성 전용 액션이 확인되지 않아 폴더 구조 준비를 위한 우회 수단이 필요함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Folder - 압축 작업",
+                          "url": "",
+                          "score": 0.388671875
+                        }
+                      ],
+                      "confidence": 0.29
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-3",
+                  "label": "Twilio 요청 본문 준비",
+                  "description": "수신자, 발신자, 메시지 또는 통화 내용 등 Twilio 요청에 필요한 값을 구성한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "String",
+                      "action": "stringPackageAssignAction",
+                      "label": "요청 본문 변수 지정",
+                      "parameters": [
+                        {
+                          "name": "targetString",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "Twilio 발신 요청 세부값을 준비해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "String - 지정 작업",
+                          "url": "",
+                          "score": 0.5390625
+                        }
+                      ],
+                      "confidence": 0.4
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-4",
+                  "label": "Twilio 발신과 응답 수집",
+                  "description": "Twilio 서비스에 요청을 보내고 응답 JSON을 받아 이후 파싱할 수 있게 보관한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "REST Web Services",
+                      "action": "cloudUsingGetAction",
+                      "label": "Twilio 요청 전송",
+                      "parameters": [],
+                      "children": [],
+                      "rationale": "Twilio 서비스에 발신 요청을 전송하는 네트워크 호출 작업이 필요함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "REST Web Services - Get 메소드 사용",
+                          "url": "",
+                          "score": 0.498046875
+                        }
+                      ],
+                      "confidence": 0.5
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-5",
+                  "label": "응답 JSON 검증과 필드 추출",
+                  "description": "응답을 JSON으로 검증하고 상태, 서비스 ID, 메시지 ID, 오류 상세를 추출한 뒤 누락값에 기본값을 적용한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "JSON utilities",
+                      "action": "jsonValidate",
+                      "label": "응답 JSON 검증",
+                      "parameters": [
+                        {
+                          "name": "validationLevel",
+                          "label": null,
+                          "value": "형식",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "dataSource",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "output",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "서비스 응답은 성공 보고 전에 JSON 형태로 검사해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - 작업 유효성 검사",
+                          "url": "",
+                          "score": 0.404296875
+                        }
+                      ],
+                      "confidence": 0.3
+                    },
+                    {
+                      "order": 2,
+                      "package": "JSON utilities",
+                      "action": "jsonGetNodeValue",
+                      "label": "상태값 추출",
+                      "parameters": [
+                        {
+                          "name": "jsonNodeKeyOrPath",
+                          "label": null,
+                          "value": "status",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "sessionName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "outputVariable",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "응답에서 상태 필드를 추출해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                          "url": "",
+                          "score": 0.62890625
+                        }
+                      ],
+                      "confidence": 0.47
+                    },
+                    {
+                      "order": 3,
+                      "package": "JSON utilities",
+                      "action": "jsonGetNodeValue",
+                      "label": "서비스 ID 추출",
+                      "parameters": [
+                        {
+                          "name": "jsonNodeKeyOrPath",
+                          "label": null,
+                          "value": "serviceId",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "sessionName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "outputVariable",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "응답에서 서비스 ID 필드를 추출해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                          "url": "",
+                          "score": 0.62890625
+                        }
+                      ],
+                      "confidence": 0.47
+                    },
+                    {
+                      "order": 4,
+                      "package": "JSON utilities",
+                      "action": "jsonGetNodeValue",
+                      "label": "메시지 ID 추출",
+                      "parameters": [
+                        {
+                          "name": "jsonNodeKeyOrPath",
+                          "label": null,
+                          "value": "messageId",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "sessionName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "outputVariable",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "응답에서 메시지 ID 필드를 추출해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                          "url": "",
+                          "score": 0.62890625
+                        }
+                      ],
+                      "confidence": 0.47
+                    },
+                    {
+                      "order": 5,
+                      "package": "JSON utilities",
+                      "action": "jsonGetNodeValue",
+                      "label": "오류 상세 추출",
+                      "parameters": [
+                        {
+                          "name": "jsonNodeKeyOrPath",
+                          "label": null,
+                          "value": "errorDetail",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "sessionName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "outputVariable",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "응답에서 오류 상세 필드를 추출해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "JSON utilities - JSON에서 노드 값 가져오기 작업",
+                          "url": "",
+                          "score": 0.62890625
+                        }
+                      ],
+                      "confidence": 0.47
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-6",
+                  "label": "기본값 적용과 결과 기록",
+                  "description": "누락된 응답 필드에 기본값을 적용하고 파싱 결과를 로그 또는 출력 영역에 남긴다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "String",
+                      "action": "stringPackageAssignAction",
+                      "label": "기본값 적용",
+                      "parameters": [
+                        {
+                          "name": "targetString",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "기대 필드가 없으면 정의된 기본값을 사용해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "String - 지정 작업",
+                          "url": "",
+                          "score": 0.5390625
+                        }
+                      ],
+                      "confidence": 0.4
+                    },
+                    {
+                      "order": 2,
+                      "package": "Data Table",
+                      "action": "cloudWriteToFileAction",
+                      "label": "응답 상세 기록",
+                      "parameters": [
+                        {
+                          "name": "dataTableName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "fileName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "writeMode",
+                          "label": null,
+                          "value": "기존 파일에 덮어쓰기",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "rowDelimiter",
+                          "label": null,
+                          "value": "쉼표",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "columnDelimiter",
+                          "label": null,
+                          "value": "쉼표",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "파싱된 응답 상세를 사후 검토용 로그 또는 출력 영역에 기록해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Data Table - 파일 쓰기 작업 사용",
+                          "url": "",
+                          "score": 0.55078125
+                        }
+                      ],
+                      "confidence": 0.41
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-7",
+                  "label": "운영 증적과 종료 정리",
+                  "description": "성공·실패 시도 내역과 예외 스크린샷을 남기고 안전하게 종료한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Error handler",
+                      "action": "errorHandlerTry",
+                      "label": "증적 기록 시도",
+                      "parameters": [],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Data Table",
+                          "action": "cloudWriteToFileAction",
+                          "label": "시도 내역 기록",
+                          "parameters": [
+                            {
+                              "name": "dataTableName",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "fileName",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "writeMode",
+                              "label": null,
+                              "value": "기존 파일에 덮어쓰기",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "rowDelimiter",
+                              "label": null,
+                              "value": "쉼표",
+                              "value_source": "schema_default"
+                            },
+                            {
+                              "name": "columnDelimiter",
+                              "label": null,
+                              "value": "쉼표",
+                              "value_source": "schema_default"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "성공과 실패 Twilio 시도 모두 상세 기록이 필요함",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Data Table - 파일 쓰기 작업 사용",
+                              "url": "",
+                              "score": 0.55078125
+                            }
+                          ],
+                          "confidence": 0.41
+                        }
+                      ],
+                      "rationale": "운영 증적 기록은 실패 가능성이 있어 오류 처리로 감싸는 것이 안전함",
+                      "sources": [],
+                      "confidence": 0.4
+                    },
+                    {
+                      "order": 2,
+                      "package": "Error handler",
+                      "action": "errorHandlerCatch",
+                      "label": "예외 기록",
+                      "parameters": [
+                        {
+                          "name": "exception",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "continueOnError",
+                          "label": null,
+                          "value": true,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Screen",
+                          "action": "cloudUsingScreenCaptureWindow",
+                          "label": "스크린샷 저장",
+                          "parameters": [
+                            {
+                              "name": "windowSource",
+                              "label": null,
+                              "value": "브라우저",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "filePath",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "overwrite",
+                              "label": null,
+                              "value": true,
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "예외가 발생하면 스크린샷이나 진단 표시를 남겨야 함",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Screen - 화면 패키지의 창 캡처 작업 사용",
+                              "url": "",
+                              "score": 0.56640625
+                            }
+                          ],
+                          "confidence": 0.42
+                        }
+                      ],
+                      "rationale": "예외 발생 시 운영 증적을 남겨 외부 대조가 가능해야 함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                          "url": "",
+                          "score": 0.65625
+                        }
+                      ],
+                      "confidence": 0.49
+                    },
+                    {
+                      "order": 3,
+                      "package": "Error handler",
+                      "action": "errorHandlerFinally",
+                      "label": "안전 종료 정리",
+                      "parameters": [],
+                      "children": [],
+                      "rationale": "오류 여부와 무관하게 안전한 종료 정리가 필요함",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 최종 작업",
+                          "url": "",
+                          "score": 0.76953125
+                        }
+                      ],
+                      "confidence": 0.77
+                    }
+                  ]
+                }
+              ],
+              "variables": [
+                {
+                  "name": "executionYear",
+                  "type": "NUMBER",
+                  "direction": "local",
+                  "description": "현재 실행 연도"
+                },
+                {
+                  "name": "twilioRequestBody",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "Twilio 발신 요청 본문"
+                },
+                {
+                  "name": "twilioResponseJson",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "Twilio 응답 JSON 문자열"
+                },
+                {
+                  "name": "responseStatus",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "응답 상태"
+                },
+                {
+                  "name": "serviceId",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "Twilio 서비스 ID"
+                },
+                {
+                  "name": "messageId",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "Twilio 메시지 ID"
+                },
+                {
+                  "name": "errorDetail",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "응답 오류 상세"
+                },
+                {
+                  "name": "parsedResponseTable",
+                  "type": "TABLE",
+                  "direction": "local",
+                  "description": "파싱된 응답 상세 기록용 테이블"
+                },
+                {
+                  "name": "attemptLogTable",
+                  "type": "TABLE",
+                  "direction": "local",
+                  "description": "성공과 실패 Twilio 시도 기록용 테이블"
+                },
+                {
+                  "name": "screenshotPath",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "예외 시 저장할 스크린샷 경로"
+                }
+              ],
+              "notes": "카탈로그에서 Twilio 전용 발신 액션과 운영 폴더 생성 전용 액션은 확인되지 않아, Twilio 호출과 폴더 생성은 REST Web Services 및 폴더 우회 수단으로 표현했다. · REST Web Services의 POST 전용 액션이 카탈로그에서 확인되지 않아, 실제 Twilio 발신은 카탈로그에 확인된 액션만으로 완전 명시하기 어렵다. · getActionInDatetime는 연도/월/일 등 개별 값 추출만 확인되어 보존 기준일 산정 로직은 사용자 정의 계산이 추가로 필요하다. · JSON 응답의 정확한 키 경로(status, serviceId, messageId, errorDetail)는 문서 기준 해석이므로 실제 Twilio 응답 스키마에 맞춰 조정이 필요할 수 있다."
+            },
+            "usage_gauge": {
+              "intake_tokens": 1053,
+              "limit_tokens": 6000,
+              "ratio": 0.1755,
+              "compact_recommended": false,
+              "compact_required": false
+            }
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\04_turn_recommend.events.jsonl",
+      "error": null
+    }
+  ]
+}

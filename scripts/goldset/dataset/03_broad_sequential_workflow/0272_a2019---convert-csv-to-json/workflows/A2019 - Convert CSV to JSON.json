@@ -1,0 +1,1301 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "This bot converts csv file(s) to json file(s)",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "8e6d11a1-193b-4594-a825-895f04423183"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "prompt-assignment"
+              },
+              "uid": "c925c7fc-d98e-4a38-8f81-62621341bcb3"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Displays error message if present.",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "502c50d4-8a3f-4930-8243-aa7bdbe5f4ff"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "ERROR!!!",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "Error Message : $vErrorMessage$\nError Line:$vErrorLine.Number:toString$\nPlease find the log file in $sLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "messageBox",
+              "disabled": false,
+              "packageName": "MessageBox",
+              "uid": "0ca69479-cbc5-4a67-890f-3b3900c2df04"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "vErrorLine"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "vErrorMessage"
+            }
+          },
+          "uid": "a5b5c8f4-eb27-4a28-a198-f0216c0df905"
+        },
+        {
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Create folder to log the status of the bot.",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "92d7747f-d437-4f71-8bb0-68f102ccbd7a"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sLogFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderDoesNotExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sLogFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "createFolder",
+                  "disabled": false,
+                  "packageName": "Folder",
+                  "uid": "0cf70b53-a718-470b-a22c-044e15f6a070"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "9e689b73-68b5-4405-97c8-9244cbee4495"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$prompt-assignment$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "true",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/ErrorLog.txt",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "All actions are completed",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "logToFile",
+                      "disabled": false,
+                      "packageName": "LogToFile",
+                      "uid": "6bd7415f-ad47-456e-9f75-c8108fac0085"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "28e9df0b-1911-4ff7-b62e-362a714b68b9"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sLogFolder$/ErrorLog.txt",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "Error Message : $vErrorMessage$\nError Line:$vErrorLine.Number:toString$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "logToFile",
+                  "disabled": false,
+                  "packageName": "LogToFile",
+                  "uid": "97a4cfb2-4a95-40a8-8a8e-f0dd4718f607"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "839e45cf-89d0-4fc6-bf11-5a2f1b690a93"
+            }
+          ],
+          "commandName": "finally",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "ef58bcae-8a7d-48e0-ad16-0d993f012d74"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Download config file in C:\\A2019 -Convert Csv to Json folder",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "a2b12c2e-1ba7-405d-a1e0-db385b91214b"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$sConfigFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "promptCaption",
+                  "value": {
+                    "string": "Provide complete file path along with extension ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "promptMessage",
+                  "value": {
+                    "string": "Eg: C:\\A2019 - Convert CSV to JSON\\Config.xlsx",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "forFolder",
+              "disabled": false,
+              "packageName": "Prompt",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sConfigFile"
+              },
+              "uid": "a73981d5-dec6-4bd9-aad7-32533280f5c7"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "b4de3e16-9e46-4568-b46f-1d0531ba71cc"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$sConfigFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20Convert%20CSV%20%20to%20JSON%20-%20KLOUDPAD%20Mobility%20Research%20Pvt%20Ltd/Docs/Config.xlsx",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "destination",
+                  "value": {
+                    "expression": "file://$sConfigFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "overwrite",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "downloadTo",
+              "disabled": false,
+              "packageName": "File",
+              "uid": "d805884b-f634-46f1-9230-e02ea3004343"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "03dcb0d2-805e-48ca-bf2e-9b4db6513473"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "set the value in config excel file in variables",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sConfigFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isSpecificSheet",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "fileAccessMode",
+                  "value": {
+                    "string": "EDIT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isSecure",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "containsHeader",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "loadAddIns",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "OpenSpreadsheet",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "263498a0-05af-46f9-91ef-01e711e42684"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "B2",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption",
+                  "value": {
+                    "string": "READ_CELL_TEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption_readCellText_Help",
+                  "value": {
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GetSingleCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sInputFolder"
+              },
+              "uid": "edb8ab03-7b89-4388-ba0c-04c631c594e7"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "B3",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption",
+                  "value": {
+                    "string": "READ_CELL_TEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption_readCellText_Help",
+                  "value": {
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GetSingleCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sOutputFolder"
+              },
+              "uid": "21cb7eb8-e52f-4ccb-a5a9-0c7d2e2f5a30"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "Default",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "activeCell",
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "string": "B4",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption",
+                  "value": {
+                    "string": "READ_CELL_TEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption_readCellText_Help",
+                  "value": {
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "GetSingleCell",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sLogFolder"
+              },
+              "uid": "9677f78e-f9bb-483c-b017-c71af36e3bf5"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "2ffaa4e4-7797-4010-895b-ff7ff26b673c"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Create folder Structure",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sInputFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderDoesNotExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sInputFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "createFolder",
+                  "disabled": false,
+                  "packageName": "Folder",
+                  "uid": "18446899-0d97-493a-96fb-ea980b8e0095"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20Convert%20CSV%20%20to%20JSON%20-%20KLOUDPAD%20Mobility%20Research%20Pvt%20Ltd/Docs/Input%201.csv",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "destination",
+                      "value": {
+                        "expression": "file://$sInputFolder$/Input.csv",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "overwrite",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "downloadTo",
+                  "disabled": false,
+                  "packageName": "File",
+                  "uid": "2da81ffe-1255-4a2a-9b03-e419f1123685"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "7e25c384-5691-4683-a172-3b24606ac00c"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sOutputFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderDoesNotExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sOutputFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "createFolder",
+                  "disabled": false,
+                  "packageName": "Folder",
+                  "uid": "8885bbd0-9066-4891-b72d-415059b2c97c"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "989c0c9b-1900-4205-aa7f-b8130d96c717"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Loop through each excel file and convert  it json file",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "e25d7a72-425a-4281-b4d0-8f36c6778650"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "loopType",
+                  "value": {
+                    "string": "ITERATOR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sInputFolder$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "name": "iterator",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "vFile"
+                  },
+                  "value": {
+                    "iteratorName": "loop.iterators.files",
+                    "packageName": "File",
+                    "type": "ITERATOR"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Input File path",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "expression": "$sInputFolder$\\$vFile{name}$.$vFile{extension}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "timeOut",
+                      "value": {
+                        "number": "3",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "messageBox",
+                  "disabled": false,
+                  "packageName": "MessageBox",
+                  "uid": "f6f458ee-95c9-4d1c-895e-54affdeb81f1"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Execute Python Script for Conversion",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "6de14002-641c-4adf-89a0-247b0461e714"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "session",
+                      "value": {
+                        "string": "Default",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scriptOption",
+                      "value": {
+                        "string": "FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "file",
+                      "value": {
+                        "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20Convert%20CSV%20%20to%20JSON%20-%20KLOUDPAD%20Mobility%20Research%20Pvt%20Ltd/Docs/CSVtoJSON.py",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "version",
+                      "value": {
+                        "string": "3",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "python.commands.openScript",
+                  "disabled": false,
+                  "packageName": "Python",
+                  "uid": "b1c92fac-4618-420a-9959-e0eca6d00a34"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceDictionary",
+                      "value": {
+                        "dictionary": [
+                          {
+                            "key": "CsvFilePath",
+                            "value": {
+                              "expression": "$sInputFolder$\\$vFile{name}$.$vFile{extension}$",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "key": "JsonFilePath",
+                            "value": {
+                              "expression": "$sOutputFolder$\\$vFile{name}$.json",
+                              "type": "STRING"
+                            }
+                          }
+                        ],
+                        "type": "DICTIONARY"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "Dictionary",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "dicFilePath"
+                  },
+                  "uid": "6cbb0ef0-dcbd-4965-860a-a0a94d146012"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "session",
+                      "value": {
+                        "string": "Default",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "functionName",
+                      "value": {
+                        "string": "CsvToJson",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "argument",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "dicFilePath"
+                      }
+                    }
+                  ],
+                  "commandName": "python.commands.executeFunction",
+                  "disabled": false,
+                  "packageName": "Python",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "dicResponse"
+                  },
+                  "uid": "7b94a4fe-c2b4-48c8-97e7-86152939674b"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "session",
+                      "value": {
+                        "string": "Default",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "python.commands.closeScript",
+                  "disabled": false,
+                  "packageName": "Python",
+                  "uid": "43dd9511-0567-4429-805a-747721ec5ae3"
+                }
+              ],
+              "commandName": "loop.commands.start",
+              "disabled": false,
+              "packageName": "Loop",
+              "uid": "7f75542a-589d-41d9-9032-5c5155438fdb"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "43dc4f1c-3ca3-422f-8a32-c437cc16c1fd"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "c221939a-e573-4c47-a4d6-2f866c26289d"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.1.0-20200831-031015"
+    },
+    {
+      "name": "Dictionary",
+      "version": "3.2.0-20200831-031027"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.1.0-20200831-031055"
+    },
+    {
+      "name": "Excel_MS",
+      "version": "5.0.0-20200909-124042"
+    },
+    {
+      "name": "File",
+      "version": "2.2.0-20200831-031057"
+    },
+    {
+      "name": "Folder",
+      "version": "2.2.0-20200831-031100"
+    },
+    {
+      "name": "If",
+      "version": "2.1.0-20200825-071156"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.2.0-20200831-031539"
+    },
+    {
+      "name": "Loop",
+      "version": "2.1.0-20200831-031540"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.1.0-20200831-031541"
+    },
+    {
+      "name": "Number",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "Prompt",
+      "version": "2.1.0-20200824-092056"
+    },
+    {
+      "name": "Python",
+      "version": "2.1.0-20200831-031850"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "String",
+      "version": "3.1.0-20200831-031943"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\A2019 - Convert CSV to JSON\\Input Folder",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sInputFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\A2019 - Convert CSV to JSON\\Output Folder",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sOutputFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\A2019 - Convert CSV to JSON\\Log",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sLogFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vErrorMessage",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "vErrorLine",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "vFile",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vOutputPath",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dicFilePath",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "dicResponse",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\A2019 - Convert CSV to JSON\\Config.xlsx",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sConfigFile",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

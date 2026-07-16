@@ -1,0 +1,544 @@
+{
+  "reviewed_pairs": [
+    {
+      "gold_action": "Boolean.assign",
+      "stored_action": "Boolean.booleanAssign",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Boolean.assign",
+      "stored_action": "Boolean.booleanToString",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Browser.launchWebsite",
+      "stored_action": "WebAutomation.openpage",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Browser.launchWebsite",
+      "stored_action": "WebAutomation.StartSessionWebAutomation",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Browser.openbrowser",
+      "stored_action": "WebAutomation.openpage",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Browser.openbrowser",
+      "stored_action": "WebAutomation.StartSessionWebAutomation",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "DLL.Close",
+      "stored_action": "DLL.setSessionVariable",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "DLL.Close",
+      "stored_action": "DLL.dllPackageCloseAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "DLL.Open",
+      "stored_action": "DLL.setSessionVariable",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "DLL.Open",
+      "stored_action": "DLL.dllPackageOpenAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "DLL.RunCSharpDLL_V1",
+      "stored_action": "DLL.Run function",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Datetime.subtract",
+      "stored_action": "Datetime.usingSubtractAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Datetime.subtract",
+      "stored_action": "Datetime.usingTheDifferenceBetweenDatesAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Datetime.toString",
+      "stored_action": "Datetime.cloudConvertDatetimeToString",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Datetime.toString",
+      "stored_action": "Datetime.usingSubtractAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Delay.delay",
+      "stored_action": "Delay.delayDelay",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Dictionary.put",
+      "stored_action": "Dictionary.dictionaryPut",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Dictionary.put",
+      "stored_action": "Dictionary.dictionarySize",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Email.closeEmail",
+      "stored_action": "Email.saveEmail",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Email.emailConnect",
+      "stored_action": "Email.emailDisconnectAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Email.emailConnect",
+      "stored_action": "Email.emailDeleteAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Email.saveAttachment",
+      "stored_action": "Email.saveEmail",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Email.saveAttachment",
+      "stored_action": "Email.saveAllAtatchments",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Email.sendMail",
+      "stored_action": "Email.ReplyEmail",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Email.sendMail",
+      "stored_action": "Email.ForwardEmail",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.GetMultipleCells",
+      "stored_action": "Excel advanced.excelAdvancedPackageGetMultipleCellsAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.GetMultipleCells",
+      "stored_action": "Excel advanced.excelAdvancedPackageGetSingleCellAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.GetMultipleCells",
+      "stored_action": "Excel advanced.cloudGetCellColor",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.OpenSpreadsheet",
+      "stored_action": "Excel advanced.cloudExcelOpen",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.OpenSpreadsheet",
+      "stored_action": "Excel advanced.excelAdvancedGetWorksheetAsDataTable",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.OpenSpreadsheet",
+      "stored_action": "Excel advanced.excelAdvancedGetCurrentWorksheetName",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.SetCell",
+      "stored_action": "Excel advanced.excelAdvancedPackageSetCellAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.SetCell",
+      "stored_action": "Excel advanced.excelAdvancedPackageSetCellFormulaAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel.SetCell",
+      "stored_action": "Excel advanced.saveAsAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.CloseSpreadsheet",
+      "stored_action": "Excel_MS.DeleteSpreadsheet",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.GetMultipleCells",
+      "stored_action": "Excel_MS.GetSingleCell",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.GetMultipleCells",
+      "stored_action": "Excel_MS.GetSingleColumnName",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.GoToCell",
+      "stored_action": "Excel_MS.SetCell",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.GoToCell",
+      "stored_action": "Excel_MS.GoToNextEmptyCell",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.OpenSpreadsheet",
+      "stored_action": "Excel_MS.getWorksheetAsDataTable",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.SetCell",
+      "stored_action": "Excel_MS.GoToCell",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.SetCell",
+      "stored_action": "Excel_MS.SetCellFormula",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.readExcelRow",
+      "stored_action": "Excel_MS.ReadExcelColumn",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Excel_MS.readExcelRow",
+      "stored_action": "Excel_MS.ReadCellFormula",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "File.copyFiles",
+      "stored_action": "File.filePackageAssignAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "File.createFile",
+      "stored_action": "File.createFileShortcut",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "File.createFile",
+      "stored_action": "File.filePackageCreateAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "File.deleteFiles",
+      "stored_action": "File.cloudDeletingFile",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "File.deleteFiles",
+      "stored_action": "File.printFile",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Folder.createFolder",
+      "stored_action": "Folder.openFolder",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Folder.createFolder",
+      "stored_action": "Folder.folderCreate",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "JSONHandler.Initialize",
+      "stored_action": "JSONHandler.Query",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "JSONHandler.Initialize",
+      "stored_action": "JSONHandler.Set",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "List.addItem",
+      "stored_action": "List.listAddItem",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "List.addItem",
+      "stored_action": "List.listAssign",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "List.listSize",
+      "stored_action": "List.listAssign",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "List.listSize",
+      "stored_action": "List.listSetItem",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "MSWordPackage.ReplaceText",
+      "stored_action": "Word.mswordFindAndReplaceText",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "MSWordPackage.ReplaceText",
+      "stored_action": "Word.formatText",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Number.assignToNumber",
+      "stored_action": "Number.numberAssign",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Number.increment",
+      "stored_action": "Number.numberIncrement",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Number.increment",
+      "stored_action": "Number.decrement",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Number.toString",
+      "stored_action": "Number.numberAssign",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Number.toString",
+      "stored_action": "Number.numberIncrement",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Recorder.capture",
+      "stored_action": "Browser.Extractsource",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Recorder.capture",
+      "stored_action": "WebAutomation.pagesource",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Rest.restGet",
+      "stored_action": "Rest.restDelete",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Rest.restGet",
+      "stored_action": "Rest.restPost",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Rest.restPost",
+      "stored_action": "Rest.restPut",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Rest.restPost",
+      "stored_action": "Rest.restPatch",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Screen.captureDesktop",
+      "stored_action": "Screen.screenCaptureDesktop",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Screen.captureDesktop",
+      "stored_action": "Screen.captureArea",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "String.assign",
+      "stored_action": "String.stringPackageAssignAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "String.assign",
+      "stored_action": "String.randomString",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "String.replace",
+      "stored_action": "String.cloudUsingReplaceAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "String.replace",
+      "stored_action": "String.stringPackageAssignAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "String.toNumber",
+      "stored_action": "String.stringPackageAssignAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "String.toNumber",
+      "stored_action": "String.stringPackageToNumberAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "System.systemInformation",
+      "stored_action": "System.systemRestart",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "System.systemInformation",
+      "stored_action": "System.systemShutdown",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "TaskBot.stopTask",
+      "stored_action": "TaskBot.runTask",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "TaskBot.stopTask",
+      "stored_action": "Task Bot.taskBotPackagePauseAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Twilio.Place a call from Twilio",
+      "stored_action": "Twilio.Send SMS from Twilio",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "Twilio.Send SMS from Twilio",
+      "stored_action": "Twilio.Place a call from Twilio",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.EndSessionWebAutomation",
+      "stored_action": "Browser.browserPackageCloseAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.EndSessionWebAutomation",
+      "stored_action": "Browser.close",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.StartSessionWebAutomation",
+      "stored_action": "WebAutomation.openpage",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.StartSessionWebAutomation",
+      "stored_action": "Browser.browserPackageOpenAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.elementloaded",
+      "stored_action": "Browser.downloadFile",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.elementloaded",
+      "stored_action": "Browser.browserPackageDownloadFilesAction",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.getvalueelement",
+      "stored_action": "WebAutomation.getvalueselement",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.getvalueelement",
+      "stored_action": "Browser.Extractsource",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.isloaded",
+      "stored_action": "WebAutomation.pageloaded",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.isloaded",
+      "stored_action": "Browser.downloadFile",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.openpage",
+      "stored_action": "Browser.openbrowser",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "WebAutomation.openpage",
+      "stored_action": "Browser.launchWebsite",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "XML.endSession",
+      "stored_action": "XML.xmlEndSession",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "XML.endSession",
+      "stored_action": "XML.xmlSaveSessionData",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "XML.getSingleNode",
+      "stored_action": "XML.xmlGetSingleNode",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "XML.getSingleNode",
+      "stored_action": "XML.deleteNode",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "XML.startSession",
+      "stored_action": "XML.xmlStartSession",
+      "source": "action_equivalence_review_gold_to_db_shortlist_non_exact.csv"
+    },
+    {
+      "gold_action": "DLL.RunCSharpDLL_V1",
+      "stored_action": "DLL.Close",
+      "source": "manual_rejected_20260716"
+    },
+    {
+      "gold_action": "DLL.RunCSharpDLL_V1",
+      "stored_action": "DLL.setSessionVariable",
+      "source": "manual_rejected_20260716"
+    },
+    {
+      "gold_action": "Email.saveAttachment",
+      "stored_action": "Email.emailSaveAllAttachmentsAction",
+      "source": "manual_rejected_20260716"
+    },
+    {
+      "gold_action": "Excel.GetMultipleCells",
+      "stored_action": "Excel advanced.cloudGetNumberOfRows",
+      "source": "manual_rejected_20260716"
+    },
+    {
+      "gold_action": "Excel.SaveSpreadSheet",
+      "stored_action": "Excel advanced.saveAsAction",
+      "source": "manual_rejected_20260716"
+    },
+    {
+      "gold_action": "Excel advanced.excelAdvancedPackageReadRowAction",
+      "stored_action": "Excel.GetMultipleCells",
+      "source": "agent_gold_strict_review_20260716"
+    },
+    {
+      "gold_action": "Excel advanced.excelAdvancedPackageReadRowAction",
+      "stored_action": "Excel_MS.GetMultipleCells",
+      "source": "agent_gold_strict_review_20260716"
+    }
+  ]
+}

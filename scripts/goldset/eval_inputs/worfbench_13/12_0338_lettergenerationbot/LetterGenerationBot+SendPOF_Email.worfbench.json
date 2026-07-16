@@ -1,0 +1,356 @@
+{
+  "source": "a360_rpa_goldset",
+  "id": "03_broad_sequential_workflow/12_0338_lettergenerationbot/LetterGenerationBot+SendPOF_Email",
+  "conversations": [
+    {
+      "role": "system",
+      "content": "You are a helpful and intelligent task planner, and your target is to decompose the assigned task into multiple subtasks for task completion and analyze the precedence relationships among subtasks.\nAt the beginning of your interactions, you will be given the task description and actions list you can take to finish the task, and you should decompose the given task into subtasks that can be accomplished using the provided actions or APIs. And then, you should analyze the precedence relationships among these subtasks, ensuring that each subtask is sequenced correctly relative to others. Based on the analysis, you should construct a workflow consisting of the identified subtasks to complete the task. You should use \"Node: \\n1. <subtask 1>\\n2. <subtask 2>\" to denote subtasks, and use (x,y) to denote that <subtask x> is a predecessor of <subtask y>, (START,x) to indicate the beginning with <subtask x>, and (x,END) to signify the conclusion with <subtask x>. Remember that x, y are numbers.\nYour response should use the following format:\n\nNode:\n1.<subtask 1>\n2.<subtask 2>\n...\nEdges:(START,1) ... (n,END)"
+    },
+    {
+      "role": "user",
+      "content": "Task: LetterGenerationBot+SendPOF_Email.json"
+    },
+    {
+      "role": "assistant",
+      "content": "Node:\n1: String.assign\n2: String.assign\n3: MessageBox.messageBox\n4: TaskBot.stopTask\n5: String.assign\n6: String.assign\n7: String.assign\n8: Folder.createFolder\n9: Folder.createFolder\n10: Folder.createFolder\n11: Folder.createFolder\n12: Datetime.toString\n13: Datetime.subtract\n14: Datetime.toString\n15: File.deleteFiles\n16: File.deleteFiles\n17: Browser.launchWebsite\n18: Recorder.capture\n19: Recorder.capture\n20: Recorder.capture\n21: Recorder.capture\n22: Recorder.capture\n23: Recorder.capture\n24: Boolean.assign\n25: Recorder.capture\n26: Recorder.capture\n27: Recorder.capture\n28: Recorder.capture\n29: List.addItem\n30: Recorder.capture\n31: List.addItem\n32: Recorder.capture\n33: String.replace\n34: Number.assignToNumber\n35: Number.toString\n36: Rest.restGet\n37: Boolean.assign\n38: JSONHandler.Initialize\n39: JSONHandler.Query\n40: Number.assignToNumber\n41: JSONHandler.Query\n42: JSONHandler.Query\n43: List.addItem\n44: JSONHandler.Query\n45: List.addItem\n46: String.replace\n47: Number.assignToNumber\n48: Number.toString\n49: Number.toString\n50: String.toNumber\n51: Browser.downloadFile\n52: String.assign\n53: File.copyFiles\n54: String.assign\n55: List.listSize\n56: String.assign\n57: List.listSize\n58: String.assign\n59: MSWordPackage.ReplaceText\n60: MSWordPackage.ReplaceText\n61: MSWordPackage.Bookmark\n62: MSWordPackage.Bookmark\n63: MSWordPackage.Bookmark\n64: MSWordPackage.Bookmark\n65: Recorder.capture\n66: String.assign\n67: String.assign\n68: MessageBox.messageBox\n69: TaskBot.stopTask\n70: String.assign\n71: String.assign\n72: String.assign\n73: Folder.createFolder\n74: Folder.createFolder\n75: Folder.createFolder\n76: Folder.createFolder\n77: Datetime.toString\n78: Datetime.subtract\n79: Datetime.toString\n80: File.deleteFiles\n81: File.deleteFiles\n82: Email.sendMail\nEdges:\n(START,1) (1,2) (2,3) (3,4) (4,5) (5,6) (6,7) (7,8) (8,9) (9,10) (10,11) (11,12) (12,13) (13,14) (14,15) (15,16) (16,17) (17,18) (18,19) (19,20) (20,21) (21,22) (22,23) (23,24) (24,25) (25,26) (26,27) (27,28) (28,29) (29,30) (30,31) (31,32) (32,33) (33,34) (34,35) (35,36) (36,37) (37,38) (38,39) (39,40) (40,41) (41,42) (42,43) (43,44) (44,45) (45,46) (46,47) (47,48) (48,49) (49,50) (50,51) (51,52) (52,53) (53,54) (54,55) (55,56) (56,57) (57,58) (58,59) (59,60) (60,61) (61,62) (62,63) (63,64) (64,65) (65,66) (66,67) (67,68) (68,69) (69,70) (70,71) (71,72) (72,73) (73,74) (74,75) (75,76) (76,77) (77,78) (78,79) (79,80) (80,81) (81,82) (82,END)"
+    }
+  ],
+  "meta": {
+    "worfbench_fidelity": "approximated",
+    "control_flow_types": [
+      "if",
+      "loop",
+      "try"
+    ],
+    "actions": [
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "TaskBot",
+        "action": "stopTask"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Datetime",
+        "action": "toString"
+      },
+      {
+        "package": "Datetime",
+        "action": "subtract"
+      },
+      {
+        "package": "Datetime",
+        "action": "toString"
+      },
+      {
+        "package": "File",
+        "action": "deleteFiles"
+      },
+      {
+        "package": "File",
+        "action": "deleteFiles"
+      },
+      {
+        "package": "Browser",
+        "action": "launchWebsite"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Boolean",
+        "action": "assign"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "List",
+        "action": "addItem"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "List",
+        "action": "addItem"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "String",
+        "action": "replace"
+      },
+      {
+        "package": "Number",
+        "action": "assignToNumber"
+      },
+      {
+        "package": "Number",
+        "action": "toString"
+      },
+      {
+        "package": "Rest",
+        "action": "restGet"
+      },
+      {
+        "package": "Boolean",
+        "action": "assign"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Initialize"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "Number",
+        "action": "assignToNumber"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "List",
+        "action": "addItem"
+      },
+      {
+        "package": "JSONHandler",
+        "action": "Query"
+      },
+      {
+        "package": "List",
+        "action": "addItem"
+      },
+      {
+        "package": "String",
+        "action": "replace"
+      },
+      {
+        "package": "Number",
+        "action": "assignToNumber"
+      },
+      {
+        "package": "Number",
+        "action": "toString"
+      },
+      {
+        "package": "Number",
+        "action": "toString"
+      },
+      {
+        "package": "String",
+        "action": "toNumber"
+      },
+      {
+        "package": "Browser",
+        "action": "downloadFile"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "File",
+        "action": "copyFiles"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "List",
+        "action": "listSize"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "List",
+        "action": "listSize"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "MSWordPackage",
+        "action": "ReplaceText"
+      },
+      {
+        "package": "MSWordPackage",
+        "action": "ReplaceText"
+      },
+      {
+        "package": "MSWordPackage",
+        "action": "Bookmark"
+      },
+      {
+        "package": "MSWordPackage",
+        "action": "Bookmark"
+      },
+      {
+        "package": "MSWordPackage",
+        "action": "Bookmark"
+      },
+      {
+        "package": "MSWordPackage",
+        "action": "Bookmark"
+      },
+      {
+        "package": "Recorder",
+        "action": "capture"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "MessageBox",
+        "action": "messageBox"
+      },
+      {
+        "package": "TaskBot",
+        "action": "stopTask"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "String",
+        "action": "assign"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Folder",
+        "action": "createFolder"
+      },
+      {
+        "package": "Datetime",
+        "action": "toString"
+      },
+      {
+        "package": "Datetime",
+        "action": "subtract"
+      },
+      {
+        "package": "Datetime",
+        "action": "toString"
+      },
+      {
+        "package": "File",
+        "action": "deleteFiles"
+      },
+      {
+        "package": "File",
+        "action": "deleteFiles"
+      },
+      {
+        "package": "Email",
+        "action": "sendMail"
+      }
+    ]
+  }
+}

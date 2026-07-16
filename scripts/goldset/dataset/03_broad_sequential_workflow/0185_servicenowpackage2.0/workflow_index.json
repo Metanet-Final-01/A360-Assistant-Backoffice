@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0185_servicenowpackage2.0",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "ServiceNowPackage",
+      "manual_dependencies": [],
+      "output_file": "workflows/ServiceNowPackage.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

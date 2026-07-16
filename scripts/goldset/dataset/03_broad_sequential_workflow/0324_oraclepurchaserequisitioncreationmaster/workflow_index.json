@@ -1,0 +1,55 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0324_oraclepurchaserequisitioncreationmaster",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "OraclePurchaseRequisitionCreationMaster",
+      "manual_dependencies": [],
+      "output_file": "workflows/OraclePurchaseRequisitionCreationMaster.json",
+      "scanned_dependencies": [
+        "OraclePurchaseRequisitionCreationMain"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "OraclePurchaseRequisitionCreationRRM",
+      "manual_dependencies": [],
+      "output_file": "workflows/OraclePurchaseRequisitionCreationRRM.json",
+      "scanned_dependencies": [
+        "OraclePurchaseRequisitionCreationAFXLogin"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "OraclePurchaseRequisitionCreationPRinOracle",
+      "manual_dependencies": [],
+      "output_file": "workflows/OraclePurchaseRequisitionCreationPRinOracle.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "OraclePurchaseRequisitionCreationAFXLogin",
+      "manual_dependencies": [],
+      "output_file": "workflows/OraclePurchaseRequisitionCreationAFXLogin.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "OraclePurchaseRequisitionCreationMain",
+      "manual_dependencies": [],
+      "output_file": "workflows/OraclePurchaseRequisitionCreationMain.json",
+      "scanned_dependencies": [
+        "OraclePurchaseRequisitionCreationExcelOps",
+        "OraclePurchaseRequisitionCreationRRM",
+        "OraclePurchaseRequisitionCreationPRinOracle"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "OraclePurchaseRequisitionCreationExcelOps",
+      "manual_dependencies": [],
+      "output_file": "workflows/OraclePurchaseRequisitionCreationExcelOps.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,193 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Docs\\Currency Exchange.xlsx",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Docs\\Currency Exchange.xlsx"
+      ],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate\\080a9dd9-36d2-4b77-8e79-40dec25c068b.png",
+      "scannedDependencies": null,
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate\\0fa9e673-f7a3-430b-b995-d5b5bb7e3435.png",
+      "scannedDependencies": null,
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate\\1ba99033-c831-41e2-8790-a72de94067f9.png",
+      "scannedDependencies": null,
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate\\241f8238-b07f-4620-9953-095ff3fd884b.png",
+      "scannedDependencies": null,
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate\\592e37ff-b0a1-4a89-b0d4-dd8c43b26991.png",
+      "scannedDependencies": null,
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate\\7a34af2d-4dc7-48fd-ab6e-640ef7a928a9.png",
+      "scannedDependencies": null,
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate\\e4bcf5b5-f792-4353-892a-3b1ba6faf60e.png",
+      "scannedDependencies": null,
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate",
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Global Exchange Currency Rate-KLOUDPAD Mobility Research Pvt Ltd\\Global Exchange Currency Rate\\edabe42e-9b5d-4c6a-ac16-e05d638a3380.png",
+      "scannedDependencies": null,
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Browser",
+      "path": "bot-command-browser-2.4.0-20210227-025920.jar",
+      "version": "2.4.0-20210227-025920"
+    },
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.5.0-20210227-025428.jar",
+      "version": "2.5.0-20210227-025428"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.2.0-20210227-025439.jar",
+      "version": "2.2.0-20210227-025439"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.5.0-20210227-025450.jar",
+      "version": "2.5.0-20210227-025450"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-5.5.0-20210223-002448.jar",
+      "version": "5.5.0-20210223-002448"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-3.3.0-20210227-025452.jar",
+      "version": "3.3.0-20210227-025452"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-3.2.0-20210227-025456.jar",
+      "version": "3.2.0-20210227-025456"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.1.0-20210227-025501.jar",
+      "version": "2.1.0-20210227-025501"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.2.0-20210227-025720.jar",
+      "version": "2.2.0-20210227-025720"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-2.2.0-20210227-025721.jar",
+      "version": "2.2.0-20210227-025721"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.1.0-20210227-025722.jar",
+      "version": "2.1.0-20210227-025722"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.3.0-20210227-025737.jar",
+      "version": "2.3.0-20210227-025737"
+    },
+    {
+      "name": "Recorder",
+      "path": "bot-command-recorder-2.1.0-20210311-002508.jar",
+      "version": "2.1.0-20210311-002508"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.1-20210304-145803.jar",
+      "version": "2.0.1-20210304-145803"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.3.0-20210227-030040.jar",
+      "version": "3.3.0-20210227-030040"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-3.2.0-20210223-115227.jar",
+      "version": "3.2.0-20210223-115227"
+    },
+    {
+      "name": "SystemVariablesPackage",
+      "path": "System_Variables-2.0.4-20201005-084352.jar",
+      "version": "2.0.4-20201005-084352"
+    }
+  ]
+}

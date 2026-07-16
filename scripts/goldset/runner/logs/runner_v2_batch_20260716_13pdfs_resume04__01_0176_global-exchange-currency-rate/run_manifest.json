@@ -1,0 +1,1826 @@
+{
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate",
+  "created_at": "2026-07-15T17:09:47.853938+00:00",
+  "runner": "runner_v2",
+  "base_url": "http://127.0.0.1:8000",
+  "agent_version": "v2",
+  "input": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf",
+  "frontend_equivalent_flow": [
+    "POST /api/documents",
+    "POST /api/documents/{id}/parse",
+    "POST /api/sessions/{session_id}/turn analyze",
+    "POST /api/sessions/{session_id}/turn recommend"
+  ],
+  "finished_at": "2026-07-15T17:15:25.520524+00:00",
+  "status": "ok",
+  "session_id": "48c6f36e-9bfc-4b9e-90a8-b0cbac98465e",
+  "document_id": "2a774bc9-0ba4-426d-b2aa-fe93a8ca65b8",
+  "steps": [
+    {
+      "name": "uploadDocument",
+      "started_at": "2026-07-15T17:09:47.854026+00:00",
+      "finished_at": "2026-07-15T17:09:50.011354+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents",
+        "file": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:09:49 GMT",
+          "server": "uvicorn",
+          "content-length": "312",
+          "content-type": "application/json",
+          "x-request-id": "d9eb7eeec8de",
+          "connection": "close"
+        },
+        "data": {
+          "id": "2a774bc9-0ba4-426d-b2aa-fe93a8ca65b8",
+          "session_id": "48c6f36e-9bfc-4b9e-90a8-b0cbac98465e",
+          "filename": "0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf",
+          "size_bytes": 50436,
+          "status": "uploaded",
+          "error": null,
+          "page_count": null,
+          "warnings": [],
+          "created_at": "2026-07-15T17:09:49.255080+00:00"
+        }
+      },
+      "events_log": null,
+      "error": null
+    },
+    {
+      "name": "parseDocument",
+      "started_at": "2026-07-15T17:09:50.016174+00:00",
+      "finished_at": "2026-07-15T17:09:51.144152+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents/2a774bc9-0ba4-426d-b2aa-fe93a8ca65b8/parse"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:09:49 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "370346911a89",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 1,
+          "done": 1
+        },
+        "duration_seconds": 1.127,
+        "final_event": {
+          "event": "done",
+          "stage": "parsing",
+          "message": "파싱 완료",
+          "data": {
+            "id": "2a774bc9-0ba4-426d-b2aa-fe93a8ca65b8",
+            "session_id": "48c6f36e-9bfc-4b9e-90a8-b0cbac98465e",
+            "filename": "0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf",
+            "size_bytes": 50436,
+            "status": "parsed",
+            "error": null,
+            "page_count": 2,
+            "warnings": [],
+            "created_at": "2026-07-15T17:09:49.255080+00:00"
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate\\02_parseDocument.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnAnalyze",
+      "started_at": "2026-07-15T17:09:51.148634+00:00",
+      "finished_at": "2026-07-15T17:12:26.158932+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/48c6f36e-9bfc-4b9e-90a8-b0cbac98465e/turn",
+        "json": {
+          "message": "이 업무정의서를 분석해서 자동화 흐름도까지 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:09:50 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "949a067bb7f7",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 13,
+          "partial": 29,
+          "done": 1
+        },
+        "duration_seconds": 155.009,
+        "final_event": {
+          "event": "done",
+          "stage": "agent",
+          "message": "완료",
+          "data": {
+            "type": "recommendation",
+            "answer": "4개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 원문에 글로벌 환율 웹사이트의 정확한 URL, 다운로드 버튼/메뉴, 최종 출력 형식(CSV 또는 통합문서), 카운터 변수명은 명시되지 않아 구체 값은 확정할 수 없었다. Browser 열기 액션은 카탈로그상 url 파라미터가 아니라 tab/windowTitle 구조만 확인되어, 실제 웹사이트 접속은 환경의 기본 브라우저 시작/사전 연결 세션 전제가 필요하다. count 유지용 전용 액션은 확인되지 않아 별도 카운터 단계는 생략했다. 다운로드 파일 읽기는 CSV/TXT 읽기 액션으로 대체했다. Error handler는 Try/Catch/Finally 구조만 확인되어, 오류 세부 행 기록은 테이블 기반 CSV 쓰기로 우회했다. (검수에서 해소하지 못한 위반 1건이 있어요 — 흐름도에서 확인해 주세요.)",
+            "sources": [
+              {
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": "",
+                "score": 0.73046875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "File - 작업 생성",
+                "url": "",
+                "score": 0.54296875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file",
+                "score": 0.62109375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 Try 작업",
+                "url": "",
+                "score": 0.60546875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": "",
+                "score": 0.66796875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": "",
+                "score": 0.66015625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 최종 작업",
+                "url": "",
+                "score": 0.80078125
+              }
+            ],
+            "session_id": "48c6f36e-9bfc-4b9e-90a8-b0cbac98465e",
+            "analysis_id": "9d12216c-57c2-4a8d-908b-24aa9ba3eb38",
+            "analysis_result": {
+              "schema_version": "1.0",
+              "document_title": "업무 정의서",
+              "summary": "로컬 실행 폴더와 로그/출력 파일을 준비한 뒤, 브라우저로 환율 정보 웹사이트에 접속해 글로벌 통화 데이터를 다운로드하고, 다운로드된 파일에서 필요한 환율 레코드를 읽어 CSV 또는 통합문서 출력에 기록한다. 마지막으로 실행 상태를 로그에 남기고, 실패 시 오류 로그를 작성한 뒤 브라우저와 파일 핸들을 닫는다.",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "order": 1,
+                  "name": "작업 루트를 사용한다",
+                  "description": "지정된 로컬 경로를 작업 루트로 사용한다.",
+                  "inputs": [
+                    "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange"
+                  ],
+                  "outputs": [
+                    "작업 루트"
+                  ],
+                  "systems": [
+                    "로컬 파일 시스템"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "1. `C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange`를 작업 루트로 사용한다."
+                  }
+                },
+                {
+                  "step_id": "step-2",
+                  "order": 2,
+                  "name": "출력 CSV 경로를 준비한다",
+                  "description": "작업 루트 아래에 Exchange Currency.csv 출력 경로를 준비한다.",
+                  "inputs": [
+                    "작업 루트"
+                  ],
+                  "outputs": [
+                    "Exchange Currency.csv 출력 경로"
+                  ],
+                  "systems": [
+                    "로컬 파일 시스템"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "2. 작업 루트 아래에 `Exchange Currency.csv` 출력 CSV 경로를 준비한다."
+                  }
+                },
+                {
+                  "step_id": "step-3",
+                  "order": 3,
+                  "name": "Logs 폴더와 ErrorLogs.csv 파일을 만든다",
+                  "description": "실행 진단 정보를 남길 수 있도록 Logs 폴더와 ErrorLogs.csv 파일을 생성한다.",
+                  "inputs": [
+                    "작업 루트"
+                  ],
+                  "outputs": [
+                    "Logs 폴더",
+                    "ErrorLogs.csv 파일"
+                  ],
+                  "systems": [
+                    "로컬 파일 시스템",
+                    "CSV 로그 파일"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "3. `Logs` 폴더와 `ErrorLogs.csv` 파일을 만들어 실행 진단 정보를 남길 수 있게 한다."
+                  }
+                },
+                {
+                  "step_id": "step-4",
+                  "order": 4,
+                  "name": "출력 폴더를 만든다",
+                  "description": "최종 환율 산출물을 보관할 출력 폴더를 생성한다.",
+                  "inputs": [
+                    "작업 루트"
+                  ],
+                  "outputs": [
+                    "출력 폴더"
+                  ],
+                  "systems": [
+                    "로컬 파일 시스템"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "4. 최종 환율 산출물을 보관할 출력 폴더를 만든다."
+                  }
+                },
+                {
+                  "step_id": "step-5",
+                  "order": 5,
+                  "name": "현재 날짜와 시간을 기록한다",
+                  "description": "이번 실행과 로그 행을 연결할 수 있도록 현재 날짜와 시간을 기록한다.",
+                  "inputs": [
+                    "현재 날짜와 시간"
+                  ],
+                  "outputs": [
+                    "실행 식별용 시간 정보"
+                  ],
+                  "systems": [
+                    "CSV 로그 파일",
+                    "로컬 파일 시스템"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "5. 로그 행을 이번 실행과 연결할 수 있도록 현재 날짜와 시간을 기록한다."
+                  }
+                },
+                {
+                  "step_id": "step-6",
+                  "order": 6,
+                  "name": "환율 정보 웹사이트를 연다",
+                  "description": "브라우저에서 환율 정보 웹사이트를 연다.",
+                  "inputs": [
+                    "환율 정보 웹사이트"
+                  ],
+                  "outputs": [
+                    "브라우저 세션"
+                  ],
+                  "systems": [
+                    "브라우저 세션"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "1. 브라우저에서 환율 정보 웹사이트를 연다."
+                  }
+                },
+                {
+                  "step_id": "step-7",
+                  "order": 7,
+                  "name": "글로벌 통화 데이터 페이지로 이동한다",
+                  "description": "다운로드 가능한 글로벌 통화 데이터가 제공되는 페이지로 이동한다.",
+                  "inputs": [
+                    "브라우저 세션"
+                  ],
+                  "outputs": [
+                    "대상 웹 페이지"
+                  ],
+                  "systems": [
+                    "환율 정보 웹사이트",
+                    "브라우저 세션"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "2. 다운로드 가능한 글로벌 통화 데이터가 제공되는 페이지로 이동한다."
+                  }
+                },
+                {
+                  "step_id": "step-8",
+                  "order": 8,
+                  "name": "데이터 내보내기 또는 다운로드를 실행한다",
+                  "description": "웹 페이지에서 데이터 내보내기 또는 다운로드 동작을 실행한다.",
+                  "inputs": [
+                    "대상 웹 페이지"
+                  ],
+                  "outputs": [
+                    "다운로드된 통화 데이터 파일"
+                  ],
+                  "systems": [
+                    "환율 정보 웹사이트",
+                    "브라우저 세션"
+                  ],
+                  "branching": "데이터 내보내기 또는 다운로드 동작 중 하나를 실행함",
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "3. 웹 페이지에서 데이터 내보내기 또는 다운로드 동작을 실행한다."
+                  }
+                },
+                {
+                  "step_id": "step-9",
+                  "order": 9,
+                  "name": "브라우저 다운로드 완료를 기다린다",
+                  "description": "출력 파일을 읽기 전에 브라우저 다운로드 작업이 끝날 때까지 대기한다.",
+                  "inputs": [
+                    "브라우저 다운로드 작업"
+                  ],
+                  "outputs": [
+                    "다운로드 완료 상태"
+                  ],
+                  "systems": [
+                    "브라우저 세션"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "4. 출력 파일을 읽기 전에 브라우저 다운로드 작업이 끝날 때까지 기다린다."
+                  }
+                },
+                {
+                  "step_id": "step-10",
+                  "order": 10,
+                  "name": "다운로드된 통화 데이터 파일을 읽는다",
+                  "description": "다운로드된 통화 데이터 파일을 열거나 읽는다.",
+                  "inputs": [
+                    "다운로드된 통화 데이터 파일"
+                  ],
+                  "outputs": [
+                    "읽기 가능한 통화 데이터"
+                  ],
+                  "systems": [
+                    "다운로드 데이터 파일"
+                  ],
+                  "branching": "파일을 열거나 읽는 방식으로 처리함",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "1. 다운로드된 통화 데이터 파일을 열거나  읽는다."
+                  }
+                },
+                {
+                  "step_id": "step-11",
+                  "order": 11,
+                  "name": "환율 레코드를 반복 처리한다",
+                  "description": "사용 가능한 환율 레코드를 반복하며 출력에 필요한 필드를 수집한다.",
+                  "inputs": [
+                    "읽기 가능한 통화 데이터"
+                  ],
+                  "outputs": [
+                    "출력용 환율 필드"
+                  ],
+                  "systems": [
+                    "다운로드 데이터 파일"
+                  ],
+                  "branching": "사용 가능한 환율 레코드를 반복함",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "2. 사용 가능한 환율 레코드를 반복하며 출력에  필요한 필드를  수집한다."
+                  }
+                },
+                {
+                  "step_id": "step-12",
+                  "order": 12,
+                  "name": "선택한 값을 출력에 기록한다",
+                  "description": "준비된 CSV 또는 통합문서 출력에 선택한 값을 기록한다.",
+                  "inputs": [
+                    "출력용 환율 필드",
+                    "CSV 또는 통합문서 출력"
+                  ],
+                  "outputs": [
+                    "기록된 출력 파일"
+                  ],
+                  "systems": [
+                    "Excel/CSV 출력"
+                  ],
+                  "branching": "CSV 또는 통합문서 출력 중 문서에 명시된 준비된 출력에 기록함",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "3. 선택한 값을 준비된 CSV 또는 통합문서 출력에 기록한다."
+                  }
+                },
+                {
+                  "step_id": "step-13",
+                  "order": 13,
+                  "name": "카운터나 진행 표시값을 유지한다",
+                  "description": "배치 처리 내역을 감사할 수 있도록 카운터나 진행 표시값을 유지한다.",
+                  "inputs": [
+                    "배치 처리 상태"
+                  ],
+                  "outputs": [
+                    "카운터",
+                    "진행 표시값"
+                  ],
+                  "systems": [
+                    "Excel/CSV 출력"
+                  ],
+                  "branching": "카운터 또는 진행 표시값을 유지함",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "4. 배치 처리 내역을 감사할 수 있도록 카운터나 진행 표시값을  유지한다."
+                  }
+                },
+                {
+                  "step_id": "step-14",
+                  "order": 14,
+                  "name": "실행 상태 정보를 로그에 추가한다",
+                  "description": "실행 상태 정보를 로그 파일에 추가한다.",
+                  "inputs": [
+                    "실행 상태 정보",
+                    "로그 파일"
+                  ],
+                  "outputs": [
+                    "추가된 로그 행"
+                  ],
+                  "systems": [
+                    "오류 로그",
+                    "CSV 로그 파일"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "1. 실행 상태 정보를 로그 파일에 추가한다."
+                  }
+                },
+                {
+                  "step_id": "step-15",
+                  "order": 15,
+                  "name": "실패 시 오류 로그에 기록한다",
+                  "description": "웹사이트, 다운로드, 출력 쓰기 중 실패가 발생하면 오류 로그에 읽기 쉬운 행으로 기록한다.",
+                  "inputs": [
+                    "실패 정보",
+                    "오류 로그"
+                  ],
+                  "outputs": [
+                    "오류 로그 행"
+                  ],
+                  "systems": [
+                    "오류 로그",
+                    "브라우저 세션",
+                    "출력 폴더"
+                  ],
+                  "branching": "웹사이트, 다운로드, 출력 쓰기 중 실패가 발생할 때만 수행",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "2. 웹사이트, 다운로드, 출력 쓰기 중 실패가 발생하면 오류 로그에 읽기 쉬운 행으로 기록한다."
+                  }
+                },
+                {
+                  "step_id": "step-16",
+                  "order": 16,
+                  "name": "브라우저와 파일 핸들을 닫는다",
+                  "description": "작업에서 연 브라우저와 파일 핸들을 닫는다.",
+                  "inputs": [
+                    "브라우저 세션",
+                    "파일 핸들"
+                  ],
+                  "outputs": [
+                    "닫힌 세션/파일"
+                  ],
+                  "systems": [
+                    "브라우저 세션",
+                    "다운로드 데이터 파일",
+                    "Excel/CSV 출력"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "3. 작업에서 연 브라우저와 파일 핸들을 닫는다."
+                  }
+                }
+              ],
+              "ambiguities": [
+                "문서 제목이 '업무 정의서'로만 표시되어 있어 별도의 상세 문서명은 확인되지 않는다.",
+                "1페이지 상단의 'Task 3. 다운로드 값 수집'은 전체 문서의 제목처럼 보이지만, 실제 내용은 Task 1~4로 구성되어 있어 문서 구조가 다소 혼재되어 있다.",
+                "Task 2의 '데이터 내보내기 또는 다운로드'에서 실제로 어떤 버튼/메뉴를 사용하는지는 문서에 명시되어 있지 않다.",
+                "2페이지의 'CSV 또는 통합문서 출력' 중 실제 최종 출력 형식이 CSV인지 통합문서인지 문서만으로 확정할 수 없다.",
+                "2페이지의 '카운터나 진행 표시값'이 어떤 변수명/형식으로 유지되는지 문서에 구체화되어 있지 않다.",
+                "Task 4의 오류 기록은 '웹사이트, 다운로드, 출력 쓰기' 실패를 모두 언급하지만, 각 실패 유형별 상세 처리 절차는 문서에 없다."
+              ]
+            },
+            "id": "fab9546e-4d08-42c5-85a4-6790cd2fc4e2",
+            "version": 1,
+            "parent_version": null,
+            "source": "chat",
+            "change_summary": null,
+            "created_at": "2026-07-15T17:12:25.732012+00:00",
+            "recommendation": {
+              "schema_version": "1.0",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "label": "작업 경로와 감사 파일 준비",
+                  "description": "지정된 로컬 작업 루트를 사용하고 로그 폴더, 오류 로그 파일, 출력 폴더를 생성하며 실행 시각을 기록한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Folder",
+                      "action": "folderCreate",
+                      "label": "로그 폴더 만들기",
+                      "parameters": [
+                        {
+                          "name": "folder",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "overwriteExistingFolder",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "실행 진단 정보를 남기기 위한 Logs 폴더를 만든다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Folder - 폴더의 생성 작업",
+                          "url": "",
+                          "score": 0.73046875
+                        }
+                      ],
+                      "confidence": 0.73
+                    },
+                    {
+                      "order": 2,
+                      "package": "Folder",
+                      "action": "folderCreate",
+                      "label": "출력 폴더 만들기",
+                      "parameters": [
+                        {
+                          "name": "folder",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Output",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "overwriteExistingFolder",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "최종 환율 산출물을 보관할 출력 폴더를 만든다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Folder - 폴더의 생성 작업",
+                          "url": "",
+                          "score": 0.73046875
+                        }
+                      ],
+                      "confidence": 0.73
+                    },
+                    {
+                      "order": 3,
+                      "package": "File",
+                      "action": "filePackageCreateAction",
+                      "label": "오류 로그 파일 만들기",
+                      "parameters": [
+                        {
+                          "name": "file",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "overwriteExistingFile",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "오류 발생 시 읽기 쉬운 행을 기록할 ErrorLogs.csv 파일을 준비한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "File - 작업 생성",
+                          "url": "",
+                          "score": 0.54296875
+                        }
+                      ],
+                      "confidence": 0.54
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-2",
+                  "label": "환율 다운로드 파일 열기",
+                  "description": "다운로드된 CSV/TXT 파일을 CSV/TXT 읽기용 테이블로 연다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "CSV/TXT",
+                      "action": "cloudOpeningCsvTextFile",
+                      "label": "다운로드 파일 열기",
+                      "parameters": [
+                        {
+                          "name": "source",
+                          "label": null,
+                          "value": "바탕화면 파일",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "headerIncluded",
+                          "label": null,
+                          "value": true,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "delimiter",
+                          "label": null,
+                          "value": "쉼표",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "trimLeadingSpaces",
+                          "label": null,
+                          "value": true,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "trimTrailingSpaces",
+                          "label": null,
+                          "value": true,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "encoding",
+                          "label": null,
+                          "value": "UTF8",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "다운로드된 통화 데이터 파일을 읽기 위해 CSV/TXT 파일 열기 작업이 필요하다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file",
+                          "score": 0.62109375
+                        }
+                      ],
+                      "confidence": 0.62
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-3",
+                  "label": "환율 레코드 추출 및 출력",
+                  "description": "다운로드 파일의 각 레코드를 순회하며 필요한 값을 수집해 CSV 출력 파일로 쓴다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Error handler",
+                      "action": "errorHandlerTry",
+                      "label": "다운로드 데이터 처리 시도",
+                      "parameters": [],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Data Table",
+                          "action": "cloudWriteToFileAction",
+                          "label": "CSV로 기록",
+                          "parameters": [
+                            {
+                              "name": "dataTableName",
+                              "label": null,
+                              "value": "exchangeRatesTable",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "fileName",
+                              "label": null,
+                              "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Exchange Currency.csv",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "createIfMissing",
+                              "label": null,
+                              "value": true,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "writeMode",
+                              "label": null,
+                              "value": "기존 파일에 덮어쓰기",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "rowDelimiter",
+                              "label": null,
+                              "value": "쉼표",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "columnDelimiter",
+                              "label": null,
+                              "value": "쉼표",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "encoding",
+                              "label": null,
+                              "value": "UTF-8",
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "선택한 환율 값을 준비된 CSV 출력에 기록한다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Data Table - 파일 쓰기 작업 사용",
+                              "url": "",
+                              "score": 0.66796875
+                            }
+                          ],
+                          "confidence": 0.67
+                        }
+                      ],
+                      "rationale": "다운로드 데이터 읽기와 출력 쓰기는 실패 가능성이 있어 예외 처리가 필요하다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 Try 작업",
+                          "url": "",
+                          "score": 0.60546875
+                        }
+                      ],
+                      "confidence": 0.61
+                    },
+                    {
+                      "order": 2,
+                      "package": "Error handler",
+                      "action": "errorHandlerCatch",
+                      "label": "오류 로그 남기기",
+                      "parameters": [
+                        {
+                          "name": "exception",
+                          "label": null,
+                          "value": null,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "continueOnError",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "assignExceptionMessageTo",
+                          "label": null,
+                          "value": "errorMessage",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "assignLineNumberTo",
+                          "label": null,
+                          "value": "errorLineNumber",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Data Table",
+                          "action": "cloudWriteToFileAction",
+                          "label": "오류 CSV에 기록",
+                          "parameters": [
+                            {
+                              "name": "dataTableName",
+                              "label": null,
+                              "value": "errorLogTable",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "fileName",
+                              "label": null,
+                              "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "createIfMissing",
+                              "label": null,
+                              "value": true,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "writeMode",
+                              "label": null,
+                              "value": "기존 파일에 추가",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "rowDelimiter",
+                              "label": null,
+                              "value": "쉼표",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "columnDelimiter",
+                              "label": null,
+                              "value": "쉼표",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "encoding",
+                              "label": null,
+                              "value": "UTF-8",
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "웹사이트, 다운로드, 출력 쓰기 실패를 오류 로그에 기록한다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Data Table - 파일 쓰기 작업 사용",
+                              "url": "",
+                              "score": 0.66796875
+                            }
+                          ],
+                          "confidence": 0.67
+                        }
+                      ],
+                      "rationale": "실패 시 오류 로그를 남겨야 하므로 Catch에서 오류 정보를 받는다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                          "url": "",
+                          "score": 0.66015625
+                        }
+                      ],
+                      "confidence": 0.5
+                    },
+                    {
+                      "order": 3,
+                      "package": "Error handler",
+                      "action": "errorHandlerFinally",
+                      "label": "브라우저 닫기",
+                      "parameters": [],
+                      "children": [],
+                      "rationale": "작업 종료 시 브라우저와 세션을 정리해야 한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 최종 작업",
+                          "url": "",
+                          "score": 0.80078125
+                        }
+                      ],
+                      "confidence": 0.8
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-4",
+                  "label": "실행 상태 기록",
+                  "description": "작업 성공 여부를 로그 파일에 추가로 남긴다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Data Table",
+                      "action": "cloudWriteToFileAction",
+                      "label": "실행 상태 로그 추가",
+                      "parameters": [
+                        {
+                          "name": "dataTableName",
+                          "label": null,
+                          "value": "statusLogTable",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "fileName",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionStatus.csv",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "createIfMissing",
+                          "label": null,
+                          "value": true,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "writeMode",
+                          "label": null,
+                          "value": "기존 파일에 추가",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "rowDelimiter",
+                          "label": null,
+                          "value": "쉼표",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "columnDelimiter",
+                          "label": null,
+                          "value": "쉼표",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "encoding",
+                          "label": null,
+                          "value": "UTF-8",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "완료 시 실행 상태 정보를 로그에 추가한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Data Table - 파일 쓰기 작업 사용",
+                          "url": "",
+                          "score": 0.66796875
+                        }
+                      ],
+                      "confidence": 0.67
+                    }
+                  ]
+                }
+              ],
+              "variables": [
+                {
+                  "name": "exchangeRatesTable",
+                  "type": "TABLE",
+                  "direction": "local",
+                  "description": "다운로드된 환율 데이터를 담는 테이블"
+                },
+                {
+                  "name": "errorLogTable",
+                  "type": "TABLE",
+                  "direction": "local",
+                  "description": "오류 로그로 기록할 테이블"
+                },
+                {
+                  "name": "statusLogTable",
+                  "type": "TABLE",
+                  "direction": "local",
+                  "description": "실행 상태를 기록할 테이블"
+                },
+                {
+                  "name": "errorMessage",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "예외 메시지"
+                },
+                {
+                  "name": "errorLineNumber",
+                  "type": "NUMBER",
+                  "direction": "local",
+                  "description": "오류가 발생한 줄 번호"
+                },
+                {
+                  "name": "runDateTime",
+                  "type": "DATETIME",
+                  "direction": "local",
+                  "description": "실행 시각"
+                }
+              ],
+              "notes": "원문에 글로벌 환율 웹사이트의 정확한 URL, 다운로드 버튼/메뉴, 최종 출력 형식(CSV 또는 통합문서), 카운터 변수명은 명시되지 않아 구체 값은 확정할 수 없었다. Browser 열기 액션은 카탈로그상 url 파라미터가 아니라 tab/windowTitle 구조만 확인되어, 실제 웹사이트 접속은 환경의 기본 브라우저 시작/사전 연결 세션 전제가 필요하다. count 유지용 전용 액션은 확인되지 않아 별도 카운터 단계는 생략했다. 다운로드 파일 읽기는 CSV/TXT 읽기 액션으로 대체했다. Error handler는 Try/Catch/Finally 구조만 확인되어, 오류 세부 행 기록은 테이블 기반 CSV 쓰기로 우회했다."
+            },
+            "usage_gauge": {
+              "intake_tokens": 777,
+              "limit_tokens": 6000,
+              "ratio": 0.1295,
+              "compact_recommended": false,
+              "compact_required": false
+            }
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate\\03_turn_analyze.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnRecommend",
+      "started_at": "2026-07-15T17:12:26.165598+00:00",
+      "finished_at": "2026-07-15T17:15:25.510340+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/48c6f36e-9bfc-4b9e-90a8-b0cbac98465e/turn",
+        "json": {
+          "message": "이 업무정의서로 자동화 흐름도 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:12:25 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "8ae88f71452c",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 8,
+          "partial": 5,
+          "done": 1
+        },
+        "duration_seconds": 179.344,
+        "final_event": {
+          "event": "done",
+          "stage": "agent",
+          "message": "완료",
+          "data": {
+            "type": "recommendation",
+            "answer": "4개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 브라우저 다운로드 완료 대기 전용 카탈로그 액션을 찾지 못해 별도 대기 단계는 생략했고, 다운로드 파일 읽기는 CSV/TXT 열기 작업으로 대체했다. 웹사이트 URL과 다운로드 버튼/페이지 식별자는 원문에 없어서 예시 값과 JS 클릭 우회를 사용했다. 원문은 최종 출력 형식을 CSV 또는 통합문서 중 확정하지 않아 CSV로 설계했다. download/read/open/close 전체를 세밀하게 제어하는 전용 파일 핸들 액션은 확인되지 않아 파일 정리와 읽기는 CSV/TXT 및 Browser 액션으로 처리했다. (검수에서 해소하지 못한 위반 1건이 있어요 — 흐름도에서 확인해 주세요.)",
+            "sources": [
+              {
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": "",
+                "score": 0.875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "File - 작업 생성",
+                "url": "",
+                "score": 0.80078125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": "",
+                "score": 0.77734375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Browser - 열기 작업",
+                "url": "",
+                "score": 0.80859375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Browser - JavaScript 실행 작업",
+                "url": "",
+                "score": 0.51953125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file",
+                "score": 0.82421875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Loop - 루프 작업 사용",
+                "url": "",
+                "score": 0.66015625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Data Table - 단일 셀의 값 설정 작업",
+                "url": "",
+                "score": 0.55078125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Data Table - 파일 쓰기 작업 사용",
+                "url": "",
+                "score": 0.80859375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Number - 숫자의 증가 작업",
+                "url": "",
+                "score": 0.8671875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 Try 작업",
+                "url": "",
+                "score": 0.87890625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": "",
+                "score": 0.85546875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Browser - 닫기 작업",
+                "url": "",
+                "score": 0.7578125
+              }
+            ],
+            "session_id": "48c6f36e-9bfc-4b9e-90a8-b0cbac98465e",
+            "id": "9deb79eb-19d8-496d-bd38-4e78ed356dd8",
+            "version": 2,
+            "parent_version": 1,
+            "source": "chat",
+            "change_summary": null,
+            "created_at": "2026-07-15T17:15:25.035405+00:00",
+            "recommendation": {
+              "schema_version": "1.0",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "label": "작업 폴더·출력 경로 준비",
+                  "description": "지정된 로컬 작업 루트 아래에 출력 CSV, Logs 폴더, ErrorLogs.csv, 출력 폴더를 준비하고 실행 시작 시각을 기록한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Folder",
+                      "action": "folderCreate",
+                      "label": "Logs 폴더 생성",
+                      "parameters": [
+                        {
+                          "name": "folder",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "overwriteExistingFolder",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "실행 진단용 Logs 폴더를 작업 루트 아래에 만든다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Folder - 폴더의 생성 작업",
+                          "url": "",
+                          "score": 0.875
+                        }
+                      ],
+                      "confidence": 0.88
+                    },
+                    {
+                      "order": 2,
+                      "package": "File",
+                      "action": "filePackageCreateAction",
+                      "label": "ErrorLogs.csv 생성",
+                      "parameters": [
+                        {
+                          "name": "file",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "overwriteExistingFile",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "오류 기록을 남길 ErrorLogs.csv 파일을 준비한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "File - 작업 생성",
+                          "url": "",
+                          "score": 0.80078125
+                        }
+                      ],
+                      "confidence": 0.8
+                    },
+                    {
+                      "order": 3,
+                      "package": "Folder",
+                      "action": "folderCreate",
+                      "label": "출력 폴더 생성",
+                      "parameters": [
+                        {
+                          "name": "folder",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Output",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "overwriteExistingFolder",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "최종 환율 산출물을 보관할 출력 폴더를 만든다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Folder - 폴더의 생성 작업",
+                          "url": "",
+                          "score": 0.875
+                        }
+                      ],
+                      "confidence": 0.88
+                    },
+                    {
+                      "order": 4,
+                      "package": "Logging",
+                      "action": "cloudInsertingLogToFileCommand",
+                      "label": "시작 시각 기록",
+                      "parameters": [
+                        {
+                          "name": "filePath",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "textToLog",
+                          "label": null,
+                          "value": "Execution started",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "addTimestamp",
+                          "label": null,
+                          "value": true,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "writeMode",
+                          "label": null,
+                          "value": "기존 로그 파일에 추가",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "encoding",
+                          "label": null,
+                          "value": "UTF8",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "실행 행을 감사할 수 있도록 시작 시각을 로그에 남긴다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                          "url": "",
+                          "score": 0.77734375
+                        }
+                      ],
+                      "confidence": 0.78
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-2",
+                  "label": "환율 사이트 접속·다운로드",
+                  "description": "브라우저로 환율 정보 웹사이트를 열고 글로벌 통화 데이터 페이지에서 다운로드를 실행한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Browser",
+                      "action": "browserPackageOpenAction",
+                      "label": "환율 사이트 열기",
+                      "parameters": [
+                        {
+                          "name": "tab",
+                          "label": null,
+                          "value": "새 탭",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "windowTitle",
+                          "label": null,
+                          "value": "https://example.com",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "브라우저에서 환율 정보 웹사이트를 연다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Browser - 열기 작업",
+                          "url": "",
+                          "score": 0.80859375
+                        }
+                      ],
+                      "confidence": 0.81
+                    },
+                    {
+                      "order": 2,
+                      "package": "Browser",
+                      "action": "browserPackageRunJavascriptAction",
+                      "label": "다운로드 실행",
+                      "parameters": [
+                        {
+                          "name": "target",
+                          "label": null,
+                          "value": "브라우저",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "javascript",
+                          "label": null,
+                          "value": "document.querySelector('button, a').click();",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "글로벌 통화 데이터 페이지에서 내보내기/다운로드 동작을 수행하기 위한 웹 상호작용을 실행한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Browser - JavaScript 실행 작업",
+                          "url": "",
+                          "score": 0.51953125
+                        }
+                      ],
+                      "confidence": 0.52
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-3",
+                  "label": "다운로드 파일 읽기·출력 생성",
+                  "description": "다운로드된 CSV를 읽어 각 레코드를 순회하며 필요한 값을 출력 CSV에 기록한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "CSV/TXT",
+                      "action": "cloudOpeningCsvTextFile",
+                      "label": "다운로드 CSV 열기",
+                      "parameters": [
+                        {
+                          "name": "source",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/DownloadedCurrency.csv",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "headerIncluded",
+                          "label": null,
+                          "value": true,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "delimiter",
+                          "label": null,
+                          "value": "쉼표",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "trimLeadingSpaces",
+                          "label": null,
+                          "value": true,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "trimTrailingSpaces",
+                          "label": null,
+                          "value": true,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "encoding",
+                          "label": null,
+                          "value": "UTF8",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "다운로드된 통화 데이터 파일을 읽기 위해 CSV/TXT 열기 작업을 사용한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "CSV/TXT - CSV/TXT 파일에 대한 열기 작업 사용",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-csv-text-command/cloud-opening-csv-text-file",
+                          "score": 0.82421875
+                        }
+                      ],
+                      "confidence": 0.82
+                    },
+                    {
+                      "order": 2,
+                      "package": "Loop",
+                      "action": "cloudUsingLoopAction",
+                      "label": "환율 레코드 반복",
+                      "parameters": [
+                        {
+                          "name": "iterator",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Data Table",
+                          "action": "dataTablePackageSetValueSinlgeCellAction",
+                          "label": "선택 필드 기록",
+                          "parameters": [
+                            {
+                              "name": "dataTableName",
+                              "label": null,
+                              "value": "outputRates",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "rowIndex",
+                              "label": null,
+                              "value": 1,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "column",
+                              "label": null,
+                              "value": "이름",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "value",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "반복 중 선택한 환율 값을 출력 데이터에 기록한다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Data Table - 단일 셀의 값 설정 작업",
+                              "url": "",
+                              "score": 0.55078125
+                            }
+                          ],
+                          "confidence": 0.55
+                        }
+                      ],
+                      "rationale": "환율 레코드를 반복하며 필요한 필드를 수집한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Loop - 루프 작업 사용",
+                          "url": "",
+                          "score": 0.66015625
+                        }
+                      ],
+                      "confidence": 0.66
+                    },
+                    {
+                      "order": 3,
+                      "package": "Data Table",
+                      "action": "cloudWriteToFileAction",
+                      "label": "출력 CSV 쓰기",
+                      "parameters": [
+                        {
+                          "name": "dataTableName",
+                          "label": null,
+                          "value": "outputRates",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "fileName",
+                          "label": null,
+                          "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Exchange Currency.csv",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "createIfMissing",
+                          "label": null,
+                          "value": true,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "writeMode",
+                          "label": null,
+                          "value": "기존 파일에 덮어쓰기",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "rowDelimiter",
+                          "label": null,
+                          "value": "쉼표",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "columnDelimiter",
+                          "label": null,
+                          "value": "쉼표",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "encoding",
+                          "label": null,
+                          "value": "UTF-8",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "준비된 CSV 출력 파일에 선택한 값을 기록한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Data Table - 파일 쓰기 작업 사용",
+                          "url": "",
+                          "score": 0.80859375
+                        }
+                      ],
+                      "confidence": 0.81
+                    },
+                    {
+                      "order": 4,
+                      "package": "Number",
+                      "action": "numberIncrement",
+                      "label": "진행 카운터 증가",
+                      "parameters": [
+                        {
+                          "name": "number",
+                          "label": null,
+                          "value": 0,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "incrementValue",
+                          "label": null,
+                          "value": 1,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "outputNumberVariable",
+                          "label": null,
+                          "value": "recordCount",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "배치 처리 내역을 감사할 수 있도록 카운터를 유지한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Number - 숫자의 증가 작업",
+                          "url": "",
+                          "score": 0.8671875
+                        }
+                      ],
+                      "confidence": 0.87
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-4",
+                  "label": "완료 로그·정리",
+                  "description": "실행 상태를 로그에 남기고, 오류 발생 시 오류 로그를 기록한 뒤 브라우저와 파일을 닫는다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Error handler",
+                      "action": "errorHandlerTry",
+                      "label": "업무 실행 시도",
+                      "parameters": [],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Logging",
+                          "action": "cloudInsertingLogToFileCommand",
+                          "label": "완료 상태 기록",
+                          "parameters": [
+                            {
+                              "name": "filePath",
+                              "label": null,
+                              "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ExecutionLog.csv",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "textToLog",
+                              "label": null,
+                              "value": "Execution completed",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "addTimestamp",
+                              "label": null,
+                              "value": true,
+                              "value_source": "schema_default"
+                            },
+                            {
+                              "name": "writeMode",
+                              "label": null,
+                              "value": "기존 로그 파일에 추가",
+                              "value_source": "schema_default"
+                            },
+                            {
+                              "name": "encoding",
+                              "label": null,
+                              "value": "UTF8",
+                              "value_source": "schema_default"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "실행 상태 정보를 로그 파일에 추가한다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                              "url": "",
+                              "score": 0.77734375
+                            }
+                          ],
+                          "confidence": 0.78
+                        }
+                      ],
+                      "rationale": "완료 로그와 후속 정리를 보호된 구간으로 묶는다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 Try 작업",
+                          "url": "",
+                          "score": 0.87890625
+                        }
+                      ],
+                      "confidence": 0.88
+                    },
+                    {
+                      "order": 2,
+                      "package": "Error handler",
+                      "action": "errorHandlerCatch",
+                      "label": "오류 시 기록",
+                      "parameters": [
+                        {
+                          "name": "exception",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "continueOnError",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Logging",
+                          "action": "cloudInsertingLogToFileCommand",
+                          "label": "오류 로그 기록",
+                          "parameters": [
+                            {
+                              "name": "filePath",
+                              "label": null,
+                              "value": "C:/ProgramData/AutomationAnywhere/Bots/Gobal Currency Exchange/Logs/ErrorLogs.csv",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "textToLog",
+                              "label": null,
+                              "value": "Workflow failed",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "addTimestamp",
+                              "label": null,
+                              "value": true,
+                              "value_source": "schema_default"
+                            },
+                            {
+                              "name": "writeMode",
+                              "label": null,
+                              "value": "기존 로그 파일에 추가",
+                              "value_source": "schema_default"
+                            },
+                            {
+                              "name": "encoding",
+                              "label": null,
+                              "value": "UTF8",
+                              "value_source": "schema_default"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "웹사이트, 다운로드 또는 출력 쓰기 실패 시 오류 로그에 읽기 쉬운 행을 남긴다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                              "url": "",
+                              "score": 0.77734375
+                            }
+                          ],
+                          "confidence": 0.78
+                        }
+                      ],
+                      "rationale": "실패 시 오류 로그에 기록한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                          "url": "",
+                          "score": 0.85546875
+                        }
+                      ],
+                      "confidence": 0.64
+                    },
+                    {
+                      "order": 3,
+                      "package": "Browser",
+                      "action": "browserPackageCloseAction",
+                      "label": "브라우저 닫기",
+                      "parameters": [
+                        {
+                          "name": "target",
+                          "label": null,
+                          "value": "탭",
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "작업에서 연 브라우저를 닫아 정리한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Browser - 닫기 작업",
+                          "url": "",
+                          "score": 0.7578125
+                        }
+                      ],
+                      "confidence": 0.76
+                    }
+                  ]
+                }
+              ],
+              "variables": [
+                {
+                  "name": "outputRates",
+                  "type": "TABLE",
+                  "direction": "local",
+                  "description": "다운로드한 환율 레코드에서 선택해 기록할 출력 데이터 테이블"
+                },
+                {
+                  "name": "recordCount",
+                  "type": "NUMBER",
+                  "direction": "local",
+                  "description": "배치 처리 진행 카운터"
+                }
+              ],
+              "notes": "브라우저 다운로드 완료 대기 전용 카탈로그 액션을 찾지 못해 별도 대기 단계는 생략했고, 다운로드 파일 읽기는 CSV/TXT 열기 작업으로 대체했다. 웹사이트 URL과 다운로드 버튼/페이지 식별자는 원문에 없어서 예시 값과 JS 클릭 우회를 사용했다. 원문은 최종 출력 형식을 CSV 또는 통합문서 중 확정하지 않아 CSV로 설계했다. download/read/open/close 전체를 세밀하게 제어하는 전용 파일 핸들 액션은 확인되지 않아 파일 정리와 읽기는 CSV/TXT 및 Browser 액션으로 처리했다."
+            },
+            "usage_gauge": {
+              "intake_tokens": 1016,
+              "limit_tokens": 6000,
+              "ratio": 0.1693,
+              "compact_recommended": false,
+              "compact_required": false
+            }
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate\\04_turn_recommend.events.jsonl",
+      "error": null
+    }
+  ]
+}

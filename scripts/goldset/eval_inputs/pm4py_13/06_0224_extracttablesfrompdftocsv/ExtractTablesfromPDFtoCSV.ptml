@@ -1,0 +1,26 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="1d51396c-8aa9-40b8-8ff4-582557658e92" root="5d28b0cc-3f78-4a08-9357-1c122c529bcc" id="c70be312-d0e8-4139-a824-15f4bc6a4e85">
+    <sequence name="" id="5d28b0cc-3f78-4a08-9357-1c122c529bcc"/>
+    <manualTask name="String.assign" id="3efa11ca-83a3-4c57-9d6f-5e5b9d03f926"/>
+    <manualTask name="String.assign" id="7ff6b670-d7c0-432c-b9de-093513d891e6"/>
+    <manualTask name="Dictionary.put" id="80e92ccd-bea5-4c3f-8321-4e6fbcff0ea3"/>
+    <manualTask name="Dictionary.put" id="f1f0695f-b525-4433-8e22-caf4e1ef813a"/>
+    <manualTask name="DLL.Open" id="52a4633b-c217-42c5-8c06-962f96ff5aab"/>
+    <manualTask name="DLL.Open" id="dbb74dfe-ac26-4c14-8a2b-e397136188ba"/>
+    <manualTask name="DLL.Run function" id="7ed0a730-ca1a-4f76-a543-a804cfdbe3f3"/>
+    <manualTask name="MessageBox.messageBox" id="062f7295-595f-4ed4-abd5-2e8fffffa7a2"/>
+    <manualTask name="DLL.Close" id="f07d3b65-fbf5-4422-a26d-506e7e8ec2d9"/>
+    <manualTask name="DLL.Close" id="b52c9b27-6b7a-4d7e-b8d5-0f7509063e04"/>
+    <parentsNode id="dc88c1a7-10b0-4695-92dc-5a8a978c2cbc" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="3efa11ca-83a3-4c57-9d6f-5e5b9d03f926"/>
+    <parentsNode id="320b105c-53b3-4043-923e-15ac4139f792" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="7ff6b670-d7c0-432c-b9de-093513d891e6"/>
+    <parentsNode id="19baa7d4-c6ac-4a59-b794-04e8c57d3e71" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="80e92ccd-bea5-4c3f-8321-4e6fbcff0ea3"/>
+    <parentsNode id="c9b8eb4e-9bc7-4812-a536-16b7c1c040a3" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="f1f0695f-b525-4433-8e22-caf4e1ef813a"/>
+    <parentsNode id="994c7f4b-d2a2-42ae-ac6e-91afe3655662" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="52a4633b-c217-42c5-8c06-962f96ff5aab"/>
+    <parentsNode id="8fac68a7-3b7d-48a8-a471-4342d776979b" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="dbb74dfe-ac26-4c14-8a2b-e397136188ba"/>
+    <parentsNode id="7918f95c-39e8-46c4-9297-61bdfc4e3758" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="7ed0a730-ca1a-4f76-a543-a804cfdbe3f3"/>
+    <parentsNode id="c534eaf6-c315-4153-af89-b444cdf4bdb8" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="062f7295-595f-4ed4-abd5-2e8fffffa7a2"/>
+    <parentsNode id="17759035-4135-4655-8399-592f228630a6" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="f07d3b65-fbf5-4422-a26d-506e7e8ec2d9"/>
+    <parentsNode id="f62bb4f7-34bb-4111-8f9d-83ddcb9f997c" sourceId="5d28b0cc-3f78-4a08-9357-1c122c529bcc" targetId="b52c9b27-6b7a-4d7e-b8d5-0f7509063e04"/>
+  </processTree>
+</ptml>

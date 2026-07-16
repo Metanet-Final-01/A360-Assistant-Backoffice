@@ -1,0 +1,1745 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "filePath",
+          "value": {
+            "expression": "file://$excel_file_path_for_sap$",
+            "type": "FILE"
+          }
+        },
+        {
+          "name": "isSpecificSheet",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "fileAccessMode",
+          "value": {
+            "string": "EDIT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isSecure",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "containsHeader",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "loadAddIns",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "OpenSpreadsheet",
+      "disabled": false,
+      "packageName": "Excel_MS",
+      "uid": "5b88d5d5-c4d6-4981-8327-2759266bc3b8"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "loopSelection",
+          "value": {
+            "string": "ALL_ROWS",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "readOption",
+          "value": {
+            "string": "READ_CELL_TEXT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "readOption_readCellText_Help",
+          "value": {
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "GetMultipleCells",
+      "disabled": false,
+      "packageName": "Excel_MS",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "tablee"
+      },
+      "uid": "ea60aa09-4317-4ef9-bf99-96c932a67bcd"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "filePath",
+          "value": {
+            "expression": "file://$product_category_emails_file$",
+            "type": "FILE"
+          }
+        },
+        {
+          "name": "isSpecificSheet",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "fileAccessMode",
+          "value": {
+            "string": "EDIT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isSecure",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "containsHeader",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "loadAddIns",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "OpenSpreadsheet",
+      "disabled": false,
+      "packageName": "Excel_MS",
+      "uid": "aee990e6-9fbf-4926-ab0f-aaa7ec592376"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "loopSelection",
+          "value": {
+            "string": "ALL_ROWS",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "readOption",
+          "value": {
+            "string": "READ_CELL_TEXT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "readOption_readCellText_Help",
+          "value": {
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "GetMultipleCells",
+      "disabled": false,
+      "packageName": "Excel_MS",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "cust_emails_table"
+      },
+      "uid": "d04cc432-a20a-4858-8ba5-63848712e725"
+    },
+    {
+      "attributes": [
+        {
+          "name": "loopType",
+          "value": {
+            "string": "ITERATOR",
+            "type": "STRING"
+          }
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceTable",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "tablee"
+              }
+            }
+          ],
+          "name": "iterator",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "cur_row"
+          },
+          "value": {
+            "iteratorName": "iteratorTableRow",
+            "packageName": "DataTable",
+            "type": "ITERATOR"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "expression": "$cur_row[27]$",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "assignToNumber",
+          "disabled": false,
+          "packageName": "Number",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "email_vendor"
+          },
+          "uid": "e59b43d9-93c9-4a11-83fb-768b748bc8e2"
+        },
+        {
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "expression": "$cur_row[30]$",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "assignToNumber",
+          "disabled": false,
+          "packageName": "Number",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "email_customer"
+          },
+          "uid": "3b06784b-3cc7-4aeb-a912-0ddaabbc08f2"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$email_vendor$",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "numberVariable",
+                "packageName": "Number",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$email_customer$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "string": "Customer",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "messageBox",
+                  "disabled": false,
+                  "packageName": "MessageBox",
+                  "uid": "b24563dd-37cb-481b-b751-5a967757bea2"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[21]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "cust_po_num"
+                  },
+                  "uid": "21ca1c3a-7074-42c7-88b1-fa5a03e926fa"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[17]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "lrd_date"
+                  },
+                  "uid": "ef1de321-b365-49ca-92d2-b97d40a8561f"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[5]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "mat_num"
+                  },
+                  "uid": "01424e04-f0b1-442c-9c72-35d995cb6ff4"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[3]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "item_no"
+                  },
+                  "uid": "e7ec1752-5da6-4f96-bcd7-9261af251cc7"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[10]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "quant_num"
+                  },
+                  "uid": "7262560d-34f8-483e-8eee-0ff06bd69946"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[23]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "cust_addr"
+                  },
+                  "uid": "0c23c874-5f33-49b2-b061-808db2920abd"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[26]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "post_days"
+                  },
+                  "uid": "cf60bc8c-66a3-4833-9dcf-b0335927c579"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[1]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sales_ord_no"
+                  },
+                  "uid": "80f064bc-69a0-451a-98cb-f20b8f9be813"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cur_row[9]$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "product_cat"
+                  },
+                  "uid": "0e57a0c5-4b52-42af-bf84-e68d3c8aecee"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$product_cat$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "toNumber",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "product_category"
+                  },
+                  "uid": "47ff66d8-704a-4138-a825-aec7be0aebbd"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "string": "constant",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "userDefined",
+                      "value": {
+                        "string": "false",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "Boolean",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "prod_email_found"
+                  },
+                  "uid": "a6b61507-ec34-4653-b0af-dbd030ef879b"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$cust_addr$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "product_cat_cust_email"
+                  },
+                  "uid": "b1b84272-3726-4898-8535-b1be6e0473bb"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "loopType",
+                      "value": {
+                        "string": "ITERATOR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceTable",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "cust_emails_table"
+                          }
+                        }
+                      ],
+                      "name": "iterator",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "email_row"
+                      },
+                      "value": {
+                        "iteratorName": "iteratorTableRow",
+                        "packageName": "DataTable",
+                        "type": "ITERATOR"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceString",
+                          "value": {
+                            "expression": "$email_row[0]$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "toNumber",
+                      "disabled": false,
+                      "packageName": "String",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "this_category"
+                      },
+                      "uid": "e0c3df5d-25a1-4a31-b8ce-6b53a2060e7d"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "variable",
+                              "value": {
+                                "expression": "$product_category$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "operator",
+                              "value": {
+                                "string": "EQ",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "value",
+                              "value": {
+                                "expression": "$this_category$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "name": "condition",
+                          "value": {
+                            "conditionalName": "numberVariable",
+                            "packageName": "Number",
+                            "type": "CONDITIONAL"
+                          }
+                        }
+                      ],
+                      "branches": [
+                        {
+                          "children": [
+                            {
+                              "commandName": "loop.commands.continue",
+                              "disabled": false,
+                              "packageName": "Loop",
+                              "uid": "ea350c66-c068-4a83-9d1a-770e13112ed4"
+                            }
+                          ],
+                          "commandName": "else",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "d9b7f055-ca5d-4a32-9bcb-f1c4a2adc63f"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "source",
+                              "value": {
+                                "string": "constant",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "userDefined",
+                              "value": {
+                                "string": "true",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "assign",
+                          "disabled": false,
+                          "packageName": "Boolean",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "prod_email_found"
+                          },
+                          "uid": "a9906546-03ea-413e-bfa1-1d2d8ad40167"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "sourceString",
+                              "value": {
+                                "expression": "$email_row[1]$",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "assign",
+                          "disabled": false,
+                          "packageName": "String",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "product_cat_cust_email"
+                          },
+                          "uid": "207a25bf-2353-4672-aa31-0a27f4728251"
+                        },
+                        {
+                          "commandName": "loop.commands.break",
+                          "disabled": false,
+                          "packageName": "Loop",
+                          "uid": "94c0306a-9374-45f7-90f1-e34b577d43a9"
+                        }
+                      ],
+                      "commandName": "if",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "cfff8719-715a-44da-96eb-21d77244d717"
+                    }
+                  ],
+                  "commandName": "loop.commands.start",
+                  "disabled": false,
+                  "packageName": "Loop",
+                  "uid": "15c2e498-1557-4dd4-b395-7b0da5af1dfd"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$prod_email_found$",
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "booleanVariable",
+                        "packageName": "Boolean",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [
+                    {
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "toAddress",
+                              "value": {
+                                "expression": "$cust_addr$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "cc",
+                              "value": {
+                                "string": "",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "bcc",
+                              "value": {
+                                "string": "",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "subject",
+                              "value": {
+                                "expression": "Request to delay delivery of Purchase Order No. $cust_po_num$ by $post_days$ days (Internal SO $sales_ord_no$) *** AUTOMATED EMAIL BY OPSVEDA ***",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "ensureAttachmentsExist",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "bodyFormat",
+                              "value": {
+                                "string": "PLAINTEXT",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "message",
+                              "value": {
+                                "expression": "Dear Customer,\nCan we delay the delivery of Purchase Order No. $cust_po_num$ by $post_days$ days? Following are the details of your Purchase Order:\n\nPO Number: $cust_po_num$\nMaterial No.: $mat_num$\nItem No.: $item_no$\nQuantity: $quant_num$\nInternal Sales Doc: $sales_ord_no$\nCurrent Requested Del. Date: $lrd_date$ (Can we postpone this by $post_days$ days?)\n\nSince this is an automated email, please draft your response in the format provided below. You only have to change DECISION and NEW DELIVERY DATE (If DECISION is not \"NO\") values.\n*** BEGIN RESPONSE ***\nTYPE: CUSTOMER\nDECISION: (YES/NO)\nNEW ACCEPTED DELIVERY DATE: YYYY-MM-DD\n*** END RESPONSE ***\n\nThank you.\n",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "goGreen",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "serverType",
+                              "value": {
+                                "string": "OUTLOOK",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "sendMail",
+                          "disabled": false,
+                          "packageName": "Email",
+                          "uid": "a0452127-8fd3-4fc3-ae93-48c161b836cc"
+                        }
+                      ],
+                      "commandName": "else",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "95f2d376-5dac-4736-b305-216ec845e3fa"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "toAddress",
+                          "value": {
+                            "expression": "$cust_addr$, $product_cat_cust_email$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "cc",
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "bcc",
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "subject",
+                          "value": {
+                            "expression": "Request to delay delivery of Purchase Order No. $cust_po_num$ by $post_days$ days (Internal SO $sales_ord_no$) *** AUTOMATED EMAIL BY OPSVEDA ***",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "ensureAttachmentsExist",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "bodyFormat",
+                          "value": {
+                            "string": "PLAINTEXT",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "message",
+                          "value": {
+                            "expression": "Dear Customer,\nCan we delay the delivery of Purchase Order No. $cust_po_num$ by $post_days$ days? Following are the details of your Purchase Order:\n\nPO Number: $cust_po_num$\nMaterial No.: $mat_num$\nItem No.: $item_no$\nQuantity: $quant_num$\nInternal Sales Doc: $sales_ord_no$\nCurrent Requested Del. Date: $lrd_date$ (Can we postpone this by $post_days$ days?)\n\nSince this is an automated email, please draft your response in the format provided below. You only have to change DECISION and NEW DELIVERY DATE (If DECISION is not \"NO\") values.\n*** BEGIN RESPONSE ***\nTYPE: CUSTOMER\nDECISION: (YES/NO)\nNEW ACCEPTED DELIVERY DATE: YYYY-MM-DD\n*** END RESPONSE ***\n\nThank you.\n",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "goGreen",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "serverType",
+                          "value": {
+                            "string": "OUTLOOK",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "sendMail",
+                      "disabled": false,
+                      "packageName": "Email",
+                      "uid": "6517e453-12e9-420f-9f44-ea313d3c91b5"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "9292094b-06cd-434f-b17a-a874150b0eb5"
+                }
+              ],
+              "commandName": "elseIf",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "c7887096-7778-42b7-a1d5-d1fb816b4932"
+            },
+            {
+              "children": [
+                {
+                  "commandName": "loop.commands.break",
+                  "disabled": false,
+                  "packageName": "Loop",
+                  "uid": "c9d22beb-d2ec-429e-b4e9-f503f24add12"
+                }
+              ],
+              "commandName": "else",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "5bc9c36c-825d-49e5-a946-cc18e0bbb079"
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "string": "vendor",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "messageBox",
+              "disabled": false,
+              "packageName": "MessageBox",
+              "uid": "770688f8-0855-4719-9a01-f91f26fc3edf"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[20]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "supply_po_num"
+              },
+              "uid": "64b040ad-b358-4f34-964e-8cd654e0f32c"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[19]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "cur_stock_date"
+              },
+              "uid": "422a4944-b858-432e-bbbb-a888e6c3e9ee"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[5]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "mat_num"
+              },
+              "uid": "f616abdf-8839-43ca-8791-9af9c836c3d8"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[3]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "item_no"
+              },
+              "uid": "e3e3a14d-8cee-46c2-b818-2755822897b9"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[10]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "quant_num"
+              },
+              "uid": "d6c42933-c0bd-44d2-91c5-690d3b27589d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[22]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vendor_addr"
+              },
+              "uid": "064b9e5a-d8da-4e9d-af29-c9f140cb2925"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$cur_row[26]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pre_days"
+              },
+              "uid": "aa2d7c41-a612-42ab-80d8-cab8ac136390"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "toAddress",
+                  "value": {
+                    "expression": "$vendor_addr$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cc",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "bcc",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "subject",
+                  "value": {
+                    "expression": "Request to Expedite Purchase Order No. $supply_po_num$ by $pre_days$ days *** AUTOMATED EMAIL BY OPSVEDA ***",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "ensureAttachmentsExist",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "bodyFormat",
+                  "value": {
+                    "string": "PLAINTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "message",
+                  "value": {
+                    "expression": "Dear Vendor,\nCan we expedite the delivery of Purchase Order No. $supply_po_num$ by $pre_days$ days? Following are the details of the Purchase Order:\n\nPO Number: $supply_po_num$\nMaterial No.: $mat_num$\nItem No.: $item_no$\nQuantity: $quant_num$\nCurrent Stock Date: $cur_stock_date$ (We need the order $pre_days$ days prior to this date)\n\nSince this is an automated email, please draft your response in the format provided below. You only have to change DECISION and NEW DELIVERY DATE (If DECISION is not \"NO\") values.\n*** BEGIN RESPONSE ***\nTYPE: VENDOR\nDECISION: (YES/NO)\nNEW DELIVERY DATE: YYYY-MM-DD\n*** END RESPONSE ***\n\nThank you.",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "goGreen",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "serverType",
+                  "value": {
+                    "string": "OUTLOOK",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "sendMail",
+              "disabled": false,
+              "packageName": "Email",
+              "uid": "449127d6-1631-46c6-ad74-2b09e5184189"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "c99bdfbf-9c7c-4b09-bb53-f5940700fc4d"
+        }
+      ],
+      "commandName": "loop.commands.start",
+      "disabled": false,
+      "packageName": "Loop",
+      "uid": "2c80e836-4467-4e5a-8ce6-f0f877ccb9fb"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Save and close",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SaveSpreadSheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "be53dac7-d319-4f9d-9328-946795fe3a36"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "CloseSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "14b33ab7-ea89-4b6b-a7c8-f9124f6d3279"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default2",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "SaveSpreadSheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "60d41ea4-de5b-4213-a91d-7c48139fd547"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default2",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "CloseSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "8231821b-3d13-4e02-9f65-ba8f3714ef7e"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "96d8ce8b-4cd7-43c7-b87e-37e7e4b09798"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Boolean",
+      "version": "2.1.0-20200831-031000"
+    },
+    {
+      "name": "DataTable",
+      "version": "2.1.0-20200831-031946"
+    },
+    {
+      "name": "Email",
+      "version": "3.0.0-20200901-105426"
+    },
+    {
+      "name": "Excel_MS",
+      "version": "5.0.0-20200909-124042"
+    },
+    {
+      "name": "If",
+      "version": "2.1.0-20200825-071156"
+    },
+    {
+      "name": "Loop",
+      "version": "2.1.0-20200831-031540"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.1.0-20200831-031541"
+    },
+    {
+      "name": "Number",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "String",
+      "version": "3.1.0-20200831-031943"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "excel_file_path_for_sap",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "tablee",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "record": {
+          "schema": [],
+          "values": []
+        },
+        "type": "RECORD"
+      },
+      "description": "",
+      "input": false,
+      "name": "cur_row",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "RECORD"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "email_vendor",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "email_customer",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "cur_stock_date",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "mat_num",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "item_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "quant_num",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vendor_addr",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "supply_po_num",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "pre_days",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "cust_po_num",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "lrd_date",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "cust_addr",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "post_days",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sales_ord_no",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "product_category_emails_file",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "cust_emails_table",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "record": {
+          "schema": [],
+          "values": []
+        },
+        "type": "RECORD"
+      },
+      "description": "",
+      "input": false,
+      "name": "email_row",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "RECORD"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "product_cat",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "product_category",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "this_category",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "product_cat_cust_email",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "boolean": false,
+        "type": "BOOLEAN"
+      },
+      "description": "",
+      "input": false,
+      "name": "prod_email_found",
+      "output": false,
+      "readOnly": false,
+      "type": "BOOLEAN"
+    }
+  ],
+  "workItemTemplateName": null
+}

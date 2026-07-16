@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784151873.3946526" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784151873.3946526</text>
+    </name>
+    <page id="n0">
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <transition id="b0ccb98c-68a7-4b48-839b-4eb6b64e42b9">
+        <name>
+          <text>Gmail.sendGmailPkg</text>
+        </name>
+      </transition>
+      <transition id="62d26391-8de9-4753-9199-b1298864d142">
+        <name>
+          <text>Email.cloudUsingSendAction</text>
+        </name>
+      </transition>
+      <transition id="76005cef-a474-4f66-8353-6896b91d0250">
+        <name>
+          <text>Email.emailDisconnectAction</text>
+        </name>
+      </transition>
+      <transition id="551c0a52-afa2-4f3f-9b28-cd4ab6d91380">
+        <name>
+          <text>Apple Mail.appleMailConnectDisconnect</text>
+        </name>
+      </transition>
+      <transition id="d65f624a-ac10-4415-9ce7-ba72102bef68">
+        <name>
+          <text>Databricks.getjoboutDbricks</text>
+        </name>
+      </transition>
+      <transition id="b5a4ff07-9435-4193-b368-b9b73082dab5">
+        <name>
+          <text>Error handler.errorHandlerCatch</text>
+        </name>
+      </transition>
+      <transition id="6bff07bf-7339-4404-968a-6e63bdf6843b">
+        <name>
+          <text>Error handler.errorHandlerThrow</text>
+        </name>
+      </transition>
+      <arc id="2227314293024" source="76005cef-a474-4f66-8353-6896b91d0250" target="sink"/>
+      <arc id="2227314324016" source="62d26391-8de9-4753-9199-b1298864d142" target="p_9"/>
+      <arc id="2227314114096" source="p_12" target="6bff07bf-7339-4404-968a-6e63bdf6843b"/>
+      <arc id="2227314572208" source="6bff07bf-7339-4404-968a-6e63bdf6843b" target="p_11"/>
+      <arc id="2227314085824" source="p_9" target="d65f624a-ac10-4415-9ce7-ba72102bef68"/>
+      <arc id="2228874216272" source="p_10" target="b5a4ff07-9435-4193-b368-b9b73082dab5"/>
+      <arc id="2227314469456" source="source" target="551c0a52-afa2-4f3f-9b28-cd4ab6d91380"/>
+      <arc id="2227314323792" source="p_8" target="62d26391-8de9-4753-9199-b1298864d142"/>
+      <arc id="2227313868240" source="d65f624a-ac10-4415-9ce7-ba72102bef68" target="p_10"/>
+      <arc id="2227314573008" source="p_11" target="76005cef-a474-4f66-8353-6896b91d0250"/>
+      <arc id="2227314638928" source="551c0a52-afa2-4f3f-9b28-cd4ab6d91380" target="p_5"/>
+      <arc id="2227313941216" source="p_5" target="b0ccb98c-68a7-4b48-839b-4eb6b64e42b9"/>
+      <arc id="2227314114272" source="b5a4ff07-9435-4193-b368-b9b73082dab5" target="p_12"/>
+      <arc id="2227314469344" source="b0ccb98c-68a7-4b48-839b-4eb6b64e42b9" target="p_8"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

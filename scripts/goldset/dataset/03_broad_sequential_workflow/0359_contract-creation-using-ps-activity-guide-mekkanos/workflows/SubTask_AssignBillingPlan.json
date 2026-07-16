@@ -1,0 +1,3913 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "assignToNumber",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "nErrorFlag"
+              },
+              "uid": "b2efc8fb-f19b-4e20-9c30-fdf643c81138"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "ERROR in Sub Task Assign Billing Plan\n\nError Message : $sErrorMessage$\n\nError Line Number : $nErrorLineNumber.Number:toString$\n",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "timeOut",
+                  "value": {
+                    "number": "10",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "messageBox",
+              "disabled": false,
+              "packageName": "MessageBox",
+              "uid": "ffb4aa32-d2bc-4adb-acc3-023d02b0c2fa"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "Error message-$sErrorMessage$ Error line no-$nErrorLineNumber.Number:toString$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sErrorMessage"
+              },
+              "uid": "5fda7408-d9dc-43eb-b78e-84a8df4f0035"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$dUserConfig{sErrorLogFile}$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "Error in Task: $System:AATaskName$\nError Line Number : $nErrorLineNumber.Number:toString$\nError Message : $sErrorMessage$\n",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "logToFile",
+              "disabled": false,
+              "packageName": "LogToFile",
+              "uid": "c4d445dd-eb6d-4dae-9e4c-c4e2fd882f98"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "nErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "sErrorMessage"
+            }
+          },
+          "uid": "bbdb65c5-9318-42d1-863e-d9e1074263db"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "****Assign Billing plan****",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "8b87cfe5-b108-4750-8bc0-9e72b0d29c62"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Assing the Bill plan to the contract",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNThmYTA2NGMtZjY4YS00ODZmLTkxOWQtODA0MDFmOGYzOWQ2IiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6Mn0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjotMX0seyJpbmRleCI6LTR9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9XX0sInJvbGUiOjMxLCJpbmRleCI6MCwibGVmdCI6MTAsInRvcCI6NTA0LCJ3aWR0aCI6NDQ4LCJoZWlnaHQiOjMwLCJjbGlja1giOjk2LCJjbGlja1kiOjE4LCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IiIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjMsInByb2Nlc3NJRCI6IlRBLUNCUy1DSFJPTUUtQUdFTlQiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy91bFtAaWQ9J1BUQUlBY2NvcmRpb24nXS9saVs2XS9kaXZbMV0vYVsxXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IkNBX0FTR0JQSUk3X0NBX0VOVFJZTEwyNTgzIn0seyJuYW1lIjoiSFRNTCBOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUYWciLCJ2YWx1ZSI6IkEifSx7Im5hbWUiOiJIVE1MIENsYXNzIiwidmFsdWUiOiJQVEFJQWN0aW9uSXRlbSJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiJBc3NpZ24gQmlsbGluZyBQbGFuICgwIG9mIDEpIn0seyJuYW1lIjoiSFRNTCBTb3VyY2VJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkhUTUwgSHJlZiIsInZhbHVlIjoiaHR0cDovL29lbHNlcjMua292YWlvbi5jb206NzAzMC9wc2MvcHNfbmV3d2luL0VNUExPWUVFL0VSUC9jL01BTkFHRV9DT05UUkFDVFMuQ0FfQlBfTElOS19QTkcuR0JMP1BBR0U9Q0FfQlBfTElOSyZCVVNJTkVTU19VTklUPVVTMDAxJkNPTlRSQUNUX05VTT1DT04wMDAwMDAwMDAzMDAmUFRBST1UJlBUQUlfTElTVF9JRD1DQV9FTlRSWUxMMjU4MyZQVEFJX0lURU1fSUQ9Q0FfQVNHQlBJSTdfQ0FfRU5UUllMTDI1ODMmUFRBSV9QT1NUUFJPQz1DQV9FTlRSWV9BQ1RfR1VJREU6SXRlbVN0YXR1cyZQVEFJX1NSQ05PREU9UFNGVF9FUCJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiJBc3NpZ24gQmlsbGluZyBQbGFuICgwIG9mIDEpIn0seyJuYW1lIjoiSFRNTCBIZWlnaHQiLCJ2YWx1ZSI6IjMwIn0seyJuYW1lIjoiSFRNTCBXaWR0aCIsInZhbHVlIjoiNDQ4In0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiMTIifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMjIxIn0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIxIn0seyJuYW1lIjoiSFRNTCBIYXNGcmFtZSIsInZhbHVlIjoidHJ1ZSJ9LHsibmFtZSI6IkhUTUwgRnJhbWVTcmMiLCJ2YWx1ZSI6Imh0dHA6Ly9vZWxzZXIzLmtvdmFpb24uY29tOjcwMzAvcHNwL3BzL0VNUExPWUVFL0VSUC9zL1dFQkxJQl9QVEFMLklTQ1JJUFQxLkZpZWxkRm9ybXVsYS5JU2NyaXB0X1BUQUxfUEFfUEFHRT9QVEFMX0lEPUVNUExPWUVFLkVQX0NBX1dFTF9BQ1RfR1VJREVfR0JMJmM9UGZES3hkT1FlOEUlMmZSOHhRS1hvQ25nJTNkJTNkJlRFTVBMQVRFX0lEPUNBX0VOVFJZTEwmQlVTSU5FU1NfVU5JVD1VUzAwMSZDT05UUkFDVF9OVU09Q09OMDAwMDAwMDAwMzAwIn0seyJuYW1lIjoiSFRNTCBGcmFtZU5hbWUiLCJ2YWx1ZSI6IlBhZ2VsZXRBcmVhIn0seyJuYW1lIjoiSFRNTCBGcmFtZVBhdGgiLCJ2YWx1ZSI6IklGUkFNRVs0XSJ9LHsibmFtZSI6ImlubmVySFRNTCIsInZhbHVlIjoiPGltZyB0aXRsZT1cIlRhc2sgaXMgbm90IHN0YXJ0ZWRcIiBzcmM9XCJodHRwOi8vb2Vsc2VyMy5rb3ZhaW9uLmNvbTo3MDMwL2NzL3BzL2NhY2hlL1BUQUlfQVNTSUdORURfNDUuUE5HXCIgaWQ9XCJJTUdfQ0FfQVNHQlBJSTdfQ0FfRU5UUllMTDI1ODNcIiBjbGFzcz1cIlBUQUlfU3RhdHVzSW1hZ2VcIiBhbHQ9XCJUYXNrIGlzIG5vdCBzdGFydGVkXCI+PHNwYW4gaWQ9XCJTUEFOX0NBX0FTR0JQSUk3X0NBX0VOVFJZTEwyNTgzXCIgY2xhc3M9XCJQVEFJQXJpYUltYWdlU3RhdHVzVGV4dFwiIGFyaWEtbGl2ZT1cImFzc2VydGl2ZVwiPiA8L3NwYW4+PGltZyB0aXRsZT1cIlJlcXVpcmVkIEl0ZW1cIiBzcmM9XCJodHRwOi8vb2Vsc2VyMy5rb3ZhaW9uLmNvbTo3MDMwL2NzL3BzL2NhY2hlL1BUQUlfQVNURVJJU0tfMS5QTkdcIiBjbGFzcz1cIlBUQUlBY3Rpb25JdGVtTm90UmVxdWlyZWRcIiBhbHQ9XCJSZXF1aXJlZCBJdGVtXCI+PHNwYW4+QXNzaWduIEJpbGxpbmcgUGxhbiAoMCBvZiAxKTwvc3Bhbj4ifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxhIHRpdGxlPVwiQXNzaWduIEJpbGxpbmcgUGxhbiAoMCBvZiAxKVwiIHRhcmdldD1cIlRhcmdldENvbnRlbnRcIiBvbmNsaWNrPVwiT3BlbmluVEModGhpcyk7cmV0dXJuIGZhbHNlO1wiIGlkPVwiQ0FfQVNHQlBJSTdfQ0FfRU5UUllMTDI1ODNcIiBocmVmPVwiaHR0cDovL29lbHNlcjMua292YWlvbi5jb206NzAzMC9wc2MvcHNfbmV3d2luL0VNUExPWUVFL0VSUC9jL01BTkFHRV9DT05UUkFDVFMuQ0FfQlBfTElOS19QTkcuR0JMP1BBR0U9Q0FfQlBfTElOSyZCVVNJTkVTU19VTklUPVVTMDAxJkNPTlRSQUNUX05VTT1DT04wMDAwMDAwMDAzMDAmUFRBST1UJlBUQUlfTElTVF9JRD1DQV9FTlRSWUxMMjU4MyZQVEFJX0lURU1fSUQ9Q0FfQVNHQlBJSTdfQ0FfRU5UUllMTDI1ODMmUFRBSV9QT1NUUFJPQz1DQV9FTlRSWV9BQ1RfR1VJREU6SXRlbVN0YXR1cyZQVEFJX1NSQ05PREU9UFNGVF9FUFwiIGNsYXNzPVwiUFRBSUFjdGlvbkl0ZW1cIiBhcmlhLWxpdmU9XCJhc3NlcnRpdmVcIj48aW1nIHRpdGxlPVwiVGFzayBpcyBub3Qgc3RhcnRlZFwiIHNyYz1cImh0dHA6Ly9vZWxzZXIzLmtvdmFpb24uY29tOjcwMzAvY3MvcHMvY2FjaGUvUFRBSV9BU1NJR05FRF80NS5QTkdcIiBpZD1cIklNR19DQV9BU0dCUElJN19DQV9FTlRSWUxMMjU4M1wiIGNsYXNzPVwiUFRBSV9TdGF0dXNJbWFnZVwiIGFsdD1cIlRhc2sgaXMgbm90IHN0YXJ0ZWRcIj48c3BhbiBpZD1cIlNQQU5fQ0FfQVNHQlBJSTdfQ0FfRU5UUllMTDI1ODNcIiBjbGFzcz1cIlBUQUlBcmlhSW1hZ2VTdGF0dXNUZXh0XCIgYXJpYS1saXZlPVwiYXNzZXJ0aXZlXCI+IDwvc3Bhbj48aW1nIHRpdGxlPVwiUmVxdWlyZWQgSXRlbVwiIHNyYz1cImh0dHA6Ly9vZWxzZXIzLmtvdmFpb24uY29tOjcwMzAvY3MvcHMvY2FjaGUvUFRBSV9BU1RFUklTS18xLlBOR1wiIGNsYXNzPVwiUFRBSUFjdGlvbkl0ZW1Ob3RSZXF1aXJlZFwiIGFsdD1cIlJlcXVpcmVkIEl0ZW1cIj48c3Bhbj5Bc3NpZ24gQmlsbGluZyBQbGFuICgwIG9mIDEpPC9zcGFuPjwvYT4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiNThmYTA2NGMtZjY4YS00ODZmLTkxOWQtODA0MDFmOGYzOWQ2In0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiTGluayJ9LHsibmFtZSI6IlBhdGgiLCJ2YWx1ZSI6IjJ8MXwxfDF8MXwtMXwxfDF8MXwxfDF8MXwyfDF8MXwxfC0yfC0xfC00fDF8MSJ9LHsibmFtZSI6IkluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiTGVmdCIsInZhbHVlIjoiMSJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiMzY3In0seyJuYW1lIjoiV2lkdGgiLCJ2YWx1ZSI6IjQ0OCJ9LHsibmFtZSI6IkhlaWdodCIsInZhbHVlIjoiMzAifSx7Im5hbWUiOiJDbGlja1giLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJDbGlja1kiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw2OSw1OCw2NSw2Myw3MSw3Myw3NCw3OSw4MF0sImVycm9yIjpudWxsfQ==",
+                      "capture": {
+                        "screenshotMetadataPath": "268bf10f-d452-4e5a-9643-0d1c65f3fe8f.png",
+                        "screenshotRectangle": {
+                          "height": 30,
+                          "width": 448,
+                          "x": 10,
+                          "y": 504
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "508e329c-7356-4408-899a-72f8ae426539.png",
+                        "thumbnailRectangle": {
+                          "height": 30,
+                          "width": 448,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "LINK",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//ul[@id='PTAIAccordion']/li[6]/div[1]/a[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PTAIActionItem",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PageletArea",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "IFRAME[4]",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "http://oelser3.kovaion.com:7030/psp/ps/EMPLOYEE/ERP/s/WEBLIB_PTAL.ISCRIPT1.FieldFormula.IScript_PTAL_PA_PAGE?PTAL_ID=EMPLOYEE.EP_CA_WEL_ACT_GUIDE_GBL&c=PfDKxdOQe8E%2fR8xQKXoCng%3d%3d&TEMPLATE_ID=CA_ENTRYLL&BUSINESS_UNIT=US001&CONTRACT_NUM=CON000000000300",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "30",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "http://oelser3.kovaion.com:7030/psc/ps_newwin/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_BP_LINK_PNG.GBL?PAGE=CA_BP_LINK&BUSINESS_UNIT=US001&CONTRACT_NUM=CON000000000300&PTAI=T&PTAI_LIST_ID=CA_ENTRYLL2583&PTAI_ITEM_ID=CA_ASGBPII7_CA_ENTRYLL2583&PTAI_POSTPROC=CA_ENTRY_ACT_GUIDE:ItemStatus&PTAI_SRCNODE=PSFT_EP",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_ASGBPII7_CA_ENTRYLL2583",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": true,
+                          "value": {
+                            "string": "Assign Billing Plan (0 of 1)",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "A",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "12",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Assign Billing Plan (0 of 1)",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "221",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "448",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "30",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2|1|1|1|1|-1|1|1|1|1|1|1|2|1|1|1|-2|-1|-4|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Link",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "367",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58fa064c-f68a-486f-919d-80401f8f39d6",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "448",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<img title=\"Task is not started\" src=\"http://oelser3.kovaion.com:7030/cs/ps/cache/PTAI_ASSIGNED_45.PNG\" id=\"IMG_CA_ASGBPII7_CA_ENTRYLL2583\" class=\"PTAI_StatusImage\" alt=\"Task is not started\"><span id=\"SPAN_CA_ASGBPII7_CA_ENTRYLL2583\" class=\"PTAIAriaImageStatusText\" aria-live=\"assertive\"> </span><img title=\"Required Item\" src=\"http://oelser3.kovaion.com:7030/cs/ps/cache/PTAI_ASTERISK_1.PNG\" class=\"PTAIActionItemNotRequired\" alt=\"Required Item\"><span>Assign Billing Plan (0 of 1)</span>",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<a title=\"Assign Billing Plan (0 of 1)\" target=\"TargetContent\" onclick=\"OpeninTC(this);return false;\" id=\"CA_ASGBPII7_CA_ENTRYLL2583\" href=\"http://oelser3.kovaion.com:7030/psc/ps_newwin/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_BP_LINK_PNG.GBL?PAGE=CA_BP_LINK&BUSINESS_UNIT=US001&CONTRACT_NUM=CON000000000300&PTAI=T&PTAI_LIST_ID=CA_ENTRYLL2583&PTAI_ITEM_ID=CA_ASGBPII7_CA_ENTRYLL2583&PTAI_POSTPROC=CA_ENTRY_ACT_GUIDE:ItemStatus&PTAI_SRCNODE=PSFT_EP\" class=\"PTAIActionItem\" aria-live=\"assertive\"><img title=\"Task is not started\" src=\"http://oelser3.kovaion.com:7030/cs/ps/cache/PTAI_ASSIGNED_45.PNG\" id=\"IMG_CA_ASGBPII7_CA_ENTRYLL2583\" class=\"PTAI_StatusImage\" alt=\"Task is not started\"><span id=\"SPAN_CA_ASGBPII7_CA_ENTRYLL2583\" class=\"PTAIAriaImageStatusText\" aria-live=\"assertive\"> </span><img title=\"Required Item\" src=\"http://oelser3.kovaion.com:7030/cs/ps/cache/PTAI_ASTERISK_1.PNG\" class=\"PTAIActionItemNotRequired\" alt=\"Required Item\"><span>Assign Billing Plan (0 of 1)</span></a>",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-1$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "linkAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "60",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "eb8a0919-27f0-4945-a400-165c4e80f18e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "2",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "114049f4-9f6f-4161-b9ec-06e94aacaaee"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMzUyNmFmYzItNDJiZC00MjM3LWI5ZjItYmRiNmRlYWM3ZGQ2IiwiaWQiOiIiLCJuYW1lIjoiQ0FfREVUQUlMJHNlbG0kMCQkMCIsInZhbHVlIjoiIiwiY2xhc3MiOiIiLCJwYXJlbnQiOiIiLCJ3aW5kb3dUaXRsZSI6IiIsInBhdGgiOnsib2JqUGF0aCI6W3siaW5kZXgiOjN9LHsiaW5kZXgiOjd9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi03fSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6LTF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTF9XX0sInJvbGUiOjcsImluZGV4IjowLCJsZWZ0Ijo0NiwidG9wIjo0MjEsIndpZHRoIjoxMywiaGVpZ2h0IjoxMywiY2xpY2tYIjo4LCJjbGlja1kiOjgsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiVW5jaGVja2VkIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6MywicHJvY2Vzc0lEIjoiVEEtQ0JTLUNIUk9NRS1BR0VOVCIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6bnVsbCwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL3RhYmxlW0BpZD0nQUNFX3dpZHRoJ10vdGJvZHlbMV0vdHJbOF0vdGRbMl0vZGl2WzFdL3RhYmxlWzFdL3Rib2R5WzFdL3RyWzJdL3RkWzFdL2RpdlsxXS90YWJsZVsxXS90Ym9keVsxXS90clsyXS90ZFsxXS9kaXZbMV0vdGFibGVbMV0vdGJvZHlbMV0vdHJbMV0vdGRbMV0vZGl2WzFdL3RhYmxlWzFdL3Rib2R5WzFdL3RyWzFdL3RkWzFdL2RpdlsxXS9pbnB1dFsyXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IkNBX0RFVEFJTCRzZWxtJDAkJDAifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IkNBX0RFVEFJTCRzZWxtJDAkJDAifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUYWciLCJ2YWx1ZSI6IklOUFVUIn0seyJuYW1lIjoiSFRNTCBDbGFzcyIsInZhbHVlIjoiUFNDSEVDS0JPWCJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6ImNoZWNrYm94In0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoib24ifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6IlNlbGVjdCB0aGlzIHJvdyJ9LHsibmFtZSI6IkhUTUwgSGVpZ2h0IiwidmFsdWUiOiIxMyJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6IjEzIn0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiMzIifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMzAwIn0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIzOCJ9LHsibmFtZSI6IkhUTUwgSGFzRnJhbWUiLCJ2YWx1ZSI6InRydWUifSx7Im5hbWUiOiJIVE1MIEZyYW1lU3JjIiwidmFsdWUiOiJodHRwczovL29lbHNlcjMua292YWlvbi5jb206NzA1MC9wc2MvZXA5MnUwMzcvRU1QTE9ZRUUvRVJQL2MvTUFOQUdFX0NPTlRSQUNUUy5DQV9FTlRSWV9BQ1RfR1VJREUuR0JMP1BvcnRhbEFjdHVhbFVSTD1odHRwcyUzYSUyZiUyZm9lbHNlcjMua292YWlvbi5jb20lM2E3MDUwJTJmcHNjJTJmZXA5MnUwMzclMmZFTVBMT1lFRSUyZkVSUCUyZmMlMmZNQU5BR0VfQ09OVFJBQ1RTLkNBX0VOVFJZX0FDVF9HVUlERS5HQkwmUG9ydGFsQ29udGVudFVSTD1odHRwcyUzYSUyZiUyZm9lbHNlcjMua292YWlvbi5jb20lM2E3MDUwJTJmcHNjJTJmZXA5MnUwMzclMmZFTVBMT1lFRSUyZkVSUCUyZmMlMmZNQU5BR0VfQ09OVFJBQ1RTLkNBX0VOVFJZX0FDVF9HVUlERS5HQkwmUG9ydGFsQ29udGVudFByb3ZpZGVyPUVSUCZQb3J0YWxDUmVmTGFiZWw9TWFuYWdlJTIwQ29udHJhY3QlMjBFbnRyeSZQb3J0YWxSZWdpc3RyeU5hbWU9RU1QTE9ZRUUmUG9ydGFsU2VydmxldFVSST1odHRwcyUzYSUyZiUyZm9lbHNlcjMua292YWlvbi5jb20lM2E3MDUwJTJmcHNwJTJmZXA5MnUwMzclMmYmUG9ydGFsVVJJPWh0dHBzJTNhJTJmJTJmb2Vsc2VyMy5rb3ZhaW9uLmNvbSUzYTcwNTAlMmZwc2MlMmZlcDkydTAzNyUyZiZQb3J0YWxIb3N0Tm9kZT1FUlAmTm9DcnVtYnM9eWVzJlBvcnRhbEtleVN0cnVjdD15ZXMifSx7Im5hbWUiOiJIVE1MIEZyYW1lTmFtZSIsInZhbHVlIjoiVGFyZ2V0Q29udGVudCJ9LHsibmFtZSI6IkhUTUwgRnJhbWVQYXRoIiwidmFsdWUiOiJJRlJBTUVbMV0ifSx7Im5hbWUiOiJpbm5lckhUTUwiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Im91dGVySFRNTCIsInZhbHVlIjoiPGlucHV0IHR5cGU9XCJjaGVja2JveFwiIG5hbWU9XCJDQV9ERVRBSUwkc2VsbSQwJCQwXCIgaWQ9XCJDQV9ERVRBSUwkc2VsbSQwJCQwXCIgY2xhc3M9XCJQU0NIRUNLQk9YXCIgdGFiaW5kZXg9XCI0MFwiIG9uY2xpY2s9XCJ0aGlzLmZvcm0uQ0FfREVUQUlMJHNlbG1oJDAkJDAudmFsdWU9KHRoaXMuY2hlY2tlZD8nWSc6J04nKTtcIiBwc25jaGc9XCIwXCIgdGl0bGU9XCJTZWxlY3QgdGhpcyByb3dcIj4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiMzUyNmFmYzItNDJiZC00MjM3LWI5ZjItYmRiNmRlYWM3ZGQ2In0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IkNBX0RFVEFJTCRzZWxtJDAkJDAifSx7Im5hbWUiOiJWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiQ2xhc3MiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlBhcmVudCIsInZhbHVlIjoiIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IkNoZWNrQm94In0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiM3w3fDF8MXwxfDF8MXwxfDF8LTd8LTF8MXwtMXwxfC0xfDF8MXwxfDF8LTF8MXwxfDF8MXwxfDF8MXwxfDF8MXwxfDF8LTEifSx7Im5hbWUiOiJJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkxlZnQiLCJ2YWx1ZSI6IjM4In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiI0MTMifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiMTMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjEzIn0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiQ2xpY2tZIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiRGVzY3JpcHRpb24iLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlN0YXRlcyIsInZhbHVlIjoiVW5jaGVja2VkIn0seyJuYW1lIjoiRGVmYXVsdEFjdGlvbiIsInZhbHVlIjoiIn1dLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzcsNjEsNjcsNjksNTksNTgsNjYsNzEsNzMsNzQsNzksODBdLCJlcnJvciI6bnVsbH0=",
+                      "controlType": "CHECKBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//table[@id='ACE_width']/tbody[1]/tr[8]/td[2]/div[1]/table[1]/tbody[1]/tr[2]/td[1]/div[1]/table[1]/tbody[1]/tr[2]/td[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/table[1]/tbody[1]/tr[1]/td[1]/div[1]/input[2]",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PSCHECKBOX",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TargetContent",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "IFRAME[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "https://oelser3.kovaion.com:7050/psc/ep92u037/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_ENTRY_ACT_GUIDE.GBL?PortalActualURL=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2fEMPLOYEE%2fERP%2fc%2fMANAGE_CONTRACTS.CA_ENTRY_ACT_GUIDE.GBL&PortalContentURL=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2fEMPLOYEE%2fERP%2fc%2fMANAGE_CONTRACTS.CA_ENTRY_ACT_GUIDE.GBL&PortalContentProvider=ERP&PortalCRefLabel=Manage%20Contract%20Entry&PortalRegistryName=EMPLOYEE&PortalServletURI=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsp%2fep92u037%2f&PortalURI=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2f&PortalHostNode=ERP&NoCrumbs=yes&PortalKeyStruct=yes",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "13",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_DETAIL$selm$0$$0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "38",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_DETAIL$selm$0$$0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "32",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Select this row",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "300",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "checkbox",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "on",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "13",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "13",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "38",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_DETAIL$selm$0$$0",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|7|1|1|1|1|1|1|1|-7|-1|1|-1|1|-1|1|1|1|1|-1|1|1|1|1|1|1|1|1|1|1|1|1|-1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CheckBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Unchecked",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "413",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "3526afc2-42bd-4237-b9f2-bdb6deac7dd6",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "13",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"checkbox\" name=\"CA_DETAIL$selm$0$$0\" id=\"CA_DETAIL$selm$0$$0\" class=\"PSCHECKBOX\" tabindex=\"40\" onclick=\"this.form.CA_DETAIL$selmh$0$$0.value=(this.checked?'Y':'N');\" psnchg=\"0\" title=\"Select this row\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "checkboxAction",
+                  "value": {
+                    "string": "CHECK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "13d2012d-81af-4f5e-aa83-26ed8ec07edf"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiYzlkMjI5YzUtNThkOS00MzcxLTk3MzUtM2Q0ODg1MzdlNmNmIiwiaWQiOiIiLCJuYW1lIjoiQ0FfQklMTFBMQU5fV1JLX0JJTExfUExBTl9JRCIsInZhbHVlIjoiIiwiY2xhc3MiOiIiLCJwYXJlbnQiOiIiLCJ3aW5kb3dUaXRsZSI6IiIsInBhdGgiOnsib2JqUGF0aCI6W3siaW5kZXgiOjN9LHsiaW5kZXgiOjd9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0zfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9XX0sInJvbGUiOjUsImluZGV4IjowLCJsZWZ0IjoyNDIsInRvcCI6NTIyLCJ3aWR0aCI6MTQzLCJoZWlnaHQiOjMwLCJjbGlja1giOjQ5LCJjbGlja1kiOjE4LCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IiIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjMsInByb2Nlc3NJRCI6IlRBLUNCUy1DSFJPTUUtQUdFTlQiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy9pbnB1dFtAaWQ9J0NBX0JJTExQTEFOX1dSS19CSUxMX1BMQU5fSUQnXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IkNBX0JJTExQTEFOX1dSS19CSUxMX1BMQU5fSUQifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IkNBX0JJTExQTEFOX1dSS19CSUxMX1BMQU5fSUQifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUYWciLCJ2YWx1ZSI6IklOUFVUIn0seyJuYW1lIjoiSFRNTCBDbGFzcyIsInZhbHVlIjoiUFNFRElUQk9YIFBUQ1BFRElUQk9YV0lUSElDT04ifSx7Im5hbWUiOiJIVE1MIElubmVyVGV4dCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBTb3VyY2VJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkhUTUwgSHJlZiIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUeXBlIiwidmFsdWUiOiJ0ZXh0In0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiTkVYVCJ9LHsibmFtZSI6IkhUTUwgQ2xhc3NJZCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBIZWlnaHQiLCJ2YWx1ZSI6IjMwIn0seyJuYW1lIjoiSFRNTCBXaWR0aCIsInZhbHVlIjoiMTQzIn0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiMzMifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiNDAyIn0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIyMzQifSx7Im5hbWUiOiJIVE1MIEhhc0ZyYW1lIiwidmFsdWUiOiJ0cnVlIn0seyJuYW1lIjoiSFRNTCBGcmFtZVNyYyIsInZhbHVlIjoiaHR0cHM6Ly9vZWxzZXIzLmtvdmFpb24uY29tOjcwNTAvcHNjL2VwOTJ1MDM3L0VNUExPWUVFL0VSUC9jL01BTkFHRV9DT05UUkFDVFMuQ0FfRU5UUllfQUNUX0dVSURFLkdCTD9Qb3J0YWxBY3R1YWxVUkw9aHR0cHMlM2ElMmYlMmZvZWxzZXIzLmtvdmFpb24uY29tJTNhNzA1MCUyZnBzYyUyZmVwOTJ1MDM3JTJmRU1QTE9ZRUUlMmZFUlAlMmZjJTJmTUFOQUdFX0NPTlRSQUNUUy5DQV9FTlRSWV9BQ1RfR1VJREUuR0JMJlBvcnRhbENvbnRlbnRVUkw9aHR0cHMlM2ElMmYlMmZvZWxzZXIzLmtvdmFpb24uY29tJTNhNzA1MCUyZnBzYyUyZmVwOTJ1MDM3JTJmRU1QTE9ZRUUlMmZFUlAlMmZjJTJmTUFOQUdFX0NPTlRSQUNUUy5DQV9FTlRSWV9BQ1RfR1VJREUuR0JMJlBvcnRhbENvbnRlbnRQcm92aWRlcj1FUlAmUG9ydGFsQ1JlZkxhYmVsPU1hbmFnZSUyMENvbnRyYWN0JTIwRW50cnkmUG9ydGFsUmVnaXN0cnlOYW1lPUVNUExPWUVFJlBvcnRhbFNlcnZsZXRVUkk9aHR0cHMlM2ElMmYlMmZvZWxzZXIzLmtvdmFpb24uY29tJTNhNzA1MCUyZnBzcCUyZmVwOTJ1MDM3JTJmJlBvcnRhbFVSST1odHRwcyUzYSUyZiUyZm9lbHNlcjMua292YWlvbi5jb20lM2E3MDUwJTJmcHNjJTJmZXA5MnUwMzclMmYmUG9ydGFsSG9zdE5vZGU9RVJQJk5vQ3J1bWJzPXllcyZQb3J0YWxLZXlTdHJ1Y3Q9eWVzIn0seyJuYW1lIjoiSFRNTCBGcmFtZU5hbWUiLCJ2YWx1ZSI6IlRhcmdldENvbnRlbnQifSx7Im5hbWUiOiJIVE1MIEZyYW1lUGF0aCIsInZhbHVlIjoiSUZSQU1FWzFdIn0seyJuYW1lIjoiaW5uZXJIVE1MIiwidmFsdWUiOiIifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxpbnB1dCB0eXBlPVwidGV4dFwiIG5hbWU9XCJDQV9CSUxMUExBTl9XUktfQklMTF9QTEFOX0lEXCIgaWQ9XCJDQV9CSUxMUExBTl9XUktfQklMTF9QTEFOX0lEXCIgdGFiaW5kZXg9XCIzNzBcIiB2YWx1ZT1cIk5FWFRcIiBjbGFzcz1cIlBTRURJVEJPWCBQVENQRURJVEJPWFdJVEhJQ09OIFwiIHN0eWxlPVwid2lkdGg6MTA3cHg7IFwiIG1heGxlbmd0aD1cIjEwXCIgb25jaGFuZ2U9XCJhZGRjaGdfd2luMCh0aGlzKTtvQ2hhbmdlX3dpbjA9dGhpcztcIj4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiYzlkMjI5YzUtNThkOS00MzcxLTk3MzUtM2Q0ODg1MzdlNmNmIn0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IkNBX0JJTExQTEFOX1dSS19CSUxMX1BMQU5fSUQifSx7Im5hbWUiOiJWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiQ2xhc3MiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlBhcmVudCIsInZhbHVlIjoiIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlRleHRCb3gifSx7Im5hbWUiOiJQYXRoIiwidmFsdWUiOiIzfDd8MXwxfDF8MXwxfDF8MXwtM3wtMXwxfDF8MXwtMXwxfDF8MXwyfDJ8MXwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiIyMzQifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjUxNCJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIxNDMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjMwIn0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiQ2xpY2tZIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiRGVzY3JpcHRpb24iLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlN0YXRlcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiRGVmYXVsdEFjdGlvbiIsInZhbHVlIjoiIn1dLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzcsNjEsNjcsNTksNTgsNzEsNzMsNzQsNzksODBdLCJlcnJvciI6bnVsbH0=",
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='CA_BILLPLAN_WRK_BILL_PLAN_ID']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PSEDITBOX PTCPEDITBOXWITHICON",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TargetContent",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "IFRAME[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "https://oelser3.kovaion.com:7050/psc/ep92u037/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_ENTRY_ACT_GUIDE.GBL?PortalActualURL=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2fEMPLOYEE%2fERP%2fc%2fMANAGE_CONTRACTS.CA_ENTRY_ACT_GUIDE.GBL&PortalContentURL=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2fEMPLOYEE%2fERP%2fc%2fMANAGE_CONTRACTS.CA_ENTRY_ACT_GUIDE.GBL&PortalContentProvider=ERP&PortalCRefLabel=Manage%20Contract%20Entry&PortalRegistryName=EMPLOYEE&PortalServletURI=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsp%2fep92u037%2f&PortalURI=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2f&PortalHostNode=ERP&NoCrumbs=yes&PortalKeyStruct=yes",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "30",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BILL_PLAN_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "234",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BILL_PLAN_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "33",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "402",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "text",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "NEXT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "143",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "30",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "234",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BILL_PLAN_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|7|1|1|1|1|1|1|1|-3|-1|1|1|1|-1|1|1|1|2|2|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TextBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "514",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "c9d229c5-58d9-4371-9735-3d488537e6cf",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "143",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"text\" name=\"CA_BILLPLAN_WRK_BILL_PLAN_ID\" id=\"CA_BILLPLAN_WRK_BILL_PLAN_ID\" tabindex=\"370\" value=\"NEXT\" class=\"PSEDITBOX PTCPEDITBOXWITHICON \" style=\"width:107px; \" maxlength=\"10\" onchange=\"addchg_win0(this);oChange_win0=this;\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$dAssignBillingplan{\"sBillingPlan\"}$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delay",
+                  "value": {
+                    "number": "5",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "d6e7b382-ae25-4f27-8e52-23979d110e15"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMTNkMDQ3ZGUtM2E3MS00Yjg5LWEwYTYtYzY0NWUxODE5ODk5IiwiaWQiOiIiLCJuYW1lIjoiQ0FfQklMTFBMQU5fV1JLX0JJTExfUExBTl9UWVBFIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6N30seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTN9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6Mn0seyJpbmRleCI6MX0seyJpbmRleCI6MX1dfSwicm9sZSI6NiwiaW5kZXgiOjAsImxlZnQiOjI0MiwidG9wIjo2MTMsIndpZHRoIjoyNzMsImhlaWdodCI6MzAsImNsaWNrWCI6MjA3LCJjbGlja1kiOjEyLCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IiIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjMsInByb2Nlc3NJRCI6IlRBLUNCUy1DSFJPTUUtQUdFTlQiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy9zZWxlY3RbQGlkPSdDQV9CSUxMUExBTl9XUktfQklMTF9QTEFOX1RZUEUnXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IkNBX0JJTExQTEFOX1dSS19CSUxMX1BMQU5fVFlQRSJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiQ0FfQklMTFBMQU5fV1JLX0JJTExfUExBTl9UWVBFIn0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJTRUxFQ1QifSx7Im5hbWUiOiJIVE1MIENsYXNzIiwidmFsdWUiOiJQU0RST1BET1dOTElTVCJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiJBcyBJbmN1cnJlZFxuSW1tZWRpYXRlXG5NaWxlc3RvbmVcblBlcmNlbnQgQ29tcGxldGVcblJlY3VycmluZ1xuVmFsdWUgQmFzZWQifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6InNlbGVjdC1vbmUifSx7Im5hbWUiOiJIVE1MIFZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgSGVpZ2h0IiwidmFsdWUiOiIzMCJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6IjI3MyJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjIifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiNDg5In0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIyMzQifSx7Im5hbWUiOiJIVE1MIEhhc0ZyYW1lIiwidmFsdWUiOiJ0cnVlIn0seyJuYW1lIjoiSFRNTCBGcmFtZVNyYyIsInZhbHVlIjoiaHR0cHM6Ly9vZWxzZXIzLmtvdmFpb24uY29tOjcwNTAvcHNjL2VwOTJ1MDM3L0VNUExPWUVFL0VSUC9jL01BTkFHRV9DT05UUkFDVFMuQ0FfSERSX1BORy5HQkw/QlVTSU5FU1NfVU5JVD1VUzAwMSZDT05UUkFDVF9OVU09QVNTU0VUX0JVSUxEX0NPTlRSQUNUJlBvcnRhbEFjdHVhbFVSTD1odHRwcyUzYSUyZiUyZm9lbHNlcjMua292YWlvbi5jb20lM2E3MDUwJTJmcHNjJTJmZXA5MnUwMzclMmZFTVBMT1lFRSUyZkVSUCUyZmMlMmZNQU5BR0VfQ09OVFJBQ1RTLkNBX0hEUl9QTkcuR0JMJTNmQlVTSU5FU1NfVU5JVCUzZFVTMDAxJTI2Q09OVFJBQ1RfTlVNJTNkQVNTU0VUX0JVSUxEX0NPTlRSQUNUJlBvcnRhbENvbnRlbnRVUkw9aHR0cHMlM2ElMmYlMmZvZWxzZXIzLmtvdmFpb24uY29tJTNhNzA1MCUyZnBzYyUyZmVwOTJ1MDM3JTJmRU1QTE9ZRUUlMmZFUlAlMmZjJTJmTUFOQUdFX0NPTlRSQUNUUy5DQV9IRFJfUE5HLkdCTCZQb3J0YWxDb250ZW50UHJvdmlkZXI9RVJQJlBvcnRhbENSZWZMYWJlbD1HZW5lcmFsJTIwSW5mb3JtYXRpb24mUG9ydGFsUmVnaXN0cnlOYW1lPUVNUExPWUVFJlBvcnRhbFNlcnZsZXRVUkk9aHR0cHMlM2ElMmYlMmZvZWxzZXIzLmtvdmFpb24uY29tJTNhNzA1MCUyZnBzcCUyZmVwOTJ1MDM3JTJmJlBvcnRhbFVSST1odHRwcyUzYSUyZiUyZm9lbHNlcjMua292YWlvbi5jb20lM2E3MDUwJTJmcHNjJTJmZXA5MnUwMzclMmYmUG9ydGFsSG9zdE5vZGU9RVJQJk5vQ3J1bWJzPXllcyZQb3J0YWxLZXlTdHJ1Y3Q9eWVzIn0seyJuYW1lIjoiSFRNTCBGcmFtZU5hbWUiLCJ2YWx1ZSI6IlRhcmdldENvbnRlbnQifSx7Im5hbWUiOiJIVE1MIEZyYW1lUGF0aCIsInZhbHVlIjoiSUZSQU1FWzFdIn0seyJuYW1lIjoiSXRlbUNvbGxlY3Rpb24iLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6ImlubmVySFRNTCIsInZhbHVlIjoiXG48b3B0aW9uIHZhbHVlPVwiXCIgc2VsZWN0ZWQ9XCJzZWxlY3RlZFwiPiAgPC9vcHRpb24+XG48b3B0aW9uIHZhbHVlPVwiMDFcIj5BcyBJbmN1cnJlZDwvb3B0aW9uPlxuPG9wdGlvbiB2YWx1ZT1cIjA2XCI+SW1tZWRpYXRlPC9vcHRpb24+XG48b3B0aW9uIHZhbHVlPVwiMDRcIj5NaWxlc3RvbmU8L29wdGlvbj5cbjxvcHRpb24gdmFsdWU9XCIwNVwiPlBlcmNlbnQgQ29tcGxldGU8L29wdGlvbj5cbjxvcHRpb24gdmFsdWU9XCIwM1wiPlJlY3VycmluZzwvb3B0aW9uPlxuPG9wdGlvbiB2YWx1ZT1cIjA3XCI+VmFsdWUgQmFzZWQ8L29wdGlvbj5cbiJ9LHsibmFtZSI6Im91dGVySFRNTCIsInZhbHVlIjoiPHNlbGVjdCBuYW1lPVwiQ0FfQklMTFBMQU5fV1JLX0JJTExfUExBTl9UWVBFXCIgaWQ9XCJDQV9CSUxMUExBTl9XUktfQklMTF9QTEFOX1RZUEVcIiB0YWJpbmRleD1cIjM4MFwiIHNpemU9XCIxXCIgY2xhc3M9XCJQU0RST1BET1dOTElTVFwiIHN0eWxlPVwid2lkdGg6MjczcHg7IFwiPlxuPG9wdGlvbiB2YWx1ZT1cIlwiIHNlbGVjdGVkPVwic2VsZWN0ZWRcIj4gIDwvb3B0aW9uPlxuPG9wdGlvbiB2YWx1ZT1cIjAxXCI+QXMgSW5jdXJyZWQ8L29wdGlvbj5cbjxvcHRpb24gdmFsdWU9XCIwNlwiPkltbWVkaWF0ZTwvb3B0aW9uPlxuPG9wdGlvbiB2YWx1ZT1cIjA0XCI+TWlsZXN0b25lPC9vcHRpb24+XG48b3B0aW9uIHZhbHVlPVwiMDVcIj5QZXJjZW50IENvbXBsZXRlPC9vcHRpb24+XG48b3B0aW9uIHZhbHVlPVwiMDNcIj5SZWN1cnJpbmc8L29wdGlvbj5cbjxvcHRpb24gdmFsdWU9XCIwN1wiPlZhbHVlIEJhc2VkPC9vcHRpb24+XG48L3NlbGVjdD4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiMTNkMDQ3ZGUtM2E3MS00Yjg5LWEwYTYtYzY0NWUxODE5ODk5In0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IkNBX0JJTExQTEFOX1dSS19CSUxMX1BMQU5fVFlQRSJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiQ29tYm9Cb3gifSx7Im5hbWUiOiJQYXRoIiwidmFsdWUiOiIzfDd8MXwxfDF8MXwxfDF8MXwtM3wtMXwxfDF8MXwtMXwxfDF8MXw0fDJ8MXwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiIyMzQifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjYwNSJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIyNzMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjMwIn0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiQ2xpY2tZIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiRGVzY3JpcHRpb24iLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlN0YXRlcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiRGVmYXVsdEFjdGlvbiIsInZhbHVlIjoiIn1dLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOlt7Iml0ZW0iOiJBcyBJbmN1cnJlZCIsInN1Ykl0ZW1zIjpbXX0seyJpdGVtIjoiSW1tZWRpYXRlIiwic3ViSXRlbXMiOltdfV0sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw2Nyw1OSw1OCw3MSw3Myw3NCw3OSw4MF0sImVycm9yIjpudWxsfQ==",
+                      "controlType": "COMBOBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//select[@id='CA_BILLPLAN_WRK_BILL_PLAN_TYPE']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PSDROPDOWNLIST",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TargetContent",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "IFRAME[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "https://oelser3.kovaion.com:7050/psc/ep92u037/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_HDR_PNG.GBL?BUSINESS_UNIT=US001&CONTRACT_NUM=ASSSET_BUILD_CONTRACT&PortalActualURL=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2fEMPLOYEE%2fERP%2fc%2fMANAGE_CONTRACTS.CA_HDR_PNG.GBL%3fBUSINESS_UNIT%3dUS001%26CONTRACT_NUM%3dASSSET_BUILD_CONTRACT&PortalContentURL=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2fEMPLOYEE%2fERP%2fc%2fMANAGE_CONTRACTS.CA_HDR_PNG.GBL&PortalContentProvider=ERP&PortalCRefLabel=General%20Information&PortalRegistryName=EMPLOYEE&PortalServletURI=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsp%2fep92u037%2f&PortalURI=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2f&PortalHostNode=ERP&NoCrumbs=yes&PortalKeyStruct=yes",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "30",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BILL_PLAN_TYPE",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "As Incurred\nImmediate\nMilestone\nPercent Complete\nRecurring\nValue Based",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "234",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BILL_PLAN_TYPE",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "SELECT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "489",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "select-one",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "273",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "30",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemCollection": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "234",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BILL_PLAN_TYPE",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|7|1|1|1|1|1|1|1|-3|-1|1|1|1|-1|1|1|1|4|2|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ComboBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "605",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "13d047de-3a71-4b89-a0a6-c645e1819899",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "273",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "\n<option value=\"\" selected=\"selected\">  </option>\n<option value=\"01\">As Incurred</option>\n<option value=\"06\">Immediate</option>\n<option value=\"04\">Milestone</option>\n<option value=\"05\">Percent Complete</option>\n<option value=\"03\">Recurring</option>\n<option value=\"07\">Value Based</option>\n",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<select name=\"CA_BILLPLAN_WRK_BILL_PLAN_TYPE\" id=\"CA_BILLPLAN_WRK_BILL_PLAN_TYPE\" tabindex=\"380\" size=\"1\" class=\"PSDROPDOWNLIST\" style=\"width:273px; \">\n<option value=\"\" selected=\"selected\">  </option>\n<option value=\"01\">As Incurred</option>\n<option value=\"06\">Immediate</option>\n<option value=\"04\">Milestone</option>\n<option value=\"05\">Percent Complete</option>\n<option value=\"03\">Recurring</option>\n<option value=\"07\">Value Based</option>\n</select>",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "comboboxAction",
+                  "value": {
+                    "string": "SELECTITEMBYTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$dAssignBillingplan{\"sBillingMethod\"}$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "5d355f49-caf1-45be-827b-ba4b2f5a9c0a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMWExMGFjZmEtNzk0ZS00NWYxLWE1NGEtMDhkNjY2NmI2YjIxIiwiaWQiOiIiLCJuYW1lIjoiQ0FfQklMTFBMQU5fV1JLX0RFU0NSIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6N30seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTR9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfV19LCJyb2xlIjo1LCJpbmRleCI6MCwibGVmdCI6NTUyLCJ0b3AiOjUyNywid2lkdGgiOjMxMSwiaGVpZ2h0IjozNSwiY2xpY2tYIjoxMzYsImNsaWNrWSI6MjMsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6MywicHJvY2Vzc0lEIjoiVEEtQ0JTLUNIUk9NRS1BR0VOVCIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6bnVsbCwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2lucHV0W0BpZD0nQ0FfQklMTFBMQU5fV1JLX0RFU0NSJ10ifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiJDQV9CSUxMUExBTl9XUktfREVTQ1IifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IkNBX0JJTExQTEFOX1dSS19ERVNDUiJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiSU5QVVQifSx7Im5hbWUiOiJIVE1MIENsYXNzIiwidmFsdWUiOiJQU0VESVRCT1gifSx7Im5hbWUiOiJIVE1MIElubmVyVGV4dCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBTb3VyY2VJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkhUTUwgSHJlZiIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUeXBlIiwidmFsdWUiOiJ0ZXh0In0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiMzUifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIzMTEifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiI0NSJ9LHsibmFtZSI6IkhUTUwgVG9wIiwidmFsdWUiOiI1MzYifSx7Im5hbWUiOiJIVE1MIExlZnQiLCJ2YWx1ZSI6IjIzNCJ9LHsibmFtZSI6IkhUTUwgSGFzRnJhbWUiLCJ2YWx1ZSI6InRydWUifSx7Im5hbWUiOiJIVE1MIEZyYW1lU3JjIiwidmFsdWUiOiJodHRwOi8vb2Vsc2VyMy5rb3ZhaW9uLmNvbTo3MDMwL3BzYy9wc19uZXd3aW4vRU1QTE9ZRUUvRVJQL2MvTUFOQUdFX0NPTlRSQUNUUy5DQV9CUF9MSU5LX1BORy5HQkw/UEFHRT1DQV9CUF9MSU5LJkJVU0lORVNTX1VOSVQ9VVMwMDEmQ09OVFJBQ1RfTlVNPUFURVNUMTAxJlBUQUk9VCZQVEFJX0xJU1RfSUQ9Q0FfRU5UUllMTDI0MDMmUFRBSV9JVEVNX0lEPUNBX0FTR0JQSUk3X0NBX0VOVFJZTEwyNDAzJlBUQUlfUE9TVFBST0M9Q0FfRU5UUllfQUNUX0dVSURFOkl0ZW1TdGF0dXMmUFRBSV9TUkNOT0RFPVBTRlRfRVAifSx7Im5hbWUiOiJIVE1MIEZyYW1lTmFtZSIsInZhbHVlIjoiVGFyZ2V0Q29udGVudCJ9LHsibmFtZSI6IkhUTUwgRnJhbWVQYXRoIiwidmFsdWUiOiJJRlJBTUVbMV0ifSx7Im5hbWUiOiJpbm5lckhUTUwiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Im91dGVySFRNTCIsInZhbHVlIjoiPGlucHV0IHR5cGU9XCJ0ZXh0XCIgbmFtZT1cIkNBX0JJTExQTEFOX1dSS19ERVNDUlwiIGlkPVwiQ0FfQklMTFBMQU5fV1JLX0RFU0NSXCIgdGFiaW5kZXg9XCIzODNcIiB2YWx1ZT1cIlwiIGNsYXNzPVwiUFNFRElUQk9YXCIgc3R5bGU9XCJ3aWR0aDoyNzNweDsgXCIgbWF4bGVuZ3RoPVwiMzBcIj4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiMWExMGFjZmEtNzk0ZS00NWYxLWE1NGEtMDhkNjY2NmI2YjIxIn0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IkNBX0JJTExQTEFOX1dSS19ERVNDUiJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiVGV4dEJveCJ9LHsibmFtZSI6IlBhdGgiLCJ2YWx1ZSI6IjN8N3wxfDF8MXwxfDF8MXwxfC0yfC0xfDF8MXwxfC0xfDF8MXwxfC00fC0xfDF8MSJ9LHsibmFtZSI6IkluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiTGVmdCIsInZhbHVlIjoiNTQ0In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiI1MTkifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiMzExIn0seyJuYW1lIjoiSGVpZ2h0IiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkRlc2NyaXB0aW9uIiwidmFsdWUiOiIifSx7Im5hbWUiOiJTdGF0ZXMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkRlZmF1bHRBY3Rpb24iLCJ2YWx1ZSI6IiJ9XSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjpudWxsLCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDY3LDU5LDU4LDcxLDczLDc0LDc5LDgwXSwiZXJyb3IiOm51bGx9",
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='CA_BILLPLAN_WRK_DESCR']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PSEDITBOX",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": true,
+                          "value": {
+                            "string": "TargetContent",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "IFRAME[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": true,
+                          "value": {
+                            "string": "http://oelser3.kovaion.com:7030/psc/ps_newwin/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_BP_LINK_PNG.GBL?PAGE=CA_BP_LINK&BUSINESS_UNIT=US001&CONTRACT_NUM=ATEST101&PTAI=T&PTAI_LIST_ID=CA_ENTRYLL2403&PTAI_ITEM_ID=CA_ASGBPII7_CA_ENTRYLL2403&PTAI_POSTPROC=CA_ENTRY_ACT_GUIDE:ItemStatus&PTAI_SRCNODE=PSFT_EP",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "35",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": true,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_DESCR",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "234",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": true,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_DESCR",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "45",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "536",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "text",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "311",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "35",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "544",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_DESCR",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|7|1|1|1|1|1|1|1|-2|-1|1|1|1|-1|1|1|1|-4|-1|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TextBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "519",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1a10acfa-794e-45f1-a54a-08d6666b6b21",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "311",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"text\" name=\"CA_BILLPLAN_WRK_DESCR\" id=\"CA_BILLPLAN_WRK_DESCR\" tabindex=\"383\" value=\"\" class=\"PSEDITBOX\" style=\"width:273px; \" maxlength=\"30\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$dAssignBillingplan{\"sDescription\"}$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delay",
+                  "value": {
+                    "number": "4",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "6bf55946-6247-44f0-8e81-8ebce33e6002"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNGUwYjQyNDktNzQzNS00ODgyLWFjYWItNjQ2ZGM1ZTc2MTc3IiwiaWQiOiIiLCJuYW1lIjoiQ0FfQklMTFBMQU5fV1JLX0NBX0JQX1RNUExfSUQiLCJ2YWx1ZSI6IiIsImNsYXNzIjoiIiwicGFyZW50IjoiIiwid2luZG93VGl0bGUiOiIiLCJwYXRoIjp7Im9ialBhdGgiOlt7ImluZGV4IjozfSx7ImluZGV4Ijo3fSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjotMn0seyJpbmRleCI6LTF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoyfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX1dfSwicm9sZSI6NSwiaW5kZXgiOjAsImxlZnQiOjEyMTMsInRvcCI6NDM4LCJ3aWR0aCI6MTc0LCJoZWlnaHQiOjM1LCJjbGlja1giOjYzLCJjbGlja1kiOjE1LCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IiIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjMsInByb2Nlc3NJRCI6IlRBLUNCUy1DSFJPTUUtQUdFTlQiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy9pbnB1dFtAaWQ9J0NBX0JJTExQTEFOX1dSS19DQV9CUF9UTVBMX0lEJ10ifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiJDQV9CSUxMUExBTl9XUktfQ0FfQlBfVE1QTF9JRCJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiQ0FfQklMTFBMQU5fV1JLX0NBX0JQX1RNUExfSUQifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUYWciLCJ2YWx1ZSI6IklOUFVUIn0seyJuYW1lIjoiSFRNTCBDbGFzcyIsInZhbHVlIjoiUFNFRElUQk9YIFBUQ1BFRElUQk9YV0lUSElDT04ifSx7Im5hbWUiOiJIVE1MIElubmVyVGV4dCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBTb3VyY2VJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkhUTUwgSHJlZiIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUeXBlIiwidmFsdWUiOiJ0ZXh0In0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiMzUifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIxNzQifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiI0MyJ9LHsibmFtZSI6IkhUTUwgVG9wIiwidmFsdWUiOiI0NTYifSx7Im5hbWUiOiJIVE1MIExlZnQiLCJ2YWx1ZSI6IjgzNSJ9LHsibmFtZSI6IkhUTUwgSGFzRnJhbWUiLCJ2YWx1ZSI6InRydWUifSx7Im5hbWUiOiJIVE1MIEZyYW1lU3JjIiwidmFsdWUiOiJodHRwOi8vb2Vsc2VyMy5rb3ZhaW9uLmNvbTo3MDMwL3BzYy9wc19uZXd3aW4vRU1QTE9ZRUUvRVJQL2MvTUFOQUdFX0NPTlRSQUNUUy5DQV9CUF9MSU5LX1BORy5HQkw/UEFHRT1DQV9CUF9MSU5LJkJVU0lORVNTX1VOSVQ9VVMwMDEmQ09OVFJBQ1RfTlVNPUFURVNUMTAxJlBUQUk9VCZQVEFJX0xJU1RfSUQ9Q0FfRU5UUllMTDI0MDMmUFRBSV9JVEVNX0lEPUNBX0FTR0JQSUk3X0NBX0VOVFJZTEwyNDAzJlBUQUlfUE9TVFBST0M9Q0FfRU5UUllfQUNUX0dVSURFOkl0ZW1TdGF0dXMmUFRBSV9TUkNOT0RFPVBTRlRfRVAifSx7Im5hbWUiOiJIVE1MIEZyYW1lTmFtZSIsInZhbHVlIjoiVGFyZ2V0Q29udGVudCJ9LHsibmFtZSI6IkhUTUwgRnJhbWVQYXRoIiwidmFsdWUiOiJJRlJBTUVbMV0ifSx7Im5hbWUiOiJpbm5lckhUTUwiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Im91dGVySFRNTCIsInZhbHVlIjoiPGlucHV0IHR5cGU9XCJ0ZXh0XCIgbmFtZT1cIkNBX0JJTExQTEFOX1dSS19DQV9CUF9UTVBMX0lEXCIgaWQ9XCJDQV9CSUxMUExBTl9XUktfQ0FfQlBfVE1QTF9JRFwiIHRhYmluZGV4PVwiMzc4XCIgdmFsdWU9XCJcIiBjbGFzcz1cIlBTRURJVEJPWCBQVENQRURJVEJPWFdJVEhJQ09OIFwiIHN0eWxlPVwid2lkdGg6MTIycHg7IFwiIG1heGxlbmd0aD1cIjEwXCI+In0seyJuYW1lIjoiSXNWaXNpYmxlIiwidmFsdWUiOiJ0cnVlIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjRlMGI0MjQ5LTc0MzUtNDg4Mi1hY2FiLTY0NmRjNWU3NjE3NyJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiJDQV9CSUxMUExBTl9XUktfQ0FfQlBfVE1QTF9JRCJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiVGV4dEJveCJ9LHsibmFtZSI6IlBhdGgiLCJ2YWx1ZSI6IjN8N3wxfDF8MXwxfDF8MXwxfC0yfC0xfDF8MXwxfC0xfDF8MXwxfDJ8LTF8MXwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiIxMjA1In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiI0MzAifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiMTc0In0seyJuYW1lIjoiSGVpZ2h0IiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkRlc2NyaXB0aW9uIiwidmFsdWUiOiIifSx7Im5hbWUiOiJTdGF0ZXMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkRlZmF1bHRBY3Rpb24iLCJ2YWx1ZSI6IiJ9XSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjpudWxsLCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDY3LDU5LDU4LDcxLDczLDc0LDc5LDgwXSwiZXJyb3IiOm51bGx9",
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='CA_BILLPLAN_WRK_CA_BP_TMPL_ID']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PSEDITBOX PTCPEDITBOXWITHICON",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": true,
+                          "value": {
+                            "string": "TargetContent",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "IFRAME[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "http://oelser3.kovaion.com:7030/psc/ps_newwin/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_BP_LINK_PNG.GBL?PAGE=CA_BP_LINK&BUSINESS_UNIT=US001&CONTRACT_NUM=ATEST101&PTAI=T&PTAI_LIST_ID=CA_ENTRYLL2403&PTAI_ITEM_ID=CA_ASGBPII7_CA_ENTRYLL2403&PTAI_POSTPROC=CA_ENTRY_ACT_GUIDE:ItemStatus&PTAI_SRCNODE=PSFT_EP",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "35",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_CA_BP_TMPL_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "835",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_CA_BP_TMPL_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "43",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "456",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "text",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "174",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "35",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1205",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_CA_BP_TMPL_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|7|1|1|1|1|1|1|1|-2|-1|1|1|1|-1|1|1|1|2|-1|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TextBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "430",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "4e0b4249-7435-4882-acab-646dc5e76177",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "174",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"text\" name=\"CA_BILLPLAN_WRK_CA_BP_TMPL_ID\" id=\"CA_BILLPLAN_WRK_CA_BP_TMPL_ID\" tabindex=\"378\" value=\"\" class=\"PSEDITBOX PTCPEDITBOXWITHICON \" style=\"width:122px; \" maxlength=\"10\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$dAssignBillingplan{\"sBillingPlanTemplate\"}$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delay",
+                  "value": {
+                    "number": "5",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "6834768b-78b3-433f-8273-23d280f09a79"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMGYwYWUwOTItMTYxMC00ZWQwLThhMTctMzhkNmYyMjE5YjZkIiwiaWQiOiIiLCJuYW1lIjoiQ0FfQklMTFBMQU5fV1JLX0JQX0RUTF9UTVBMX0lEIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6N30seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6LTF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9XX0sInJvbGUiOjUsImluZGV4IjowLCJsZWZ0IjoxMjEzLCJ0b3AiOjQ4Mywid2lkdGgiOjE3NCwiaGVpZ2h0IjozNSwiY2xpY2tYIjo0MSwiY2xpY2tZIjoyMywiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjozLCJwcm9jZXNzSUQiOiJUQS1DQlMtQ0hST01FLUFHRU5UIiwid2luSGFuZGxlIjoiIiwib2NyRW5naW5lIjpudWxsLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpudWxsLCJwcm9wZXJ0aWVzIjpbeyJuYW1lIjoiRE9NWFBhdGgiLCJ2YWx1ZSI6Ii8vaW5wdXRbQGlkPSdDQV9CSUxMUExBTl9XUktfQlBfRFRMX1RNUExfSUQnXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IkNBX0JJTExQTEFOX1dSS19CUF9EVExfVE1QTF9JRCJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiQ0FfQklMTFBMQU5fV1JLX0JQX0RUTF9UTVBMX0lEIn0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJJTlBVVCJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6IlBTRURJVEJPWCBQVENQRURJVEJPWFdJVEhJQ09OIn0seyJuYW1lIjoiSFRNTCBJbm5lclRleHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgU291cmNlSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIVE1MIEhyZWYiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoidGV4dCJ9LHsibmFtZSI6IkhUTUwgVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQ2xhc3NJZCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBIZWlnaHQiLCJ2YWx1ZSI6IjM1In0seyJuYW1lIjoiSFRNTCBXaWR0aCIsInZhbHVlIjoiMTc0In0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiNDQifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiNDk2In0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiI4MzUifSx7Im5hbWUiOiJIVE1MIEhhc0ZyYW1lIiwidmFsdWUiOiJ0cnVlIn0seyJuYW1lIjoiSFRNTCBGcmFtZVNyYyIsInZhbHVlIjoiaHR0cDovL29lbHNlcjMua292YWlvbi5jb206NzAzMC9wc2MvcHNfbmV3d2luL0VNUExPWUVFL0VSUC9jL01BTkFHRV9DT05UUkFDVFMuQ0FfQlBfTElOS19QTkcuR0JMP1BBR0U9Q0FfQlBfTElOSyZCVVNJTkVTU19VTklUPVVTMDAxJkNPTlRSQUNUX05VTT1BVEVTVDEwMSZQVEFJPVQmUFRBSV9MSVNUX0lEPUNBX0VOVFJZTEwyNDAzJlBUQUlfSVRFTV9JRD1DQV9BU0dCUElJN19DQV9FTlRSWUxMMjQwMyZQVEFJX1BPU1RQUk9DPUNBX0VOVFJZX0FDVF9HVUlERTpJdGVtU3RhdHVzJlBUQUlfU1JDTk9ERT1QU0ZUX0VQIn0seyJuYW1lIjoiSFRNTCBGcmFtZU5hbWUiLCJ2YWx1ZSI6IlRhcmdldENvbnRlbnQifSx7Im5hbWUiOiJIVE1MIEZyYW1lUGF0aCIsInZhbHVlIjoiSUZSQU1FWzFdIn0seyJuYW1lIjoiaW5uZXJIVE1MIiwidmFsdWUiOiIifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxpbnB1dCB0eXBlPVwidGV4dFwiIG5hbWU9XCJDQV9CSUxMUExBTl9XUktfQlBfRFRMX1RNUExfSURcIiBpZD1cIkNBX0JJTExQTEFOX1dSS19CUF9EVExfVE1QTF9JRFwiIHRhYmluZGV4PVwiMzgxXCIgdmFsdWU9XCJcIiBjbGFzcz1cIlBTRURJVEJPWCBQVENQRURJVEJPWFdJVEhJQ09OIFwiIHN0eWxlPVwid2lkdGg6MTIycHg7IFwiIG1heGxlbmd0aD1cIjEwXCI+In0seyJuYW1lIjoiSXNWaXNpYmxlIiwidmFsdWUiOiJ0cnVlIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjBmMGFlMDkyLTE2MTAtNGVkMC04YTE3LTM4ZDZmMjIxOWI2ZCJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiJDQV9CSUxMUExBTl9XUktfQlBfRFRMX1RNUExfSUQifSx7Im5hbWUiOiJWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiQ2xhc3MiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlBhcmVudCIsInZhbHVlIjoiIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlRleHRCb3gifSx7Im5hbWUiOiJQYXRoIiwidmFsdWUiOiIzfDd8MXwxfDF8MXwxfDF8MXwtMnwtMXwxfDF8MXwtMXwxfDF8MXw0fC0xfDF8MSJ9LHsibmFtZSI6IkluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiTGVmdCIsInZhbHVlIjoiMTIwNSJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiNDc1In0seyJuYW1lIjoiV2lkdGgiLCJ2YWx1ZSI6IjE3NCJ9LHsibmFtZSI6IkhlaWdodCIsInZhbHVlIjoiMzUifSx7Im5hbWUiOiJDbGlja1giLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJDbGlja1kiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw2Nyw1OSw1OCw3MSw3Myw3NCw3OSw4MF0sImVycm9yIjpudWxsfQ==",
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='CA_BILLPLAN_WRK_BP_DTL_TMPL_ID']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PSEDITBOX PTCPEDITBOXWITHICON",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": true,
+                          "value": {
+                            "string": "TargetContent",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "IFRAME[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "http://oelser3.kovaion.com:7030/psc/ps_newwin/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_BP_LINK_PNG.GBL?PAGE=CA_BP_LINK&BUSINESS_UNIT=US001&CONTRACT_NUM=ATEST101&PTAI=T&PTAI_LIST_ID=CA_ENTRYLL2403&PTAI_ITEM_ID=CA_ASGBPII7_CA_ENTRYLL2403&PTAI_POSTPROC=CA_ENTRY_ACT_GUIDE:ItemStatus&PTAI_SRCNODE=PSFT_EP",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "35",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BP_DTL_TMPL_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "835",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BP_DTL_TMPL_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "44",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "496",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "text",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "174",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "35",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1205",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "CA_BILLPLAN_WRK_BP_DTL_TMPL_ID",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|7|1|1|1|1|1|1|1|-2|-1|1|1|1|-1|1|1|1|4|-1|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TextBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "475",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0f0ae092-1610-4ed0-8a17-38d6f2219b6d",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "174",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"text\" name=\"CA_BILLPLAN_WRK_BP_DTL_TMPL_ID\" id=\"CA_BILLPLAN_WRK_BP_DTL_TMPL_ID\" tabindex=\"381\" value=\"\" class=\"PSEDITBOX PTCPEDITBOXWITHICON \" style=\"width:122px; \" maxlength=\"10\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$dAssignBillingplan{\"sBillTemplateID\"}$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delay",
+                  "value": {
+                    "number": "5",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "0763aec1-5689-4fbc-ac4c-943e954cb220"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "3305870a-faaf-4254-8fca-89c2c6a8dd63"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMDdjYTEwOGYtNmM4MC00YWZkLTk4MjEtZWQ2YjNlY2ZjM2M2IiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6N30seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTN9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9XX0sInJvbGUiOjMxLCJpbmRleCI6MCwibGVmdCI6MTUsInRvcCI6NTY1LCJ3aWR0aCI6MTU5LCJoZWlnaHQiOjM0LCJjbGlja1giOjE1LCJjbGlja1kiOjI5LCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IiIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjMsInByb2Nlc3NJRCI6IlRBLUNCUy1DSFJPTUUtQUdFTlQiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy90YWJsZVtAaWQ9J0FDRV9DQV9CSUxMUExBTl9XUktfU0VMRUNUX0JQTEFOX1BCJ10vdGJvZHlbMV0vdHJbOV0vdGRbMl0vZGl2WzFdL2FbMV0ifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiQSJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6IlBTUFVTSEJVVFRPTiBMZWZ0IFBTUFJJTUFSWSJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQ2xhc3NJZCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBIZWlnaHQiLCJ2YWx1ZSI6IjM0In0seyJuYW1lIjoiSFRNTCBXaWR0aCIsInZhbHVlIjoiMTU5In0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiMTgifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiNTY1In0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiI3In0seyJuYW1lIjoiSFRNTCBIYXNGcmFtZSIsInZhbHVlIjoidHJ1ZSJ9LHsibmFtZSI6IkhUTUwgRnJhbWVTcmMiLCJ2YWx1ZSI6Imh0dHBzOi8vb2Vsc2VyMy5rb3ZhaW9uLmNvbTo3MDUwL3BzYy9lcDkydTAzNy9FTVBMT1lFRS9FUlAvYy9NQU5BR0VfQ09OVFJBQ1RTLkNBX0hEUl9QTkcuR0JMP0JVU0lORVNTX1VOSVQ9VVMwMDEmQ09OVFJBQ1RfTlVNPUFTU1NFVF9CVUlMRF9DT05UUkFDVCZQb3J0YWxBY3R1YWxVUkw9aHR0cHMlM2ElMmYlMmZvZWxzZXIzLmtvdmFpb24uY29tJTNhNzA1MCUyZnBzYyUyZmVwOTJ1MDM3JTJmRU1QTE9ZRUUlMmZFUlAlMmZjJTJmTUFOQUdFX0NPTlRSQUNUUy5DQV9IRFJfUE5HLkdCTCUzZkJVU0lORVNTX1VOSVQlM2RVUzAwMSUyNkNPTlRSQUNUX05VTSUzZEFTU1NFVF9CVUlMRF9DT05UUkFDVCZQb3J0YWxDb250ZW50VVJMPWh0dHBzJTNhJTJmJTJmb2Vsc2VyMy5rb3ZhaW9uLmNvbSUzYTcwNTAlMmZwc2MlMmZlcDkydTAzNyUyZkVNUExPWUVFJTJmRVJQJTJmYyUyZk1BTkFHRV9DT05UUkFDVFMuQ0FfSERSX1BORy5HQkwmUG9ydGFsQ29udGVudFByb3ZpZGVyPUVSUCZQb3J0YWxDUmVmTGFiZWw9R2VuZXJhbCUyMEluZm9ybWF0aW9uJlBvcnRhbFJlZ2lzdHJ5TmFtZT1FTVBMT1lFRSZQb3J0YWxTZXJ2bGV0VVJJPWh0dHBzJTNhJTJmJTJmb2Vsc2VyMy5rb3ZhaW9uLmNvbSUzYTcwNTAlMmZwc3AlMmZlcDkydTAzNyUyZiZQb3J0YWxVUkk9aHR0cHMlM2ElMmYlMmZvZWxzZXIzLmtvdmFpb24uY29tJTNhNzA1MCUyZnBzYyUyZmVwOTJ1MDM3JTJmJlBvcnRhbEhvc3ROb2RlPUVSUCZOb0NydW1icz15ZXMmUG9ydGFsS2V5U3RydWN0PXllcyJ9LHsibmFtZSI6IkhUTUwgRnJhbWVOYW1lIiwidmFsdWUiOiJUYXJnZXRDb250ZW50In0seyJuYW1lIjoiSFRNTCBGcmFtZVBhdGgiLCJ2YWx1ZSI6IklGUkFNRVsxXSJ9LHsibmFtZSI6ImlubmVySFRNTCIsInZhbHVlIjoiPHNwYW4gc3R5bGU9XCJiYWNrZ3JvdW5kLUNvbG9yOiB0cmFuc3BhcmVudDtcIj48aW5wdXQgdHlwZT1cImJ1dHRvblwiIG5hbWU9XCJDQV9CSUxMUExBTl9XUktfU0VMRUNUX0JQTEFOX1BCJDE3JFwiIGlkPVwiQ0FfQklMTFBMQU5fV1JLX1NFTEVDVF9CUExBTl9QQiQxNyRcIiB0YWJpbmRleD1cIjM4NFwiIHZhbHVlPVwiQXNzaWduXCIgY2xhc3M9XCJQU1BVU0hCVVRUT05cIiBzdHlsZT1cIndpZHRoOjEyMnB4OyBcIiBvbmNsaWNrPVwic3VibWl0QWN0aW9uX3dpbjAoZG9jdW1lbnQud2luMCx0aGlzLmlkLGV2ZW50KTtcIiB0aXRsZT1cIkFzc2lnbiBMaW5lc1wiPjwvc3Bhbj4ifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxhIHJvbGU9XCJwcmVzZW50YXRpb25cIiBjbGFzcz1cIlBTUFVTSEJVVFRPTiBMZWZ0IFBTUFJJTUFSWVwiIG9uY2xpY2s9XCJqYXZhc2NyaXB0OmlmKGV2ZW50LnRhcmdldC5pZCA9PSB0aGlzLmZpcnN0Q2hpbGQuZmlyc3RDaGlsZC5pZCkgeyByZXR1cm4gdHJ1ZTsgfSBlbHNlIHJldHVybigodGhpcy5maXJzdENoaWxkICYmIHRoaXMuZmlyc3RDaGlsZC5maXJzdENoaWxkKSAhPSBudWxsID8gdGhpcy5maXJzdENoaWxkLmZpcnN0Q2hpbGQuY2xpY2soKSA6IGZhbHNlKTtcIj48c3BhbiBzdHlsZT1cImJhY2tncm91bmQtQ29sb3I6IHRyYW5zcGFyZW50O1wiPjxpbnB1dCB0eXBlPVwiYnV0dG9uXCIgbmFtZT1cIkNBX0JJTExQTEFOX1dSS19TRUxFQ1RfQlBMQU5fUEIkMTckXCIgaWQ9XCJDQV9CSUxMUExBTl9XUktfU0VMRUNUX0JQTEFOX1BCJDE3JFwiIHRhYmluZGV4PVwiMzg0XCIgdmFsdWU9XCJBc3NpZ25cIiBjbGFzcz1cIlBTUFVTSEJVVFRPTlwiIHN0eWxlPVwid2lkdGg6MTIycHg7IFwiIG9uY2xpY2s9XCJzdWJtaXRBY3Rpb25fd2luMChkb2N1bWVudC53aW4wLHRoaXMuaWQsZXZlbnQpO1wiIHRpdGxlPVwiQXNzaWduIExpbmVzXCI+PC9zcGFuPjwvYT4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiMDdjYTEwOGYtNmM4MC00YWZkLTk4MjEtZWQ2YjNlY2ZjM2M2In0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiTGluayJ9LHsibmFtZSI6IlBhdGgiLCJ2YWx1ZSI6IjN8N3wxfDF8MXwxfDF8MXwxfC0zfC0xfDF8MXwxfC0xfDF8MXwxfC0yfDJ8MXwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI3In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiI1NTcifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiMTU5In0seyJuYW1lIjoiSGVpZ2h0IiwidmFsdWUiOiIzNCJ9LHsibmFtZSI6IkNsaWNrWCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkRlc2NyaXB0aW9uIiwidmFsdWUiOiIifSx7Im5hbWUiOiJTdGF0ZXMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkRlZmF1bHRBY3Rpb24iLCJ2YWx1ZSI6IiJ9XSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjpudWxsLCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDcxLDczLDc0LDc5LDgwXSwiZXJyb3IiOm51bGx9",
+                      "controlType": "LINK",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//table[@id='ACE_CA_BILLPLAN_WRK_SELECT_BPLAN_PB']/tbody[1]/tr[9]/td[2]/div[1]/a[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PSPUSHBUTTON Left PSPRIMARY",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TargetContent",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "IFRAME[1]",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "https://oelser3.kovaion.com:7050/psc/ep92u037/EMPLOYEE/ERP/c/MANAGE_CONTRACTS.CA_HDR_PNG.GBL?BUSINESS_UNIT=US001&CONTRACT_NUM=ASSSET_BUILD_CONTRACT&PortalActualURL=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2fEMPLOYEE%2fERP%2fc%2fMANAGE_CONTRACTS.CA_HDR_PNG.GBL%3fBUSINESS_UNIT%3dUS001%26CONTRACT_NUM%3dASSSET_BUILD_CONTRACT&PortalContentURL=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2fEMPLOYEE%2fERP%2fc%2fMANAGE_CONTRACTS.CA_HDR_PNG.GBL&PortalContentProvider=ERP&PortalCRefLabel=General%20Information&PortalRegistryName=EMPLOYEE&PortalServletURI=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsp%2fep92u037%2f&PortalURI=https%3a%2f%2foelser3.kovaion.com%3a7050%2fpsc%2fep92u037%2f&PortalHostNode=ERP&NoCrumbs=yes&PortalKeyStruct=yes",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "34",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "7",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "A",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "18",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "565",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "159",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "34",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "7",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|7|1|1|1|1|1|1|1|-3|-1|1|1|1|-1|1|1|1|-2|2|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Link",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "557",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "07ca108f-6c80-4afd-9821-ed6b3ecfc3c6",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "159",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<span style=\"background-Color: transparent;\"><input type=\"button\" name=\"CA_BILLPLAN_WRK_SELECT_BPLAN_PB$17$\" id=\"CA_BILLPLAN_WRK_SELECT_BPLAN_PB$17$\" tabindex=\"384\" value=\"Assign\" class=\"PSPUSHBUTTON\" style=\"width:122px; \" onclick=\"submitAction_win0(document.win0,this.id,event);\" title=\"Assign Lines\"></span>",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<a role=\"presentation\" class=\"PSPUSHBUTTON Left PSPRIMARY\" onclick=\"javascript:if(event.target.id == this.firstChild.firstChild.id) { return true; } else return((this.firstChild && this.firstChild.firstChild) != null ? this.firstChild.firstChild.click() : false);\"><span style=\"background-Color: transparent;\"><input type=\"button\" name=\"CA_BILLPLAN_WRK_SELECT_BPLAN_PB$17$\" id=\"CA_BILLPLAN_WRK_SELECT_BPLAN_PB$17$\" tabindex=\"384\" value=\"Assign\" class=\"PSPUSHBUTTON\" style=\"width:122px; \" onclick=\"submitAction_win0(document.win0,this.id,event);\" title=\"Assign Lines\"></span></a>",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "linkAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "45",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "7aef4142-8d81-496f-82a3-3306e9f5f38b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "3c558216-6406-4744-be3e-a936fb6b1cd9"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNWUxYjBlOTktNDU5OS00OGM0LWE2MmItOTFkZjU4ZWEwMTY4IiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6Mn0seyJpbmRleCI6LTF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfV19LCJyb2xlIjoxLCJpbmRleCI6MCwibGVmdCI6MTIyMSwidG9wIjoxMzIsIndpZHRoIjoxMTYsImhlaWdodCI6MTksImNsaWNrWCI6NjUsImNsaWNrWSI6OSwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjozLCJwcm9jZXNzSUQiOiJUQS1DQlMtQ0hST01FLUFHRU5UIiwid2luSGFuZGxlIjoiIiwib2NyRW5naW5lIjpudWxsLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpudWxsLCJwcm9wZXJ0aWVzIjpbeyJuYW1lIjoiRE9NWFBhdGgiLCJ2YWx1ZSI6Ii8vaW5wdXRbQGlkPSdwdGFpTWFya0NvbXBsZXRlJ10ifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiJwdGFpTWFya0NvbXBsZXRlIn0seyJuYW1lIjoiSFRNTCBOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiTWFyayBDb21wbGV0ZSJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJJTlBVVCJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6IlBTUFVTSEJVVFRPTiJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6ImJ1dHRvbiJ9LHsibmFtZSI6IkhUTUwgVmFsdWUiLCJ2YWx1ZSI6Ik1hcmsgQ29tcGxldGUifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6Ik1hcmsgQ29tcGxldGUifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiMTkifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIxMTYifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiIxNiJ9LHsibmFtZSI6IkhUTUwgVG9wIiwidmFsdWUiOiI1MyJ9LHsibmFtZSI6IkhUTUwgTGVmdCIsInZhbHVlIjoiMTEwNCJ9LHsibmFtZSI6IkhUTUwgSGFzRnJhbWUiLCJ2YWx1ZSI6ImZhbHNlIn0seyJuYW1lIjoiSFRNTCBGcmFtZVNyYyIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBGcmFtZU5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgRnJhbWVQYXRoIiwidmFsdWUiOiIifSx7Im5hbWUiOiJpbm5lckhUTUwiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Im91dGVySFRNTCIsInZhbHVlIjoiPGlucHV0IHR5cGU9XCJidXR0b25cIiBpZD1cInB0YWlNYXJrQ29tcGxldGVcIiBjbGFzcz1cIlBTUFVTSEJVVFRPTlwiIG9uY2xpY2s9XCJwdGFpQWd1aWRlLkV4ZWN1dGVBRygnQ0FfRU5UUllMTDI0MDMnLCdNYXJrQ29tcGxldGUnLCdDb250aW51ZSBMYXRlciAtIENvbmZpcm1hdGlvbicsJ0YnLCdMSVNUQlROJyk7XCIgdmFsdWU9XCJNYXJrIENvbXBsZXRlXCIgdGl0bGU9XCJNYXJrIENvbXBsZXRlXCIgYWx0PVwiTWFyayBDb21wbGV0ZVwiPiJ9LHsibmFtZSI6IklzVmlzaWJsZSIsInZhbHVlIjoidHJ1ZSJ9XSwiYXR0cmlidXRlcyI6W3sibmFtZSI6IlVuaXF1ZUlEIiwidmFsdWUiOiI1ZTFiMGU5OS00NTk5LTQ4YzQtYTYyYi05MWRmNThlYTAxNjgifSx7Im5hbWUiOiJJRCIsInZhbHVlIjoiIn0seyJuYW1lIjoiTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IldpbmRvd1RpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJSb2xlIiwidmFsdWUiOiJQdXNoQnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiNHwxfDF8MXwxfDF8MXwxfDF8MnwtMXwtMXwxfDF8MSJ9LHsibmFtZSI6IkluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiTGVmdCIsInZhbHVlIjoiMTIxMyJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiMTI0In0seyJuYW1lIjoiV2lkdGgiLCJ2YWx1ZSI6IjExNiJ9LHsibmFtZSI6IkhlaWdodCIsInZhbHVlIjoiMTkifSx7Im5hbWUiOiJDbGlja1giLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJDbGlja1kiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw2Nyw2OSw1OCw2Niw4MF0sImVycm9yIjpudWxsfQ==",
+                      "controlType": "BUTTON",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickX": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "ClickY": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='ptaiMarkComplete']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Mark Complete",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PSPUSHBUTTON",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": false,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "19",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ptaiMarkComplete",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1104",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "16",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Mark Complete",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "53",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "button",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "Mark Complete",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "116",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "19",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1213",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "4|1|1|1|1|1|1|1|1|2|-1|-1|1|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "PushButton",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "124",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "5e1b0e99-4599-48c4-a62b-91df58ea0168",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "116",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"button\" id=\"ptaiMarkComplete\" class=\"PSPUSHBUTTON\" onclick=\"ptaiAguide.ExecuteAG('CA_ENTRYLL2403','MarkComplete','Continue Later - Confirmation','F','LISTBTN');\" value=\"Mark Complete\" title=\"Mark Complete\" alt=\"Mark Complete\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$window-4$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "buttonAction",
+                  "value": {
+                    "string": "CLICK",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "45",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "capture",
+              "disabled": false,
+              "packageName": "Recorder",
+              "uid": "450aee53-d8be-4cf8-a7ef-d3a997aa2ef5"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "SECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "06d92e24-0c58-422c-a1bc-0bbf0c1175b0"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "f398c593-1451-4ac2-9af4-d1b755328c23"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "c4b913e9-dd0b-4a37-8c8a-527b2d42fbd1"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "Delay",
+      "version": "2.1.0-20200721-221959"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.0.0-20200515-071432"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Number",
+      "version": "2.0.0-20200515-071522"
+    },
+    {
+      "name": "Recorder",
+      "version": "2.0.7-20200726-053131"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "version": "3.0.0-20200515-071729"
+    },
+    {
+      "name": "System",
+      "version": "2.0.0-20200721-222454"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": true,
+      "name": "dAssignBillingplan",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "Chrome_WidgetWin_1",
+          "handle": "853038",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "*Assign Billing Plan*",
+          "path": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 744,
+            "width": 1382
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-4",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorMessage",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorLineNumber",
+      "output": true,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorFlag",
+      "output": true,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "Chrome_WidgetWin_1",
+          "handle": "986644",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "Contract Terms - Google Chrome",
+          "path": "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-1",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": true,
+      "name": "dUserConfig",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    }
+  ],
+  "workItemTemplateName": null
+}

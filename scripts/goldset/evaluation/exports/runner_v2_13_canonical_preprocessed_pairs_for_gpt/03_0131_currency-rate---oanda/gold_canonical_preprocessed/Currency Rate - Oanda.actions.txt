@@ -1,0 +1,45 @@
+String.stringPackageAssignAction
+String.stringPackageAssignAction
+MessageBox.messageBox
+TaskBot.stopTask
+String.stringPackageAssignAction
+String.stringPackageAssignAction
+String.stringPackageAssignAction
+Folder.folderCreate
+Folder.folderCreate
+Folder.folderCreate
+Folder.folderCreate
+Datetime.cloudConvertDatetimeToString
+Datetime.usingSubtractAction
+Datetime.cloudConvertDatetimeToString
+File.cloudDeletingFile
+File.cloudDeletingFile
+Excel advanced.cloudExcelOpen
+Browser.launchWebsite
+WebAutomation.isloaded
+Excel_MS.GoToCell
+Delay.delayDelay
+WebAutomation.isloaded
+WebAutomation.clickelement
+WebAutomation.sendkeys
+WebAutomation.sendkeys
+WebAutomation.clickelement
+WebAutomation.sendkeys
+WebAutomation.sendkeys
+WebAutomation.sendkeys
+WebAutomation.elementloaded
+Delay.delayDelay
+WebAutomation.elementloaded
+WebAutomation.getvalueselement
+Excel advanced.excelAdvancedPackageSetCellAction
+Excel_MS.GoToCell
+Excel advanced.excelAdvancedPackageSetCellAction
+Excel_MS.GoToCell
+Excel_MS.GoToCell
+Excel advanced.excelAdvancedPackageCloseAction
+File.filePackageCreateAction
+LogToFile.logToFile
+Datetime.cloudConvertDatetimeToString
+Number.toString
+LogToFile.logToFile
+Screen.screenCaptureDesktop

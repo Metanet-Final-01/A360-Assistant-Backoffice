@@ -1,0 +1,609 @@
+{
+  "case_id": "12_0338_lettergenerationbot",
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot",
+  "normalized": {
+    "gold_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\12_0338_lettergenerationbot\\LetterGenerationBot+SendPOF_Email.goldset.json",
+    "prediction_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.goldset.json",
+    "gold_source_file": "LetterGenerationBot+SendPOF_Email.json",
+    "prediction_source_file": "runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.json",
+    "preprocessing": {
+      "excluded_rule": "browser_session_lifecycle_action",
+      "excluded_regex": {
+        "package": "^(web\\s*automation|webautomation|browser|recorder)$",
+        "action": "session"
+      },
+      "excluded_gold_actions": [],
+      "excluded_prediction_actions": [],
+      "excluded_gold_count": 0,
+      "excluded_prediction_count": 0,
+      "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+      "action_equivalence_member_count": 61
+    },
+    "gold_action_count": 98,
+    "prediction_action_count": 16,
+    "action_sequence": {
+      "lcs": 1,
+      "precision": 0.0625,
+      "recall": 0.01020408163265306,
+      "f1": 0.017543859649122806,
+      "gold_count": 98,
+      "prediction_count": 16
+    },
+    "action_multiset": {
+      "precision": 0.0625,
+      "recall": 0.01020408163265306,
+      "f1": 0.017543859649122806,
+      "overlap": 1,
+      "gold_count": 98,
+      "prediction_count": 16
+    },
+    "canonical_action_sequence": {
+      "lcs": 4,
+      "precision": 0.25,
+      "recall": 0.04081632653061224,
+      "f1": 0.07017543859649122,
+      "gold_count": 98,
+      "prediction_count": 16
+    },
+    "canonical_action_multiset": {
+      "precision": 0.25,
+      "recall": 0.04081632653061224,
+      "f1": 0.07017543859649122,
+      "overlap": 4,
+      "gold_count": 98,
+      "prediction_count": 16
+    },
+    "package_multiset": {
+      "precision": 0.25,
+      "recall": 0.04081632653061224,
+      "f1": 0.07017543859649122,
+      "overlap": 4,
+      "gold_count": 98,
+      "prediction_count": 16
+    },
+    "package_family_multiset": {
+      "precision": 0.25,
+      "recall": 0.04081632653061224,
+      "f1": 0.07017543859649122,
+      "overlap": 4,
+      "gold_count": 98,
+      "prediction_count": 16
+    },
+    "salient_family_multiset": {
+      "precision": 0.2,
+      "recall": 0.08333333333333333,
+      "f1": 0.11764705882352941,
+      "overlap": 3,
+      "gold_count": 36,
+      "prediction_count": 15
+    },
+    "adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 99,
+      "prediction_count": 17
+    },
+    "canonical_adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 99,
+      "prediction_count": 17
+    },
+    "first_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.assign",
+        "prediction": "Prompt.promptForValue"
+      },
+      {
+        "index": 2,
+        "gold": "String.assign",
+        "prediction": "Message box.usingMessageBoxAction"
+      },
+      {
+        "index": 3,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Task Bot.taskBotPackageStopAction"
+      },
+      {
+        "index": 4,
+        "gold": "TaskBot.stopTask",
+        "prediction": "Folder.folderCreate"
+      },
+      {
+        "index": 5,
+        "gold": "String.assign",
+        "prediction": "Browser.browserPackageOpenAction"
+      },
+      {
+        "index": 6,
+        "gold": "String.assign",
+        "prediction": "JSON utilities.jsonStartSession"
+      },
+      {
+        "index": 7,
+        "gold": "String.assign",
+        "prediction": "JSON utilities.jsonValidate"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.createFolder",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 9,
+        "gold": "Folder.createFolder",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 10,
+        "gold": "Folder.createFolder",
+        "prediction": "List.listSize"
+      },
+      {
+        "index": 11,
+        "gold": "Folder.createFolder",
+        "prediction": "Word.mswordOpenDocument"
+      },
+      {
+        "index": 12,
+        "gold": "Datetime.toString",
+        "prediction": "Word.mswordInsertText"
+      }
+    ],
+    "first_canonical_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Prompt.promptForValue"
+      },
+      {
+        "index": 2,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Message box.usingMessageBoxAction"
+      },
+      {
+        "index": 3,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Task Bot.taskBotPackageStopAction"
+      },
+      {
+        "index": 4,
+        "gold": "TaskBot.stopTask",
+        "prediction": "Folder.folderCreate"
+      },
+      {
+        "index": 5,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Browser.launchWebsite"
+      },
+      {
+        "index": 6,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "JSON utilities.jsonStartSession"
+      },
+      {
+        "index": 7,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "JSON utilities.jsonValidate"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.folderCreate",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 9,
+        "gold": "Folder.folderCreate",
+        "prediction": "JSON utilities.jsonGetNodeValue"
+      },
+      {
+        "index": 10,
+        "gold": "Folder.folderCreate",
+        "prediction": "List.listSize"
+      },
+      {
+        "index": 11,
+        "gold": "Folder.folderCreate",
+        "prediction": "Word.mswordOpenDocument"
+      },
+      {
+        "index": 12,
+        "gold": "Datetime.cloudConvertDatetimeToString",
+        "prediction": "Word.mswordInsertText"
+      }
+    ],
+    "gold_actions_preview": [
+      "String.assign",
+      "String.assign",
+      "MessageBox.messageBox",
+      "TaskBot.stopTask",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Datetime.toString",
+      "Datetime.subtract",
+      "Datetime.toString",
+      "File.deleteFiles",
+      "File.deleteFiles",
+      "Browser.launchWebsite",
+      "Recorder.capture",
+      "Recorder.capture",
+      "Recorder.capture"
+    ],
+    "gold_canonical_actions_preview": [
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "MessageBox.messageBox",
+      "TaskBot.stopTask",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Datetime.cloudConvertDatetimeToString",
+      "Datetime.usingSubtractAction",
+      "Datetime.cloudConvertDatetimeToString",
+      "File.cloudDeletingFile",
+      "File.cloudDeletingFile",
+      "Browser.launchWebsite",
+      "Recorder.capture",
+      "Recorder.capture",
+      "Recorder.capture"
+    ],
+    "prediction_actions": [
+      "Prompt.promptForValue",
+      "Message box.usingMessageBoxAction",
+      "Task Bot.taskBotPackageStopAction",
+      "Folder.folderCreate",
+      "Browser.browserPackageOpenAction",
+      "JSON utilities.jsonStartSession",
+      "JSON utilities.jsonValidate",
+      "JSON utilities.jsonGetNodeValue",
+      "JSON utilities.jsonGetNodeValue",
+      "List.listSize",
+      "Word.mswordOpenDocument",
+      "Word.mswordInsertText",
+      "Word.mswordInsertText",
+      "Word.mswordSaveDocumentAs",
+      "Email.cloudUsingSendAction",
+      "Word.mswordCloseDocument"
+    ],
+    "prediction_canonical_actions": [
+      "Prompt.promptForValue",
+      "Message box.usingMessageBoxAction",
+      "Task Bot.taskBotPackageStopAction",
+      "Folder.folderCreate",
+      "Browser.launchWebsite",
+      "JSON utilities.jsonStartSession",
+      "JSON utilities.jsonValidate",
+      "JSON utilities.jsonGetNodeValue",
+      "JSON utilities.jsonGetNodeValue",
+      "List.listSize",
+      "Word.mswordOpenDocument",
+      "Word.mswordInsertText",
+      "Word.mswordInsertText",
+      "Word.mswordSaveDocumentAs",
+      "Email.cloudUsingSendAction",
+      "Word.mswordCloseDocument"
+    ],
+    "gold_salient_families": [
+      "browser",
+      "recorder",
+      "recorder",
+      "recorder",
+      "recorder",
+      "recorder",
+      "recorder",
+      "boolean",
+      "recorder",
+      "recorder",
+      "recorder",
+      "recorder",
+      "list",
+      "recorder",
+      "list",
+      "recorder",
+      "rest",
+      "boolean",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "jsonhandler",
+      "list",
+      "jsonhandler",
+      "list",
+      "browser",
+      "list",
+      "list",
+      "mswordpackage",
+      "mswordpackage",
+      "mswordpackage",
+      "mswordpackage",
+      "mswordpackage",
+      "mswordpackage",
+      "recorder",
+      "email"
+    ],
+    "prediction_salient_families": [
+      "prompt",
+      "message_box",
+      "task_bot",
+      "browser",
+      "json_utilities",
+      "json_utilities",
+      "json_utilities",
+      "json_utilities",
+      "list",
+      "word",
+      "word",
+      "word",
+      "word",
+      "email",
+      "word"
+    ]
+  },
+  "pm4py": {
+    "mode": "actual_pm4py_alignment_conformance",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\12_0338_lettergenerationbot\\LetterGenerationBot+SendPOF_Email.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 98,
+    "prediction_action_count_after_preprocessing": 16,
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "fitness": 0.0714,
+    "precision": 0.0,
+    "raw_fitness": {
+      "percFitTraces": 0.0,
+      "averageFitness": 0.0714285714285714,
+      "percentage_of_fitting_traces": 0.0,
+      "average_trace_fitness": 0.0714285714285714,
+      "log_fitness": 0.0714285714285714
+    }
+  },
+  "pm4py_artifact_check": {
+    "gold_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\12_0338_lettergenerationbot",
+    "prediction_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\pm4py",
+    "gold_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\12_0338_lettergenerationbot\\LetterGenerationBot+SendPOF_Email.tree.json",
+      "exists": true,
+      "sha256": "33ca187ee0ac865b424413806eb56757f90f197d8a0e92eccc356a068dd990ad",
+      "leaf_count": 98,
+      "labels": [
+        "String.assign",
+        "String.assign",
+        "MessageBox.messageBox",
+        "TaskBot.stopTask",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Datetime.toString",
+        "Datetime.subtract",
+        "Datetime.toString",
+        "File.deleteFiles",
+        "File.deleteFiles",
+        "Browser.launchWebsite",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Boolean.assign",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "List.addItem",
+        "Recorder.capture",
+        "List.addItem",
+        "Recorder.capture",
+        "String.replace",
+        "Number.assignToNumber",
+        "Number.toString",
+        "Rest.restGet",
+        "Boolean.assign",
+        "JSONHandler.Initialize",
+        "JSONHandler.Query",
+        "Number.assignToNumber",
+        "JSONHandler.Query",
+        "JSONHandler.Query",
+        "List.addItem",
+        "JSONHandler.Query",
+        "List.addItem",
+        "String.replace",
+        "Number.assignToNumber",
+        "Number.toString",
+        "Number.toString",
+        "String.toNumber",
+        "Browser.downloadFile",
+        "String.assign",
+        "File.copyFiles",
+        "String.assign",
+        "List.listSize",
+        "String.assign",
+        "Number.assignToNumber",
+        "String.assign",
+        "List.listSize",
+        "String.assign",
+        "Number.assignToNumber",
+        "String.assign",
+        "MSWordPackage.ReplaceText",
+        "MSWordPackage.ReplaceText",
+        "MSWordPackage.Bookmark",
+        "MSWordPackage.Bookmark",
+        "MSWordPackage.Bookmark",
+        "MSWordPackage.Bookmark",
+        "File.createFile",
+        "LogToFile.logToFile",
+        "Datetime.toString",
+        "Number.toString",
+        "LogToFile.logToFile",
+        "Screen.captureDesktop",
+        "Recorder.capture",
+        "String.assign",
+        "String.assign",
+        "MessageBox.messageBox",
+        "TaskBot.stopTask",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Datetime.toString",
+        "Datetime.subtract",
+        "Datetime.toString",
+        "File.deleteFiles",
+        "File.deleteFiles",
+        "Email.sendMail",
+        "File.createFile",
+        "LogToFile.logToFile",
+        "Datetime.toString",
+        "Number.toString",
+        "LogToFile.logToFile",
+        "Screen.captureDesktop"
+      ],
+      "operator_counts": {
+        "loop": 4,
+        "sequence": 20,
+        "xor": 27
+      }
+    },
+    "prediction_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\pm4py\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.tree.json",
+      "exists": true,
+      "sha256": "8b012b73ad7be0553665a37387aad8df10543e13cda75e68a6c284c61bf6a241",
+      "leaf_count": 16,
+      "labels": [
+        "Prompt.promptForValue",
+        "Message box.usingMessageBoxAction",
+        "Task Bot.taskBotPackageStopAction",
+        "Folder.folderCreate",
+        "Browser.browserPackageOpenAction",
+        "JSON utilities.jsonStartSession",
+        "JSON utilities.jsonValidate",
+        "JSON utilities.jsonGetNodeValue",
+        "JSON utilities.jsonGetNodeValue",
+        "List.listSize",
+        "Word.mswordOpenDocument",
+        "Word.mswordInsertText",
+        "Word.mswordInsertText",
+        "Word.mswordSaveDocumentAs",
+        "Email.cloudUsingSendAction",
+        "Word.mswordCloseDocument"
+      ],
+      "operator_counts": {
+        "sequence": 5
+      }
+    },
+    "gold_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\12_0338_lettergenerationbot\\LetterGenerationBot+SendPOF_Email.pnml",
+      "exists": true,
+      "sha256": "d4a147ef4c4394f980bb8ff6e2b1b2f795c50fb8324bf24146801a5467a30fd5",
+      "readable_by_pm4py": true,
+      "places": 99,
+      "transitions": 111,
+      "visible_transitions": 98,
+      "arcs": 222,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "prediction_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\pm4py\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.pnml",
+      "exists": true,
+      "sha256": "d93373c468083e39f0dfd887c71bc741c52dfe2f52db47080d15e04066670c7f",
+      "readable_by_pm4py": true,
+      "places": 17,
+      "transitions": 16,
+      "visible_transitions": 16,
+      "arcs": 32,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "tree_leaf_count_delta": -82,
+    "tree_hash_equal": false,
+    "pnml_hash_equal": false
+  },
+  "worfbench": {
+    "mode": "actual_worfbench_t_eval_nodes",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\12_0338_lettergenerationbot\\LetterGenerationBot+SendPOF_Email.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 82,
+    "prediction_action_count_after_preprocessing": 16,
+    "gold_worfbench_fidelity": "approximated",
+    "prediction_worfbench_fidelity": "exact",
+    "gold_control_flow_types": [
+      "if",
+      "loop",
+      "try"
+    ],
+    "prediction_control_flow_types": [],
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "precision": 0.625,
+    "recall": 0.119,
+    "f1_score": 0.2
+  },
+  "worfbench_diagnostic_artifact_f1": {
+    "gold": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\worfbench_13\\12_0338_lettergenerationbot\\LetterGenerationBot+SendPOF_Email.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/12_0338_lettergenerationbot/LetterGenerationBot+SendPOF_Email",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "if",
+        "loop",
+        "try"
+      ]
+    },
+    "prediction": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\worfbench\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend/runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "container"
+      ]
+    },
+    "node_label_f1": {
+      "precision": 0.0625,
+      "recall": 0.012195121951219513,
+      "f1": 0.020408163265306124,
+      "overlap": 1,
+      "gold_count": 82,
+      "prediction_count": 16
+    },
+    "edge_f1": {
+      "precision": 0.9411764705882353,
+      "recall": 0.1927710843373494,
+      "f1": 0.32,
+      "overlap": 16,
+      "gold_count": 83,
+      "prediction_count": 17
+    },
+    "gold_node_count": 82,
+    "prediction_node_count": 16,
+    "gold_edge_count": 83,
+    "prediction_edge_count": 17
+  }
+}

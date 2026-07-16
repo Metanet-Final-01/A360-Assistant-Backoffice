@@ -1,0 +1,2 @@
+{"received_at": "2026-07-15T22:12:50.273460+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
+{"received_at": "2026-07-15T22:12:50.804319+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "94e9b24e-1b5e-43e1-b689-5c7ced496dbc", "session_id": "b7b378ac-843c-49d6-8d2e-70fffa198b5c", "filename": "0419_sendbulkemailswithtemplate__SendBulkEmailsWithTemplate.pdf", "size_bytes": 63068, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T22:12:48.508157+00:00"}}

@@ -1,0 +1,2278 @@
+{
+  "answer": "14개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 액션1.sessionName: XML 세션 이름이 필요하지만 단계 정보에 명시되지 않음 · 설정 XML에서 특정 구간(dev 환경) 값을 파싱/추출하는 액션이 후보 카탈로그에 없다. 제공된 후보는 Azure OpenAI 인증, SageMaker 텍스트 모델 호출, Google Document AI 추출뿐이며 XML 파싱 목적에 직접 사용할 수 없다. · 설정 XML에서 첨부파일 저장 폴더 경로를 '확인'하는 전용 액션이 후보 액션 카탈로그에 없음. 저장 작업만 가능하므로 이 단계는 액션 없이 처리 불가 · 액션1.sessionName: 기본 Outlook 메일함 세션의 세션 이름이 필요함 · 액션1.mailbox: 기본 Outlook 메일함의 메일함 식별 정보가 필요함 · 액션1.ms365OutlookSession: Outlook 세션이 필요하지만 입력에 세션 값이 없음 · 액션1.saveAttachmentsToFolder: 첨부파일 저장 폴더 경로 값이 필요하지만 입력에 구체 경로가 없음 · 이번 단계는 '저장된 첨부파일을 공식 배치 입력으로 간주'하는 의미적 분류 작업이며, 후보 액션 카탈로그에는 파일/배치 메타데이터를 변경하거나 '공식 배치 입력'으로 등록하는 액션이 없다. · 액션1.sessionName: 종료할 Outlook 메일함 세션을 특정해야 접속 해제가 가능함 · 후보 액션 카탈로그에 Excel 통합문서를 여는 액션이 없어 'Jira 입력 첨부파일 폴더의 JiraProjectsDetails.xlsx 파일을 연다' 작업을 자동화할 수 없음 · Excel 통합문서에서 단일 값이 아닌 표 형태의 다중 셀 범위를 읽는 데 사용할 수 있는 후보 액션이 없습니다. · processComposerCreateARequest.process: 어떤 프로세스(프로젝트 생성 프로세스)를 지정할지 필요 · processComposerCreateARequest.inputValues: 각 행의 어떤 값들을 요청 본문으로 보존할지 필요 · 배치 데이터를 읽는 데 필요한 시간 동안 통합문서를 열어 두는 동작에 사용할 수 있는 후보 액션이 카탈로그에 없어 자동화 시퀀스를 구성할 수 없음. · Jira.jiraCreateProject.additionalProperties: JIRA 요청 본문에 넣어야 할 실제 필드 매핑 값이 필요함 · Jira.jiraCreateProject.assignResultTo: 생성된 요청 본문을 저장할 대상 변수가 필요함 · jiraCreateProject는 프로젝트 생성용 액션이지만, 현재 카탈로그에는 REST 요청 본문을 직접 구성하는 전용 액션이 없으므로 엔드포인트 본문 생성에 재사용하는 전제가 필요함 · JIRA REST 엔드포인트로 실제 요청 전송 및 응답 저장을 수행할 후보 액션이 카탈로그에 없어, 반복 컨테이너만 설계 가능함. · errorHandlerCatch.exception: 자동화 예외 객체를 연결해야 오류 정보를 받을 수 있음 · 사용자에게 오류 표시하는 알림 창 출력 액션이 후보 카탈로그에 없어, 사용자에게 실제 메시지를 보여주는 단계는 구현할 수 없음 · Task 3. 프로젝트 요청 목록 읽기라는 제목이 있으나, 본문 상세 작업은 Task 1~4로 나뉘어 있어 제목과 상세 흐름의 포함 관계가 다소 모호하다. · Task 2에서 '신규 프로젝트 요청 메일'을 어떤 기준으로 식별하는지 문서에 명시되어 있지 않다. · Task 4의 '응답 결과를 후속 처리용으로 저장'에서 저장 위치나 저장 형식은 문서에 나오지 않는다. · Task 4의 권장 흐름에 '설정 읽기, 메일 첨부파일 저장, 엑셀 행 읽기, 반복적인 JIRA 요청, 예외 보고 순서'가 언급되지만, 이는 순서 권고인지 필수 제약인지 문서상 완전히 확정되지 않는다. · Task 1의 '현재 생성 요청에 사용하지 않는 비활성 설정 조회는 업무 처리 대상에서 제외한다'는 제외 대상의 구체 범위가 명시되어 있지 않다. (검수에서 해소하지 못한 위반 8건이 있어요 — 흐름도에서 확인해 주세요.)",
+  "backend_response_id": "f4057116-d8c6-474f-8d00-a2293fdacb76",
+  "backend_response_version": 2,
+  "backend_step": "turnRecommend",
+  "document_id": "21896c24-5f93-4ecf-aaa9-8f8c38fbbe96",
+  "notes": "액션1.sessionName: XML 세션 이름이 필요하지만 단계 정보에 명시되지 않음 · 설정 XML에서 특정 구간(dev 환경) 값을 파싱/추출하는 액션이 후보 카탈로그에 없다. 제공된 후보는 Azure OpenAI 인증, SageMaker 텍스트 모델 호출, Google Document AI 추출뿐이며 XML 파싱 목적에 직접 사용할 수 없다. · 설정 XML에서 첨부파일 저장 폴더 경로를 '확인'하는 전용 액션이 후보 액션 카탈로그에 없음. 저장 작업만 가능하므로 이 단계는 액션 없이 처리 불가 · 액션1.sessionName: 기본 Outlook 메일함 세션의 세션 이름이 필요함 · 액션1.mailbox: 기본 Outlook 메일함의 메일함 식별 정보가 필요함 · 액션1.ms365OutlookSession: Outlook 세션이 필요하지만 입력에 세션 값이 없음 · 액션1.saveAttachmentsToFolder: 첨부파일 저장 폴더 경로 값이 필요하지만 입력에 구체 경로가 없음 · 이번 단계는 '저장된 첨부파일을 공식 배치 입력으로 간주'하는 의미적 분류 작업이며, 후보 액션 카탈로그에는 파일/배치 메타데이터를 변경하거나 '공식 배치 입력'으로 등록하는 액션이 없다. · 액션1.sessionName: 종료할 Outlook 메일함 세션을 특정해야 접속 해제가 가능함 · 후보 액션 카탈로그에 Excel 통합문서를 여는 액션이 없어 'Jira 입력 첨부파일 폴더의 JiraProjectsDetails.xlsx 파일을 연다' 작업을 자동화할 수 없음 · Excel 통합문서에서 단일 값이 아닌 표 형태의 다중 셀 범위를 읽는 데 사용할 수 있는 후보 액션이 없습니다. · processComposerCreateARequest.process: 어떤 프로세스(프로젝트 생성 프로세스)를 지정할지 필요 · processComposerCreateARequest.inputValues: 각 행의 어떤 값들을 요청 본문으로 보존할지 필요 · 배치 데이터를 읽는 데 필요한 시간 동안 통합문서를 열어 두는 동작에 사용할 수 있는 후보 액션이 카탈로그에 없어 자동화 시퀀스를 구성할 수 없음. · Jira.jiraCreateProject.additionalProperties: JIRA 요청 본문에 넣어야 할 실제 필드 매핑 값이 필요함 · Jira.jiraCreateProject.assignResultTo: 생성된 요청 본문을 저장할 대상 변수가 필요함 · jiraCreateProject는 프로젝트 생성용 액션이지만, 현재 카탈로그에는 REST 요청 본문을 직접 구성하는 전용 액션이 없으므로 엔드포인트 본문 생성에 재사용하는 전제가 필요함 · JIRA REST 엔드포인트로 실제 요청 전송 및 응답 저장을 수행할 후보 액션이 카탈로그에 없어, 반복 컨테이너만 설계 가능함. · errorHandlerCatch.exception: 자동화 예외 객체를 연결해야 오류 정보를 받을 수 있음 · 사용자에게 오류 표시하는 알림 창 출력 액션이 후보 카탈로그에 없어, 사용자에게 실제 메시지를 보여주는 단계는 구현할 수 없음 · Task 3. 프로젝트 요청 목록 읽기라는 제목이 있으나, 본문 상세 작업은 Task 1~4로 나뉘어 있어 제목과 상세 흐름의 포함 관계가 다소 모호하다. · Task 2에서 '신규 프로젝트 요청 메일'을 어떤 기준으로 식별하는지 문서에 명시되어 있지 않다. · Task 4의 '응답 결과를 후속 처리용으로 저장'에서 저장 위치나 저장 형식은 문서에 나오지 않는다. · Task 4의 권장 흐름에 '설정 읽기, 메일 첨부파일 저장, 엑셀 행 읽기, 반복적인 JIRA 요청, 예외 보고 순서'가 언급되지만, 이는 순서 권고인지 필수 제약인지 문서상 완전히 확정되지 않는다. · Task 1의 '현재 생성 요청에 사용하지 않는 비활성 설정 조회는 업무 처리 대상에서 제외한다'는 제외 대상의 구체 범위가 명시되어 있지 않다.",
+  "original_recommendation": {
+    "notes": "액션1.sessionName: XML 세션 이름이 필요하지만 단계 정보에 명시되지 않음 · 설정 XML에서 특정 구간(dev 환경) 값을 파싱/추출하는 액션이 후보 카탈로그에 없다. 제공된 후보는 Azure OpenAI 인증, SageMaker 텍스트 모델 호출, Google Document AI 추출뿐이며 XML 파싱 목적에 직접 사용할 수 없다. · 설정 XML에서 첨부파일 저장 폴더 경로를 '확인'하는 전용 액션이 후보 액션 카탈로그에 없음. 저장 작업만 가능하므로 이 단계는 액션 없이 처리 불가 · 액션1.sessionName: 기본 Outlook 메일함 세션의 세션 이름이 필요함 · 액션1.mailbox: 기본 Outlook 메일함의 메일함 식별 정보가 필요함 · 액션1.ms365OutlookSession: Outlook 세션이 필요하지만 입력에 세션 값이 없음 · 액션1.saveAttachmentsToFolder: 첨부파일 저장 폴더 경로 값이 필요하지만 입력에 구체 경로가 없음 · 이번 단계는 '저장된 첨부파일을 공식 배치 입력으로 간주'하는 의미적 분류 작업이며, 후보 액션 카탈로그에는 파일/배치 메타데이터를 변경하거나 '공식 배치 입력'으로 등록하는 액션이 없다. · 액션1.sessionName: 종료할 Outlook 메일함 세션을 특정해야 접속 해제가 가능함 · 후보 액션 카탈로그에 Excel 통합문서를 여는 액션이 없어 'Jira 입력 첨부파일 폴더의 JiraProjectsDetails.xlsx 파일을 연다' 작업을 자동화할 수 없음 · Excel 통합문서에서 단일 값이 아닌 표 형태의 다중 셀 범위를 읽는 데 사용할 수 있는 후보 액션이 없습니다. · processComposerCreateARequest.process: 어떤 프로세스(프로젝트 생성 프로세스)를 지정할지 필요 · processComposerCreateARequest.inputValues: 각 행의 어떤 값들을 요청 본문으로 보존할지 필요 · 배치 데이터를 읽는 데 필요한 시간 동안 통합문서를 열어 두는 동작에 사용할 수 있는 후보 액션이 카탈로그에 없어 자동화 시퀀스를 구성할 수 없음. · Jira.jiraCreateProject.additionalProperties: JIRA 요청 본문에 넣어야 할 실제 필드 매핑 값이 필요함 · Jira.jiraCreateProject.assignResultTo: 생성된 요청 본문을 저장할 대상 변수가 필요함 · jiraCreateProject는 프로젝트 생성용 액션이지만, 현재 카탈로그에는 REST 요청 본문을 직접 구성하는 전용 액션이 없으므로 엔드포인트 본문 생성에 재사용하는 전제가 필요함 · JIRA REST 엔드포인트로 실제 요청 전송 및 응답 저장을 수행할 후보 액션이 카탈로그에 없어, 반복 컨테이너만 설계 가능함. · errorHandlerCatch.exception: 자동화 예외 객체를 연결해야 오류 정보를 받을 수 있음 · 사용자에게 오류 표시하는 알림 창 출력 액션이 후보 카탈로그에 없어, 사용자에게 실제 메시지를 보여주는 단계는 구현할 수 없음 · Task 3. 프로젝트 요청 목록 읽기라는 제목이 있으나, 본문 상세 작업은 Task 1~4로 나뉘어 있어 제목과 상세 흐름의 포함 관계가 다소 모호하다. · Task 2에서 '신규 프로젝트 요청 메일'을 어떤 기준으로 식별하는지 문서에 명시되어 있지 않다. · Task 4의 '응답 결과를 후속 처리용으로 저장'에서 저장 위치나 저장 형식은 문서에 나오지 않는다. · Task 4의 권장 흐름에 '설정 읽기, 메일 첨부파일 저장, 엑셀 행 읽기, 반복적인 JIRA 요청, 예외 보고 순서'가 언급되지만, 이는 순서 권고인지 필수 제약인지 문서상 완전히 확정되지 않는다. · Task 1의 '현재 생성 요청에 사용하지 않는 비활성 설정 조회는 업무 처리 대상에서 제외한다'는 제외 대상의 구체 범위가 명시되어 있지 않다.",
+    "schema_version": "1.0",
+    "steps": [
+      {
+        "actions": [
+          {
+            "action": "xmlStartSession",
+            "children": [],
+            "confidence": 0.44,
+            "label": "설정 XML 세션 시작",
+            "order": 1,
+            "package": "XML",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": "파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileSourceType",
+                "value": "데스크톱 파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileSelectionMode",
+                "value": "특정 경로",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "지정된 Configuration.xml 설정 파일을 로컬 디스크에서 열어 XML 세션으로 읽기 위해 세션을 시작한다",
+            "sources": [
+              {
+                "score": 0.435546875,
+                "source_type": "action_schema",
+                "title": "XML - 작업에서 세션 시작 XML",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-xml-command/xml-start-session"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-1"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-2"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-3"
+      },
+      {
+        "actions": [
+          {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.61,
+            "label": "Outlook 메일함 연결",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "mailbox",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "기본 Outlook 메일함 세션에 접속하는 단계이므로 Outlook 연결/연결 해제 액션으로 세션을 연다.",
+            "sources": [
+              {
+                "score": 0.609375,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-4"
+      },
+      {
+        "actions": [
+          {
+            "action": "ms365OutlookSaveAttachments",
+            "children": [],
+            "confidence": 0.84,
+            "label": "첨부파일 저장",
+            "order": 1,
+            "package": "Microsoft 365 Outlook",
+            "parameters": [
+              {
+                "label": null,
+                "name": "ms365OutlookSession",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "saveAttachmentsToFolder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteFiles",
+                "value": true,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "신규 프로젝트 요청 메일의 첨부파일을 설정된 폴더에 저장하는 단계이므로 Outlook 첨부파일 저장 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.8359375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Outlook - 작업 Microsoft 365 Outlook에 첨부파일 패키지 저장",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-save-attachments"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-5"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-6"
+      },
+      {
+        "actions": [
+          {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.65,
+            "label": "메일함 접속 종료",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "첨부파일 저장이 끝났으므로 Outlook 메일함 접속을 종료한다.",
+            "sources": [
+              {
+                "score": 0.6484375,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-7"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-8"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-9"
+      },
+      {
+        "actions": [
+          {
+            "action": "loop.commands.start",
+            "children": [
+              {
+                "action": "processComposerCreateARequest",
+                "children": [],
+                "confidence": 0.39,
+                "label": "요청 생성",
+                "order": 1,
+                "package": "Process Composer",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "process",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "inputValues",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "각 행을 하나의 프로젝트 생성 요청으로 보존하려면 행마다 요청 생성 작업을 수행한다.",
+                "sources": [
+                  {
+                    "score": 0.390625,
+                    "source_type": "action_schema",
+                    "title": "Process Composer - 요청 생성 작업",
+                    "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cp-pc-package/process-composer-create-a-request"
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.85,
+            "label": "각 행 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 행마다 반복해야 하므로 ITERATOR 루프로 행 단위 처리를 감싼다.",
+            "sources": []
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-10"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-11"
+      },
+      {
+        "actions": [
+          {
+            "action": "loop.commands.start",
+            "children": [
+              {
+                "action": "jiraCreateProject",
+                "children": [],
+                "confidence": 0.68,
+                "label": "JIRA 프로젝트 본문 구성",
+                "order": 1,
+                "package": "Jira",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "additionalProperties",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "assignResultTo",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "각 프로젝트 행마다 JIRA 프로젝트 생성 엔드포인트가 요구하는 요청 본문을 구성한다",
+                "sources": [
+                  {
+                    "score": 0.67578125,
+                    "source_type": "action_schema",
+                    "title": "Jira - 프로젝트 만들기",
+                    "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/jira-package/jira-create-project"
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.85,
+            "label": "프로젝트 행 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 프로젝트 행마다 반복하며 JIRA 요청 본문을 구성해야 하므로 루프를 사용한다",
+            "sources": []
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-12"
+      },
+      {
+        "actions": [
+          {
+            "action": "loop.commands.start",
+            "children": [],
+            "confidence": 0.85,
+            "label": "프로젝트 행마다 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 프로젝트 행마다 JIRA 요청을 전송해야 하므로 반복 컨테이너를 시작한다.",
+            "sources": []
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-13"
+      },
+      {
+        "actions": [
+          {
+            "action": "errorHandlerCatch",
+            "children": [],
+            "confidence": 0.64,
+            "label": "오류 정보 받기",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "assignExceptionMessageTo",
+                "value": "errorMessage",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "assignLineNumberTo",
+                "value": "failedLineNumber",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "자동화 예외가 발생했을 때 실패한 줄 번호와 오류 메시지를 받아 사용자에게 표시할 정보를 확보한다.",
+            "sources": [
+              {
+                "score": 0.640625,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-14"
+      }
+    ],
+    "variables": [
+      {
+        "description": "로컬 설정 파일 경로",
+        "direction": "input",
+        "name": "Configuration.xml",
+        "type": "STRING"
+      },
+      {
+        "description": "설정 XML 내용",
+        "direction": "input",
+        "name": "settingsXml",
+        "type": "STRING"
+      },
+      {
+        "description": "dev 환경 구간에서 확인한 프로젝트 생성 요청용 엔드포인트 값",
+        "direction": "output",
+        "name": "devEndpoint",
+        "type": "STRING"
+      },
+      {
+        "description": "설정 XML에서 확인한 수신 메일 첨부파일 저장 폴더 경로",
+        "direction": "output",
+        "name": "attachmentFolderPath",
+        "type": "STRING"
+      },
+      {
+        "description": "Outlook 메일함에 접속한 세션",
+        "direction": "output",
+        "name": "Outlook 메일함 세션",
+        "type": "SESSION"
+      },
+      {
+        "description": "Outlook 메일함 세션",
+        "direction": "input",
+        "name": "ms365OutlookSession",
+        "type": "SESSION"
+      },
+      {
+        "description": "첨부파일 저장 폴더 경로",
+        "direction": "input",
+        "name": "saveAttachmentsToFolder",
+        "type": "STRING"
+      },
+      {
+        "description": "Jira 입력 첨부파일 폴더에 있는 열 대상 파일 경로",
+        "direction": "input",
+        "name": "JiraProjectsDetails.xlsx",
+        "type": "STRING"
+      },
+      {
+        "description": "열린 Excel 통합문서에서 읽은 프로젝트 목록 범위 데이터",
+        "direction": "output",
+        "name": "projectRangeData",
+        "type": "TABLE"
+      },
+      {
+        "description": "프로젝트 목록 범위 데이터",
+        "direction": "input",
+        "name": "projectListRange",
+        "type": "TABLE"
+      },
+      {
+        "description": "행별 요청 본문용 보존 데이터",
+        "direction": "output",
+        "name": "preservedRequestBody",
+        "type": "TABLE"
+      },
+      {
+        "description": "각 프로젝트 행의 요청 본문 구성에 필요한 보존 데이터",
+        "direction": "input",
+        "name": "행별 요청 본문용 보존 데이터",
+        "type": "TABLE"
+      },
+      {
+        "description": "JIRA 프로젝트 생성 엔드포인트 값",
+        "direction": "input",
+        "name": "프로젝트 생성 요청용 엔드포인트 값",
+        "type": "STRING"
+      },
+      {
+        "description": "JIRA REST 엔드포인트로 전송할 요청 본문",
+        "direction": "input",
+        "name": "JIRA요청본문",
+        "type": "STRING"
+      },
+      {
+        "description": "JIRA 전송 응답 결과",
+        "direction": "output",
+        "name": "JIRA응답결과",
+        "type": "STRING"
+      },
+      {
+        "description": "후속 처리용으로 저장할 데이터",
+        "direction": "output",
+        "name": "후속처리용저장데이터",
+        "type": "STRING"
+      },
+      {
+        "description": "예외 메시지를 저장할 변수",
+        "direction": "output",
+        "name": "errorMessage",
+        "type": "STRING"
+      },
+      {
+        "description": "실패한 줄 번호를 저장할 변수",
+        "direction": "output",
+        "name": "failedLineNumber",
+        "type": "NUMBER"
+      }
+    ]
+  },
+  "parent_version": 1,
+  "run_id": "runner_v1_batch_20260716_13pdfs_resume09__02_0374_createprojectinjirausingapi",
+  "runner": "runner_v2",
+  "session_id": "f0cc1527-4e2e-4d1e-ba37-24e869e6e9d6",
+  "source": "backend_recommendation",
+  "source_file": "runner_v1_batch_20260716_13pdfs_resume09__02_0374_createprojectinjirausingapi__turnRecommend.json",
+  "sources": [
+    {
+      "score": 0.435546875,
+      "source_type": "action_schema",
+      "title": "XML - 작업에서 세션 시작 XML",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-xml-command/xml-start-session"
+    },
+    {
+      "score": 0.609375,
+      "source_type": "action_schema",
+      "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+    },
+    {
+      "score": 0.8359375,
+      "source_type": "action_schema",
+      "title": "Microsoft 365 Outlook - 작업 Microsoft 365 Outlook에 첨부파일 패키지 저장",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-save-attachments"
+    },
+    {
+      "score": 0.390625,
+      "source_type": "action_schema",
+      "title": "Process Composer - 요청 생성 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cp-pc-package/process-composer-create-a-request"
+    },
+    {
+      "score": 0.67578125,
+      "source_type": "action_schema",
+      "title": "Jira - 프로젝트 만들기",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/jira-package/jira-create-project"
+    },
+    {
+      "score": 0.640625,
+      "source_type": "action_schema",
+      "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+      "url": ""
+    }
+  ],
+  "steps": [
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-1"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "xmlStartSession",
+            "children": [],
+            "confidence": 0.44,
+            "label": "설정 XML 세션 시작",
+            "order": 1,
+            "package": "XML",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": "파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileSourceType",
+                "value": "데스크톱 파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileSelectionMode",
+                "value": "특정 경로",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "지정된 Configuration.xml 설정 파일을 로컬 디스크에서 열어 XML 세션으로 읽기 위해 세션을 시작한다",
+            "sources": [
+              {
+                "score": 0.435546875,
+                "source_type": "action_schema",
+                "title": "XML - 작업에서 세션 시작 XML",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-xml-command/xml-start-session"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-1"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "xmlStartSession",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "dataSource",
+              "original_parameter": {
+                "label": null,
+                "name": "dataSource",
+                "value": "파일",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "파일",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "fileSourceType",
+              "original_parameter": {
+                "label": null,
+                "name": "fileSourceType",
+                "value": "데스크톱 파일",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "데스크톱 파일",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "fileSelectionMode",
+              "original_parameter": {
+                "label": null,
+                "name": "fileSelectionMode",
+                "value": "특정 경로",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "특정 경로",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.44,
+                  "label": "설정 XML 세션 시작",
+                  "order": 1,
+                  "rationale": "지정된 Configuration.xml 설정 파일을 로컬 디스크에서 열어 XML 세션으로 읽기 위해 세션을 시작한다",
+                  "sources": [
+                    {
+                      "score": 0.435546875,
+                      "source_type": "action_schema",
+                      "title": "XML - 작업에서 세션 시작 XML",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-xml-command/xml-start-session"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "xmlStartSession",
+            "children": [],
+            "confidence": 0.44,
+            "label": "설정 XML 세션 시작",
+            "order": 1,
+            "package": "XML",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "dataSource",
+                "value": "파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileSourceType",
+                "value": "데스크톱 파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "fileSelectionMode",
+                "value": "특정 경로",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "지정된 Configuration.xml 설정 파일을 로컬 디스크에서 열어 XML 세션으로 읽기 위해 세션을 시작한다",
+            "sources": [
+              {
+                "score": 0.435546875,
+                "source_type": "action_schema",
+                "title": "XML - 작업에서 세션 시작 XML",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-xml-command/xml-start-session"
+              }
+            ]
+          },
+          "package": "XML",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-2"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-2"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-3"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-3"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-4"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.61,
+            "label": "Outlook 메일함 연결",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "mailbox",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "기본 Outlook 메일함 세션에 접속하는 단계이므로 Outlook 연결/연결 해제 액션으로 세션을 연다.",
+            "sources": [
+              {
+                "score": 0.609375,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-4"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "macMsOutlookConnectDisconnect",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "mailbox",
+              "original_parameter": {
+                "label": null,
+                "name": "mailbox",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.61,
+                  "label": "Outlook 메일함 연결",
+                  "order": 1,
+                  "rationale": "기본 Outlook 메일함 세션에 접속하는 단계이므로 Outlook 연결/연결 해제 액션으로 세션을 연다.",
+                  "sources": [
+                    {
+                      "score": 0.609375,
+                      "source_type": "action_schema",
+                      "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.61,
+            "label": "Outlook 메일함 연결",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "mailbox",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "기본 Outlook 메일함 세션에 접속하는 단계이므로 Outlook 연결/연결 해제 액션으로 세션을 연다.",
+            "sources": [
+              {
+                "score": 0.609375,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          },
+          "package": "Microsoft Outlook (macOS)",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-5"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "ms365OutlookSaveAttachments",
+            "children": [],
+            "confidence": 0.84,
+            "label": "첨부파일 저장",
+            "order": 1,
+            "package": "Microsoft 365 Outlook",
+            "parameters": [
+              {
+                "label": null,
+                "name": "ms365OutlookSession",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "saveAttachmentsToFolder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteFiles",
+                "value": true,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "신규 프로젝트 요청 메일의 첨부파일을 설정된 폴더에 저장하는 단계이므로 Outlook 첨부파일 저장 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.8359375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Outlook - 작업 Microsoft 365 Outlook에 첨부파일 패키지 저장",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-save-attachments"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-5"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "ms365OutlookSaveAttachments",
+          "attributes": [
+            {
+              "label": null,
+              "name": "ms365OutlookSession",
+              "original_parameter": {
+                "label": null,
+                "name": "ms365OutlookSession",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "saveAttachmentsToFolder",
+              "original_parameter": {
+                "label": null,
+                "name": "saveAttachmentsToFolder",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "overwriteFiles",
+              "original_parameter": {
+                "label": null,
+                "name": "overwriteFiles",
+                "value": true,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.84,
+                  "label": "첨부파일 저장",
+                  "order": 1,
+                  "rationale": "신규 프로젝트 요청 메일의 첨부파일을 설정된 폴더에 저장하는 단계이므로 Outlook 첨부파일 저장 액션을 사용한다.",
+                  "sources": [
+                    {
+                      "score": 0.8359375,
+                      "source_type": "action_schema",
+                      "title": "Microsoft 365 Outlook - 작업 Microsoft 365 Outlook에 첨부파일 패키지 저장",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-save-attachments"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "ms365OutlookSaveAttachments",
+            "children": [],
+            "confidence": 0.84,
+            "label": "첨부파일 저장",
+            "order": 1,
+            "package": "Microsoft 365 Outlook",
+            "parameters": [
+              {
+                "label": null,
+                "name": "ms365OutlookSession",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "saveAttachmentsToFolder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteFiles",
+                "value": true,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "신규 프로젝트 요청 메일의 첨부파일을 설정된 폴더에 저장하는 단계이므로 Outlook 첨부파일 저장 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.8359375,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 Outlook - 작업 Microsoft 365 Outlook에 첨부파일 패키지 저장",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/ms-365-outlook-package/ms-365-outlook-save-attachments"
+              }
+            ]
+          },
+          "package": "Microsoft 365 Outlook",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-6"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-6"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-7"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.65,
+            "label": "메일함 접속 종료",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "첨부파일 저장이 끝났으므로 Outlook 메일함 접속을 종료한다.",
+            "sources": [
+              {
+                "score": 0.6484375,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-7"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "macMsOutlookConnectDisconnect",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.65,
+                  "label": "메일함 접속 종료",
+                  "order": 1,
+                  "rationale": "첨부파일 저장이 끝났으므로 Outlook 메일함 접속을 종료한다.",
+                  "sources": [
+                    {
+                      "score": 0.6484375,
+                      "source_type": "action_schema",
+                      "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "macMsOutlookConnectDisconnect",
+            "children": [],
+            "confidence": 0.65,
+            "label": "메일함 접속 종료",
+            "order": 1,
+            "package": "Microsoft Outlook (macOS)",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "첨부파일 저장이 끝났으므로 Outlook 메일함 접속을 종료한다.",
+            "sources": [
+              {
+                "score": 0.6484375,
+                "source_type": "action_schema",
+                "title": "Microsoft Outlook (macOS) - Microsoft Outlook(macOS) 패키지의 연결 및 연결 해제 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/microsoft-outlook-package/mac-ms-outlook-connect-disconnect"
+              }
+            ]
+          },
+          "package": "Microsoft Outlook (macOS)",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-8"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-8"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-9"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-9"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-10"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "loop.commands.start",
+            "children": [
+              {
+                "action": "processComposerCreateARequest",
+                "children": [],
+                "confidence": 0.39,
+                "label": "요청 생성",
+                "order": 1,
+                "package": "Process Composer",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "process",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "inputValues",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "각 행을 하나의 프로젝트 생성 요청으로 보존하려면 행마다 요청 생성 작업을 수행한다.",
+                "sources": [
+                  {
+                    "score": 0.390625,
+                    "source_type": "action_schema",
+                    "title": "Process Composer - 요청 생성 작업",
+                    "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cp-pc-package/process-composer-create-a-request"
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.85,
+            "label": "각 행 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 행마다 반복해야 하므로 ITERATOR 루프로 행 단위 처리를 감싼다.",
+            "sources": []
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-10"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "loop.commands.start",
+          "attributes": [
+            {
+              "label": null,
+              "name": "loopType",
+              "original_parameter": {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.85,
+                  "label": "각 행 반복",
+                  "order": 1,
+                  "rationale": "각 행마다 반복해야 하므로 ITERATOR 루프로 행 단위 처리를 감싼다.",
+                  "sources": []
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "loop.commands.start",
+            "children": [
+              {
+                "action": "processComposerCreateARequest",
+                "children": [],
+                "confidence": 0.39,
+                "label": "요청 생성",
+                "order": 1,
+                "package": "Process Composer",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "process",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "inputValues",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "각 행을 하나의 프로젝트 생성 요청으로 보존하려면 행마다 요청 생성 작업을 수행한다.",
+                "sources": [
+                  {
+                    "score": 0.390625,
+                    "source_type": "action_schema",
+                    "title": "Process Composer - 요청 생성 작업",
+                    "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cp-pc-package/process-composer-create-a-request"
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.85,
+            "label": "각 행 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 행마다 반복해야 하므로 ITERATOR 루프로 행 단위 처리를 감싼다.",
+            "sources": []
+          },
+          "package": "Loop",
+          "steps": [
+            {
+              "action": "processComposerCreateARequest",
+              "attributes": [
+                {
+                  "label": null,
+                  "name": "process",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "process",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "type": "NULL",
+                    "value": null
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "inputValues",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "inputValues",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "type": "NULL",
+                    "value": null
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "name": "recommendation_action_meta",
+                  "value": {
+                    "json": {
+                      "confidence": 0.39,
+                      "label": "요청 생성",
+                      "order": 1,
+                      "rationale": "각 행을 하나의 프로젝트 생성 요청으로 보존하려면 행마다 요청 생성 작업을 수행한다.",
+                      "sources": [
+                        {
+                          "score": 0.390625,
+                          "source_type": "action_schema",
+                          "title": "Process Composer - 요청 생성 작업",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cp-pc-package/process-composer-create-a-request"
+                        }
+                      ]
+                    },
+                    "type": "JSON"
+                  }
+                }
+              ],
+              "disabled": false,
+              "original_recommendation_action": {
+                "action": "processComposerCreateARequest",
+                "children": [],
+                "confidence": 0.39,
+                "label": "요청 생성",
+                "order": 1,
+                "package": "Process Composer",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "process",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "inputValues",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "각 행을 하나의 프로젝트 생성 요청으로 보존하려면 행마다 요청 생성 작업을 수행한다.",
+                "sources": [
+                  {
+                    "score": 0.390625,
+                    "source_type": "action_schema",
+                    "title": "Process Composer - 요청 생성 작업",
+                    "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cp-pc-package/process-composer-create-a-request"
+                  }
+                ]
+              },
+              "package": "Process Composer",
+              "type": "action"
+            }
+          ],
+          "type": "container"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-11"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-11"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-12"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "loop.commands.start",
+            "children": [
+              {
+                "action": "jiraCreateProject",
+                "children": [],
+                "confidence": 0.68,
+                "label": "JIRA 프로젝트 본문 구성",
+                "order": 1,
+                "package": "Jira",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "additionalProperties",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "assignResultTo",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "각 프로젝트 행마다 JIRA 프로젝트 생성 엔드포인트가 요구하는 요청 본문을 구성한다",
+                "sources": [
+                  {
+                    "score": 0.67578125,
+                    "source_type": "action_schema",
+                    "title": "Jira - 프로젝트 만들기",
+                    "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/jira-package/jira-create-project"
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.85,
+            "label": "프로젝트 행 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 프로젝트 행마다 반복하며 JIRA 요청 본문을 구성해야 하므로 루프를 사용한다",
+            "sources": []
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-12"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "loop.commands.start",
+          "attributes": [
+            {
+              "label": null,
+              "name": "loopType",
+              "original_parameter": {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.85,
+                  "label": "프로젝트 행 반복",
+                  "order": 1,
+                  "rationale": "각 프로젝트 행마다 반복하며 JIRA 요청 본문을 구성해야 하므로 루프를 사용한다",
+                  "sources": []
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "loop.commands.start",
+            "children": [
+              {
+                "action": "jiraCreateProject",
+                "children": [],
+                "confidence": 0.68,
+                "label": "JIRA 프로젝트 본문 구성",
+                "order": 1,
+                "package": "Jira",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "additionalProperties",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "assignResultTo",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "각 프로젝트 행마다 JIRA 프로젝트 생성 엔드포인트가 요구하는 요청 본문을 구성한다",
+                "sources": [
+                  {
+                    "score": 0.67578125,
+                    "source_type": "action_schema",
+                    "title": "Jira - 프로젝트 만들기",
+                    "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/jira-package/jira-create-project"
+                  }
+                ]
+              }
+            ],
+            "confidence": 0.85,
+            "label": "프로젝트 행 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 프로젝트 행마다 반복하며 JIRA 요청 본문을 구성해야 하므로 루프를 사용한다",
+            "sources": []
+          },
+          "package": "Loop",
+          "steps": [
+            {
+              "action": "jiraCreateProject",
+              "attributes": [
+                {
+                  "label": null,
+                  "name": "additionalProperties",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "additionalProperties",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "type": "NULL",
+                    "value": null
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "label": null,
+                  "name": "assignResultTo",
+                  "original_parameter": {
+                    "label": null,
+                    "name": "assignResultTo",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  "rationale": null,
+                  "value": {
+                    "type": "NULL",
+                    "value": null
+                  },
+                  "value_source": "llm"
+                },
+                {
+                  "name": "recommendation_action_meta",
+                  "value": {
+                    "json": {
+                      "confidence": 0.68,
+                      "label": "JIRA 프로젝트 본문 구성",
+                      "order": 1,
+                      "rationale": "각 프로젝트 행마다 JIRA 프로젝트 생성 엔드포인트가 요구하는 요청 본문을 구성한다",
+                      "sources": [
+                        {
+                          "score": 0.67578125,
+                          "source_type": "action_schema",
+                          "title": "Jira - 프로젝트 만들기",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/jira-package/jira-create-project"
+                        }
+                      ]
+                    },
+                    "type": "JSON"
+                  }
+                }
+              ],
+              "disabled": false,
+              "original_recommendation_action": {
+                "action": "jiraCreateProject",
+                "children": [],
+                "confidence": 0.68,
+                "label": "JIRA 프로젝트 본문 구성",
+                "order": 1,
+                "package": "Jira",
+                "parameters": [
+                  {
+                    "label": null,
+                    "name": "additionalProperties",
+                    "value": null,
+                    "value_source": "llm"
+                  },
+                  {
+                    "label": null,
+                    "name": "assignResultTo",
+                    "value": null,
+                    "value_source": "llm"
+                  }
+                ],
+                "rationale": "각 프로젝트 행마다 JIRA 프로젝트 생성 엔드포인트가 요구하는 요청 본문을 구성한다",
+                "sources": [
+                  {
+                    "score": 0.67578125,
+                    "source_type": "action_schema",
+                    "title": "Jira - 프로젝트 만들기",
+                    "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/jira-package/jira-create-project"
+                  }
+                ]
+              },
+              "package": "Jira",
+              "type": "action"
+            }
+          ],
+          "type": "container"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-13"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "loop.commands.start",
+            "children": [],
+            "confidence": 0.85,
+            "label": "프로젝트 행마다 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 프로젝트 행마다 JIRA 요청을 전송해야 하므로 반복 컨테이너를 시작한다.",
+            "sources": []
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-13"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "loop.commands.start",
+          "attributes": [
+            {
+              "label": null,
+              "name": "loopType",
+              "original_parameter": {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.85,
+                  "label": "프로젝트 행마다 반복",
+                  "order": 1,
+                  "rationale": "각 프로젝트 행마다 JIRA 요청을 전송해야 하므로 반복 컨테이너를 시작한다.",
+                  "sources": []
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "loop.commands.start",
+            "children": [],
+            "confidence": 0.85,
+            "label": "프로젝트 행마다 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "각 프로젝트 행마다 JIRA 요청을 전송해야 하므로 반복 컨테이너를 시작한다.",
+            "sources": []
+          },
+          "package": "Loop",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-14"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "errorHandlerCatch",
+            "children": [],
+            "confidence": 0.64,
+            "label": "오류 정보 받기",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "assignExceptionMessageTo",
+                "value": "errorMessage",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "assignLineNumberTo",
+                "value": "failedLineNumber",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "자동화 예외가 발생했을 때 실패한 줄 번호와 오류 메시지를 받아 사용자에게 표시할 정보를 확보한다.",
+            "sources": [
+              {
+                "score": 0.640625,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-14"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "errorHandlerCatch",
+          "attributes": [
+            {
+              "label": null,
+              "name": "exception",
+              "original_parameter": {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "assignExceptionMessageTo",
+              "original_parameter": {
+                "label": null,
+                "name": "assignExceptionMessageTo",
+                "value": "errorMessage",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "errorMessage",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "assignLineNumberTo",
+              "original_parameter": {
+                "label": null,
+                "name": "assignLineNumberTo",
+                "value": "failedLineNumber",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "failedLineNumber",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.64,
+                  "label": "오류 정보 받기",
+                  "order": 1,
+                  "rationale": "자동화 예외가 발생했을 때 실패한 줄 번호와 오류 메시지를 받아 사용자에게 표시할 정보를 확보한다.",
+                  "sources": [
+                    {
+                      "score": 0.640625,
+                      "source_type": "action_schema",
+                      "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "errorHandlerCatch",
+            "children": [],
+            "confidence": 0.64,
+            "label": "오류 정보 받기",
+            "order": 1,
+            "package": "Error handler",
+            "parameters": [
+              {
+                "label": null,
+                "name": "exception",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "assignExceptionMessageTo",
+                "value": "errorMessage",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "assignLineNumberTo",
+                "value": "failedLineNumber",
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "자동화 예외가 발생했을 때 실패한 줄 번호와 오류 메시지를 받아 사용자에게 표시할 정보를 확보한다.",
+            "sources": [
+              {
+                "score": 0.640625,
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Error handler",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    }
+  ],
+  "triggers": [],
+  "usage_gauge": {
+    "compact_recommended": false,
+    "compact_required": false,
+    "intake_tokens": 1876,
+    "limit_tokens": 6000,
+    "ratio": 0.3127
+  },
+  "variables": [
+    {
+      "description": "로컬 설정 파일 경로",
+      "direction": "input",
+      "name": "Configuration.xml",
+      "type": "STRING"
+    },
+    {
+      "description": "설정 XML 내용",
+      "direction": "input",
+      "name": "settingsXml",
+      "type": "STRING"
+    },
+    {
+      "description": "dev 환경 구간에서 확인한 프로젝트 생성 요청용 엔드포인트 값",
+      "direction": "output",
+      "name": "devEndpoint",
+      "type": "STRING"
+    },
+    {
+      "description": "설정 XML에서 확인한 수신 메일 첨부파일 저장 폴더 경로",
+      "direction": "output",
+      "name": "attachmentFolderPath",
+      "type": "STRING"
+    },
+    {
+      "description": "Outlook 메일함에 접속한 세션",
+      "direction": "output",
+      "name": "Outlook 메일함 세션",
+      "type": "SESSION"
+    },
+    {
+      "description": "Outlook 메일함 세션",
+      "direction": "input",
+      "name": "ms365OutlookSession",
+      "type": "SESSION"
+    },
+    {
+      "description": "첨부파일 저장 폴더 경로",
+      "direction": "input",
+      "name": "saveAttachmentsToFolder",
+      "type": "STRING"
+    },
+    {
+      "description": "Jira 입력 첨부파일 폴더에 있는 열 대상 파일 경로",
+      "direction": "input",
+      "name": "JiraProjectsDetails.xlsx",
+      "type": "STRING"
+    },
+    {
+      "description": "열린 Excel 통합문서에서 읽은 프로젝트 목록 범위 데이터",
+      "direction": "output",
+      "name": "projectRangeData",
+      "type": "TABLE"
+    },
+    {
+      "description": "프로젝트 목록 범위 데이터",
+      "direction": "input",
+      "name": "projectListRange",
+      "type": "TABLE"
+    },
+    {
+      "description": "행별 요청 본문용 보존 데이터",
+      "direction": "output",
+      "name": "preservedRequestBody",
+      "type": "TABLE"
+    },
+    {
+      "description": "각 프로젝트 행의 요청 본문 구성에 필요한 보존 데이터",
+      "direction": "input",
+      "name": "행별 요청 본문용 보존 데이터",
+      "type": "TABLE"
+    },
+    {
+      "description": "JIRA 프로젝트 생성 엔드포인트 값",
+      "direction": "input",
+      "name": "프로젝트 생성 요청용 엔드포인트 값",
+      "type": "STRING"
+    },
+    {
+      "description": "JIRA REST 엔드포인트로 전송할 요청 본문",
+      "direction": "input",
+      "name": "JIRA요청본문",
+      "type": "STRING"
+    },
+    {
+      "description": "JIRA 전송 응답 결과",
+      "direction": "output",
+      "name": "JIRA응답결과",
+      "type": "STRING"
+    },
+    {
+      "description": "후속 처리용으로 저장할 데이터",
+      "direction": "output",
+      "name": "후속처리용저장데이터",
+      "type": "STRING"
+    },
+    {
+      "description": "예외 메시지를 저장할 변수",
+      "direction": "output",
+      "name": "errorMessage",
+      "type": "STRING"
+    },
+    {
+      "description": "실패한 줄 번호를 저장할 변수",
+      "direction": "output",
+      "name": "failedLineNumber",
+      "type": "NUMBER"
+    }
+  ]
+}

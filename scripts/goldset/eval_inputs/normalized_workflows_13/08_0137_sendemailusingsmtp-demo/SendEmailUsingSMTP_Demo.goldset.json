@@ -1,0 +1,486 @@
+{
+  "source_file": "SendEmailUsingSMTP_Demo.json",
+  "steps": [
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "errorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "errorMessage"
+            }
+          },
+          "steps": []
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "Open",
+          "attributes": [
+            {
+              "name": "file",
+              "value": {
+                "string": "repository:///Automation%20Anywhere/Bot%20Store/Send%20Email%20using%20SMTP%20config%20-%20Automation%20Anywhere/SendEmailSMTP.dll",
+                "type": "FILE"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DLL",
+          "return_to": {
+            "sessionName": {
+              "string": "DLLSession",
+              "type": "STRING"
+            },
+            "sessionTarget": "LOCAL",
+            "type": "SESSION"
+          },
+          "type": "action",
+          "uid": "5553868a-9793-4f04-a0db-a3f13f5d87fe"
+        },
+        {
+          "action": "RunCSharpDLL_V1",
+          "attributes": [
+            {
+              "name": "dllReflection",
+              "value": {
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "DLLSession",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            },
+            {
+              "name": "nameSpace",
+              "value": {
+                "string": "SendEmailSMTP",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "className",
+              "value": {
+                "string": "SendEmailClass",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "functionName",
+              "value": {
+                "string": "sendEmail",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "dllParamEntryList",
+              "value": {
+                "list": [
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "fromAddress",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "sikhapauk@gmail.com",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "toAddress",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "sikha.p@automationanywhere.com,sikhapoyyil@gmail.com",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "ccAddress",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "sikha.p@automationanywhere.com,sikhapoyyil@gmail.com",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "bccAddress",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "sikha.p@automationanywhere.com,sikhapoyyil@gmail.com",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "subject",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "Sample subject",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "isHtmlBody",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.boolOnly",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "boolValue",
+                        "value": {
+                          "boolean": true,
+                          "type": "BOOLEAN"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "body",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "<html><body>Sample</body></html>",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "severHost",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "smtp.gmail.com",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "serverPort",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.intOnly",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "numberValueSelect",
+                        "value": {
+                          "string": "Number",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "numberValue",
+                        "value": {
+                          "number": "587",
+                          "type": "NUMBER"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "secureConnection",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.boolOnly",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "boolValue",
+                        "value": {
+                          "boolean": true,
+                          "type": "BOOLEAN"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "username",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "dddd",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "password",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "dddd",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  },
+                  {
+                    "dictionary": [
+                      {
+                        "key": "paramName",
+                        "value": {
+                          "string": "attachments",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "paramType",
+                        "value": {
+                          "string": "System.String",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "key": "stringValue",
+                        "value": {
+                          "string": "C:\\Users\\Sikha.P\\Downloads\\gear.png,C:\\Users\\Sikha.P\\Downloads\\woman.png",
+                          "type": "STRING"
+                        }
+                      }
+                    ],
+                    "type": "DICTIONARY"
+                  }
+                ],
+                "type": "LIST"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DLL",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "DLLOutput"
+          },
+          "type": "action",
+          "uid": "e983e180-d133-4860-a9b2-1525674aadda"
+        },
+        {
+          "action": "Close",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "DLLSession",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DLL",
+          "type": "action",
+          "uid": "c79fd1e6-3658-4e3b-bc8b-c3959582d768"
+        }
+      ],
+      "type": "try",
+      "uid": "d9ab2ae3-701b-43d7-84ec-a0fe1cd0009f"
+    }
+  ],
+  "triggers": []
+}

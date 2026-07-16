@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="a015e5dd-05ac-4ed0-8df3-23d5a0949b3b" root="fad6c221-a951-4e3e-b6b0-def5cc80dfd7" id="fba91381-4801-4aac-8865-f71117a73f75">
+    <sequence name="" id="fad6c221-a951-4e3e-b6b0-def5cc80dfd7"/>
+    <manualTask name="Email.cloudUsingSendAction" id="32cbe9b0-5d58-42fc-a07c-1809908cf8e9"/>
+    <manualTask name="Error handler.errorHandlerCatch" id="9fa95cdf-00ad-452f-9e04-2c0db5c57b3d"/>
+    <manualTask name="Email.emailDisconnectAction" id="bbfd1f3d-3a1d-445d-b449-e1e0ac774f18"/>
+    <parentsNode id="b5e025f1-735d-429e-b76e-3cd8ad10c93f" sourceId="fad6c221-a951-4e3e-b6b0-def5cc80dfd7" targetId="32cbe9b0-5d58-42fc-a07c-1809908cf8e9"/>
+    <parentsNode id="f3f72968-ffc0-4a60-9d4f-f6327de2dd80" sourceId="fad6c221-a951-4e3e-b6b0-def5cc80dfd7" targetId="9fa95cdf-00ad-452f-9e04-2c0db5c57b3d"/>
+    <parentsNode id="50835f7d-01eb-4791-a05d-9cef735e6d6e" sourceId="fad6c221-a951-4e3e-b6b0-def5cc80dfd7" targetId="bbfd1f3d-3a1d-445d-b449-e1e0ac774f18"/>
+  </processTree>
+</ptml>

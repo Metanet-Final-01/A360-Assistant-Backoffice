@@ -1,0 +1,56 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Dictionary.put",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Dictionary.put",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "DLL.Open",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "DLL.Open",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "DLL.Run function",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "MessageBox.messageBox",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "DLL.Close",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "DLL.Close",
+      "children": []
+    }
+  ]
+}

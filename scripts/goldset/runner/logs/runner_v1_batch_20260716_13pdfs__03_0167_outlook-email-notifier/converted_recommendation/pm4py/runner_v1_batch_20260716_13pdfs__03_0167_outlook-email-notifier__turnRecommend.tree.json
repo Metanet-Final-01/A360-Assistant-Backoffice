@@ -1,0 +1,86 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "CSV/TXT.cloudOpeningCsvTextFile",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Logging.cloudInsertingLogToFileCommand",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Excel advanced.excelAdvancedPackageCreateWorkbookAction",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Microsoft Outlook (macOS).macMsOutlookConnectDisconnect",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Databricks.getjobstatusDbricks",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Email.emailDisconnectAction",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Excel advanced.excelAdvPkgBrkWrbkLinks",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Error handler.errorHandlerCatch",
+      "children": []
+    }
+  ]
+}

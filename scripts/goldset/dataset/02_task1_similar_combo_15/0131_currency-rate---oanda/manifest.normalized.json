@@ -1,0 +1,130 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Exchange Rate - Team Computers\\Currency Rate - Oanda",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Exchange Rate - Team Computers\\Input.xlsx"
+      ],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Exchange Rate - Team Computers\\Input.xlsx",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Boolean",
+      "path": "bot-command-boolean-2.2.0-20211011-141617.jar",
+      "version": "2.2.0-20211011-141617"
+    },
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.0.0-20200721-221948.jar",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.0.0-20200721-221958.jar",
+      "version": "2.0.0-20200721-221958"
+    },
+    {
+      "name": "Delay",
+      "path": "bot-command-delay-3.2.0-20211011-141700.jar",
+      "version": "3.2.0-20211011-141700"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200721-222009.jar",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-6.3.0-20211028-055115.jar",
+      "version": "6.3.0-20211028-055115"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-2.1.0-20200721-222011.jar",
+      "version": "2.1.0-20200721-222011"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-2.1.0-20200721-222013.jar",
+      "version": "2.1.0-20200721-222013"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200302-135950.jar",
+      "version": "2.0.0-20200302-135950"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.1.0-20200721-222212.jar",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-3.1.0-20211011-141812.jar",
+      "version": "3.1.0-20211011-141812"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200721-222224.jar",
+      "version": "2.0.0-20200721-222224"
+    },
+    {
+      "name": "Screen",
+      "path": "bot-command-screen-2.0.0-20200721-222442.jar",
+      "version": "2.0.0-20200721-222442"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200723-201827.jar",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200721-222454.jar",
+      "version": "3.0.0-20200721-222454"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-2.0.0-20200721-222454.jar",
+      "version": "2.0.0-20200721-222454"
+    },
+    {
+      "name": "SystemVariablesPackage",
+      "path": "System_Variables-2.0.4-20201005-084352.jar",
+      "version": "2.0.4-20201005-084352"
+    },
+    {
+      "name": "TaskBot",
+      "path": "bot-command-task-2.0.1-20200728-235256.jar",
+      "version": "2.0.1-20200728-235256"
+    },
+    {
+      "name": "WebAutomation",
+      "path": "-4.0.3-20210907-125344.jar",
+      "version": "4.0.3-20210907-125344"
+    }
+  ]
+}

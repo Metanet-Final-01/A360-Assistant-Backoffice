@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784153834.5584157" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784153834.5584157</text>
+    </name>
+    <page id="n0">
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_16">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_17">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <transition id="5c6ffc91-3e6e-4508-9a62-c23c7fa5a7dc">
+        <name>
+          <text>Box.boxCrtFldr</text>
+        </name>
+      </transition>
+      <transition id="69de3c95-430b-4014-b0af-3649b85cf679">
+        <name>
+          <text>Logging.cloudInsertingLogToFileCommand</text>
+        </name>
+      </transition>
+      <transition id="82361930-3ccd-4c59-9c2a-29f1bb001df8">
+        <name>
+          <text>Box.boxCrtFldr</text>
+        </name>
+      </transition>
+      <transition id="a79849c2-b137-45d7-81dc-ff90d6bbf060">
+        <name>
+          <text>Box.boxCrtFldr</text>
+        </name>
+      </transition>
+      <transition id="4fecede1-9520-4232-a8b9-ba983c6c11d8">
+        <name>
+          <text>Box.boxCrtFldr</text>
+        </name>
+      </transition>
+      <transition id="69246fc1-63ca-4a63-b136-3892c2ad94c5">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageCreateWorkbookAction</text>
+        </name>
+      </transition>
+      <transition id="f8db83ff-8d05-4703-a6e8-a7ba557f9c57">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageReadRowAction</text>
+        </name>
+      </transition>
+      <transition id="1b204c8f-3857-4626-8d55-2ea2979ee285">
+        <name>
+          <text>Loop.loop.commands.start</text>
+        </name>
+      </transition>
+      <transition id="756301e2-76bb-412b-b47f-b673a0553b3d">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageCreateWorkbookAction</text>
+        </name>
+      </transition>
+      <arc id="1495817870592" source="82361930-3ccd-4c59-9c2a-29f1bb001df8" target="p_7"/>
+      <arc id="1495818400640" source="69de3c95-430b-4014-b0af-3649b85cf679" target="sink"/>
+      <arc id="1495817813648" source="69246fc1-63ca-4a63-b136-3892c2ad94c5" target="p_10"/>
+      <arc id="1495818400528" source="source" target="a79849c2-b137-45d7-81dc-ff90d6bbf060"/>
+      <arc id="1495231726608" source="p_10" target="f8db83ff-8d05-4703-a6e8-a7ba557f9c57"/>
+      <arc id="1495818399632" source="p_16" target="756301e2-76bb-412b-b47f-b673a0553b3d"/>
+      <arc id="1495818399520" source="756301e2-76bb-412b-b47f-b673a0553b3d" target="p_17"/>
+      <arc id="1495818400304" source="4fecede1-9520-4232-a8b9-ba983c6c11d8" target="p_9"/>
+      <arc id="1495818399408" source="1b204c8f-3857-4626-8d55-2ea2979ee285" target="p_16"/>
+      <arc id="1495817692864" source="p_8" target="4fecede1-9520-4232-a8b9-ba983c6c11d8"/>
+      <arc id="1495817982928" source="p_9" target="69246fc1-63ca-4a63-b136-3892c2ad94c5"/>
+      <arc id="1495818242384" source="p_7" target="5c6ffc91-3e6e-4508-9a62-c23c7fa5a7dc"/>
+      <arc id="1495818242896" source="5c6ffc91-3e6e-4508-9a62-c23c7fa5a7dc" target="p_8"/>
+      <arc id="1495818399184" source="f8db83ff-8d05-4703-a6e8-a7ba557f9c57" target="p_13"/>
+      <arc id="1495818648144" source="p_13" target="1b204c8f-3857-4626-8d55-2ea2979ee285"/>
+      <arc id="1495818308208" source="a79849c2-b137-45d7-81dc-ff90d6bbf060" target="p_6"/>
+      <arc id="1495817870320" source="p_6" target="82361930-3ccd-4c59-9c2a-29f1bb001df8"/>
+      <arc id="1495818399856" source="p_17" target="69de3c95-430b-4014-b0af-3649b85cf679"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

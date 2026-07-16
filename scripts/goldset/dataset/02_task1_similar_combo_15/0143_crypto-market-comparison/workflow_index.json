@@ -1,0 +1,14 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0143_crypto-market-comparison",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Crypto Market Comparison",
+      "manual_dependencies": [],
+      "output_file": "workflows/Crypto Market Comparison.json",
+      "scanned_dependencies": [
+        "Crypto Market Comparison.xlsx"
+      ]
+    }
+  ]
+}

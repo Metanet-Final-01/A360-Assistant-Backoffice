@@ -1,0 +1,67 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Apple Mail.appleMailConnectDisconnect",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Gmail.sendGmailPkg",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Email.cloudUsingSendAction",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Databricks.getjoboutDbricks",
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Error handler.errorHandlerCatch",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Error handler.errorHandlerThrow",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "Email.emailDisconnectAction",
+      "children": []
+    }
+  ]
+}

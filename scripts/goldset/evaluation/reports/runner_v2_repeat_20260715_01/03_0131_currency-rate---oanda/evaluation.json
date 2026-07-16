@@ -1,0 +1,474 @@
+{
+  "created_at": "2026-07-15T15:50:33.657229+00:00",
+  "case_id": "03_0131_currency-rate---oanda",
+  "run_id": "runner_v2_repeat_20260715_01",
+  "normalized": {
+    "gold_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\03_0131_currency-rate---oanda\\Currency Rate - Oanda.goldset.json",
+    "prediction_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_repeat_20260715_01\\converted_recommendation\\normalized\\runner_v2_repeat_20260715_01__turnRecommend.goldset.json",
+    "gold_source_file": "Currency Rate - Oanda.json",
+    "prediction_source_file": "runner_v2_repeat_20260715_01__turnRecommend.json",
+    "preprocessing": {
+      "excluded_rule": "browser_session_lifecycle_action",
+      "excluded_regex": {
+        "package": "^(web\\s*automation|webautomation|browser|recorder)$",
+        "action": "session"
+      },
+      "excluded_gold_actions": [
+        "WebAutomation.StartSessionWebAutomation",
+        "WebAutomation.EndSessionWebAutomation"
+      ],
+      "excluded_prediction_actions": [],
+      "excluded_gold_count": 2,
+      "excluded_prediction_count": 0,
+      "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+      "action_equivalence_member_count": 51
+    },
+    "gold_action_count": 45,
+    "prediction_action_count": 8,
+    "action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 45,
+      "prediction_count": 8
+    },
+    "action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 45,
+      "prediction_count": 8
+    },
+    "canonical_action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 45,
+      "prediction_count": 8
+    },
+    "canonical_action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 45,
+      "prediction_count": 8
+    },
+    "package_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 45,
+      "prediction_count": 8
+    },
+    "package_family_multiset": {
+      "precision": 0.875,
+      "recall": 0.15555555555555556,
+      "f1": 0.26415094339622647,
+      "overlap": 7,
+      "gold_count": 45,
+      "prediction_count": 8
+    },
+    "salient_family_multiset": {
+      "precision": 0.875,
+      "recall": 0.3333333333333333,
+      "f1": 0.48275862068965514,
+      "overlap": 7,
+      "gold_count": 21,
+      "prediction_count": 8
+    },
+    "adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 46,
+      "prediction_count": 9
+    },
+    "canonical_adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 46,
+      "prediction_count": 9
+    },
+    "first_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.assign",
+        "prediction": "Excel advanced.cloudExcelOpen"
+      },
+      {
+        "index": 2,
+        "gold": "String.assign",
+        "prediction": "Excel advanced.excelAdvancedPackageReadRowAction"
+      },
+      {
+        "index": 3,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Browser.browserPackageOpenAction"
+      },
+      {
+        "index": 4,
+        "gold": "TaskBot.stopTask",
+        "prediction": "Browser.browserPackageRunJavascriptAction"
+      },
+      {
+        "index": 5,
+        "gold": "String.assign",
+        "prediction": "Error handler.errorHandlerCatch"
+      },
+      {
+        "index": 6,
+        "gold": "String.assign",
+        "prediction": "Excel advanced.excelAdvancedPackageSetCellAction"
+      },
+      {
+        "index": 7,
+        "gold": "String.assign",
+        "prediction": "Excel advanced.excelAdvancedPackageCloseAction"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.createFolder",
+        "prediction": "Browser.browserPackageCloseAction"
+      },
+      {
+        "index": 9,
+        "gold": "Folder.createFolder",
+        "prediction": null
+      },
+      {
+        "index": 10,
+        "gold": "Folder.createFolder",
+        "prediction": null
+      },
+      {
+        "index": 11,
+        "gold": "Folder.createFolder",
+        "prediction": null
+      },
+      {
+        "index": 12,
+        "gold": "Datetime.toString",
+        "prediction": null
+      }
+    ],
+    "first_canonical_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Excel advanced.cloudExcelOpen"
+      },
+      {
+        "index": 2,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Excel advanced.excelAdvancedPackageReadRowAction"
+      },
+      {
+        "index": 3,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Browser.browserPackageOpenAction"
+      },
+      {
+        "index": 4,
+        "gold": "TaskBot.stopTask",
+        "prediction": "Browser.browserPackageRunJavascriptAction"
+      },
+      {
+        "index": 5,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Error handler.errorHandlerCatch"
+      },
+      {
+        "index": 6,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Excel advanced.excelAdvancedPackageSetCellAction"
+      },
+      {
+        "index": 7,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Excel advanced.excelAdvancedPackageCloseAction"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.folderCreate",
+        "prediction": "Browser.browserPackageCloseAction"
+      },
+      {
+        "index": 9,
+        "gold": "Folder.folderCreate",
+        "prediction": null
+      },
+      {
+        "index": 10,
+        "gold": "Folder.folderCreate",
+        "prediction": null
+      },
+      {
+        "index": 11,
+        "gold": "Folder.folderCreate",
+        "prediction": null
+      },
+      {
+        "index": 12,
+        "gold": "Datetime.cloudConvertDatetimeToString",
+        "prediction": null
+      }
+    ],
+    "gold_actions_preview": [
+      "String.assign",
+      "String.assign",
+      "MessageBox.messageBox",
+      "TaskBot.stopTask",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "Datetime.toString",
+      "Datetime.subtract",
+      "Datetime.toString",
+      "File.deleteFiles",
+      "File.deleteFiles",
+      "Excel_MS.OpenSpreadsheet",
+      "WebAutomation.openpage",
+      "WebAutomation.isloaded",
+      "Excel_MS.GoToCell"
+    ],
+    "gold_canonical_actions_preview": [
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "MessageBox.messageBox",
+      "TaskBot.stopTask",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "Datetime.cloudConvertDatetimeToString",
+      "Datetime.usingSubtractAction",
+      "Datetime.cloudConvertDatetimeToString",
+      "File.cloudDeletingFile",
+      "File.cloudDeletingFile",
+      "Excel_MS.OpenSpreadsheet",
+      "Browser.launchWebsite",
+      "WebAutomation.isloaded",
+      "Excel_MS.GoToCell"
+    ],
+    "prediction_actions": [
+      "Excel advanced.cloudExcelOpen",
+      "Excel advanced.excelAdvancedPackageReadRowAction",
+      "Browser.browserPackageOpenAction",
+      "Browser.browserPackageRunJavascriptAction",
+      "Error handler.errorHandlerCatch",
+      "Excel advanced.excelAdvancedPackageSetCellAction",
+      "Excel advanced.excelAdvancedPackageCloseAction",
+      "Browser.browserPackageCloseAction"
+    ],
+    "prediction_canonical_actions": [
+      "Excel advanced.cloudExcelOpen",
+      "Excel advanced.excelAdvancedPackageReadRowAction",
+      "Browser.browserPackageOpenAction",
+      "Browser.browserPackageRunJavascriptAction",
+      "Error handler.errorHandlerCatch",
+      "Excel advanced.excelAdvancedPackageSetCellAction",
+      "Excel advanced.excelAdvancedPackageCloseAction",
+      "Browser.browserPackageCloseAction"
+    ],
+    "gold_salient_families": [
+      "spreadsheet",
+      "browser",
+      "browser",
+      "spreadsheet",
+      "browser",
+      "browser",
+      "browser",
+      "browser",
+      "browser",
+      "browser",
+      "browser",
+      "browser",
+      "browser",
+      "browser",
+      "browser",
+      "spreadsheet",
+      "spreadsheet",
+      "spreadsheet",
+      "spreadsheet",
+      "spreadsheet",
+      "spreadsheet"
+    ],
+    "prediction_salient_families": [
+      "spreadsheet",
+      "spreadsheet",
+      "browser",
+      "browser",
+      "error_handler",
+      "spreadsheet",
+      "spreadsheet",
+      "browser"
+    ]
+  },
+  "pm4py": {
+    "gold_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\03_0131_currency-rate---oanda",
+    "prediction_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_repeat_20260715_01\\converted_recommendation\\pm4py",
+    "gold_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\03_0131_currency-rate---oanda\\Currency Rate - Oanda.tree.json",
+      "exists": true,
+      "sha256": "3ba9f6ac2fd93b5842d345e39b6f7c69f2e029087eebbddd6b17f17d6b2374c9",
+      "leaf_count": 47,
+      "labels": [
+        "String.assign",
+        "String.assign",
+        "MessageBox.messageBox",
+        "TaskBot.stopTask",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "Datetime.toString",
+        "Datetime.subtract",
+        "Datetime.toString",
+        "File.deleteFiles",
+        "File.deleteFiles",
+        "Excel_MS.OpenSpreadsheet",
+        "WebAutomation.StartSessionWebAutomation",
+        "WebAutomation.openpage",
+        "WebAutomation.isloaded",
+        "Excel_MS.GoToCell",
+        "Delay.delay",
+        "WebAutomation.isloaded",
+        "WebAutomation.clickelement",
+        "WebAutomation.sendkeys",
+        "WebAutomation.sendkeys",
+        "WebAutomation.clickelement",
+        "WebAutomation.sendkeys",
+        "WebAutomation.sendkeys",
+        "WebAutomation.sendkeys",
+        "WebAutomation.elementloaded",
+        "Delay.delay",
+        "WebAutomation.elementloaded",
+        "WebAutomation.getvalueelement",
+        "Excel_MS.SetCell",
+        "Excel_MS.GoToCell",
+        "Excel_MS.SetCell",
+        "Excel_MS.GoToCell",
+        "Excel_MS.GoToCell",
+        "Excel_MS.CloseSpreadsheet",
+        "WebAutomation.EndSessionWebAutomation",
+        "File.createFile",
+        "LogToFile.logToFile",
+        "Datetime.toString",
+        "Number.toString",
+        "LogToFile.logToFile",
+        "Screen.captureDesktop"
+      ],
+      "operator_counts": {
+        "loop": 3,
+        "sequence": 8,
+        "xor": 7
+      }
+    },
+    "prediction_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_repeat_20260715_01\\converted_recommendation\\pm4py\\runner_v2_repeat_20260715_01__turnRecommend.tree.json",
+      "exists": true,
+      "sha256": "0cd57117d5420655e593d9823cf3fac1e3b41075e56b05980a47a4f8314f8fbe",
+      "leaf_count": 8,
+      "labels": [
+        "Excel advanced.cloudExcelOpen",
+        "Excel advanced.excelAdvancedPackageReadRowAction",
+        "Browser.browserPackageOpenAction",
+        "Browser.browserPackageRunJavascriptAction",
+        "Error handler.errorHandlerCatch",
+        "Excel advanced.excelAdvancedPackageSetCellAction",
+        "Excel advanced.excelAdvancedPackageCloseAction",
+        "Browser.browserPackageCloseAction"
+      ],
+      "operator_counts": {
+        "sequence": 4
+      }
+    },
+    "gold_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\03_0131_currency-rate---oanda\\Currency Rate - Oanda.pnml",
+      "exists": true,
+      "sha256": "a612117e0e68622ca8ae533def2d61d03313b0315f04e6d3b4e123fbef0f7fa9",
+      "readable_by_pm4py": true,
+      "places": 51,
+      "transitions": 57,
+      "visible_transitions": 47,
+      "arcs": 114,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "prediction_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_repeat_20260715_01\\converted_recommendation\\pm4py\\runner_v2_repeat_20260715_01__turnRecommend.pnml",
+      "exists": true,
+      "sha256": "d01621be11190e97003436e9638e1f99e606b2daf6db0b1ed31128f3c9fb268f",
+      "readable_by_pm4py": true,
+      "places": 9,
+      "transitions": 8,
+      "visible_transitions": 8,
+      "arcs": 16,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "tree_leaf_count_delta": -39,
+    "tree_hash_equal": false,
+    "pnml_hash_equal": false
+  },
+  "worfbench": {
+    "gold": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\worfbench_13\\03_0131_currency-rate---oanda\\Currency Rate - Oanda.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/03_0131_currency-rate---oanda/Currency Rate - Oanda",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "if",
+        "loop",
+        "try"
+      ]
+    },
+    "prediction": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_repeat_20260715_01\\converted_recommendation\\worfbench\\runner_v2_repeat_20260715_01__turnRecommend.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/runner_v2_repeat_20260715_01__turnRecommend/runner_v2_repeat_20260715_01__turnRecommend",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "container"
+      ]
+    },
+    "node_label_f1": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 41,
+      "prediction_count": 8
+    },
+    "edge_f1": {
+      "precision": 0.8888888888888888,
+      "recall": 0.19047619047619047,
+      "f1": 0.3137254901960784,
+      "overlap": 8,
+      "gold_count": 42,
+      "prediction_count": 9
+    },
+    "gold_node_count": 41,
+    "prediction_node_count": 8,
+    "gold_edge_count": 42,
+    "prediction_edge_count": 9
+  }
+}

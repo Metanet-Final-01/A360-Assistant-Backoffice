@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0374_createprojectinjirausingapi",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "CreateProjectInJIRAusingAPI",
+      "manual_dependencies": [],
+      "output_file": "workflows/CreateProjectInJIRAusingAPI.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

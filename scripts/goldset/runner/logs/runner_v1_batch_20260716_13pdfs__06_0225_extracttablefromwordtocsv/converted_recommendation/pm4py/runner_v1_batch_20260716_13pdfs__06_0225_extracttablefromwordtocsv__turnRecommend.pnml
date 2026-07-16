@@ -1,0 +1,97 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784152525.46228" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784152525.46228</text>
+    </name>
+    <page id="n0">
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <transition id="0e0c3e57-73ac-4202-b78c-02f05757e008">
+        <name>
+          <text>Word.mswordOpenDocument</text>
+        </name>
+      </transition>
+      <transition id="2d5a9787-90ff-46aa-86f6-7b95b6d205b0">
+        <name>
+          <text>File.filePackageGetPathAction</text>
+        </name>
+      </transition>
+      <transition id="cc8d516e-fe35-402e-b4e5-a7dad4406fcf">
+        <name>
+          <text>CSV/TXT.cloudOpeningCsvTextFile</text>
+        </name>
+      </transition>
+      <transition id="40e69632-45d8-4356-9217-e7ec43e77c76">
+        <name>
+          <text>Word.mswordReadTable</text>
+        </name>
+      </transition>
+      <transition id="f2452d16-f89d-415f-ae7f-50ce74d96746">
+        <name>
+          <text>CSV/TXT.cloudOpeningCsvTextFile</text>
+        </name>
+      </transition>
+      <transition id="745e9b9c-00ca-46ee-b014-dc3242ec2be6">
+        <name>
+          <text>Word.mswordReadText</text>
+        </name>
+      </transition>
+      <arc id="2386197850368" source="2d5a9787-90ff-46aa-86f6-7b95b6d205b0" target="p_9"/>
+      <arc id="2386197454096" source="p_3" target="cc8d516e-fe35-402e-b4e5-a7dad4406fcf"/>
+      <arc id="2386197453456" source="0e0c3e57-73ac-4202-b78c-02f05757e008" target="p_3"/>
+      <arc id="2386197345424" source="p_4" target="2d5a9787-90ff-46aa-86f6-7b95b6d205b0"/>
+      <arc id="2386197495344" source="p_10" target="745e9b9c-00ca-46ee-b014-dc3242ec2be6"/>
+      <arc id="2386197344816" source="cc8d516e-fe35-402e-b4e5-a7dad4406fcf" target="p_4"/>
+      <arc id="2386197849920" source="745e9b9c-00ca-46ee-b014-dc3242ec2be6" target="sink"/>
+      <arc id="2385679319888" source="40e69632-45d8-4356-9217-e7ec43e77c76" target="p_11"/>
+      <arc id="2386198036560" source="source" target="0e0c3e57-73ac-4202-b78c-02f05757e008"/>
+      <arc id="2386197249488" source="p_11" target="f2452d16-f89d-415f-ae7f-50ce74d96746"/>
+      <arc id="2386197495520" source="f2452d16-f89d-415f-ae7f-50ce74d96746" target="p_10"/>
+      <arc id="2386197471856" source="p_9" target="40e69632-45d8-4356-9217-e7ec43e77c76"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

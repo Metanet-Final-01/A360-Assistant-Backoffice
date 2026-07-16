@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784153212.2180417" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784153212.2180417</text>
+    </name>
+    <page id="n0">
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <transition id="d2759d7f-2ac6-4e29-baa8-c5a9485b688b">
+        <name>
+          <text>Microsoft Outlook (macOS).macMsOutlookConnectDisconnect</text>
+        </name>
+      </transition>
+      <transition id="9312b0fe-2f54-4afa-863e-af09862045e6">
+        <name>
+          <text>Microsoft Outlook (macOS).macMsOutlookConnectDisconnect</text>
+        </name>
+      </transition>
+      <transition id="a5806f99-0780-48db-a8ed-35f28b275bc1">
+        <name>
+          <text>XML.xmlStartSession</text>
+        </name>
+      </transition>
+      <transition id="596277e6-c542-48c4-88ec-841f67ad07b2">
+        <name>
+          <text>Microsoft 365 Outlook.ms365OutlookSaveAttachments</text>
+        </name>
+      </transition>
+      <transition id="4f85450c-9fa1-4926-a84d-0d43b75243ca">
+        <name>
+          <text>Process Composer.processComposerCreateARequest</text>
+        </name>
+      </transition>
+      <transition id="4b3f0828-b1e1-460d-87b9-d9158068822f">
+        <name>
+          <text>Jira.jiraCreateProject</text>
+        </name>
+      </transition>
+      <transition id="8a332b5e-56ac-41d0-8e83-462cfff5f223">
+        <name>
+          <text>Loop.loop.commands.start</text>
+        </name>
+      </transition>
+      <transition id="5672c822-34c5-4b80-9121-7f8bec7ddf54">
+        <name>
+          <text>Error handler.errorHandlerCatch</text>
+        </name>
+      </transition>
+      <arc id="1236103964928" source="5672c822-34c5-4b80-9121-7f8bec7ddf54" target="sink"/>
+      <arc id="1236103964816" source="9312b0fe-2f54-4afa-863e-af09862045e6" target="p_11"/>
+      <arc id="1236103965712" source="8a332b5e-56ac-41d0-8e83-462cfff5f223" target="p_15"/>
+      <arc id="1236104135072" source="source" target="a5806f99-0780-48db-a8ed-35f28b275bc1"/>
+      <arc id="1236103965600" source="p_14" target="8a332b5e-56ac-41d0-8e83-462cfff5f223"/>
+      <arc id="1236103819824" source="p_8" target="9312b0fe-2f54-4afa-863e-af09862045e6"/>
+      <arc id="1236103964480" source="4f85450c-9fa1-4926-a84d-0d43b75243ca" target="p_13"/>
+      <arc id="1236103965376" source="a5806f99-0780-48db-a8ed-35f28b275bc1" target="p_5"/>
+      <arc id="1236103792976" source="p_6" target="596277e6-c542-48c4-88ec-841f67ad07b2"/>
+      <arc id="1236103965264" source="596277e6-c542-48c4-88ec-841f67ad07b2" target="p_8"/>
+      <arc id="1236104099664" source="p_13" target="4b3f0828-b1e1-460d-87b9-d9158068822f"/>
+      <arc id="1236104090192" source="4b3f0828-b1e1-460d-87b9-d9158068822f" target="p_14"/>
+      <arc id="1236103420640" source="p_5" target="d2759d7f-2ac6-4e29-baa8-c5a9485b688b"/>
+      <arc id="1236103610080" source="p_11" target="4f85450c-9fa1-4926-a84d-0d43b75243ca"/>
+      <arc id="1236103420912" source="d2759d7f-2ac6-4e29-baa8-c5a9485b688b" target="p_6"/>
+      <arc id="1236103965040" source="p_15" target="5672c822-34c5-4b80-9121-7f8bec7ddf54"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

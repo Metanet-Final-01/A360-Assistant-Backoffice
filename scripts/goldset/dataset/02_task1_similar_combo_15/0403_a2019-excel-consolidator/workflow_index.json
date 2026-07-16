@@ -1,0 +1,15 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0403_a2019-excel-consolidator",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "A2019-Excel Consolidator",
+      "manual_dependencies": [],
+      "output_file": "workflows/A2019-Excel Consolidator.json",
+      "scanned_dependencies": [
+        "Input Excel.xlsx",
+        "Base Excel.xlsx"
+      ]
+    }
+  ]
+}

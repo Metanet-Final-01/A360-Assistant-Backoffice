@@ -1,0 +1,21 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": null,
+      "label": "Email.cloudUsingSendAction",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Error handler.errorHandlerCatch",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Email.emailDisconnectAction",
+      "children": []
+    }
+  ]
+}

@@ -1,0 +1,217 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784138366.8297913" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784138366.8297913</text>
+    </name>
+    <page id="n0">
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="p_17">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <place id="p_16">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <transition id="46429c24-2c42-42b4-b4ac-11496e910ea8">
+        <name>
+          <text>Folder.cloudZipFilesAndFolders</text>
+        </name>
+      </transition>
+      <transition id="f91ebb5f-915a-44a8-a3e0-c0841be8fee1">
+        <name>
+          <text>JSON utilities.jsonValidate</text>
+        </name>
+      </transition>
+      <transition id="35c6683f-cef2-4538-8ee7-f7c00688949e">
+        <name>
+          <text>JSON utilities.jsonGetNodeValue</text>
+        </name>
+      </transition>
+      <transition id="9a3451d3-ee3e-40e0-bf75-39e81479d7bf">
+        <name>
+          <text>Data Table.cloudWriteToFileAction</text>
+        </name>
+      </transition>
+      <transition id="b55f049d-2b05-4c7a-a1e8-9548423ddf18">
+        <name>
+          <text>Screen.cloudUsingScreenCaptureWindow</text>
+        </name>
+      </transition>
+      <transition id="926b74fa-f232-4fb6-b563-584e9a0baaa2">
+        <name>
+          <text>Message box.usingMessageBoxAction</text>
+        </name>
+      </transition>
+      <transition id="a8cafd8d-2642-4498-9614-90385fe55afc">
+        <name>
+          <text>Datetime.getActionInDatetime</text>
+        </name>
+      </transition>
+      <transition id="75c99cf7-c949-4f7d-b30a-2757f0efb819">
+        <name>
+          <text>Task Bot.taskBotPackageStopAction</text>
+        </name>
+      </transition>
+      <transition id="e55e7f2c-8392-4ff4-b4a8-d40fdeefcfa2">
+        <name>
+          <text>String.stringPackageAssignAction</text>
+        </name>
+      </transition>
+      <transition id="67e5959d-b16b-444f-9a01-4c71900b9bfc">
+        <name>
+          <text>REST Web Services.cloudUsingGetAction</text>
+        </name>
+      </transition>
+      <transition id="8657e22b-d417-418d-80ca-b48d36677a97">
+        <name>
+          <text>JSON utilities.jsonGetNodeValue</text>
+        </name>
+      </transition>
+      <transition id="f074072f-18af-4fa1-ae48-fbb7a107e65f">
+        <name>
+          <text>JSON utilities.jsonGetNodeValue</text>
+        </name>
+      </transition>
+      <transition id="32da7777-02d5-4609-b90b-c338b92472ea">
+        <name>
+          <text>JSON utilities.jsonGetNodeValue</text>
+        </name>
+      </transition>
+      <transition id="80d7a5ae-377c-4772-9efa-3bd8143ba529">
+        <name>
+          <text>String.stringPackageAssignAction</text>
+        </name>
+      </transition>
+      <transition id="8f1d81ce-d89e-4f96-bb31-c4b74134a69f">
+        <name>
+          <text>Data Table.cloudWriteToFileAction</text>
+        </name>
+      </transition>
+      <transition id="a4cf252a-095c-4a46-aec8-58edcb5d1b64">
+        <name>
+          <text>Error handler.errorHandlerFinally</text>
+        </name>
+      </transition>
+      <arc id="3044032115584" source="p_10" target="8657e22b-d417-418d-80ca-b48d36677a97"/>
+      <arc id="3044032314496" source="35c6683f-cef2-4538-8ee7-f7c00688949e" target="p_9"/>
+      <arc id="3044032492416" source="a4cf252a-095c-4a46-aec8-58edcb5d1b64" target="sink"/>
+      <arc id="3044031984784" source="p_3" target="a8cafd8d-2642-4498-9614-90385fe55afc"/>
+      <arc id="3044032493200" source="b55f049d-2b05-4c7a-a1e8-9548423ddf18" target="p_17"/>
+      <arc id="3044032807328" source="source" target="926b74fa-f232-4fb6-b563-584e9a0baaa2"/>
+      <arc id="3044032493088" source="p_17" target="a4cf252a-095c-4a46-aec8-58edcb5d1b64"/>
+      <arc id="3044032134704" source="p_12" target="32da7777-02d5-4609-b90b-c338b92472ea"/>
+      <arc id="3044031984176" source="75c99cf7-c949-4f7d-b30a-2757f0efb819" target="p_3"/>
+      <arc id="3044031752112" source="67e5959d-b16b-444f-9a01-4c71900b9bfc" target="p_8"/>
+      <arc id="3044032592816" source="p_13" target="35c6683f-cef2-4538-8ee7-f7c00688949e"/>
+      <arc id="3044032492976" source="p_15" target="8f1d81ce-d89e-4f96-bb31-c4b74134a69f"/>
+      <arc id="3044032492752" source="p_16" target="b55f049d-2b05-4c7a-a1e8-9548423ddf18"/>
+      <arc id="3044031751872" source="p_7" target="67e5959d-b16b-444f-9a01-4c71900b9bfc"/>
+      <arc id="3044032492864" source="8f1d81ce-d89e-4f96-bb31-c4b74134a69f" target="p_14"/>
+      <arc id="3043446850384" source="p_11" target="f074072f-18af-4fa1-ae48-fbb7a107e65f"/>
+      <arc id="3044032092496" source="926b74fa-f232-4fb6-b563-584e9a0baaa2" target="p_4"/>
+      <arc id="3044032093136" source="p_4" target="75c99cf7-c949-4f7d-b30a-2757f0efb819"/>
+      <arc id="3044032383312" source="a8cafd8d-2642-4498-9614-90385fe55afc" target="p_6"/>
+      <arc id="3044032317776" source="p_5" target="e55e7f2c-8392-4ff4-b4a8-d40fdeefcfa2"/>
+      <arc id="3044032318288" source="e55e7f2c-8392-4ff4-b4a8-d40fdeefcfa2" target="p_7"/>
+      <arc id="3044032345296" source="f91ebb5f-915a-44a8-a3e0-c0841be8fee1" target="p_10"/>
+      <arc id="3044031888848" source="8657e22b-d417-418d-80ca-b48d36677a97" target="p_11"/>
+      <arc id="3044032592976" source="32da7777-02d5-4609-b90b-c338b92472ea" target="p_13"/>
+      <arc id="3044032472784" source="p_9" target="80d7a5ae-377c-4772-9efa-3bd8143ba529"/>
+      <arc id="3044031945440" source="p_6" target="46429c24-2c42-42b4-b4ac-11496e910ea8"/>
+      <arc id="3044032134880" source="f074072f-18af-4fa1-ae48-fbb7a107e65f" target="p_12"/>
+      <arc id="3044032492640" source="p_14" target="9a3451d3-ee3e-40e0-bf75-39e81479d7bf"/>
+      <arc id="3044032473680" source="80d7a5ae-377c-4772-9efa-3bd8143ba529" target="p_15"/>
+      <arc id="3044031945712" source="46429c24-2c42-42b4-b4ac-11496e910ea8" target="p_5"/>
+      <arc id="3044032345072" source="p_8" target="f91ebb5f-915a-44a8-a3e0-c0841be8fee1"/>
+      <arc id="3044032492528" source="9a3451d3-ee3e-40e0-bf75-39e81479d7bf" target="p_16"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

@@ -1,0 +1,87 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Data Table Extraction (Pdf to Excel) -KLOUDPAD Mobility Research Pvt Ltd\\A2019 - Data Table Extraction (Pdf to Excel)",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\A2019 - Data Table Extraction (Pdf to Excel) -KLOUDPAD Mobility Research Pvt Ltd\\Docs\\Config.xlsx"
+      ]
+    },
+    {
+      "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\A2019 - Data Table Extraction (Pdf to Excel) -KLOUDPAD Mobility Research Pvt Ltd\\Docs\\Config.xlsx",
+      "scannedDependencies": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.0.0-20200721-221948.jar",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "Dictionary",
+      "path": "bot-command-dictionary-3.2.0-20200831-031027.jar",
+      "version": "3.2.0-20200831-031027"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200721-222009.jar",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-5.0.0-20200909-124042.jar",
+      "version": "5.0.0-20200909-124042"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-2.1.0-20200721-222013.jar",
+      "version": "2.1.0-20200721-222013"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200721-222021.jar",
+      "version": "2.0.0-20200721-222021"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.1.0-20200721-222212.jar",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.1.0-20200831-031551.jar",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "Prompt",
+      "path": "bot-command-prompt-2.1.0-20200824-092056.jar",
+      "version": "2.1.0-20200824-092056"
+    },
+    {
+      "name": "Python",
+      "path": "bot-command-python-2.0.0-20200721-222345.jar",
+      "version": "2.0.0-20200721-222345"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200723-201827.jar",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.1.0-20200831-031943.jar",
+      "version": "3.1.0-20200831-031943"
+    }
+  ]
+}

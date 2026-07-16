@@ -1,0 +1,128 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0359_contract-creation-using-ps-activity-guide-mekkanos",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_AssignBillingPlan",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_AssignBillingPlan.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_AccountDistribution",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_AccountDistribution.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_CreateFolderStructure",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_CreateFolderStructure.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_LoginBot",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_LoginBot.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_ReadInputFile",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_ReadInputFile.json",
+      "scanned_dependencies": [
+        "SubTask_ContractTerms",
+        "SubTask_AmountAllocation",
+        "SubTask_DefineRevenuePlan",
+        "SubTask_AccountDistribution",
+        "SubTask_AssignRevenuePlan",
+        "SubTask_GeneralInformation",
+        "SubTask_ContractLines",
+        "SubTask_AssignBillingPlan",
+        "SubTask_DefineBillingPlan"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_ContractTerms",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_ContractTerms.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_ContractLines",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_ContractLines.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_DefineBillingPlan",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_DefineBillingPlan.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_AssignRevenuePlan",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_AssignRevenuePlan.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Contract Creation using PS Activity Guide-Mekkanos",
+      "manual_dependencies": [],
+      "output_file": "workflows/Contract Creation using PS Activity Guide-Mekkanos.json",
+      "scanned_dependencies": [
+        "SubTask_CreateFolderStructure",
+        "SubTask_LoginBot",
+        "SubTask_ReadInputFile",
+        "SubTask_ReadUserConfig",
+        "SubTask_SendMail"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_GeneralInformation",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_GeneralInformation.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_AmountAllocation",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_AmountAllocation.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_SendMail",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_SendMail.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_DefineRevenuePlan",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_DefineRevenuePlan.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SubTask_ReadUserConfig",
+      "manual_dependencies": [],
+      "output_file": "workflows/SubTask_ReadUserConfig.json",
+      "scanned_dependencies": [
+        "PS User Config.xlsx"
+      ]
+    }
+  ]
+}

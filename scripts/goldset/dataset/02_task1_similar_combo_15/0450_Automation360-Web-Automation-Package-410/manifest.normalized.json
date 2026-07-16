@@ -1,0 +1,47 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Automation360-Web_Automation_Package",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "DataTable",
+      "path": "bot-command-table-4.3.0-20220118-154751.jar",
+      "version": "4.3.0-20220118-154751"
+    },
+    {
+      "name": "Delay",
+      "path": "bot-command-delay-3.4.0-20220118-133635.jar",
+      "version": "3.4.0-20220118-133635"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-3.3.0-20220118-133818.jar",
+      "version": "3.3.0-20220118-133818"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-3.4.0-20220118-133837.jar",
+      "version": "3.4.0-20220118-133837"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.1.0-20220201-190609.jar",
+      "version": "2.1.0-20220201-190609"
+    },
+    {
+      "name": "WebAutomation",
+      "path": "WebAutomation-4.0.10-20220518-124540.jar",
+      "version": "4.0.10-20220518-124540"
+    }
+  ]
+}

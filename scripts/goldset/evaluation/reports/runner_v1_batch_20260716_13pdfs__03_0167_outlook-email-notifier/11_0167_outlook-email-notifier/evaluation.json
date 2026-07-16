@@ -1,0 +1,478 @@
+{
+  "case_id": "11_0167_outlook-email-notifier",
+  "run_id": "runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier",
+  "normalized": {
+    "gold_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\11_0167_outlook-email-notifier\\Outlook Email Notifier.goldset.json",
+    "prediction_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend.goldset.json",
+    "gold_source_file": "Outlook Email Notifier.json",
+    "prediction_source_file": "runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend.json",
+    "preprocessing": {
+      "excluded_rule": "browser_session_lifecycle_action",
+      "excluded_regex": {
+        "package": "^(web\\s*automation|webautomation|browser|recorder)$",
+        "action": "session"
+      },
+      "excluded_gold_actions": [],
+      "excluded_prediction_actions": [],
+      "excluded_gold_count": 0,
+      "excluded_prediction_count": 0,
+      "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+      "action_equivalence_member_count": 61
+    },
+    "gold_action_count": 24,
+    "prediction_action_count": 8,
+    "action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 24,
+      "prediction_count": 8
+    },
+    "action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 24,
+      "prediction_count": 8
+    },
+    "canonical_action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 24,
+      "prediction_count": 8
+    },
+    "canonical_action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 24,
+      "prediction_count": 8
+    },
+    "package_multiset": {
+      "precision": 0.125,
+      "recall": 0.041666666666666664,
+      "f1": 0.0625,
+      "overlap": 1,
+      "gold_count": 24,
+      "prediction_count": 8
+    },
+    "package_family_multiset": {
+      "precision": 0.5,
+      "recall": 0.16666666666666666,
+      "f1": 0.25,
+      "overlap": 4,
+      "gold_count": 24,
+      "prediction_count": 8
+    },
+    "salient_family_multiset": {
+      "precision": 0.42857142857142855,
+      "recall": 0.42857142857142855,
+      "f1": 0.42857142857142855,
+      "overlap": 3,
+      "gold_count": 7,
+      "prediction_count": 7
+    },
+    "adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 25,
+      "prediction_count": 9
+    },
+    "canonical_adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 25,
+      "prediction_count": 9
+    },
+    "first_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.assign",
+        "prediction": "CSV/TXT.cloudOpeningCsvTextFile"
+      },
+      {
+        "index": 2,
+        "gold": "String.assign",
+        "prediction": "Logging.cloudInsertingLogToFileCommand"
+      },
+      {
+        "index": 3,
+        "gold": "String.assign",
+        "prediction": "Excel advanced.excelAdvancedPackageCreateWorkbookAction"
+      },
+      {
+        "index": 4,
+        "gold": "String.assign",
+        "prediction": "Microsoft Outlook (macOS).macMsOutlookConnectDisconnect"
+      },
+      {
+        "index": 5,
+        "gold": "String.assign",
+        "prediction": "Databricks.getjobstatusDbricks"
+      },
+      {
+        "index": 6,
+        "gold": "Datetime.toString",
+        "prediction": "Email.emailDisconnectAction"
+      },
+      {
+        "index": 7,
+        "gold": "Folder.createFolder",
+        "prediction": "Excel advanced.excelAdvPkgBrkWrbkLinks"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.createFolder",
+        "prediction": "Error handler.errorHandlerCatch"
+      },
+      {
+        "index": 9,
+        "gold": "File.createFile",
+        "prediction": null
+      },
+      {
+        "index": 10,
+        "gold": "LogToFile.logToFile",
+        "prediction": null
+      },
+      {
+        "index": 11,
+        "gold": "Folder.createFolder",
+        "prediction": null
+      },
+      {
+        "index": 12,
+        "gold": "Excel_MS.OpenSpreadsheet",
+        "prediction": null
+      }
+    ],
+    "first_canonical_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "CSV/TXT.cloudOpeningCsvTextFile"
+      },
+      {
+        "index": 2,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Logging.cloudInsertingLogToFileCommand"
+      },
+      {
+        "index": 3,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Excel advanced.excelAdvancedPackageCreateWorkbookAction"
+      },
+      {
+        "index": 4,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Microsoft Outlook (macOS).macMsOutlookConnectDisconnect"
+      },
+      {
+        "index": 5,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Databricks.getjobstatusDbricks"
+      },
+      {
+        "index": 6,
+        "gold": "Datetime.cloudConvertDatetimeToString",
+        "prediction": "Email.emailDisconnectAction"
+      },
+      {
+        "index": 7,
+        "gold": "Folder.folderCreate",
+        "prediction": "Excel advanced.excelAdvPkgBrkWrbkLinks"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.folderCreate",
+        "prediction": "Error handler.errorHandlerCatch"
+      },
+      {
+        "index": 9,
+        "gold": "File.filePackageCreateAction",
+        "prediction": null
+      },
+      {
+        "index": 10,
+        "gold": "LogToFile.logToFile",
+        "prediction": null
+      },
+      {
+        "index": 11,
+        "gold": "Folder.folderCreate",
+        "prediction": null
+      },
+      {
+        "index": 12,
+        "gold": "Excel advanced.cloudExcelOpen",
+        "prediction": null
+      }
+    ],
+    "gold_actions_preview": [
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "Datetime.toString",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "File.createFile",
+      "LogToFile.logToFile",
+      "Folder.createFolder",
+      "Excel_MS.OpenSpreadsheet",
+      "Excel_MS.readExcelRow",
+      "Excel_MS.readExcelRow",
+      "Excel_MS.readExcelRow",
+      "Email.emailConnect",
+      "File.createFile",
+      "LogToFile.logToFile",
+      "MessageBox.messageBox",
+      "LogToFile.logToFile"
+    ],
+    "gold_canonical_actions_preview": [
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "Datetime.cloudConvertDatetimeToString",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "File.filePackageCreateAction",
+      "LogToFile.logToFile",
+      "Folder.folderCreate",
+      "Excel advanced.cloudExcelOpen",
+      "Excel advanced.excelAdvancedPackageReadRowAction",
+      "Excel advanced.excelAdvancedPackageReadRowAction",
+      "Excel advanced.excelAdvancedPackageReadRowAction",
+      "Email.emailConnect",
+      "File.filePackageCreateAction",
+      "LogToFile.logToFile",
+      "MessageBox.messageBox",
+      "LogToFile.logToFile"
+    ],
+    "prediction_actions": [
+      "CSV/TXT.cloudOpeningCsvTextFile",
+      "Logging.cloudInsertingLogToFileCommand",
+      "Excel advanced.excelAdvancedPackageCreateWorkbookAction",
+      "Microsoft Outlook (macOS).macMsOutlookConnectDisconnect",
+      "Databricks.getjobstatusDbricks",
+      "Email.emailDisconnectAction",
+      "Excel advanced.excelAdvPkgBrkWrbkLinks",
+      "Error handler.errorHandlerCatch"
+    ],
+    "prediction_canonical_actions": [
+      "CSV/TXT.cloudOpeningCsvTextFile",
+      "Logging.cloudInsertingLogToFileCommand",
+      "Excel advanced.excelAdvancedPackageCreateWorkbookAction",
+      "Microsoft Outlook (macOS).macMsOutlookConnectDisconnect",
+      "Databricks.getjobstatusDbricks",
+      "Email.emailDisconnectAction",
+      "Excel advanced.excelAdvPkgBrkWrbkLinks",
+      "Error handler.errorHandlerCatch"
+    ],
+    "gold_salient_families": [
+      "spreadsheet",
+      "spreadsheet",
+      "spreadsheet",
+      "spreadsheet",
+      "email",
+      "email",
+      "spreadsheet"
+    ],
+    "prediction_salient_families": [
+      "csv/txt",
+      "spreadsheet",
+      "microsoft_outlook_(macos)",
+      "databricks",
+      "email",
+      "spreadsheet",
+      "error_handler"
+    ]
+  },
+  "pm4py": {
+    "mode": "actual_pm4py_alignment_conformance",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\11_0167_outlook-email-notifier\\Outlook Email Notifier.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 24,
+    "prediction_action_count_after_preprocessing": 7,
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [
+      "Error handler.errorHandlerCatch"
+    ],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "fitness": 0.0,
+    "precision": 0.0,
+    "raw_fitness": {
+      "percFitTraces": 0.0,
+      "averageFitness": 0.0,
+      "percentage_of_fitting_traces": 0.0,
+      "average_trace_fitness": 0.0,
+      "log_fitness": 0.0
+    }
+  },
+  "pm4py_artifact_check": {
+    "gold_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\11_0167_outlook-email-notifier",
+    "prediction_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier\\converted_recommendation\\pm4py",
+    "gold_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\11_0167_outlook-email-notifier\\Outlook Email Notifier.tree.json",
+      "exists": true,
+      "sha256": "e61636de68aeb2fe66fdbb440a61af512de537fab672ab6e180f67fdb8758214",
+      "leaf_count": 24,
+      "labels": [
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "Datetime.toString",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "File.createFile",
+        "LogToFile.logToFile",
+        "Folder.createFolder",
+        "Excel_MS.OpenSpreadsheet",
+        "Excel_MS.readExcelRow",
+        "Excel_MS.readExcelRow",
+        "Excel_MS.readExcelRow",
+        "Email.emailConnect",
+        "File.createFile",
+        "LogToFile.logToFile",
+        "MessageBox.messageBox",
+        "LogToFile.logToFile",
+        "Email.closeEmail",
+        "Excel_MS.CloseSpreadsheet",
+        "MessageBox.messageBox",
+        "LogToFile.logToFile"
+      ],
+      "operator_counts": {
+        "loop": 1,
+        "sequence": 6,
+        "xor": 7
+      }
+    },
+    "prediction_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier\\converted_recommendation\\pm4py\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend.tree.json",
+      "exists": true,
+      "sha256": "c95e03b1f0c58dafa0f7e7c10662190ed8ec3efe1ecaa54f08f726168219b59f",
+      "leaf_count": 8,
+      "labels": [
+        "CSV/TXT.cloudOpeningCsvTextFile",
+        "Logging.cloudInsertingLogToFileCommand",
+        "Excel advanced.excelAdvancedPackageCreateWorkbookAction",
+        "Microsoft Outlook (macOS).macMsOutlookConnectDisconnect",
+        "Databricks.getjobstatusDbricks",
+        "Email.emailDisconnectAction",
+        "Excel advanced.excelAdvPkgBrkWrbkLinks",
+        "Error handler.errorHandlerCatch"
+      ],
+      "operator_counts": {
+        "sequence": 1
+      }
+    },
+    "gold_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\11_0167_outlook-email-notifier\\Outlook Email Notifier.pnml",
+      "exists": true,
+      "sha256": "b734da5ddc2fe467ec03f3c6447ce5741a680ed8b1cee40416d2651430e0b87c",
+      "readable_by_pm4py": true,
+      "places": 26,
+      "transitions": 33,
+      "visible_transitions": 24,
+      "arcs": 66,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "prediction_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier\\converted_recommendation\\pm4py\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend.pnml",
+      "exists": true,
+      "sha256": "46eae08ef3761dcffa01208e9875406b401667056eb33cce6a49cdbb2fb05a97",
+      "readable_by_pm4py": true,
+      "places": 9,
+      "transitions": 8,
+      "visible_transitions": 8,
+      "arcs": 16,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "tree_leaf_count_delta": -16,
+    "tree_hash_equal": false,
+    "pnml_hash_equal": false
+  },
+  "worfbench": {
+    "mode": "actual_worfbench_t_eval_nodes",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\11_0167_outlook-email-notifier\\Outlook Email Notifier.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 23,
+    "prediction_action_count_after_preprocessing": 7,
+    "gold_worfbench_fidelity": "approximated",
+    "prediction_worfbench_fidelity": "exact",
+    "gold_control_flow_types": [
+      "if",
+      "loop",
+      "try"
+    ],
+    "prediction_control_flow_types": [],
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [
+      "Error handler.errorHandlerCatch"
+    ],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "precision": 0.5714,
+    "recall": 0.16,
+    "f1_score": 0.25
+  },
+  "worfbench_diagnostic_artifact_f1": {
+    "gold": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\worfbench_13\\11_0167_outlook-email-notifier\\Outlook Email Notifier.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/11_0167_outlook-email-notifier/Outlook Email Notifier",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "if",
+        "loop",
+        "try"
+      ]
+    },
+    "prediction": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier\\converted_recommendation\\worfbench\\runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend/runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier__turnRecommend",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "container"
+      ]
+    },
+    "node_label_f1": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 23,
+      "prediction_count": 8
+    },
+    "edge_f1": {
+      "precision": 0.8888888888888888,
+      "recall": 0.3333333333333333,
+      "f1": 0.48484848484848486,
+      "overlap": 8,
+      "gold_count": 24,
+      "prediction_count": 9
+    },
+    "gold_node_count": 23,
+    "prediction_node_count": 8,
+    "gold_edge_count": 24,
+    "prediction_edge_count": 9
+  }
+}

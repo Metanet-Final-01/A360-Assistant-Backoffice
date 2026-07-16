@@ -1,0 +1,64 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Excel advanced.cloudExcelOpen",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Excel advanced.excelAdvancedPackageReadRowAction",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "Browser.browserPackageOpenAction",
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Browser.browserPackageRunJavascriptAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Error handler.errorHandlerCatch",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "Excel advanced.excelAdvancedPackageSetCellAction",
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Excel advanced.excelAdvancedPackageCloseAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Browser.browserPackageCloseAction",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

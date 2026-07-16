@@ -1,0 +1,34 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0338_lettergenerationbot",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SendPOF_Email",
+      "manual_dependencies": [],
+      "output_file": "workflows/SendPOF_Email.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "LetterGenerationBot",
+      "manual_dependencies": [
+        "ProofOfFunds_Process",
+        "SendPOF_Email",
+        "VerifyFunds",
+        "EnterCustomerID"
+      ],
+      "output_file": "workflows/LetterGenerationBot.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.workflow",
+      "filename": "ProofOfFunds_Process",
+      "manual_dependencies": [
+        "LetterGenerationBot",
+        "SendPOF_Email"
+      ],
+      "output_file": "workflows/ProofOfFunds_Process.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

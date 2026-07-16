@@ -1,0 +1,373 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": "sequence",
+          "label": null,
+          "children": [
+            {
+              "operator": null,
+              "label": "MessageBox.messageBox",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "TaskBot.stopTask",
+              "children": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "String.assign",
+      "children": []
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.createFolder",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.createFolder",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.createFolder",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Folder.createFolder",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "Datetime.toString",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Datetime.subtract",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Datetime.toString",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "File.deleteFiles",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "File.deleteFiles",
+      "children": []
+    },
+    {
+      "operator": "xor",
+      "label": null,
+      "children": [
+        {
+          "operator": "sequence",
+          "label": null,
+          "children": [
+            {
+              "operator": null,
+              "label": "Excel_MS.OpenSpreadsheet",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "WebAutomation.StartSessionWebAutomation",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "WebAutomation.openpage",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "WebAutomation.isloaded",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "Excel_MS.GoToCell",
+              "children": []
+            },
+            {
+              "operator": "loop",
+              "label": null,
+              "children": [
+                {
+                  "operator": "sequence",
+                  "label": null,
+                  "children": [
+                    {
+                      "operator": "loop",
+                      "label": null,
+                      "children": [
+                        {
+                          "operator": "sequence",
+                          "label": null,
+                          "children": [
+                            {
+                              "operator": null,
+                              "label": "Delay.delay",
+                              "children": []
+                            },
+                            {
+                              "operator": null,
+                              "label": "WebAutomation.isloaded",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "operator": null,
+                          "label": null,
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": null,
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.clickelement",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.sendkeys",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.sendkeys",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.clickelement",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.sendkeys",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.sendkeys",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.sendkeys",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.elementloaded",
+                      "children": []
+                    },
+                    {
+                      "operator": "loop",
+                      "label": null,
+                      "children": [
+                        {
+                          "operator": "sequence",
+                          "label": null,
+                          "children": [
+                            {
+                              "operator": null,
+                              "label": "Delay.delay",
+                              "children": []
+                            },
+                            {
+                              "operator": null,
+                              "label": "WebAutomation.elementloaded",
+                              "children": []
+                            }
+                          ]
+                        },
+                        {
+                          "operator": null,
+                          "label": null,
+                          "children": []
+                        },
+                        {
+                          "operator": null,
+                          "label": null,
+                          "children": []
+                        }
+                      ]
+                    },
+                    {
+                      "operator": null,
+                      "label": "WebAutomation.getvalueelement",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "Excel_MS.SetCell",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "Excel_MS.GoToCell",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "Excel_MS.SetCell",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "Excel_MS.GoToCell",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "Excel_MS.GoToCell",
+                      "children": []
+                    }
+                  ]
+                },
+                {
+                  "operator": null,
+                  "label": null,
+                  "children": []
+                },
+                {
+                  "operator": null,
+                  "label": null,
+                  "children": []
+                }
+              ]
+            },
+            {
+              "operator": null,
+              "label": "Excel_MS.CloseSpreadsheet",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "WebAutomation.EndSessionWebAutomation",
+              "children": []
+            }
+          ]
+        },
+        {
+          "operator": "sequence",
+          "label": null,
+          "children": [
+            {
+              "operator": "xor",
+              "label": null,
+              "children": [
+                {
+                  "operator": "sequence",
+                  "label": null,
+                  "children": [
+                    {
+                      "operator": null,
+                      "label": "File.createFile",
+                      "children": []
+                    },
+                    {
+                      "operator": null,
+                      "label": "LogToFile.logToFile",
+                      "children": []
+                    }
+                  ]
+                }
+              ]
+            },
+            {
+              "operator": null,
+              "label": "Datetime.toString",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "Number.toString",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "LogToFile.logToFile",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "Screen.captureDesktop",
+              "children": []
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

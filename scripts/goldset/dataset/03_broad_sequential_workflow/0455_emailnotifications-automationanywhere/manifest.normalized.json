@@ -1,0 +1,103 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\EmailNotifications-AutomationAnywhere\\EmailNotifications-AutomationAnywhere",
+      "scannedDependencies": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.0.0-20200624-041619.jar",
+      "version": "2.0.0-20200624-041619"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.0.0-20200624-041628.jar",
+      "version": "2.0.0-20200624-041628"
+    },
+    {
+      "name": "Delay",
+      "path": "bot-command-delay-2.1.0-20200624-041629.jar",
+      "version": "2.1.0-20200624-041629"
+    },
+    {
+      "name": "Email",
+      "path": "bot-command-email-2.0.0-20200624-041631.jar",
+      "version": "2.0.0-20200624-041631"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200624-041636.jar",
+      "version": "2.0.0-20200624-041636"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-2.1.0-20200624-041638.jar",
+      "version": "2.1.0-20200624-041638"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-2.1.0-20200624-041640.jar",
+      "version": "2.1.0-20200624-041640"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200624-041646.jar",
+      "version": "2.0.0-20200624-041646"
+    },
+    {
+      "name": "JavaScript",
+      "path": "bot-command-javascript-2.0.0-20200630-062021.jar",
+      "version": "2.0.0-20200630-062021"
+    },
+    {
+      "name": "List",
+      "path": "bot-command-list-2.0.0-20200624-041923.jar",
+      "version": "2.0.0-20200624-041923"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.1.0-20200624-041923.jar",
+      "version": "2.1.0-20200624-041923"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200624-041925.jar",
+      "version": "2.0.0-20200624-041925"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200624-041934.jar",
+      "version": "2.0.0-20200624-041934"
+    },
+    {
+      "name": "Screen",
+      "path": "bot-command-screen-2.0.0-20200624-042134.jar",
+      "version": "2.0.0-20200624-042134"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200624-103754.jar",
+      "version": "2.0.0-20200624-103754"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200624-042145.jar",
+      "version": "3.0.0-20200624-042145"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-2.0.0-20200624-042146.jar",
+      "version": "2.0.0-20200624-042146"
+    },
+    {
+      "name": "TaskBot",
+      "path": "bot-command-task-2.0.0-20200624-103759.jar",
+      "version": "2.0.0-20200624-103759"
+    }
+  ]
+}

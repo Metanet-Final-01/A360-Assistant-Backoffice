@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0170_urlextractor",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "URLExtractor",
+      "manual_dependencies": [],
+      "output_file": "workflows/URLExtractor.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,470 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin\\1d371c83-fd97-43bf-b4e8-706e467d88d7.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin\\35ba1ceb-9d7e-4bf9-8dbd-cf151719c866.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin\\71c94788-186f-4678-9e05-03f611a7888e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin\\8fa6d2cf-6e74-49f3-a53e-5f11dff5d246.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin\\f1fef269-981f-4920-a9f3-aca480e28b01.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin\\fdf7a86f-426d-44c4-8804-5affa3e908df.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\57bea596-7115-444b-bfa3-5d6566dc7281.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\682ac4de-f857-4bd4-afe9-7bbd863e7952.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\6c1f8360-d093-4c51-9592-f51cb3e50dff.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\721262eb-c278-409b-beb5-cfb8abf0d57f.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\7832cbe9-b68e-4051-b1e9-45d6601413cb.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\83b7fb1b-997e-4085-95a2-237fb78e2d7e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\8f7ba056-9c3d-49d4-840d-117a1b00a0d2.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\b8b4aa88-e514-4551-8f21-2b89f31d79d1.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\c191503e-d16b-44c6-bede-a42bf7b8298b.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\c6ce0213-e574-4624-aecd-5393bc370998.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\c909d9fd-9f91-4e76-bfaa-636edf871c86.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps\\f32c2a40-0a53-4077-9dfe-9f58efacf11a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationMain",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+        "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationExcelOps",
+        "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+        "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationPRinSAP"
+      ]
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationMaster",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationMain"
+      ]
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationPRinSAP",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationAFXLogin"
+      ]
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM\\5e113c0a-ea1a-4989-88a5-c65837403fde.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM\\5e29dc3e-d3ea-4f33-9062-6377a2b714e6.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM\\6e4a5cc5-0ba6-46c1-a1c0-e1e5de25405a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM\\760bb131-a7c3-41a9-b2d3-b9474d99bddd.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM\\7826b527-facd-484b-ac65-394ad13054de.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM\\9cd18913-8a9a-4311-8448-e5b10ecc93ad.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM\\a0395bcd-be67-449b-ba88-6d3a42016966.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationRRM\\cf7271a6-fe65-453a-b677-c85263a13b47.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\456629ec-b4c4-4598-a0b3-915b93f9c3b6.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\4902e642-1b4d-47e0-89e8-5bb851cb23fb.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\5462b6c3-bb96-485b-8a4f-cd433fa1d865.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\57567360-0c2f-4520-a075-4d3b4c1a6a7e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\5d89dd42-dc02-4be1-89f5-f973c69c0e6d.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\7290fb7a-ff41-4a57-89bb-f7762f656452.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\9c461ec8-a7c7-4e1b-b424-110d204b3029.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\9df746b8-c0bb-412d-9614-6eb0ddd69335.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\a04c1694-560d-4134-854f-3ddccf8ed76a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\aa2c426b-abdb-412f-91bf-f9b7110d828c.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\bc110d54-dcca-4664-a45a-e77713ec3ec7.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin",
+      "path": "Automation Anywhere\\Bot Store\\SAPPurchaseRequisitionCreation-OpsVeda\\SAPPurchaseRequisitionCreationVPNLogin\\e8d1df49-47de-4c68-8f38-59e5476a20d5.png",
+      "scannedDependencies": null
+    }
+  ],
+  "packages": [
+    {
+      "name": "Application",
+      "path": "bot-command-application-2.1.0-20200819-064505.jar",
+      "version": "2.1.0-20200819-064505"
+    },
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.0.0-20200721-221948.jar",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "DataTable",
+      "path": "bot-command-table-2.1.0-20200831-031946.jar",
+      "version": "2.1.0-20200831-031946"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.0.0-20200721-221958.jar",
+      "version": "2.0.0-20200721-221958"
+    },
+    {
+      "name": "Delay",
+      "path": "bot-command-delay-2.2.0-20200831-031026.jar",
+      "version": "2.2.0-20200831-031026"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200721-222009.jar",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-5.0.0-20200909-124042.jar",
+      "version": "5.0.0-20200909-124042"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-2.1.0-20200721-222011.jar",
+      "version": "2.1.0-20200721-222011"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-2.1.0-20200721-222013.jar",
+      "version": "2.1.0-20200721-222013"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.1.0-20200825-071156.jar",
+      "version": "2.1.0-20200825-071156"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200302-135950.jar",
+      "version": "2.0.0-20200302-135950"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.1.0-20200721-222212.jar",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-2.1.0-20200831-031540.jar",
+      "version": "2.1.0-20200831-031540"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Mouse",
+      "path": "bot-command-mouse-2.1.0-20200831-031542.jar",
+      "version": "2.1.0-20200831-031542"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.1.0-20200831-031551.jar",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200721-222224.jar",
+      "version": "2.0.0-20200721-222224"
+    },
+    {
+      "name": "Recorder",
+      "path": "bot-command-recorder-2.0.8-20201009-015051.jar",
+      "version": "2.0.8-20201009-015051"
+    },
+    {
+      "name": "SAP",
+      "path": "bot-command-sap-2.2.0-20200825-071614.jar",
+      "version": "2.2.0-20200825-071614"
+    },
+    {
+      "name": "Screen",
+      "path": "bot-command-screen-2.0.0-20200721-222442.jar",
+      "version": "2.0.0-20200721-222442"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200907-072944.jar",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200723-201827.jar",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.1.0-20200831-031943.jar",
+      "version": "3.1.0-20200831-031943"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200721-222454.jar",
+      "version": "3.0.0-20200721-222454"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-2.0.0-20200721-222454.jar",
+      "version": "2.0.0-20200721-222454"
+    },
+    {
+      "name": "TaskBot",
+      "path": "bot-command-task-2.0.1-20200907-072949.jar",
+      "version": "2.0.1-20200907-072949"
+    },
+    {
+      "name": "TaskBot",
+      "path": "bot-command-task-2.0.1-20200728-235256.jar",
+      "version": "2.0.1-20200728-235256"
+    },
+    {
+      "name": "XML",
+      "path": "bot-command-xml-2.1.0-20200831-031958.jar",
+      "version": "2.1.0-20200831-031958"
+    }
+  ]
+}

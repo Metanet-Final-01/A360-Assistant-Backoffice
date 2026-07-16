@@ -1,0 +1,116 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Message box.usingMessageBoxAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Task Bot.taskBotPackageStopAction",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Datetime.getActionInDatetime",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Folder.cloudZipFilesAndFolders",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "String.stringPackageAssignAction",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "REST Web Services.cloudUsingGetAction",
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "JSON utilities.jsonValidate",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "JSON utilities.jsonGetNodeValue",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "JSON utilities.jsonGetNodeValue",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "JSON utilities.jsonGetNodeValue",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "JSON utilities.jsonGetNodeValue",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "String.stringPackageAssignAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Data Table.cloudWriteToFileAction",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Data Table.cloudWriteToFileAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Screen.cloudUsingScreenCaptureWindow",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Error handler.errorHandlerFinally",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

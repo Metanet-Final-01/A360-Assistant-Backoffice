@@ -1,0 +1,15 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0302_a2019-get-current-exchange-rate",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "A2019 Get Current Exchange Rate",
+      "manual_dependencies": [],
+      "output_file": "workflows/A2019 Get Current Exchange Rate.json",
+      "scanned_dependencies": [
+        "Get Current Exchange Rate.dll",
+        "Newtonsoft.Json.dll"
+      ]
+    }
+  ]
+}

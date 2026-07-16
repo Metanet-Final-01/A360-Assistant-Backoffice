@@ -1,0 +1,1418 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "Extract data table from pdf & write to excel",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "fada1723-724e-43f0-b4be-f153a7e1e55c"
+    },
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "Use Error Handler to catch error and log it",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "40d9e718-2df9-4cbf-910c-08b081945b5c"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Take Config Excel File",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "filePath",
+              "value": {
+                "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20Data%20Table%20Extraction%20%28Pdf%20to%20Excel%29%20-KLOUDPAD%20Mobility%20Research%20Pvt%20Ltd/Docs/Config.xlsx",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "EDIT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "loadAddIns",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "OpenSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "84857d81-af9a-425e-9db4-1aa9f727a630"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "B2",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GetSingleCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sBotFolder"
+          },
+          "uid": "c3aa4bd1-d6b4-40d0-bead-92ad2880a30c"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "B3",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GetSingleCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sInputFolder"
+          },
+          "uid": "0f594070-3ef0-4857-99de-9bf488ea5257"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "B4",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GetSingleCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sOutputFolder"
+          },
+          "uid": "f717e983-5a2d-46a6-a239-7ba33224ee81"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "B5",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GetSingleCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sLogFolder"
+          },
+          "uid": "8abe9049-1310-4fd1-928a-ea6dd26d9b12"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "B6",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GetSingleCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sInput"
+          },
+          "uid": "f93e0034-9f27-4552-aedd-08996b972b49"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "B7",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "GetSingleCell",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sOutput"
+          },
+          "uid": "ecef7aae-c9ac-48ba-93d0-67381882c294"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "9da2452e-7c70-4c59-be3a-ff735797a8ae"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Create Input & Output Folder",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sInputFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "operatorAttribute": {
+                "attributes": [
+                  {
+                    "name": "folderPath",
+                    "value": {
+                      "expression": "$sBotFolder$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "waitTimeout",
+                    "value": {
+                      "number": "0",
+                      "type": "NUMBER"
+                    }
+                  }
+                ],
+                "operator": "AND",
+                "operatorAttribute": {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sOutputFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "operator": "AND",
+                  "value": {
+                    "conditionalName": "folderDoesNotExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                },
+                "value": {
+                  "conditionalName": "folderDoesNotExists",
+                  "packageName": "Folder",
+                  "type": "CONDITIONAL"
+                }
+              },
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sBotFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "16bda140-2d5a-474b-b723-eccec75be248"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sInputFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "f11d13c6-954a-46e5-9902-de1e270a583a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sOutputFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "6da1fe7b-e2bd-4845-b41d-4347a8da6132"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "6e92e927-8d10-433c-9539-667eae497528"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "a72bc8ff-efbc-4697-af9f-ac795b766739"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Catch the error message and error line number",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "string": "Python should be installed",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "timeOut",
+                      "value": {
+                        "number": "5",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "messageBox",
+                  "disabled": false,
+                  "packageName": "MessageBox",
+                  "uid": "ce190153-58b6-477b-8e10-47afc916a6ae"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "if excel file does does not exist , create an file",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "f20f2361-79f0-4e22-86ad-cb4d6a9903cb"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$sLogFolder$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "folderDoesNotExists",
+                        "packageName": "Folder",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$sLogFolder$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFolder",
+                      "disabled": false,
+                      "packageName": "Folder",
+                      "uid": "3f9f945f-aa6b-4e7c-9af6-063921f047d7"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "642bbb02-ec46-4885-b9f1-c7be50d3dcbd"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sLogFolder$/Error.txt",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "$sErrormessage$-$nErrorLineNumber.Number:toString$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "logToFile",
+                  "disabled": false,
+                  "packageName": "LogToFile",
+                  "uid": "2924b1fa-716c-4782-8c23-c39440344ad9"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "525f12dc-49a7-4d18-841b-18a2afea637a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "prompt-assignment"
+              },
+              "uid": "8d3cad8b-433f-43e4-9691-f03d6a20e6a8"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "nErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "sErrormessage"
+            }
+          },
+          "uid": "9f71ea56-fca7-4aa4-bc66-5f9b4a0de2ac"
+        },
+        {
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "if excel file does does not exist , create an file",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "03443411-fb85-4628-bce0-2c303f99f155"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sLogFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderDoesNotExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$sLogFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "createFolder",
+                  "disabled": false,
+                  "packageName": "Folder",
+                  "uid": "ffd204ee-1c09-4cc8-8c8a-fcaee9437747"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "634aa3a5-0590-4197-8a53-f72c2a35ac13"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$prompt-assignment$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "true",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/Error.txt",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "All actions are completed ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "logToFile",
+                      "disabled": false,
+                      "packageName": "LogToFile",
+                      "uid": "5f8a5ad5-a140-4847-ab35-ac785959dc9e"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "795353bc-47f1-4d5c-8c14-9277e8e3d898"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sLogFolder$/Error.txt",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "$sErrormessage$-$nErrorLineNumber.Number:toString$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "logToFile",
+                  "disabled": false,
+                  "packageName": "LogToFile",
+                  "uid": "da630f7b-3ab4-4b76-b3ce-7505e76a1a52"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "99768e08-6f8e-479e-9040-2248f0837761"
+            }
+          ],
+          "commandName": "finally",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "a111727e-2eb0-4b50-8d63-caa04e85f4c0"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Take misalligned image &  crop prefect",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "8b5871d2-81ca-4188-a688-6841522b50a0"
+        },
+        {
+          "attributes": [
+            {
+              "name": "windowCaption",
+              "value": {
+                "string": "Select Your Pdf Page Number ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "promptMessage",
+              "value": {
+                "string": "Select Your Pdf Page Number ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encryptKeystroke",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "ForValue",
+          "disabled": false,
+          "packageName": "Prompt",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sPageNumber"
+          },
+          "uid": "24c198ac-e256-4474-b22e-dcbe1828de31"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceDictionary",
+              "value": {
+                "dictionary": [
+                  {
+                    "key": "input",
+                    "value": {
+                      "expression": "$sInput$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "key": "output",
+                    "value": {
+                      "expression": "$sOutput$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "key": "page_num",
+                    "value": {
+                      "expression": "$sPageNumber$",
+                      "type": "STRING"
+                    }
+                  }
+                ],
+                "type": "DICTIONARY"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "Dictionary",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "dPath"
+          },
+          "uid": "6cd38efc-f4e0-4ff9-b725-eabd550e797a"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "scriptOption",
+              "value": {
+                "string": "SCRIPT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "script",
+              "value": {
+                "string": "import camelot\nimport pandas as pd\ndef exttable(dvalue):\n    tables = camelot.read_pdf(dvalue['input'] ,pages =dvalue['page_num'])\n\n\n    for i in range(tables.n):\n    \n        data = tables[i].df\n        data.to_excel(dvalue['output'])\n        return \"Data table successfully Generated\"",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "version",
+              "value": {
+                "string": "3",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "python.commands.openScript",
+          "disabled": false,
+          "packageName": "Python",
+          "uid": "29f63a0e-b6d9-482c-8b76-017e725911c9"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "functionName",
+              "value": {
+                "string": "exttable",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "argument",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "dPath"
+              }
+            }
+          ],
+          "commandName": "python.commands.executeFunction",
+          "disabled": false,
+          "packageName": "Python",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "prompt-assignment"
+          },
+          "uid": "664366b9-a2bd-4c67-b477-f8832ab14ffa"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Automation Anywhere Enterprise Client",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "content",
+              "value": {
+                "expression": "$prompt-assignment$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "scrollLines",
+              "value": {
+                "number": "30",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "closeMsgBox",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "timeOut",
+              "value": {
+                "number": "3",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "messageBox",
+          "disabled": false,
+          "packageName": "MessageBox",
+          "uid": "36fa81d9-1bcd-41a8-b390-bd6540cb6151"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "python.commands.closeScript",
+          "disabled": false,
+          "packageName": "Python",
+          "uid": "2caf8303-f319-4e5c-8394-3be385fb8bff"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "813627bd-77d5-4f98-801f-5a3a6ee53764"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "Dictionary",
+      "version": "3.2.0-20200831-031027"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "Excel_MS",
+      "version": "5.0.0-20200909-124042"
+    },
+    {
+      "name": "Folder",
+      "version": "2.1.0-20200721-222013"
+    },
+    {
+      "name": "If",
+      "version": "2.0.0-20200721-222021"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Number",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "Prompt",
+      "version": "2.1.0-20200824-092056"
+    },
+    {
+      "name": "Python",
+      "version": "2.0.0-20200721-222345"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "version": "3.1.0-20200831-031943"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dPath",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrormessage",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sBotFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sInput",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sOutput",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sInputFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sOutputFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sLogFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sPageNumber",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

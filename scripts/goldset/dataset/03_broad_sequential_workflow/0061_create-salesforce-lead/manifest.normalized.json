@@ -1,0 +1,105 @@
+{
+  "files": [
+    {
+      "contentType": "text/xml",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\SAP Build Process Automation\\Create New Lead\\Config\\Config.xml",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\SAP Build Process Automation\\Create New Lead\\Create Salesforce Lead",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\SAP Build Process Automation\\Create New Lead\\Config\\Config.xml"
+      ],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.14.0.jar",
+      "version": "2.14.0"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.12.1.jar",
+      "version": "2.12.1"
+    },
+    {
+      "name": "Dictionary",
+      "path": "bot-command-dictionary-3.12.0.jar",
+      "version": "3.12.0"
+    },
+    {
+      "name": "Email",
+      "path": "bot-command-email-3.17.6.jar",
+      "version": "3.17.6"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.11.3-20230316-162433.jar",
+      "version": "2.11.3-20230316-162433"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-6.7.0.jar",
+      "version": "6.7.0"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-6.7.0.jar",
+      "version": "6.7.0"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-3.6.2-20230316-161323.jar",
+      "version": "3.6.2-20230316-161323"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-3.7.0.jar",
+      "version": "3.7.0"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-3.8.0.jar",
+      "version": "3.8.0"
+    },
+    {
+      "name": "Salesforce",
+      "path": "bot-command-salesforce-1.3.2.jar",
+      "version": "1.3.2"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.5.0-20230105-135537.jar",
+      "version": "2.5.0-20230105-135537"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-5.7.1.jar",
+      "version": "5.7.1"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-3.12.0.jar",
+      "version": "3.12.0"
+    },
+    {
+      "name": "XML",
+      "path": "bot-command-xml-3.10.0.jar",
+      "version": "3.10.0"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Dictionary.dictionaryPut",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Dictionary.dictionaryPut",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Dictionary.dictionaryPut",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "Application.applicationPackageOpenProgramFileAction",
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Message box.usingMessageBoxAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Browser.browserPackageCloseAction",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

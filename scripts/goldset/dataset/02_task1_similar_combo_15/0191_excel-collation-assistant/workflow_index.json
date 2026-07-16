@@ -1,0 +1,12 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0191_excel-collation-assistant",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Excel Collation Assistant",
+      "manual_dependencies": [],
+      "output_file": "workflows/Excel Collation Assistant.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

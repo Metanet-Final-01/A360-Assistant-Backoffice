@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0422_generate-random-password-and-send-email-to-user",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Generate Random Password and send Email to User",
+      "manual_dependencies": [],
+      "output_file": "workflows/Generate Random Password and send Email to User.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

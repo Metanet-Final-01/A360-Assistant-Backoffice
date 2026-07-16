@@ -1,0 +1,2479 @@
+{
+  "answer": "14개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 후보 액션 카탈로그에 입력값 비어 있음 여부를 직접 확인하고 분기/중단하는 액션이 없어, '봇 이름'과 '벤더명'의 제공 여부를 검증하는 작업을 액션으로 설계할 수 없음 · 사용자에게 알리고 작업을 중단하는 화면 알림/중단 액션이 후보 액션 카탈로그에 없다. 제공된 후보 액션은 사용자 생성 또는 캘린더 알림 삭제뿐이라 이 단계를 자동화할 수 없다. · 액션1.sessionName: Box 세션 이름이 필요하다 · 액션1.output: 생성된 오류 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션2.sessionName: Box 세션 이름이 필요하다 · 액션2.output: 생성된 로그 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션3.sessionName: Box 세션 이름이 필요하다 · 액션3.output: 생성된 스크린샷 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션4.sessionName: Box 세션 이름이 필요하다 · 액션4.output: 생성된 출력 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 현재 날짜와 로그 삭제 기준일을 준비하는 데 사용할 수 있는 후보 액션이 없어 자동화 시퀀스를 구성할 수 없음 · 액션1.sessionName: 통합 문서를 열고 관리할 세션 이름이 필요함 · 액션1.filePath: 열어야 할 Excel 통합문서의 경로가 필요함 · 액션1.sessionType: 로컬 세션 또는 글로벌 세션 중 실행 환경에 맞는 값이 필요함 · 액션1.sessionName: 열린 Excel 통합문서의 세션 이름이 필요하다 · 액션1.outputList: 읽은 행 데이터를 저장할 리스트 변수명이 필요하다 · 후보 액션 카탈로그에 행 위치를 보존하거나 인덱스를 부여하는 Excel 관련 액션이 없어 이 단계를 자동화할 액션을 설계할 수 없음 · JavaScript.javascriptRun.sessionName: Oanda 웹사이트를 열 대상 브라우저 세션 이름이 필요함 · 후보 카탈로그에 브라우저 열기/URL 이동/페이지 대기 액션이 없어서 Oanda 웹사이트를 열고 준비 상태를 확인하는 순서를 직접 구성할 수 없음 · 액션1.loopType: 반복 방식은 ITERATOR가 적합하나 카탈로그 기본값 외 별도 지정이 필요한지 확인 필요 · Oanda 웹페이지 입력 영역에 값을 입력하는 액션이 후보 카탈로그에 없어 실제 입력 동작은 설계할 수 없음 · 후보 액션 카탈로그에 대기(Wait)나 화면 요소 읽기(Read/Get text) 계열 액션이 없어, '필요한 경우 짧게 대기한 뒤 값을 읽는다'를 A360 액션으로 구성할 수 없음 · 환율 결과 수집: 현재 행에 해당하는 표시 환율 결과를 수집하는 Oanda 웹사이트/브라우저 세션용 액션이 후보 카탈로그에 없고, 우회용 RunMacro/스크립트 실행도 제공되지 않아 자동화 액션을 설계할 수 없음 · 액션1.sessionName: Excel 세션 이름이 필요함 · 액션1.filePath: 갱신할 통합문서 파일 경로가 필요함 · 입력 행과 같은 위치의 결과 열에 값을 쓰는 액션이 후보 카탈로그에 없음 · action1.filePath: 실패 로그를 저장할 로그 파일 경로가 필요함 · action1.textToLog: 행 단위 실패 정보를 어떤 형식의 텍스트로 기록할지 필요함 · action1.writeMode: 기존 로그 파일에 추가할지, 덮어쓸지 결정 필요 · 카탈로그에 통합문서/브라우저 세션을 직접 닫는 액션이 없고, 제공된 후보 액션은 Excel 통합 문서 링크 끊기 작업뿐이라 종료 작업을 그대로 표현할 수 없다. · 만약 상위 조립 단계에 세션 종료용 RunMacro/스크립트 실행 액션이 उपलब्ध하면, 통합문서 닫기와 브라우저 세션 종료를 그 우회 수단으로 처리해야 한다. · 1페이지의 'Task 3. Oanda 사이트에서 환율 조회'는 상위 제목인지 별도 작업 식별자인지 문서 구조만으로는 완전히 확정되지 않는다. · 1페이지의 '현재 날짜와 로그 삭제 기준일을 준비한다'에서 로그 삭제 기준일의 계산 방식은 문서에 없다. · 2페이지의 '동적 결과가 표시될 수 있도록 필요한 경우 짧게 대기'는 정확한 대기 조건과 시간 기준이 문서에 없다. · 4번 종료 단계의 '목표 흐름은 필수값 검증, 폴더/로그 준비, 반복 웹 조회, 통합문서 갱신, 안전한 종료를 반영해야 한다'는 요약 문구로 보이며, 별도 실행 단계로 보지는 않았다. (검수에서 해소하지 못한 위반 18건이 있어요 — 흐름도에서 확인해 주세요.)",
+  "backend_response_id": "06aca929-7c4e-4422-861e-d2309f3201a1",
+  "backend_response_version": 1,
+  "backend_step": "turnAnalyze",
+  "document_id": null,
+  "notes": "후보 액션 카탈로그에 입력값 비어 있음 여부를 직접 확인하고 분기/중단하는 액션이 없어, '봇 이름'과 '벤더명'의 제공 여부를 검증하는 작업을 액션으로 설계할 수 없음 · 사용자에게 알리고 작업을 중단하는 화면 알림/중단 액션이 후보 액션 카탈로그에 없다. 제공된 후보 액션은 사용자 생성 또는 캘린더 알림 삭제뿐이라 이 단계를 자동화할 수 없다. · 액션1.sessionName: Box 세션 이름이 필요하다 · 액션1.output: 생성된 오류 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션2.sessionName: Box 세션 이름이 필요하다 · 액션2.output: 생성된 로그 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션3.sessionName: Box 세션 이름이 필요하다 · 액션3.output: 생성된 스크린샷 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션4.sessionName: Box 세션 이름이 필요하다 · 액션4.output: 생성된 출력 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 현재 날짜와 로그 삭제 기준일을 준비하는 데 사용할 수 있는 후보 액션이 없어 자동화 시퀀스를 구성할 수 없음 · 액션1.sessionName: 통합 문서를 열고 관리할 세션 이름이 필요함 · 액션1.filePath: 열어야 할 Excel 통합문서의 경로가 필요함 · 액션1.sessionType: 로컬 세션 또는 글로벌 세션 중 실행 환경에 맞는 값이 필요함 · 액션1.sessionName: 열린 Excel 통합문서의 세션 이름이 필요하다 · 액션1.outputList: 읽은 행 데이터를 저장할 리스트 변수명이 필요하다 · 후보 액션 카탈로그에 행 위치를 보존하거나 인덱스를 부여하는 Excel 관련 액션이 없어 이 단계를 자동화할 액션을 설계할 수 없음 · JavaScript.javascriptRun.sessionName: Oanda 웹사이트를 열 대상 브라우저 세션 이름이 필요함 · 후보 카탈로그에 브라우저 열기/URL 이동/페이지 대기 액션이 없어서 Oanda 웹사이트를 열고 준비 상태를 확인하는 순서를 직접 구성할 수 없음 · 액션1.loopType: 반복 방식은 ITERATOR가 적합하나 카탈로그 기본값 외 별도 지정이 필요한지 확인 필요 · Oanda 웹페이지 입력 영역에 값을 입력하는 액션이 후보 카탈로그에 없어 실제 입력 동작은 설계할 수 없음 · 후보 액션 카탈로그에 대기(Wait)나 화면 요소 읽기(Read/Get text) 계열 액션이 없어, '필요한 경우 짧게 대기한 뒤 값을 읽는다'를 A360 액션으로 구성할 수 없음 · 환율 결과 수집: 현재 행에 해당하는 표시 환율 결과를 수집하는 Oanda 웹사이트/브라우저 세션용 액션이 후보 카탈로그에 없고, 우회용 RunMacro/스크립트 실행도 제공되지 않아 자동화 액션을 설계할 수 없음 · 액션1.sessionName: Excel 세션 이름이 필요함 · 액션1.filePath: 갱신할 통합문서 파일 경로가 필요함 · 입력 행과 같은 위치의 결과 열에 값을 쓰는 액션이 후보 카탈로그에 없음 · action1.filePath: 실패 로그를 저장할 로그 파일 경로가 필요함 · action1.textToLog: 행 단위 실패 정보를 어떤 형식의 텍스트로 기록할지 필요함 · action1.writeMode: 기존 로그 파일에 추가할지, 덮어쓸지 결정 필요 · 카탈로그에 통합문서/브라우저 세션을 직접 닫는 액션이 없고, 제공된 후보 액션은 Excel 통합 문서 링크 끊기 작업뿐이라 종료 작업을 그대로 표현할 수 없다. · 만약 상위 조립 단계에 세션 종료용 RunMacro/스크립트 실행 액션이 उपलब्ध하면, 통합문서 닫기와 브라우저 세션 종료를 그 우회 수단으로 처리해야 한다. · 1페이지의 'Task 3. Oanda 사이트에서 환율 조회'는 상위 제목인지 별도 작업 식별자인지 문서 구조만으로는 완전히 확정되지 않는다. · 1페이지의 '현재 날짜와 로그 삭제 기준일을 준비한다'에서 로그 삭제 기준일의 계산 방식은 문서에 없다. · 2페이지의 '동적 결과가 표시될 수 있도록 필요한 경우 짧게 대기'는 정확한 대기 조건과 시간 기준이 문서에 없다. · 4번 종료 단계의 '목표 흐름은 필수값 검증, 폴더/로그 준비, 반복 웹 조회, 통합문서 갱신, 안전한 종료를 반영해야 한다'는 요약 문구로 보이며, 별도 실행 단계로 보지는 않았다.",
+  "original_recommendation": {
+    "notes": "후보 액션 카탈로그에 입력값 비어 있음 여부를 직접 확인하고 분기/중단하는 액션이 없어, '봇 이름'과 '벤더명'의 제공 여부를 검증하는 작업을 액션으로 설계할 수 없음 · 사용자에게 알리고 작업을 중단하는 화면 알림/중단 액션이 후보 액션 카탈로그에 없다. 제공된 후보 액션은 사용자 생성 또는 캘린더 알림 삭제뿐이라 이 단계를 자동화할 수 없다. · 액션1.sessionName: Box 세션 이름이 필요하다 · 액션1.output: 생성된 오류 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션2.sessionName: Box 세션 이름이 필요하다 · 액션2.output: 생성된 로그 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션3.sessionName: Box 세션 이름이 필요하다 · 액션3.output: 생성된 스크린샷 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 액션4.sessionName: Box 세션 이름이 필요하다 · 액션4.output: 생성된 출력 폴더 경로를 받을 변수 또는 출력 대상이 필요하다 · 현재 날짜와 로그 삭제 기준일을 준비하는 데 사용할 수 있는 후보 액션이 없어 자동화 시퀀스를 구성할 수 없음 · 액션1.sessionName: 통합 문서를 열고 관리할 세션 이름이 필요함 · 액션1.filePath: 열어야 할 Excel 통합문서의 경로가 필요함 · 액션1.sessionType: 로컬 세션 또는 글로벌 세션 중 실행 환경에 맞는 값이 필요함 · 액션1.sessionName: 열린 Excel 통합문서의 세션 이름이 필요하다 · 액션1.outputList: 읽은 행 데이터를 저장할 리스트 변수명이 필요하다 · 후보 액션 카탈로그에 행 위치를 보존하거나 인덱스를 부여하는 Excel 관련 액션이 없어 이 단계를 자동화할 액션을 설계할 수 없음 · JavaScript.javascriptRun.sessionName: Oanda 웹사이트를 열 대상 브라우저 세션 이름이 필요함 · 후보 카탈로그에 브라우저 열기/URL 이동/페이지 대기 액션이 없어서 Oanda 웹사이트를 열고 준비 상태를 확인하는 순서를 직접 구성할 수 없음 · 액션1.loopType: 반복 방식은 ITERATOR가 적합하나 카탈로그 기본값 외 별도 지정이 필요한지 확인 필요 · Oanda 웹페이지 입력 영역에 값을 입력하는 액션이 후보 카탈로그에 없어 실제 입력 동작은 설계할 수 없음 · 후보 액션 카탈로그에 대기(Wait)나 화면 요소 읽기(Read/Get text) 계열 액션이 없어, '필요한 경우 짧게 대기한 뒤 값을 읽는다'를 A360 액션으로 구성할 수 없음 · 환율 결과 수집: 현재 행에 해당하는 표시 환율 결과를 수집하는 Oanda 웹사이트/브라우저 세션용 액션이 후보 카탈로그에 없고, 우회용 RunMacro/스크립트 실행도 제공되지 않아 자동화 액션을 설계할 수 없음 · 액션1.sessionName: Excel 세션 이름이 필요함 · 액션1.filePath: 갱신할 통합문서 파일 경로가 필요함 · 입력 행과 같은 위치의 결과 열에 값을 쓰는 액션이 후보 카탈로그에 없음 · action1.filePath: 실패 로그를 저장할 로그 파일 경로가 필요함 · action1.textToLog: 행 단위 실패 정보를 어떤 형식의 텍스트로 기록할지 필요함 · action1.writeMode: 기존 로그 파일에 추가할지, 덮어쓸지 결정 필요 · 카탈로그에 통합문서/브라우저 세션을 직접 닫는 액션이 없고, 제공된 후보 액션은 Excel 통합 문서 링크 끊기 작업뿐이라 종료 작업을 그대로 표현할 수 없다. · 만약 상위 조립 단계에 세션 종료용 RunMacro/스크립트 실행 액션이 उपलब्ध하면, 통합문서 닫기와 브라우저 세션 종료를 그 우회 수단으로 처리해야 한다. · 1페이지의 'Task 3. Oanda 사이트에서 환율 조회'는 상위 제목인지 별도 작업 식별자인지 문서 구조만으로는 완전히 확정되지 않는다. · 1페이지의 '현재 날짜와 로그 삭제 기준일을 준비한다'에서 로그 삭제 기준일의 계산 방식은 문서에 없다. · 2페이지의 '동적 결과가 표시될 수 있도록 필요한 경우 짧게 대기'는 정확한 대기 조건과 시간 기준이 문서에 없다. · 4번 종료 단계의 '목표 흐름은 필수값 검증, 폴더/로그 준비, 반복 웹 조회, 통합문서 갱신, 안전한 종료를 반영해야 한다'는 요약 문구로 보이며, 별도 실행 단계로 보지는 않았다.",
+    "schema_version": "1.0",
+    "steps": [
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-1"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-2"
+      },
+      {
+        "actions": [
+          {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "오류 폴더 생성",
+            "order": 1,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "오류",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 오류 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "로그 폴더 생성",
+            "order": 2,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "로그",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 로그 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "스크린샷 폴더 생성",
+            "order": 3,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "스크린샷",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 스크린샷 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "출력 폴더 생성",
+            "order": 4,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "출력",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 출력 영역 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-3"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-4"
+      },
+      {
+        "actions": [
+          {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.53,
+            "label": "통합 문서 열기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "환율 조회 대상이 들어 있는 Excel 통합문서를 열어 이후 조회 작업에 사용할 열린 세션을 만든다.",
+            "sources": [
+              {
+                "score": 0.52734375,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-5"
+      },
+      {
+        "actions": [
+          {
+            "action": "excelAdvancedPackageReadRowAction",
+            "children": [],
+            "confidence": 0.56,
+            "label": "조회 대상 행 읽기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "startFrom",
+                "value": "activeCell",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readMode",
+                "value": "readVisibleText",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputList",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "열린 Excel 통합문서에서 현재 환율 값을 조회할 대상 행 목록을 읽어 출력한다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 행 읽기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-6"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-7"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-8"
+      },
+      {
+        "actions": [
+          {
+            "action": "loop.commands.start",
+            "children": [],
+            "confidence": 0.85,
+            "label": "각 통화 조회 대상 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "통합문서의 각 통화 조회 대상마다 반복해 웹 입력 영역에 값을 넣는 단계이므로 반복 루프를 시작한다.",
+            "sources": []
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-9"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-10"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-11"
+      },
+      {
+        "actions": [
+          {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.43,
+            "label": "통합 문서 생성",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": "로컬 세션",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "조회한 환율을 결과 열에 기록하려면 대상 Excel 통합문서를 여는 세션이 필요하다.",
+            "sources": [
+              {
+                "score": 0.4296875,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-12"
+      },
+      {
+        "actions": [
+          {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.48,
+            "label": "실패 로그 파일에 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "행 단위 실패가 발생했을 때 로그 파일에 실패 정보를 남겨 전체 배치 영향 없이 추적할 수 있도록 한다.",
+            "sources": [
+              {
+                "score": 0.478515625,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-13"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-14"
+      }
+    ],
+    "variables": [
+      {
+        "description": "필수 입력값으로, 비어 있으면 이후 작업을 중단해야 함",
+        "direction": "input",
+        "name": "봇 이름",
+        "type": "STRING"
+      },
+      {
+        "description": "필수 입력값으로, 비어 있으면 이후 작업을 중단해야 함",
+        "direction": "input",
+        "name": "벤더명",
+        "type": "STRING"
+      },
+      {
+        "description": "필수값이 비어 있는지 판정한 결과",
+        "direction": "input",
+        "name": "필수값 확인 결과",
+        "type": "STRING"
+      },
+      {
+        "description": "공유 루트 경로",
+        "direction": "input",
+        "name": "sharedRoot",
+        "type": "STRING"
+      },
+      {
+        "description": "오류 폴더 경로",
+        "direction": "output",
+        "name": "errorFolder",
+        "type": "STRING"
+      },
+      {
+        "description": "로그 폴더 경로",
+        "direction": "output",
+        "name": "logFolder",
+        "type": "STRING"
+      },
+      {
+        "description": "스크린샷 폴더 경로",
+        "direction": "output",
+        "name": "screenshotFolder",
+        "type": "STRING"
+      },
+      {
+        "description": "출력 영역 폴더 경로",
+        "direction": "output",
+        "name": "outputFolder",
+        "type": "STRING"
+      },
+      {
+        "description": "현재 날짜",
+        "direction": "input",
+        "name": "current_date",
+        "type": "STRING"
+      },
+      {
+        "description": "로그 삭제 기준일",
+        "direction": "input",
+        "name": "retention_cutoff_date",
+        "type": "STRING"
+      },
+      {
+        "description": "열린 Excel 통합문서 세션",
+        "direction": "output",
+        "name": "openedWorkbookSession",
+        "type": "SESSION"
+      },
+      {
+        "description": "현재 환율 값을 조회해야 하는 행 목록",
+        "direction": "local",
+        "name": "조회 대상 행 목록",
+        "type": "TABLE"
+      },
+      {
+        "description": "원래 행에 다시 쓸 수 있도록 보존한 행 위치 정보",
+        "direction": "local",
+        "name": "행 위치 정보",
+        "type": "TABLE"
+      },
+      {
+        "description": "Oanda 웹사이트를 열 브라우저 세션",
+        "direction": "input",
+        "name": "브라우저 세션",
+        "type": "SESSION"
+      },
+      {
+        "description": "결과 조회에 사용되는 입력값",
+        "direction": "input",
+        "name": "조회 대상값",
+        "type": "STRING"
+      },
+      {
+        "description": "대기 후 읽어야 하는 결과 상태",
+        "direction": "local",
+        "name": "조회 가능한 결과 상태",
+        "type": "STRING"
+      },
+      {
+        "description": "현재 행에 해당하는 표시 환율 결과",
+        "direction": "output",
+        "name": "표시 환율 결과",
+        "type": "STRING"
+      },
+      {
+        "description": "조회한 환율 결과 값",
+        "direction": "input",
+        "name": "환율 결과",
+        "type": "STRING"
+      },
+      {
+        "description": "실패 로그에 기록할 행 단위 실패 내용",
+        "direction": "input",
+        "name": "행 단위 실패 정보",
+        "type": "STRING"
+      },
+      {
+        "description": "실패 로그를 저장할 파일 경로",
+        "direction": "input",
+        "name": "로그 파일 경로",
+        "type": "STRING"
+      },
+      {
+        "description": "닫을 대상 Excel 통합문서 세션/식별자",
+        "direction": "input",
+        "name": "workbook",
+        "type": "STRING"
+      },
+      {
+        "description": "닫을 대상 브라우저 세션",
+        "direction": "input",
+        "name": "browserSession",
+        "type": "SESSION"
+      }
+    ]
+  },
+  "parent_version": null,
+  "run_id": "runner_v1_batch_20260716_13pdfs__01_0131_currency-rate---oanda",
+  "runner": "runner_v2",
+  "session_id": null,
+  "source": "backend_recommendation",
+  "source_file": "runner_v1_batch_20260716_13pdfs__01_0131_currency-rate---oanda__turnAnalyze.json",
+  "sources": [
+    {
+      "score": 0.5625,
+      "source_type": "action_schema",
+      "title": "Box - 폴더 생성 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+    },
+    {
+      "score": 0.52734375,
+      "source_type": "action_schema",
+      "title": "Excel advanced - 통합 문서 생성",
+      "url": ""
+    },
+    {
+      "score": 0.5625,
+      "source_type": "action_schema",
+      "title": "Excel advanced - 행 읽기 작업",
+      "url": ""
+    },
+    {
+      "score": 0.478515625,
+      "source_type": "action_schema",
+      "title": "Logging - 파일에 텍스트 기록 작업 사용",
+      "url": ""
+    }
+  ],
+  "steps": [
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-1"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-1"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-2"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-2"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-3"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "오류 폴더 생성",
+            "order": 1,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "오류",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 오류 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "로그 폴더 생성",
+            "order": 2,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "로그",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 로그 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "스크린샷 폴더 생성",
+            "order": 3,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "스크린샷",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 스크린샷 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "출력 폴더 생성",
+            "order": 4,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "출력",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 출력 영역 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-3"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "boxCrtFldr",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "newFolderName",
+              "original_parameter": {
+                "label": null,
+                "name": "newFolderName",
+                "value": "오류",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "오류",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "output",
+              "original_parameter": {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.56,
+                  "label": "오류 폴더 생성",
+                  "order": 1,
+                  "rationale": "공유 루트 아래에 오류 폴더를 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.5625,
+                      "source_type": "action_schema",
+                      "title": "Box - 폴더 생성 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "오류 폴더 생성",
+            "order": 1,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "오류",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 오류 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          "package": "Box",
+          "type": "action"
+        },
+        {
+          "action": "boxCrtFldr",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "newFolderName",
+              "original_parameter": {
+                "label": null,
+                "name": "newFolderName",
+                "value": "로그",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "로그",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "output",
+              "original_parameter": {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.56,
+                  "label": "로그 폴더 생성",
+                  "order": 2,
+                  "rationale": "공유 루트 아래에 로그 폴더를 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.5625,
+                      "source_type": "action_schema",
+                      "title": "Box - 폴더 생성 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "로그 폴더 생성",
+            "order": 2,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "로그",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 로그 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          "package": "Box",
+          "type": "action"
+        },
+        {
+          "action": "boxCrtFldr",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "newFolderName",
+              "original_parameter": {
+                "label": null,
+                "name": "newFolderName",
+                "value": "스크린샷",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "스크린샷",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "output",
+              "original_parameter": {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.56,
+                  "label": "스크린샷 폴더 생성",
+                  "order": 3,
+                  "rationale": "공유 루트 아래에 스크린샷 폴더를 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.5625,
+                      "source_type": "action_schema",
+                      "title": "Box - 폴더 생성 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "스크린샷 폴더 생성",
+            "order": 3,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "스크린샷",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 스크린샷 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          "package": "Box",
+          "type": "action"
+        },
+        {
+          "action": "boxCrtFldr",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "newFolderName",
+              "original_parameter": {
+                "label": null,
+                "name": "newFolderName",
+                "value": "출력",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "출력",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "output",
+              "original_parameter": {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.56,
+                  "label": "출력 폴더 생성",
+                  "order": 4,
+                  "rationale": "공유 루트 아래에 출력 영역 폴더를 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.5625,
+                      "source_type": "action_schema",
+                      "title": "Box - 폴더 생성 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "boxCrtFldr",
+            "children": [],
+            "confidence": 0.56,
+            "label": "출력 폴더 생성",
+            "order": 4,
+            "package": "Box",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "newFolderName",
+                "value": "출력",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "output",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "공유 루트 아래에 출력 영역 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Box - 폴더 생성 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/box-pkg/box-crt-fldr"
+              }
+            ]
+          },
+          "package": "Box",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-4"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-4"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-5"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.53,
+            "label": "통합 문서 열기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "환율 조회 대상이 들어 있는 Excel 통합문서를 열어 이후 조회 작업에 사용할 열린 세션을 만든다.",
+            "sources": [
+              {
+                "score": 0.52734375,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-5"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "excelAdvancedPackageCreateWorkbookAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "sessionType",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionType",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.53,
+                  "label": "통합 문서 열기",
+                  "order": 1,
+                  "rationale": "환율 조회 대상이 들어 있는 Excel 통합문서를 열어 이후 조회 작업에 사용할 열린 세션을 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.52734375,
+                      "source_type": "action_schema",
+                      "title": "Excel advanced - 통합 문서 생성",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.53,
+            "label": "통합 문서 열기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "환율 조회 대상이 들어 있는 Excel 통합문서를 열어 이후 조회 작업에 사용할 열린 세션을 만든다.",
+            "sources": [
+              {
+                "score": 0.52734375,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Excel advanced",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-6"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "excelAdvancedPackageReadRowAction",
+            "children": [],
+            "confidence": 0.56,
+            "label": "조회 대상 행 읽기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "startFrom",
+                "value": "activeCell",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readMode",
+                "value": "readVisibleText",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputList",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "열린 Excel 통합문서에서 현재 환율 값을 조회할 대상 행 목록을 읽어 출력한다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 행 읽기 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-6"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "excelAdvancedPackageReadRowAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "startFrom",
+              "original_parameter": {
+                "label": null,
+                "name": "startFrom",
+                "value": "activeCell",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "activeCell",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "readMode",
+              "original_parameter": {
+                "label": null,
+                "name": "readMode",
+                "value": "readVisibleText",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "readVisibleText",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "outputList",
+              "original_parameter": {
+                "label": null,
+                "name": "outputList",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.56,
+                  "label": "조회 대상 행 읽기",
+                  "order": 1,
+                  "rationale": "열린 Excel 통합문서에서 현재 환율 값을 조회할 대상 행 목록을 읽어 출력한다.",
+                  "sources": [
+                    {
+                      "score": 0.5625,
+                      "source_type": "action_schema",
+                      "title": "Excel advanced - 행 읽기 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "excelAdvancedPackageReadRowAction",
+            "children": [],
+            "confidence": 0.56,
+            "label": "조회 대상 행 읽기",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "startFrom",
+                "value": "activeCell",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "readMode",
+                "value": "readVisibleText",
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "outputList",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "열린 Excel 통합문서에서 현재 환율 값을 조회할 대상 행 목록을 읽어 출력한다.",
+            "sources": [
+              {
+                "score": 0.5625,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 행 읽기 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Excel advanced",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-7"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-7"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-8"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-8"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-9"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "loop.commands.start",
+            "children": [],
+            "confidence": 0.85,
+            "label": "각 통화 조회 대상 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "통합문서의 각 통화 조회 대상마다 반복해 웹 입력 영역에 값을 넣는 단계이므로 반복 루프를 시작한다.",
+            "sources": []
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-9"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "loop.commands.start",
+          "attributes": [
+            {
+              "label": null,
+              "name": "loopType",
+              "original_parameter": {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.85,
+                  "label": "각 통화 조회 대상 반복",
+                  "order": 1,
+                  "rationale": "통합문서의 각 통화 조회 대상마다 반복해 웹 입력 영역에 값을 넣는 단계이므로 반복 루프를 시작한다.",
+                  "sources": []
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "loop.commands.start",
+            "children": [],
+            "confidence": 0.85,
+            "label": "각 통화 조회 대상 반복",
+            "order": 1,
+            "package": "Loop",
+            "parameters": [
+              {
+                "label": null,
+                "name": "loopType",
+                "value": "ITERATOR",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "통합문서의 각 통화 조회 대상마다 반복해 웹 입력 영역에 값을 넣는 단계이므로 반복 루프를 시작한다.",
+            "sources": []
+          },
+          "package": "Loop",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-10"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-10"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-11"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-11"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-12"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.43,
+            "label": "통합 문서 생성",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": "로컬 세션",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "조회한 환율을 결과 열에 기록하려면 대상 Excel 통합문서를 여는 세션이 필요하다.",
+            "sources": [
+              {
+                "score": 0.4296875,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-12"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "excelAdvancedPackageCreateWorkbookAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "sessionType",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionType",
+                "value": "로컬 세션",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "로컬 세션",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.43,
+                  "label": "통합 문서 생성",
+                  "order": 1,
+                  "rationale": "조회한 환율을 결과 열에 기록하려면 대상 Excel 통합문서를 여는 세션이 필요하다.",
+                  "sources": [
+                    {
+                      "score": 0.4296875,
+                      "source_type": "action_schema",
+                      "title": "Excel advanced - 통합 문서 생성",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "excelAdvancedPackageCreateWorkbookAction",
+            "children": [],
+            "confidence": 0.43,
+            "label": "통합 문서 생성",
+            "order": 1,
+            "package": "Excel advanced",
+            "parameters": [
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionType",
+                "value": "로컬 세션",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "조회한 환율을 결과 열에 기록하려면 대상 Excel 통합문서를 여는 세션이 필요하다.",
+            "sources": [
+              {
+                "score": 0.4296875,
+                "source_type": "action_schema",
+                "title": "Excel advanced - 통합 문서 생성",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Excel advanced",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-13"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.48,
+            "label": "실패 로그 파일에 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "행 단위 실패가 발생했을 때 로그 파일에 실패 정보를 남겨 전체 배치 영향 없이 추적할 수 있도록 한다.",
+            "sources": [
+              {
+                "score": 0.478515625,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-13"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "cloudInsertingLogToFileCommand",
+          "attributes": [
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "textToLog",
+              "original_parameter": {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "addTimestamp",
+              "original_parameter": {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "encoding",
+              "original_parameter": {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "UTF8",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.48,
+                  "label": "실패 로그 파일에 기록",
+                  "order": 1,
+                  "rationale": "행 단위 실패가 발생했을 때 로그 파일에 실패 정보를 남겨 전체 배치 영향 없이 추적할 수 있도록 한다.",
+                  "sources": [
+                    {
+                      "score": 0.478515625,
+                      "source_type": "action_schema",
+                      "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.48,
+            "label": "실패 로그 파일에 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "행 단위 실패가 발생했을 때 로그 파일에 실패 정보를 남겨 전체 배치 영향 없이 추적할 수 있도록 한다.",
+            "sources": [
+              {
+                "score": 0.478515625,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Logging",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-14"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-14"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    }
+  ],
+  "triggers": [],
+  "usage_gauge": {
+    "compact_recommended": false,
+    "compact_required": false,
+    "intake_tokens": 777,
+    "limit_tokens": 6000,
+    "ratio": 0.1295
+  },
+  "variables": [
+    {
+      "description": "필수 입력값으로, 비어 있으면 이후 작업을 중단해야 함",
+      "direction": "input",
+      "name": "봇 이름",
+      "type": "STRING"
+    },
+    {
+      "description": "필수 입력값으로, 비어 있으면 이후 작업을 중단해야 함",
+      "direction": "input",
+      "name": "벤더명",
+      "type": "STRING"
+    },
+    {
+      "description": "필수값이 비어 있는지 판정한 결과",
+      "direction": "input",
+      "name": "필수값 확인 결과",
+      "type": "STRING"
+    },
+    {
+      "description": "공유 루트 경로",
+      "direction": "input",
+      "name": "sharedRoot",
+      "type": "STRING"
+    },
+    {
+      "description": "오류 폴더 경로",
+      "direction": "output",
+      "name": "errorFolder",
+      "type": "STRING"
+    },
+    {
+      "description": "로그 폴더 경로",
+      "direction": "output",
+      "name": "logFolder",
+      "type": "STRING"
+    },
+    {
+      "description": "스크린샷 폴더 경로",
+      "direction": "output",
+      "name": "screenshotFolder",
+      "type": "STRING"
+    },
+    {
+      "description": "출력 영역 폴더 경로",
+      "direction": "output",
+      "name": "outputFolder",
+      "type": "STRING"
+    },
+    {
+      "description": "현재 날짜",
+      "direction": "input",
+      "name": "current_date",
+      "type": "STRING"
+    },
+    {
+      "description": "로그 삭제 기준일",
+      "direction": "input",
+      "name": "retention_cutoff_date",
+      "type": "STRING"
+    },
+    {
+      "description": "열린 Excel 통합문서 세션",
+      "direction": "output",
+      "name": "openedWorkbookSession",
+      "type": "SESSION"
+    },
+    {
+      "description": "현재 환율 값을 조회해야 하는 행 목록",
+      "direction": "local",
+      "name": "조회 대상 행 목록",
+      "type": "TABLE"
+    },
+    {
+      "description": "원래 행에 다시 쓸 수 있도록 보존한 행 위치 정보",
+      "direction": "local",
+      "name": "행 위치 정보",
+      "type": "TABLE"
+    },
+    {
+      "description": "Oanda 웹사이트를 열 브라우저 세션",
+      "direction": "input",
+      "name": "브라우저 세션",
+      "type": "SESSION"
+    },
+    {
+      "description": "결과 조회에 사용되는 입력값",
+      "direction": "input",
+      "name": "조회 대상값",
+      "type": "STRING"
+    },
+    {
+      "description": "대기 후 읽어야 하는 결과 상태",
+      "direction": "local",
+      "name": "조회 가능한 결과 상태",
+      "type": "STRING"
+    },
+    {
+      "description": "현재 행에 해당하는 표시 환율 결과",
+      "direction": "output",
+      "name": "표시 환율 결과",
+      "type": "STRING"
+    },
+    {
+      "description": "조회한 환율 결과 값",
+      "direction": "input",
+      "name": "환율 결과",
+      "type": "STRING"
+    },
+    {
+      "description": "실패 로그에 기록할 행 단위 실패 내용",
+      "direction": "input",
+      "name": "행 단위 실패 정보",
+      "type": "STRING"
+    },
+    {
+      "description": "실패 로그를 저장할 파일 경로",
+      "direction": "input",
+      "name": "로그 파일 경로",
+      "type": "STRING"
+    },
+    {
+      "description": "닫을 대상 Excel 통합문서 세션/식별자",
+      "direction": "input",
+      "name": "workbook",
+      "type": "STRING"
+    },
+    {
+      "description": "닫을 대상 브라우저 세션",
+      "direction": "input",
+      "name": "browserSession",
+      "type": "SESSION"
+    }
+  ]
+}

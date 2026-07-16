@@ -1,0 +1,137 @@
+{
+  "source": "eval_inputs/extracted_workflows_13",
+  "description": "Regenerated pm4py_13 artifacts for the 13 eval-input cases.",
+  "case_count": 13,
+  "entries": [
+    {
+      "case_dir": "01_0374_createprojectinjirausingapi",
+      "bot_name": "0374_createprojectinjirausingapi",
+      "source_count": 1,
+      "files": [
+        "CreateProjectInJIRAusingAPI.pnml",
+        "CreateProjectInJIRAusingAPI.ptml",
+        "CreateProjectInJIRAusingAPI.tree.json"
+      ]
+    },
+    {
+      "case_dir": "02_0419_sendbulkemailswithtemplate",
+      "bot_name": "0419_sendbulkemailswithtemplate",
+      "source_count": 1,
+      "files": [
+        "SendBulkEmailsWithTemplate.pnml",
+        "SendBulkEmailsWithTemplate.ptml",
+        "SendBulkEmailsWithTemplate.tree.json"
+      ]
+    },
+    {
+      "case_dir": "03_0131_currency-rate---oanda",
+      "bot_name": "0131_currency-rate---oanda",
+      "source_count": 1,
+      "files": [
+        "Currency Rate - Oanda.pnml",
+        "Currency Rate - Oanda.ptml",
+        "Currency Rate - Oanda.tree.json"
+      ]
+    },
+    {
+      "case_dir": "04_0176_global-exchange-currency-rate",
+      "bot_name": "0176_global-exchange-currency-rate",
+      "source_count": 1,
+      "files": [
+        "Global Exchange Currency Rate.pnml",
+        "Global Exchange Currency Rate.ptml",
+        "Global Exchange Currency Rate.tree.json"
+      ]
+    },
+    {
+      "case_dir": "05_0393_a2019-twilio-integration",
+      "bot_name": "0393_a2019-twilio-integration",
+      "source_count": 1,
+      "files": [
+        "A2019 Twilio Integration.pnml",
+        "A2019 Twilio Integration.ptml",
+        "A2019 Twilio Integration.tree.json"
+      ]
+    },
+    {
+      "case_dir": "06_0224_extracttablesfrompdftocsv",
+      "bot_name": "0224_extracttablesfrompdftocsv",
+      "source_count": 1,
+      "files": [
+        "ExtractTablesfromPDFtoCSV.pnml",
+        "ExtractTablesfromPDFtoCSV.ptml",
+        "ExtractTablesfromPDFtoCSV.tree.json"
+      ]
+    },
+    {
+      "case_dir": "07_0225_extracttablefromwordtocsv",
+      "bot_name": "0225_extracttablefromwordtocsv",
+      "source_count": 1,
+      "files": [
+        "ExtractTablefromWordtoCSV.pnml",
+        "ExtractTablefromWordtoCSV.ptml",
+        "ExtractTablefromWordtoCSV.tree.json"
+      ]
+    },
+    {
+      "case_dir": "08_0137_sendemailusingsmtp-demo",
+      "bot_name": "0137_sendemailusingsmtp-demo",
+      "source_count": 1,
+      "files": [
+        "SendEmailUsingSMTP_Demo.pnml",
+        "SendEmailUsingSMTP_Demo.ptml",
+        "SendEmailUsingSMTP_Demo.tree.json"
+      ]
+    },
+    {
+      "case_dir": "09_0245_merge-multiple-csv-files",
+      "bot_name": "0245_merge-multiple-csv-files",
+      "source_count": 1,
+      "files": [
+        "Merge Multiple CSV Files.pnml",
+        "Merge Multiple CSV Files.ptml",
+        "Merge Multiple CSV Files.tree.json"
+      ]
+    },
+    {
+      "case_dir": "10_0302_a2019-get-current-exchange-rate",
+      "bot_name": "0302_a2019-get-current-exchange-rate",
+      "source_count": 1,
+      "files": [
+        "A2019 Get Current Exchange Rate.pnml",
+        "A2019 Get Current Exchange Rate.ptml",
+        "A2019 Get Current Exchange Rate.tree.json"
+      ]
+    },
+    {
+      "case_dir": "11_0167_outlook-email-notifier",
+      "bot_name": "0167_outlook-email-notifier",
+      "source_count": 1,
+      "files": [
+        "Outlook Email Notifier.pnml",
+        "Outlook Email Notifier.ptml",
+        "Outlook Email Notifier.tree.json"
+      ]
+    },
+    {
+      "case_dir": "12_0338_lettergenerationbot",
+      "bot_name": "0338_lettergenerationbot",
+      "source_count": 2,
+      "files": [
+        "LetterGenerationBot+SendPOF_Email.pnml",
+        "LetterGenerationBot+SendPOF_Email.ptml",
+        "LetterGenerationBot+SendPOF_Email.tree.json"
+      ]
+    },
+    {
+      "case_dir": "13_0410_a2019-invoicely-assistant",
+      "bot_name": "0410_a2019-invoicely-assistant",
+      "source_count": 1,
+      "files": [
+        "A2019-Invoicely Assistant.pnml",
+        "A2019-Invoicely Assistant.ptml",
+        "A2019-Invoicely Assistant.tree.json"
+      ]
+    }
+  ]
+}

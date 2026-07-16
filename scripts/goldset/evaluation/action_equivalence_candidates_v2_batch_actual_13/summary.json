@@ -1,0 +1,25 @@
+{
+  "gold_unique_actions": 63,
+  "agent_unique_actions": 57,
+  "candidate_rows": 15,
+  "accepted_rule_rows": 14,
+  "strong_candidate_rows": 1,
+  "possible_candidate_rows": 0,
+  "unmatched_agent_actions": 45,
+  "agent_sources": [
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs__01_0131_currency-rate---oanda\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs__01_0131_currency-rate---oanda__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__03_0225_extracttablefromwordtocsv\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__03_0225_extracttablefromwordtocsv__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__09_0410_a2019-invoicely-assistant\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__09_0410_a2019-invoicely-assistant__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__10_0419_sendbulkemailswithtemplate\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__10_0419_sendbulkemailswithtemplate__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier\\converted_recommendation\\normalized\\runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier__turnRecommend.goldset.json"
+  ],
+  "note": "Candidate pool is limited to actions present in the agent normalized output and actions present in the 13 gold normalized workflows. RAG DB actions are not used."
+}

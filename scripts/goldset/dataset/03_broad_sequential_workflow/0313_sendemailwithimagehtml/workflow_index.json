@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0313_sendemailwithimagehtml",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SendEmailWithImageHTML",
+      "manual_dependencies": [],
+      "output_file": "workflows/SendEmailWithImageHTML.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

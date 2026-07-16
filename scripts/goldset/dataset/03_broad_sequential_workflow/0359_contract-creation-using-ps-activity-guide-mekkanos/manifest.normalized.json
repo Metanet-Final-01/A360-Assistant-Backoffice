@@ -1,0 +1,894 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\Contract Creation using PS Activity Guide-Mekkanos",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_CreateFolderStructure",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ReadInputFile",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ReadUserConfig",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_SendMail"
+      ]
+    },
+    {
+      "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\PS User Config.xlsx",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution\\09573ccd-4b20-4c2e-bac9-f86723b84a4a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution\\8917e041-afeb-4d06-a13b-b2ef21565e3f.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution\\b14966f5-b976-429e-8368-b871d54b2823.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution\\ca8c308c-64c8-4509-ac88-f4194b6d75ad.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation\\17dc89c9-91ab-4526-8935-51c8e2330e3f.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation\\18deeef0-850f-485c-a6a3-68797a1670b6.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation\\6774bb97-56d1-4a56-abe7-42fad83dce63.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation\\68a614b6-9a63-48ae-af97-976ada3a8109.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation\\a7918079-d2be-412e-bae4-46bee15210f9.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation\\c8473364-3d5a-4044-b54e-8b251bad9592.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation\\da82e712-0f2d-4b01-a09b-e4dc1b254da5.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation\\dc305439-e079-4cf7-ad45-71c8517f3145.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignBillingPlan",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignBillingPlan\\268bf10f-d452-4e5a-9643-0d1c65f3fe8f.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignBillingPlan\\508e329c-7356-4408-899a-72f8ae426539.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan\\08cd0d47-72ed-4dcf-9013-6953b5f5ad27.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan\\3a7b29c1-5023-4a51-946b-e577cd258eab.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan\\5236ae06-bafb-4944-9dc7-6234b2de20dd.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan\\885a80d8-253e-48b9-aa19-4d9e0761b128.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan\\958224ef-943f-4b06-9d03-dec4c961a6f0.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan\\ae2130a5-f64b-4fb5-8387-9844d4edd631.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan\\b2929cff-b220-4b16-9e47-f804b53149d0.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan\\b77b6f4e-adf7-4cff-bbbb-4748b988d385.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\0c6a4918-d313-484d-81ea-b9b2a48e7649.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\0d5bdd7a-1913-4e2d-8ce8-f0a897c61939.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\176c5c91-5ffb-4a79-bdff-b6df17aaff61.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\1c1bfc2d-aa8b-46b6-80fb-b1326a93de1e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\38e47844-74dc-42cb-aeed-bccdfc124bcc.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\4d854129-f5c7-4a5c-8ac6-67300c17a9ee.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\4f4bfed2-281a-41fb-a8ca-2d0e24315d8e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\651e2722-ac8d-4ff0-8fca-00309f382ebb.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\851084e6-6039-448a-ac65-25d7f06a62af.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\8525c7a9-dcb7-4168-94e6-609c0a083136.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\8b14003d-a223-48bb-a8dc-c91ecb54d037.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\93931042-501e-494b-a7bc-f6d169cc9c3a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\9e63e079-f893-4398-aac5-e3a1a6b96604.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\a24d3e87-e96f-4a1b-a855-980717c32883.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\af13a6f1-4140-40c3-913e-7b09b8eadc93.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\b4497af8-e8af-4604-a0ea-06f33dcc6ec7.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\babdc6a0-f7c7-429e-ac91-368952cf6f0b.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\c61ef08c-d5de-4337-a16e-226fc5454089.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\d32e07fb-242a-4c2e-8138-5a04db34c829.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\d640e5a0-2506-4768-ab53-ca52525bdbb5.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\e0d11390-3914-4d47-bf4a-2d33896bdfb7.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\efe2d8cb-6856-438f-8766-c865515eee35.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\f6ab0751-eefb-4701-953b-f4ef9e224471.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines\\f902816a-d774-46be-a033-ee44e0362db0.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\07046624-a974-4122-9c7d-258279c0e453.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\3e70010b-eb8b-4eff-abd7-149f1db07cce.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\3f9df798-1ed2-4b73-971a-3bfd896c3133.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\49319e78-1d88-4511-ab5f-163b8cceb027.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\64b8ea94-8d5c-4817-b0c3-dcfa89b47747.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\81c31492-5f5f-4aff-859a-e806fadbac78.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\8c121b92-5813-490a-948f-695541c2f802.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\9f565fd5-3ce5-424e-a27f-443cc3a5dd88.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\b427f68b-00b4-4e0a-8ee2-e3074ce2f061.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\b86c040e-308f-4f8f-acaf-13caf6852b36.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\d7eb3c31-1205-41cd-b5f6-f3873992170b.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms\\edfe55b2-2bc6-4df8-a7fb-0525c88cd5fa.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_CreateFolderStructure",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan\\344c00bc-936f-464e-a1ed-7512d8ef4169.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan\\3c24b1f2-a31a-4026-a016-d053829248fc.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan\\7727ca50-65ea-4f85-8727-867358cff8ee.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan\\9d77c763-eac9-47d6-a4d1-1965b7aa1732.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan\\bc9dd2ab-cde9-4fe2-ae1b-208b63d3dd1d.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan\\d076da81-338d-4ffd-a9e1-8d823ef7c38a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan\\db16c8c9-38cc-4e66-92cc-ad860e4b6f98.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan\\ecbf968c-a37f-455e-8b05-7eb121c0c545.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineRevenuePlan",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineRevenuePlan\\3084883b-ee94-488e-8a1d-777434bc6f5e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineRevenuePlan",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineRevenuePlan\\eb333b42-4239-4b44-8a68-a23b04f1b798.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\102c826f-6f1a-4dc0-aab9-3062d12e966a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\3fed3020-6201-411b-9146-528b553127c3.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\4518ceff-0e6d-4870-88aa-80318c953a00.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\67a776cc-0a01-4968-a27e-2f61f644fc11.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\794ac7d0-0712-44ae-a351-2f62fa86f264.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\80b7e542-c8a6-463e-bc43-aa4c9e4df590.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\82c15d98-f08b-4105-9c66-b03ea8c8f094.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\84c6de32-2a17-41c9-a659-af5f28707787.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\9a058dfa-f055-4208-8bc5-ae3f98ae3be8.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\b7aab523-5aa4-4f42-9ad2-db7b9845a9e8.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\ed140bf7-d73c-48b9-b7c9-0aaf118450df.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation\\f8911b96-afb3-4762-a2c8-b347bccf5c4b.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot\\75909bb3-1622-4387-8322-fca6e5d5cdff.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot\\c685fb73-9267-43d4-a92b-d2d2cb9d5315.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot\\caea00b5-529a-42ab-9138-0e5ce48711ee.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot",
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_LoginBot\\f5c41a83-8a2d-47f2-8a5f-6d7039426083.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ReadInputFile",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractTerms",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AmountAllocation",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineRevenuePlan",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AccountDistribution",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignRevenuePlan",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_GeneralInformation",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ContractLines",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_AssignBillingPlan",
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_DefineBillingPlan"
+      ]
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_ReadUserConfig",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\PS User Config.xlsx"
+      ]
+    },
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Contract Creation using PS Activity Guide\\SubTask_SendMail",
+      "scannedDependencies": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Application",
+      "path": "bot-command-application-2.0.0-20200721-221935.jar",
+      "version": "2.0.0-20200721-221935"
+    },
+    {
+      "name": "Browser",
+      "path": "bot-command-browser-2.0.0-20200721-221938.jar",
+      "version": "2.0.0-20200721-221938"
+    },
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.0.0-20200721-221948.jar",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "DataTable",
+      "path": "bot-command-table-2.0.0-20200721-222456.jar",
+      "version": "2.0.0-20200721-222456"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.0.0-20200721-221958.jar",
+      "version": "2.0.0-20200721-221958"
+    },
+    {
+      "name": "Delay",
+      "path": "bot-command-delay-2.1.0-20200721-221959.jar",
+      "version": "2.1.0-20200721-221959"
+    },
+    {
+      "name": "Dictionary",
+      "path": "bot-command-dictionary-3.0.1-20200721-222000.jar",
+      "version": "3.0.1-20200721-222000"
+    },
+    {
+      "name": "Email",
+      "path": "bot-command-email-2.0.0-20200721-222003.jar",
+      "version": "2.0.0-20200721-222003"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200721-222009.jar",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200515-071432.jar",
+      "version": "2.0.0-20200515-071432"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-4.0.0-20200604-173722.jar",
+      "version": "4.0.0-20200604-173722"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-4.0.0-20200723-234413.jar",
+      "version": "4.0.0-20200723-234413"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-2.1.0-20200721-222011.jar",
+      "version": "2.1.0-20200721-222011"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-2.1.0-20200624-041640.jar",
+      "version": "2.1.0-20200624-041640"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200624-041646.jar",
+      "version": "2.0.0-20200624-041646"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200721-222021.jar",
+      "version": "2.0.0-20200721-222021"
+    },
+    {
+      "name": "Keystrokes",
+      "path": "bot-command-keystroke-2.1.0-20200721-222204.jar",
+      "version": "2.1.0-20200721-222204"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.1.0-20200721-222212.jar",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200624-041925.jar",
+      "version": "2.0.0-20200624-041925"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200515-071522.jar",
+      "version": "2.0.0-20200515-071522"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200721-222224.jar",
+      "version": "2.0.0-20200721-222224"
+    },
+    {
+      "name": "ProcessDiscovery",
+      "path": "bot-command-processdiscovery-2.0.7-20200805-233637.jar",
+      "version": "2.0.7-20200805-233637"
+    },
+    {
+      "name": "Recorder",
+      "path": "bot-command-recorder-2.0.7-20200726-053131.jar",
+      "version": "2.0.7-20200726-053131"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200519-082740.jar",
+      "version": "2.0.0-20200519-082740"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200723-201827.jar",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200515-071729.jar",
+      "version": "3.0.0-20200515-071729"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200721-222454.jar",
+      "version": "3.0.0-20200721-222454"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-2.0.0-20200721-222454.jar",
+      "version": "2.0.0-20200721-222454"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-2.0.0-20200515-071729.jar",
+      "version": "2.0.0-20200515-071729"
+    },
+    {
+      "name": "TaskBot",
+      "path": "bot-command-task-2.0.1-20200728-235256.jar",
+      "version": "2.0.1-20200728-235256"
+    },
+    {
+      "name": "Wait",
+      "path": "bot-command-wait-3.0.0-20200721-222505.jar",
+      "version": "3.0.0-20200721-222505"
+    },
+    {
+      "name": "Window",
+      "path": "bot-command-window-2.1.0-20200813-181240.jar",
+      "version": "2.1.0-20200813-181240"
+    }
+  ]
+}

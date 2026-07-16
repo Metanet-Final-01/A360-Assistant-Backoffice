@@ -1,0 +1,1631 @@
+{
+  "description": "PDF text vs normalized workflow comparison for the 13 eval inputs.",
+  "case_count": 13,
+  "rows": [
+    {
+      "case_dir": "01_0374_createprojectinjirausingapi",
+      "bot_name": "0374_createprojectinjirausingapi",
+      "pdf_file": "0374_createprojectinjirausingapi__CreateProjectInJIRAusingAPI.pdf",
+      "normalized_files": [
+        "CreateProjectInJIRAusingAPI.goldset.json"
+      ],
+      "pdf_text_length": 1177,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "환경 설정 및 요청 기준 읽기",
+        "프로젝트 요청 첨부파일 수집",
+        "프로젝트 요청 목록 읽기",
+        "프로젝트 생성 및 실패 처리"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "Excel 통합문서",
+        "JIRA REST 엔드포인트",
+        "Outlook 메일함",
+        "로컬 파일 시스템",
+        "사용자 알림 창",
+        "설정 XML",
+        "첨부파일 저장 폴더"
+      ],
+      "normalized_action_count": 17,
+      "normalized_packages": [
+        "Email",
+        "Excel_MS",
+        "MessageBox",
+        "Number",
+        "Rest",
+        "String",
+        "XML"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "XML",
+          "action": "startSession"
+        },
+        {
+          "type": "action",
+          "package": "XML",
+          "action": "getSingleNode"
+        },
+        {
+          "type": "action",
+          "package": "XML",
+          "action": "getSingleNode"
+        },
+        {
+          "type": "action",
+          "package": "XML",
+          "action": "getSingleNode"
+        },
+        {
+          "type": "action",
+          "package": "XML",
+          "action": "endSession"
+        },
+        {
+          "type": "action",
+          "package": "Email",
+          "action": "emailConnect"
+        },
+        {
+          "type": "action",
+          "package": "Email",
+          "action": "saveAttachment"
+        },
+        {
+          "type": "action",
+          "package": "Email",
+          "action": "closeEmail"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "OpenSpreadsheet"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "GetMultipleCells"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Rest",
+          "action": "restPost"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "CloseSpreadsheet"
+        },
+        {
+          "type": "action",
+          "package": "Number",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        }
+      ]
+    },
+    {
+      "case_dir": "02_0419_sendbulkemailswithtemplate",
+      "bot_name": "0419_sendbulkemailswithtemplate",
+      "pdf_file": "0419_sendbulkemailswithtemplate__SendBulkEmailsWithTemplate.pdf",
+      "normalized_files": [
+        "SendBulkEmailsWithTemplate.goldset.json"
+      ],
+      "pdf_text_length": 1206,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "실행 식별값 검증 및 폴더 준비",
+        "수신자 및 템플릿 데이터 준비",
+        "개인화 메일 작성 및 발송",
+        "결과 보관 및 마무리"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "Excel 통합문서",
+        "로그 파일",
+        "사용자 알림 창",
+        "상태 기록 통합문서",
+        "실행 변수",
+        "이메일 서비스",
+        "입력 폴더",
+        "처리 완료 폴더",
+        "출력 폴더",
+        "템플릿 데이터",
+        "폴더 구조"
+      ],
+      "normalized_action_count": 55,
+      "normalized_packages": [
+        "Datetime",
+        "Email",
+        "Excel",
+        "File",
+        "Folder",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "TaskBot",
+          "action": "stopTask"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "subtract"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        }
+      ]
+    },
+    {
+      "case_dir": "03_0131_currency-rate---oanda",
+      "bot_name": "0131_currency-rate---oanda",
+      "pdf_file": "0131_currency-rate---oanda__Currency Rate - Oanda.pdf",
+      "normalized_files": [
+        "Currency Rate - Oanda.goldset.json"
+      ],
+      "pdf_text_length": 994,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "실행 식별값 및 로그 폴더 검증",
+        "입력 통합문서 열기",
+        "Oanda 사이트에서 환율 조회",
+        "결과 기록 및 종료"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "Excel 통합문서",
+        "Oanda 웹사이트",
+        "로그 파일",
+        "브라우저 세션",
+        "사용자 알림 창",
+        "폴더 구조"
+      ],
+      "normalized_action_count": 47,
+      "normalized_packages": [
+        "Datetime",
+        "Delay",
+        "Excel_MS",
+        "File",
+        "Folder",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot",
+        "WebAutomation"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "TaskBot",
+          "action": "stopTask"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "subtract"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "OpenSpreadsheet"
+        },
+        {
+          "type": "action",
+          "package": "WebAutomation",
+          "action": "StartSessionWebAutomation"
+        },
+        {
+          "type": "action",
+          "package": "WebAutomation",
+          "action": "openpage"
+        },
+        {
+          "type": "action",
+          "package": "WebAutomation",
+          "action": "isloaded"
+        }
+      ]
+    },
+    {
+      "case_dir": "04_0176_global-exchange-currency-rate",
+      "bot_name": "0176_global-exchange-currency-rate",
+      "pdf_file": "0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf",
+      "normalized_files": [
+        "Global Exchange Currency Rate.goldset.json"
+      ],
+      "pdf_text_length": 1046,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "로컬 실행 폴더와 감사 파일 준비",
+        "환율 데이터 다운로드",
+        "다운로드 값 수집",
+        "완료 및 오류 기록"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "CSV 로그 파일",
+        "Excel/CSV 출력",
+        "다운로드 데이터 파일",
+        "로컬 파일 시스템",
+        "브라우저 세션",
+        "오류 로그",
+        "출력 폴더",
+        "환율 정보 웹사이트"
+      ],
+      "normalized_action_count": 24,
+      "normalized_packages": [
+        "Browser",
+        "Datetime",
+        "Excel_MS",
+        "File",
+        "Folder",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Recorder",
+        "String"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "createFile"
+        },
+        {
+          "type": "action",
+          "package": "LogToFile",
+          "action": "logToFile"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Browser",
+          "action": "openbrowser"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "downloadTo"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "OpenSpreadsheet"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        }
+      ]
+    },
+    {
+      "case_dir": "05_0393_a2019-twilio-integration",
+      "bot_name": "0393_a2019-twilio-integration",
+      "pdf_file": "0393_a2019-twilio-integration__A2019 Twilio Integration.pdf",
+      "normalized_files": [
+        "A2019 Twilio Integration.goldset.json"
+      ],
+      "pdf_text_length": 1079,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "실행 식별값 검증 및 작업 폴더 생성",
+        "Twilio 통신 요청 전송",
+        "응답 파싱 및 검증",
+        "운영 증적 남기기"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "JSON 응답",
+        "Twilio 서비스",
+        "로그 파일",
+        "사용자 알림 창",
+        "스크린샷 폴더",
+        "출력 폴더",
+        "통신 요청 데이터",
+        "폴더 구조"
+      ],
+      "normalized_action_count": 47,
+      "normalized_packages": [
+        "Datetime",
+        "File",
+        "Folder",
+        "JSONHandler",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot",
+        "Twilio"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "TaskBot",
+          "action": "stopTask"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "subtract"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "Twilio",
+          "action": "Send SMS from Twilio"
+        },
+        {
+          "type": "action",
+          "package": "Twilio",
+          "action": "Place a call from Twilio"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        }
+      ]
+    },
+    {
+      "case_dir": "06_0224_extracttablesfrompdftocsv",
+      "bot_name": "0224_extracttablesfrompdftocsv",
+      "pdf_file": "0224_extracttablesfrompdftocsv__ExtractTablesfromPDFtoCSV.pdf",
+      "normalized_files": [
+        "ExtractTablesfromPDFtoCSV.goldset.json"
+      ],
+      "pdf_text_length": 797,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "원본 및 대상 파일 지정",
+        "표 추출 컴포넌트 로드",
+        "변환 실행 및 결과 보고"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 3,
+      "system_terms": [
+        "Bot Store 저장소",
+        "CSV 출력 파일",
+        "PDF 입력 파일",
+        "PDF 표 추출기",
+        "사용자 알림 창",
+        "외부 변환 컴포넌트",
+        "인수 딕셔너리"
+      ],
+      "normalized_action_count": 10,
+      "normalized_packages": [
+        "DLL",
+        "Dictionary",
+        "MessageBox",
+        "String"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Dictionary",
+          "action": "put"
+        },
+        {
+          "type": "action",
+          "package": "Dictionary",
+          "action": "put"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Open"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Open"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Run function"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Close"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Close"
+        }
+      ]
+    },
+    {
+      "case_dir": "07_0225_extracttablefromwordtocsv",
+      "bot_name": "0225_extracttablefromwordtocsv",
+      "pdf_file": "0225_extracttablefromwordtocsv__ExtractTablefromWordtoCSV.pdf",
+      "normalized_files": [
+        "ExtractTablefromWordtoCSV.goldset.json"
+      ],
+      "pdf_text_length": 830,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "원본 및 대상 파일 지정",
+        "문서 변환 컴포넌트 로드",
+        "변환 실행 및 결과 보고"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 3,
+      "system_terms": [
+        "Bot Store 저장소",
+        "CSV 출력 파일",
+        "Word 입력 문서",
+        "Word 표 추출기",
+        "사용자 알림 창",
+        "외부 변환 컴포넌트",
+        "인수 딕셔너리"
+      ],
+      "normalized_action_count": 10,
+      "normalized_packages": [
+        "DLL",
+        "Dictionary",
+        "MessageBox",
+        "String"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Dictionary",
+          "action": "put"
+        },
+        {
+          "type": "action",
+          "package": "Dictionary",
+          "action": "put"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Open"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Open"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Run function"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Close"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Close"
+        }
+      ]
+    },
+    {
+      "case_dir": "08_0137_sendemailusingsmtp-demo",
+      "bot_name": "0137_sendemailusingsmtp-demo",
+      "pdf_file": "0137_sendemailusingsmtp-demo__SendEmailUsingSMTP_Demo.pdf",
+      "normalized_files": [
+        "SendEmailUsingSMTP_Demo.goldset.json"
+      ],
+      "pdf_text_length": 811,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "SMTP 도우미 로드",
+        "메일 필드 준비",
+        "발송 및 종료"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 3,
+      "system_terms": [
+        "Bot Store 저장소",
+        "SMTP 도우미 컴포넌트",
+        "SMTP 메일 필드",
+        "실행 출력 변수"
+      ],
+      "normalized_action_count": 3,
+      "normalized_packages": [
+        "DLL"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Open"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Close"
+        }
+      ]
+    },
+    {
+      "case_dir": "09_0245_merge-multiple-csv-files",
+      "bot_name": "0245_merge-multiple-csv-files",
+      "pdf_file": "0245_merge-multiple-csv-files__Merge Multiple CSV Files.pdf",
+      "normalized_files": [
+        "Merge Multiple CSV Files.goldset.json"
+      ],
+      "pdf_text_length": 1040,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "실행 식별값 검증 및 작업 영역 준비",
+        "병합 대상 파일 수집",
+        "통합 컴포넌트 실행",
+        "보관 및 종료"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "CSV 병합 컴포넌트",
+        "CSV 파일",
+        "로그 파일",
+        "사용자 알림 창",
+        "입력 폴더",
+        "처리 완료 폴더",
+        "출력 폴더",
+        "폴더 구조"
+      ],
+      "normalized_action_count": 29,
+      "normalized_packages": [
+        "DLL",
+        "Datetime",
+        "File",
+        "Folder",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "TaskBot",
+          "action": "stopTask"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "subtract"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "downloadTo"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "downloadTo"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        }
+      ]
+    },
+    {
+      "case_dir": "10_0302_a2019-get-current-exchange-rate",
+      "bot_name": "0302_a2019-get-current-exchange-rate",
+      "pdf_file": "0302_a2019-get-current-exchange-rate__A2019 Get Current Exchange Rate.pdf",
+      "normalized_files": [
+        "A2019 Get Current Exchange Rate.goldset.json"
+      ],
+      "pdf_text_length": 894,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "데스크톱 작업 영역 준비",
+        "환율 조회 요청값 설정",
+        "환율 조회 도우미 실행",
+        "결과 보고"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "Windows 사용자 프로필",
+        "로그 폴더",
+        "바탕화면 폴더",
+        "사용자 알림 창",
+        "외부 라이브러리 컴포넌트",
+        "인수 딕셔너리",
+        "통화 조회 요청 데이터",
+        "환율 조회 도우미 컴포넌트"
+      ],
+      "normalized_action_count": 18,
+      "normalized_packages": [
+        "DLL",
+        "Dictionary",
+        "Folder",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "String",
+        "System"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "System",
+          "action": "systemInformation"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Dictionary",
+          "action": "put"
+        },
+        {
+          "type": "action",
+          "package": "Dictionary",
+          "action": "put"
+        },
+        {
+          "type": "action",
+          "package": "Dictionary",
+          "action": "put"
+        },
+        {
+          "type": "action",
+          "package": "Dictionary",
+          "action": "put"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Open"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Open"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Run function"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Close"
+        },
+        {
+          "type": "action",
+          "package": "DLL",
+          "action": "Close"
+        },
+        {
+          "type": "action",
+          "package": "Number",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "LogToFile",
+          "action": "logToFile"
+        }
+      ]
+    },
+    {
+      "case_dir": "11_0167_outlook-email-notifier",
+      "bot_name": "0167_outlook-email-notifier",
+      "pdf_file": "0167_outlook-email-notifier__Outlook Email Notifier.pdf",
+      "normalized_files": [
+        "Outlook Email Notifier.goldset.json"
+      ],
+      "pdf_text_length": 977,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "작업 폴더와 로그 준비",
+        "메일함 자격 증명 읽기",
+        "메일함 확인 및 알림",
+        "리소스 종료"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "CSV 로그 파일",
+        "Excel 통합문서",
+        "Outlook 메일함",
+        "로컬 파일 시스템",
+        "사용자 알림 창",
+        "오류 로그",
+        "자격 증명 데이터",
+        "출력 CSV"
+      ],
+      "normalized_action_count": 24,
+      "normalized_packages": [
+        "Datetime",
+        "Email",
+        "Excel_MS",
+        "File",
+        "Folder",
+        "LogToFile",
+        "MessageBox",
+        "String"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "createFile"
+        },
+        {
+          "type": "action",
+          "package": "LogToFile",
+          "action": "logToFile"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "OpenSpreadsheet"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "readExcelRow"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "readExcelRow"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "readExcelRow"
+        },
+        {
+          "type": "action",
+          "package": "Email",
+          "action": "emailConnect"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "createFile"
+        },
+        {
+          "type": "action",
+          "package": "LogToFile",
+          "action": "logToFile"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "LogToFile",
+          "action": "logToFile"
+        }
+      ]
+    },
+    {
+      "case_dir": "12_0338_lettergenerationbot",
+      "bot_name": "0338_lettergenerationbot",
+      "pdf_file": "0338_lettergenerationbot__LetterGenerationBot+SendPOF_Email.pdf",
+      "normalized_files": [
+        "LetterGenerationBot+SendPOF_Email.goldset.json"
+      ],
+      "pdf_text_length": 1310,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "요청 검증 및 실행 폴더 준비",
+        "고객 요청 정보 수집",
+        "계좌 요약 계산",
+        "편지 문서 생성",
+        "생성 편지 발송"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 5,
+      "system_terms": [
+        "JSON 응답",
+        "Word 템플릿",
+        "고객 계좌 API",
+        "로그 파일",
+        "목록 및 합계 계산",
+        "브라우저 기반 고객 시스템",
+        "사용자 알림 창",
+        "생성 문서",
+        "생성된 편지 첨부파일",
+        "실행 로그",
+        "이메일 서비스",
+        "출력 폴더",
+        "폴더 구조"
+      ],
+      "normalized_action_count": 98,
+      "normalized_packages": [
+        "Boolean",
+        "Browser",
+        "Datetime",
+        "Email",
+        "File",
+        "Folder",
+        "JSONHandler",
+        "List",
+        "LogToFile",
+        "MSWordPackage",
+        "MessageBox",
+        "Number",
+        "Recorder",
+        "Rest",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "TaskBot",
+          "action": "stopTask"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "String",
+          "action": "assign"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "subtract"
+        },
+        {
+          "type": "action",
+          "package": "Datetime",
+          "action": "toString"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "File",
+          "action": "deleteFiles"
+        },
+        {
+          "type": "action",
+          "package": "Browser",
+          "action": "launchWebsite"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        }
+      ]
+    },
+    {
+      "case_dir": "13_0410_a2019-invoicely-assistant",
+      "bot_name": "0410_a2019-invoicely-assistant",
+      "pdf_file": "0410_a2019-invoicely-assistant__A2019-Invoicely Assistant.pdf",
+      "normalized_files": [
+        "A2019-Invoicely Assistant.goldset.json"
+      ],
+      "pdf_text_length": 1051,
+      "title_in_pdf_text": true,
+      "task_names_found_in_pdf_text": [
+        "Invoicely 열기 및 로그인",
+        "청구 행 로드",
+        "웹 양식에 인보이스 작성",
+        "완료 상태 기록"
+      ],
+      "task_names_missing_from_pdf_text": [],
+      "task_count": 4,
+      "system_terms": [
+        "Chrome 브라우저",
+        "Excel 통합문서",
+        "Invoicely 웹사이트",
+        "Invoicely 인보이스 양식",
+        "로그/출력 파일",
+        "브라우저 세션",
+        "사용자 알림 창",
+        "출력/로그 폴더"
+      ],
+      "normalized_action_count": 31,
+      "normalized_packages": [
+        "Browser",
+        "Excel_MS",
+        "Folder",
+        "LogToFile",
+        "MessageBox",
+        "Recorder"
+      ],
+      "normalized_actions_sample": [
+        {
+          "type": "action",
+          "package": "Browser",
+          "action": "launchWebsite"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Folder",
+          "action": "createFolder"
+        },
+        {
+          "type": "action",
+          "package": "MessageBox",
+          "action": "messageBox"
+        },
+        {
+          "type": "action",
+          "package": "LogToFile",
+          "action": "logToFile"
+        },
+        {
+          "type": "action",
+          "package": "LogToFile",
+          "action": "logToFile"
+        },
+        {
+          "type": "action",
+          "package": "Excel_MS",
+          "action": "OpenSpreadsheet"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        },
+        {
+          "type": "action",
+          "package": "Recorder",
+          "action": "capture"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,577 @@
+{
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "formId",
+          "value": {
+            "string": "3883"
+          }
+        },
+        {
+          "name": "stepInput",
+          "value": {
+            "taskbotFile": {
+              "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20AARI%20for%20Web%20-%20PoF%20Letter%20Generation/EnterCustomerID",
+              "type": "TASKBOT"
+            },
+            "type": "TASKBOT"
+          }
+        },
+        {
+          "name": "caseTitle",
+          "value": {
+            "string": "Enter Customer ID"
+          }
+        },
+        {
+          "name": "stepTitle",
+          "value": {
+            "string": "Request Creation - Enter Customer ID"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "stepId",
+              "value": {
+                "string": "0a15bd3e-58f9-45fc-bce2-00797804b3be"
+              }
+            }
+          ],
+          "children": [],
+          "commandName": "schedule",
+          "packageName": "HBCWorkflow",
+          "uid": "4f4dd37e-875f-45b1-ae39-7de1598ea17d"
+        }
+      ],
+      "commandName": "InitialStep",
+      "packageName": "HBCWorkflow",
+      "uid": "26ca3fe9-a02e-40eb-91a6-d3db944ad91e"
+    },
+    {
+      "attributes": [
+        {
+          "name": "stepAlias",
+          "value": {
+            "string": "GenerateLetter"
+          }
+        },
+        {
+          "name": "stepTitle",
+          "value": {
+            "string": "Research Customer and Generate Letter"
+          }
+        },
+        {
+          "name": "stepInput",
+          "value": {
+            "taskbotFile": {
+              "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20AARI%20for%20Web%20-%20PoF%20Letter%20Generation/LetterGenerationBot",
+              "type": "TASKBOT"
+            },
+            "taskbotInput": {
+              "dictionary": [
+                {
+                  "key": "sCustomerID_input",
+                  "value": {
+                    "expression": "$input[TextBox0]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "type": "DICTIONARY"
+            },
+            "type": "TASKBOT"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$GenerateLetter.output[bCustomerMatched_output]$",
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "boolean": "true",
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "booleanVariable",
+                "packageName": "Boolean",
+                "type": "CONDITIONAL"
+              }
+            },
+            {
+              "name": "stepAlias",
+              "value": {
+                "string": "Validate Customer Exists"
+              }
+            },
+            {
+              "name": "stepTitle",
+              "value": {
+                "string": "Validate Customer Exists"
+              }
+            },
+            {
+              "name": "stepStatus",
+              "value": {
+                "string": "Checking for validity of customer"
+              }
+            }
+          ],
+          "branches": [
+            {
+              "_hovered": false,
+              "attributes": [
+                {
+                  "name": "stepTitle",
+                  "value": {
+                    "string": "Customer Does Not Exist"
+                  }
+                },
+                {
+                  "name": "stepStatus",
+                  "value": {
+                    "string": "Bot was unable to validate customer"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "caseExit",
+                      "value": {
+                        "string": "ERROR"
+                      }
+                    },
+                    {
+                      "name": "stepTitle",
+                      "value": {
+                        "string": "Customer Does Not Exist"
+                      }
+                    },
+                    {
+                      "name": "stepStatus",
+                      "value": {
+                        "string": "Bot was unable to validate customer"
+                      }
+                    },
+                    {
+                      "name": "caseTitle",
+                      "value": {
+                        "string": "Customer ID not Found"
+                      }
+                    },
+                    {
+                      "name": "caseStatus",
+                      "value": {
+                        "string": "Bot was not able to validate customer based on customer ID. Please check the ID and try again."
+                      }
+                    }
+                  ],
+                  "commandName": "exit",
+                  "packageName": "HBCWorkflow",
+                  "uid": "e9d21e36-73af-49ff-95b0-cf9734cb158e"
+                }
+              ],
+              "commandName": "else",
+              "packageName": "If",
+              "uid": "21e875ca-bd0d-405d-80f8-9a0ff01fbfcf"
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "stepId",
+                  "value": {
+                    "string": "49b59990-9e06-464c-b5b2-cbf2efc369e6"
+                  }
+                },
+                {
+                  "name": "stepTitle",
+                  "value": {
+                    "string": "Validate Customer Exists"
+                  }
+                },
+                {
+                  "name": "stepStatus",
+                  "value": {
+                    "string": "Checking for validity of customer"
+                  }
+                }
+              ],
+              "children": [],
+              "commandName": "schedule",
+              "packageName": "HBCWorkflow",
+              "uid": "57040eea-812f-44ff-80d5-80ad0ad07e63"
+            }
+          ],
+          "commandName": "if",
+          "packageName": "If",
+          "uid": "74f63c05-8135-4e47-ba72-2b77d689cd52"
+        }
+      ],
+      "commandName": "BotStep",
+      "packageName": "HBCWorkflow",
+      "uid": "0a15bd3e-58f9-45fc-bce2-00797804b3be"
+    },
+    {
+      "attributes": [
+        {
+          "name": "stepAlias",
+          "value": {
+            "string": "ValidateCustomerDetails"
+          }
+        },
+        {
+          "name": "stepTitle",
+          "value": {
+            "string": "Validate Customer Details"
+          }
+        },
+        {
+          "name": "autoAssign",
+          "value": {
+            "string": "CREATOR"
+          }
+        },
+        {
+          "name": "stepInput",
+          "value": {
+            "taskbotFile": {
+              "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20AARI%20for%20Web%20-%20PoF%20Letter%20Generation/VerifyFunds",
+              "type": "TASKBOT"
+            },
+            "taskbotInput": {
+              "dictionary": [
+                {
+                  "key": "TextBox0",
+                  "value": {
+                    "expression": "$input[TextBox0]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "TextBox1",
+                  "value": {
+                    "expression": "$GenerateLetter.output[sCustomerFullName]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "TextBox5",
+                  "value": {
+                    "expression": "$GenerateLetter.output[sCustomerEmail]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "TextBox7",
+                  "value": {
+                    "expression": "$GenerateLetter.output[sRunningTotal]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "TextBox2",
+                  "value": {
+                    "expression": "$GenerateLetter.output[sCustomerAccountNumbers]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "TextBox3",
+                  "value": {
+                    "expression": "$GenerateLetter.output[sCustomerAccountTypes]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "TextBox4",
+                  "value": {
+                    "expression": "$GenerateLetter.output[sGeneratedLetter_output]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "type": "DICTIONARY"
+            },
+            "type": "TASKBOT"
+          }
+        },
+        {
+          "name": "formButtons",
+          "value": {
+            "dictionary": [
+              {
+                "key": "Cancel",
+                "value": {
+                  "string": "cancel"
+                }
+              },
+              {
+                "key": "Send",
+                "value": {
+                  "string": "primary"
+                }
+              }
+            ],
+            "type": "DICTIONARY"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "isMatch",
+                  "value": {
+                    "boolean": "false",
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$ValidateCustomerDetails.status$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "string": "Send",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "stringVariable",
+                "packageName": "String",
+                "type": "CONDITIONAL"
+              }
+            },
+            {
+              "name": "stepAlias",
+              "value": {
+                "string": "Validate Send Letter"
+              }
+            },
+            {
+              "name": "stepTitle",
+              "value": {
+                "string": "Validate Send Letter"
+              }
+            },
+            {
+              "name": "stepStatus",
+              "value": {
+                "string": "Determining if the operator chose to send the letter"
+              }
+            }
+          ],
+          "branches": [
+            {
+              "_hovered": false,
+              "attributes": [
+                {
+                  "name": "stepTitle",
+                  "value": {
+                    "string": "Operator Selected Cancel"
+                  }
+                },
+                {
+                  "name": "stepStatus",
+                  "value": {
+                    "string": "Operator selected to not send the letter via automated method"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "caseExit",
+                      "value": {
+                        "string": "CANCELLED"
+                      }
+                    },
+                    {
+                      "name": "stepTitle",
+                      "value": {
+                        "string": "Operator Selected Cancel"
+                      }
+                    },
+                    {
+                      "name": "stepStatus",
+                      "value": {
+                        "string": "Operator selected to not send the letter via automated method"
+                      }
+                    },
+                    {
+                      "name": "caseTitle",
+                      "value": {
+                        "string": "Cancelled Send"
+                      }
+                    },
+                    {
+                      "name": "caseStatus",
+                      "value": {
+                        "string": "Operator selected not to send the email. Task processing complete."
+                      }
+                    }
+                  ],
+                  "commandName": "exit",
+                  "packageName": "HBCWorkflow",
+                  "uid": "8d75296d-fbbd-4acd-ab26-d91b7e0223b4"
+                }
+              ],
+              "commandName": "else",
+              "packageName": "If",
+              "uid": "76c6082d-53b5-44fc-bc34-e7d329c38e09"
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "stepId",
+                  "value": {
+                    "string": "3f145f0b-884b-4306-a332-a0d871aa1594"
+                  }
+                },
+                {
+                  "name": "stepTitle",
+                  "value": {
+                    "string": "Validate Send Letter"
+                  }
+                },
+                {
+                  "name": "stepStatus",
+                  "value": {
+                    "string": "Determining if the operator chose to send the letter"
+                  }
+                }
+              ],
+              "children": [],
+              "commandName": "schedule",
+              "packageName": "HBCWorkflow",
+              "uid": "60df4921-79d4-4708-8640-4cf7068cb6e7"
+            }
+          ],
+          "commandName": "if",
+          "packageName": "If",
+          "uid": "58b19081-560c-402c-948b-c89b4291db4a"
+        }
+      ],
+      "commandName": "FormStep",
+      "editorMetadata": {
+        "checkboxGroupDefaults": {}
+      },
+      "packageName": "HBCWorkflow",
+      "uid": "49b59990-9e06-464c-b5b2-cbf2efc369e6"
+    },
+    {
+      "attributes": [
+        {
+          "name": "stepAlias",
+          "value": {
+            "string": "SendPOFEmail"
+          }
+        },
+        {
+          "name": "stepTitle",
+          "value": {
+            "string": "Send POF Email"
+          }
+        },
+        {
+          "name": "stepInput",
+          "value": {
+            "taskbotFile": {
+              "string": "repository:///Automation%20Anywhere/Bot%20Store/A2019%20-%20AARI%20for%20Web%20-%20PoF%20Letter%20Generation/SendPOF_Email",
+              "type": "TASKBOT"
+            },
+            "taskbotInput": {
+              "dictionary": [
+                {
+                  "key": "sEmailAddress_input",
+                  "value": {
+                    "expression": "$ValidateCustomerDetails.output[TextBox6]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "sLetterLocation_input",
+                  "value": {
+                    "expression": "$GenerateLetter.output[sGeneratedLetter_output]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "sCustomerName_input",
+                  "value": {
+                    "expression": "$GenerateLetter.output[sCustomerFullName]$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "type": "DICTIONARY"
+            },
+            "type": "TASKBOT"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "caseExit",
+              "value": {
+                "string": "SUCCESS"
+              }
+            }
+          ],
+          "commandName": "exit",
+          "packageName": "HBCWorkflow",
+          "uid": "c3efe9d1-2d17-48da-aa0c-16f69201dcf1"
+        }
+      ],
+      "commandName": "BotStep",
+      "packageName": "HBCWorkflow",
+      "uid": "3f145f0b-884b-4306-a332-a0d871aa1594"
+    }
+  ]
+}

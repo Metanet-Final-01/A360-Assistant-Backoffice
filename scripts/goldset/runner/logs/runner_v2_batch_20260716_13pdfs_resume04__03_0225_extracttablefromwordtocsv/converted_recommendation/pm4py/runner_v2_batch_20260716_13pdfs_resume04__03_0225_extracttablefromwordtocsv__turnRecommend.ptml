@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="cef37e23-6fa4-495e-acb0-0a24a00670e3" root="89ef4d35-03e6-4350-baec-68eee972c333" id="8e04a40f-6f67-4792-8a42-ee4c27a06d3c">
+    <sequence name="" id="89ef4d35-03e6-4350-baec-68eee972c333"/>
+    <sequence name="" id="720f3b46-b82b-4930-9bd5-433eeb53f7bb"/>
+    <manualTask name="Dictionary.dictionaryPut" id="b5f81a4f-6af7-4d44-ae19-8918abd28c8c"/>
+    <manualTask name="Python Script.pythonOpenAction" id="7109530f-3fbb-4ac9-91dd-36526f7ca8ef"/>
+    <sequence name="" id="23fc9052-a139-4e30-bd17-2f4b5bd7dcd1"/>
+    <manualTask name="Dictionary.dictionaryPut" id="a11b0052-535a-4670-ad19-1eb9acec946f"/>
+    <manualTask name="Message box.usingMessageBoxAction" id="e103950a-fef8-41f2-8ddd-bb83da049994"/>
+    <manualTask name="Python Script.pythonCloseAction" id="be02d99f-4ada-4f2a-9d41-a88fb4d57bf6"/>
+    <manualTask name="Dictionary.dictionaryPut" id="b0d89430-83e5-480c-bec9-329220afa371"/>
+    <manualTask name="Dictionary.dictionaryPut" id="575ce53d-b4b7-4cf2-8590-54c70222f942"/>
+    <manualTask name="Word.mswordReadTable" id="2d5897ef-1a5d-40b7-8968-2c1a9f96fc2a"/>
+    <manualTask name="Data Table.cloudWriteToFileAction" id="df29f537-7178-4bec-bf28-0206406440b9"/>
+    <parentsNode id="1e7bd1d8-0c8c-4bea-b959-6f1b43c6a127" sourceId="89ef4d35-03e6-4350-baec-68eee972c333" targetId="720f3b46-b82b-4930-9bd5-433eeb53f7bb"/>
+    <parentsNode id="c2100a79-bd0a-4fff-9ffd-074c78b98712" sourceId="89ef4d35-03e6-4350-baec-68eee972c333" targetId="b5f81a4f-6af7-4d44-ae19-8918abd28c8c"/>
+    <parentsNode id="4ec65bac-25ed-4a38-a101-442560a6640d" sourceId="89ef4d35-03e6-4350-baec-68eee972c333" targetId="7109530f-3fbb-4ac9-91dd-36526f7ca8ef"/>
+    <parentsNode id="417812a7-9284-441f-a9fe-c0bd8eaeef45" sourceId="89ef4d35-03e6-4350-baec-68eee972c333" targetId="23fc9052-a139-4e30-bd17-2f4b5bd7dcd1"/>
+    <parentsNode id="8680a2de-53c0-436d-9438-6fa5d79a7838" sourceId="89ef4d35-03e6-4350-baec-68eee972c333" targetId="a11b0052-535a-4670-ad19-1eb9acec946f"/>
+    <parentsNode id="16b71a33-5ec5-485d-b90d-a0b19438698b" sourceId="89ef4d35-03e6-4350-baec-68eee972c333" targetId="e103950a-fef8-41f2-8ddd-bb83da049994"/>
+    <parentsNode id="1a3cb44d-4952-43a3-aa4c-437b9705c4bc" sourceId="89ef4d35-03e6-4350-baec-68eee972c333" targetId="be02d99f-4ada-4f2a-9d41-a88fb4d57bf6"/>
+    <parentsNode id="a20cd331-2a4c-4f7f-84ad-fcef47c58645" sourceId="720f3b46-b82b-4930-9bd5-433eeb53f7bb" targetId="b0d89430-83e5-480c-bec9-329220afa371"/>
+    <parentsNode id="d7d33272-0fea-4d98-88ec-7411e38c5ba6" sourceId="720f3b46-b82b-4930-9bd5-433eeb53f7bb" targetId="575ce53d-b4b7-4cf2-8590-54c70222f942"/>
+    <parentsNode id="70665312-8595-4d4f-8d2f-47659bf40fe6" sourceId="23fc9052-a139-4e30-bd17-2f4b5bd7dcd1" targetId="2d5897ef-1a5d-40b7-8968-2c1a9f96fc2a"/>
+    <parentsNode id="b210888f-5bcb-4a41-b36f-f1c91ac52be1" sourceId="23fc9052-a139-4e30-bd17-2f4b5bd7dcd1" targetId="df29f537-7178-4bec-bf28-0206406440b9"/>
+  </processTree>
+</ptml>

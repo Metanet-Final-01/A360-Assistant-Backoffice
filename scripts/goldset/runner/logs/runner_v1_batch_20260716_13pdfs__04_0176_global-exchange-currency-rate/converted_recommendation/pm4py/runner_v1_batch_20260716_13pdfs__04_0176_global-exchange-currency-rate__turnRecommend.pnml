@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784152257.732278" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784152257.732278</text>
+    </name>
+    <page id="n0">
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <place id="p_17">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <place id="p_18">
+        <name>
+          <text>p_18</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_16">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <transition id="4eb18256-71f5-4680-9fdf-14a9d3d8416c">
+        <name>
+          <text>Loop.loop.commands.start</text>
+        </name>
+      </transition>
+      <transition id="556d4576-87c2-4ea6-b168-f1cd96e2e721">
+        <name>
+          <text>Logging.cloudInsertingLogToFileCommand</text>
+        </name>
+      </transition>
+      <transition id="79f793af-9a67-40ff-a6e9-e9897280bb53">
+        <name>
+          <text>Browser.browserPackageCloseAction</text>
+        </name>
+      </transition>
+      <transition id="bba669fe-0607-44bb-bcaa-8810b00b28f2">
+        <name>
+          <text>CSV/TXT/cloudOpeningCsvTextFile.CSV/TXT 파일에 대한 열기 작업 사용</text>
+        </name>
+      </transition>
+      <transition id="cf0a0205-b951-423a-a46b-1ae7cb3048f0">
+        <name>
+          <text>Browser.browserPackageDownloadFilesAction</text>
+        </name>
+      </transition>
+      <transition id="8bdf2c7c-6a53-4707-8527-4f9cd31b1524">
+        <name>
+          <text>Browser.browserPackageDownloadFilesAction</text>
+        </name>
+      </transition>
+      <transition id="e44a3a98-c376-488a-b975-d86c0c8dd0ff">
+        <name>
+          <text>CSV/TXT/cloudUsingDatatableCreateAction.읽기 작업 사용</text>
+        </name>
+      </transition>
+      <transition id="3336b13f-51bc-4c4e-a73a-03a255839e50">
+        <name>
+          <text>Error handler.errorHandlerCatch</text>
+        </name>
+      </transition>
+      <transition id="a478d3fb-8d2b-44e6-8ee1-6142a0e666f2">
+        <name>
+          <text>Logging.logToFileLogVariablesToFile</text>
+        </name>
+      </transition>
+      <arc id="2807365743488" source="556d4576-87c2-4ea6-b168-f1cd96e2e721" target="p_16"/>
+      <arc id="2807365741696" source="p_16" target="3336b13f-51bc-4c4e-a73a-03a255839e50"/>
+      <arc id="2807365742592" source="bba669fe-0607-44bb-bcaa-8810b00b28f2" target="p_9"/>
+      <arc id="2807365742480" source="8bdf2c7c-6a53-4707-8527-4f9cd31b1524" target="p_12"/>
+      <arc id="2807365564560" source="4eb18256-71f5-4680-9fdf-14a9d3d8416c" target="p_13"/>
+      <arc id="2807365743376" source="p_15" target="556d4576-87c2-4ea6-b168-f1cd96e2e721"/>
+      <arc id="2807365741584" source="3336b13f-51bc-4c4e-a73a-03a255839e50" target="p_18"/>
+      <arc id="2807365741472" source="p_18" target="a478d3fb-8d2b-44e6-8ee1-6142a0e666f2"/>
+      <arc id="2807365359792" source="p_9" target="cf0a0205-b951-423a-a46b-1ae7cb3048f0"/>
+      <arc id="2807365743040" source="e44a3a98-c376-488a-b975-d86c0c8dd0ff" target="p_15"/>
+      <arc id="2808902419280" source="cf0a0205-b951-423a-a46b-1ae7cb3048f0" target="p_10"/>
+      <arc id="2807365139920" source="p_10" target="8bdf2c7c-6a53-4707-8527-4f9cd31b1524"/>
+      <arc id="2807365862736" source="p_13" target="e44a3a98-c376-488a-b975-d86c0c8dd0ff"/>
+      <arc id="2807365742928" source="source" target="bba669fe-0607-44bb-bcaa-8810b00b28f2"/>
+      <arc id="2807365741920" source="p_17" target="79f793af-9a67-40ff-a6e9-e9897280bb53"/>
+      <arc id="2807365844208" source="p_12" target="4eb18256-71f5-4680-9fdf-14a9d3d8416c"/>
+      <arc id="2807365741808" source="79f793af-9a67-40ff-a6e9-e9897280bb53" target="sink"/>
+      <arc id="2807365742032" source="a478d3fb-8d2b-44e6-8ee1-6142a0e666f2" target="p_17"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

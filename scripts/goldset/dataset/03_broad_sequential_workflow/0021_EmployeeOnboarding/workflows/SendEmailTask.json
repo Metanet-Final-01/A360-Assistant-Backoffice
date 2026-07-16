@@ -1,0 +1,229 @@
+{
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "toAddress",
+          "value": {
+            "expression": "$ToEmailAddress$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cc",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "bcc",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "invalidAddress",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "subject",
+          "value": {
+            "expression": "$iStrEmailSubject$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "ensureAttachmentsExist",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "bodyFormat",
+          "value": {
+            "string": "PLAINTEXT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "message",
+          "value": {
+            "expression": "$iStrEmailMessage$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "goGreen",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "serverType",
+          "value": {
+            "string": "EMAIL_SERVER",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "encoding",
+          "value": {
+            "string": "UTF-8",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "fromAddress",
+          "value": {
+            "string": "niketan084@gmail.com",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "useSecureConnection",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "emailServerHost",
+          "value": {
+            "string": "smtp.gmail.com",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "emailServerPort",
+          "value": {
+            "number": "587",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "requiresAuthentication",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "emailServerAuthType",
+          "value": {
+            "string": "authCodeGrant",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "grantFlowClientID",
+          "value": {
+            "credential": {
+              "attributeName": "client_ID",
+              "lockerName": "Nike",
+              "name": "Nike2"
+            },
+            "type": "CREDENTIAL"
+          }
+        },
+        {
+          "name": "redirectUriOauthGrant",
+          "value": {
+            "string": "http://localhost:8899/Callback",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "grantFlowUsername",
+          "value": {
+            "string": "niketan084@gmail.com",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "grantFlowClientSecret",
+          "value": {
+            "credential": {
+              "attributeName": "client_secret",
+              "lockerName": "Nike",
+              "name": "Nike2"
+            },
+            "type": "CREDENTIAL"
+          }
+        },
+        {
+          "name": "emailProviderGrantFlow",
+          "value": {
+            "string": "google",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "SendMailV2",
+      "disabled": false,
+      "packageName": "Email",
+      "uid": "b4bc7946-654d-4002-9679-e3f34193eb1f"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Email",
+      "settingsAttributes": [],
+      "version": "3.31.1"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "7",
+    "improvedNumberSupport": true,
+    "runInChildWindow": false,
+    "runInChildWindowMode": "DESKTOP",
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "ToEmailAddress",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "iStrEmailSubject",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "iStrEmailMessage",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

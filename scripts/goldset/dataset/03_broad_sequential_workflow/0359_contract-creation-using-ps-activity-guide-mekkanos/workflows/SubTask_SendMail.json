@@ -1,0 +1,745 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "Get The Task Name",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "0882679d-9aa9-4fd3-b7a6-e9e904e5130c"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$System:AATaskName$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "find",
+          "value": {
+            "string": "^(.*[\\\\\\/])",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isCaseSensitive",
+          "value": {
+            "string": "false",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isRegularExpression",
+          "value": {
+            "string": "true",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "startIndex",
+          "value": {
+            "number": "1",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "count",
+          "value": {
+            "number": "-1",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "replaceWith",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "replace",
+      "disabled": false,
+      "packageName": "String",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "sTaskName"
+      },
+      "uid": "dea0b603-20c5-4ac9-ae27-65180c05de0c"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "Error Message: $sErrorMessage$  Error Line Number:$nErrorLine.Number:toString$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sErrorMessage"
+              },
+              "uid": "dcd68f02-8ee8-4cec-ab11-15230469da17"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "assignToNumber",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "nErrorFlag"
+              },
+              "uid": "5bb06e80-25d4-4fb4-988f-e9e9aaf0f375"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$dUserConfig{sErrorLogPath}$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "Error in Task: $System:AATaskName$\nError Line Number : $nErrorLine.Number:toString$\nError Message : $sErrorMessage$\n",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "logToFile",
+              "disabled": false,
+              "packageName": "LogToFile",
+              "uid": "f9629994-7ee4-4548-8071-835655ea5ae2"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "nErrorLine"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "sErrorMessage"
+            }
+          },
+          "uid": "de4242cb-a98c-4666-921f-2a802ffa284d"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Send Email",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$nErrorFlag$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$nErrorFlag$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "number": "1",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "operatorAttribute": {
+                        "attributes": [
+                          {
+                            "name": "variable",
+                            "value": {
+                              "expression": "$sErrorMessage$",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "operator",
+                            "value": {
+                              "string": "INCLUDE",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "value",
+                            "value": {
+                              "string": "Exception",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "matchCase",
+                            "value": {
+                              "boolean": true,
+                              "type": "BOOLEAN"
+                            }
+                          }
+                        ],
+                        "operator": "AND",
+                        "value": {
+                          "conditionalName": "stringVariable",
+                          "packageName": "String",
+                          "type": "CONDITIONAL"
+                        }
+                      },
+                      "value": {
+                        "conditionalName": "numberVariable",
+                        "packageName": "Number",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "toAddress",
+                          "value": {
+                            "expression": "$dUserConfig{EmailTo}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "cc",
+                          "value": {
+                            "expression": "$dUserConfig{EmailCC}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "bcc",
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "subject",
+                          "value": {
+                            "expression": "Exception Email - $sTaskName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "ensureAttachmentsExist",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "bodyFormat",
+                          "value": {
+                            "string": "HTML",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "message",
+                          "value": {
+                            "expression": "<html><body><p><b>Hi Team,<b></p><p style=\"color:rgb(0,200,0)\"><b>Bot has encountered an exception. For more details please refer the table below.</b></p><Center><table border=\"1\"><tr><th>Error Name</th><th> Description </th></tr><tr><td>Exception</td><td> $sErrorMessage$ </td></tr></table></center><p><b>Thanks,</b></p><p> Bot</p></body></html>",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "goGreen",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "serverType",
+                          "value": {
+                            "string": "OUTLOOK",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "sendMail",
+                      "disabled": false,
+                      "packageName": "Email",
+                      "uid": "bec15681-d3bc-4436-aca4-7dded7e0c845"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "a13a067a-a232-4130-899f-d1792f2dcdbb"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$nErrorFlag$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "number": "1",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "operatorAttribute": {
+                        "attributes": [
+                          {
+                            "name": "variable",
+                            "value": {
+                              "expression": "$sErrorMessage$",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "operator",
+                            "value": {
+                              "string": "INCLUDE",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "value",
+                            "value": {
+                              "string": "Error",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "matchCase",
+                            "value": {
+                              "boolean": true,
+                              "type": "BOOLEAN"
+                            }
+                          }
+                        ],
+                        "operator": "AND",
+                        "value": {
+                          "conditionalName": "stringVariable",
+                          "packageName": "String",
+                          "type": "CONDITIONAL"
+                        }
+                      },
+                      "value": {
+                        "conditionalName": "numberVariable",
+                        "packageName": "Number",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "toAddress",
+                          "value": {
+                            "expression": "$dUserConfig{EmailTo}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "cc",
+                          "value": {
+                            "expression": "$dUserConfig{EmailCC}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "bcc",
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "subject",
+                          "value": {
+                            "expression": "Error Email - $sTaskName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "ensureAttachmentsExist",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "bodyFormat",
+                          "value": {
+                            "string": "HTML",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "message",
+                          "value": {
+                            "expression": "<html><body><p><b>Hi Team,<b></p><p style=\"color:rgb(255,0,0)\"><b>Bot process is stopped due to an exception. Please check the error below.</b></p><Center><table border=\"1\"><tr><th>Error Name</th><th> Description </th></tr><tr><td>Exception</td><td> $sErrorMessage$ </td></tr></table></center><p><b>Thanks,</b></p><p> Bot</p></body></html>",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "goGreen",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "serverType",
+                          "value": {
+                            "string": "OUTLOOK",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "sendMail",
+                      "disabled": false,
+                      "packageName": "Email",
+                      "uid": "f44aa39c-a36b-47e0-b66e-9449905a395e"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "0e100bcb-4989-4f71-8e61-76255f40bc9d"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "toAddress",
+                      "value": {
+                        "expression": "$dUserConfig{EmailFrom}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "cc",
+                      "value": {
+                        "expression": "$dUserConfig{EmailCC}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "bcc",
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "subject",
+                      "value": {
+                        "expression": "Success Email - $sTaskName$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "ensureAttachmentsExist",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "bodyFormat",
+                      "value": {
+                        "string": "PLAINTEXT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "message",
+                      "value": {
+                        "string": "Hi Team,\n\nExecution of \"New Contract Creation Process for PeopleSoft\" Process is Successful\n\nThanks,\nBot\n\n",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "goGreen",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "serverType",
+                      "value": {
+                        "string": "OUTLOOK",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "sendMail",
+                  "disabled": false,
+                  "packageName": "Email",
+                  "uid": "04cdc4d8-5290-40c5-8d9f-06d210b6a61c"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "a9ac128c-5042-47e8-82ee-7e22f7c03b4f"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "5addae61-d0c3-4241-add0-b2f12d6a433e"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "c82bc61d-47d6-42eb-acf0-d6fd5ee5fc42"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "Email",
+      "version": "2.0.0-20200721-222003"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "If",
+      "version": "2.0.0-20200721-222021"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "Number",
+      "version": "2.0.0-20200721-222224"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "version": "3.0.0-20200721-222454"
+    },
+    {
+      "name": "System",
+      "version": "2.0.0-20200721-222454"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sTaskName",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": true,
+      "name": "nErrorFlag",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": true,
+      "name": "dUserConfig",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sErrorMessage",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorLine",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    }
+  ],
+  "workItemTemplateName": null
+}

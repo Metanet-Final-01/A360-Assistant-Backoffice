@@ -1,0 +1,53 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\Botname-VendorName\\SalesforceBotInsightA2019",
+      "scannedDependencies": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Analyze",
+      "path": "bot-command-analyze-2.2.4-20200720-070515.jar",
+      "version": "2.2.4-20200720-070515"
+    },
+    {
+      "name": "CsvTxt",
+      "path": "bot-command-csvtxt-2.0.0-20200726-052504.jar",
+      "version": "2.0.0-20200726-052504"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200721-222021.jar",
+      "version": "2.0.0-20200721-222021"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.1.0-20200721-222212.jar",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200721-222224.jar",
+      "version": "2.0.0-20200721-222224"
+    },
+    {
+      "name": "Python",
+      "path": "bot-command-python-2.0.0-20200721-222345.jar",
+      "version": "2.0.0-20200721-222345"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200721-222454.jar",
+      "version": "3.0.0-20200721-222454"
+    }
+  ]
+}

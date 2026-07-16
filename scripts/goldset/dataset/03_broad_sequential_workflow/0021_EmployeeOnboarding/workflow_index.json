@@ -1,0 +1,44 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0021_EmployeeOnboarding",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.headlessbot",
+      "filename": "FormatDataAPI",
+      "manual_dependencies": [],
+      "output_file": "workflows/FormatDataAPI.json",
+      "scanned_dependencies": [
+        "FormatDetails"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "ExtractionDocData",
+      "manual_dependencies": [],
+      "output_file": "workflows/ExtractionDocData.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.headlessbot",
+      "filename": "EmailComposerAPI",
+      "manual_dependencies": [],
+      "output_file": "workflows/EmailComposerAPI.json",
+      "scanned_dependencies": [
+        "EmailComposer"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "EmailDetailsDownload",
+      "manual_dependencies": [],
+      "output_file": "workflows/EmailDetailsDownload.json",
+      "scanned_dependencies": []
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SendEmailTask",
+      "manual_dependencies": [],
+      "output_file": "workflows/SendEmailTask.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

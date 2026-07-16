@@ -1,0 +1,484 @@
+{
+  "case_id": "04_0176_global-exchange-currency-rate",
+  "run_id": "runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate",
+  "normalized": {
+    "gold_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\04_0176_global-exchange-currency-rate\\Global Exchange Currency Rate.goldset.json",
+    "prediction_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend.goldset.json",
+    "gold_source_file": "Global Exchange Currency Rate.json",
+    "prediction_source_file": "runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend.json",
+    "preprocessing": {
+      "excluded_rule": "browser_session_lifecycle_action",
+      "excluded_regex": {
+        "package": "^(web\\s*automation|webautomation|browser|recorder)$",
+        "action": "session"
+      },
+      "excluded_gold_actions": [],
+      "excluded_prediction_actions": [],
+      "excluded_gold_count": 0,
+      "excluded_prediction_count": 0,
+      "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+      "action_equivalence_member_count": 61
+    },
+    "gold_action_count": 24,
+    "prediction_action_count": 9,
+    "action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 24,
+      "prediction_count": 9
+    },
+    "action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 24,
+      "prediction_count": 9
+    },
+    "canonical_action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 24,
+      "prediction_count": 9
+    },
+    "canonical_action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 24,
+      "prediction_count": 9
+    },
+    "package_multiset": {
+      "precision": 0.1111111111111111,
+      "recall": 0.041666666666666664,
+      "f1": 0.06060606060606061,
+      "overlap": 1,
+      "gold_count": 24,
+      "prediction_count": 9
+    },
+    "package_family_multiset": {
+      "precision": 0.3333333333333333,
+      "recall": 0.125,
+      "f1": 0.18181818181818182,
+      "overlap": 3,
+      "gold_count": 24,
+      "prediction_count": 9
+    },
+    "salient_family_multiset": {
+      "precision": 0.14285714285714285,
+      "recall": 0.125,
+      "f1": 0.13333333333333333,
+      "overlap": 1,
+      "gold_count": 8,
+      "prediction_count": 7
+    },
+    "adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 25,
+      "prediction_count": 10
+    },
+    "canonical_adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 25,
+      "prediction_count": 10
+    },
+    "first_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.assign",
+        "prediction": "CSV/TXT/cloudOpeningCsvTextFile.CSV/TXT 파일에 대한 열기 작업 사용"
+      },
+      {
+        "index": 2,
+        "gold": "String.assign",
+        "prediction": "Browser.browserPackageDownloadFilesAction"
+      },
+      {
+        "index": 3,
+        "gold": "String.assign",
+        "prediction": "Browser.browserPackageDownloadFilesAction"
+      },
+      {
+        "index": 4,
+        "gold": "String.assign",
+        "prediction": "Loop.loop.commands.start"
+      },
+      {
+        "index": 5,
+        "gold": "String.assign",
+        "prediction": "CSV/TXT/cloudUsingDatatableCreateAction.읽기 작업 사용"
+      },
+      {
+        "index": 6,
+        "gold": "Datetime.toString",
+        "prediction": "Logging.cloudInsertingLogToFileCommand"
+      },
+      {
+        "index": 7,
+        "gold": "Folder.createFolder",
+        "prediction": "Error handler.errorHandlerCatch"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.createFolder",
+        "prediction": "Logging.logToFileLogVariablesToFile"
+      },
+      {
+        "index": 9,
+        "gold": "File.createFile",
+        "prediction": "Browser.browserPackageCloseAction"
+      },
+      {
+        "index": 10,
+        "gold": "LogToFile.logToFile",
+        "prediction": null
+      },
+      {
+        "index": 11,
+        "gold": "Folder.createFolder",
+        "prediction": null
+      },
+      {
+        "index": 12,
+        "gold": "Browser.openbrowser",
+        "prediction": null
+      }
+    ],
+    "first_canonical_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "CSV/TXT/cloudOpeningCsvTextFile.CSV/TXT 파일에 대한 열기 작업 사용"
+      },
+      {
+        "index": 2,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Browser.browserPackageDownloadFilesAction"
+      },
+      {
+        "index": 3,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Browser.browserPackageDownloadFilesAction"
+      },
+      {
+        "index": 4,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Loop.loop.commands.start"
+      },
+      {
+        "index": 5,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "CSV/TXT/cloudUsingDatatableCreateAction.읽기 작업 사용"
+      },
+      {
+        "index": 6,
+        "gold": "Datetime.cloudConvertDatetimeToString",
+        "prediction": "Logging.cloudInsertingLogToFileCommand"
+      },
+      {
+        "index": 7,
+        "gold": "Folder.folderCreate",
+        "prediction": "Error handler.errorHandlerCatch"
+      },
+      {
+        "index": 8,
+        "gold": "Folder.folderCreate",
+        "prediction": "Logging.logToFileLogVariablesToFile"
+      },
+      {
+        "index": 9,
+        "gold": "File.filePackageCreateAction",
+        "prediction": "Browser.browserPackageCloseAction"
+      },
+      {
+        "index": 10,
+        "gold": "LogToFile.logToFile",
+        "prediction": null
+      },
+      {
+        "index": 11,
+        "gold": "Folder.folderCreate",
+        "prediction": null
+      },
+      {
+        "index": 12,
+        "gold": "Browser.launchWebsite",
+        "prediction": null
+      }
+    ],
+    "gold_actions_preview": [
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "String.assign",
+      "Datetime.toString",
+      "Folder.createFolder",
+      "Folder.createFolder",
+      "File.createFile",
+      "LogToFile.logToFile",
+      "Folder.createFolder",
+      "Browser.openbrowser",
+      "File.downloadTo",
+      "Excel_MS.OpenSpreadsheet",
+      "Recorder.capture",
+      "Recorder.capture",
+      "Recorder.capture",
+      "Recorder.capture",
+      "Recorder.capture",
+      "MessageBox.messageBox"
+    ],
+    "gold_canonical_actions_preview": [
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "Datetime.cloudConvertDatetimeToString",
+      "Folder.folderCreate",
+      "Folder.folderCreate",
+      "File.filePackageCreateAction",
+      "LogToFile.logToFile",
+      "Folder.folderCreate",
+      "Browser.launchWebsite",
+      "File.downloadTo",
+      "Excel advanced.cloudExcelOpen",
+      "Recorder.capture",
+      "Recorder.capture",
+      "Recorder.capture",
+      "Recorder.capture",
+      "Recorder.capture",
+      "MessageBox.messageBox"
+    ],
+    "prediction_actions": [
+      "CSV/TXT/cloudOpeningCsvTextFile.CSV/TXT 파일에 대한 열기 작업 사용",
+      "Browser.browserPackageDownloadFilesAction",
+      "Browser.browserPackageDownloadFilesAction",
+      "Loop.loop.commands.start",
+      "CSV/TXT/cloudUsingDatatableCreateAction.읽기 작업 사용",
+      "Logging.cloudInsertingLogToFileCommand",
+      "Error handler.errorHandlerCatch",
+      "Logging.logToFileLogVariablesToFile",
+      "Browser.browserPackageCloseAction"
+    ],
+    "prediction_canonical_actions": [
+      "CSV/TXT/cloudOpeningCsvTextFile.CSV/TXT 파일에 대한 열기 작업 사용",
+      "Browser.browserPackageDownloadFilesAction",
+      "Browser.browserPackageDownloadFilesAction",
+      "Loop.loop.commands.start",
+      "CSV/TXT/cloudUsingDatatableCreateAction.읽기 작업 사용",
+      "Logging.cloudInsertingLogToFileCommand",
+      "Error handler.errorHandlerCatch",
+      "Logging.logToFileLogVariablesToFile",
+      "Browser.browserPackageCloseAction"
+    ],
+    "gold_salient_families": [
+      "browser",
+      "spreadsheet",
+      "recorder",
+      "recorder",
+      "recorder",
+      "recorder",
+      "recorder",
+      "spreadsheet"
+    ],
+    "prediction_salient_families": [
+      "csv/txt/cloudopeningcsvtextfile",
+      "browser",
+      "browser",
+      "loop",
+      "csv/txt/cloudusingdatatablecreateaction",
+      "error_handler",
+      "browser"
+    ]
+  },
+  "pm4py": {
+    "mode": "actual_pm4py_alignment_conformance",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\04_0176_global-exchange-currency-rate\\Global Exchange Currency Rate.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 24,
+    "prediction_action_count_after_preprocessing": 7,
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [
+      "Loop.loop.commands.start",
+      "Error handler.errorHandlerCatch"
+    ],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "fitness": 0.0,
+    "precision": 0.0,
+    "raw_fitness": {
+      "percFitTraces": 0.0,
+      "averageFitness": 0.0,
+      "percentage_of_fitting_traces": 0.0,
+      "average_trace_fitness": 0.0,
+      "log_fitness": 0.0
+    }
+  },
+  "pm4py_artifact_check": {
+    "gold_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\04_0176_global-exchange-currency-rate",
+    "prediction_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate\\converted_recommendation\\pm4py",
+    "gold_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\04_0176_global-exchange-currency-rate\\Global Exchange Currency Rate.tree.json",
+      "exists": true,
+      "sha256": "56bba0a18c528240ddbb18c570afccdd01da370d05310fb82de2611c0d52467c",
+      "leaf_count": 24,
+      "labels": [
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "String.assign",
+        "Datetime.toString",
+        "Folder.createFolder",
+        "Folder.createFolder",
+        "File.createFile",
+        "LogToFile.logToFile",
+        "Folder.createFolder",
+        "Browser.openbrowser",
+        "File.downloadTo",
+        "Excel_MS.OpenSpreadsheet",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "Recorder.capture",
+        "MessageBox.messageBox",
+        "Excel_MS.SetCell",
+        "Number.increment",
+        "MessageBox.messageBox",
+        "LogToFile.logToFile"
+      ],
+      "operator_counts": {
+        "loop": 1,
+        "sequence": 5,
+        "xor": 6
+      }
+    },
+    "prediction_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate\\converted_recommendation\\pm4py\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend.tree.json",
+      "exists": true,
+      "sha256": "a432556b5d9d99833234b91a433a88695463ef937d56dc32b30f87cf6661da90",
+      "leaf_count": 9,
+      "labels": [
+        "CSV/TXT/cloudOpeningCsvTextFile.CSV/TXT 파일에 대한 열기 작업 사용",
+        "Browser.browserPackageDownloadFilesAction",
+        "Browser.browserPackageDownloadFilesAction",
+        "Loop.loop.commands.start",
+        "CSV/TXT/cloudUsingDatatableCreateAction.읽기 작업 사용",
+        "Logging.cloudInsertingLogToFileCommand",
+        "Error handler.errorHandlerCatch",
+        "Logging.logToFileLogVariablesToFile",
+        "Browser.browserPackageCloseAction"
+      ],
+      "operator_counts": {
+        "sequence": 2
+      }
+    },
+    "gold_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\04_0176_global-exchange-currency-rate\\Global Exchange Currency Rate.pnml",
+      "exists": true,
+      "sha256": "ca2f764322a6a130f3e50f454b0fedae9a10ff4588e17780389fcd08db5d4747",
+      "readable_by_pm4py": true,
+      "places": 26,
+      "transitions": 33,
+      "visible_transitions": 24,
+      "arcs": 66,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "prediction_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate\\converted_recommendation\\pm4py\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend.pnml",
+      "exists": true,
+      "sha256": "f6e1ae7a6bef840c6b58211fb0e60fd37b1b7cd81686951fb8612e1dc780fb3e",
+      "readable_by_pm4py": true,
+      "places": 10,
+      "transitions": 9,
+      "visible_transitions": 9,
+      "arcs": 18,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "tree_leaf_count_delta": -15,
+    "tree_hash_equal": false,
+    "pnml_hash_equal": false
+  },
+  "worfbench": {
+    "mode": "actual_worfbench_t_eval_nodes",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\04_0176_global-exchange-currency-rate\\Global Exchange Currency Rate.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 23,
+    "prediction_action_count_after_preprocessing": 7,
+    "gold_worfbench_fidelity": "approximated",
+    "prediction_worfbench_fidelity": "exact",
+    "gold_control_flow_types": [
+      "if",
+      "loop",
+      "try"
+    ],
+    "prediction_control_flow_types": [],
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [
+      "Loop.loop.commands.start",
+      "Error handler.errorHandlerCatch"
+    ],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "precision": 0.2857,
+    "recall": 0.08,
+    "f1_score": 0.125
+  },
+  "worfbench_diagnostic_artifact_f1": {
+    "gold": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\worfbench_13\\04_0176_global-exchange-currency-rate\\Global Exchange Currency Rate.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/04_0176_global-exchange-currency-rate/Global Exchange Currency Rate",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "if",
+        "loop",
+        "try"
+      ]
+    },
+    "prediction": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate\\converted_recommendation\\worfbench\\runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend/runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate__turnRecommend",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "container"
+      ]
+    },
+    "node_label_f1": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 23,
+      "prediction_count": 9
+    },
+    "edge_f1": {
+      "precision": 0.9,
+      "recall": 0.375,
+      "f1": 0.5294117647058825,
+      "overlap": 9,
+      "gold_count": 24,
+      "prediction_count": 10
+    },
+    "gold_node_count": 23,
+    "prediction_node_count": 9,
+    "gold_edge_count": 24,
+    "prediction_edge_count": 10
+  }
+}

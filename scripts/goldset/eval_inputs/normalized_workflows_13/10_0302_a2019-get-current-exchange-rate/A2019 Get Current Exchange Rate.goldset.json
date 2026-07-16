@@ -1,0 +1,613 @@
+{
+  "source_file": "A2019 Get Current Exchange Rate.json",
+  "steps": [
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "vErrorLine"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "vErrorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "toString",
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "expression": "$vErrorLine$",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "numFormatDigits",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Number",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "vErrorLineString"
+              },
+              "type": "action",
+              "uid": "fc7e23c2-e659-494c-8c75-3d195656c8b3"
+            },
+            {
+              "action": "logToFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file:///C:/Users/$vUserName$/Desktop/A2019%20Get%20Current%20Exchange%20Rate/Log/Log.txt",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "$vErrorLineString$\n$vErrorMessage$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "LogToFile",
+              "type": "action",
+              "uid": "ecebdaf8-7576-4395-93dd-0543d8105559"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "systemInformation",
+          "attributes": [
+            {
+              "name": "variableOption",
+              "value": {
+                "string": "BY_SELECTION",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "systemNameBySelection",
+              "value": {
+                "label": "USERNAME",
+                "string": "USERNAME",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "System",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vUserName"
+          },
+          "type": "action",
+          "uid": "c8a07aea-9d60-4b30-9fff-017699a8692f"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "C:\\Users\\$vUserName$\\Desktop\\A2019 Get Current Exchange Rate",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "C:\\Users\\$vUserName$\\Desktop\\A2019 Get Current Exchange Rate",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "0e213776-b94a-4c4e-9eaa-111215b589a6"
+            }
+          ],
+          "type": "if",
+          "uid": "82e721d7-8aa8-4c74-8359-af69db27d901"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "C:\\Users\\$vUserName$\\Desktop\\A2019 Get Current Exchange Rate\\Log",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "C:\\Users\\$vUserName$\\Desktop\\A2019 Get Current Exchange Rate\\Log",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "006e3496-a1dd-4de1-bd3c-cd9f28eaa5d7"
+            }
+          ],
+          "type": "if",
+          "uid": "ed1e8200-bf2d-4b82-bb0f-d9fe1d2b5f3f"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "1",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vAmount"
+          },
+          "type": "action",
+          "uid": "e0fa14f8-f0b2-46a5-82e3-fd646c0b5994"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "SAR",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vFrom"
+          },
+          "type": "action",
+          "uid": "2f36a90b-c6fb-4741-89bc-6c826e91fad4"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "EGP",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vTo"
+          },
+          "type": "action",
+          "uid": "46f7ad4e-74aa-4d76-a7d6-4e5f70d31fff"
+        },
+        {
+          "action": "put",
+          "attributes": [
+            {
+              "name": "sourceMap",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vInputs"
+              }
+            },
+            {
+              "name": "key",
+              "value": {
+                "string": "amount",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "newValue",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vAmount"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Dictionary",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vOutput"
+          },
+          "type": "action",
+          "uid": "785585c3-2334-4863-9540-184225f4340b"
+        },
+        {
+          "action": "put",
+          "attributes": [
+            {
+              "name": "sourceMap",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vInputs"
+              }
+            },
+            {
+              "name": "key",
+              "value": {
+                "string": "fromCurrency",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "newValue",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vFrom"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Dictionary",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vOutput"
+          },
+          "type": "action",
+          "uid": "218369e1-b898-493a-892a-0f810fab7c85"
+        },
+        {
+          "action": "put",
+          "attributes": [
+            {
+              "name": "sourceMap",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vInputs"
+              }
+            },
+            {
+              "name": "key",
+              "value": {
+                "string": "toCurrency",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "newValue",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vTo"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Dictionary",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vOutput"
+          },
+          "type": "action",
+          "uid": "c0df7581-b9ab-4dcf-a38c-94f537aea82b"
+        },
+        {
+          "action": "put",
+          "attributes": [
+            {
+              "name": "sourceMap",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vInputs"
+              }
+            },
+            {
+              "name": "key",
+              "value": {
+                "string": "output",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "newValue",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vOutput"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Dictionary",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vOutput"
+          },
+          "type": "action",
+          "uid": "bd96164a-b827-4bb6-8bd4-4c2fff95c835"
+        },
+        {
+          "action": "Open",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default1",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "file",
+              "value": {
+                "string": "repository:///Automation%20Anywhere/Bot%20Store/Newtonsoft.Json.dll",
+                "type": "FILE"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DLL",
+          "type": "action",
+          "uid": "f051dc23-30ed-4020-9e2d-0e272f3a8715"
+        },
+        {
+          "action": "Open",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "file",
+              "value": {
+                "string": "repository:///Automation%20Anywhere/Bot%20Store/Get%20Current%20Exchange%20Rate.dll",
+                "type": "FILE"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DLL",
+          "type": "action",
+          "uid": "1f71cbf2-2911-495e-8948-b4ebcb003380"
+        },
+        {
+          "action": "Run function",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "nameSpace",
+              "value": {
+                "string": "Get_Current_Exchange_Rate",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "className",
+              "value": {
+                "string": "MagdiDotNet",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "functionName",
+              "value": {
+                "string": "CurrencyConversion",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "arguments",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "vInputs"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DLL",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vOutput"
+          },
+          "type": "action",
+          "uid": "52ab4853-c780-4ce1-9028-f4c7a3ea56d9"
+        },
+        {
+          "action": "messageBox",
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Automation Anywhere Enterprise Client",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "content",
+              "value": {
+                "expression": "$vOutput$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "scrollLines",
+              "value": {
+                "number": "30",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "closeMsgBox",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "MessageBox",
+          "type": "action",
+          "uid": "92735054-873d-4b13-87d7-8a9292ace22e"
+        },
+        {
+          "action": "Close",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DLL",
+          "type": "action",
+          "uid": "b68bc022-e968-417e-a50e-e70248e2bec4"
+        },
+        {
+          "action": "Close",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "Default1",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DLL",
+          "type": "action",
+          "uid": "711ac961-0216-425f-8a19-604d8c8b5c21"
+        }
+      ],
+      "type": "try",
+      "uid": "7ace3e6c-402c-4901-aa69-d99b1aec8ee0"
+    }
+  ],
+  "triggers": []
+}

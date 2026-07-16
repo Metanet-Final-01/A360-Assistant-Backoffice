@@ -1,0 +1,14 @@
+﻿case_id,run_id,status,error,gold_actions,prediction_actions,canonical_action_f1,canonical_sequence_f1,package_family_f1,pm4py_status,pm4py_fitness,pm4py_precision,worfbench_status,worfbench_precision,worfbench_recall,worfbench_f1,worfbench_gold_fidelity,worfbench_prediction_fidelity
+03_0131_currency-rate---oanda,runner_v1_batch_20260716_13pdfs__01_0131_currency-rate---oanda,skipped,source=0131_currency-rate---oanda runner_status=None,,,,,,,,,,,,,,
+08_0137_sendemailusingsmtp-demo,runner_v1_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo,ok,,3,7,0.0,0.0,0.0,ok,0.0,0.0,ok,0.2,0.3333,0.25,approximated,exact
+11_0167_outlook-email-notifier,runner_v1_batch_20260716_13pdfs__03_0167_outlook-email-notifier,ok,,24,8,0.0,0.0,0.25,ok,0.0,0.0,ok,0.5714,0.16,0.25,approximated,exact
+04_0176_global-exchange-currency-rate,runner_v1_batch_20260716_13pdfs__04_0176_global-exchange-currency-rate,ok,,24,9,0.0,0.0,0.18181818181818182,ok,0.0,0.0,ok,0.2857,0.08,0.125,approximated,exact
+06_0224_extracttablesfrompdftocsv,runner_v1_batch_20260716_13pdfs__05_0224_extracttablesfrompdftocsv,ok,,10,5,0.0,0.0,0.0,ok,0.0,0.0,ok,0.2,0.0833,0.1176,exact,exact
+07_0225_extracttablefromwordtocsv,runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv,ok,,10,6,0.0,0.0,0.0,ok,0.0,0.0,ok,0.1667,0.0833,0.1111,exact,exact
+09_0245_merge-multiple-csv-files,runner_v1_batch_20260716_13pdfs__07_0245_merge-multiple-csv-files,ok,,29,4,0.0606060606060606,0.0606060606060606,0.1212121212121212,ok,0.0741,0.0,ok,0.25,0.04,0.069,approximated,exact
+10_0302_a2019-get-current-exchange-rate,runner_v1_batch_20260716_13pdfs__08_0302_a2019-get-current-exchange-rate,ok,,18,6,0.08333333333333333,0.08333333333333333,0.25,ok,0.0,0.0,ok,0.2,0.0556,0.087,approximated,exact
+12_0338_lettergenerationbot,runner_v1_batch_20260716_13pdfs_resume09__01_0338_lettergenerationbot,skipped,source=0338_lettergenerationbot runner_status=error,,,,,,,,,,,,,,
+01_0374_createprojectinjirausingapi,runner_v1_batch_20260716_13pdfs_resume09__02_0374_createprojectinjirausingapi,ok,,17,8,0.0,0.0,0.07999999999999999,ok,0.0,0.0,ok,0.1667,0.0588,0.087,approximated,exact
+05_0393_a2019-twilio-integration,runner_v1_batch_20260716_13pdfs_resume09__03_0393_a2019-twilio-integration,ok,,47,7,0.037037037037037035,0.037037037037037035,0.14814814814814814,ok,0.0741,0.0,ok,0.2,0.0238,0.0426,approximated,exact
+13_0410_a2019-invoicely-assistant,runner_v1_batch_20260716_13pdfs_resume09__04_0410_a2019-invoicely-assistant,ok,,31,8,0.0,0.0,0.15384615384615383,ok,0.0,0.0,ok,0.1667,0.0333,0.0556,approximated,exact
+02_0419_sendbulkemailswithtemplate,runner_v1_batch_20260716_13pdfs_resume09__05_0419_sendbulkemailswithtemplate,ok,,55,13,0.0,0.0,0.0588235294117647,ok,0.0,0.0,ok,0.1818,0.04,0.0656,approximated,exact

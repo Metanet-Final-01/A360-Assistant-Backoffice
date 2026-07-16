@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="30d1208b-f96d-48d2-820d-d3fa81061dc3" root="7716ca9d-95b0-408a-89f0-e90d61346792" id="0302d7b6-610f-4ef6-80aa-ec6065df0535">
+    <sequence name="" id="7716ca9d-95b0-408a-89f0-e90d61346792"/>
+    <sequence name="" id="d867cf16-2735-4c4f-b0f0-2ce1ff683659"/>
+    <sequence name="" id="f084e801-d68e-413a-b96f-516b4d0e07cd"/>
+    <sequence name="" id="212aff64-2e47-4499-b471-903b509abcf9"/>
+    <sequence name="" id="08fce47a-e719-4abd-9a58-139a69ba270b"/>
+    <sequence name="" id="b5350f47-8a6c-450f-a658-a55760d776be"/>
+    <manualTask name="If.ifPackageElseIfOptionalAction" id="5c1872ef-83f0-42ac-9858-01a78b4bd5e0"/>
+    <manualTask name="Prompt.promptForValue" id="a5f3048b-ab54-4d84-b0ab-6f273a89632b"/>
+    <manualTask name="Task Bot.taskBotPackageStopAction" id="f61af474-2a2e-41cb-9ea8-632d234da80f"/>
+    <manualTask name="Folder.folderCreate" id="8ace216e-c1d0-449f-82e3-eed207ea113b"/>
+    <manualTask name="Datetime.getActionInDatetime" id="9c7f7ba5-6122-4f69-a338-acf1a9ee4030"/>
+    <sequence name="" id="497229d7-df4f-4f91-b12a-56edf620df83"/>
+    <manualTask name="Error handler.errorHandlerCatch" id="332e7a51-10f7-461e-99a1-928856df2c8d"/>
+    <manualTask name="Error handler.errorHandlerFinally" id="fc394571-55af-4744-98b5-7e95f82aeea1"/>
+    <sequence name="" id="38bc0e8c-6052-43cf-bb0e-f9e9a602fc01"/>
+    <manualTask name="Logging.cloudInsertingLogToFileCommand" id="8026c071-62de-4bac-82b9-94de51021c23"/>
+    <manualTask name="Error handler.errorHandlerFinally" id="1fac094e-dd1d-46a5-b643-d184726ca246"/>
+    <manualTask name="Microsoft 365 Excel package in Automation 360.office365ExcelClose" id="4d02024b-917f-4092-8bc5-addab6e38be5"/>
+    <manualTask name="Browser.browserPackageCloseAction" id="6c616685-f91f-4b52-afc3-93015e22382d"/>
+    <manualTask name="Microsoft 365 Excel package in Automation 360.usingOpenWorkbookAction" id="53a92b98-a80e-4e23-bd1b-5c9498e7ebfb"/>
+    <manualTask name="Microsoft 365 Excel package in Automation 360.getWorksheetAsDataTableIn" id="203b4741-973d-4bda-b7a8-5894f6751bf9"/>
+    <manualTask name="Browser.browserPackageOpenAction" id="1642fb4c-6b0f-4290-a6d7-91a1c450c79e"/>
+    <manualTask name="Prompt.promptForValue" id="3e53c548-aa48-4f2f-9a07-5414ce3cbe5f"/>
+    <manualTask name="Microsoft 365 Excel package in Automation 360.office365ExcelSetCell" id="61126971-5d21-4258-82a6-3b6947841f92"/>
+    <parentsNode id="659c4317-cbfa-4e76-a6a2-b6143aa5edb5" sourceId="7716ca9d-95b0-408a-89f0-e90d61346792" targetId="d867cf16-2735-4c4f-b0f0-2ce1ff683659"/>
+    <parentsNode id="5c7ccc3d-b62c-4a50-b48d-6c1070f4408f" sourceId="7716ca9d-95b0-408a-89f0-e90d61346792" targetId="f084e801-d68e-413a-b96f-516b4d0e07cd"/>
+    <parentsNode id="c1086fdb-a52c-4fb2-ab35-093028095afd" sourceId="7716ca9d-95b0-408a-89f0-e90d61346792" targetId="212aff64-2e47-4499-b471-903b509abcf9"/>
+    <parentsNode id="31fc08b5-5d04-43e0-bf81-a703066a8948" sourceId="7716ca9d-95b0-408a-89f0-e90d61346792" targetId="08fce47a-e719-4abd-9a58-139a69ba270b"/>
+    <parentsNode id="262ec6fc-1044-413a-848e-4435cabaf58f" sourceId="7716ca9d-95b0-408a-89f0-e90d61346792" targetId="b5350f47-8a6c-450f-a658-a55760d776be"/>
+    <parentsNode id="ef3c37a4-c809-4b58-8dd5-a64ab50f20d6" sourceId="d867cf16-2735-4c4f-b0f0-2ce1ff683659" targetId="5c1872ef-83f0-42ac-9858-01a78b4bd5e0"/>
+    <parentsNode id="4ed74f4e-6153-4f88-a2ba-736d10af62d0" sourceId="d867cf16-2735-4c4f-b0f0-2ce1ff683659" targetId="a5f3048b-ab54-4d84-b0ab-6f273a89632b"/>
+    <parentsNode id="051fe273-acb3-47e0-bfba-69194c65e3a8" sourceId="d867cf16-2735-4c4f-b0f0-2ce1ff683659" targetId="f61af474-2a2e-41cb-9ea8-632d234da80f"/>
+    <parentsNode id="f3c51473-8e34-4dcf-84ca-1607f5b9b05a" sourceId="f084e801-d68e-413a-b96f-516b4d0e07cd" targetId="8ace216e-c1d0-449f-82e3-eed207ea113b"/>
+    <parentsNode id="bc0b7cb0-f091-4f49-b6b2-cdf311276985" sourceId="f084e801-d68e-413a-b96f-516b4d0e07cd" targetId="9c7f7ba5-6122-4f69-a338-acf1a9ee4030"/>
+    <parentsNode id="36fdb480-f5c3-4eac-b048-a53cd3e49f42" sourceId="212aff64-2e47-4499-b471-903b509abcf9" targetId="497229d7-df4f-4f91-b12a-56edf620df83"/>
+    <parentsNode id="e1caa44c-cd2f-48c7-abb3-108a88e9ec4e" sourceId="212aff64-2e47-4499-b471-903b509abcf9" targetId="332e7a51-10f7-461e-99a1-928856df2c8d"/>
+    <parentsNode id="eb1bab84-74b9-40a8-a467-286486f82f56" sourceId="212aff64-2e47-4499-b471-903b509abcf9" targetId="fc394571-55af-4744-98b5-7e95f82aeea1"/>
+    <parentsNode id="3e149ec4-56be-4a1a-8978-ba83cfe5ff2e" sourceId="08fce47a-e719-4abd-9a58-139a69ba270b" targetId="38bc0e8c-6052-43cf-bb0e-f9e9a602fc01"/>
+    <parentsNode id="592cfff7-5ded-4c3c-ba01-63b0ed0d0d51" sourceId="08fce47a-e719-4abd-9a58-139a69ba270b" targetId="8026c071-62de-4bac-82b9-94de51021c23"/>
+    <parentsNode id="c146e837-d4b2-4a78-963d-a67cdfd2503c" sourceId="08fce47a-e719-4abd-9a58-139a69ba270b" targetId="1fac094e-dd1d-46a5-b643-d184726ca246"/>
+    <parentsNode id="0b62065e-eb62-404c-bc03-7630d7b9f8e0" sourceId="b5350f47-8a6c-450f-a658-a55760d776be" targetId="4d02024b-917f-4092-8bc5-addab6e38be5"/>
+    <parentsNode id="c8ae83d8-1dce-465f-b2a6-5df5ee95b12c" sourceId="b5350f47-8a6c-450f-a658-a55760d776be" targetId="6c616685-f91f-4b52-afc3-93015e22382d"/>
+    <parentsNode id="1eceed6b-5131-427f-b2b4-a6adb7266f41" sourceId="497229d7-df4f-4f91-b12a-56edf620df83" targetId="53a92b98-a80e-4e23-bd1b-5c9498e7ebfb"/>
+    <parentsNode id="563eb801-ed12-442a-a768-4aaadd3d85db" sourceId="497229d7-df4f-4f91-b12a-56edf620df83" targetId="203b4741-973d-4bda-b7a8-5894f6751bf9"/>
+    <parentsNode id="fac64768-f960-4496-b3d3-4fde0fb56a52" sourceId="38bc0e8c-6052-43cf-bb0e-f9e9a602fc01" targetId="1642fb4c-6b0f-4290-a6d7-91a1c450c79e"/>
+    <parentsNode id="3273f917-5661-40da-b4e3-de85e739fcf0" sourceId="38bc0e8c-6052-43cf-bb0e-f9e9a602fc01" targetId="3e53c548-aa48-4f2f-9a07-5414ce3cbe5f"/>
+    <parentsNode id="f384f64d-b011-4e69-9d5b-ad3b2adfa2be" sourceId="38bc0e8c-6052-43cf-bb0e-f9e9a602fc01" targetId="61126971-5d21-4258-82a6-3b6947841f92"/>
+  </processTree>
+</ptml>

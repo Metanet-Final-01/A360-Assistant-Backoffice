@@ -1,0 +1,14 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0182_multiple-excel-operation",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "Multiple EXCEL Operation",
+      "manual_dependencies": [],
+      "output_file": "workflows/Multiple EXCEL Operation.json",
+      "scanned_dependencies": [
+        "Excel Operations"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,76 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": null,
+      "label": "XML.xmlStartSession",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Microsoft Outlook (macOS).macMsOutlookConnectDisconnect",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Microsoft 365 Outlook.ms365OutlookSaveAttachments",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Microsoft Outlook (macOS).macMsOutlookConnectDisconnect",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Process Composer.processComposerCreateARequest",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": null,
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Jira.jiraCreateProject",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Loop.loop.commands.start",
+      "children": []
+    },
+    {
+      "operator": null,
+      "label": "Error handler.errorHandlerCatch",
+      "children": []
+    }
+  ]
+}

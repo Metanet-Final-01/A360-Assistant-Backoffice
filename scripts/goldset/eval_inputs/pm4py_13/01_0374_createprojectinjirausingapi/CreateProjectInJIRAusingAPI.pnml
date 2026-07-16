@@ -1,0 +1,282 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784123785.2259765" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784123785.2259765</text>
+    </name>
+    <page id="n0">
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_19">
+        <name>
+          <text>p_19</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_20">
+        <name>
+          <text>p_20</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_21">
+        <name>
+          <text>p_21</text>
+        </name>
+      </place>
+      <place id="p_17">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <place id="p_18">
+        <name>
+          <text>p_18</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_22">
+        <name>
+          <text>p_22</text>
+        </name>
+      </place>
+      <place id="p_23">
+        <name>
+          <text>p_23</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <transition id="c338b986-5d74-490c-a92d-47d6fdad9ca7">
+        <name>
+          <text>XML.startSession</text>
+        </name>
+      </transition>
+      <transition id="skip_4">
+        <name>
+          <text>skip_4</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="85537b9d-7ff2-4f0b-afef-a5e53fa5fa67"/>
+      </transition>
+      <transition id="6e04c2f4-cdc7-471a-b64c-41cf1407df46">
+        <name>
+          <text>Email.emailConnect</text>
+        </name>
+      </transition>
+      <transition id="loop_2">
+        <name>
+          <text>loop_2</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="9780b715-1df0-4dc3-997d-eb170d588159"/>
+      </transition>
+      <transition id="6accc357-e85d-4508-93a3-793a4de2c0aa">
+        <name>
+          <text>Number.toString</text>
+        </name>
+      </transition>
+      <transition id="16e09304-eb03-4ba4-94e2-9ef3b2ba1170">
+        <name>
+          <text>Excel_MS.GetMultipleCells</text>
+        </name>
+      </transition>
+      <transition id="b7b95226-aabd-4893-b6e9-3e466872ccb2">
+        <name>
+          <text>MessageBox.messageBox</text>
+        </name>
+      </transition>
+      <transition id="1d78780b-2ef1-48e7-8ee6-d2970d6cdb7a">
+        <name>
+          <text>Email.closeEmail</text>
+        </name>
+      </transition>
+      <transition id="skip_8">
+        <name>
+          <text>skip_8</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="65656d84-d73f-45d1-b587-7ed3d234d2fa"/>
+      </transition>
+      <transition id="48df44f0-04ba-42da-8451-cec9c251a930">
+        <name>
+          <text>XML.getSingleNode</text>
+        </name>
+      </transition>
+      <transition id="be73ce93-6c63-4902-8799-4dd1fa7e8d90">
+        <name>
+          <text>Excel_MS.CloseSpreadsheet</text>
+        </name>
+      </transition>
+      <transition id="loop_7">
+        <name>
+          <text>loop_7</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="0046a07c-01cf-4d85-a891-7e6fb7078835"/>
+      </transition>
+      <transition id="27b507a7-49c6-41d9-a0d2-8fdebfb24966">
+        <name>
+          <text>XML.getSingleNode</text>
+        </name>
+      </transition>
+      <transition id="b41cbfb6-0d99-4b25-aa65-d898c6f87201">
+        <name>
+          <text>XML.getSingleNode</text>
+        </name>
+      </transition>
+      <transition id="c9d7d2f4-4886-4b05-869c-8304536220dc">
+        <name>
+          <text>Email.saveAttachment</text>
+        </name>
+      </transition>
+      <transition id="skip_3">
+        <name>
+          <text>skip_3</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="a3c1114b-e1f6-4d79-b029-f9cc8af5fcd0"/>
+      </transition>
+      <transition id="942a7e24-2319-4cc8-9cfd-b80ad27d2de2">
+        <name>
+          <text>Rest.restPost</text>
+        </name>
+      </transition>
+      <transition id="skip_9">
+        <name>
+          <text>skip_9</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="0e31ee97-ecdb-4439-acb3-0ba0ffb6e85e"/>
+      </transition>
+      <transition id="98dd79a4-c377-4b86-8d2c-973c7f481fe1">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="6580d125-a805-44fd-8dd4-f27604f04fcf">
+        <name>
+          <text>MessageBox.messageBox</text>
+        </name>
+      </transition>
+      <transition id="09a95d0f-83b9-42cd-b0dc-7ae72e964325">
+        <name>
+          <text>XML.endSession</text>
+        </name>
+      </transition>
+      <transition id="bcf7c048-2de3-4630-9121-8787b52d91bd">
+        <name>
+          <text>Excel_MS.OpenSpreadsheet</text>
+        </name>
+      </transition>
+      <transition id="411c7d43-14f5-43f2-b7b0-c4946ab3bee4">
+        <name>
+          <text>MessageBox.messageBox</text>
+        </name>
+      </transition>
+      <arc id="1561467643264" source="p_13" target="bcf7c048-2de3-4630-9121-8787b52d91bd"/>
+      <arc id="1561467644160" source="b7b95226-aabd-4893-b6e9-3e466872ccb2" target="p_19"/>
+      <arc id="1561467648640" source="p_22" target="loop_7"/>
+      <arc id="1561467649536" source="p_7" target="6accc357-e85d-4508-93a3-793a4de2c0aa"/>
+      <arc id="1561467649872" source="p_23" target="6580d125-a805-44fd-8dd4-f27604f04fcf"/>
+      <arc id="1561467617936" source="p_11" target="skip_3"/>
+      <arc id="1561467262992" source="c338b986-5d74-490c-a92d-47d6fdad9ca7" target="p_3"/>
+      <arc id="1561467263632" source="p_3" target="27b507a7-49c6-41d9-a0d2-8fdebfb24966"/>
+      <arc id="1561467139216" source="p_4" target="b41cbfb6-0d99-4b25-aa65-d898c6f87201"/>
+      <arc id="1561467830800" source="p_11" target="1d78780b-2ef1-48e7-8ee6-d2970d6cdb7a"/>
+      <arc id="1561467644048" source="p_17" target="b7b95226-aabd-4893-b6e9-3e466872ccb2"/>
+      <arc id="1561467648528" source="skip_9" target="p_22"/>
+      <arc id="1561467830352" source="6580d125-a805-44fd-8dd4-f27604f04fcf" target="sink"/>
+      <arc id="1561467304992" source="p_11" target="skip_4"/>
+      <arc id="1561467830688" source="p_18" target="be73ce93-6c63-4902-8799-4dd1fa7e8d90"/>
+      <arc id="1561467648416" source="p_18" target="skip_9"/>
+      <arc id="1561467649312" source="be73ce93-6c63-4902-8799-4dd1fa7e8d90" target="sink"/>
+      <arc id="1561467138608" source="27b507a7-49c6-41d9-a0d2-8fdebfb24966" target="p_4"/>
+      <arc id="1561467279536" source="p_10" target="c9d7d2f4-4886-4b05-869c-8304536220dc"/>
+      <arc id="1561467830576" source="16e09304-eb03-4ba4-94e2-9ef3b2ba1170" target="p_17"/>
+      <arc id="1561467647408" source="942a7e24-2319-4cc8-9cfd-b80ad27d2de2" target="p_21"/>
+      <arc id="1561467648304" source="skip_8" target="p_22"/>
+      <arc id="1561467647184" source="p_20" target="942a7e24-2319-4cc8-9cfd-b80ad27d2de2"/>
+      <arc id="1561467099328" source="p_5" target="48df44f0-04ba-42da-8451-cec9c251a930"/>
+      <arc id="1561466922688" source="p_7" target="6e04c2f4-cdc7-471a-b64c-41cf1407df46"/>
+      <arc id="1561467648192" source="p_18" target="skip_8"/>
+      <arc id="1561467830464" source="6e04c2f4-cdc7-471a-b64c-41cf1407df46" target="p_10"/>
+      <arc id="1561467813968" source="source" target="c338b986-5d74-490c-a92d-47d6fdad9ca7"/>
+      <arc id="1561467552976" source="b41cbfb6-0d99-4b25-aa65-d898c6f87201" target="p_5"/>
+      <arc id="1561467099600" source="48df44f0-04ba-42da-8451-cec9c251a930" target="p_6"/>
+      <arc id="1561467488336" source="p_6" target="09a95d0f-83b9-42cd-b0dc-7ae72e964325"/>
+      <arc id="1561467488848" source="09a95d0f-83b9-42cd-b0dc-7ae72e964325" target="p_7"/>
+      <arc id="1561467618512" source="c9d7d2f4-4886-4b05-869c-8304536220dc" target="p_11"/>
+      <arc id="1561467745488" source="skip_4" target="p_12"/>
+      <arc id="1561467402960" source="p_12" target="loop_2"/>
+      <arc id="1563029627472" source="loop_2" target="p_10"/>
+      <arc id="1561467643600" source="p_14" target="16e09304-eb03-4ba4-94e2-9ef3b2ba1170"/>
+      <arc id="1561467648080" source="411c7d43-14f5-43f2-b7b0-c4946ab3bee4" target="p_18"/>
+      <arc id="1561467643488" source="bcf7c048-2de3-4630-9121-8787b52d91bd" target="p_14"/>
+      <arc id="1561467647968" source="p_21" target="411c7d43-14f5-43f2-b7b0-c4946ab3bee4"/>
+      <arc id="1561467648976" source="loop_7" target="p_17"/>
+      <arc id="1561467304816" source="skip_3" target="p_12"/>
+      <arc id="1561467643376" source="1d78780b-2ef1-48e7-8ee6-d2970d6cdb7a" target="p_13"/>
+      <arc id="1561467644272" source="p_19" target="98dd79a4-c377-4b86-8d2c-973c7f481fe1"/>
+      <arc id="1561467647856" source="98dd79a4-c377-4b86-8d2c-973c7f481fe1" target="p_20"/>
+      <arc id="1561467649648" source="6accc357-e85d-4508-93a3-793a4de2c0aa" target="p_23"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

@@ -1,0 +1,109 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784136686.4670987" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784136686.4670987</text>
+    </name>
+    <page id="n0">
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <transition id="a4ca7b67-03cc-4320-bbc0-6b808de17f5a">
+        <name>
+          <text>Task Bot.taskBotPackageStopAction</text>
+        </name>
+      </transition>
+      <transition id="02420018-b37b-4bcb-8c0a-acb476d464c0">
+        <name>
+          <text>Prompt.promptForFile</text>
+        </name>
+      </transition>
+      <transition id="96d00ccf-1c21-4575-8eed-49edcfe8bd06">
+        <name>
+          <text>Prompt.promptForValue</text>
+        </name>
+      </transition>
+      <transition id="e078572a-caac-4c7e-abd0-4d4234dcd02f">
+        <name>
+          <text>Message box.usingMessageBoxAction</text>
+        </name>
+      </transition>
+      <transition id="7d7fc921-df3a-41cd-93c1-ddf3a99a02e2">
+        <name>
+          <text>Prompt.promptForValue</text>
+        </name>
+      </transition>
+      <transition id="5ae3b8a0-9128-424a-afbd-3e58016be3d1">
+        <name>
+          <text>Folder.folderCreate</text>
+        </name>
+      </transition>
+      <transition id="c4f8ec56-af41-471d-9523-bdf31f83f031">
+        <name>
+          <text>Datetime.cloudUsingAddAction</text>
+        </name>
+      </transition>
+      <arc id="2786852618656" source="source" target="96d00ccf-1c21-4575-8eed-49edcfe8bd06"/>
+      <arc id="2786851926880" source="7d7fc921-df3a-41cd-93c1-ddf3a99a02e2" target="p_5"/>
+      <arc id="2786851904224" source="p_6" target="a4ca7b67-03cc-4320-bbc0-6b808de17f5a"/>
+      <arc id="2786266007264" source="p_8" target="c4f8ec56-af41-471d-9523-bdf31f83f031"/>
+      <arc id="2786851710656" source="c4f8ec56-af41-471d-9523-bdf31f83f031" target="p_7"/>
+      <arc id="2786852051280" source="96d00ccf-1c21-4575-8eed-49edcfe8bd06" target="p_4"/>
+      <arc id="2786851927184" source="p_5" target="e078572a-caac-4c7e-abd0-4d4234dcd02f"/>
+      <arc id="2786852051920" source="p_4" target="7d7fc921-df3a-41cd-93c1-ddf3a99a02e2"/>
+      <arc id="2786852342096" source="e078572a-caac-4c7e-abd0-4d4234dcd02f" target="p_6"/>
+      <arc id="2786851904496" source="a4ca7b67-03cc-4320-bbc0-6b808de17f5a" target="p_3"/>
+      <arc id="2786852276560" source="p_3" target="5ae3b8a0-9128-424a-afbd-3e58016be3d1"/>
+      <arc id="2786852277072" source="5ae3b8a0-9128-424a-afbd-3e58016be3d1" target="p_8"/>
+      <arc id="2786852302512" source="p_7" target="02420018-b37b-4bcb-8c0a-acb476d464c0"/>
+      <arc id="2786852302736" source="02420018-b37b-4bcb-8c0a-acb476d464c0" target="sink"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

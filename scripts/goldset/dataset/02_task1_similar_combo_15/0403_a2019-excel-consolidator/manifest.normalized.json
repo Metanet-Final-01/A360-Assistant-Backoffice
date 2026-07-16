@@ -1,0 +1,314 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\Docs\\Input Excel.xlsx",
+        "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\Docs\\Base Excel.xlsx"
+      ]
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\10de698e-a56f-46f3-8a89-530e55fea53c.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\15b732ed-8ea0-4fdf-8ddf-ffdfa18e217b.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\233af66f-3034-42af-8c80-267fd8e0e11e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\2a9b1630-6a0c-4b7d-abf5-4bf7389a4b2a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\2df853a6-c336-4d61-90e7-5745f8ef39ac.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\389d3832-eada-4946-85d0-261b2911c309.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\4239273e-2812-4909-937a-c905bd371631.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\4c2724ec-70ac-457d-ab8a-a6024f0a5715.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\5543c6d8-5fca-49da-b637-d932b6ec331e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\5e6bdcd9-cada-477b-b162-54c31c70bbab.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\61566535-94c7-4893-9e89-9bd75975255a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\6389b70a-f854-4578-8de3-6118f3630559.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\64adfe7e-4b06-4ca8-8b8b-8ab7b1709d89.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\7d20de37-971d-431c-8fdb-77501216c633.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\7eb9c5b7-f336-458b-87c5-4a7d5f3465e3.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\80a9faed-51fa-40f9-acab-36e0dd687ea6.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\83b09274-4449-4bc1-b9a2-12f7ab149c80.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\89bd3fc4-3f54-42da-a0c5-4db03c1a6d83.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\932ebbc0-7058-4666-b740-980b3eee3793.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\98bac239-9639-48b9-81a5-a9af49ee456c.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\aef227d0-bab4-4bb8-9025-541f91277be9.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\af956a57-bd70-4efd-979d-dc5d37fab5d8.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\bd2ec782-b41e-4694-8c3d-352821ab9736.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\bdc16549-0317-4cec-a81b-f23dbe68b71e.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\c55e2b58-3415-4472-b65f-a6e01f6b174c.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\c92e64c6-74ce-4d1e-9789-dca88ea91809.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\ca709853-c18a-4198-b638-8bf83445d67a.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\ce1f14be-e8d8-4729-80b2-8a0196df8611.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\d889c955-8e43-4411-bc7f-f6e96a580dc8.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\dde00b83-36c2-4f1f-9494-667a90839afa.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\dec8fa7c-9d0f-455f-9bac-3e324e8e8486.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "image/png",
+      "manualDependencies": null,
+      "metadataForFile": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator",
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\A2019-Excel Consolidator\\f73b527f-3a87-4a79-9531-a4cea8de99fe.png",
+      "scannedDependencies": null
+    },
+    {
+      "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\Docs\\Base Excel.xlsx",
+      "scannedDependencies": []
+    },
+    {
+      "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+      "manualDependencies": [],
+      "metadataForFile": null,
+      "path": "Automation Anywhere\\Bot Store\\A2019-Excel Consolidator - KLOUDPAD Mobility Research Pvt Ltd\\Docs\\Input Excel.xlsx",
+      "scannedDependencies": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.0.0-20200721-221948.jar",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "Delay",
+      "path": "bot-command-delay-2.1.0-20200721-221959.jar",
+      "version": "2.1.0-20200721-221959"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.0.0-20200721-222009.jar",
+      "version": "2.0.0-20200721-222009"
+    },
+    {
+      "name": "Excel_MS",
+      "path": "bot-command-msexcel-4.0.0-20200723-234413.jar",
+      "version": "4.0.0-20200723-234413"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.0.0-20200721-222021.jar",
+      "version": "2.0.0-20200721-222021"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.1.0-20200721-222212.jar",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.0.0-20200721-222213.jar",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.0.0-20200721-222224.jar",
+      "version": "2.0.0-20200721-222224"
+    },
+    {
+      "name": "Recorder",
+      "path": "bot-command-recorder-2.0.7-20200726-053131.jar",
+      "version": "2.0.7-20200726-053131"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200723-201827.jar",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-3.0.0-20200721-222454.jar",
+      "version": "3.0.0-20200721-222454"
+    },
+    {
+      "name": "Wait",
+      "path": "bot-command-wait-3.0.0-20200721-222505.jar",
+      "version": "3.0.0-20200721-222505"
+    }
+  ]
+}

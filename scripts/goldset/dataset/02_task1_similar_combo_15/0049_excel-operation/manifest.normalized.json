@@ -1,0 +1,29 @@
+{
+  "files": [
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.taskbot",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Excel Operation\\Excel Operation",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Excel Operation of STS",
+      "path": "Excel Operation of STS-2.0.9-20240502-163402.jar",
+      "version": "2.0.9-20240502-163402"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.6.0.jar",
+      "version": "2.6.0"
+    }
+  ]
+}

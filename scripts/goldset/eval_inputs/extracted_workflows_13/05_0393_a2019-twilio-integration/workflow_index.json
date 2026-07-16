@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0393_a2019-twilio-integration",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "A2019 Twilio Integration",
+      "manual_dependencies": [],
+      "output_file": "workflows/A2019 Twilio Integration.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

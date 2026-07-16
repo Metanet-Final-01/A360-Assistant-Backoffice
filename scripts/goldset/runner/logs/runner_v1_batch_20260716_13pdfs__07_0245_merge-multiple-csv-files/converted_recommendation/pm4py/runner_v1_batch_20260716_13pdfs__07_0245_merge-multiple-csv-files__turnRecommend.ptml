@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="833ad45d-160c-46a8-9c87-2a06f73e7fc5" root="686664e2-76c2-46c9-ae7d-997efbe9d68b" id="17bd2906-086a-43fb-9708-765d78dfad3a">
+    <sequence name="" id="686664e2-76c2-46c9-ae7d-997efbe9d68b"/>
+    <automaticTask name="" id="7464be6e-1550-4593-873c-153df1b366c7"/>
+    <manualTask name="Folder.folderCreate" id="22987ae5-3f66-40ca-88c1-8f4665b344b9"/>
+    <automaticTask name="" id="88951574-b629-47c3-af3d-53837c2abfa5"/>
+    <manualTask name="ServiceNow.servicenowGetAttachment" id="d532e55c-94fa-4fc6-859d-be0a79e598da"/>
+    <automaticTask name="" id="8fd930f5-b5bd-4b07-b84e-ae5af9a979b4"/>
+    <automaticTask name="" id="23a0f72b-ebc5-4191-9ab8-d38ea9654c34"/>
+    <automaticTask name="" id="5541a74e-37d9-49c0-b14d-9b2318b78fb2"/>
+    <automaticTask name="" id="e126a4e4-703e-4560-9c7d-4879b70689b9"/>
+    <automaticTask name="" id="ff178b06-d24d-4005-9449-f3c92aac6ce4"/>
+    <automaticTask name="" id="bceb217a-4379-4451-bbca-b0c2c725a032"/>
+    <manualTask name="Logging.cloudInsertingLogToFileCommand" id="8a4b4452-848f-46b8-8f2e-208fd458f5c3"/>
+    <manualTask name="Microsoft 365 OneDrive.oneDriveMoveFileOrFolderAction" id="0acfe0ec-7021-4001-93c1-2102cd75b168"/>
+    <automaticTask name="" id="356a1651-6b4d-4643-a37b-75b9ff46be9a"/>
+    <automaticTask name="" id="1a7647cd-df3a-415f-abd1-9114968226e4"/>
+    <parentsNode id="bbcddaa3-5a67-4a25-b742-eec2252207cc" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="7464be6e-1550-4593-873c-153df1b366c7"/>
+    <parentsNode id="9558c984-c5b4-4c86-bb8a-062eccc61277" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="22987ae5-3f66-40ca-88c1-8f4665b344b9"/>
+    <parentsNode id="4dedb821-f45a-4059-aaee-e1eadf2467d2" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="88951574-b629-47c3-af3d-53837c2abfa5"/>
+    <parentsNode id="d0e11ab4-af0f-4557-b4c4-6010a9b37760" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="d532e55c-94fa-4fc6-859d-be0a79e598da"/>
+    <parentsNode id="17153333-828a-4cb3-8961-201ce953b37b" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="8fd930f5-b5bd-4b07-b84e-ae5af9a979b4"/>
+    <parentsNode id="ec9e6f3c-e489-4416-a269-e3cb21ab2301" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="23a0f72b-ebc5-4191-9ab8-d38ea9654c34"/>
+    <parentsNode id="12f62530-05e8-475c-843c-593b126f358e" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="5541a74e-37d9-49c0-b14d-9b2318b78fb2"/>
+    <parentsNode id="7f8395ab-2f79-4023-9e38-b43361050806" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="e126a4e4-703e-4560-9c7d-4879b70689b9"/>
+    <parentsNode id="160d9e46-83d3-46e3-b869-c85a6253afa2" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="ff178b06-d24d-4005-9449-f3c92aac6ce4"/>
+    <parentsNode id="a327ceca-8ed5-4ff6-8209-5dca121e0cd2" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="bceb217a-4379-4451-bbca-b0c2c725a032"/>
+    <parentsNode id="4fc8c762-707e-4f67-ad87-cb7c9f71bcc0" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="8a4b4452-848f-46b8-8f2e-208fd458f5c3"/>
+    <parentsNode id="7df0ba64-29de-436c-b26d-0f4fa2722ffa" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="0acfe0ec-7021-4001-93c1-2102cd75b168"/>
+    <parentsNode id="4b87310d-3bbb-4473-ab5c-b347e5938729" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="356a1651-6b4d-4643-a37b-75b9ff46be9a"/>
+    <parentsNode id="39e60815-c5be-4bc3-9aa8-fddf63bb9e9c" sourceId="686664e2-76c2-46c9-ae7d-997efbe9d68b" targetId="1a7647cd-df3a-415f-abd1-9114968226e4"/>
+  </processTree>
+</ptml>

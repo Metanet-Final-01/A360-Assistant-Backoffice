@@ -1,0 +1,529 @@
+{
+  "source_manifest": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_combined_manifest.json",
+  "rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+  "note": "These are derived artifacts after scoring-time removal and human-confirmed canonical action equivalence mapping. Candidate mappings are not applied.",
+  "pairs": [
+    {
+      "case_id": "03_0131_currency-rate---oanda",
+      "source": "0131_currency-rate---oanda",
+      "run_id": "runner_v2_batch_20260716_13pdfs__01_0131_currency-rate---oanda",
+      "gold": [
+        {
+          "file": "03_0131_currency-rate---oanda\\gold_canonical_preprocessed\\Currency Rate - Oanda.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\03_0131_currency-rate---oanda\\Currency Rate - Oanda.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [
+            "WebAutomation.StartSessionWebAutomation",
+            "WebAutomation.EndSessionWebAutomation"
+          ],
+          "excluded_count": 2,
+          "action_count_after_preprocessing": 45
+        }
+      ],
+      "prediction": [
+        {
+          "file": "03_0131_currency-rate---oanda\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs__01_0131_currency-rate---oanda__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs__01_0131_currency-rate---oanda\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs__01_0131_currency-rate---oanda__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [
+            "If.ifPackageElseIfOptionalAction",
+            "Error handler.errorHandlerCatch",
+            "Error handler.errorHandlerFinally",
+            "Error handler.errorHandlerFinally"
+          ],
+          "excluded_count": 4,
+          "action_count_after_preprocessing": 12
+        }
+      ]
+    },
+    {
+      "case_id": "08_0137_sendemailusingsmtp-demo",
+      "source": "0137_sendemailusingsmtp-demo",
+      "run_id": "runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo",
+      "gold": [
+        {
+          "file": "08_0137_sendemailusingsmtp-demo\\gold_canonical_preprocessed\\SendEmailUsingSMTP_Demo.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\08_0137_sendemailusingsmtp-demo\\SendEmailUsingSMTP_Demo.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 3
+        }
+      ],
+      "prediction": [
+        {
+          "file": "08_0137_sendemailusingsmtp-demo\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [
+            "Error handler.errorHandlerCatch"
+          ],
+          "excluded_count": 1,
+          "action_count_after_preprocessing": 2
+        }
+      ]
+    },
+    {
+      "case_id": "11_0167_outlook-email-notifier",
+      "source": "0167_outlook-email-notifier",
+      "run_id": "runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier",
+      "gold": [
+        {
+          "file": "11_0167_outlook-email-notifier\\gold_canonical_preprocessed\\Outlook Email Notifier.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\11_0167_outlook-email-notifier\\Outlook Email Notifier.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 24
+        }
+      ],
+      "prediction": [
+        {
+          "file": "11_0167_outlook-email-notifier\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier\\converted_recommendation\\normalized\\runner_v2_batch_20260716_probe03__01_0167_outlook-email-notifier__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [
+            "Error handler.errorHandlerCatch",
+            "Error handler.errorHandlerFinally"
+          ],
+          "excluded_count": 2,
+          "action_count_after_preprocessing": 11
+        }
+      ]
+    },
+    {
+      "case_id": "04_0176_global-exchange-currency-rate",
+      "source": "0176_global-exchange-currency-rate",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate",
+      "gold": [
+        {
+          "file": "04_0176_global-exchange-currency-rate\\gold_canonical_preprocessed\\Global Exchange Currency Rate.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\04_0176_global-exchange-currency-rate\\Global Exchange Currency Rate.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 24
+        }
+      ],
+      "prediction": [
+        {
+          "file": "04_0176_global-exchange-currency-rate\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__01_0176_global-exchange-currency-rate__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 13
+        }
+      ]
+    },
+    {
+      "case_id": "06_0224_extracttablesfrompdftocsv",
+      "source": "0224_extracttablesfrompdftocsv",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv",
+      "gold": [
+        {
+          "file": "06_0224_extracttablesfrompdftocsv\\gold_canonical_preprocessed\\ExtractTablesfromPDFtoCSV.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\06_0224_extracttablesfrompdftocsv\\ExtractTablesfromPDFtoCSV.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 10
+        }
+      ],
+      "prediction": [
+        {
+          "file": "06_0224_extracttablesfrompdftocsv\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 6
+        }
+      ]
+    },
+    {
+      "case_id": "07_0225_extracttablefromwordtocsv",
+      "source": "0225_extracttablefromwordtocsv",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__03_0225_extracttablefromwordtocsv",
+      "gold": [
+        {
+          "file": "07_0225_extracttablefromwordtocsv\\gold_canonical_preprocessed\\ExtractTablefromWordtoCSV.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\07_0225_extracttablefromwordtocsv\\ExtractTablefromWordtoCSV.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 10
+        }
+      ],
+      "prediction": [
+        {
+          "file": "07_0225_extracttablefromwordtocsv\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__03_0225_extracttablefromwordtocsv__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__03_0225_extracttablefromwordtocsv\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__03_0225_extracttablefromwordtocsv__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 9
+        }
+      ]
+    },
+    {
+      "case_id": "09_0245_merge-multiple-csv-files",
+      "source": "0245_merge-multiple-csv-files",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files",
+      "gold": [
+        {
+          "file": "09_0245_merge-multiple-csv-files\\gold_canonical_preprocessed\\Merge Multiple CSV Files.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\09_0245_merge-multiple-csv-files\\Merge Multiple CSV Files.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 29
+        }
+      ],
+      "prediction": [
+        {
+          "file": "09_0245_merge-multiple-csv-files\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 7
+        }
+      ]
+    },
+    {
+      "case_id": "10_0302_a2019-get-current-exchange-rate",
+      "source": "0302_a2019-get-current-exchange-rate",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate",
+      "gold": [
+        {
+          "file": "10_0302_a2019-get-current-exchange-rate\\gold_canonical_preprocessed\\A2019 Get Current Exchange Rate.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\10_0302_a2019-get-current-exchange-rate\\A2019 Get Current Exchange Rate.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 18
+        }
+      ],
+      "prediction": [
+        {
+          "file": "10_0302_a2019-get-current-exchange-rate\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__05_0302_a2019-get-current-exchange-rate__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 13
+        }
+      ]
+    },
+    {
+      "case_id": "12_0338_lettergenerationbot",
+      "source": "0338_lettergenerationbot",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot",
+      "gold": [
+        {
+          "file": "12_0338_lettergenerationbot\\gold_canonical_preprocessed\\LetterGenerationBot+SendPOF_Email.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\12_0338_lettergenerationbot\\LetterGenerationBot+SendPOF_Email.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 98
+        }
+      ],
+      "prediction": [
+        {
+          "file": "12_0338_lettergenerationbot\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__06_0338_lettergenerationbot__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 16
+        }
+      ]
+    },
+    {
+      "case_id": "01_0374_createprojectinjirausingapi",
+      "source": "0374_createprojectinjirausingapi",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi",
+      "gold": [
+        {
+          "file": "01_0374_createprojectinjirausingapi\\gold_canonical_preprocessed\\CreateProjectInJIRAusingAPI.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\01_0374_createprojectinjirausingapi\\CreateProjectInJIRAusingAPI.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 17
+        }
+      ],
+      "prediction": [
+        {
+          "file": "01_0374_createprojectinjirausingapi\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 12
+        }
+      ]
+    },
+    {
+      "case_id": "05_0393_a2019-twilio-integration",
+      "source": "0393_a2019-twilio-integration",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration",
+      "gold": [
+        {
+          "file": "05_0393_a2019-twilio-integration\\gold_canonical_preprocessed\\A2019 Twilio Integration.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\05_0393_a2019-twilio-integration\\A2019 Twilio Integration.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 47
+        }
+      ],
+      "prediction": [
+        {
+          "file": "05_0393_a2019-twilio-integration\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__08_0393_a2019-twilio-integration__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [
+            "Error handler.errorHandlerFinally"
+          ],
+          "excluded_count": 1,
+          "action_count_after_preprocessing": 15
+        }
+      ]
+    },
+    {
+      "case_id": "13_0410_a2019-invoicely-assistant",
+      "source": "0410_a2019-invoicely-assistant",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__09_0410_a2019-invoicely-assistant",
+      "gold": [
+        {
+          "file": "13_0410_a2019-invoicely-assistant\\gold_canonical_preprocessed\\A2019-Invoicely Assistant.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\13_0410_a2019-invoicely-assistant\\A2019-Invoicely Assistant.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 31
+        }
+      ],
+      "prediction": [
+        {
+          "file": "13_0410_a2019-invoicely-assistant\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__09_0410_a2019-invoicely-assistant__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__09_0410_a2019-invoicely-assistant\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__09_0410_a2019-invoicely-assistant__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 13
+        }
+      ]
+    },
+    {
+      "case_id": "02_0419_sendbulkemailswithtemplate",
+      "source": "0419_sendbulkemailswithtemplate",
+      "run_id": "runner_v2_batch_20260716_13pdfs_resume04__10_0419_sendbulkemailswithtemplate",
+      "gold": [
+        {
+          "file": "02_0419_sendbulkemailswithtemplate\\gold_canonical_preprocessed\\SendBulkEmailsWithTemplate.goldset.json",
+          "side": "gold",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\02_0419_sendbulkemailswithtemplate\\SendBulkEmailsWithTemplate.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 55
+        }
+      ],
+      "prediction": [
+        {
+          "file": "02_0419_sendbulkemailswithtemplate\\prediction_canonical_preprocessed\\runner_v2_batch_20260716_13pdfs_resume04__10_0419_sendbulkemailswithtemplate__turnRecommend.goldset.json",
+          "side": "prediction",
+          "source_file_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__10_0419_sendbulkemailswithtemplate\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__10_0419_sendbulkemailswithtemplate__turnRecommend.goldset.json",
+          "rules": [
+            "remove browser/webautomation/recorder session lifecycle actions",
+            "remove visible control-flow marker actions from If/Loop/Error handler packages",
+            "apply human-confirmed action_equivalence_rules.json canonical mapping"
+          ],
+          "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+          "action_equivalence_member_count": 61,
+          "excluded_actions": [],
+          "excluded_count": 0,
+          "action_count_after_preprocessing": 13
+        }
+      ]
+    }
+  ]
+}

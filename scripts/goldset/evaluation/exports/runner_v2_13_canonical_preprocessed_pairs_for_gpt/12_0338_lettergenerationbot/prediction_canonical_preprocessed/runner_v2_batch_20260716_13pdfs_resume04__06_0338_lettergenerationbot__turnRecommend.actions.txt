@@ -1,0 +1,16 @@
+Prompt.promptForValue
+Message box.usingMessageBoxAction
+Task Bot.taskBotPackageStopAction
+Folder.folderCreate
+Browser.launchWebsite
+JSON utilities.jsonStartSession
+JSON utilities.jsonValidate
+JSON utilities.jsonGetNodeValue
+JSON utilities.jsonGetNodeValue
+List.listSize
+Word.mswordOpenDocument
+Word.mswordInsertText
+Word.mswordInsertText
+Word.mswordSaveDocumentAs
+Email.cloudUsingSendAction
+Word.mswordCloseDocument

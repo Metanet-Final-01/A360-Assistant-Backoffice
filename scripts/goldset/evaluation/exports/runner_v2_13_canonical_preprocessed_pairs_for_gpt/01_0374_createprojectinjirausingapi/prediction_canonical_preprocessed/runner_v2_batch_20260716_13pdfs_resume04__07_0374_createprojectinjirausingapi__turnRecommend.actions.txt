@@ -1,0 +1,12 @@
+XML.xmlStartSession
+XML.xmlGetSingleNode
+XML.xmlGetSingleNode
+Microsoft 365 Outlook.ms365OutlookSaveAllAttachments
+Microsoft 365 Outlook.ms365OutlookDisconnect
+Excel advanced.cloudExcelOpen
+Excel advanced.excelAdvancedPackageReadRowAction
+Jira.jiraCreateIssue
+JSON utilities.jsonStartSession
+JSON utilities.convertJsonToDictionary
+Message box.usingMessageBoxAction
+Excel advanced.excelAdvancedPackageCloseAction

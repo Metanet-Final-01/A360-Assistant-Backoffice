@@ -1,0 +1,1624 @@
+{
+  "answer": "14개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 봇 이름과 벤더명이 비어 있는지 검증하고 차단 메시지를 표시하는 데 사용할 수 있는 후보 액션이 제공되지 않아 자동화 액션을 설계할 수 없음 · action1.folder: 생성할 작업 폴더 경로가 필요함 · 후보 액션 카탈로그에 현재 날짜/시간을 가져오거나 생성하는 액션이 없어 이 단계를 자동화할 수 없음 · 액션1.attachmentFilterCriteria: 병합 대상 CSV를 특정할 ServiceNow 첨부 조건(sys_id/관련 기록/쿼리)이 필요함 · 액션1.targetFolderPath: 다운로드한 CSV 파일을 저장할 대상 폴더 경로가 필요함 · 후보 액션에는 CSV/TXT 파일을 '열기' 또는 DataTable로 '읽기'만 있으며, 입력 작업 영역에 '배치'하는 직접 액션이 없다. · 후보 액션 카탈로그에는 원본 폴더와 통합 출력 파일을 단순히 식별하거나 병합 인수를 생성하는 액션이 없다. · PDF/cloudUsingMergeDocumentsAction는 PDF 문서 병합용이며, 본 단계의 '병합 인수 준비'를 직접 표현하기에 부적합하다. · PGP/cloudUsingTheEncryptFilesAction는 파일 암호화용이며 본 단계와 무관하다. · 이 단계는 '이전 실행에서 이미 보관된 파일은 다시 처리하지 않는다'는 제외/필터링 로직이 필요하지만, 후보 액션 카탈로그에는 CSV 열기 외에 목록 비교, 조건 분기, 필터, 검색, 제외 처리에 해당하는 액션이 없다. · 후보 액션 카탈로그에는 CSV/TXT 파일을 열거나 Datatable로 읽는 액션만 있어, '사용자 지정 CSV 병합 컴포넌트'를 실행 환경에 로드하는 전용 액션이 없다. · CSV 병합 컴포넌트에 해당하는 후보 액션이 카탈로그에 없음. 제공된 후보는 PDF 문서 병합과 GitHub PR 병합뿐이며, 이 단계의 입력 파일 병합 기능을 직접 수행할 액션이 없다. · 반환 상태 캡처(성공 여부, 출력 경로, 오류 상세)를 수행할 수 있는 후보 액션이 카탈로그에 없습니다. · 액션1.filePath: 실행 로그를 저장할 로그 파일 경로가 필요함 · 액션1.textToLog: 성공/실패 분기와 오류 상세를 포함한 기록 문구가 필요함 · 성공/실패 분기는 상위 조립 단계에서 조건 처리 후 이 액션에 전달하는 전제를 둔다. · 액션1.connection: OneDrive 연결 정보가 필요함 · 액션1.sourceFileOrFolderNameAndPathOrLink: 이동할 원본 파일의 경로 또는 링크가 필요함 · 액션1.targetFileOrFolderNameAndPathOrLink: 완료 폴더의 경로 또는 링크가 필요함 · 실패 파일을 검토 가능하도록 남겨 두는 '보존'만 수행하는 전용 액션이 후보 카탈로그에 없다. 제공된 후보는 다운로드/로그 기록/문서 병합뿐이며, 파일 복사·이동·보존 처리에 직접 대응하는 액션이 없다. · 후보 액션 카탈로그에 닫기/종료/해제에 해당하는 액션이 없어 열린 도우미 컴포넌트와 파일 리소스를 종료하는 동작을 직접 설계할 수 없음 · '실행 식별값 검증'에서 실제로 어떤 입력 화면/변수로 봇 이름과 벤더명을 확인하는지 문서에 구체적 절차가 없다. · '작업 폴더'와 '입력 작업 영역'의 물리적 경로 및 생성 위치는 문서만으로 확정할 수 없다. · '병합 인수'의 정확한 형식과 포함 항목은 문서에 정의되어 있지 않다. · '이전 실행에서 이미 보관된 파일'을 식별하는 기준과 위치는 문서만으로 확정할 수 없다. · '사용자 지정 CSV 병합 컴포넌트'가 어떤 프로그램/플랫폼에서 로드되는지는 문서에 명시되지 않았다. · '통합 파일이 생성되면'의 성공 판정 기준과 생성 파일명 규칙은 문서만으로 확정할 수 없다. · '실패 파일'이 무엇을 의미하는지, 어느 폴더에 남기는지 세부 기준은 문서에 없다. (검수에서 해소하지 못한 위반 9건이 있어요 — 흐름도에서 확인해 주세요.)",
+  "backend_response_id": "76858878-e277-4709-bc0e-27d97fc90149",
+  "backend_response_version": 2,
+  "backend_step": "turnRecommend",
+  "document_id": "8145a173-8471-48b0-a841-115cffc253a8",
+  "notes": "봇 이름과 벤더명이 비어 있는지 검증하고 차단 메시지를 표시하는 데 사용할 수 있는 후보 액션이 제공되지 않아 자동화 액션을 설계할 수 없음 · action1.folder: 생성할 작업 폴더 경로가 필요함 · 후보 액션 카탈로그에 현재 날짜/시간을 가져오거나 생성하는 액션이 없어 이 단계를 자동화할 수 없음 · 액션1.attachmentFilterCriteria: 병합 대상 CSV를 특정할 ServiceNow 첨부 조건(sys_id/관련 기록/쿼리)이 필요함 · 액션1.targetFolderPath: 다운로드한 CSV 파일을 저장할 대상 폴더 경로가 필요함 · 후보 액션에는 CSV/TXT 파일을 '열기' 또는 DataTable로 '읽기'만 있으며, 입력 작업 영역에 '배치'하는 직접 액션이 없다. · 후보 액션 카탈로그에는 원본 폴더와 통합 출력 파일을 단순히 식별하거나 병합 인수를 생성하는 액션이 없다. · PDF/cloudUsingMergeDocumentsAction는 PDF 문서 병합용이며, 본 단계의 '병합 인수 준비'를 직접 표현하기에 부적합하다. · PGP/cloudUsingTheEncryptFilesAction는 파일 암호화용이며 본 단계와 무관하다. · 이 단계는 '이전 실행에서 이미 보관된 파일은 다시 처리하지 않는다'는 제외/필터링 로직이 필요하지만, 후보 액션 카탈로그에는 CSV 열기 외에 목록 비교, 조건 분기, 필터, 검색, 제외 처리에 해당하는 액션이 없다. · 후보 액션 카탈로그에는 CSV/TXT 파일을 열거나 Datatable로 읽는 액션만 있어, '사용자 지정 CSV 병합 컴포넌트'를 실행 환경에 로드하는 전용 액션이 없다. · CSV 병합 컴포넌트에 해당하는 후보 액션이 카탈로그에 없음. 제공된 후보는 PDF 문서 병합과 GitHub PR 병합뿐이며, 이 단계의 입력 파일 병합 기능을 직접 수행할 액션이 없다. · 반환 상태 캡처(성공 여부, 출력 경로, 오류 상세)를 수행할 수 있는 후보 액션이 카탈로그에 없습니다. · 액션1.filePath: 실행 로그를 저장할 로그 파일 경로가 필요함 · 액션1.textToLog: 성공/실패 분기와 오류 상세를 포함한 기록 문구가 필요함 · 성공/실패 분기는 상위 조립 단계에서 조건 처리 후 이 액션에 전달하는 전제를 둔다. · 액션1.connection: OneDrive 연결 정보가 필요함 · 액션1.sourceFileOrFolderNameAndPathOrLink: 이동할 원본 파일의 경로 또는 링크가 필요함 · 액션1.targetFileOrFolderNameAndPathOrLink: 완료 폴더의 경로 또는 링크가 필요함 · 실패 파일을 검토 가능하도록 남겨 두는 '보존'만 수행하는 전용 액션이 후보 카탈로그에 없다. 제공된 후보는 다운로드/로그 기록/문서 병합뿐이며, 파일 복사·이동·보존 처리에 직접 대응하는 액션이 없다. · 후보 액션 카탈로그에 닫기/종료/해제에 해당하는 액션이 없어 열린 도우미 컴포넌트와 파일 리소스를 종료하는 동작을 직접 설계할 수 없음 · '실행 식별값 검증'에서 실제로 어떤 입력 화면/변수로 봇 이름과 벤더명을 확인하는지 문서에 구체적 절차가 없다. · '작업 폴더'와 '입력 작업 영역'의 물리적 경로 및 생성 위치는 문서만으로 확정할 수 없다. · '병합 인수'의 정확한 형식과 포함 항목은 문서에 정의되어 있지 않다. · '이전 실행에서 이미 보관된 파일'을 식별하는 기준과 위치는 문서만으로 확정할 수 없다. · '사용자 지정 CSV 병합 컴포넌트'가 어떤 프로그램/플랫폼에서 로드되는지는 문서에 명시되지 않았다. · '통합 파일이 생성되면'의 성공 판정 기준과 생성 파일명 규칙은 문서만으로 확정할 수 없다. · '실패 파일'이 무엇을 의미하는지, 어느 폴더에 남기는지 세부 기준은 문서에 없다.",
+  "original_recommendation": {
+    "notes": "봇 이름과 벤더명이 비어 있는지 검증하고 차단 메시지를 표시하는 데 사용할 수 있는 후보 액션이 제공되지 않아 자동화 액션을 설계할 수 없음 · action1.folder: 생성할 작업 폴더 경로가 필요함 · 후보 액션 카탈로그에 현재 날짜/시간을 가져오거나 생성하는 액션이 없어 이 단계를 자동화할 수 없음 · 액션1.attachmentFilterCriteria: 병합 대상 CSV를 특정할 ServiceNow 첨부 조건(sys_id/관련 기록/쿼리)이 필요함 · 액션1.targetFolderPath: 다운로드한 CSV 파일을 저장할 대상 폴더 경로가 필요함 · 후보 액션에는 CSV/TXT 파일을 '열기' 또는 DataTable로 '읽기'만 있으며, 입력 작업 영역에 '배치'하는 직접 액션이 없다. · 후보 액션 카탈로그에는 원본 폴더와 통합 출력 파일을 단순히 식별하거나 병합 인수를 생성하는 액션이 없다. · PDF/cloudUsingMergeDocumentsAction는 PDF 문서 병합용이며, 본 단계의 '병합 인수 준비'를 직접 표현하기에 부적합하다. · PGP/cloudUsingTheEncryptFilesAction는 파일 암호화용이며 본 단계와 무관하다. · 이 단계는 '이전 실행에서 이미 보관된 파일은 다시 처리하지 않는다'는 제외/필터링 로직이 필요하지만, 후보 액션 카탈로그에는 CSV 열기 외에 목록 비교, 조건 분기, 필터, 검색, 제외 처리에 해당하는 액션이 없다. · 후보 액션 카탈로그에는 CSV/TXT 파일을 열거나 Datatable로 읽는 액션만 있어, '사용자 지정 CSV 병합 컴포넌트'를 실행 환경에 로드하는 전용 액션이 없다. · CSV 병합 컴포넌트에 해당하는 후보 액션이 카탈로그에 없음. 제공된 후보는 PDF 문서 병합과 GitHub PR 병합뿐이며, 이 단계의 입력 파일 병합 기능을 직접 수행할 액션이 없다. · 반환 상태 캡처(성공 여부, 출력 경로, 오류 상세)를 수행할 수 있는 후보 액션이 카탈로그에 없습니다. · 액션1.filePath: 실행 로그를 저장할 로그 파일 경로가 필요함 · 액션1.textToLog: 성공/실패 분기와 오류 상세를 포함한 기록 문구가 필요함 · 성공/실패 분기는 상위 조립 단계에서 조건 처리 후 이 액션에 전달하는 전제를 둔다. · 액션1.connection: OneDrive 연결 정보가 필요함 · 액션1.sourceFileOrFolderNameAndPathOrLink: 이동할 원본 파일의 경로 또는 링크가 필요함 · 액션1.targetFileOrFolderNameAndPathOrLink: 완료 폴더의 경로 또는 링크가 필요함 · 실패 파일을 검토 가능하도록 남겨 두는 '보존'만 수행하는 전용 액션이 후보 카탈로그에 없다. 제공된 후보는 다운로드/로그 기록/문서 병합뿐이며, 파일 복사·이동·보존 처리에 직접 대응하는 액션이 없다. · 후보 액션 카탈로그에 닫기/종료/해제에 해당하는 액션이 없어 열린 도우미 컴포넌트와 파일 리소스를 종료하는 동작을 직접 설계할 수 없음 · '실행 식별값 검증'에서 실제로 어떤 입력 화면/변수로 봇 이름과 벤더명을 확인하는지 문서에 구체적 절차가 없다. · '작업 폴더'와 '입력 작업 영역'의 물리적 경로 및 생성 위치는 문서만으로 확정할 수 없다. · '병합 인수'의 정확한 형식과 포함 항목은 문서에 정의되어 있지 않다. · '이전 실행에서 이미 보관된 파일'을 식별하는 기준과 위치는 문서만으로 확정할 수 없다. · '사용자 지정 CSV 병합 컴포넌트'가 어떤 프로그램/플랫폼에서 로드되는지는 문서에 명시되지 않았다. · '통합 파일이 생성되면'의 성공 판정 기준과 생성 파일명 규칙은 문서만으로 확정할 수 없다. · '실패 파일'이 무엇을 의미하는지, 어느 폴더에 남기는지 세부 기준은 문서에 없다.",
+    "schema_version": "1.0",
+    "steps": [
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-1"
+      },
+      {
+        "actions": [
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.56,
+            "label": "작업 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "로그, 스크린샷, 오류, 입력 파일, 출력 파일, 처리 완료 파일을 저장할 작업 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.55859375,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-2"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-3"
+      },
+      {
+        "actions": [
+          {
+            "action": "servicenowGetAttachment",
+            "children": [],
+            "confidence": 0.54,
+            "label": "CSV 첨부 다운로드",
+            "order": 1,
+            "package": "ServiceNow",
+            "parameters": [
+              {
+                "label": null,
+                "name": "attachmentFilterCriteria",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "targetFolderPath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "기본",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "이번 실행에서 병합해야 하는 CSV 파일을 찾거나 다운로드해야 하므로, ServiceNow 첨부 파일을 대상 폴더로 가져온다",
+            "sources": [
+              {
+                "score": 0.53515625,
+                "source_type": "action_schema",
+                "title": "ServiceNow - ServiceNow 첨부 파일 가져오기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-servicenow-package/servicenow-attachments-overview/servicenow-get-attachment"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-4"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-5"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-6"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-7"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-8"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-9"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-10"
+      },
+      {
+        "actions": [
+          {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.64,
+            "label": "실행 로그 파일에 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "완료 또는 실패 내용을 실행 로그 파일에 남겨야 하므로 로그 텍스트를 파일에 기록한다.",
+            "sources": [
+              {
+                "score": 0.640625,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-11"
+      },
+      {
+        "actions": [
+          {
+            "action": "oneDriveMoveFileOrFolderAction",
+            "children": [],
+            "confidence": 0.61,
+            "label": "원본 파일 완료 폴더로 이동",
+            "order": 1,
+            "package": "Microsoft 365 OneDrive",
+            "parameters": [
+              {
+                "label": null,
+                "name": "connection",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "moveType",
+                "value": "파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sourceFileOrFolderNameAndPathOrLink",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "targetFileOrFolderNameAndPathOrLink",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "통합 파일 생성 후 처리 완료된 원본 파일을 완료 폴더로 이동해야 하므로 파일 이동 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.60546875,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 OneDrive - 파일 또는 폴더 이동 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-one-drive-package/one-drive-move-file-or-folder-action"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-12"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-13"
+      },
+      {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-14"
+      }
+    ],
+    "variables": [
+      {
+        "description": "검증 대상 봇 이름",
+        "direction": "input",
+        "name": "botName",
+        "type": "STRING"
+      },
+      {
+        "description": "검증 대상 벤더명",
+        "direction": "input",
+        "name": "vendorName",
+        "type": "STRING"
+      },
+      {
+        "description": "상태 로그와 출력 파일명에 사용할 현재 날짜/시간 값",
+        "direction": "output",
+        "name": "currentDateTime",
+        "type": "STRING"
+      },
+      {
+        "description": "다운로드한 CSV 파일을 저장할 폴더 경로",
+        "direction": "input",
+        "name": "targetFolderPath",
+        "type": "STRING"
+      },
+      {
+        "description": "입력 작업 영역에 배치할 대상 CSV 파일",
+        "direction": "input",
+        "name": "원본 CSV 파일",
+        "type": "STRING"
+      },
+      {
+        "description": "원본 폴더",
+        "direction": "input",
+        "name": "sourceFolder",
+        "type": "STRING"
+      },
+      {
+        "description": "통합 출력 파일",
+        "direction": "input",
+        "name": "outputFile",
+        "type": "STRING"
+      },
+      {
+        "description": "병합 인수",
+        "direction": "output",
+        "name": "mergeArgs",
+        "type": "STRING"
+      },
+      {
+        "description": "로드 대상 컴포넌트 입력",
+        "direction": "input",
+        "name": "사용자 지정 CSV 병합 컴포넌트",
+        "type": "STRING"
+      },
+      {
+        "description": "병합 루틴의 대상이 되는 준비된 입력 파일 목록",
+        "direction": "input",
+        "name": "입력 파일들",
+        "type": "TABLE"
+      },
+      {
+        "description": "병합 결과를 저장해야 하는 대상 경로",
+        "direction": "input",
+        "name": "출력 폴더",
+        "type": "STRING"
+      },
+      {
+        "description": "성공 여부, 출력 경로, 오류 상세를 캡처하는 입력 상태",
+        "direction": "input",
+        "name": "병합 실행 결과",
+        "type": "STRING"
+      },
+      {
+        "description": "반환 상태로 기록될 성공 플래그",
+        "direction": "output",
+        "name": "성공 여부",
+        "type": "STRING"
+      },
+      {
+        "description": "반환 상태로 기록될 출력 파일 경로",
+        "direction": "output",
+        "name": "출력 경로",
+        "type": "STRING"
+      },
+      {
+        "description": "반환 상태로 기록될 오류 메시지 상세",
+        "direction": "output",
+        "name": "오류 상세",
+        "type": "STRING"
+      },
+      {
+        "description": "성공 여부",
+        "direction": "input",
+        "name": "successFlag",
+        "type": "STRING"
+      },
+      {
+        "description": "오류 상세",
+        "direction": "input",
+        "name": "errorDetail",
+        "type": "STRING"
+      },
+      {
+        "description": "출력 경로",
+        "direction": "input",
+        "name": "outputPath",
+        "type": "STRING"
+      },
+      {
+        "description": "실행 로그",
+        "direction": "output",
+        "name": "executionLog",
+        "type": "STRING"
+      },
+      {
+        "description": "완료 폴더로 이동할 원본 파일의 경로 또는 링크",
+        "direction": "input",
+        "name": "처리 완료된 원본 파일",
+        "type": "STRING"
+      },
+      {
+        "description": "이동 대상 완료 폴더의 경로 또는 링크",
+        "direction": "input",
+        "name": "완료 폴더",
+        "type": "STRING"
+      },
+      {
+        "description": "병합이 끝나지 않은 실패 파일 경로 또는 대상",
+        "direction": "input",
+        "name": "실패 파일",
+        "type": "STRING"
+      },
+      {
+        "description": "열려 있는 도우미 컴포넌트를 종료해야 함",
+        "direction": "input",
+        "name": "도우미 컴포넌트",
+        "type": "UNKNOWN"
+      },
+      {
+        "description": "열려 있는 파일 리소스를 종료해야 함",
+        "direction": "input",
+        "name": "파일 리소스",
+        "type": "UNKNOWN"
+      }
+    ]
+  },
+  "parent_version": 1,
+  "run_id": "runner_v1_batch_20260716_13pdfs__07_0245_merge-multiple-csv-files",
+  "runner": "runner_v2",
+  "session_id": "74cc86ca-c566-4e31-a815-88a889267a89",
+  "source": "backend_recommendation",
+  "source_file": "runner_v1_batch_20260716_13pdfs__07_0245_merge-multiple-csv-files__turnRecommend.json",
+  "sources": [
+    {
+      "score": 0.55859375,
+      "source_type": "action_schema",
+      "title": "Folder - 폴더의 생성 작업",
+      "url": ""
+    },
+    {
+      "score": 0.53515625,
+      "source_type": "action_schema",
+      "title": "ServiceNow - ServiceNow 첨부 파일 가져오기 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-servicenow-package/servicenow-attachments-overview/servicenow-get-attachment"
+    },
+    {
+      "score": 0.640625,
+      "source_type": "action_schema",
+      "title": "Logging - 파일에 텍스트 기록 작업 사용",
+      "url": ""
+    },
+    {
+      "score": 0.60546875,
+      "source_type": "action_schema",
+      "title": "Microsoft 365 OneDrive - 파일 또는 폴더 이동 작업",
+      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-one-drive-package/one-drive-move-file-or-folder-action"
+    }
+  ],
+  "steps": [
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-1"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-1"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-2"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.56,
+            "label": "작업 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "로그, 스크린샷, 오류, 입력 파일, 출력 파일, 처리 완료 파일을 저장할 작업 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.55859375,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-2"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "folderCreate",
+          "attributes": [
+            {
+              "label": null,
+              "name": "folder",
+              "original_parameter": {
+                "label": null,
+                "name": "folder",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "overwriteExistingFolder",
+              "original_parameter": {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.56,
+                  "label": "작업 폴더 생성",
+                  "order": 1,
+                  "rationale": "로그, 스크린샷, 오류, 입력 파일, 출력 파일, 처리 완료 파일을 저장할 작업 폴더를 만든다.",
+                  "sources": [
+                    {
+                      "score": 0.55859375,
+                      "source_type": "action_schema",
+                      "title": "Folder - 폴더의 생성 작업",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "folderCreate",
+            "children": [],
+            "confidence": 0.56,
+            "label": "작업 폴더 생성",
+            "order": 1,
+            "package": "Folder",
+            "parameters": [
+              {
+                "label": null,
+                "name": "folder",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "overwriteExistingFolder",
+                "value": false,
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "로그, 스크린샷, 오류, 입력 파일, 출력 파일, 처리 완료 파일을 저장할 작업 폴더를 만든다.",
+            "sources": [
+              {
+                "score": 0.55859375,
+                "source_type": "action_schema",
+                "title": "Folder - 폴더의 생성 작업",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Folder",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-3"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-3"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-4"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "servicenowGetAttachment",
+            "children": [],
+            "confidence": 0.54,
+            "label": "CSV 첨부 다운로드",
+            "order": 1,
+            "package": "ServiceNow",
+            "parameters": [
+              {
+                "label": null,
+                "name": "attachmentFilterCriteria",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "targetFolderPath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "기본",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "이번 실행에서 병합해야 하는 CSV 파일을 찾거나 다운로드해야 하므로, ServiceNow 첨부 파일을 대상 폴더로 가져온다",
+            "sources": [
+              {
+                "score": 0.53515625,
+                "source_type": "action_schema",
+                "title": "ServiceNow - ServiceNow 첨부 파일 가져오기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-servicenow-package/servicenow-attachments-overview/servicenow-get-attachment"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-4"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "servicenowGetAttachment",
+          "attributes": [
+            {
+              "label": null,
+              "name": "attachmentFilterCriteria",
+              "original_parameter": {
+                "label": null,
+                "name": "attachmentFilterCriteria",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "targetFolderPath",
+              "original_parameter": {
+                "label": null,
+                "name": "targetFolderPath",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "sessionName",
+              "original_parameter": {
+                "label": null,
+                "name": "sessionName",
+                "value": "기본",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기본",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.54,
+                  "label": "CSV 첨부 다운로드",
+                  "order": 1,
+                  "rationale": "이번 실행에서 병합해야 하는 CSV 파일을 찾거나 다운로드해야 하므로, ServiceNow 첨부 파일을 대상 폴더로 가져온다",
+                  "sources": [
+                    {
+                      "score": 0.53515625,
+                      "source_type": "action_schema",
+                      "title": "ServiceNow - ServiceNow 첨부 파일 가져오기 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-servicenow-package/servicenow-attachments-overview/servicenow-get-attachment"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "servicenowGetAttachment",
+            "children": [],
+            "confidence": 0.54,
+            "label": "CSV 첨부 다운로드",
+            "order": 1,
+            "package": "ServiceNow",
+            "parameters": [
+              {
+                "label": null,
+                "name": "attachmentFilterCriteria",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "targetFolderPath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sessionName",
+                "value": "기본",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "이번 실행에서 병합해야 하는 CSV 파일을 찾거나 다운로드해야 하므로, ServiceNow 첨부 파일을 대상 폴더로 가져온다",
+            "sources": [
+              {
+                "score": 0.53515625,
+                "source_type": "action_schema",
+                "title": "ServiceNow - ServiceNow 첨부 파일 가져오기 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-servicenow-package/servicenow-attachments-overview/servicenow-get-attachment"
+              }
+            ]
+          },
+          "package": "ServiceNow",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-5"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-5"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-6"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-6"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-7"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-7"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-8"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-8"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-9"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-9"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-10"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-10"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-11"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.64,
+            "label": "실행 로그 파일에 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "완료 또는 실패 내용을 실행 로그 파일에 남겨야 하므로 로그 텍스트를 파일에 기록한다.",
+            "sources": [
+              {
+                "score": 0.640625,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-11"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "cloudInsertingLogToFileCommand",
+          "attributes": [
+            {
+              "label": null,
+              "name": "filePath",
+              "original_parameter": {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "textToLog",
+              "original_parameter": {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "addTimestamp",
+              "original_parameter": {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "label": null,
+              "name": "writeMode",
+              "original_parameter": {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "기존 로그 파일에 추가",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "encoding",
+              "original_parameter": {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              },
+              "rationale": null,
+              "value": {
+                "string": "UTF8",
+                "type": "STRING"
+              },
+              "value_source": "schema_default"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.64,
+                  "label": "실행 로그 파일에 기록",
+                  "order": 1,
+                  "rationale": "완료 또는 실패 내용을 실행 로그 파일에 남겨야 하므로 로그 텍스트를 파일에 기록한다.",
+                  "sources": [
+                    {
+                      "score": 0.640625,
+                      "source_type": "action_schema",
+                      "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                      "url": ""
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "cloudInsertingLogToFileCommand",
+            "children": [],
+            "confidence": 0.64,
+            "label": "실행 로그 파일에 기록",
+            "order": 1,
+            "package": "Logging",
+            "parameters": [
+              {
+                "label": null,
+                "name": "filePath",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "textToLog",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "addTimestamp",
+                "value": false,
+                "value_source": "schema_default"
+              },
+              {
+                "label": null,
+                "name": "writeMode",
+                "value": "기존 로그 파일에 추가",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "encoding",
+                "value": "UTF8",
+                "value_source": "schema_default"
+              }
+            ],
+            "rationale": "완료 또는 실패 내용을 실행 로그 파일에 남겨야 하므로 로그 텍스트를 파일에 기록한다.",
+            "sources": [
+              {
+                "score": 0.640625,
+                "source_type": "action_schema",
+                "title": "Logging - 파일에 텍스트 기록 작업 사용",
+                "url": ""
+              }
+            ]
+          },
+          "package": "Logging",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-12"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [
+          {
+            "action": "oneDriveMoveFileOrFolderAction",
+            "children": [],
+            "confidence": 0.61,
+            "label": "원본 파일 완료 폴더로 이동",
+            "order": 1,
+            "package": "Microsoft 365 OneDrive",
+            "parameters": [
+              {
+                "label": null,
+                "name": "connection",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "moveType",
+                "value": "파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sourceFileOrFolderNameAndPathOrLink",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "targetFileOrFolderNameAndPathOrLink",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "통합 파일 생성 후 처리 완료된 원본 파일을 완료 폴더로 이동해야 하므로 파일 이동 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.60546875,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 OneDrive - 파일 또는 폴더 이동 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-one-drive-package/one-drive-move-file-or-folder-action"
+              }
+            ]
+          }
+        ],
+        "description": null,
+        "label": null,
+        "step_id": "step-12"
+      },
+      "package": "Recommendation",
+      "steps": [
+        {
+          "action": "oneDriveMoveFileOrFolderAction",
+          "attributes": [
+            {
+              "label": null,
+              "name": "connection",
+              "original_parameter": {
+                "label": null,
+                "name": "connection",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "moveType",
+              "original_parameter": {
+                "label": null,
+                "name": "moveType",
+                "value": "파일",
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "string": "파일",
+                "type": "STRING"
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "sourceFileOrFolderNameAndPathOrLink",
+              "original_parameter": {
+                "label": null,
+                "name": "sourceFileOrFolderNameAndPathOrLink",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "label": null,
+              "name": "targetFileOrFolderNameAndPathOrLink",
+              "original_parameter": {
+                "label": null,
+                "name": "targetFileOrFolderNameAndPathOrLink",
+                "value": null,
+                "value_source": "llm"
+              },
+              "rationale": null,
+              "value": {
+                "type": "NULL",
+                "value": null
+              },
+              "value_source": "llm"
+            },
+            {
+              "name": "recommendation_action_meta",
+              "value": {
+                "json": {
+                  "confidence": 0.61,
+                  "label": "원본 파일 완료 폴더로 이동",
+                  "order": 1,
+                  "rationale": "통합 파일 생성 후 처리 완료된 원본 파일을 완료 폴더로 이동해야 하므로 파일 이동 액션을 사용한다.",
+                  "sources": [
+                    {
+                      "score": 0.60546875,
+                      "source_type": "action_schema",
+                      "title": "Microsoft 365 OneDrive - 파일 또는 폴더 이동 작업",
+                      "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-one-drive-package/one-drive-move-file-or-folder-action"
+                    }
+                  ]
+                },
+                "type": "JSON"
+              }
+            }
+          ],
+          "disabled": false,
+          "original_recommendation_action": {
+            "action": "oneDriveMoveFileOrFolderAction",
+            "children": [],
+            "confidence": 0.61,
+            "label": "원본 파일 완료 폴더로 이동",
+            "order": 1,
+            "package": "Microsoft 365 OneDrive",
+            "parameters": [
+              {
+                "label": null,
+                "name": "connection",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "moveType",
+                "value": "파일",
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "sourceFileOrFolderNameAndPathOrLink",
+                "value": null,
+                "value_source": "llm"
+              },
+              {
+                "label": null,
+                "name": "targetFileOrFolderNameAndPathOrLink",
+                "value": null,
+                "value_source": "llm"
+              }
+            ],
+            "rationale": "통합 파일 생성 후 처리 완료된 원본 파일을 완료 폴더로 이동해야 하므로 파일 이동 액션을 사용한다.",
+            "sources": [
+              {
+                "score": 0.60546875,
+                "source_type": "action_schema",
+                "title": "Microsoft 365 OneDrive - 파일 또는 폴더 이동 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-one-drive-package/one-drive-move-file-or-folder-action"
+              }
+            ]
+          },
+          "package": "Microsoft 365 OneDrive",
+          "type": "action"
+        }
+      ],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-13"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-13"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    },
+    {
+      "action": "businessStep",
+      "attributes": [
+        {
+          "name": "recommendation_business_step",
+          "value": {
+            "json": {
+              "description": null,
+              "label": null,
+              "step_id": "step-14"
+            },
+            "type": "JSON"
+          }
+        }
+      ],
+      "disabled": false,
+      "original_recommendation_step": {
+        "actions": [],
+        "description": null,
+        "label": null,
+        "step_id": "step-14"
+      },
+      "package": "Recommendation",
+      "steps": [],
+      "type": "container"
+    }
+  ],
+  "triggers": [],
+  "usage_gauge": {
+    "compact_recommended": false,
+    "compact_required": false,
+    "intake_tokens": 1972,
+    "limit_tokens": 6000,
+    "ratio": 0.3287
+  },
+  "variables": [
+    {
+      "description": "검증 대상 봇 이름",
+      "direction": "input",
+      "name": "botName",
+      "type": "STRING"
+    },
+    {
+      "description": "검증 대상 벤더명",
+      "direction": "input",
+      "name": "vendorName",
+      "type": "STRING"
+    },
+    {
+      "description": "상태 로그와 출력 파일명에 사용할 현재 날짜/시간 값",
+      "direction": "output",
+      "name": "currentDateTime",
+      "type": "STRING"
+    },
+    {
+      "description": "다운로드한 CSV 파일을 저장할 폴더 경로",
+      "direction": "input",
+      "name": "targetFolderPath",
+      "type": "STRING"
+    },
+    {
+      "description": "입력 작업 영역에 배치할 대상 CSV 파일",
+      "direction": "input",
+      "name": "원본 CSV 파일",
+      "type": "STRING"
+    },
+    {
+      "description": "원본 폴더",
+      "direction": "input",
+      "name": "sourceFolder",
+      "type": "STRING"
+    },
+    {
+      "description": "통합 출력 파일",
+      "direction": "input",
+      "name": "outputFile",
+      "type": "STRING"
+    },
+    {
+      "description": "병합 인수",
+      "direction": "output",
+      "name": "mergeArgs",
+      "type": "STRING"
+    },
+    {
+      "description": "로드 대상 컴포넌트 입력",
+      "direction": "input",
+      "name": "사용자 지정 CSV 병합 컴포넌트",
+      "type": "STRING"
+    },
+    {
+      "description": "병합 루틴의 대상이 되는 준비된 입력 파일 목록",
+      "direction": "input",
+      "name": "입력 파일들",
+      "type": "TABLE"
+    },
+    {
+      "description": "병합 결과를 저장해야 하는 대상 경로",
+      "direction": "input",
+      "name": "출력 폴더",
+      "type": "STRING"
+    },
+    {
+      "description": "성공 여부, 출력 경로, 오류 상세를 캡처하는 입력 상태",
+      "direction": "input",
+      "name": "병합 실행 결과",
+      "type": "STRING"
+    },
+    {
+      "description": "반환 상태로 기록될 성공 플래그",
+      "direction": "output",
+      "name": "성공 여부",
+      "type": "STRING"
+    },
+    {
+      "description": "반환 상태로 기록될 출력 파일 경로",
+      "direction": "output",
+      "name": "출력 경로",
+      "type": "STRING"
+    },
+    {
+      "description": "반환 상태로 기록될 오류 메시지 상세",
+      "direction": "output",
+      "name": "오류 상세",
+      "type": "STRING"
+    },
+    {
+      "description": "성공 여부",
+      "direction": "input",
+      "name": "successFlag",
+      "type": "STRING"
+    },
+    {
+      "description": "오류 상세",
+      "direction": "input",
+      "name": "errorDetail",
+      "type": "STRING"
+    },
+    {
+      "description": "출력 경로",
+      "direction": "input",
+      "name": "outputPath",
+      "type": "STRING"
+    },
+    {
+      "description": "실행 로그",
+      "direction": "output",
+      "name": "executionLog",
+      "type": "STRING"
+    },
+    {
+      "description": "완료 폴더로 이동할 원본 파일의 경로 또는 링크",
+      "direction": "input",
+      "name": "처리 완료된 원본 파일",
+      "type": "STRING"
+    },
+    {
+      "description": "이동 대상 완료 폴더의 경로 또는 링크",
+      "direction": "input",
+      "name": "완료 폴더",
+      "type": "STRING"
+    },
+    {
+      "description": "병합이 끝나지 않은 실패 파일 경로 또는 대상",
+      "direction": "input",
+      "name": "실패 파일",
+      "type": "STRING"
+    },
+    {
+      "description": "열려 있는 도우미 컴포넌트를 종료해야 함",
+      "direction": "input",
+      "name": "도우미 컴포넌트",
+      "type": "UNKNOWN"
+    },
+    {
+      "description": "열려 있는 파일 리소스를 종료해야 함",
+      "direction": "input",
+      "name": "파일 리소스",
+      "type": "UNKNOWN"
+    }
+  ]
+}

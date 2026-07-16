@@ -1,0 +1,2836 @@
+{
+  "source_file": "Global Exchange Currency Rate.json",
+  "steps": [
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "string": "C:\\ProgramData\\AutomationAnywhere\\Bots\\Gobal Currency Exchange",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "RootDirectory"
+      },
+      "type": "action",
+      "uid": "c944e311-e4e4-4658-a992-038d502eee2c"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$RootDirectory$/Exchange Currency.csv",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "OutputExcelFile"
+      },
+      "type": "action",
+      "uid": "db5133d6-bc30-4064-ac29-37541a2897db"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$RootDirectory$\\Logs",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "LogFolder"
+      },
+      "type": "action",
+      "uid": "2cae9349-091b-44d4-b369-d3392392adc9"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$LogFolder$\\ErrorLogs.csv",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "ErrorLog"
+      },
+      "type": "action",
+      "uid": "f65ba1b5-50fd-4ad6-8da1-bac2639c71e6"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$RootDirectory$\\Output",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "Output"
+      },
+      "type": "action",
+      "uid": "9e91d914-3abe-4463-9216-f931bc6ea980"
+    },
+    {
+      "action": "toString",
+      "attributes": [
+        {
+          "name": "source",
+          "value": {
+            "packageName": "System",
+            "type": "VARIABLE",
+            "variableName": "Date"
+          }
+        },
+        {
+          "name": "selectPattern",
+          "value": {
+            "string": "PREBUILT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "preBuiltPattern",
+          "value": {
+            "string": "RFC_1123_DATE_TIME",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Datetime",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "PresentDate"
+      },
+      "type": "action",
+      "uid": "35a3f317-cebe-4d67-bd96-975696832bdb"
+    },
+    {
+      "attributes": [
+        {
+          "attributes": [
+            {
+              "name": "folderPath",
+              "value": {
+                "expression": "$RootDirectory$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "waitTimeout",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "name": "condition",
+          "value": {
+            "conditionalName": "folderDoesNotExists",
+            "packageName": "Folder",
+            "type": "CONDITIONAL"
+          }
+        }
+      ],
+      "branches": [
+        {
+          "attributes": [],
+          "branch": "else",
+          "steps": []
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "createFolder",
+          "attributes": [
+            {
+              "name": "folderPath",
+              "value": {
+                "expression": "$RootDirectory$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isOverwrite",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Folder",
+          "type": "action",
+          "uid": "a64e0862-26a0-4501-9316-662962e0ce52"
+        }
+      ],
+      "type": "if",
+      "uid": "bb7b2f83-cccd-4f32-89bb-4ec36004d23a"
+    },
+    {
+      "attributes": [
+        {
+          "attributes": [
+            {
+              "name": "folderPath",
+              "value": {
+                "expression": "$LogFolder$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "waitTimeout",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "name": "condition",
+          "value": {
+            "conditionalName": "folderDoesNotExists",
+            "packageName": "Folder",
+            "type": "CONDITIONAL"
+          }
+        }
+      ],
+      "branches": [
+        {
+          "attributes": [],
+          "branch": "else",
+          "steps": []
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "createFolder",
+          "attributes": [
+            {
+              "name": "folderPath",
+              "value": {
+                "expression": "$LogFolder$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isOverwrite",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Folder",
+          "type": "action",
+          "uid": "7e64456b-2d97-4cee-8282-0a1b670762c0"
+        }
+      ],
+      "type": "if",
+      "uid": "30e71df3-2864-42fa-84c4-81244d48d439"
+    },
+    {
+      "attributes": [
+        {
+          "attributes": [
+            {
+              "name": "sourceFilePath",
+              "value": {
+                "expression": "file://$ErrorLog$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "waitTimeout",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "name": "condition",
+          "value": {
+            "conditionalName": "fileNotExists",
+            "packageName": "File",
+            "type": "CONDITIONAL"
+          }
+        }
+      ],
+      "branches": [
+        {
+          "attributes": [],
+          "branch": "else",
+          "steps": []
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "createFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$ErrorLog$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "isOverwrite",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "File",
+          "type": "action",
+          "uid": "c6391a82-3224-4c54-b9b1-6fa706f31d3a"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$ErrorLog$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Date Time,System,Task Name,Error Line,Error Message",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "OVERWRITE_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "98a50fa1-58ce-4506-a7e2-f89a417b665b"
+        }
+      ],
+      "type": "if",
+      "uid": "f767b1cf-8770-495c-aec9-1cc985681863"
+    },
+    {
+      "attributes": [
+        {
+          "attributes": [
+            {
+              "name": "folderPath",
+              "value": {
+                "expression": "$Output$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "waitTimeout",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "name": "condition",
+          "value": {
+            "conditionalName": "folderDoesNotExists",
+            "packageName": "Folder",
+            "type": "CONDITIONAL"
+          }
+        }
+      ],
+      "branches": [
+        {
+          "attributes": [],
+          "branch": "else",
+          "steps": []
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "createFolder",
+          "attributes": [
+            {
+              "name": "folderPath",
+              "value": {
+                "expression": "$Output$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isOverwrite",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Folder",
+          "type": "action",
+          "uid": "2cf10628-a032-4e2f-b4ea-20611fc03302"
+        }
+      ],
+      "type": "if",
+      "uid": "2bdb6cbb-8f0c-4f4c-bbae-75135a2aae57"
+    },
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "errorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "ErrorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "Error Message: $ErrorMessage$-$errorLineNumber.Number:toString$:",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "a19e5d52-c316-4661-8479-df91c412041c"
+            }
+          ]
+        },
+        {
+          "attributes": [],
+          "branch": "finally",
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$errorLineNumber$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": []
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$ErrorLog$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "$SystemVariablesPackage:CurrentDate$_$SystemVariablesPackage:CurrentHour$$SystemVariablesPackage:CurrentMinute$$SystemVariablesPackage:CurrentSecond$,$System:Machine$,$System:AATaskName$,$errorLineNumber.Number:toString$,\"$ErrorMessage$\"",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "43923c00-a646-459c-a377-5e5907c1fb34"
+                }
+              ],
+              "type": "if",
+              "uid": "b6886875-3c3d-4dba-9cd4-ea1f3dd290fc"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "openbrowser",
+          "attributes": [
+            {
+              "name": "openOption",
+              "value": {
+                "string": "NEW_WIN",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "browser",
+              "value": {
+                "string": "CHROME",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "url",
+              "value": {
+                "string": "https://www.x-rates.com/calculator/?from=USD&to=HKD&amount=120",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "timeoutValue",
+              "value": {
+                "number": "240",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Browser",
+          "type": "action",
+          "uid": "d80e7ffe-9357-421f-934f-e293fd8e273c"
+        },
+        {
+          "action": "downloadTo",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "string": "repository:///Automation%20Anywhere/Bot%20Store/Global%20Exchange%20Currency%20Rate-KLOUDPAD%20Mobility%20Research%20Pvt%20Ltd/Docs/Currency%20Exchange.xlsx",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "destination",
+              "value": {
+                "expression": "file://$RootDirectory$/Exchange%20Currency.csv",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "overwrite",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "File",
+          "type": "action",
+          "uid": "fb9da4d3-b52d-491a-8dc1-2cb2fc46c9a6"
+        },
+        {
+          "action": "OpenSpreadsheet",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$OutputExcelFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "EDIT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "loadAddIns",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "1341a990-f900-4ab0-8e4a-e95303f939c8"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "loopSelection",
+                  "value": {
+                    "string": "ALL_ROWS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption",
+                  "value": {
+                    "string": "READ_CELL_TEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption_readCellText_Help",
+                  "value": {
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "session",
+                  "value": {
+                    "sessionName": {
+                      "string": "Default",
+                      "type": "STRING"
+                    },
+                    "type": "SESSION"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "MyExcel"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.excel",
+                "packageName": "Excel_MS",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "capture",
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiZGRkNWIyYzktOTcxYS00MzVhLWI1NzUtMmI3YWJmNjI1M2E4IiwiaWQiOiIiLCJuYW1lIjoiYW1vdW50IiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOjJ9XX0sInJvbGUiOjUsImluZGV4IjowLCJsZWZ0IjoyMzUsInRvcCI6Mzg3LCJ3aWR0aCI6MzA2LCJoZWlnaHQiOjU4LCJjbGlja1giOjI0NiwiY2xpY2tZIjoxNywiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjozLCJwcm9jZXNzSUQiOiJUQS1DQlMtQ0hST01FLUFHRU5UIiwid2luSGFuZGxlIjoiIiwib2NyRW5naW5lIjpudWxsLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpudWxsLCJwcm9wZXJ0aWVzIjpbeyJuYW1lIjoiRE9NWFBhdGgiLCJ2YWx1ZSI6Ii8vaW5wdXRbQGlkPSdhbW91bnQnXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6ImFtb3VudCJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiYW1vdW50In0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJJTlBVVCJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6ImNvbnZlcnRlckFtb3VudCJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6InRleHQifSx7Im5hbWUiOiJIVE1MIFZhbHVlIiwidmFsdWUiOiIxMjAifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgSGVpZ2h0IiwidmFsdWUiOiI1OCJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6IjMwNiJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMjMzIn0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIxODEifSx7Im5hbWUiOiJIVE1MIEhhc0ZyYW1lIiwidmFsdWUiOiJmYWxzZSJ9LHsibmFtZSI6IkhUTUwgRnJhbWVTcmMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgRnJhbWVOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lUGF0aCIsInZhbHVlIjoiIn0seyJuYW1lIjoiaW5uZXJIVE1MIiwidmFsdWUiOiIifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxpbnB1dCB0eXBlPVwidGV4dFwiIG5hbWU9XCJhbW91bnRcIiBpZD1cImFtb3VudFwiIGNsYXNzPVwiY29udmVydGVyQW1vdW50XCIgb25mb2N1cz1cImlmKHRoaXMudmFsdWUgPT0gJzEyMCcpIHRoaXMudmFsdWU9Jyc7XCIgb25ibHVyPVwiaWYodGhpcy52YWx1ZSA9PSAnJykgdGhpcy52YWx1ZT0nMTIwJyA7XCIgdmFsdWU9XCIxMjBcIiBtYXhsZW5ndGg9XCI1MFwiIHRhYmluZGV4PVwiMVwiPiJ9LHsibmFtZSI6IklzVmlzaWJsZSIsInZhbHVlIjoidHJ1ZSJ9XSwiYXR0cmlidXRlcyI6W3sibmFtZSI6IlVuaXF1ZUlEIiwidmFsdWUiOiJkZGQ1YjJjOS05NzFhLTQzNWEtYjU3NS0yYjdhYmY2MjUzYTgifSx7Im5hbWUiOiJJRCIsInZhbHVlIjoiIn0seyJuYW1lIjoiTmFtZSIsInZhbHVlIjoiYW1vdW50In0seyJuYW1lIjoiVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IldpbmRvd1RpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJSb2xlIiwidmFsdWUiOiJUZXh0Qm94In0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiM3wxfC0yfDF8MXwyfDF8MXwzfDIifSx7Im5hbWUiOiJJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkxlZnQiLCJ2YWx1ZSI6IjIyNiJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiMjkwIn0seyJuYW1lIjoiV2lkdGgiLCJ2YWx1ZSI6IjMwNiJ9LHsibmFtZSI6IkhlaWdodCIsInZhbHVlIjoiNTgifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw2Nyw1OSw1OCw4MF0sImVycm9yIjpudWxsfQ==",
+                      "capture": {
+                        "screenshotMetadataPath": "080a9dd9-36d2-4b77-8e79-40dec25c068b.png",
+                        "screenshotRectangle": {
+                          "height": 58,
+                          "width": 306,
+                          "x": 235,
+                          "y": 387
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "0fa9e673-f7a3-430b-b995-d5b5bb7e3435.png",
+                        "thumbnailRectangle": {
+                          "height": 51,
+                          "width": 271,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='amount']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "converterAmount",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": true,
+                          "value": {
+                            "string": "amount",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "181",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": true,
+                          "value": {
+                            "string": "amount",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "1",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "233",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "text",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "120",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "306",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "226",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "amount",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|1|-2|1|1|2|1|1|3|2",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TextBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "290",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ddd5b2c9-971a-435a-b575-2b7abf6253a8",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "306",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"text\" name=\"amount\" id=\"amount\" class=\"converterAmount\" onfocus=\"if(this.value == '120') this.value='';\" onblur=\"if(this.value == '') this.value='120' ;\" value=\"120\" maxlength=\"50\" tabindex=\"1\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$browser-3$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$MyExcel[0]$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delay",
+                  "value": {
+                    "number": "20",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Recorder",
+              "type": "action",
+              "uid": "5b3c293c-8b8b-4e5b-b651-f0b19620bfd6"
+            },
+            {
+              "action": "capture",
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiYmEzOTM4NzktNDY4Ni00NzdlLTgyYTUtNDA3M2Q3ODAwNzlhIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0zfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfV19LCJyb2xlIjo1LCJpbmRleCI6MCwibGVmdCI6MjM1LCJ0b3AiOjQ5Mywid2lkdGgiOjMwNiwiaGVpZ2h0Ijo1OCwiY2xpY2tYIjoxOTAsImNsaWNrWSI6MjAsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6MywicHJvY2Vzc0lEIjoiVEEtQ0JTLUNIUk9NRS1BR0VOVCIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6bnVsbCwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2lucHV0W0BpZD0nZnJvbSddIn0seyJuYW1lIjoiSFRNTCBJRCIsInZhbHVlIjoiZnJvbSJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJJTlBVVCJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6ImNvbnZlcnRlckN1cnJlbmN5RnJvbSBhY19pbnB1dCJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6InRleHQifSx7Im5hbWUiOiJIVE1MIFZhbHVlIiwidmFsdWUiOiJVU0QgLSBVUyBEb2xsYXIifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgSGVpZ2h0IiwidmFsdWUiOiI1OCJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6IjMwNiJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjIifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMzE4In0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIxODEifSx7Im5hbWUiOiJIVE1MIEhhc0ZyYW1lIiwidmFsdWUiOiJmYWxzZSJ9LHsibmFtZSI6IkhUTUwgRnJhbWVTcmMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgRnJhbWVOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lUGF0aCIsInZhbHVlIjoiIn0seyJuYW1lIjoiaW5uZXJIVE1MIiwidmFsdWUiOiIifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxpbnB1dCB0eXBlPVwidGV4dFwiIGlkPVwiZnJvbVwiIGNsYXNzPVwiY29udmVydGVyQ3VycmVuY3lGcm9tIGFjX2lucHV0XCIgdGFiaW5kZXg9XCIyXCIgdmFsdWU9XCJcIiBhdXRvY29tcGxldGU9XCJvZmZcIiBzZWxlY3R2YWx1ZT1cIlVTRCAtIFVTIERvbGxhclwiPiJ9LHsibmFtZSI6IklzVmlzaWJsZSIsInZhbHVlIjoidHJ1ZSJ9XSwiYXR0cmlidXRlcyI6W3sibmFtZSI6IlVuaXF1ZUlEIiwidmFsdWUiOiJiYTM5Mzg3OS00Njg2LTQ3N2UtODJhNS00MDczZDc4MDA3OWEifSx7Im5hbWUiOiJJRCIsInZhbHVlIjoiIn0seyJuYW1lIjoiTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IldpbmRvd1RpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJSb2xlIiwidmFsdWUiOiJUZXh0Qm94In0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiM3wxfC0yfDF8MXwyfDF8MXwtM3wxfDEifSx7Im5hbWUiOiJJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkxlZnQiLCJ2YWx1ZSI6IjIyNiJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiMzk2In0seyJuYW1lIjoiV2lkdGgiLCJ2YWx1ZSI6IjMwNiJ9LHsibmFtZSI6IkhlaWdodCIsInZhbHVlIjoiNTgifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw2Nyw1OCw4MF0sImVycm9yIjpudWxsfQ==",
+                      "capture": {
+                        "screenshotMetadataPath": "e4bcf5b5-f792-4353-892a-3b1ba6faf60e.png",
+                        "screenshotRectangle": {
+                          "height": 58,
+                          "width": 306,
+                          "x": 235,
+                          "y": 493
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "241f8238-b07f-4620-9953-095ff3fd884b.png",
+                        "thumbnailRectangle": {
+                          "height": 51,
+                          "width": 271,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='from']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "converterCurrencyFrom ac_input",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": true,
+                          "value": {
+                            "string": "from",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "181",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "318",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "text",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "USD - US Dollar",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "306",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "226",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|1|-2|1|1|2|1|1|-3|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TextBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "396",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ba393879-4686-477e-82a5-4073d780079a",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "306",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"text\" id=\"from\" class=\"converterCurrencyFrom ac_input\" tabindex=\"2\" value=\"\" autocomplete=\"off\" selectvalue=\"USD - US Dollar\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$browser-3$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$MyExcel{From}$[ENTER]",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Recorder",
+              "type": "action",
+              "uid": "06f3bec8-2e71-467b-88aa-0d24fef12c9b"
+            },
+            {
+              "action": "capture",
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMmI4NmNjYmEtYTZjZC00ODQyLWJiOTItNjg2OGNkYTQyYmVmIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfV19LCJyb2xlIjo1LCJpbmRleCI6MCwibGVmdCI6MjM1LCJ0b3AiOjYwMCwid2lkdGgiOjMwNiwiaGVpZ2h0Ijo1OCwiY2xpY2tYIjoyMDEsImNsaWNrWSI6MTQsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6MywicHJvY2Vzc0lEIjoiVEEtQ0JTLUNIUk9NRS1BR0VOVCIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6bnVsbCwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2lucHV0W0BpZD0ndG8nXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6InRvIn0seyJuYW1lIjoiSFRNTCBOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEFsdCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUYWciLCJ2YWx1ZSI6IklOUFVUIn0seyJuYW1lIjoiSFRNTCBDbGFzcyIsInZhbHVlIjoiY29udmVydGVyQ3VycmVuY3lUbyBhY19pbnB1dCJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6InRleHQifSx7Im5hbWUiOiJIVE1MIFZhbHVlIiwidmFsdWUiOiJIS0QgLSBIb25nIEtvbmcgRG9sbGFyIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiNTgifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIzMDYifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiI0In0seyJuYW1lIjoiSFRNTCBUb3AiLCJ2YWx1ZSI6IjQwMiJ9LHsibmFtZSI6IkhUTUwgTGVmdCIsInZhbHVlIjoiMTgxIn0seyJuYW1lIjoiSFRNTCBIYXNGcmFtZSIsInZhbHVlIjoiZmFsc2UifSx7Im5hbWUiOiJIVE1MIEZyYW1lU3JjIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBGcmFtZVBhdGgiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6ImlubmVySFRNTCIsInZhbHVlIjoiIn0seyJuYW1lIjoib3V0ZXJIVE1MIiwidmFsdWUiOiI8aW5wdXQgdHlwZT1cInRleHRcIiBpZD1cInRvXCIgY2xhc3M9XCJjb252ZXJ0ZXJDdXJyZW5jeVRvIGFjX2lucHV0XCIgdGFiaW5kZXg9XCIzXCIgdmFsdWU9XCJcIiBhdXRvY29tcGxldGU9XCJvZmZcIiBzZWxlY3R2YWx1ZT1cIkhLRCAtIEhvbmcgS29uZyBEb2xsYXJcIj4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiMmI4NmNjYmEtYTZjZC00ODQyLWJiOTItNjg2OGNkYTQyYmVmIn0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiVGV4dEJveCJ9LHsibmFtZSI6IlBhdGgiLCJ2YWx1ZSI6IjN8MXwtMnwxfDF8MnwxfDF8LTF8MXwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiIyMjYifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjUwMyJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIzMDYifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjU4In0seyJuYW1lIjoiRGVzY3JpcHRpb24iLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlN0YXRlcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiRGVmYXVsdEFjdGlvbiIsInZhbHVlIjoiIn1dLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzcsNjEsNjcsNTgsODBdLCJlcnJvciI6bnVsbH0=",
+                      "capture": {
+                        "screenshotMetadataPath": "1ba99033-c831-41e2-8790-a72de94067f9.png",
+                        "screenshotRectangle": {
+                          "height": 58,
+                          "width": 306,
+                          "x": 235,
+                          "y": 600
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "edabe42e-9b5d-4c6a-ac16-e05d638a3380.png",
+                        "thumbnailRectangle": {
+                          "height": 51,
+                          "width": 271,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='to']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "converterCurrencyTo ac_input",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": true,
+                          "value": {
+                            "string": "to",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "181",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "4",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "402",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "text",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "HKD - Hong Kong Dollar",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "306",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "226",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|1|-2|1|1|2|1|1|-1|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TextBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "503",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2b86ccba-a6cd-4842-bb92-6868cda42bef",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "306",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"text\" id=\"to\" class=\"converterCurrencyTo ac_input\" tabindex=\"3\" value=\"\" autocomplete=\"off\" selectvalue=\"HKD - Hong Kong Dollar\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$browser-3$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$MyExcel[2]$[ENTER]",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Recorder",
+              "type": "action",
+              "uid": "6b59dcab-2f68-4b06-a89a-37f93756a627"
+            },
+            {
+              "action": "capture",
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiYmEzOTM4NzktNDY4Ni00NzdlLTgyYTUtNDA3M2Q3ODAwNzlhIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0zfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfV19LCJyb2xlIjo1LCJpbmRleCI6MCwibGVmdCI6MjM1LCJ0b3AiOjQ5Mywid2lkdGgiOjMwNiwiaGVpZ2h0Ijo1OCwiY2xpY2tYIjoxOTAsImNsaWNrWSI6MjAsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6MywicHJvY2Vzc0lEIjoiVEEtQ0JTLUNIUk9NRS1BR0VOVCIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6bnVsbCwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2lucHV0W0BpZD0nZnJvbSddIn0seyJuYW1lIjoiSFRNTCBJRCIsInZhbHVlIjoiZnJvbSJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJJTlBVVCJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6ImNvbnZlcnRlckN1cnJlbmN5RnJvbSBhY19pbnB1dCJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6InRleHQifSx7Im5hbWUiOiJIVE1MIFZhbHVlIiwidmFsdWUiOiJVU0QgLSBVUyBEb2xsYXIifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgSGVpZ2h0IiwidmFsdWUiOiI1OCJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6IjMwNiJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjIifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMzE4In0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIxODEifSx7Im5hbWUiOiJIVE1MIEhhc0ZyYW1lIiwidmFsdWUiOiJmYWxzZSJ9LHsibmFtZSI6IkhUTUwgRnJhbWVTcmMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgRnJhbWVOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lUGF0aCIsInZhbHVlIjoiIn0seyJuYW1lIjoiaW5uZXJIVE1MIiwidmFsdWUiOiIifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxpbnB1dCB0eXBlPVwidGV4dFwiIGlkPVwiZnJvbVwiIGNsYXNzPVwiY29udmVydGVyQ3VycmVuY3lGcm9tIGFjX2lucHV0XCIgdGFiaW5kZXg9XCIyXCIgdmFsdWU9XCJcIiBhdXRvY29tcGxldGU9XCJvZmZcIiBzZWxlY3R2YWx1ZT1cIlVTRCAtIFVTIERvbGxhclwiPiJ9LHsibmFtZSI6IklzVmlzaWJsZSIsInZhbHVlIjoidHJ1ZSJ9XSwiYXR0cmlidXRlcyI6W3sibmFtZSI6IlVuaXF1ZUlEIiwidmFsdWUiOiJiYTM5Mzg3OS00Njg2LTQ3N2UtODJhNS00MDczZDc4MDA3OWEifSx7Im5hbWUiOiJJRCIsInZhbHVlIjoiIn0seyJuYW1lIjoiTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IldpbmRvd1RpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJSb2xlIiwidmFsdWUiOiJUZXh0Qm94In0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiM3wxfC0yfDF8MXwyfDF8MXwtM3wxfDEifSx7Im5hbWUiOiJJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkxlZnQiLCJ2YWx1ZSI6IjIyNiJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiMzk2In0seyJuYW1lIjoiV2lkdGgiLCJ2YWx1ZSI6IjMwNiJ9LHsibmFtZSI6IkhlaWdodCIsInZhbHVlIjoiNTgifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw2Nyw1OCw4MF0sImVycm9yIjpudWxsfQ==",
+                      "capture": {
+                        "screenshotMetadataPath": "e4bcf5b5-f792-4353-892a-3b1ba6faf60e.png",
+                        "screenshotRectangle": {
+                          "height": 58,
+                          "width": 306,
+                          "x": 235,
+                          "y": 493
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "241f8238-b07f-4620-9953-095ff3fd884b.png",
+                        "thumbnailRectangle": {
+                          "height": 51,
+                          "width": 271,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "TEXTBOX",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//input[@id='from']",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "converterCurrencyFrom ac_input",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": true,
+                          "value": {
+                            "string": "from",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "181",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "INPUT",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "2",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "318",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": true,
+                          "value": {
+                            "string": "text",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "USD - US Dollar",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "306",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "58",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "226",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|1|-2|1|1|2|1|1|-3|1|1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "TextBox",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "396",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ba393879-4686-477e-82a5-4073d780079a",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "306",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<input type=\"text\" id=\"from\" class=\"converterCurrencyFrom ac_input\" tabindex=\"2\" value=\"\" autocomplete=\"off\" selectvalue=\"USD - US Dollar\">",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$browser-3$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "textboxAction",
+                  "value": {
+                    "string": "SETTEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "typeOfInput",
+                  "value": {
+                    "string": "VALUE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$MyExcel{From}$[ENTER]",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Recorder",
+              "type": "action",
+              "uid": "5a31dd4d-4d9c-42b6-87e1-d7d1823b1696"
+            },
+            {
+              "action": "capture",
+              "attributes": [
+                {
+                  "name": "uiObject",
+                  "value": {
+                    "type": "UIOBJECT",
+                    "uiObject": {
+                      "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiYWZkNjg0YjItMmU5Yy00MjEyLWJhNDYtMGQ4ZGI4YmUyNGU5IiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOi0xfV19LCJyb2xlIjo2NiwiaW5kZXgiOjAsImxlZnQiOjY2MCwidG9wIjoxNDgsIndpZHRoIjo0NDEsImhlaWdodCI6ODEsImNsaWNrWCI6NTMsImNsaWNrWSI6MzQsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6MywicHJvY2Vzc0lEIjoiVEEtQ0JTLUNIUk9NRS1BR0VOVCIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6bnVsbCwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2RpdltAaWQ9J2NvbnRlbnQnXS9kaXZbMV0vZGl2WzFdL2RpdlsxXS9kaXZbMV0vZGl2WzFdL3NwYW5bMl0ifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiU1BBTiJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6ImNjT3V0cHV0UnNsdCJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiI5MzQuMzYwNTMyIEhLRCJ9LHsibmFtZSI6IkhUTUwgU291cmNlSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIVE1MIEhyZWYiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiODEifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiI0NDEifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiI0In0seyJuYW1lIjoiSFRNTCBUb3AiLCJ2YWx1ZSI6IjI3NCJ9LHsibmFtZSI6IkhUTUwgTGVmdCIsInZhbHVlIjoiNTIyIn0seyJuYW1lIjoiSFRNTCBIYXNGcmFtZSIsInZhbHVlIjoiZmFsc2UifSx7Im5hbWUiOiJIVE1MIEZyYW1lU3JjIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBGcmFtZVBhdGgiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6ImlubmVySFRNTCIsInZhbHVlIjoiOTM0LjM2PHNwYW4gY2xhc3M9XCJjY091dHB1dFRyYWlsXCI+MDUzMjwvc3Bhbj48c3BhbiBjbGFzcz1cImNjT3V0cHV0Q29kZVwiPiBIS0Q8L3NwYW4+In0seyJuYW1lIjoib3V0ZXJIVE1MIiwidmFsdWUiOiI8c3BhbiBjbGFzcz1cImNjT3V0cHV0UnNsdFwiPjkzNC4zNjxzcGFuIGNsYXNzPVwiY2NPdXRwdXRUcmFpbFwiPjA1MzI8L3NwYW4+PHNwYW4gY2xhc3M9XCJjY091dHB1dENvZGVcIj4gSEtEPC9zcGFuPjwvc3Bhbj4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiYWZkNjg0YjItMmU5Yy00MjEyLWJhNDYtMGQ4ZGI4YmUyNGU5In0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiU3RhdGljVGV4dCJ9LHsibmFtZSI6IlBhdGgiLCJ2YWx1ZSI6IjN8MXwtMnwxfDF8MXwxfDJ8LTEifSx7Im5hbWUiOiJJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkxlZnQiLCJ2YWx1ZSI6IjY1MSJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiNTEifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiNDQxIn0seyJuYW1lIjoiSGVpZ2h0IiwidmFsdWUiOiI4MSJ9LHsibmFtZSI6IkRlc2NyaXB0aW9uIiwidmFsdWUiOiIifSx7Im5hbWUiOiJTdGF0ZXMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkRlZmF1bHRBY3Rpb24iLCJ2YWx1ZSI6IiJ9XSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjpudWxsLCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDgwXSwiZXJyb3IiOm51bGx9",
+                      "capture": {
+                        "screenshotMetadataPath": "592e37ff-b0a1-4a89-b0d4-dd8c43b26991.png",
+                        "screenshotRectangle": {
+                          "height": 81,
+                          "width": 441,
+                          "x": 660,
+                          "y": 148
+                        },
+                        "securelyRecorded": false,
+                        "thumbnailMetadataPath": "7a34af2d-4dc7-48fd-ab6e-640ef7a928a9.png",
+                        "thumbnailRectangle": {
+                          "height": 63,
+                          "width": 341,
+                          "x": 0,
+                          "y": 0
+                        }
+                      },
+                      "controlType": "LABEL",
+                      "criteria": {
+                        "Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "DOMXPath": {
+                          "enabled": true,
+                          "value": {
+                            "string": "//div[@id='content']/div[1]/div[1]/div[1]/div[1]/div[1]/span[2]",
+                            "type": "STRING"
+                          }
+                        },
+                        "DefaultAction": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Description": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Alt": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Class": {
+                          "enabled": false,
+                          "value": {
+                            "string": "ccOutputRslt",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ClassId": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FramePath": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML FrameSrc": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML HasFrame": {
+                          "enabled": true,
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "81",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Href": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML InnerText": {
+                          "enabled": false,
+                          "value": {
+                            "string": "934.360532 HKD",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "522",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML SourceIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Tag": {
+                          "enabled": true,
+                          "value": {
+                            "string": "SPAN",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML TagIndex": {
+                          "enabled": false,
+                          "value": {
+                            "string": "4",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Title": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "274",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Type": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "HTML Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "441",
+                            "type": "STRING"
+                          }
+                        },
+                        "Height": {
+                          "enabled": false,
+                          "value": {
+                            "string": "81",
+                            "type": "STRING"
+                          }
+                        },
+                        "ID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Index": {
+                          "enabled": false,
+                          "value": {
+                            "string": "0",
+                            "type": "STRING"
+                          }
+                        },
+                        "IsVisible": {
+                          "enabled": false,
+                          "value": {
+                            "string": "true",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemName": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "ItemValue": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Left": {
+                          "enabled": false,
+                          "value": {
+                            "string": "651",
+                            "type": "STRING"
+                          }
+                        },
+                        "Name": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Parent": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Path": {
+                          "enabled": true,
+                          "value": {
+                            "string": "3|1|-2|1|1|1|1|2|-1",
+                            "type": "STRING"
+                          }
+                        },
+                        "Role": {
+                          "enabled": false,
+                          "value": {
+                            "string": "StaticText",
+                            "type": "STRING"
+                          }
+                        },
+                        "States": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Top": {
+                          "enabled": false,
+                          "value": {
+                            "string": "51",
+                            "type": "STRING"
+                          }
+                        },
+                        "UniqueID": {
+                          "enabled": false,
+                          "value": {
+                            "string": "afd684b2-2e9c-4212-ba46-0d8db8be24e9",
+                            "type": "STRING"
+                          }
+                        },
+                        "Value": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "Width": {
+                          "enabled": false,
+                          "value": {
+                            "string": "441",
+                            "type": "STRING"
+                          }
+                        },
+                        "WindowTitle": {
+                          "enabled": false,
+                          "value": {
+                            "string": "",
+                            "type": "STRING"
+                          }
+                        },
+                        "innerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "934.36<span class=\"ccOutputTrail\">0532</span><span class=\"ccOutputCode\"> HKD</span>",
+                            "type": "STRING"
+                          }
+                        },
+                        "outerHTML": {
+                          "enabled": false,
+                          "value": {
+                            "string": "<span class=\"ccOutputRslt\">934.36<span class=\"ccOutputTrail\">0532</span><span class=\"ccOutputCode\"> HKD</span></span>",
+                            "type": "STRING"
+                          }
+                        }
+                      },
+                      "technologyType": "HTML"
+                    },
+                    "uiObjectWindow": {
+                      "expression": "$browser-3$",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "labelAction",
+                  "value": {
+                    "string": "GETPROPERTY",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "runInBackground",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "string": "HTML InnerText",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "wait",
+                  "value": {
+                    "number": "15",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Recorder",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "prompt-assignment"
+              },
+              "type": "action",
+              "uid": "4d574ef3-3b07-44e7-819c-d751e80d7b4a"
+            },
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "$prompt-assignment$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "timeOut",
+                  "value": {
+                    "number": "2",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "4eb9678e-4e4e-49eb-9177-4e251cf16a14"
+            },
+            {
+              "action": "SetCell",
+              "attributes": [
+                {
+                  "name": "cellOption",
+                  "value": {
+                    "string": "SPECIFIC_CELL",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "cell",
+                  "value": {
+                    "expression": "D$Count.Number:toString$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$prompt-assignment$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "session",
+                  "value": {
+                    "sessionName": {
+                      "string": "Default",
+                      "type": "STRING"
+                    },
+                    "type": "SESSION"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Excel_MS",
+              "type": "action",
+              "uid": "9a921620-3176-40c1-98f6-db05aa083b75"
+            },
+            {
+              "action": "increment",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "expression": "$Count$",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "by",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Number",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "Count"
+              },
+              "type": "action",
+              "uid": "004086b8-db6a-43f4-965e-c345effab171"
+            }
+          ],
+          "type": "loop",
+          "uid": "cad5bd5b-e899-4189-a885-e9b4ce4df843"
+        }
+      ],
+      "type": "try",
+      "uid": "1e057599-d8c9-48fb-aa60-fabe620a586d"
+    }
+  ],
+  "triggers": []
+}

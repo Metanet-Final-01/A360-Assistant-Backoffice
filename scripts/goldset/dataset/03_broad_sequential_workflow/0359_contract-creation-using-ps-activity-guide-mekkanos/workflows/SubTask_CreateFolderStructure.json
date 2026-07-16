@@ -1,0 +1,1280 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$System:AATaskName$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "find",
+          "value": {
+            "string": "^(.*[\\\\\\/])",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isCaseSensitive",
+          "value": {
+            "string": "false",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isRegularExpression",
+          "value": {
+            "string": "true",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "startIndex",
+          "value": {
+            "number": "1",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "count",
+          "value": {
+            "number": "-1",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "replaceWith",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "replace",
+      "disabled": false,
+      "packageName": "String",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "sCreateFolders"
+      },
+      "uid": "872cf7a4-42ba-4897-a047-e7e8970866ae"
+    },
+    {
+      "attributes": [
+        {
+          "name": "source",
+          "value": {
+            "packageName": "System",
+            "type": "VARIABLE",
+            "variableName": "Date"
+          }
+        },
+        {
+          "name": "selectPattern",
+          "value": {
+            "string": "CUSTOM",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "patternInput",
+          "value": {
+            "string": "ddMMYY HHmm",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "toString",
+      "disabled": false,
+      "packageName": "Datetime",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "sTimeStamp"
+      },
+      "uid": "8ad92693-84af-4003-8159-f739faa8a6ed"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "assignToNumber",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "nErrorFlag"
+              },
+              "uid": "cc6d99a4-8240-475f-bbfb-40714af8639d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "Error : $sErrorMessage$ - $nErrorLineNumber.Number:toString$  in Subtask \"$sTaskName$\"",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "sErrorDescription"
+              },
+              "uid": "8474349b-064d-4f78-b2ac-8b63e62e0adf"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "$sErrorDescription$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "messageBox",
+              "disabled": false,
+              "packageName": "MessageBox",
+              "uid": "9c9d910f-a15b-4981-858b-eba3fb9c30e9"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "nErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "sErrorMessage"
+            }
+          },
+          "uid": "43ed6e95-9077-4674-b7e1-2c0b45834dcb"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "****Creating the Input,Output,Log and Screenshot Folders****",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "4b4a8da3-e75a-4010-9c2b-0c2cc34c6dea"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Create Input Folder",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dUserConfig{InputPath}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$dUserConfig{InputPath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "folderDoesNotExists",
+                        "packageName": "Folder",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [
+                    {
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$dUserConfig{InputPath}$/*",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "isSize",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "isDate",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "deleteFiles",
+                          "disabled": false,
+                          "packageName": "File",
+                          "uid": "c5c8e6dd-3c65-43e8-9bb3-223eebcd6c9b"
+                        }
+                      ],
+                      "commandName": "else",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "f1f96a32-2cda-46f3-a928-3baf3d266ecc"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$dUserConfig{InputPath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFolder",
+                      "disabled": false,
+                      "packageName": "Folder",
+                      "uid": "3aa47d97-30b1-4c7c-9318-3973aa5c8574"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "26a58e11-4166-46ad-8047-3358ddc32d53"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "fcd3e7ce-e8ef-4f89-9088-6002c25149da"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "a4abd75d-3c65-468f-bd3e-09d46b6cc988"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Create Output Folder",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dUserConfig{OutputPath}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$dUserConfig{OutputPath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "folderDoesNotExists",
+                        "packageName": "Folder",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [
+                    {
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$dUserConfig{OutputPath}$/*",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "isSize",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "isDate",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "deleteFiles",
+                          "disabled": false,
+                          "packageName": "File",
+                          "uid": "058de47c-b2ab-40c6-8fe0-ca5c28aef51b"
+                        }
+                      ],
+                      "commandName": "else",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "e907956a-17ef-4311-a2ee-df56a22c1ba2"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$dUserConfig{OutputPath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFolder",
+                      "disabled": false,
+                      "packageName": "Folder",
+                      "uid": "3019dc66-295c-4961-99bc-96d1a9518336"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "d3332b9a-840f-446a-94dd-6cc6db092072"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "23d45b4e-537c-418b-9104-a91be81451ac"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "776309f9-84c6-43a0-a5ff-00195b8e64ee"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Create Log Folder",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dUserConfig{LogPath}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$dUserConfig{LogPath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "folderDoesNotExists",
+                        "packageName": "Folder",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [
+                    {
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$dUserConfig{LogPath}$/*",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "isSize",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "isDate",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "deleteFiles",
+                          "disabled": false,
+                          "packageName": "File",
+                          "uid": "bb4203fb-593a-484a-99e6-d0b800b53aec"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "title",
+                              "value": {
+                                "string": "Automation Anywhere Enterprise Client",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "content",
+                              "value": {
+                                "string": "Deleted all files in the Log Folder.",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "scrollLines",
+                              "value": {
+                                "number": "30",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "closeMsgBox",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "timeOut",
+                              "value": {
+                                "number": "5",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "commandName": "messageBox",
+                          "disabled": false,
+                          "packageName": "MessageBox",
+                          "uid": "afe356c2-43e4-465f-ab66-eb6ad306f49d"
+                        }
+                      ],
+                      "commandName": "else",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "0f7db9d0-7c0a-471a-a9b6-8dd288083576"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$dUserConfig{LogPath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFolder",
+                      "disabled": false,
+                      "packageName": "Folder",
+                      "uid": "3fa3c516-f5fe-431b-8b05-0c62559146e9"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "4d04e505-d637-49c7-aef7-3de4f7a55a96"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "b80edfbe-d30b-4c90-a63b-ee907841a87d"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "1e1af1f8-302e-4648-a04c-e40d4e257423"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Create ErrorLog File",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$dUserConfig{ErrorLogFile}$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "find",
+                  "value": {
+                    "string": "#Timestamp#",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isCaseSensitive",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isRegularExpression",
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "startIndex",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "count",
+                  "value": {
+                    "number": "-1",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "replaceWith",
+                  "value": {
+                    "expression": "$sTimeStamp$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "replace",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "ErrorLogFile"
+              },
+              "uid": "d06703eb-a2e1-47a3-af26-2b41c7dd51f6"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceMap",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "dUserConfig"
+                  }
+                },
+                {
+                  "name": "key",
+                  "value": {
+                    "string": "sErrorLogFile",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "newValue",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "ErrorLogFile"
+                  }
+                }
+              ],
+              "commandName": "put",
+              "disabled": false,
+              "packageName": "Dictionary",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "temp"
+              },
+              "uid": "464a4229-4d62-415a-98b3-9f12914ca625"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$dUserConfig{sErrorLogFile}$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFile",
+              "disabled": false,
+              "packageName": "File",
+              "uid": "ca0232be-564e-40ce-ac1b-49b93e37dfda"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$dUserConfig{sErrorLogFile}$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "string": "Test Log inside the Create Folder Structure",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "logToFile",
+              "disabled": true,
+              "packageName": "LogToFile",
+              "uid": "aa4306c2-2bb0-4cd4-8f52-6f96b1084b54"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "9b34413b-ce59-4eae-8017-bdeda5acf448"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Create Screenshot Folder",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dUserConfig{ScreenshotPath}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$dUserConfig{ScreenshotPath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "folderDoesNotExists",
+                        "packageName": "Folder",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [
+                    {
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$dUserConfig{ScreenshotPath}$/*",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "isSize",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "isDate",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "deleteFiles",
+                          "disabled": false,
+                          "packageName": "File",
+                          "uid": "e22de3d1-7134-4bf7-82f9-25de42cbdbb8"
+                        }
+                      ],
+                      "commandName": "else",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "2c38324a-f288-49d5-8c46-db69ac712e4d"
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$dUserConfig{ScreenshotPath}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFolder",
+                      "disabled": false,
+                      "packageName": "Folder",
+                      "uid": "0fee5733-f390-4fa5-b581-8e161857e8b3"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "1d97963b-cd5c-4f21-90c2-91383cf6b3fd"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "83286c1d-008c-4c33-bb76-c3d65a87839d"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "cecf7a59-ed0c-4048-8dc6-772865aa8d3b"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "8364d5de-783d-4e19-acb2-cf49e6389bb8"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.0.0-20200721-221948"
+    },
+    {
+      "name": "Datetime",
+      "version": "2.0.0-20200721-221958"
+    },
+    {
+      "name": "Dictionary",
+      "version": "3.0.1-20200721-222000"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.0.0-20200515-071432"
+    },
+    {
+      "name": "File",
+      "version": "2.1.0-20200721-222011"
+    },
+    {
+      "name": "Folder",
+      "version": "2.1.0-20200624-041640"
+    },
+    {
+      "name": "If",
+      "version": "2.0.0-20200624-041646"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.1.0-20200721-222212"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.0.0-20200721-222213"
+    },
+    {
+      "name": "Number",
+      "version": "2.0.0-20200515-071522"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200723-201827"
+    },
+    {
+      "name": "String",
+      "version": "3.0.0-20200515-071729"
+    },
+    {
+      "name": "System",
+      "version": "2.0.0-20200515-071729"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sCreateFolders",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sTimeStamp",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": true,
+      "name": "dUserConfig",
+      "output": true,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "ErrorLogFile",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "temp",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "ANY"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorMessage",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorLineNumber",
+      "output": true,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorFlag",
+      "output": true,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorDescription",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sTaskName",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

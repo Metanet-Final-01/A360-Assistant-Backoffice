@@ -1,0 +1,81 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\PDF To Word Extraction Package - KLOUDPAD Mobility Research Pvt Ltd\\PDF To Word Extraction Package",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.1.0-20200831-031015.jar",
+      "version": "2.1.0-20200831-031015"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.2.0-20200831-031025.jar",
+      "version": "2.2.0-20200831-031025"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.1.0-20200831-031055.jar",
+      "version": "2.1.0-20200831-031055"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-2.2.0-20200831-031057.jar",
+      "version": "2.2.0-20200831-031057"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-2.2.0-20200831-031100.jar",
+      "version": "2.2.0-20200831-031100"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-2.1.0-20200825-071156.jar",
+      "version": "2.1.0-20200825-071156"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-2.2.0-20200831-031539.jar",
+      "version": "2.2.0-20200831-031539"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-2.2.0-20210227-025721.jar",
+      "version": "2.2.0-20210227-025721"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.1.0-20200831-031541.jar",
+      "version": "2.1.0-20200831-031541"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-2.1.0-20200831-031551.jar",
+      "version": "2.1.0-20200831-031551"
+    },
+    {
+      "name": "PDFToWord",
+      "path": "PDFToWord-2.1.0-20210813-131303.jar",
+      "version": "2.1.0-20210813-131303"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.0.0-20200907-072944.jar",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-3.0.0-20200831-031944.jar",
+      "version": "3.0.0-20200831-031944"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+case_count,gold_count,pred_count,family,max_name_similarity,gold_action,pred_action
+10,26,11,runtime_ui,0.0,MessageBox.messageBox,Message box.usingMessageBoxAction
+5,7,5,runtime_ui,0.0,TaskBot.stopTask,Task Bot.taskBotPackageStopAction
+3,6,5,logging,0.0,LogToFile.logToFile,Logging.cloudInsertingLogToFileCommand
+3,9,3,datetime,0.3333,Datetime.cloudConvertDatetimeToString,Datetime.getActionInDatetime
+2,2,2,datetime,0.3333,Datetime.usingSubtractAction,Datetime.getActionInDatetime
+1,3,2,spreadsheet,0.5,Excel advanced.excelAdvancedPackageReadRowAction,Excel advanced.excelAdvancedPackageGetSingleCellAction
+1,3,2,file,0.3333,File.cloudDeletingFile,File.filePackageCopyControlRoomFileAction
+1,2,2,word,0.3333,Word.mswordFindAndReplaceText,Word.mswordInsertText
+1,3,2,xml,0.3333,XML.getSingleNode,XML.xmlGetSingleNode
+1,3,1,datetime,0.3333,Datetime.cloudConvertDatetimeToString,Datetime.cloudUsingAddAction
+1,1,1,datetime,0.3333,Datetime.usingSubtractAction,Datetime.cloudUsingAddAction
+1,1,2,file,0.3333,File.copyFiles,File.filePackageCopyControlRoomFileAction
+1,1,2,file,0.3333,File.downloadTo,File.filePackageCopyControlRoomFileAction
+1,4,1,folder,0.3333,Folder.folderCreate,Folder.cloudZipFilesAndFolders
+1,1,1,number,0.3333,Number.toString,Number.numberToString
+1,1,1,runtime_ui,0.3333,Screen.screenCaptureDesktop,Screen.cloudUsingScreenCaptureWindow
+1,1,1,system,0.3333,System.systemInformation,System.usingTheGetEnvironmentVariableAction
+1,2,1,word,0.3333,Word.mswordFindAndReplaceText,Word.mswordCloseDocument
+1,2,1,word,0.3333,Word.mswordFindAndReplaceText,Word.mswordOpenDocument
+1,2,1,word,0.3333,Word.mswordFindAndReplaceText,Word.mswordSaveDocumentAs
+1,1,2,xml,0.3333,XML.endSession,XML.xmlGetSingleNode
+1,1,1,xml,0.3333,XML.endSession,XML.xmlStartSession
+1,3,1,xml,0.3333,XML.getSingleNode,XML.xmlStartSession
+1,1,2,xml,0.3333,XML.startSession,XML.xmlGetSingleNode
+1,1,1,xml,0.3333,XML.startSession,XML.xmlStartSession
+1,1,1,spreadsheet,0.2,Excel_MS.GetMultipleCells,Excel advanced.excelAdvancedPackageReadRowAction
+1,12,1,runtime_ui,0.0,MessageBox.messageBox,Screen.cloudUsingScreenCaptureWindow
+1,1,1,runtime_ui,0.0,TaskBot.stopTask,Screen.cloudUsingScreenCaptureWindow
+1,2,1,browser,0.0,WebAutomation.clickelement,Browser.browserPackageCloseAction
+1,2,1,browser,0.0,WebAutomation.elementloaded,Browser.browserPackageCloseAction
+1,1,1,browser,0.0,WebAutomation.getvalueselement,Browser.browserPackageCloseAction
+1,2,1,browser,0.0,WebAutomation.isloaded,Browser.browserPackageCloseAction
+1,5,1,browser,0.0,WebAutomation.sendkeys,Browser.browserPackageCloseAction

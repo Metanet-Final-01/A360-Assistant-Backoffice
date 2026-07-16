@@ -1,0 +1,1831 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "OV AFX start-up",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "taskbot",
+              "value": {
+                "taskbotFile": {
+                  "string": "repository:///Automation%20Anywhere/Bot%20Store/OraclePRCreation-OpsVeda/OraclePurchaseRequisitionCreationAFXLogin",
+                  "type": "FILE"
+                },
+                "taskbotInput": {
+                  "dictionary": [
+                    {
+                      "key": "path_to_chrome",
+                      "value": {
+                        "expression": "$path_to_chrome_rrm$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "key": "params_for_chrome",
+                      "value": {
+                        "expression": "$params_for_chrome_rrm$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "type": "DICTIONARY"
+                },
+                "type": "TASKBOT"
+              }
+            },
+            {
+              "name": "repeatOption",
+              "value": {
+                "string": "DO_NOT_REPEAT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayNextRepetition",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "continueOnError",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "runTask",
+          "disabled": false,
+          "packageName": "TaskBot",
+          "uid": "660984fd-aae2-47a3-8669-d71035d75bcb"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "faf9affd-224d-4db0-b780-4420bf2b185a"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Nav to RRM",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNDNkYTEyOGYtNzA4Yy00ZTZiLWEzODMtNjIwOGEzYTA2ZTBiIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6LTN9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX1dfSwicm9sZSI6MzEsImluZGV4IjowLCJsZWZ0IjoxODU0LCJ0b3AiOjEzNywid2lkdGgiOjc1LCJoZWlnaHQiOjUxLCJjbGlja1giOjUwLCJjbGlja1kiOjI4LCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IiIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjMsInByb2Nlc3NJRCI6IlRBLUNCUy1DSFJPTUUtQUdFTlQiLCJ3aW5IYW5kbGUiOiIiLCJvY3JFbmdpbmUiOm51bGwsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy9kaXZbQGlkPSd0b3BzaGVsbCddL2RpdlszXS9kaXZbMV0vZGl2WzFdL2RpdlsxXS9kaXZbN10vZGl2WzFdL2FbMV0ifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiQSJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6Imljb25tZW51In0seyJuYW1lIjoiSFRNTCBJbm5lclRleHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgU291cmNlSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIVE1MIEhyZWYiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiNTEifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiI3NSJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjEyIn0seyJuYW1lIjoiSFRNTCBUb3AiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIVE1MIExlZnQiLCJ2YWx1ZSI6IjE0NzYifSx7Im5hbWUiOiJIVE1MIEhhc0ZyYW1lIiwidmFsdWUiOiJmYWxzZSJ9LHsibmFtZSI6IkhUTUwgRnJhbWVTcmMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgRnJhbWVOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lUGF0aCIsInZhbHVlIjoiIn0seyJuYW1lIjoiaW5uZXJIVE1MIiwidmFsdWUiOiJcbiAgICAgICAgPGkgY2xhc3M9XCJnbHlwaGljb24gZ2x5cGhpY29uLWFsaWduLWp1c3RpZnkgbWVudUJhclwiPjwvaT5cbiAgICAgICAgPGltZyBhbHQ9XCJBcHBsaWNhdGlvbiBOYW1lXCIgc3JjPVwiaW1nL09wc1ZlZGE0NHB4LnBuZ1wiIG5nLXN0eWxlPVwiZ2V0TWVudUltZ1N0eWxlKClcIiBzdHlsZT1cImZpbHRlcjogaW5oZXJpdDtcIj5cbiAgICAifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxhIGNsYXNzPVwiaWNvbm1lbnVcIiBzdHlsZT1cInRleHQtZGVjb3JhdGlvbjogbm9uZTsgYmFja2dyb3VuZC1jb2xvcjogdHJhbnNwYXJlbnQ7XCIgbmctc3R5bGU9XCJnZXRNZW51U3R5bGUoKVwiIG5nLWNsaWNrPVwibWFpbk1lbnVDbGlja2VkKCRldmVudClcIj5cbiAgICAgICAgPGkgY2xhc3M9XCJnbHlwaGljb24gZ2x5cGhpY29uLWFsaWduLWp1c3RpZnkgbWVudUJhclwiPjwvaT5cbiAgICAgICAgPGltZyBhbHQ9XCJBcHBsaWNhdGlvbiBOYW1lXCIgc3JjPVwiaW1nL09wc1ZlZGE0NHB4LnBuZ1wiIG5nLXN0eWxlPVwiZ2V0TWVudUltZ1N0eWxlKClcIiBzdHlsZT1cImZpbHRlcjogaW5oZXJpdDtcIj5cbiAgICA8L2E+In0seyJuYW1lIjoiSXNWaXNpYmxlIiwidmFsdWUiOiJ0cnVlIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjQzZGExMjhmLTcwOGMtNGU2Yi1hMzgzLTYyMDhhM2EwNmUwYiJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiQ2xhc3MiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlBhcmVudCIsInZhbHVlIjoiIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IkxpbmsifSx7Im5hbWUiOiJQYXRoIiwidmFsdWUiOiItM3wxfDF8NHwxfDF8LTF8LTF8MXwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiIxODQ1In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiV2lkdGgiLCJ2YWx1ZSI6Ijc1In0seyJuYW1lIjoiSGVpZ2h0IiwidmFsdWUiOiI1MSJ9LHsibmFtZSI6IkNsaWNrWCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkRlc2NyaXB0aW9uIiwidmFsdWUiOiIifSx7Im5hbWUiOiJTdGF0ZXMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkRlZmF1bHRBY3Rpb24iLCJ2YWx1ZSI6IiJ9XSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjpudWxsLCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDgwXSwiZXJyb3IiOm51bGx9",
+                  "capture": {
+                    "screenshotMetadataPath": "6e4a5cc5-0ba6-46c1-a1c0-e1e5de25405a.png",
+                    "screenshotRectangle": {
+                      "height": 51,
+                      "width": 75,
+                      "x": 1854,
+                      "y": 137
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "5e113c0a-ea1a-4989-88a5-c65837403fde.png",
+                    "thumbnailRectangle": {
+                      "height": 47,
+                      "width": 70,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "LINK",
+                  "criteria": {
+                    "Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ClickX": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "ClickY": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//div[@id='topshell']/div[3]/div[1]/div[1]/div[1]/div[7]/div[1]/a[1]",
+                        "type": "STRING"
+                      }
+                    },
+                    "DefaultAction": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Description": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "iconmenu",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FrameName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FramePath": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FrameSrc": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML HasFrame": {
+                      "enabled": true,
+                      "value": {
+                        "string": "false",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "51",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "1476",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "A",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "12",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "75",
+                        "type": "STRING"
+                      }
+                    },
+                    "Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "51",
+                        "type": "STRING"
+                      }
+                    },
+                    "ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Index": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "IsVisible": {
+                      "enabled": false,
+                      "value": {
+                        "string": "true",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "1845",
+                        "type": "STRING"
+                      }
+                    },
+                    "Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Parent": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "-3|1|1|4|1|1|-1|-1|1|1",
+                        "type": "STRING"
+                      }
+                    },
+                    "Role": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Link",
+                        "type": "STRING"
+                      }
+                    },
+                    "States": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "UniqueID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "43da128f-708c-4e6b-a383-6208a3a06e0b",
+                        "type": "STRING"
+                      }
+                    },
+                    "Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "75",
+                        "type": "STRING"
+                      }
+                    },
+                    "WindowTitle": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "innerHTML": {
+                      "enabled": false,
+                      "value": {
+                        "string": "\n        <i class=\"glyphicon glyphicon-align-justify menuBar\"></i>\n        <img alt=\"Application Name\" src=\"img/OpsVeda44px.png\" ng-style=\"getMenuImgStyle()\" style=\"filter: inherit;\">\n    ",
+                        "type": "STRING"
+                      }
+                    },
+                    "outerHTML": {
+                      "enabled": false,
+                      "value": {
+                        "string": "<a class=\"iconmenu\" style=\"text-decoration: none; background-color: transparent;\" ng-style=\"getMenuStyle()\" ng-click=\"mainMenuClicked($event)\">\n        <i class=\"glyphicon glyphicon-align-justify menuBar\"></i>\n        <img alt=\"Application Name\" src=\"img/OpsVeda44px.png\" ng-style=\"getMenuImgStyle()\" style=\"filter: inherit;\">\n    </a>",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-1$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "linkAction",
+              "value": {
+                "string": "LEFTCLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "efe6a415-af7c-4aa6-a9be-13e6ab2fce07"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "20",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "8e1cf3d4-6b34-4aff-9988-12c12d4f7d76"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMjJmMmU0MDAtY2U5OS00YzRkLWIwMzUtNjUyMDgyNjI4YzkzIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6LTN9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6LTF9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjozfSx7ImluZGV4IjoxfV19LCJyb2xlIjozMSwiaW5kZXgiOjAsImxlZnQiOjczNCwidG9wIjozMDYsIndpZHRoIjoyMTMsImhlaWdodCI6MzQsImNsaWNrWCI6NTksImNsaWNrWSI6MjUsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6MywicHJvY2Vzc0lEIjoiVEEtQ0JTLUNIUk9NRS1BR0VOVCIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6bnVsbCwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2RpdltAaWQ9J3RvcHNoZWxsJ10vZGl2WzNdL2RpdlsxXS9kaXZbMV0vZGl2WzFdL2Rpdls3XS9kaXZbMV0vZGl2WzFdL3VsWzRdL2xpWzFdL3NwYW5bM10vYVsxXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJBIn0seyJuYW1lIjoiSFRNTCBDbGFzcyIsInZhbHVlIjoibmctYmluZGluZyJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiJSZXZlbnVlIFJpc2sgTWdtdCJ9LHsibmFtZSI6IkhUTUwgU291cmNlSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIVE1MIEhyZWYiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiMzQifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIyMTMifSx7Im5hbWUiOiJIVE1MIFRhZ0luZGV4IiwidmFsdWUiOiI1MSJ9LHsibmFtZSI6IkhUTUwgVG9wIiwidmFsdWUiOiIxMzYifSx7Im5hbWUiOiJIVE1MIExlZnQiLCJ2YWx1ZSI6IjU4MCJ9LHsibmFtZSI6IkhUTUwgSGFzRnJhbWUiLCJ2YWx1ZSI6ImZhbHNlIn0seyJuYW1lIjoiSFRNTCBGcmFtZVNyYyIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBGcmFtZU5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgRnJhbWVQYXRoIiwidmFsdWUiOiIifSx7Im5hbWUiOiJpbm5lckhUTUwiLCJ2YWx1ZSI6IlJldmVudWUgUmlzayBNZ210In0seyJuYW1lIjoib3V0ZXJIVE1MIiwidmFsdWUiOiI8YSBuZy1zaG93PVwic2hvd1N1Yk1lbnUoc3ViSXRlbSlcIiBuZy1jbGljaz1cIm1lbnVJdGVtQ2xpY2soc3ViSXRlbSlcIiBjbGFzcz1cIm5nLWJpbmRpbmdcIj5SZXZlbnVlIFJpc2sgTWdtdDwvYT4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiMjJmMmU0MDAtY2U5OS00YzRkLWIwMzUtNjUyMDgyNjI4YzkzIn0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiTGluayJ9LHsibmFtZSI6IlBhdGgiLCJ2YWx1ZSI6Ii0zfDF8MXw0fDF8MXwtMXwtMXwxfC0xfDR8LTF8M3wxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI3MjUifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjE2OSJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIyMTMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjM0In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiQ2xpY2tZIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiRGVzY3JpcHRpb24iLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlN0YXRlcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiRGVmYXVsdEFjdGlvbiIsInZhbHVlIjoiIn1dLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzcsNjEsNjMsODBdLCJlcnJvciI6bnVsbH0=",
+                  "capture": {
+                    "screenshotMetadataPath": "9cd18913-8a9a-4311-8448-e5b10ecc93ad.png",
+                    "screenshotRectangle": {
+                      "height": 34,
+                      "width": 213,
+                      "x": 734,
+                      "y": 306
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "760bb131-a7c3-41a9-b2d3-b9474d99bddd.png",
+                    "thumbnailRectangle": {
+                      "height": 34,
+                      "width": 213,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "LINK",
+                  "criteria": {
+                    "Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ClickX": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "ClickY": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//div[@id='topshell']/div[3]/div[1]/div[1]/div[1]/div[7]/div[1]/div[1]/ul[4]/li[1]/span[3]/a[1]",
+                        "type": "STRING"
+                      }
+                    },
+                    "DefaultAction": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Description": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "ng-binding",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FrameName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FramePath": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FrameSrc": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML HasFrame": {
+                      "enabled": true,
+                      "value": {
+                        "string": "false",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "34",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": true,
+                      "value": {
+                        "string": "Revenue Risk Mgmt",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "580",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "A",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "51",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "136",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "213",
+                        "type": "STRING"
+                      }
+                    },
+                    "Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "34",
+                        "type": "STRING"
+                      }
+                    },
+                    "ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Index": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "IsVisible": {
+                      "enabled": false,
+                      "value": {
+                        "string": "true",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "725",
+                        "type": "STRING"
+                      }
+                    },
+                    "Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Parent": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "-3|1|1|4|1|1|-1|-1|1|-1|4|-1|3|1",
+                        "type": "STRING"
+                      }
+                    },
+                    "Role": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Link",
+                        "type": "STRING"
+                      }
+                    },
+                    "States": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "169",
+                        "type": "STRING"
+                      }
+                    },
+                    "UniqueID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "22f2e400-ce99-4c4d-b035-652082628c93",
+                        "type": "STRING"
+                      }
+                    },
+                    "Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "213",
+                        "type": "STRING"
+                      }
+                    },
+                    "WindowTitle": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "innerHTML": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Revenue Risk Mgmt",
+                        "type": "STRING"
+                      }
+                    },
+                    "outerHTML": {
+                      "enabled": false,
+                      "value": {
+                        "string": "<a ng-show=\"showSubMenu(subItem)\" ng-click=\"menuItemClick(subItem)\" class=\"ng-binding\">Revenue Risk Mgmt</a>",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-1$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "linkAction",
+              "value": {
+                "string": "LEFTCLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "1e13567a-bb56-4c02-a5f4-8b393aa5d8a2"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "20",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "6b167938-6c84-4f03-88a6-486a4ae73f94"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "af68a82c-99ad-4cb8-9914-a4fff29a8d2f"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Capture RRM circle on chart dynamically",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMTkzZmYxOTctZDdjMy00ODU2LTk1MzUtNjVlZjc5ZDc0NmNjIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6LTN9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfSx7ImluZGV4IjotMX0seyJpbmRleCI6LTF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTh9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi00fV19LCJyb2xlIjowLCJpbmRleCI6MCwibGVmdCI6MTExNSwidG9wIjo1OTcsIndpZHRoIjowLCJoZWlnaHQiOjAsImNsaWNrWCI6MTksImNsaWNrWSI6MjAsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6MywicHJvY2Vzc0lEIjoiVEEtQ0JTLUNIUk9NRS1BR0VOVCIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNTaWx2ZXJsaWdodFRlY2hub2xvZ3kiOmZhbHNlfSwiYWN0aW9ucyI6bnVsbCwicHJvcGVydGllcyI6W3sibmFtZSI6IkRPTVhQYXRoIiwidmFsdWUiOiIvL2RpdltAaWQ9J25ldy1kYXNoYm9hcmQnXS9kYXNoYm9hcmQtdGFibGVzWzFdL2RpdlsxXS91bFsxXS9saVsxXS9kaXZbMV0vZGl2WzJdL2RpdlsyXS9kaXZbMl0vZGl2WzNdL2RpdlsxXS9kaXZbMV0vZGl2WzFdL3N2Z1sxXS9nWzEyXS9nWzFdL2NpcmNsZVs4XSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJjaXJjbGUifSx7Im5hbWUiOiJIVE1MIENsYXNzIiwidmFsdWUiOiJbb2JqZWN0IFNWR0FuaW1hdGVkU3RyaW5nXSJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQ2xhc3NJZCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBIZWlnaHQiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiOCJ9LHsibmFtZSI6IkhUTUwgVG9wIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBMZWZ0IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIYXNGcmFtZSIsInZhbHVlIjoiZmFsc2UifSx7Im5hbWUiOiJIVE1MIEZyYW1lU3JjIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBGcmFtZVBhdGgiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6ImlubmVySFRNTCIsInZhbHVlIjoiIn0seyJuYW1lIjoib3V0ZXJIVE1MIiwidmFsdWUiOiI8Y2lyY2xlIHI9XCI0XCIgY3g9XCIwXCIgY3k9XCIwXCIgZmlsbD1cIiNENTAwMDBcIiBzdHJva2U9XCIjZTg2MjE0XCIgZmlsbC1vcGFjaXR5PVwiMVwiIHN0cm9rZS13aWR0aD1cIjJcIiBzdHJva2Utb3BhY2l0eT1cIjBcIiB0cmFuc2Zvcm09XCJ0cmFuc2xhdGUoNzY0LDIzOCkgc2NhbGUoMS43KVwiIGFyaWEtbGFiZWw9XCIgQyBOb3QgQ292ZXJlZCA2MSw0MzAsNjIyXCIgY2xhc3M9XCJhbWNoYXJ0cy1ncmFwaC1idWxsZXRcIj48L2NpcmNsZT4ifSx7Im5hbWUiOiJJc1Zpc2libGUiLCJ2YWx1ZSI6InRydWUifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiMTkzZmYxOTctZDdjMy00ODU2LTk1MzUtNjVlZjc5ZDc0NmNjIn0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJDbGFzcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiUGFyZW50IiwidmFsdWUiOiIifSx7Im5hbWUiOiJXaW5kb3dUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiUm9sZSIsInZhbHVlIjoiQ2xpZW50In0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiLTN8MnwxfDF8MXwxfDJ8LTF8MXwxfDF8MXwxfC0xfC0xfC0xfC0xfDF8MXwxfDF8LTh8MXwtNCJ9LHsibmFtZSI6IkluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiTGVmdCIsInZhbHVlIjoiMTExNSJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiNDY5In0seyJuYW1lIjoiV2lkdGgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJDbGlja1giLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJDbGlja1kiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw4MF0sImVycm9yIjpudWxsfQ==",
+                  "capture": {
+                    "screenshotMetadataPath": "a0395bcd-be67-449b-ba88-6d3a42016966.png",
+                    "screenshotRectangle": {
+                      "height": 0,
+                      "width": 0,
+                      "x": 1115,
+                      "y": 597
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "cf7271a6-fe65-453a-b677-c85263a13b47.png",
+                    "thumbnailRectangle": {
+                      "height": 0,
+                      "width": 0,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "CLIENT",
+                  "criteria": {
+                    "Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ClickX": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "ClickY": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "//g/circle[contains(@aria-label, 'C Not Covered')]",
+                        "type": "STRING"
+                      }
+                    },
+                    "DefaultAction": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Description": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "[object SVGAnimatedString]",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FrameName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FramePath": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FrameSrc": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML HasFrame": {
+                      "enabled": true,
+                      "value": {
+                        "string": "false",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "circle",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "8",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Index": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "IsVisible": {
+                      "enabled": false,
+                      "value": {
+                        "string": "true",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "1115",
+                        "type": "STRING"
+                      }
+                    },
+                    "Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Parent": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": false,
+                      "value": {
+                        "string": "-3|2|1|1|1|1|2|-1|1|1|1|1|1|-1|-1|-1|-1|1|1|1|1|-8|1|-4",
+                        "type": "STRING"
+                      }
+                    },
+                    "Role": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Client",
+                        "type": "STRING"
+                      }
+                    },
+                    "States": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "469",
+                        "type": "STRING"
+                      }
+                    },
+                    "UniqueID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "193ff197-d7c3-4856-9535-65ef79d746cc",
+                        "type": "STRING"
+                      }
+                    },
+                    "Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "WindowTitle": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "innerHTML": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "outerHTML": {
+                      "enabled": false,
+                      "value": {
+                        "string": "<circle r=\"4\" cx=\"0\" cy=\"0\" fill=\"#D50000\" stroke=\"#e86214\" fill-opacity=\"1\" stroke-width=\"2\" stroke-opacity=\"0\" transform=\"translate(764,238) scale(1.7)\" aria-label=\" C Not Covered 61,430,622\" class=\"amcharts-graph-bullet\"></circle>",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-1$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "clientAction",
+              "value": {
+                "string": "CLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "runInBackground",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "16ffb48d-e2eb-43f1-8d13-1668ca74cefb"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "20",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "c16387b7-5bc0-40f9-a17a-76b5f1e2ee18"
+        },
+        {
+          "attributes": [
+            {
+              "name": "uiObject",
+              "value": {
+                "type": "UIOBJECT",
+                "uiObject": {
+                  "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiZDlmZjc5YTktNWNlYS00ZDExLWEwZTctNGZjNDllMTFlZjk1IiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6MTV9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoyfSx7ImluZGV4IjoxfSx7ImluZGV4IjotMX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6MX0seyJpbmRleCI6LTF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjF9XX0sInJvbGUiOjEsImluZGV4IjowLCJsZWZ0Ijo1NCwidG9wIjo2ODcsIndpZHRoIjozMCwiaGVpZ2h0IjoyOCwiY2xpY2tYIjoxMSwiY2xpY2tZIjoxOCwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoiIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6NiwicGxhdGZvcm1UeXBlIjoxMiwiYXBwbGljYXRpb25UeXBlIjozLCJwcm9jZXNzSUQiOiJUQS1DQlMtQ0hST01FLUFHRU5UIiwid2luSGFuZGxlIjoiIiwib2NyRW5naW5lIjpudWxsLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpudWxsLCJwcm9wZXJ0aWVzIjpbeyJuYW1lIjoiRE9NWFBhdGgiLCJ2YWx1ZSI6Ii9odG1sL2JvZHkvZGl2WzFdL2RpdlsyXS9kaXZbMV0vZGl2WzFdL2Rpdls1XS9kaXZbMV0vZGl2WzFdL2RpdlsyXS9kaXZbMV0vZGl2WzFdL2RpdlsxXS9kaXZbMV0vZGl2WzJdL2RpdlsxXS9mb3JtWzFdL2J1dHRvblsxXSJ9LHsibmFtZSI6IkhUTUwgSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBBbHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGFnIiwidmFsdWUiOiJCVVRUT04ifSx7Im5hbWUiOiJIVE1MIENsYXNzIiwidmFsdWUiOiJidG4gYnRuLXhzIGV4cG9ydEV4Y2VsIn0seyJuYW1lIjoiSFRNTCBJbm5lclRleHQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgU291cmNlSW5kZXgiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIVE1MIEhyZWYiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoic3VibWl0In0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiJFeHBvcnQgdG8gRXhjZWwifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiMjgifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiIzMCJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjE3MCJ9LHsibmFtZSI6IkhUTUwgVG9wIiwidmFsdWUiOiI0NDEifSx7Im5hbWUiOiJIVE1MIExlZnQiLCJ2YWx1ZSI6IjM2In0seyJuYW1lIjoiSFRNTCBIYXNGcmFtZSIsInZhbHVlIjoiZmFsc2UifSx7Im5hbWUiOiJIVE1MIEZyYW1lU3JjIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBGcmFtZVBhdGgiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6ImlubmVySFRNTCIsInZhbHVlIjoiXG4gICAgICAgICAgICA8c3Bhbj5cbiAgICAgICAgICAgICAgICA8aSBjbGFzcz1cImdseXBoaWNvbiBnbHlwaGljb24tdGhcIiBzdHlsZT1cImZvbnQtc2l6ZTogMTJweDsgY29sb3I6I0ZGRlwiPjwvaT5cbiAgICAgICAgICAgIDwvc3Bhbj5cbiAgICAgICAgIn0seyJuYW1lIjoib3V0ZXJIVE1MIiwidmFsdWUiOiI8YnV0dG9uIGNsYXNzPVwiYnRuIGJ0bi14cyBleHBvcnRFeGNlbFwiIG5nLWNsaWNrPVwiZXhwb3J0RGF0YVRvRXhjZWwoKVwiIGRhdGEtdG9nZ2xlPVwidG9vbHRpcFwiIHRpdGxlPVwiRXhwb3J0IHRvIEV4Y2VsXCIgc3R5bGU9XCJtYXJnaW4tYm90dG9tOiAxcHg7IGJhY2tncm91bmQtY29sb3I6IzMxQjBENVwiIG5nLWRpc2FibGVkPVwiZGlzYWJsZUV4cG9ydFRvRXhjZWwoKVwiPlxuICAgICAgICAgICAgPHNwYW4+XG4gICAgICAgICAgICAgICAgPGkgY2xhc3M9XCJnbHlwaGljb24gZ2x5cGhpY29uLXRoXCIgc3R5bGU9XCJmb250LXNpemU6IDEycHg7IGNvbG9yOiNGRkZcIj48L2k+XG4gICAgICAgICAgICA8L3NwYW4+XG4gICAgICAgIDwvYnV0dG9uPiJ9LHsibmFtZSI6IklzVmlzaWJsZSIsInZhbHVlIjoidHJ1ZSJ9XSwiYXR0cmlidXRlcyI6W3sibmFtZSI6IlVuaXF1ZUlEIiwidmFsdWUiOiJkOWZmNzlhOS01Y2VhLTRkMTEtYTBlNy00ZmM0OWUxMWVmOTUifSx7Im5hbWUiOiJJRCIsInZhbHVlIjoiIn0seyJuYW1lIjoiTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IldpbmRvd1RpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJSb2xlIiwidmFsdWUiOiJQdXNoQnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiMTV8MnwxfDF8LTF8MnwxfC0xfDF8MXwxfDF8LTF8MXwxfDEifSx7Im5hbWUiOiJJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkxlZnQiLCJ2YWx1ZSI6IjQ1In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiI1NTAifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiMzAifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI4In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiQ2xpY2tZIiwidmFsdWUiOiIwIn0seyJuYW1lIjoiRGVzY3JpcHRpb24iLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlN0YXRlcyIsInZhbHVlIjoiIn0seyJuYW1lIjoiRGVmYXVsdEFjdGlvbiIsInZhbHVlIjoiIn1dLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzcsNjEsNjcsNjksODBdLCJlcnJvciI6bnVsbH0=",
+                  "capture": {
+                    "screenshotMetadataPath": "5e29dc3e-d3ea-4f33-9062-6377a2b714e6.png",
+                    "screenshotRectangle": {
+                      "height": 28,
+                      "width": 30,
+                      "x": 54,
+                      "y": 687
+                    },
+                    "securelyRecorded": false,
+                    "thumbnailMetadataPath": "7826b527-facd-484b-ac65-394ad13054de.png",
+                    "thumbnailRectangle": {
+                      "height": 28,
+                      "width": 30,
+                      "x": 0,
+                      "y": 0
+                    }
+                  },
+                  "controlType": "BUTTON",
+                  "criteria": {
+                    "Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ClickX": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "ClickY": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "DOMXPath": {
+                      "enabled": true,
+                      "value": {
+                        "string": "/html/body/div[1]/div[2]/div[1]/div[1]/div[5]/div[1]/div[1]/div[2]/div[1]/div[1]/div[1]/div[1]/div[2]/div[1]/form[1]/button[1]",
+                        "type": "STRING"
+                      }
+                    },
+                    "DefaultAction": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Description": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Alt": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Class": {
+                      "enabled": false,
+                      "value": {
+                        "string": "btn btn-xs exportExcel",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ClassId": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FrameName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FramePath": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML FrameSrc": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML HasFrame": {
+                      "enabled": true,
+                      "value": {
+                        "string": "false",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "28",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Href": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML InnerText": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "36",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML SourceIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Tag": {
+                      "enabled": true,
+                      "value": {
+                        "string": "BUTTON",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML TagIndex": {
+                      "enabled": false,
+                      "value": {
+                        "string": "170",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Title": {
+                      "enabled": false,
+                      "value": {
+                        "string": "Export to Excel",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "441",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Type": {
+                      "enabled": true,
+                      "value": {
+                        "string": "submit",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "HTML Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "30",
+                        "type": "STRING"
+                      }
+                    },
+                    "Height": {
+                      "enabled": false,
+                      "value": {
+                        "string": "28",
+                        "type": "STRING"
+                      }
+                    },
+                    "ID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Index": {
+                      "enabled": false,
+                      "value": {
+                        "string": "0",
+                        "type": "STRING"
+                      }
+                    },
+                    "IsVisible": {
+                      "enabled": false,
+                      "value": {
+                        "string": "true",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemName": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "ItemValue": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Left": {
+                      "enabled": false,
+                      "value": {
+                        "string": "45",
+                        "type": "STRING"
+                      }
+                    },
+                    "Name": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Parent": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Path": {
+                      "enabled": true,
+                      "value": {
+                        "string": "15|2|1|1|-1|2|1|-1|1|1|1|1|-1|1|1|1",
+                        "type": "STRING"
+                      }
+                    },
+                    "Role": {
+                      "enabled": false,
+                      "value": {
+                        "string": "PushButton",
+                        "type": "STRING"
+                      }
+                    },
+                    "States": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Top": {
+                      "enabled": false,
+                      "value": {
+                        "string": "550",
+                        "type": "STRING"
+                      }
+                    },
+                    "UniqueID": {
+                      "enabled": false,
+                      "value": {
+                        "string": "d9ff79a9-5cea-4d11-a0e7-4fc49e11ef95",
+                        "type": "STRING"
+                      }
+                    },
+                    "Value": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "Width": {
+                      "enabled": false,
+                      "value": {
+                        "string": "30",
+                        "type": "STRING"
+                      }
+                    },
+                    "WindowTitle": {
+                      "enabled": false,
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    "innerHTML": {
+                      "enabled": false,
+                      "value": {
+                        "string": "\n            <span>\n                <i class=\"glyphicon glyphicon-th\" style=\"font-size: 12px; color:#FFF\"></i>\n            </span>\n        ",
+                        "type": "STRING"
+                      }
+                    },
+                    "outerHTML": {
+                      "enabled": false,
+                      "value": {
+                        "string": "<button class=\"btn btn-xs exportExcel\" ng-click=\"exportDataToExcel()\" data-toggle=\"tooltip\" title=\"Export to Excel\" style=\"margin-bottom: 1px; background-color:#31B0D5\" ng-disabled=\"disableExportToExcel()\">\n            <span>\n                <i class=\"glyphicon glyphicon-th\" style=\"font-size: 12px; color:#FFF\"></i>\n            </span>\n        </button>",
+                        "type": "STRING"
+                      }
+                    }
+                  },
+                  "technologyType": "HTML"
+                },
+                "uiObjectWindow": {
+                  "expression": "$window-1$",
+                  "type": "WINDOW"
+                }
+              }
+            },
+            {
+              "name": "buttonAction",
+              "value": {
+                "string": "LEFTCLICK",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "wait",
+              "value": {
+                "number": "15",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "capture",
+          "disabled": false,
+          "packageName": "Recorder",
+          "uid": "cdfbed27-abf1-4c7d-8880-136eb22d64dd"
+        },
+        {
+          "attributes": [
+            {
+              "name": "delayType",
+              "value": {
+                "string": "REGULAR",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "delayTime",
+              "value": {
+                "number": "20",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "timeUnit",
+              "value": {
+                "string": "SECONDS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "delay",
+          "disabled": false,
+          "packageName": "Delay",
+          "uid": "95709103-c0c1-4134-aa6b-6684b40d5a80"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "fc347d1e-ca12-49a1-a2a5-2eb6b01d805f"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Delay",
+      "version": "2.2.0-20200831-031026"
+    },
+    {
+      "name": "Recorder",
+      "version": "2.0.8-20201009-015051"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20200907-072944"
+    },
+    {
+      "name": "TaskBot",
+      "version": "2.0.1-20200907-072949"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "Chrome_WidgetWin_1",
+          "handle": "2623548",
+          "isChild": false,
+          "location": {
+            "left": -9,
+            "top": -9
+          },
+          "name": "OpsVeda :: Operational Intelligence Suite - Google Chrome",
+          "path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 1048,
+            "width": 1938
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-1",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "path_to_chrome_rrm",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "params_for_chrome_rrm",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

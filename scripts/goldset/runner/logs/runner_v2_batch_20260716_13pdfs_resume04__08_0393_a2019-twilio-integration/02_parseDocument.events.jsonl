@@ -1,0 +1,2 @@
+{"received_at": "2026-07-15T17:52:25.373388+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
+{"received_at": "2026-07-15T17:52:25.922210+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "b6d1ac7a-ac93-4264-9b95-921592f61d5d", "session_id": "e59287ed-bdfc-4345-9212-b76f0e29f473", "filename": "0393_a2019-twilio-integration__A2019 Twilio Integration.pdf", "size_bytes": 60959, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T17:52:23.832226+00:00"}}

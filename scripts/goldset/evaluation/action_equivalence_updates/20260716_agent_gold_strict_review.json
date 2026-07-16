@@ -1,0 +1,54 @@
+{
+  "source": "agent_gold_strict_review_20260716",
+  "accepted_equivalence_groups": [
+    {
+      "canonical": "Browser.launchWebsite",
+      "members": [
+        "Browser.browserPackageOpenAction",
+        "Browser.openbrowser",
+        "WebAutomation.openpage",
+        "Browser.launchWebsite"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.cloudExcelOpen",
+      "members": [
+        "Excel advanced.cloudExcelOpen",
+        "Excel.OpenSpreadsheet",
+        "Excel_MS.OpenSpreadsheet"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageCloseAction",
+      "members": [
+        "Excel advanced.excelAdvancedPackageCloseAction",
+        "Excel_MS.CloseSpreadsheet"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageReadRowAction",
+      "members": [
+        "Excel advanced.excelAdvancedPackageReadRowAction",
+        "Excel_MS.readExcelRow"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageSetCellAction",
+      "members": [
+        "Excel advanced.excelAdvancedPackageSetCellAction",
+        "Excel.SetCell",
+        "Excel_MS.SetCell"
+      ]
+    }
+  ],
+  "rejected_pairs": [
+    {
+      "source": "Excel advanced.excelAdvancedPackageReadRowAction",
+      "candidate": "Excel.GetMultipleCells"
+    },
+    {
+      "source": "Excel advanced.excelAdvancedPackageReadRowAction",
+      "candidate": "Excel_MS.GetMultipleCells"
+    }
+  ]
+}

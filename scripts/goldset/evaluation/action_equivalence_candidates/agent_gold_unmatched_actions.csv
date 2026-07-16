@@ -1,0 +1,5 @@
+﻿agent_action,agent_count,agent_family,agent_semantics
+Browser.browserPackageCloseAction,1,browser,close
+Browser.browserPackageRunJavascriptAction,1,browser,run
+Error handler.errorHandlerCatch,1,error_handler,error_flow
+Error handler.errorHandlerTry,1,error_handler,error_flow

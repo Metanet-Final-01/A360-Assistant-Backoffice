@@ -1,0 +1,38 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="4e9fc861-4ba9-4578-a367-29b199967b9d" root="294aa22f-ef57-4e61-8a53-84fb57db7464" id="b584e78d-278d-4a84-9c52-e8b4baa0909c">
+    <sequence name="" id="294aa22f-ef57-4e61-8a53-84fb57db7464"/>
+    <sequence name="" id="ebdf8eb2-58f4-44a3-9d2c-99ee48a402c6"/>
+    <manualTask name="File.filePackageCopyControlRoomFileAction" id="9dc9ac2f-3c1f-44c6-84b4-b35c8452f477"/>
+    <manualTask name="File.filePackageCreateAction" id="103faec5-392e-4aa9-93b3-792ee6e4fba3"/>
+    <sequence name="" id="9fe9003e-b214-4d26-943d-20de7a053836"/>
+    <manualTask name="Microsoft 365 Excel package in Automation 360.usingOpenWorkbookAction" id="aff3b9ce-ab65-4873-9bae-3418ae45675f"/>
+    <manualTask name="Microsoft 365 Excel package in Automation 360.getWorksheetAsDataTableIn" id="f1253c6c-0e6c-45cf-8b80-112dc8cec247"/>
+    <manualTask name="Email.cloudUsingSendAction" id="46328df7-8492-4cbb-ab28-7cc745353485"/>
+    <manualTask name="Microsoft 365 Excel package in Automation 360.writeFromDataTableIn" id="2d35ea15-6912-45d4-a874-c3c03c5c0775"/>
+    <manualTask name="File.filePackageCopyControlRoomFileAction" id="6b72acf9-ba9c-417e-89db-cdd5c1191a0f"/>
+    <sequence name="" id="d85ac074-d41d-4a04-b236-aeb917c76518"/>
+    <manualTask name="Message box.usingMessageBoxAction" id="215f5f84-18d6-4250-993a-0f2d1364a7cc"/>
+    <manualTask name="Task Bot.taskBotPackageStopAction" id="0f66028e-0dec-4e25-a854-67cd73940ebd"/>
+    <manualTask name="Datetime.getActionInDatetime" id="76234613-3e3f-40f8-bb3d-f4b9a784c687"/>
+    <manualTask name="Datetime.usingSubtractAction" id="66caa217-cdd6-4953-ad31-de378416bb20"/>
+    <manualTask name="Logging.cloudInsertingLogToFileCommand" id="1f6d6295-7bef-4faa-86e2-5fc5db1df004"/>
+    <manualTask name="Microsoft 365 Excel package in Automation 360.office365ExcelClose" id="bf9ee1c8-5820-4b88-8e8e-12de1ab7fc62"/>
+    <parentsNode id="f01dbaff-e8fa-49c0-b9b1-9b67222f8c25" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="ebdf8eb2-58f4-44a3-9d2c-99ee48a402c6"/>
+    <parentsNode id="3c8ddc8e-9168-4f8f-a80f-05ea6984dfd5" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="9dc9ac2f-3c1f-44c6-84b4-b35c8452f477"/>
+    <parentsNode id="45b5a21c-bf3c-44b4-9990-23badec44f29" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="103faec5-392e-4aa9-93b3-792ee6e4fba3"/>
+    <parentsNode id="f9a0a3c2-8f86-4c18-a9ef-3d74f489a670" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="9fe9003e-b214-4d26-943d-20de7a053836"/>
+    <parentsNode id="8188caf9-8443-45ca-895d-6bdbe73b18db" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="aff3b9ce-ab65-4873-9bae-3418ae45675f"/>
+    <parentsNode id="00aab5fc-4263-4aaa-9c3f-f5e437f92dc1" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="f1253c6c-0e6c-45cf-8b80-112dc8cec247"/>
+    <parentsNode id="0187b190-52d6-4d74-b915-702c3eb12e8c" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="46328df7-8492-4cbb-ab28-7cc745353485"/>
+    <parentsNode id="1c623a90-8427-4664-827b-cfab955b7a8f" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="2d35ea15-6912-45d4-a874-c3c03c5c0775"/>
+    <parentsNode id="b7410cdd-4ea5-45af-a019-a15d09f6c95e" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="6b72acf9-ba9c-417e-89db-cdd5c1191a0f"/>
+    <parentsNode id="70d64dc2-5839-46d2-af58-1cf7e2dce9e9" sourceId="294aa22f-ef57-4e61-8a53-84fb57db7464" targetId="d85ac074-d41d-4a04-b236-aeb917c76518"/>
+    <parentsNode id="f09be3b3-f509-481f-8b93-497452173e96" sourceId="ebdf8eb2-58f4-44a3-9d2c-99ee48a402c6" targetId="215f5f84-18d6-4250-993a-0f2d1364a7cc"/>
+    <parentsNode id="6f0e38fe-d871-4b2e-8874-cd1569a3926e" sourceId="ebdf8eb2-58f4-44a3-9d2c-99ee48a402c6" targetId="0f66028e-0dec-4e25-a854-67cd73940ebd"/>
+    <parentsNode id="64fdac44-ecb0-4c58-874f-a08702d0b4db" sourceId="9fe9003e-b214-4d26-943d-20de7a053836" targetId="76234613-3e3f-40f8-bb3d-f4b9a784c687"/>
+    <parentsNode id="4d8ce191-4538-4176-a638-d6833340d1c5" sourceId="9fe9003e-b214-4d26-943d-20de7a053836" targetId="66caa217-cdd6-4953-ad31-de378416bb20"/>
+    <parentsNode id="af5d431b-03ce-42e4-9745-3e8bd20275e9" sourceId="d85ac074-d41d-4a04-b236-aeb917c76518" targetId="1f6d6295-7bef-4faa-86e2-5fc5db1df004"/>
+    <parentsNode id="684207f2-ed57-46fc-aa48-f94b0aebac2d" sourceId="d85ac074-d41d-4a04-b236-aeb917c76518" targetId="bf9ee1c8-5820-4b88-8e8e-12de1ab7fc62"/>
+  </processTree>
+</ptml>

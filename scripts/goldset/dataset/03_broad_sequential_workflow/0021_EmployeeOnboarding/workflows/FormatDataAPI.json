@@ -1,0 +1,319 @@
+{
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "promptData",
+          "value": {
+            "automation": {
+              "file": {
+                "string": "repository:///Automation%20Anywhere/Bot%20Store/EmployeeOnboardingAiAgent/FormatDetails",
+                "type": "FILE"
+              },
+              "inputData": [
+                {
+                  "key": "api_key",
+                  "value": {
+                    "boolean": "",
+                    "conditionalId": "",
+                    "conditionalName": "",
+                    "credential": {
+                      "attributeName": "Open AI",
+                      "lockerName": "Pathfinder Summit Model Connections",
+                      "name": "Open AI"
+                    },
+                    "dictionary": [],
+                    "exceptionName": "",
+                    "expression": "",
+                    "formElementId": "",
+                    "formElementType": "",
+                    "formInstanceId": "",
+                    "iteratorId": "",
+                    "iteratorName": "",
+                    "list": [],
+                    "number": "",
+                    "packageId": "",
+                    "packageName": "",
+                    "properties": [],
+                    "queueName": "",
+                    "repository": "",
+                    "screenshotMetadataPath": "",
+                    "securelyRecorded": false,
+                    "sessionTarget": "NONE",
+                    "string": "",
+                    "taskbotSelf": false,
+                    "thumbnailMetadataPath": "",
+                    "triggerName": "",
+                    "type": "CREDENTIAL",
+                    "variableMapFilter": [],
+                    "variableMapNames": [],
+                    "variableName": ""
+                  }
+                },
+                {
+                  "key": "FilePath",
+                  "value": {
+                    "boolean": "",
+                    "conditionalId": "",
+                    "conditionalName": "",
+                    "dictionary": [],
+                    "exceptionName": "",
+                    "expression": "",
+                    "formElementId": "",
+                    "formElementType": "",
+                    "formInstanceId": "",
+                    "iteratorId": "",
+                    "iteratorName": "",
+                    "list": [],
+                    "number": "",
+                    "packageId": "",
+                    "packageName": "",
+                    "properties": [],
+                    "queueName": "",
+                    "repository": "",
+                    "screenshotMetadataPath": "",
+                    "securelyRecorded": false,
+                    "sessionTarget": "NONE",
+                    "string": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\FormatDetails",
+                    "taskbotSelf": false,
+                    "thumbnailMetadataPath": "",
+                    "triggerName": "",
+                    "type": "STRING",
+                    "variableMapFilter": [],
+                    "variableMapNames": [],
+                    "variableName": ""
+                  }
+                }
+              ],
+              "inputOptions": [],
+              "inputVariables": [
+                {
+                  "key": "ExtractedData",
+                  "value": {
+                    "expression": "$ExtractedData$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "outputAnnotations": [],
+              "previewData": [
+                {
+                  "key": "prompt",
+                  "value": {
+                    "boolean": "",
+                    "conditionalId": "",
+                    "conditionalName": "",
+                    "dictionary": [],
+                    "exceptionName": "",
+                    "expression": "",
+                    "formElementId": "",
+                    "formElementType": "",
+                    "formInstanceId": "",
+                    "iteratorId": "",
+                    "iteratorName": "",
+                    "list": [],
+                    "number": "",
+                    "packageId": "",
+                    "packageName": "",
+                    "properties": [],
+                    "queueName": "",
+                    "repository": "",
+                    "screenshotMetadataPath": "",
+                    "securelyRecorded": false,
+                    "sessionTarget": "NONE",
+                    "string": "Extracted Data : $ExtractedData$\nYou need to perform a formatting on the extracted data and and return a response formatted response or a error message. ",
+                    "taskbotSelf": false,
+                    "thumbnailMetadataPath": "",
+                    "triggerName": "",
+                    "type": "STRING",
+                    "variableMapFilter": [],
+                    "variableMapNames": [],
+                    "variableName": ""
+                  }
+                },
+                {
+                  "key": "systemPrompt",
+                  "value": {
+                    "boolean": "",
+                    "conditionalId": "",
+                    "conditionalName": "",
+                    "dictionary": [],
+                    "exceptionName": "",
+                    "expression": "",
+                    "formElementId": "",
+                    "formElementType": "",
+                    "formInstanceId": "",
+                    "iteratorId": "",
+                    "iteratorName": "",
+                    "list": [],
+                    "number": "",
+                    "packageId": "",
+                    "packageName": "",
+                    "properties": [],
+                    "queueName": "",
+                    "repository": "",
+                    "screenshotMetadataPath": "",
+                    "securelyRecorded": false,
+                    "sessionTarget": "NONE",
+                    "string": "\"Identify:\n1. Determine the type of document\n2. Restrict to: Certificate_10th, Certificate_12th, Aadhar_Card, Marksheet_10th, Marksheet_12th, Pan_Card, University_Result\n3. FAILURE RULE: Any other document type is not permitted\n\nExtract:\nIf Certificate_10th or Certificate_12th:\n{\n  \"\"name\"\": \"\",\n  \"\"seat_number\"\": \"\",\n  \"\"mother_name\"\": \"\",\n  \"\"percentage\"\": \"\",\n  \"\"place_of_birth\"\": \"\", // Only for 10th\n  \"\"date_of_birth\"\": \"\", // Only for 10th\n  \"\"status\"\": true\n}\n\nIf Aadhar_Card:\n{\n  \"\"name\"\": \"\",\n  \"\"date_of_birth\"\": \"\",\n  \"\"gender\"\": \"\",\n  \"\"aadhar_number\"\": \"\",\n  \"\"status\"\": true\n}\nRule: \n- aadhar_number must be 12 digits\n\nIf Marksheet_10th or Marksheet_12th:\n{\n  \"\"name\"\": \"\",\n  \"\"mother_name\"\": \"\",\n  \"\"percentage\"\": \"\",\n  \"\"seat_number\"\": \"\",\n  \"\"status\"\": true\n}\n\nIf Pan_Card:\n{\n  \"\"name\"\": \"\",\n  \"\"pan_number\"\": \"\",\n  \"\"father_name\"\": \"\",\n  \"\"date_of_birth\"\": \"\",\n  \"\"signature\"\": false,\n  \"\"status\"\": true\n}\nRules:\n- pan_number must be 10 characters (alphabets and numbers)\n- Set signature to true if present, otherwise false\n\nif University_Result\n{\n\"\"name\"\":\"\",\n\"\"seat_no\"\":\"\",\n\"\"mother_name\"\":\"\",\n\"\"cgpa_or_sgpa\"\":\"\"\n}\nRules:\n- there can be cgpa or sgpa mention extract any will be good\n\nFAILURE RULE:\n- If any required field is not found, set status to false\n\nTransform:\n1. Convert all dates to DD/MM/YYYY format\n2. Ensure percentage is in the format \"\"XX.XX\"\"\n\nOutput:\nReturn JSON in the following format:\n{\n  \"\"identified_doc\"\": \"\"identified_document_name\"\",\n  \"\"output\"\": {\n    // Extracted and transformed data based on the document type\n  }\n}\"",
+                    "taskbotSelf": false,
+                    "thumbnailMetadataPath": "",
+                    "triggerName": "",
+                    "type": "STRING",
+                    "variableMapFilter": [],
+                    "variableMapNames": [],
+                    "variableName": ""
+                  }
+                }
+              ],
+              "variables": [
+                {
+                  "defaultValue": {
+                    "boolean": "",
+                    "conditionalId": "",
+                    "conditionalName": "",
+                    "dictionary": [],
+                    "exceptionName": "",
+                    "expression": "",
+                    "formElementId": "",
+                    "formElementType": "",
+                    "formInstanceId": "",
+                    "iteratorId": "",
+                    "iteratorName": "",
+                    "list": [],
+                    "number": "",
+                    "packageId": "",
+                    "packageName": "",
+                    "properties": [],
+                    "queueName": "",
+                    "repository": "",
+                    "screenshotMetadataPath": "",
+                    "securelyRecorded": false,
+                    "sessionTarget": "NONE",
+                    "string": "Name: Rahul Kumar Sharma\nDOB : 15-08-2001\nGender Male\nFather Name – Mahesh Sharma\n\nAadhar no 4567 8912 3456\nAddress : H No 24, Shanti Nagar, Near Hanuman Mandir\nPost Office – Alambagh\nDistrict Lucknow\nState Uttar Pradesh\nPin-226005\n\nIssued by Govt of India\n--------------------------\n\nPAN Card Details\nPermanent Account Number : BQTPS1234K\nName of Holder Rahul K Sharma\nFather’s Name Mahesh Sharma\nDate of Birth 15/08/2001\n\nIncome Tax Department\nGovt. of India\n--------------------------\n\nSecondary School Examination (Class X)\nBoard : Central Board of Secondary Education\nRoll No 12345678\nYear of Passing 2017\n\nStudent Name: Rahul Kumar Sharma\nFather Name Mahesh Sharma\nDate of Birth : 15-08-2001\n\nSubjects & Marks\nEnglish – 78\nHindi – 72\nMathematics – 85\nScience – 80\nSocial Science – 75\n\nResult : PASS\n--------------------------\n\nSenior Secondary Examination (Class XII)\nBoard: CBSE\nRoll Number: 87654321\nYear: 2019\nStream : Science\n\nCandidate Name Rahul Kumar Sharma\nFather’s Name Mahesh Sharma\nDOB 15-08-2001\n\nMarks Obtained\nEnglish Core – 82\nPhysics – 79\nChemistry – 76\nMathematic\n",
+                    "taskbotSelf": false,
+                    "thumbnailMetadataPath": "",
+                    "triggerName": "",
+                    "type": "STRING",
+                    "variableMapFilter": [],
+                    "variableMapNames": [],
+                    "variableName": ""
+                  },
+                  "description": "",
+                  "input": true,
+                  "inputRequired": true,
+                  "key": "",
+                  "name": "ExtractedData",
+                  "output": false,
+                  "schema": [],
+                  "sessionType": "",
+                  "subtype": "UNDEFINED",
+                  "type": "STRING",
+                  "workItem": false
+                }
+              ]
+            },
+            "type": "AUTOMATION"
+          }
+        }
+      ],
+      "commandName": "GenAIPromptCommand",
+      "disabled": false,
+      "packageName": "GenAIPrompt",
+      "returns": {
+        "topChoice": {
+          "type": "VARIABLE",
+          "variableName": "FormattedResponse"
+        }
+      },
+      "uid": "504092fc-297f-48d6-ab1c-0c7144c8884b"
+    }
+  ],
+  "packages": [
+    {
+      "name": "GenAIPrompt",
+      "settingsAttributes": [],
+      "version": "8.0.2"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "7",
+    "improvedNumberSupport": true,
+    "runInChildWindow": false,
+    "runInChildWindowMode": "DESKTOP",
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "input": false,
+      "name": "SampleNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "input": false,
+      "name": "SampleString",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "boolean": "",
+        "conditionalId": "",
+        "conditionalName": "",
+        "dictionary": [],
+        "exceptionName": "",
+        "expression": "",
+        "formElementId": "",
+        "formElementType": "",
+        "formInstanceId": "",
+        "iteratorId": "",
+        "iteratorName": "",
+        "list": [],
+        "number": "",
+        "packageId": "",
+        "packageName": "",
+        "properties": [],
+        "queueName": "",
+        "repository": "",
+        "screenshotMetadataPath": "",
+        "securelyRecorded": false,
+        "sessionTarget": "NONE",
+        "string": "Name: Rahul Kumar Sharma\nDOB : 15-08-2001\nGender Male\nFather Name – Mahesh Sharma\n\nAadhar no 4567 8912 3456\nAddress : H No 24, Shanti Nagar, Near Hanuman Mandir\nPost Office – Alambagh\nDistrict Lucknow\nState Uttar Pradesh\nPin-226005\n\nIssued by Govt of India\n--------------------------\n\nPAN Card Details\nPermanent Account Number : BQTPS1234K\nName of Holder Rahul K Sharma\nFather’s Name Mahesh Sharma\nDate of Birth 15/08/2001\n\nIncome Tax Department\nGovt. of India\n--------------------------\n\nSecondary School Examination (Class X)\nBoard : Central Board of Secondary Education\nRoll No 12345678\nYear of Passing 2017\n\nStudent Name: Rahul Kumar Sharma\nFather Name Mahesh Sharma\nDate of Birth : 15-08-2001\n\nSubjects & Marks\nEnglish – 78\nHindi – 72\nMathematics – 85\nScience – 80\nSocial Science – 75\n\nResult : PASS\n--------------------------\n\nSenior Secondary Examination (Class XII)\nBoard: CBSE\nRoll Number: 87654321\nYear: 2019\nStream : Science\n\nCandidate Name Rahul Kumar Sharma\nFather’s Name Mahesh Sharma\nDOB 15-08-2001\n\nMarks Obtained\nEnglish Core – 82\nPhysics – 79\nChemistry – 76\nMathematic\n",
+        "taskbotSelf": false,
+        "thumbnailMetadataPath": "",
+        "triggerName": "",
+        "type": "STRING",
+        "variableMapFilter": [],
+        "variableMapNames": [],
+        "variableName": ""
+      },
+      "description": "",
+      "input": true,
+      "inputRequired": false,
+      "name": "ExtractedData",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "FormattedResponse",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<ptml>
+  <processTree name="6edad4d9-6e47-4803-bfdd-8f83d5feda8e" root="3c482130-fa93-49bd-b44f-d51a2d1b9018" id="4f9e4645-b823-417e-b436-ffbb3c2ec814">
+    <sequence name="" id="3c482130-fa93-49bd-b44f-d51a2d1b9018"/>
+    <manualTask name="XML.xmlStartSession" id="dd9d0df9-40f4-40cd-be45-8211502e710e"/>
+    <automaticTask name="" id="b9d80bd5-2bfb-4338-a043-c82967e1bff0"/>
+    <automaticTask name="" id="c75e951d-a51e-4f28-b752-328148fbd054"/>
+    <manualTask name="Microsoft Outlook (macOS).macMsOutlookConnectDisconnect" id="df7d3076-3255-4e6d-b76c-cee52190455b"/>
+    <manualTask name="Microsoft 365 Outlook.ms365OutlookSaveAttachments" id="8b96e449-f3f5-4372-8be8-1f9efc810ad4"/>
+    <automaticTask name="" id="5d648d7d-5472-4247-adaf-5404a76e8c5d"/>
+    <manualTask name="Microsoft Outlook (macOS).macMsOutlookConnectDisconnect" id="9556ec89-412b-4170-9821-d06ccb8e111b"/>
+    <automaticTask name="" id="420e2320-347e-4538-b5b6-abc45b30b327"/>
+    <automaticTask name="" id="fb0d1144-2302-4614-a0af-dc2448dd260d"/>
+    <manualTask name="Process Composer.processComposerCreateARequest" id="fe9a94f5-b12a-4749-a68a-df6f1e75a62f"/>
+    <automaticTask name="" id="d8849bbc-3c4d-413f-9953-eaca5bdb73aa"/>
+    <manualTask name="Jira.jiraCreateProject" id="aa500c72-7dd6-4cfa-b083-a71f9fb3f3be"/>
+    <manualTask name="Loop.loop.commands.start" id="e2f381c1-152f-47ed-8c50-d3e3b04c7780"/>
+    <manualTask name="Error handler.errorHandlerCatch" id="f4239fc6-97c9-42b6-97e4-354ee4ac6d72"/>
+    <parentsNode id="113b355f-65b5-42a6-b0dd-679ed53af512" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="dd9d0df9-40f4-40cd-be45-8211502e710e"/>
+    <parentsNode id="8d558416-ccf8-4ed0-9de8-048480debbb1" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="b9d80bd5-2bfb-4338-a043-c82967e1bff0"/>
+    <parentsNode id="c405a964-de8f-48eb-a897-33f50209023c" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="c75e951d-a51e-4f28-b752-328148fbd054"/>
+    <parentsNode id="04491042-515f-486e-a4a0-b603eb76b171" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="df7d3076-3255-4e6d-b76c-cee52190455b"/>
+    <parentsNode id="41ab88e4-0544-43b5-ab64-d5e214a71d87" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="8b96e449-f3f5-4372-8be8-1f9efc810ad4"/>
+    <parentsNode id="377af88b-b447-466f-afab-e3f4b9d3ba96" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="5d648d7d-5472-4247-adaf-5404a76e8c5d"/>
+    <parentsNode id="36b80c00-3f09-48bb-baff-a960867427cb" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="9556ec89-412b-4170-9821-d06ccb8e111b"/>
+    <parentsNode id="89754973-6ce6-4300-9ae2-acc2f8dc9845" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="420e2320-347e-4538-b5b6-abc45b30b327"/>
+    <parentsNode id="a6577bbb-1e05-4b77-b852-adec815c873a" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="fb0d1144-2302-4614-a0af-dc2448dd260d"/>
+    <parentsNode id="955d1fa3-3ab9-405e-adf8-390fab8920c9" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="fe9a94f5-b12a-4749-a68a-df6f1e75a62f"/>
+    <parentsNode id="3f9726a9-e646-434a-8556-5faee2197e85" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="d8849bbc-3c4d-413f-9953-eaca5bdb73aa"/>
+    <parentsNode id="07232d6a-2cd5-4e7f-aa2b-9ee2630fbfec" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="aa500c72-7dd6-4cfa-b083-a71f9fb3f3be"/>
+    <parentsNode id="87e74cb3-4f10-4955-a14c-9c224d30c68d" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="e2f381c1-152f-47ed-8c50-d3e3b04c7780"/>
+    <parentsNode id="c48ab3f7-4019-4697-84f9-78c36d5561c4" sourceId="3c482130-fa93-49bd-b44f-d51a2d1b9018" targetId="f4239fc6-97c9-42b6-97e4-354ee4ac6d72"/>
+  </processTree>
+</ptml>

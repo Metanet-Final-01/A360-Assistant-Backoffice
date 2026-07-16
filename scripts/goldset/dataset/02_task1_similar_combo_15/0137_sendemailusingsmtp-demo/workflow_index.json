@@ -1,0 +1,14 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0137_sendemailusingsmtp-demo",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SendEmailUsingSMTP_Demo",
+      "manual_dependencies": [],
+      "output_file": "workflows/SendEmailUsingSMTP_Demo.json",
+      "scanned_dependencies": [
+        "SendEmailSMTP.dll"
+      ]
+    }
+  ]
+}

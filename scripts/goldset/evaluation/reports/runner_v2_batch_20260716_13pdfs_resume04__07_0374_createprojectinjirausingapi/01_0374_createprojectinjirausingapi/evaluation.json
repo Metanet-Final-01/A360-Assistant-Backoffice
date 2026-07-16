@@ -1,0 +1,481 @@
+{
+  "case_id": "01_0374_createprojectinjirausingapi",
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi",
+  "normalized": {
+    "gold_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\01_0374_createprojectinjirausingapi\\CreateProjectInJIRAusingAPI.goldset.json",
+    "prediction_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.goldset.json",
+    "gold_source_file": "CreateProjectInJIRAusingAPI.json",
+    "prediction_source_file": "runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.json",
+    "preprocessing": {
+      "excluded_rule": "browser_session_lifecycle_action",
+      "excluded_regex": {
+        "package": "^(web\\s*automation|webautomation|browser|recorder)$",
+        "action": "session"
+      },
+      "excluded_gold_actions": [],
+      "excluded_prediction_actions": [],
+      "excluded_gold_count": 0,
+      "excluded_prediction_count": 0,
+      "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+      "action_equivalence_member_count": 61
+    },
+    "gold_action_count": 17,
+    "prediction_action_count": 12,
+    "action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 17,
+      "prediction_count": 12
+    },
+    "action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 17,
+      "prediction_count": 12
+    },
+    "canonical_action_sequence": {
+      "lcs": 2,
+      "precision": 0.16666666666666666,
+      "recall": 0.11764705882352941,
+      "f1": 0.13793103448275862,
+      "gold_count": 17,
+      "prediction_count": 12
+    },
+    "canonical_action_multiset": {
+      "precision": 0.16666666666666666,
+      "recall": 0.11764705882352941,
+      "f1": 0.13793103448275862,
+      "overlap": 2,
+      "gold_count": 17,
+      "prediction_count": 12
+    },
+    "package_multiset": {
+      "precision": 0.25,
+      "recall": 0.17647058823529413,
+      "f1": 0.20689655172413793,
+      "overlap": 3,
+      "gold_count": 17,
+      "prediction_count": 12
+    },
+    "package_family_multiset": {
+      "precision": 0.5,
+      "recall": 0.35294117647058826,
+      "f1": 0.41379310344827586,
+      "overlap": 6,
+      "gold_count": 17,
+      "prediction_count": 12
+    },
+    "salient_family_multiset": {
+      "precision": 0.5,
+      "recall": 0.5,
+      "f1": 0.5,
+      "overlap": 6,
+      "gold_count": 12,
+      "prediction_count": 12
+    },
+    "adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 18,
+      "prediction_count": 13
+    },
+    "canonical_adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 18,
+      "prediction_count": 13
+    },
+    "first_mismatches": [
+      {
+        "index": 1,
+        "gold": "XML.startSession",
+        "prediction": "XML.xmlStartSession"
+      },
+      {
+        "index": 2,
+        "gold": "XML.getSingleNode",
+        "prediction": "XML.xmlGetSingleNode"
+      },
+      {
+        "index": 3,
+        "gold": "XML.getSingleNode",
+        "prediction": "XML.xmlGetSingleNode"
+      },
+      {
+        "index": 4,
+        "gold": "XML.getSingleNode",
+        "prediction": "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments"
+      },
+      {
+        "index": 5,
+        "gold": "XML.endSession",
+        "prediction": "Microsoft 365 Outlook.ms365OutlookDisconnect"
+      },
+      {
+        "index": 6,
+        "gold": "Email.emailConnect",
+        "prediction": "Excel advanced.cloudExcelOpen"
+      },
+      {
+        "index": 7,
+        "gold": "Email.saveAttachment",
+        "prediction": "Excel advanced.excelAdvancedPackageReadRowAction"
+      },
+      {
+        "index": 8,
+        "gold": "Email.closeEmail",
+        "prediction": "Jira.jiraCreateIssue"
+      },
+      {
+        "index": 9,
+        "gold": "Excel_MS.OpenSpreadsheet",
+        "prediction": "JSON utilities.jsonStartSession"
+      },
+      {
+        "index": 10,
+        "gold": "Excel_MS.GetMultipleCells",
+        "prediction": "JSON utilities.convertJsonToDictionary"
+      },
+      {
+        "index": 11,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Message box.usingMessageBoxAction"
+      },
+      {
+        "index": 12,
+        "gold": "String.assign",
+        "prediction": "Excel advanced.excelAdvancedPackageCloseAction"
+      }
+    ],
+    "first_canonical_mismatches": [
+      {
+        "index": 1,
+        "gold": "XML.startSession",
+        "prediction": "XML.xmlStartSession"
+      },
+      {
+        "index": 2,
+        "gold": "XML.getSingleNode",
+        "prediction": "XML.xmlGetSingleNode"
+      },
+      {
+        "index": 3,
+        "gold": "XML.getSingleNode",
+        "prediction": "XML.xmlGetSingleNode"
+      },
+      {
+        "index": 4,
+        "gold": "XML.getSingleNode",
+        "prediction": "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments"
+      },
+      {
+        "index": 5,
+        "gold": "XML.endSession",
+        "prediction": "Microsoft 365 Outlook.ms365OutlookDisconnect"
+      },
+      {
+        "index": 6,
+        "gold": "Email.emailConnect",
+        "prediction": "Excel advanced.cloudExcelOpen"
+      },
+      {
+        "index": 7,
+        "gold": "Email.emailSaveAttachmentAction",
+        "prediction": "Excel advanced.excelAdvancedPackageReadRowAction"
+      },
+      {
+        "index": 8,
+        "gold": "Email.closeEmail",
+        "prediction": "Jira.jiraCreateIssue"
+      },
+      {
+        "index": 9,
+        "gold": "Excel advanced.cloudExcelOpen",
+        "prediction": "JSON utilities.jsonStartSession"
+      },
+      {
+        "index": 10,
+        "gold": "Excel_MS.GetMultipleCells",
+        "prediction": "JSON utilities.convertJsonToDictionary"
+      },
+      {
+        "index": 11,
+        "gold": "MessageBox.messageBox",
+        "prediction": "Message box.usingMessageBoxAction"
+      },
+      {
+        "index": 12,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Excel advanced.excelAdvancedPackageCloseAction"
+      }
+    ],
+    "gold_actions_preview": [
+      "XML.startSession",
+      "XML.getSingleNode",
+      "XML.getSingleNode",
+      "XML.getSingleNode",
+      "XML.endSession",
+      "Email.emailConnect",
+      "Email.saveAttachment",
+      "Email.closeEmail",
+      "Excel_MS.OpenSpreadsheet",
+      "Excel_MS.GetMultipleCells",
+      "MessageBox.messageBox",
+      "String.assign",
+      "Rest.restPost",
+      "MessageBox.messageBox",
+      "Excel_MS.CloseSpreadsheet",
+      "Number.toString",
+      "MessageBox.messageBox"
+    ],
+    "gold_canonical_actions_preview": [
+      "XML.startSession",
+      "XML.getSingleNode",
+      "XML.getSingleNode",
+      "XML.getSingleNode",
+      "XML.endSession",
+      "Email.emailConnect",
+      "Email.emailSaveAttachmentAction",
+      "Email.closeEmail",
+      "Excel advanced.cloudExcelOpen",
+      "Excel_MS.GetMultipleCells",
+      "MessageBox.messageBox",
+      "String.stringPackageAssignAction",
+      "Rest.restPost",
+      "MessageBox.messageBox",
+      "Excel advanced.excelAdvancedPackageCloseAction",
+      "Number.toString",
+      "MessageBox.messageBox"
+    ],
+    "prediction_actions": [
+      "XML.xmlStartSession",
+      "XML.xmlGetSingleNode",
+      "XML.xmlGetSingleNode",
+      "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments",
+      "Microsoft 365 Outlook.ms365OutlookDisconnect",
+      "Excel advanced.cloudExcelOpen",
+      "Excel advanced.excelAdvancedPackageReadRowAction",
+      "Jira.jiraCreateIssue",
+      "JSON utilities.jsonStartSession",
+      "JSON utilities.convertJsonToDictionary",
+      "Message box.usingMessageBoxAction",
+      "Excel advanced.excelAdvancedPackageCloseAction"
+    ],
+    "prediction_canonical_actions": [
+      "XML.xmlStartSession",
+      "XML.xmlGetSingleNode",
+      "XML.xmlGetSingleNode",
+      "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments",
+      "Microsoft 365 Outlook.ms365OutlookDisconnect",
+      "Excel advanced.cloudExcelOpen",
+      "Excel advanced.excelAdvancedPackageReadRowAction",
+      "Jira.jiraCreateIssue",
+      "JSON utilities.jsonStartSession",
+      "JSON utilities.convertJsonToDictionary",
+      "Message box.usingMessageBoxAction",
+      "Excel advanced.excelAdvancedPackageCloseAction"
+    ],
+    "gold_salient_families": [
+      "xml",
+      "xml",
+      "xml",
+      "xml",
+      "xml",
+      "email",
+      "email",
+      "email",
+      "spreadsheet",
+      "spreadsheet",
+      "rest",
+      "spreadsheet"
+    ],
+    "prediction_salient_families": [
+      "xml",
+      "xml",
+      "xml",
+      "microsoft_365_outlook",
+      "microsoft_365_outlook",
+      "spreadsheet",
+      "spreadsheet",
+      "jira",
+      "json_utilities",
+      "json_utilities",
+      "message_box",
+      "spreadsheet"
+    ]
+  },
+  "pm4py": {
+    "mode": "actual_pm4py_alignment_conformance",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\01_0374_createprojectinjirausingapi\\CreateProjectInJIRAusingAPI.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 17,
+    "prediction_action_count_after_preprocessing": 12,
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "fitness": 0.0,
+    "precision": 0.0,
+    "raw_fitness": {
+      "percFitTraces": 0.0,
+      "averageFitness": 0.0,
+      "percentage_of_fitting_traces": 0.0,
+      "average_trace_fitness": 0.0,
+      "log_fitness": 0.0
+    }
+  },
+  "pm4py_artifact_check": {
+    "gold_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\01_0374_createprojectinjirausingapi",
+    "prediction_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\pm4py",
+    "gold_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\01_0374_createprojectinjirausingapi\\CreateProjectInJIRAusingAPI.tree.json",
+      "exists": true,
+      "sha256": "258d0e212f41b88286b8e2e08793ff6074ff4cfa22148c5291ab56ca7c4fa38c",
+      "leaf_count": 17,
+      "labels": [
+        "XML.startSession",
+        "XML.getSingleNode",
+        "XML.getSingleNode",
+        "XML.getSingleNode",
+        "XML.endSession",
+        "Email.emailConnect",
+        "Email.saveAttachment",
+        "Email.closeEmail",
+        "Excel_MS.OpenSpreadsheet",
+        "Excel_MS.GetMultipleCells",
+        "MessageBox.messageBox",
+        "String.assign",
+        "Rest.restPost",
+        "MessageBox.messageBox",
+        "Excel_MS.CloseSpreadsheet",
+        "Number.toString",
+        "MessageBox.messageBox"
+      ],
+      "operator_counts": {
+        "loop": 2,
+        "sequence": 4,
+        "xor": 1
+      }
+    },
+    "prediction_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\pm4py\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.tree.json",
+      "exists": true,
+      "sha256": "f9abc8a5ff017f95423798a6dcc1bb1ee0f80a976042e6e3c1adb4b33179487f",
+      "leaf_count": 12,
+      "labels": [
+        "XML.xmlStartSession",
+        "XML.xmlGetSingleNode",
+        "XML.xmlGetSingleNode",
+        "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments",
+        "Microsoft 365 Outlook.ms365OutlookDisconnect",
+        "Excel advanced.cloudExcelOpen",
+        "Excel advanced.excelAdvancedPackageReadRowAction",
+        "Jira.jiraCreateIssue",
+        "JSON utilities.jsonStartSession",
+        "JSON utilities.convertJsonToDictionary",
+        "Message box.usingMessageBoxAction",
+        "Excel advanced.excelAdvancedPackageCloseAction"
+      ],
+      "operator_counts": {
+        "sequence": 5
+      }
+    },
+    "gold_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\01_0374_createprojectinjirausingapi\\CreateProjectInJIRAusingAPI.pnml",
+      "exists": true,
+      "sha256": "ef427393e4f3a272f684e695e207acf57c2e116a56c99806e06d429845a3e222",
+      "readable_by_pm4py": true,
+      "places": 19,
+      "transitions": 23,
+      "visible_transitions": 17,
+      "arcs": 46,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "prediction_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\pm4py\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.pnml",
+      "exists": true,
+      "sha256": "8ab4bc720a3b7107a7ec62802de835e3b6b440418efe5fc94f5120fa3d30992f",
+      "readable_by_pm4py": true,
+      "places": 13,
+      "transitions": 12,
+      "visible_transitions": 12,
+      "arcs": 24,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "tree_leaf_count_delta": -5,
+    "tree_hash_equal": false,
+    "pnml_hash_equal": false
+  },
+  "worfbench": {
+    "mode": "actual_worfbench_t_eval_nodes",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\01_0374_createprojectinjirausingapi\\CreateProjectInJIRAusingAPI.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 15,
+    "prediction_action_count_after_preprocessing": 12,
+    "gold_worfbench_fidelity": "approximated",
+    "prediction_worfbench_fidelity": "exact",
+    "gold_control_flow_types": [
+      "loop",
+      "try"
+    ],
+    "prediction_control_flow_types": [],
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "precision": 0.5,
+    "recall": 0.3529,
+    "f1_score": 0.4138
+  },
+  "worfbench_diagnostic_artifact_f1": {
+    "gold": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\worfbench_13\\01_0374_createprojectinjirausingapi\\CreateProjectInJIRAusingAPI.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/01_0374_createprojectinjirausingapi/CreateProjectInJIRAusingAPI",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "loop",
+        "try"
+      ]
+    },
+    "prediction": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi\\converted_recommendation\\worfbench\\runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend/runner_v2_batch_20260716_13pdfs_resume04__07_0374_createprojectinjirausingapi__turnRecommend",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "container"
+      ]
+    },
+    "node_label_f1": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 15,
+      "prediction_count": 12
+    },
+    "edge_f1": {
+      "precision": 0.9230769230769231,
+      "recall": 0.75,
+      "f1": 0.8275862068965517,
+      "overlap": 12,
+      "gold_count": 16,
+      "prediction_count": 13
+    },
+    "gold_node_count": 15,
+    "prediction_node_count": 12,
+    "gold_edge_count": 16,
+    "prediction_edge_count": 13
+  }
+}

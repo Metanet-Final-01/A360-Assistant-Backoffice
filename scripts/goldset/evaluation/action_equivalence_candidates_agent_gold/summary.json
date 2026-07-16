@@ -1,0 +1,11 @@
+{
+  "gold_unique_actions": 63,
+  "agent_unique_actions": 9,
+  "candidate_rows": 9,
+  "accepted_rule_rows": 9,
+  "strong_candidate_rows": 0,
+  "possible_candidate_rows": 0,
+  "unmatched_agent_actions": 4,
+  "agent_source": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_repeat_20260715_01\\converted_recommendation\\normalized\\runner_v2_repeat_20260715_01__turnRecommend.goldset.json",
+  "note": "Candidate pool is limited to actions present in the agent normalized output and actions present in the 13 gold normalized workflows. RAG DB actions are not used."
+}

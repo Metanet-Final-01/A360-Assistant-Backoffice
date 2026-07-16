@@ -1,0 +1,205 @@
+{
+  "equivalence_groups": [
+    {
+      "canonical": "String.stringPackageAssignAction",
+      "members": [
+        "String.assign",
+        "String.stringPackageAssignAction"
+      ]
+    },
+    {
+      "canonical": "Boolean.booleanAssign",
+      "members": [
+        "Boolean.assign",
+        "Boolean.booleanAssign"
+      ]
+    },
+    {
+      "canonical": "Browser.launchWebsite",
+      "members": [
+        "WebAutomation.openpage",
+        "Browser.openbrowser",
+        "Browser.launchWebsite",
+        "Browser.browserPackageOpenAction"
+      ]
+    },
+    {
+      "canonical": "DLL.dllPackageCloseAction",
+      "members": [
+        "DLL.Close",
+        "DLL.dllPackageCloseAction"
+      ]
+    },
+    {
+      "canonical": "DLL.dllPackageOpenAction",
+      "members": [
+        "DLL.Open",
+        "DLL.dllPackageOpenAction"
+      ]
+    },
+    {
+      "canonical": "DLL.usingRunFunctionAction",
+      "members": [
+        "DLL.RunCSharpDLL_V1",
+        "DLL.Run function",
+        "DLL.usingRunFunctionAction"
+      ]
+    },
+    {
+      "canonical": "Datetime.usingSubtractAction",
+      "members": [
+        "Datetime.subtract",
+        "Datetime.usingSubtractAction"
+      ]
+    },
+    {
+      "canonical": "Datetime.cloudConvertDatetimeToString",
+      "members": [
+        "Datetime.toString",
+        "Datetime.cloudConvertDatetimeToString"
+      ]
+    },
+    {
+      "canonical": "Delay.delayDelay",
+      "members": [
+        "Delay.delay",
+        "Delay.delayDelay"
+      ]
+    },
+    {
+      "canonical": "Dictionary.dictionaryPut",
+      "members": [
+        "Dictionary.put",
+        "Dictionary.dictionaryPut"
+      ]
+    },
+    {
+      "canonical": "Email.emailSaveAttachmentAction",
+      "members": [
+        "Email.saveAttachment",
+        "Email.emailSaveAttachmentAction"
+      ]
+    },
+    {
+      "canonical": "Email.cloudUsingSendAction",
+      "members": [
+        "Email.sendMail",
+        "Email.cloudUsingSendAction"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageGetMultipleCellsAction",
+      "members": [
+        "Excel.GetMultipleCells",
+        "Excel advanced.excelAdvancedPackageGetMultipleCellsAction"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.cloudExcelOpen",
+      "members": [
+        "Excel.OpenSpreadsheet",
+        "Excel advanced.cloudExcelOpen",
+        "Excel_MS.OpenSpreadsheet"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageSetCellAction",
+      "members": [
+        "Excel.SetCell",
+        "Excel advanced.excelAdvancedPackageSetCellAction",
+        "Excel_MS.SetCell"
+      ]
+    },
+    {
+      "canonical": "File.filePackageCreateAction",
+      "members": [
+        "File.createFile",
+        "File.filePackageCreateAction"
+      ]
+    },
+    {
+      "canonical": "File.cloudDeletingFile",
+      "members": [
+        "File.deleteFiles",
+        "File.cloudDeletingFile"
+      ]
+    },
+    {
+      "canonical": "Folder.folderCreate",
+      "members": [
+        "Folder.createFolder",
+        "Folder.folderCreate"
+      ]
+    },
+    {
+      "canonical": "List.listAddItem",
+      "members": [
+        "List.addItem",
+        "List.listAddItem"
+      ]
+    },
+    {
+      "canonical": "Word.mswordFindAndReplaceText",
+      "members": [
+        "MSWordPackage.ReplaceText",
+        "Word.mswordFindAndReplaceText"
+      ]
+    },
+    {
+      "canonical": "Number.numberAssign",
+      "members": [
+        "Number.assignToNumber",
+        "Number.numberAssign"
+      ]
+    },
+    {
+      "canonical": "Number.numberIncrement",
+      "members": [
+        "Number.increment",
+        "Number.numberIncrement"
+      ]
+    },
+    {
+      "canonical": "Screen.screenCaptureDesktop",
+      "members": [
+        "Screen.captureDesktop",
+        "Screen.screenCaptureDesktop"
+      ]
+    },
+    {
+      "canonical": "String.cloudUsingReplaceAction",
+      "members": [
+        "String.replace",
+        "String.cloudUsingReplaceAction"
+      ]
+    },
+    {
+      "canonical": "String.stringPackageToNumberAction",
+      "members": [
+        "String.toNumber",
+        "String.stringPackageToNumberAction"
+      ]
+    },
+    {
+      "canonical": "WebAutomation.getvalueelement",
+      "members": [
+        "WebAutomation.getvalueelement",
+        "WebAutomation.getvalueselement"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageCloseAction",
+      "members": [
+        "Excel advanced.excelAdvancedPackageCloseAction",
+        "Excel_MS.CloseSpreadsheet"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageReadRowAction",
+      "members": [
+        "Excel advanced.excelAdvancedPackageReadRowAction",
+        "Excel_MS.readExcelRow"
+      ]
+    }
+  ]
+}

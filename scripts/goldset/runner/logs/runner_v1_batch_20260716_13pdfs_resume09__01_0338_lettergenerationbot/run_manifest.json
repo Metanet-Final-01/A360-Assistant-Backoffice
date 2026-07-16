@@ -1,0 +1,138 @@
+{
+  "run_id": "runner_v1_batch_20260716_13pdfs_resume09__01_0338_lettergenerationbot",
+  "created_at": "2026-07-15T22:02:47.830253+00:00",
+  "runner": "runner_v2",
+  "base_url": "http://127.0.0.1:8000",
+  "agent_version": "v1",
+  "input": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0338_lettergenerationbot__LetterGenerationBot+SendPOF_Email.pdf",
+  "frontend_equivalent_flow": [
+    "POST /api/documents",
+    "POST /api/documents/{id}/parse",
+    "POST /api/sessions/{session_id}/turn analyze",
+    "POST /api/sessions/{session_id}/turn recommend"
+  ],
+  "status": "error",
+  "steps": [
+    {
+      "name": "uploadDocument",
+      "started_at": "2026-07-15T22:02:47.830322+00:00",
+      "finished_at": "2026-07-15T22:02:49.724163+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents",
+        "file": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0338_lettergenerationbot__LetterGenerationBot+SendPOF_Email.pdf"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 22:02:48 GMT",
+          "server": "uvicorn",
+          "content-length": "306",
+          "content-type": "application/json",
+          "x-request-id": "f1fe50331cca",
+          "connection": "close"
+        },
+        "data": {
+          "id": "81257688-8aa8-4bdb-951e-d8d4e3d0ec30",
+          "session_id": "ad202dbf-296a-425f-9fe2-22244c9b32e0",
+          "filename": "0338_lettergenerationbot__LetterGenerationBot+SendPOF_Email.pdf",
+          "size_bytes": 65625,
+          "status": "uploaded",
+          "error": null,
+          "page_count": null,
+          "warnings": [],
+          "created_at": "2026-07-15T22:02:48.991381+00:00"
+        }
+      },
+      "events_log": null,
+      "error": null
+    },
+    {
+      "name": "parseDocument",
+      "started_at": "2026-07-15T22:02:49.729334+00:00",
+      "finished_at": "2026-07-15T22:02:51.396470+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents/81257688-8aa8-4bdb-951e-d8d4e3d0ec30/parse"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 22:02:48 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "89a6eb7971cc",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 1,
+          "done": 1
+        },
+        "duration_seconds": 1.666,
+        "final_event": {
+          "event": "done",
+          "stage": "parsing",
+          "message": "파싱 완료",
+          "data": {
+            "id": "81257688-8aa8-4bdb-951e-d8d4e3d0ec30",
+            "session_id": "ad202dbf-296a-425f-9fe2-22244c9b32e0",
+            "filename": "0338_lettergenerationbot__LetterGenerationBot+SendPOF_Email.pdf",
+            "size_bytes": 65625,
+            "status": "parsed",
+            "error": null,
+            "page_count": 3,
+            "warnings": [],
+            "created_at": "2026-07-15T22:02:48.991381+00:00"
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__01_0338_lettergenerationbot\\02_parseDocument.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnAnalyze",
+      "started_at": "2026-07-15T22:02:51.399513+00:00",
+      "finished_at": "2026-07-15T22:03:44.915189+00:00",
+      "status": "error",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/ad202dbf-296a-425f-9fe2-22244c9b32e0/turn",
+        "json": {
+          "message": "이 업무정의서를 분석해서 자동화 흐름도까지 만들어줘",
+          "operation": "chat",
+          "agent_version": "v1"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 22:02:50 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "a4231cc7b3c9",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 28,
+          "partial": 10,
+          "error": 1
+        },
+        "duration_seconds": 53.515,
+        "final_event": {
+          "event": "error",
+          "message": "응답 생성 중 오류가 발생했습니다"
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs_resume09__01_0338_lettergenerationbot\\03_turn_analyze.events.jsonl",
+      "error": "응답 생성 중 오류가 발생했습니다"
+    }
+  ]
+}

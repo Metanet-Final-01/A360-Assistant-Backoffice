@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784112840.4508736" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784112840.4508736</text>
+    </name>
+    <page id="n0">
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <transition id="75001ddd-27ff-4135-9cc2-113bca7cdfeb">
+        <name>
+          <text>Excel advanced.cloudExcelOpen</text>
+        </name>
+      </transition>
+      <transition id="98de03de-d38b-4cae-954f-e9d82e6b5caa">
+        <name>
+          <text>Browser.browserPackageRunJavascriptAction</text>
+        </name>
+      </transition>
+      <transition id="fe859d7d-9b3b-4cda-bda3-7c0e94c7a4db">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageCloseAction</text>
+        </name>
+      </transition>
+      <transition id="a68cbfc1-040e-4ec0-adba-a3b12168fbc3">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageReadRowAction</text>
+        </name>
+      </transition>
+      <transition id="883c3326-3a1c-46b1-94aa-1854a8372ee5">
+        <name>
+          <text>Browser.browserPackageOpenAction</text>
+        </name>
+      </transition>
+      <transition id="b40dc44e-0c70-4a56-9fe2-5b820c690641">
+        <name>
+          <text>Error handler.errorHandlerCatch</text>
+        </name>
+      </transition>
+      <transition id="aaf9efb6-89cd-4e15-bbcd-15ee68a39528">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageSetCellAction</text>
+        </name>
+      </transition>
+      <transition id="b513fb36-5244-421e-91f3-208e98a9a19b">
+        <name>
+          <text>Browser.browserPackageCloseAction</text>
+        </name>
+      </transition>
+      <arc id="1836783327968" source="98de03de-d38b-4cae-954f-e9d82e6b5caa" target="p_7"/>
+      <arc id="1836783134400" source="p_6" target="aaf9efb6-89cd-4e15-bbcd-15ee68a39528"/>
+      <arc id="1836783742640" source="fe859d7d-9b3b-4cda-bda3-7c0e94c7a4db" target="p_9"/>
+      <arc id="1836783447504" source="p_9" target="b513fb36-5244-421e-91f3-208e98a9a19b"/>
+      <arc id="1836783254704" source="source" target="75001ddd-27ff-4135-9cc2-113bca7cdfeb"/>
+      <arc id="1836783350320" source="a68cbfc1-040e-4ec0-adba-a3b12168fbc3" target="p_3"/>
+      <arc id="1836783491408" source="p_4" target="a68cbfc1-040e-4ec0-adba-a3b12168fbc3"/>
+      <arc id="1836783350928" source="p_3" target="883c3326-3a1c-46b1-94aa-1854a8372ee5"/>
+      <arc id="1836783490768" source="75001ddd-27ff-4135-9cc2-113bca7cdfeb" target="p_4"/>
+      <arc id="1836783764976" source="883c3326-3a1c-46b1-94aa-1854a8372ee5" target="p_5"/>
+      <arc id="1836783327696" source="p_5" target="98de03de-d38b-4cae-954f-e9d82e6b5caa"/>
+      <arc id="1836783716432" source="p_7" target="b40dc44e-0c70-4a56-9fe2-5b820c690641"/>
+      <arc id="1836783716944" source="b40dc44e-0c70-4a56-9fe2-5b820c690641" target="p_6"/>
+      <arc id="1836783134640" source="aaf9efb6-89cd-4e15-bbcd-15ee68a39528" target="p_8"/>
+      <arc id="1836197200912" source="b513fb36-5244-421e-91f3-208e98a9a19b" target="sink"/>
+      <arc id="1836783742416" source="p_8" target="fe859d7d-9b3b-4cda-bda3-7c0e94c7a4db"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

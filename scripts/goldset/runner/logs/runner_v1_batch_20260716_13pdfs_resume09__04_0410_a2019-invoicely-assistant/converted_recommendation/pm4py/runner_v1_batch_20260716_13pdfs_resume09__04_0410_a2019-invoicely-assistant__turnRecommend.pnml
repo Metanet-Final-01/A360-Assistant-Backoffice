@@ -1,0 +1,121 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784153565.281895" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784153565.281895</text>
+    </name>
+    <page id="n0">
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_16">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <transition id="746e10b1-cefd-4145-a5f1-f1a424a67267">
+        <name>
+          <text>Logging.logToFileLogVariablesToFile</text>
+        </name>
+      </transition>
+      <transition id="12250ea7-3951-4300-9acb-9ee93bfdab68">
+        <name>
+          <text>Logging.logToFileLogVariablesToFile</text>
+        </name>
+      </transition>
+      <transition id="ff888084-b1d6-4c07-9f44-973d2062e454">
+        <name>
+          <text>Task Bot.taskBotPackageStopAction</text>
+        </name>
+      </transition>
+      <transition id="bb8da0b7-ab25-4009-89c7-b864b20ec41d">
+        <name>
+          <text>JavaScript.javascriptRun</text>
+        </name>
+      </transition>
+      <transition id="1c8bdc50-3f9f-450e-8c9a-f418e8928e25">
+        <name>
+          <text>JavaScript.javascriptRun</text>
+        </name>
+      </transition>
+      <transition id="55810244-0822-4fd2-b8aa-5a0b6499d69c">
+        <name>
+          <text>Excel advanced.excelAdvancedPackageReadRowAction</text>
+        </name>
+      </transition>
+      <transition id="713fa974-73e1-47ba-b3bd-1af37d7b653a">
+        <name>
+          <text>Loop.loop.commands.start</text>
+        </name>
+      </transition>
+      <transition id="d835b54f-3b9b-4c29-976a-86faa01a8230">
+        <name>
+          <text>Loop.loop.commands.start</text>
+        </name>
+      </transition>
+      <arc id="2703462345856" source="source" target="1c8bdc50-3f9f-450e-8c9a-f418e8928e25"/>
+      <arc id="2703461823632" source="p_4" target="bb8da0b7-ab25-4009-89c7-b864b20ec41d"/>
+      <arc id="2703462345632" source="746e10b1-cefd-4145-a5f1-f1a424a67267" target="p_7"/>
+      <arc id="2703461823024" source="1c8bdc50-3f9f-450e-8c9a-f418e8928e25" target="p_4"/>
+      <arc id="2703462238256" source="bb8da0b7-ab25-4009-89c7-b864b20ec41d" target="p_5"/>
+      <arc id="2703462345520" source="55810244-0822-4fd2-b8aa-5a0b6499d69c" target="p_10"/>
+      <arc id="2703462346416" source="p_15" target="12250ea7-3951-4300-9acb-9ee93bfdab68"/>
+      <arc id="2703459509952" source="p_7" target="55810244-0822-4fd2-b8aa-5a0b6499d69c"/>
+      <arc id="2703462346304" source="d835b54f-3b9b-4c29-976a-86faa01a8230" target="p_15"/>
+      <arc id="2703462345408" source="12250ea7-3951-4300-9acb-9ee93bfdab68" target="p_16"/>
+      <arc id="2703461744080" source="p_10" target="713fa974-73e1-47ba-b3bd-1af37d7b653a"/>
+      <arc id="2703461800672" source="p_5" target="746e10b1-cefd-4145-a5f1-f1a424a67267"/>
+      <arc id="2703462345184" source="ff888084-b1d6-4c07-9f44-973d2062e454" target="sink"/>
+      <arc id="2703462345296" source="p_16" target="ff888084-b1d6-4c07-9f44-973d2062e454"/>
+      <arc id="2703462345968" source="713fa974-73e1-47ba-b3bd-1af37d7b653a" target="p_14"/>
+      <arc id="2703462346192" source="p_14" target="d835b54f-3b9b-4c29-976a-86faa01a8230"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

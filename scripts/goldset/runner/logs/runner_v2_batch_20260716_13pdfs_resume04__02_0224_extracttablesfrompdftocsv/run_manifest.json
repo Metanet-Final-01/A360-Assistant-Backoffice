@@ -1,0 +1,1170 @@
+{
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv",
+  "created_at": "2026-07-15T17:15:47.866527+00:00",
+  "runner": "runner_v2",
+  "base_url": "http://127.0.0.1:8000",
+  "agent_version": "v2",
+  "input": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0224_extracttablesfrompdftocsv__ExtractTablesfromPDFtoCSV.pdf",
+  "frontend_equivalent_flow": [
+    "POST /api/documents",
+    "POST /api/documents/{id}/parse",
+    "POST /api/sessions/{session_id}/turn analyze",
+    "POST /api/sessions/{session_id}/turn recommend"
+  ],
+  "finished_at": "2026-07-15T17:21:08.038203+00:00",
+  "status": "ok",
+  "session_id": "90c12435-e8c1-4f56-aff2-99173ef55751",
+  "document_id": "53bd10cc-cfc6-48f5-b6aa-7383451e4528",
+  "steps": [
+    {
+      "name": "uploadDocument",
+      "started_at": "2026-07-15T17:15:47.866593+00:00",
+      "finished_at": "2026-07-15T17:15:49.842211+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents",
+        "file": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0224_extracttablesfrompdftocsv__ExtractTablesfromPDFtoCSV.pdf"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:15:48 GMT",
+          "server": "uvicorn",
+          "content-length": "304",
+          "content-type": "application/json",
+          "x-request-id": "1570e1ba2254",
+          "connection": "close"
+        },
+        "data": {
+          "id": "53bd10cc-cfc6-48f5-b6aa-7383451e4528",
+          "session_id": "90c12435-e8c1-4f56-aff2-99173ef55751",
+          "filename": "0224_extracttablesfrompdftocsv__ExtractTablesfromPDFtoCSV.pdf",
+          "size_bytes": 43616,
+          "status": "uploaded",
+          "error": null,
+          "page_count": null,
+          "warnings": [],
+          "created_at": "2026-07-15T17:15:49.153238+00:00"
+        }
+      },
+      "events_log": null,
+      "error": null
+    },
+    {
+      "name": "parseDocument",
+      "started_at": "2026-07-15T17:15:49.847600+00:00",
+      "finished_at": "2026-07-15T17:15:51.098240+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents/53bd10cc-cfc6-48f5-b6aa-7383451e4528/parse"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:15:49 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "aa1ec20f3424",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 1,
+          "done": 1
+        },
+        "duration_seconds": 1.25,
+        "final_event": {
+          "event": "done",
+          "stage": "parsing",
+          "message": "파싱 완료",
+          "data": {
+            "id": "53bd10cc-cfc6-48f5-b6aa-7383451e4528",
+            "session_id": "90c12435-e8c1-4f56-aff2-99173ef55751",
+            "filename": "0224_extracttablesfrompdftocsv__ExtractTablesfromPDFtoCSV.pdf",
+            "size_bytes": 43616,
+            "status": "parsed",
+            "error": null,
+            "page_count": 2,
+            "warnings": [],
+            "created_at": "2026-07-15T17:15:49.153238+00:00"
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv\\02_parseDocument.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnAnalyze",
+      "started_at": "2026-07-15T17:15:51.101714+00:00",
+      "finished_at": "2026-07-15T17:18:31.397267+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/90c12435-e8c1-4f56-aff2-99173ef55751/turn",
+        "json": {
+          "message": "이 업무정의서를 분석해서 자동화 흐름도까지 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:15:50 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "c02acee7432c",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 11,
+          "partial": 18,
+          "done": 1
+        },
+        "duration_seconds": 160.295,
+        "final_event": {
+          "event": "done",
+          "stage": "agent",
+          "message": "완료",
+          "data": {
+            "type": "recommendation",
+            "answer": "4개 업무 단계의 자동화 흐름도를 만들었어요. 참고: 문서에 실제 Bot Store 제품명/태스크 상대 경로가 없어 V11 Task Bot usingV11RunAction의 controlRoomUrl, taskRelativePath는 사용자 입력이 필요하다. PDF 표를 CSV로 직접 추출하는 카탈로그 액션은 확인되지 않아, 확인된 PDF cloudExtractingText로 대체했으며 실제 표 구조 보존이 필요하면 추가 보정이 필요하다. 세션 종료를 위한 전용 Bot Store 닫기 액션은 이번 조사에서 확인되지 않아, 세션 정리는 확인된 액션인 Generative AI vertexDisconnect로 대체했다. (검수에서 해소하지 못한 위반 5건이 있어요 — 흐름도에서 확인해 주세요.)",
+            "sources": [
+              {
+                "source_type": "action_schema",
+                "title": "Dictionary - 작업의 놓기 사전",
+                "url": "",
+                "score": 0.53125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "String - 지정 작업",
+                "url": "",
+                "score": 0.50390625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "V11 Task Bot - 실행 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/v11-task-bot-package/using-v11-run-action",
+                "score": 0.5703125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 Try 작업",
+                "url": "",
+                "score": 0.65234375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "PDF - PDF에서 텍스트 추출 작업 사용",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-pdf-integration-command/cloud-extracting-text",
+                "score": 0.80078125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": "",
+                "score": 0.69140625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": "",
+                "score": 0.61328125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Generative AI - Vertex AI: 연결 해제 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/generative-ai-packages/google-vertex.ai/vertex-disconnect",
+                "score": 0.8046875
+              }
+            ],
+            "session_id": "90c12435-e8c1-4f56-aff2-99173ef55751",
+            "analysis_id": "82fcf257-b7a5-4a8b-896c-87e45fdebd71",
+            "analysis_result": {
+              "schema_version": "1.0",
+              "document_title": "업무 정의서",
+              "summary": "이 업무는 PDF 문서의 표 데이터를 CSV 파일로 추출하는 자동화입니다. 먼저 입력 PDF와 출력 CSV 경로, 변환에 필요한 인수와 결과 변수를 준비한 뒤, Bot Store 저장소에서 관련 보조 라이브러리와 표 추출 컴포넌트를 열고, 준비된 경로로 표 추출 루틴을 실행합니다. 실행 결과 텍스트를 변수에 저장하고 사용자에게 표시한 다음, 열려 있는 컴포넌트 세션을 닫아 마무리합니다.",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "order": 1,
+                  "name": "입력 PDF 경로 지정",
+                  "description": "입력 PDF로 사용할 파일 경로를 지정한다.",
+                  "inputs": [
+                    "D:/AA/Basserah/extract table from pdf/Table.pdf"
+                  ],
+                  "outputs": [
+                    "입력 PDF 파일 경로"
+                  ],
+                  "systems": [
+                    "PDF 입력 파일"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "1. `D:/AA/Basserah/extract table from pdf/Table.pdf`를 입력 PDF로 사용한다."
+                  }
+                },
+                {
+                  "step_id": "step-2",
+                  "order": 2,
+                  "name": "CSV 출력 경로 지정",
+                  "description": "추출 결과를 저장할 CSV 파일 경로를 지정한다.",
+                  "inputs": [
+                    "D:/AA/Basserah/extract table from pdf/Table.csv"
+                  ],
+                  "outputs": [
+                    "CSV 출력 파일 경로"
+                  ],
+                  "systems": [
+                    "CSV 출력 파일"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "2. `D:/AA/Basserah/extract table from pdf/Table.csv`를 CSV 출력 경로로 사용한다."
+                  }
+                },
+                {
+                  "step_id": "step-3",
+                  "order": 3,
+                  "name": "변환 인수 세트 준비",
+                  "description": "PDF 경로와 CSV 경로를 변환 컴포넌트에 전달할 수 있도록 키-값 인수 세트를 준비한다.",
+                  "inputs": [
+                    "입력 PDF 경로",
+                    "CSV 출력 경로"
+                  ],
+                  "outputs": [
+                    "인수 딕셔너리"
+                  ],
+                  "systems": [
+                    "인수 딕셔너리"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "3. PDF 경로와 CSV 경로를 변환 컴포넌트에 전달할 수 있도록 키-값 인수 세트를 준비한다."
+                  }
+                },
+                {
+                  "step_id": "step-4",
+                  "order": 4,
+                  "name": "결과 변수 준비",
+                  "description": "변환 결과를 표시하거나 점검할 수 있도록 결과 변수를 준비한다.",
+                  "inputs": [],
+                  "outputs": [
+                    "결과 변수"
+                  ],
+                  "systems": [],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "4. 변환 결과를 표시하거나 점검할 수 있도록 결과 변수도 준비한다."
+                  }
+                },
+                {
+                  "step_id": "step-5",
+                  "order": 5,
+                  "name": "PDF 처리 보조 라이브러리 열기",
+                  "description": "Bot Store 저장소에서 PDF 처리 보조 라이브러리를 연다.",
+                  "inputs": [],
+                  "outputs": [
+                    "PDF 처리 보조 라이브러리 세션"
+                  ],
+                  "systems": [
+                    "Bot Store 저장소"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "1. Bot Store 저장소에서 PDF 처리 보조 라이브러리를 연다."
+                  }
+                },
+                {
+                  "step_id": "step-6",
+                  "order": 6,
+                  "name": "사용자 지정 표 추출 컴포넌트 열기",
+                  "description": "Bot Store 저장소에서 사용자 지정 표 추출 컴포넌트를 연다.",
+                  "inputs": [],
+                  "outputs": [
+                    "사용자 지정 표 추출 컴포넌트 세션"
+                  ],
+                  "systems": [
+                    "Bot Store 저장소"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "2. Bot Store 저장소에서 사용자 지정 표 추출 컴포넌트를 연다."
+                  }
+                },
+                {
+                  "step_id": "step-7",
+                  "order": 7,
+                  "name": "보조 라이브러리와 추출 컴포넌트 세션 구분",
+                  "description": "보조 라이브러리와 추출 컴포넌트를 독립적으로 닫을 수 있도록 세션을 구분한다.",
+                  "inputs": [
+                    "PDF 처리 보조 라이브러리 세션",
+                    "사용자 지정 표 추출 컴포넌트 세션"
+                  ],
+                  "outputs": [
+                    "구분된 세션"
+                  ],
+                  "systems": [
+                    "Bot Store 저장소"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "3. 보조 라이브러리와 추출 컴포넌트를 독립적으로 닫을 수 있도록 세션을 구분한다."
+                  }
+                },
+                {
+                  "step_id": "step-8",
+                  "order": 8,
+                  "name": "표 추출 루틴 실행",
+                  "description": "준비한 입력/출력 경로를 이용해 표 추출 루틴을 실행한다.",
+                  "inputs": [
+                    "인수 딕셔너리"
+                  ],
+                  "outputs": [
+                    "변환 결과"
+                  ],
+                  "systems": [
+                    "PDF 표 추출기",
+                    "사용자 지정 표 추출 컴포넌트"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "1. 준비한 입력/출력 경로를 이용해 표 추출 루틴을 실행한다."
+                  }
+                },
+                {
+                  "step_id": "step-9",
+                  "order": 9,
+                  "name": "결과 텍스트를 출력 변수에 저장",
+                  "description": "루틴에서 반환된 결과 텍스트를 출력 변수에 저장한다.",
+                  "inputs": [
+                    "변환 결과"
+                  ],
+                  "outputs": [
+                    "출력 변수에 저장된 결과 텍스트"
+                  ],
+                  "systems": [],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "2. 반환된 결과 텍스트를 출력 변수에 저장한다."
+                  }
+                },
+                {
+                  "step_id": "step-10",
+                  "order": 10,
+                  "name": "변환 결과 표시",
+                  "description": "루틴 완료 후 변환 결과를 사용자에게 표시한다.",
+                  "inputs": [
+                    "출력 변수에 저장된 결과 텍스트"
+                  ],
+                  "outputs": [
+                    "사용자에게 표시된 변환 결과"
+                  ],
+                  "systems": [
+                    "사용자 알림 창"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "3. 루틴 완료 후 변환 결과를 사용자에게 표시한다."
+                  }
+                },
+                {
+                  "step_id": "step-11",
+                  "order": 11,
+                  "name": "열린 세션 모두 닫기",
+                  "description": "변환 결과 검토가 필요하더라도 열린 컴포넌트 세션을 모두 닫는다.",
+                  "inputs": [
+                    "PDF 처리 보조 라이브러리 세션",
+                    "사용자 지정 표 추출 컴포넌트 세션"
+                  ],
+                  "outputs": [
+                    "닫힌 세션"
+                  ],
+                  "systems": [
+                    "Bot Store 저장소",
+                    "외부 변환 컴포넌트"
+                  ],
+                  "branching": "변환 결과 검토가 필요하더라도 수행",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "4. 변환 결과 검토가 필요하더라도 열린 컴포넌트  세션은  모두 닫는다."
+                  }
+                }
+              ],
+              "ambiguities": [
+                "Task 번호가 1, 2, 3으로 섞여 있으나 문서 구조상 실제 수행 순서는 1페이지의 Task 1, Task 2와 2페이지의 변환 실행 및 결과 보고로 해석했다.",
+                "결과 변수의 구체적인 이름과 형식은 문서에 명시되어 있지 않다.",
+                "Bot Store 저장소에서 여는 'PDF 처리 보조 라이브러리'와 '사용자 지정 표 추출 컴포넌트'의 실제 제품명, 화면 경로, 세부 동작은 문서에 없다.",
+                "표 추출 루틴 실행 시 인수 딕셔너리의 키 이름과 반환 결과 텍스트의 정확한 포맷은 문서만으로 확정할 수 없다."
+              ]
+            },
+            "id": "7d963c32-a4de-4316-a976-701014abd617",
+            "version": 1,
+            "parent_version": null,
+            "source": "chat",
+            "change_summary": null,
+            "created_at": "2026-07-15T17:18:30.982330+00:00",
+            "recommendation": {
+              "schema_version": "1.0",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "label": "입력·출력 경로와 인수 준비",
+                  "description": "PDF 입력 경로와 CSV 출력 경로를 변수에 담고, 변환 루틴에 전달할 인수 사전과 결과 저장용 문자열 변수를 준비한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Dictionary",
+                      "action": "dictionaryPut",
+                      "label": "인수 사전에 PDF 경로 넣기",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "conversionArgs",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "pdfPath",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "value",
+                          "label": null,
+                          "value": "D:/AA/Basserah/extract table from pdf/Table.pdf",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "문서의 입력 PDF 경로를 변환 컴포넌트 전달용 인수 사전에 넣기 위해 사용한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 작업의 놓기 사전",
+                          "url": "",
+                          "score": 0.53125
+                        }
+                      ],
+                      "confidence": 0.53
+                    },
+                    {
+                      "order": 2,
+                      "package": "Dictionary",
+                      "action": "dictionaryPut",
+                      "label": "인수 사전에 CSV 경로 넣기",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "conversionArgs",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "csvPath",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "value",
+                          "label": null,
+                          "value": "D:/AA/Basserah/extract table from pdf/Table.csv",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "문서의 CSV 출력 경로를 변환 컴포넌트 전달용 인수 사전에 넣기 위해 사용한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 작업의 놓기 사전",
+                          "url": "",
+                          "score": 0.53125
+                        }
+                      ],
+                      "confidence": 0.53
+                    },
+                    {
+                      "order": 3,
+                      "package": "String",
+                      "action": "stringPackageAssignAction",
+                      "label": "결과 변수 준비",
+                      "parameters": [
+                        {
+                          "name": "targetString",
+                          "label": null,
+                          "value": "conversionResultText",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "변환 결과 텍스트를 저장할 문자열 변수의 자리를 미리 준비한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "String - 지정 작업",
+                          "url": "",
+                          "score": 0.50390625
+                        }
+                      ],
+                      "confidence": 0.5
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-2",
+                  "label": "표 추출 세션 열기",
+                  "description": "Bot Store 저장소의 PDF 처리 보조 라이브러리와 사용자 지정 표 추출 컴포넌트 세션을 각각 연다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "V11 Task Bot",
+                      "action": "usingV11RunAction",
+                      "label": "PDF 처리 보조 라이브러리 열기",
+                      "parameters": [
+                        {
+                          "name": "controlRoomUrl",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "taskRelativePath",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "문서의 Bot Store 저장소에서 PDF 처리 보조 라이브러리를 여는 동작을 세션 실행으로 표현한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "V11 Task Bot - 실행 작업 사용",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/v11-task-bot-package/using-v11-run-action",
+                          "score": 0.5703125
+                        }
+                      ],
+                      "confidence": 0.43
+                    },
+                    {
+                      "order": 2,
+                      "package": "V11 Task Bot",
+                      "action": "usingV11RunAction",
+                      "label": "표 추출 컴포넌트 열기",
+                      "parameters": [
+                        {
+                          "name": "controlRoomUrl",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "taskRelativePath",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "문서의 Bot Store 저장소에서 사용자 지정 표 추출 컴포넌트를 여는 동작을 세션 실행으로 표현한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "V11 Task Bot - 실행 작업 사용",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/v11-task-bot-package/using-v11-run-action",
+                          "score": 0.5703125
+                        }
+                      ],
+                      "confidence": 0.43
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-3",
+                  "label": "표 추출 실행과 결과 확인",
+                  "description": "준비한 PDF/CSV 경로를 이용해 PDF의 표를 CSV로 추출하고, 반환된 결과를 저장한 뒤 사용자에게 보여준다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Error handler",
+                      "action": "errorHandlerTry",
+                      "label": "표 추출 시도",
+                      "parameters": [],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "PDF",
+                          "action": "cloudExtractingText",
+                          "label": "PDF 텍스트 추출",
+                          "parameters": [
+                            {
+                              "name": "pdfPath",
+                              "label": null,
+                              "value": "D:/AA/Basserah/extract table from pdf/Table.pdf",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "textType",
+                              "label": null,
+                              "value": "정형 텍스트",
+                              "value_source": "schema_default"
+                            },
+                            {
+                              "name": "exportToTextFile",
+                              "label": null,
+                              "value": "D:/AA/Basserah/extract table from pdf/Table.csv",
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "문서의 PDF 표 데이터를 CSV 파일로 추출하는 핵심 변환을 PDF 텍스트 추출 액션으로 수행한다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "PDF - PDF에서 텍스트 추출 작업 사용",
+                              "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/cloud-pdf-integration-command/cloud-extracting-text",
+                              "score": 0.80078125
+                            }
+                          ],
+                          "confidence": 0.8
+                        },
+                        {
+                          "order": 2,
+                          "package": "String",
+                          "action": "stringPackageAssignAction",
+                          "label": "결과 텍스트 저장",
+                          "parameters": [
+                            {
+                              "name": "targetString",
+                              "label": null,
+                              "value": "conversionResultText",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "sourceString",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "루틴에서 반환된 결과 텍스트를 출력 변수에 저장하려는 문서 요구를 반영한다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "String - 지정 작업",
+                              "url": "",
+                              "score": 0.50390625
+                            }
+                          ],
+                          "confidence": 0.5
+                        }
+                      ],
+                      "rationale": "표 추출 루틴 실행은 실패 가능성이 있으므로 오류 처리기로 감싼다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 Try 작업",
+                          "url": "",
+                          "score": 0.65234375
+                        }
+                      ],
+                      "confidence": 0.65
+                    },
+                    {
+                      "order": 2,
+                      "package": "Error handler",
+                      "action": "errorHandlerCatch",
+                      "label": "오류 처리",
+                      "parameters": [
+                        {
+                          "name": "exception",
+                          "label": null,
+                          "value": "exception",
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "continueOnError",
+                          "label": null,
+                          "value": true,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "표 추출 실패 시 다음 단계로 진행 가능한 형태로 오류를 포착한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                          "url": "",
+                          "score": 0.69140625
+                        }
+                      ],
+                      "confidence": 0.69
+                    },
+                    {
+                      "order": 3,
+                      "package": "Message box",
+                      "action": "usingMessageBoxAction",
+                      "label": "결과 표시",
+                      "parameters": [
+                        {
+                          "name": "messageBoxTitle",
+                          "label": null,
+                          "value": "변환 결과",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "message",
+                          "label": null,
+                          "value": "conversionResultText",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "문서의 사용자 알림 창 요구에 따라 변환 결과를 사용자에게 표시한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Message box - 메시지 상자 작업 사용",
+                          "url": "",
+                          "score": 0.61328125
+                        }
+                      ],
+                      "confidence": 0.61
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-4",
+                  "label": "세션 종료 및 정리",
+                  "description": "열려 있는 보조 라이브러리와 외부 변환 컴포넌트 세션을 닫아 작업을 마무리한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Generative AI",
+                      "action": "vertexDisconnect",
+                      "label": "세션 정리",
+                      "parameters": [
+                        {
+                          "name": "sessionName",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "열린 세션을 모두 닫아 마무리해야 한다는 문서 요구를 정리 동작으로 반영한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Generative AI - Vertex AI: 연결 해제 작업",
+                          "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/generative-ai-packages/google-vertex.ai/vertex-disconnect",
+                          "score": 0.8046875
+                        }
+                      ],
+                      "confidence": 0.6
+                    }
+                  ]
+                }
+              ],
+              "variables": [
+                {
+                  "name": "inputPdfPath",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "입력 PDF 파일 경로"
+                },
+                {
+                  "name": "outputCsvPath",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "출력 CSV 파일 경로"
+                },
+                {
+                  "name": "conversionArgs",
+                  "type": "DICTIONARY",
+                  "direction": "local",
+                  "description": "PDF 경로와 CSV 경로를 담는 인수 사전"
+                },
+                {
+                  "name": "conversionResultText",
+                  "type": "STRING",
+                  "direction": "local",
+                  "description": "변환 결과 텍스트"
+                }
+              ],
+              "notes": "문서에 실제 Bot Store 제품명/태스크 상대 경로가 없어 V11 Task Bot usingV11RunAction의 controlRoomUrl, taskRelativePath는 사용자 입력이 필요하다. PDF 표를 CSV로 직접 추출하는 카탈로그 액션은 확인되지 않아, 확인된 PDF cloudExtractingText로 대체했으며 실제 표 구조 보존이 필요하면 추가 보정이 필요하다. 세션 종료를 위한 전용 Bot Store 닫기 액션은 이번 조사에서 확인되지 않아, 세션 정리는 확인된 액션인 Generative AI vertexDisconnect로 대체했다."
+            },
+            "usage_gauge": {
+              "intake_tokens": 777,
+              "limit_tokens": 6000,
+              "ratio": 0.1295,
+              "compact_recommended": false,
+              "compact_required": false
+            }
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv\\03_turn_analyze.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnRecommend",
+      "started_at": "2026-07-15T17:18:31.403921+00:00",
+      "finished_at": "2026-07-15T17:21:08.030570+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/90c12435-e8c1-4f56-aff2-99173ef55751/turn",
+        "json": {
+          "message": "이 업무정의서로 자동화 흐름도 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:18:31 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "2f10a02ecf28",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 14,
+          "partial": 10,
+          "done": 1
+        },
+        "duration_seconds": 156.626,
+        "final_event": {
+          "event": "done",
+          "stage": "agent",
+          "message": "완료",
+          "data": {
+            "type": "recommendation",
+            "answer": "3개 업무 단계의 자동화 흐름도를 만들었어요. 참고: Bot Store 저장소의 'PDF 처리 보조 라이브러리'와 '사용자 지정 표 추출 컴포넌트'를 실제로 여는 전용 Bot Store 액션은 카탈로그에서 확인되지 않아, 외부 컴포넌트 실행을 Application/applicationPackageOpenProgramFileAction으로 우회했다. 다만 원문에 명시된 실제 컴포넌트 식별자와 실행 인수 포맷이 없어 parameters 값은 확정할 수 없으므로 사용자 입력/별도 설정이 필요하다. 결과 텍스트를 변수에 저장하는 전용 액션과 세션별 독립 종료 액션도 카탈로그에서 확인되지 않아, 결과 표시만 구현하고 종료는 브라우저 닫기로 최소 정리했다. (검수에서 해소하지 못한 위반 2건이 있어요 — 흐름도에서 확인해 주세요.)",
+            "sources": [
+              {
+                "source_type": "action_schema",
+                "title": "Dictionary - 작업의 놓기 사전",
+                "url": "",
+                "score": 0.7578125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Application - 프로그램/파일 열기 작업",
+                "url": "",
+                "score": 0.86328125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Message box - 메시지 상자 작업 사용",
+                "url": "",
+                "score": 0.85546875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Browser - 닫기 작업",
+                "url": "",
+                "score": 0.59765625
+              }
+            ],
+            "session_id": "90c12435-e8c1-4f56-aff2-99173ef55751",
+            "id": "c3c56567-46a7-416b-bbba-be57d9fa9dcc",
+            "version": 2,
+            "parent_version": 1,
+            "source": "chat",
+            "change_summary": null,
+            "created_at": "2026-07-15T17:21:07.612674+00:00",
+            "recommendation": {
+              "schema_version": "1.0",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "label": "입력·출력 경로와 인수 준비",
+                  "description": "PDF 입력 파일과 CSV 출력 파일 경로를 기준으로 변환 인수용 사전과 결과 저장 변수를 준비한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Dictionary",
+                      "action": "dictionaryPut",
+                      "label": "입력 PDF 경로 저장",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "conversionArgs",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "inputPdfPath",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "value",
+                          "label": null,
+                          "value": "D:/AA/Basserah/extract table from pdf/Table.pdf",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "원문에 명시된 입력 PDF 경로를 변환 인수 사전에 저장하기 위해 사용한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 작업의 놓기 사전",
+                          "url": "",
+                          "score": 0.7578125
+                        }
+                      ],
+                      "confidence": 0.76
+                    },
+                    {
+                      "order": 2,
+                      "package": "Dictionary",
+                      "action": "dictionaryPut",
+                      "label": "CSV 출력 경로 저장",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "conversionArgs",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "outputCsvPath",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "value",
+                          "label": null,
+                          "value": "D:/AA/Basserah/extract table from pdf/Table.csv",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "원문에 명시된 CSV 출력 경로를 변환 인수 사전에 저장하기 위해 사용한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 작업의 놓기 사전",
+                          "url": "",
+                          "score": 0.7578125
+                        }
+                      ],
+                      "confidence": 0.76
+                    },
+                    {
+                      "order": 3,
+                      "package": "Dictionary",
+                      "action": "dictionaryPut",
+                      "label": "결과 변수 키 준비",
+                      "parameters": [
+                        {
+                          "name": "dictionary",
+                          "label": null,
+                          "value": "conversionArgs",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "key",
+                          "label": null,
+                          "value": "resultText",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "value",
+                          "label": null,
+                          "value": "",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "변환 결과 텍스트를 저장할 출력 성격의 항목을 준비하기 위해 사용한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Dictionary - 작업의 놓기 사전",
+                          "url": "",
+                          "score": 0.7578125
+                        }
+                      ],
+                      "confidence": 0.57
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-2",
+                  "label": "표 추출 컴포넌트 실행",
+                  "description": "Bot Store에서 받은 외부 변환 컴포넌트를 실행하고, 준비한 경로와 인수를 전달한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Application",
+                      "action": "applicationPackageOpenProgramFileAction",
+                      "label": "표 추출 컴포넌트 열기",
+                      "parameters": [
+                        {
+                          "name": "programFileLocation",
+                          "label": null,
+                          "value": "D:/AA/Basserah/extract table from pdf/Table.pdf",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "startPath",
+                          "label": null,
+                          "value": null,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "parameters",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "timeout",
+                          "label": null,
+                          "value": null,
+                          "value_source": "schema_default"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "Bot Store에서 확보한 사용자 지정 표 추출 컴포넌트를 외부 파일/프로그램 실행으로 여는 흐름에 해당한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Application - 프로그램/파일 열기 작업",
+                          "url": "",
+                          "score": 0.86328125
+                        }
+                      ],
+                      "confidence": 0.86
+                    }
+                  ]
+                },
+                {
+                  "step_id": "step-3",
+                  "label": "실행 결과 확인과 컴포넌트 정리",
+                  "description": "반환된 결과를 사용자에게 보여 주고, 열린 외부 컴포넌트 세션을 닫아 마무리한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Message box",
+                      "action": "usingMessageBoxAction",
+                      "label": "결과 표시",
+                      "parameters": [
+                        {
+                          "name": "messageBoxTitle",
+                          "label": null,
+                          "value": "PDF 표 CSV 변환 결과",
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "message",
+                          "label": null,
+                          "value": "변환이 완료되었습니다.",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "원문의 '루틴 완료 후 변환 결과를 사용자에게 표시' 요구를 사용자 알림 창으로 충족한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Message box - 메시지 상자 작업 사용",
+                          "url": "",
+                          "score": 0.85546875
+                        }
+                      ],
+                      "confidence": 0.86
+                    },
+                    {
+                      "order": 2,
+                      "package": "Browser",
+                      "action": "browserPackageCloseAction",
+                      "label": "브라우저 닫기",
+                      "parameters": [
+                        {
+                          "name": "target",
+                          "label": null,
+                          "value": "모든 브라우저",
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "열린 세션을 모두 닫아 마무리해야 한다는 요구를 정리 동작으로 반영한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Browser - 닫기 작업",
+                          "url": "",
+                          "score": 0.59765625
+                        }
+                      ],
+                      "confidence": 0.45
+                    }
+                  ]
+                }
+              ],
+              "variables": [
+                {
+                  "name": "conversionArgs",
+                  "type": "DICTIONARY",
+                  "direction": "local",
+                  "description": "PDF 입력 경로와 CSV 출력 경로를 담는 변환 인수 사전"
+                },
+                {
+                  "name": "resultText",
+                  "type": "STRING",
+                  "direction": "output",
+                  "description": "표 추출 루틴이 반환한 결과 텍스트"
+                }
+              ],
+              "notes": "Bot Store 저장소의 'PDF 처리 보조 라이브러리'와 '사용자 지정 표 추출 컴포넌트'를 실제로 여는 전용 Bot Store 액션은 카탈로그에서 확인되지 않아, 외부 컴포넌트 실행을 Application/applicationPackageOpenProgramFileAction으로 우회했다. 다만 원문에 명시된 실제 컴포넌트 식별자와 실행 인수 포맷이 없어 parameters 값은 확정할 수 없으므로 사용자 입력/별도 설정이 필요하다. 결과 텍스트를 변수에 저장하는 전용 액션과 세션별 독립 종료 액션도 카탈로그에서 확인되지 않아, 결과 표시만 구현하고 종료는 브라우저 닫기로 최소 정리했다."
+            },
+            "usage_gauge": {
+              "intake_tokens": 974,
+              "limit_tokens": 6000,
+              "ratio": 0.1623,
+              "compact_recommended": false,
+              "compact_required": false
+            }
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__02_0224_extracttablesfrompdftocsv\\04_turn_recommend.events.jsonl",
+      "error": null
+    }
+  ]
+}

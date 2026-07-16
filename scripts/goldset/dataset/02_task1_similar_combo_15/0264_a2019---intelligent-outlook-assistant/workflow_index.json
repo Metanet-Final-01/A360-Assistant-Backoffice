@@ -1,0 +1,28 @@
+{
+  "bot_dir": "02_task1_similar_combo_15\\0264_a2019---intelligent-outlook-assistant",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "A2019 - Intelligent Outlook Assistant",
+      "manual_dependencies": [],
+      "output_file": "workflows/A2019 - Intelligent Outlook Assistant.json",
+      "scanned_dependencies": [
+        "Attachment Form",
+        "Read Appointment",
+        "Read Email",
+        "ReadAppointment.py",
+        "Main Form",
+        "A2019 - Outlook Appointment Creation"
+      ]
+    },
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "A2019 - Outlook Appointment Creation",
+      "manual_dependencies": [],
+      "output_file": "workflows/A2019 - Outlook Appointment Creation.json",
+      "scanned_dependencies": [
+        "Appointment Selector"
+      ]
+    }
+  ]
+}

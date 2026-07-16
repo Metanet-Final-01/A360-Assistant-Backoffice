@@ -1,0 +1,2081 @@
+{
+  "breakpoints": [
+    "72f87389-8e5f-4052-9a79-ad1a6b124ff1"
+  ],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Chrome ",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "Chrome",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "browser",
+              "value": {
+                "string": "Chrome",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "width",
+              "value": {
+                "number": "1920",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "height",
+              "value": {
+                "number": "1080",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "headless",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "profilepath",
+              "value": {
+                "string": "c:\\temp\\chromeuser2",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "library",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "StartSessionWebAutomation",
+          "disabled": false,
+          "packageName": "WebAutomation",
+          "uid": "209faec2-4c39-49d4-9e6d-130899e9bfff"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Drag and Drop",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "url",
+                  "value": {
+                    "string": "https://www.globalsqa.com/demo-site/draganddrop/#Photo%20Manager",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "openpage",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "bc3cd221-a656-4cf3-b227-f9c36e3b6db9"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "search",
+                  "value": {
+                    "string": "#post-2669 > div.twelve.columns > div > div > div.single_tab_div.resp-tab-content.resp-tab-content-active > p > iframe",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "selectframe",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "5b1d21f9-2be1-4dfc-a2d6-2143f895b87e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "fromelement",
+                  "value": {
+                    "string": "#gallery > li:nth-child(1) > img",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "toelement",
+                  "value": {
+                    "string": "#trash",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "dragdrop",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "4e76ef92-15b4-4d0e-8442-3308caba0abb"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "500",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "af6a10ce-aeb8-467a-b724-dc7dc8010892"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "fromelement",
+                  "value": {
+                    "string": "#gallery > li:nth-child(1) > img",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "toelement",
+                  "value": {
+                    "string": "#trash",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "dragdrop",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "7c52e184-451e-4f2d-8dc9-6ba87904c27e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "500",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "75e9d794-5dd3-4440-b306-f04e4ddb9b24"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "fromelement",
+                  "value": {
+                    "string": "#gallery > li:nth-child(1) > img",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "toelement",
+                  "value": {
+                    "string": "#trash",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "dragdrop",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "f3961aae-ab02-4858-a839-49556f7b5011"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "500",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "bbfd8c61-55c3-4a99-9f51-ffb1d7948608"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "fromelement",
+                  "value": {
+                    "string": "#gallery > li:nth-child(1) > img",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "toelement",
+                  "value": {
+                    "string": "#trash",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "dragdrop",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "70a31dc8-abf8-405e-a948-56a0246a76af"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3000",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "eafaa24f-9b36-4d6a-8025-d6d1c6a8d8ca"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "45236547-d261-44ef-9c03-23d80ba19e78"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Google Search",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "url",
+                  "value": {
+                    "string": "https://www.google.com/",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "openpage",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "ebad9bbc-3aef-4769-9b7f-cbc6cfb11299"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "search",
+                  "value": {
+                    "string": "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "XPATH",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "newvalue",
+                  "value": {
+                    "string": "Automation Anywhere Bot Store",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "title",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "setvalueelement",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "d1fd2ac3-484c-4a79-9543-af6432857f09"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "search",
+                  "value": {
+                    "string": "document.querySelector(\"body > div.L3eUgb > div.o3j99.ikrT4e.om7nvf > form > div:nth-child(1) > div.A8SBwf > div.FPdoLc.lJ9FBc > center > input.gNO89b\")",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "JS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "clicktype",
+                  "value": {
+                    "string": "Click",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "clickelement",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "2e339df3-42aa-4eea-9fe1-93446dce753d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "getcurrentsession",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "prompt-assignment"
+              },
+              "uid": "9b62bd61-ed2a-4e3a-a166-7dc05267010a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "getcurrenturl",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "prompt-assignment"
+              },
+              "uid": "c58f3fb2-a073-40fe-b15b-4a40d61e7184"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3000",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "d615005f-16f6-4671-a7d9-2fc254a8fa9b"
+            },
+            {
+              "attributes": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sessionName",
+                      "value": {
+                        "string": "Chrome",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "url",
+                      "value": {
+                        "string": "https://mousetester.com/",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "openpage",
+                  "disabled": false,
+                  "packageName": "WebAutomation",
+                  "uid": "73186947-618f-48b3-88a4-4b97ba069d67"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sessionName",
+                      "value": {
+                        "string": "Chrome",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "search",
+                      "value": {
+                        "string": "#clickMe",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "type",
+                      "value": {
+                        "string": "CSS",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "clicktype",
+                      "value": {
+                        "string": "DoubleClick",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "timeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "attribute",
+                      "value": {
+                        "string": "className",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "clickelement",
+                  "disabled": false,
+                  "packageName": "WebAutomation",
+                  "uid": "c8404a09-2cdd-41d7-baa4-727f314f3d28"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "delayType",
+                      "value": {
+                        "string": "REGULAR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delayTime",
+                      "value": {
+                        "number": "1000",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "timeUnit",
+                      "value": {
+                        "string": "MILLISECONDS",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "delay",
+                  "disabled": false,
+                  "packageName": "Delay",
+                  "uid": "d57b7b7e-2516-4c78-8f7f-e24148ad12fe"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sessionName",
+                      "value": {
+                        "string": "Chrome",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "search",
+                      "value": {
+                        "string": "#button_0 > p:nth-child(3)",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "type",
+                      "value": {
+                        "string": "CSS",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "filename",
+                      "value": {
+                        "string": "c:\\temp\\clicks.png",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "timeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "attribute",
+                      "value": {
+                        "string": "className",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "elementdetails",
+                  "disabled": false,
+                  "packageName": "WebAutomation",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "details"
+                  },
+                  "uid": "073ded20-40d6-4c06-ad23-447690584971"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "delayType",
+                      "value": {
+                        "string": "REGULAR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delayTime",
+                      "value": {
+                        "number": "3000",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "timeUnit",
+                      "value": {
+                        "string": "MILLISECONDS",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "delay",
+                  "disabled": false,
+                  "packageName": "Delay",
+                  "uid": "07799884-0fdf-4a65-a296-a48984b1169f"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "2edc2903-5b44-45b1-a93e-7b1a17c72843"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "9dbb1699-0b71-4363-a445-65bfe4114f29"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Table",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "url",
+                  "value": {
+                    "string": "https://www.w3schools.com/html/html_tables.asp",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "openpage",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "4dae1bb6-67d7-423a-bc95-ef45c57fb845"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Chrome",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "search",
+                  "value": {
+                    "string": "#customers",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "gettablecontent",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "table"
+              },
+              "uid": "99f03c86-cfda-42ec-9607-5ffbfad69260"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "table",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "table"
+                  }
+                },
+                {
+                  "name": "rowCountSelection",
+                  "value": {
+                    "string": "totalRowSelection",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "getNumberOfRows",
+              "disabled": false,
+              "packageName": "DataTable",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "rows"
+              },
+              "uid": "de068b5b-e175-4f9b-ae15-a45b627110df"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "table",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "table"
+                  }
+                },
+                {
+                  "name": "columnCountSelection",
+                  "value": {
+                    "string": "totalColumnSelection",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "getNumberOfColumns",
+              "disabled": false,
+              "packageName": "DataTable",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "columns"
+              },
+              "uid": "72f87389-8e5f-4052-9a79-ad1a6b124ff1"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Table ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "Columns : $columns.Number:toString$ , Rows : $rows.Number:toString$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "messageBox",
+              "disabled": false,
+              "packageName": "MessageBox",
+              "uid": "119b53d9-c9b5-452e-b467-9b2600d4449c"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "c8e3b069-c8e0-413b-93f1-db6d78ee1f7c"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "Chrome",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "closeBrowser",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "EndSessionWebAutomation",
+          "disabled": false,
+          "packageName": "WebAutomation",
+          "uid": "8c724555-e369-46ba-8b92-948e173c0f44"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "09151316-c648-4e15-93b6-a8ea70e58f8c"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Edge",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "Edge",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "browser",
+              "value": {
+                "string": "Edge",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "width",
+              "value": {
+                "number": "1920",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "height",
+              "value": {
+                "number": "1080",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "headless",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "profilepath",
+              "value": {
+                "string": "c:\\temp\\edgeeuser",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "library",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "StartSessionWebAutomation",
+          "disabled": false,
+          "packageName": "WebAutomation",
+          "uid": "5c804af3-1d39-473b-97e0-365cf10a2c30"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Drag and Drop",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "url",
+                  "value": {
+                    "string": "https://www.globalsqa.com/demo-site/draganddrop/#Photo%20Manager",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "openpage",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "43132e33-d8f5-4ca9-ab6e-eaf996062f35"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "search",
+                  "value": {
+                    "string": "#post-2669 > div.twelve.columns > div > div > div.single_tab_div.resp-tab-content.resp-tab-content-active > p > iframe",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "selectframe",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "dcdb8236-9b94-4a0e-8baa-95a2b874f22d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "fromelement",
+                  "value": {
+                    "string": "#gallery > li:nth-child(1) > img",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "toelement",
+                  "value": {
+                    "string": "#trash",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "dragdrop",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "f90a6b7e-9af0-4f5d-98ab-104934aab800"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "500",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "7c393dd8-fc06-4945-9581-58754b9912a7"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "fromelement",
+                  "value": {
+                    "string": "#gallery > li:nth-child(1) > img",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "toelement",
+                  "value": {
+                    "string": "#trash",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "dragdrop",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "f1f8bcc9-49d4-42d5-bf06-22c476958b10"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "500",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "70aab906-cd68-4bf3-8eb5-99cea00f5ccd"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "fromelement",
+                  "value": {
+                    "string": "#gallery > li:nth-child(1) > img",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "toelement",
+                  "value": {
+                    "string": "#trash",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "dragdrop",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "108beec9-72db-4b28-8686-19b563db6570"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "500",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "ba93df0c-8239-47b7-8796-30a716ffd7fc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "fromelement",
+                  "value": {
+                    "string": "#gallery > li:nth-child(1) > img",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "toelement",
+                  "value": {
+                    "string": "#trash",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "CSS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "dragdrop",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "237b11ad-8ee9-4e9e-a94c-eeadf2a5339a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3000",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "b0215f7b-aa67-4e1c-8111-9112af7eeda8"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "5473e841-c2ff-4e27-bff6-727434bcf9eb"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Google Search",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "url",
+                  "value": {
+                    "string": "https://www.google.com/",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "openpage",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "caef2518-7723-4000-856e-81da09c084e0"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "search",
+                  "value": {
+                    "string": "/html/body/div[1]/div[3]/form/div[1]/div[1]/div[1]/div/div[2]/input",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "XPATH",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "newvalue",
+                  "value": {
+                    "string": "Automation Anywhere Bot Store",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "title",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "setvalueelement",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "3ec0baa8-5044-494e-a180-9f1be448630c"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "search",
+                  "value": {
+                    "string": "document.querySelector(\"body > div.L3eUgb > div.o3j99.ikrT4e.om7nvf > form > div:nth-child(1) > div.A8SBwf > div.FPdoLc.lJ9FBc > center > input.gNO89b\")",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "type",
+                  "value": {
+                    "string": "JS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "clicktype",
+                  "value": {
+                    "string": "Click",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "timeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "attribute",
+                  "value": {
+                    "string": "className",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "clickelement",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "uid": "4e74c41d-2dd2-4a59-8a0c-caf518eb4fa8"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "getcurrentsession",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "prompt-assignment"
+              },
+              "uid": "b483fcff-bbf8-43e1-bac3-033b666bad16"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sessionName",
+                  "value": {
+                    "string": "Edge",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "getcurrenturl",
+              "disabled": false,
+              "packageName": "WebAutomation",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "prompt-assignment"
+              },
+              "uid": "ff5068a9-63f3-413d-b3a8-7334b1dd7636"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "delayType",
+                  "value": {
+                    "string": "REGULAR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "delayTime",
+                  "value": {
+                    "number": "3000",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "timeUnit",
+                  "value": {
+                    "string": "MILLISECONDS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "delay",
+              "disabled": false,
+              "packageName": "Delay",
+              "uid": "d6d81afb-6b81-43df-a99d-77f7eb5d08fe"
+            },
+            {
+              "attributes": [],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sessionName",
+                      "value": {
+                        "string": "Edge",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "url",
+                      "value": {
+                        "string": "https://mousetester.com/",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "openpage",
+                  "disabled": false,
+                  "packageName": "WebAutomation",
+                  "uid": "b90b4f72-e16c-4cf4-9eba-ef81ec23c888"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sessionName",
+                      "value": {
+                        "string": "Edge",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "search",
+                      "value": {
+                        "string": "#clickMe",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "type",
+                      "value": {
+                        "string": "CSS",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "clicktype",
+                      "value": {
+                        "string": "DoubleClick",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "timeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "attribute",
+                      "value": {
+                        "string": "className",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "clickelement",
+                  "disabled": false,
+                  "packageName": "WebAutomation",
+                  "uid": "97ff58f1-4c6f-46eb-bd86-ac232bfb00dc"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "delayType",
+                      "value": {
+                        "string": "REGULAR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delayTime",
+                      "value": {
+                        "number": "1000",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "timeUnit",
+                      "value": {
+                        "string": "MILLISECONDS",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "delay",
+                  "disabled": false,
+                  "packageName": "Delay",
+                  "uid": "c9205190-e810-4beb-b589-66aacfd9a510"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sessionName",
+                      "value": {
+                        "string": "Edge",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "search",
+                      "value": {
+                        "string": "#button_0 > p:nth-child(3)",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "type",
+                      "value": {
+                        "string": "CSS",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "filename",
+                      "value": {
+                        "string": "c:\\temp\\clicks.png",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "timeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "attribute",
+                      "value": {
+                        "string": "className",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "elementdetails",
+                  "disabled": false,
+                  "packageName": "WebAutomation",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "details"
+                  },
+                  "uid": "ed9c8751-af4c-4ff1-9992-6c108d520653"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "delayType",
+                      "value": {
+                        "string": "REGULAR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "delayTime",
+                      "value": {
+                        "number": "3000",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "timeUnit",
+                      "value": {
+                        "string": "MILLISECONDS",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "delay",
+                  "disabled": false,
+                  "packageName": "Delay",
+                  "uid": "8cd02cb7-1572-46e9-8313-f35d309bdab8"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "52616dea-4df7-4039-a8cc-7c9966e33bdf"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "b9237dae-5ffb-4c50-967e-52a57b66638b"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sessionName",
+              "value": {
+                "string": "Edge",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "closeBrowser",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "EndSessionWebAutomation",
+          "disabled": false,
+          "packageName": "WebAutomation",
+          "uid": "48aee590-966b-426a-87fe-0f8dd1348be1"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "d63ba610-a3a3-4e3b-ba40-8075f33c9a05"
+    }
+  ],
+  "packages": [
+    {
+      "name": "DataTable",
+      "version": "4.3.0-20220118-154751"
+    },
+    {
+      "name": "Delay",
+      "version": "3.4.0-20220118-133635"
+    },
+    {
+      "name": "MessageBox",
+      "version": "3.3.0-20220118-133818"
+    },
+    {
+      "name": "Number",
+      "version": "3.4.0-20220118-133837"
+    },
+    {
+      "name": "Step",
+      "version": "2.1.0-20220201-190609"
+    },
+    {
+      "name": "WebAutomation",
+      "version": "4.0.10-20220518-124540"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "1",
+    "improvedNumberSupport": false,
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "details",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "table",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "rows",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "columns",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    }
+  ],
+  "workItemTemplateName": null
+}

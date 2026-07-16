@@ -1,0 +1,840 @@
+{
+  "run_id": "runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo",
+  "created_at": "2026-07-15T16:46:39.391951+00:00",
+  "runner": "runner_v2",
+  "base_url": "http://127.0.0.1:8000",
+  "agent_version": "v2",
+  "input": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0137_sendemailusingsmtp-demo__SendEmailUsingSMTP_Demo.pdf",
+  "frontend_equivalent_flow": [
+    "POST /api/documents",
+    "POST /api/documents/{id}/parse",
+    "POST /api/sessions/{session_id}/turn analyze",
+    "POST /api/sessions/{session_id}/turn recommend"
+  ],
+  "finished_at": "2026-07-15T16:49:37.084957+00:00",
+  "status": "ok",
+  "session_id": "abb659b4-36dc-482b-ad50-b8dd3c28d857",
+  "document_id": "2960f86f-e189-4da5-8fec-7016729442ee",
+  "steps": [
+    {
+      "name": "uploadDocument",
+      "started_at": "2026-07-15T16:46:39.392022+00:00",
+      "finished_at": "2026-07-15T16:46:41.503920+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents",
+        "file": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0137_sendemailusingsmtp-demo__SendEmailUsingSMTP_Demo.pdf"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 16:46:39 GMT",
+          "server": "uvicorn",
+          "content-length": "300",
+          "content-type": "application/json",
+          "x-request-id": "22a30a3e359d",
+          "connection": "close"
+        },
+        "data": {
+          "id": "2960f86f-e189-4da5-8fec-7016729442ee",
+          "session_id": "abb659b4-36dc-482b-ad50-b8dd3c28d857",
+          "filename": "0137_sendemailusingsmtp-demo__SendEmailUsingSMTP_Demo.pdf",
+          "size_bytes": 46266,
+          "status": "uploaded",
+          "error": null,
+          "page_count": null,
+          "warnings": [],
+          "created_at": "2026-07-15T16:46:40.650952+00:00"
+        }
+      },
+      "events_log": null,
+      "error": null
+    },
+    {
+      "name": "parseDocument",
+      "started_at": "2026-07-15T16:46:41.509122+00:00",
+      "finished_at": "2026-07-15T16:46:42.733346+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents/2960f86f-e189-4da5-8fec-7016729442ee/parse"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 16:46:41 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "32c29baa1815",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 1,
+          "done": 1
+        },
+        "duration_seconds": 1.224,
+        "final_event": {
+          "event": "done",
+          "stage": "parsing",
+          "message": "파싱 완료",
+          "data": {
+            "id": "2960f86f-e189-4da5-8fec-7016729442ee",
+            "session_id": "abb659b4-36dc-482b-ad50-b8dd3c28d857",
+            "filename": "0137_sendemailusingsmtp-demo__SendEmailUsingSMTP_Demo.pdf",
+            "size_bytes": 46266,
+            "status": "parsed",
+            "error": null,
+            "page_count": 2,
+            "warnings": [],
+            "created_at": "2026-07-15T16:46:40.650952+00:00"
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo\\02_parseDocument.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnAnalyze",
+      "started_at": "2026-07-15T16:46:42.736881+00:00",
+      "finished_at": "2026-07-15T16:48:08.391821+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/abb659b4-36dc-482b-ad50-b8dd3c28d857/turn",
+        "json": {
+          "message": "이 업무정의서를 분석해서 자동화 흐름도까지 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 16:46:42 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "0c5a429bee26",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 17,
+          "partial": 13,
+          "done": 1
+        },
+        "duration_seconds": 85.655,
+        "final_event": {
+          "event": "done",
+          "stage": "agent",
+          "message": "완료",
+          "data": {
+            "type": "recommendation",
+            "answer": "1개 업무 단계의 자동화 흐름도를 만들었어요. 참고: Bot Store의 'Send Email using SMTP config'를 직접 여는 전용 A360 액션은 확인되지 않아, 실제 발송은 Email 패키지의 전달 작업으로 대체했다. · 메일 필드 중 fromAddress, subject, body, attachment의 실제 값은 문서에 없어 확정할 수 없으므로 입력 변수로만 정의했다. · CC/BCC를 '비워 둔다'는 요구는 해당 파라미터를 null로 두는 방식으로 반영했다. 도우미가 빈 문자열을 강제하는 경우에는 사용자가 값 형식을 조정해야 한다. · 이 설계에는 세션 열기/닫기 전용 액션이 확인되지 않아, 실제 세션 관리가 필요한 경우 사용 중인 SMTP 도우미 커넥터의 세션 액션으로 치환해야 한다. (검수에서 해소하지 못한 위반 1건이 있어요 — 흐름도에서 확인해 주세요.)",
+            "sources": [
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 Try 작업",
+                "url": "",
+                "score": 0.58984375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Email - 전달 작업",
+                "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/mos-apple-mail-package/apple-mail-forward",
+                "score": 0.734375
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": "",
+                "score": 0.6328125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 최종 작업",
+                "url": "",
+                "score": 0.77734375
+              }
+            ],
+            "session_id": "abb659b4-36dc-482b-ad50-b8dd3c28d857",
+            "analysis_id": "a53cc34a-fd9a-4b64-9a06-2260daca3668",
+            "analysis_result": {
+              "schema_version": "1.0",
+              "document_title": "업무 정의서",
+              "summary": "Bot Store의 SMTP 도우미 컴포넌트를 불러와 발신자, 수신자, 제목, 본문, 첨부 인수를 준비한 뒤 이메일 발송 메서드를 호출하고 결과 출력을 캡처한다. 발송 실패는 예외로 처리하며, 처리 후에는 도우미 컴포넌트 세션을 종료한다.",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "order": 1,
+                  "name": "SMTP 도우미 컴포넌트 열기",
+                  "description": "Bot Store 저장소의 `Send Email using SMTP config` 경로에서 SMTP 도우미 컴포넌트를 연다.",
+                  "inputs": [
+                    "Bot Store 저장소 경로",
+                    "Send Email using SMTP config"
+                  ],
+                  "outputs": [
+                    "SMTP 도우미 컴포넌트"
+                  ],
+                  "systems": [
+                    "Bot Store 저장소",
+                    "SMTP 도우미 컴포넌트"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "1. Bot Store 저장소의 `Send Email using SMTP config` 경로에서 SMTP 도우미 컴포넌트를 연다."
+                  }
+                },
+                {
+                  "step_id": "step-2",
+                  "order": 2,
+                  "name": "이름 있는 컴포넌트 세션 사용",
+                  "description": "도우미를 호출할 때 확정적으로 닫을 수 있도록 이름 있는 컴포넌트 세션을 사용한다.",
+                  "inputs": [
+                    "SMTP 도우미 컴포넌트"
+                  ],
+                  "outputs": [
+                    "이름 있는 컴포넌트 세션"
+                  ],
+                  "systems": [
+                    "SMTP 도우미 컴포넌트"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "2. 도우미를 호출하고 확정적으로 닫을 수 있도록 이름 있는 컴포넌트 세션을 사용한다."
+                  }
+                },
+                {
+                  "step_id": "step-3",
+                  "order": 3,
+                  "name": "발신자 주소 설정",
+                  "description": "메일 필드의 발신자 주소를 `sikhapauk@gmail.com`으로 설정한다.",
+                  "inputs": [
+                    "sikhapauk@gmail.com"
+                  ],
+                  "outputs": [
+                    "발신자 주소"
+                  ],
+                  "systems": [
+                    "SMTP 메일 필드"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "1. 발신자 주소를 `sikhapauk@gmail.com`으로 설정한다."
+                  }
+                },
+                {
+                  "step_id": "step-4",
+                  "order": 4,
+                  "name": "수신자 주소 설정",
+                  "description": "메일 필드의 수신자를 `sikha.p@automationanywhere.com`과 `sikhapoyyil@gmail.com`으로 설정한다.",
+                  "inputs": [
+                    "sikha.p@automationanywhere.com",
+                    "sikhapoyyil@gmail.com"
+                  ],
+                  "outputs": [
+                    "수신자 목록"
+                  ],
+                  "systems": [
+                    "SMTP 메일 필드"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "2. 수신자는 `sikha.p@automationanywhere.com`과 `sikhapoyyil@gmail.com`으로 설정한다."
+                  }
+                },
+                {
+                  "step_id": "step-5",
+                  "order": 5,
+                  "name": "CC와 BCC 비우기",
+                  "description": "도우미가 명시적인 빈 값을 요구하지 않는 한 CC와 BCC를 비워 둔다.",
+                  "inputs": [
+                    "도우미의 빈 값 요구 여부"
+                  ],
+                  "outputs": [
+                    "CC/BCC 미입력 상태"
+                  ],
+                  "systems": [
+                    "SMTP 메일 필드"
+                  ],
+                  "branching": "도우미가 명시적인 빈 값을 요구하는지에 따라 CC와 BCC 입력 방식이 달라짐",
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "3. CC와 BCC는 도우미가 명시적인 빈 값을 요구하지 않는 한 비워 둔다."
+                  }
+                },
+                {
+                  "step_id": "step-6",
+                  "order": 6,
+                  "name": "제목·본문·첨부 인수 준비",
+                  "description": "제목, 본문, 첨부 관련 인수를 문자열 입력값으로 준비한다.",
+                  "inputs": [
+                    "제목 인수",
+                    "본문 인수",
+                    "첨부 관련 인수"
+                  ],
+                  "outputs": [
+                    "문자열 입력값으로 준비된 메일 인수"
+                  ],
+                  "systems": [
+                    "SMTP 메일 필드"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 1,
+                    "snippet": "4. 제목, 본문, 첨부 관련 인수를 문자열 입력값으로 준비한다."
+                  }
+                },
+                {
+                  "step_id": "step-7",
+                  "order": 7,
+                  "name": "이메일 발송 메서드 호출",
+                  "description": "이메일을 보내는 도우미 메서드를 호출하고 반환 출력을 캡처한다.",
+                  "inputs": [
+                    "준비된 메일 인수",
+                    "이름 있는 컴포넌트 세션"
+                  ],
+                  "outputs": [
+                    "반환 출력",
+                    "실행 출력 변수"
+                  ],
+                  "systems": [
+                    "SMTP 도우미 컴포넌트",
+                    "실행 출력 변수"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "1. 이메일을 보내는 도우미 메서드를 호출하고 반환 출력을 캡처한다."
+                  }
+                },
+                {
+                  "step_id": "step-8",
+                  "order": 8,
+                  "name": "발송 실패 예외 처리",
+                  "description": "도우미 호출 실���는 실행 담당자가 볼 수 있는 예외로 처리한다.",
+                  "inputs": [
+                    "도우미 호출 실패"
+                  ],
+                  "outputs": [
+                    "실행 담당자가 볼 수 있는 예외"
+                  ],
+                  "systems": [
+                    "SMTP 도우미 컴포넌트"
+                  ],
+                  "branching": "도우미 호출 실패 시 예외 처리",
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "2. 도우미 호출 실패는 실행 담당자가 볼 수 있는 예외로 처리한다."
+                  }
+                },
+                {
+                  "step_id": "step-9",
+                  "order": 9,
+                  "name": "도우미 컴포넌트 세션 닫기",
+                  "description": "발송 시도 후 도우미 컴포넌트 세션을 닫는다.",
+                  "inputs": [
+                    "SMTP 도우미 컴포넌트 세션"
+                  ],
+                  "outputs": [
+                    "닫힌 컴포넌트 세션"
+                  ],
+                  "systems": [
+                    "SMTP 도우미 컴포넌트"
+                  ],
+                  "branching": null,
+                  "evidence": {
+                    "page": 2,
+                    "snippet": "3. 발송 시도 후 도우미 컴포넌트 세션을 닫는다."
+                  }
+                }
+              ],
+              "ambiguities": [
+                "제목, 본문, 첨부 관련 인수의 실제 값은 문서에 없어 확정할 수 없다.",
+                "CC와 BCC를 '비워 둔다'는 것이 완전 미입력인지, 빈 문자열/Null 등 명시적 빈 값이 필요한지는 도우미 동작에 따라 달라진다.",
+                "반환 출력과 실행 출력 변수의 구체적인 형태는 문서에 명시되어 있지 않다.",
+                "Task 3 제목은 '발송 및 종료'이지만 상세 작업 순서는 SMTP 도우미 로드, 메일 필드 준비, 발송 및 종료로 나뉘어 있어 작업 명칭 간 약간의 중복이 있다."
+              ]
+            },
+            "id": "a300c998-fee7-4699-aa45-5f60a1c9ba01",
+            "version": 1,
+            "parent_version": null,
+            "source": "chat",
+            "change_summary": null,
+            "created_at": "2026-07-15T16:48:07.600435+00:00",
+            "recommendation": {
+              "schema_version": "1.0",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "label": "SMTP 메일 보내기 준비",
+                  "description": "이메일 발송에 필요한 SMTP 도우미 세션과 메일 필드 값을 준비한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Error handler",
+                      "action": "errorHandlerTry",
+                      "label": "발송 작업 시도",
+                      "parameters": [],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Email",
+                          "action": "cloudUsingForwardAction",
+                          "label": "SMTP 메일 발송",
+                          "parameters": [
+                            {
+                              "name": "toAddress",
+                              "label": null,
+                              "value": "sikha.p@automationanywhere.com;sikhapoyyil@gmail.com",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "cc",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "bcc",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "attachments",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "message",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "SMTP 도우미를 통해 수신자, CC/BCC, 본문, 첨부를 포함한 이메일 발송을 수행한다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Email - 전달 작업",
+                              "url": "https://docs.automationanywhere.com/r/ko-kr/cloud-build/cloud-work-area/cloud-commands-panel/mos-apple-mail-package/apple-mail-forward",
+                              "score": 0.734375
+                            }
+                          ],
+                          "confidence": 0.73
+                        }
+                      ],
+                      "rationale": "도우미 호출 실패를 예외 처리로 감싸야 하므로 발송 작업을 Try로 보호한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 Try 작업",
+                          "url": "",
+                          "score": 0.58984375
+                        }
+                      ],
+                      "confidence": 0.59
+                    },
+                    {
+                      "order": 2,
+                      "package": "Error handler",
+                      "action": "errorHandlerCatch",
+                      "label": "발송 실패 처리",
+                      "parameters": [
+                        {
+                          "name": "exception",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "assignExceptionMessageTo",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "도우미 호출 실패는 실행 담당자가 볼 수 있는 예외로 처리해야 한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                          "url": "",
+                          "score": 0.6328125
+                        }
+                      ],
+                      "confidence": 0.47
+                    },
+                    {
+                      "order": 3,
+                      "package": "Error handler",
+                      "action": "errorHandlerFinally",
+                      "label": "세션 정리",
+                      "parameters": [],
+                      "children": [],
+                      "rationale": "발송 시도 후 도우미 컴포넌트 세션을 닫아 정리해야 한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 최종 작업",
+                          "url": "",
+                          "score": 0.77734375
+                        }
+                      ],
+                      "confidence": 0.78
+                    }
+                  ]
+                }
+              ],
+              "variables": [
+                {
+                  "name": "smtpSessionName",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "이름 있는 SMTP 도우미 세션 이름"
+                },
+                {
+                  "name": "fromAddress",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "발신자 이메일 주소"
+                },
+                {
+                  "name": "toAddresses",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "수신자 이메일 주소 목록"
+                },
+                {
+                  "name": "emailSubject",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "이메일 제목"
+                },
+                {
+                  "name": "emailBody",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "이메일 본문"
+                },
+                {
+                  "name": "attachmentValue",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "첨부 관련 입력값"
+                },
+                {
+                  "name": "sendResult",
+                  "type": "STRING",
+                  "direction": "output",
+                  "description": "이메일 발송 결과 출력"
+                }
+              ],
+              "notes": "Bot Store의 'Send Email using SMTP config'를 직접 여는 전용 A360 액션은 확인되지 않아, 실제 발송은 Email 패키지의 전달 작업으로 대체했다. · 메일 필드 중 fromAddress, subject, body, attachment의 실제 값은 문서에 없어 확정할 수 없으므로 입력 변수로만 정의했다. · CC/BCC를 '비워 둔다'는 요구는 해당 파라미터를 null로 두는 방식으로 반영했다. 도우미가 빈 문자열을 강제하는 경우에는 사용자가 값 형식을 조정해야 한다. · 이 설계에는 세션 열기/닫기 전용 액션이 확인되지 않아, 실제 세션 관리가 필요한 경우 사용 중인 SMTP 도우미 커넥터의 세션 액션으로 치환해야 한다."
+            },
+            "usage_gauge": {
+              "intake_tokens": 777,
+              "limit_tokens": 6000,
+              "ratio": 0.1295,
+              "compact_recommended": false,
+              "compact_required": false
+            }
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo\\03_turn_analyze.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnRecommend",
+      "started_at": "2026-07-15T16:48:08.396445+00:00",
+      "finished_at": "2026-07-15T16:49:37.079229+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/abb659b4-36dc-482b-ad50-b8dd3c28d857/turn",
+        "json": {
+          "message": "이 업무정의서로 자동화 흐름도 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 16:48:07 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "05772c33a179",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 21,
+          "partial": 4,
+          "done": 1
+        },
+        "duration_seconds": 88.682,
+        "final_event": {
+          "event": "done",
+          "stage": "agent",
+          "message": "완료",
+          "data": {
+            "type": "recommendation",
+            "answer": "1개 업무 단계의 자동화 흐름도를 만들었어요. 참고: SMTP 도우미 전용 카탈로그 액션은 확인되지 않아 Email 패키지의 발송/연결 끊기 액션으로 설계했다. 제목, 본문, 첨부의 실제 값은 문서에 없어 사용자 입력이 필요하다. 반환 출력 캡처 전용 액션은 확인되지 않아 send 액션의 결과를 캡처하는 전제로 구성했다. (검수에서 해소하지 못한 위반 3건이 있어요 — 흐름도에서 확인해 주세요.)",
+            "sources": [
+              {
+                "source_type": "action_schema",
+                "title": "Email - 보내기 작업 사용",
+                "url": "",
+                "score": 0.69140625
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                "url": "",
+                "score": 0.6328125
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Error handler - 오류 처리기의 최종 작업",
+                "url": "",
+                "score": 0.71875
+              },
+              {
+                "source_type": "action_schema",
+                "title": "Email - 연결 끊기 작업",
+                "url": "",
+                "score": 0.6328125
+              }
+            ],
+            "session_id": "abb659b4-36dc-482b-ad50-b8dd3c28d857",
+            "id": "a86e879d-ebb5-42b1-af9a-d1d8a1292872",
+            "version": 2,
+            "parent_version": 1,
+            "source": "chat",
+            "change_summary": null,
+            "created_at": "2026-07-15T16:49:36.297255+00:00",
+            "recommendation": {
+              "schema_version": "1.0",
+              "steps": [
+                {
+                  "step_id": "step-1",
+                  "label": "SMTP 세션으로 메일 발송",
+                  "description": "이름 있는 SMTP 세션을 사용해 메일 발송을 시도하고 결과를 캡처한다.",
+                  "actions": [
+                    {
+                      "order": 1,
+                      "package": "Error handler",
+                      "action": "errorHandlerTry",
+                      "label": "메일 발송 시도",
+                      "parameters": [],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Email",
+                          "action": "cloudUsingSendAction",
+                          "label": "이메일 발송",
+                          "parameters": [
+                            {
+                              "name": "toAddress",
+                              "label": null,
+                              "value": "sikha.p@automationanywhere.com;sikhapoyyil@gmail.com",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "cc",
+                              "label": null,
+                              "value": "",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "bcc",
+                              "label": null,
+                              "value": "",
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "subject",
+                              "label": null,
+                              "value": null,
+                              "value_source": "llm"
+                            },
+                            {
+                              "name": "invalidEmailIdError",
+                              "label": null,
+                              "value": false,
+                              "value_source": "schema_default"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "재사용 가능한 SMTP 컴포넌트를 통해 수신자에게 이메일을 발송하는 핵심 작업이다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Email - 보내기 작업 사용",
+                              "url": "",
+                              "score": 0.69140625
+                            }
+                          ],
+                          "confidence": 0.52
+                        }
+                      ],
+                      "rationale": "발송 실패를 예외로 처리해야 하므로 발송 작업을 Try에 넣는다.",
+                      "sources": [],
+                      "confidence": 0.4
+                    },
+                    {
+                      "order": 2,
+                      "package": "Error handler",
+                      "action": "errorHandlerCatch",
+                      "label": "발송 실패 처리",
+                      "parameters": [
+                        {
+                          "name": "exception",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "continueOnError",
+                          "label": null,
+                          "value": false,
+                          "value_source": "schema_default"
+                        },
+                        {
+                          "name": "assignExceptionMessageTo",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        },
+                        {
+                          "name": "assignLineNumberTo",
+                          "label": null,
+                          "value": null,
+                          "value_source": "llm"
+                        }
+                      ],
+                      "children": [],
+                      "rationale": "도우미 호출 실패는 실행 담당자가 볼 수 있는 예외로 처리해야 한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기에서 작업을 사용하여 자동화 오류 처리",
+                          "url": "",
+                          "score": 0.6328125
+                        }
+                      ],
+                      "confidence": 0.47
+                    },
+                    {
+                      "order": 3,
+                      "package": "Error handler",
+                      "action": "errorHandlerFinally",
+                      "label": "SMTP 세션 종료",
+                      "parameters": [],
+                      "children": [
+                        {
+                          "order": 1,
+                          "package": "Email",
+                          "action": "emailDisconnectAction",
+                          "label": "세션 닫기",
+                          "parameters": [
+                            {
+                              "name": "sessionName",
+                              "label": null,
+                              "value": "smtpSessionName",
+                              "value_source": "llm"
+                            }
+                          ],
+                          "children": [],
+                          "rationale": "발송 시도 후 도우미 컴포넌트 세션을 닫아 정리한다.",
+                          "sources": [
+                            {
+                              "source_type": "action_schema",
+                              "title": "Email - 연결 끊기 작업",
+                              "url": "",
+                              "score": 0.6328125
+                            }
+                          ],
+                          "confidence": 0.47
+                        }
+                      ],
+                      "rationale": "발송 시도 후 도우미 컴포넌트 세션을 닫아야 하므로 Finally에서 정리한다.",
+                      "sources": [
+                        {
+                          "source_type": "action_schema",
+                          "title": "Error handler - 오류 처리기의 최종 작업",
+                          "url": "",
+                          "score": 0.71875
+                        }
+                      ],
+                      "confidence": 0.72
+                    }
+                  ]
+                }
+              ],
+              "variables": [
+                {
+                  "name": "smtpSessionName",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "SMTP 도우미 컴포넌트의 이름 있는 세션명"
+                },
+                {
+                  "name": "mailSubject",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "이메일 제목"
+                },
+                {
+                  "name": "mailBody",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "이메일 본문"
+                },
+                {
+                  "name": "attachmentValue",
+                  "type": "STRING",
+                  "direction": "input",
+                  "description": "첨부 관련 인수 값"
+                },
+                {
+                  "name": "sendResult",
+                  "type": "STRING",
+                  "direction": "output",
+                  "description": "이메일 발송 결과 출력 캡처"
+                }
+              ],
+              "notes": "SMTP 도우미 전용 카탈로그 액션은 확인되지 않아 Email 패키지의 발송/연결 끊기 액션으로 설계했다. 제목, 본문, 첨부의 실제 값은 문서에 없어 사용자 입력이 필요하다. 반환 출력 캡처 전용 액션은 확인되지 않아 send 액션의 결과를 캡처하는 전제로 구성했다."
+            },
+            "usage_gauge": {
+              "intake_tokens": 1026,
+              "limit_tokens": 6000,
+              "ratio": 0.171,
+              "compact_recommended": false,
+              "compact_required": false
+            }
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs__02_0137_sendemailusingsmtp-demo\\04_turn_recommend.events.jsonl",
+      "error": null
+    }
+  ]
+}

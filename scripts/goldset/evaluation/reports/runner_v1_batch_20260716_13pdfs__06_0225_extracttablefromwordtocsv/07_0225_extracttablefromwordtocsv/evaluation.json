@@ -1,0 +1,402 @@
+{
+  "case_id": "07_0225_extracttablefromwordtocsv",
+  "run_id": "runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv",
+  "normalized": {
+    "gold_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\07_0225_extracttablefromwordtocsv\\ExtractTablefromWordtoCSV.goldset.json",
+    "prediction_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend.goldset.json",
+    "gold_source_file": "ExtractTablefromWordtoCSV.json",
+    "prediction_source_file": "runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend.json",
+    "preprocessing": {
+      "excluded_rule": "browser_session_lifecycle_action",
+      "excluded_regex": {
+        "package": "^(web\\s*automation|webautomation|browser|recorder)$",
+        "action": "session"
+      },
+      "excluded_gold_actions": [],
+      "excluded_prediction_actions": [],
+      "excluded_gold_count": 0,
+      "excluded_prediction_count": 0,
+      "action_equivalence_rules_path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\evaluation\\action_equivalence_rules.json",
+      "action_equivalence_member_count": 61
+    },
+    "gold_action_count": 10,
+    "prediction_action_count": 6,
+    "action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 10,
+      "prediction_count": 6
+    },
+    "action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 10,
+      "prediction_count": 6
+    },
+    "canonical_action_sequence": {
+      "lcs": 0,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "gold_count": 10,
+      "prediction_count": 6
+    },
+    "canonical_action_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 10,
+      "prediction_count": 6
+    },
+    "package_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 10,
+      "prediction_count": 6
+    },
+    "package_family_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 10,
+      "prediction_count": 6
+    },
+    "salient_family_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 7,
+      "prediction_count": 5
+    },
+    "adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 11,
+      "prediction_count": 7
+    },
+    "canonical_adjacent_edge_multiset": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 11,
+      "prediction_count": 7
+    },
+    "first_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.assign",
+        "prediction": "Word.mswordOpenDocument"
+      },
+      {
+        "index": 2,
+        "gold": "String.assign",
+        "prediction": "CSV/TXT.cloudOpeningCsvTextFile"
+      },
+      {
+        "index": 3,
+        "gold": "Dictionary.put",
+        "prediction": "File.filePackageGetPathAction"
+      },
+      {
+        "index": 4,
+        "gold": "Dictionary.put",
+        "prediction": "Word.mswordReadTable"
+      },
+      {
+        "index": 5,
+        "gold": "DLL.Open",
+        "prediction": "CSV/TXT.cloudOpeningCsvTextFile"
+      },
+      {
+        "index": 6,
+        "gold": "DLL.Open",
+        "prediction": "Word.mswordReadText"
+      },
+      {
+        "index": 7,
+        "gold": "DLL.Run function",
+        "prediction": null
+      },
+      {
+        "index": 8,
+        "gold": "MessageBox.messageBox",
+        "prediction": null
+      },
+      {
+        "index": 9,
+        "gold": "DLL.Close",
+        "prediction": null
+      },
+      {
+        "index": 10,
+        "gold": "DLL.Close",
+        "prediction": null
+      }
+    ],
+    "first_canonical_mismatches": [
+      {
+        "index": 1,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "Word.mswordOpenDocument"
+      },
+      {
+        "index": 2,
+        "gold": "String.stringPackageAssignAction",
+        "prediction": "CSV/TXT.cloudOpeningCsvTextFile"
+      },
+      {
+        "index": 3,
+        "gold": "Dictionary.dictionaryPut",
+        "prediction": "File.filePackageGetPathAction"
+      },
+      {
+        "index": 4,
+        "gold": "Dictionary.dictionaryPut",
+        "prediction": "Word.mswordReadTable"
+      },
+      {
+        "index": 5,
+        "gold": "DLL.dllPackageOpenAction",
+        "prediction": "CSV/TXT.cloudOpeningCsvTextFile"
+      },
+      {
+        "index": 6,
+        "gold": "DLL.dllPackageOpenAction",
+        "prediction": "Word.mswordReadText"
+      },
+      {
+        "index": 7,
+        "gold": "DLL.Run function",
+        "prediction": null
+      },
+      {
+        "index": 8,
+        "gold": "MessageBox.messageBox",
+        "prediction": null
+      },
+      {
+        "index": 9,
+        "gold": "DLL.dllPackageCloseAction",
+        "prediction": null
+      },
+      {
+        "index": 10,
+        "gold": "DLL.dllPackageCloseAction",
+        "prediction": null
+      }
+    ],
+    "gold_actions_preview": [
+      "String.assign",
+      "String.assign",
+      "Dictionary.put",
+      "Dictionary.put",
+      "DLL.Open",
+      "DLL.Open",
+      "DLL.Run function",
+      "MessageBox.messageBox",
+      "DLL.Close",
+      "DLL.Close"
+    ],
+    "gold_canonical_actions_preview": [
+      "String.stringPackageAssignAction",
+      "String.stringPackageAssignAction",
+      "Dictionary.dictionaryPut",
+      "Dictionary.dictionaryPut",
+      "DLL.dllPackageOpenAction",
+      "DLL.dllPackageOpenAction",
+      "DLL.Run function",
+      "MessageBox.messageBox",
+      "DLL.dllPackageCloseAction",
+      "DLL.dllPackageCloseAction"
+    ],
+    "prediction_actions": [
+      "Word.mswordOpenDocument",
+      "CSV/TXT.cloudOpeningCsvTextFile",
+      "File.filePackageGetPathAction",
+      "Word.mswordReadTable",
+      "CSV/TXT.cloudOpeningCsvTextFile",
+      "Word.mswordReadText"
+    ],
+    "prediction_canonical_actions": [
+      "Word.mswordOpenDocument",
+      "CSV/TXT.cloudOpeningCsvTextFile",
+      "File.filePackageGetPathAction",
+      "Word.mswordReadTable",
+      "CSV/TXT.cloudOpeningCsvTextFile",
+      "Word.mswordReadText"
+    ],
+    "gold_salient_families": [
+      "dictionary",
+      "dictionary",
+      "dll",
+      "dll",
+      "dll",
+      "dll",
+      "dll"
+    ],
+    "prediction_salient_families": [
+      "word",
+      "csv/txt",
+      "word",
+      "csv/txt",
+      "word"
+    ]
+  },
+  "pm4py": {
+    "mode": "actual_pm4py_alignment_conformance",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\07_0225_extracttablefromwordtocsv\\ExtractTablefromWordtoCSV.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 10,
+    "prediction_action_count_after_preprocessing": 6,
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "fitness": 0.0,
+    "precision": 0.0,
+    "raw_fitness": {
+      "percFitTraces": 0.0,
+      "averageFitness": 0.0,
+      "percentage_of_fitting_traces": 0.0,
+      "average_trace_fitness": 0.0,
+      "log_fitness": 0.0
+    }
+  },
+  "pm4py_artifact_check": {
+    "gold_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\07_0225_extracttablefromwordtocsv",
+    "prediction_dir": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv\\converted_recommendation\\pm4py",
+    "gold_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\07_0225_extracttablefromwordtocsv\\ExtractTablefromWordtoCSV.tree.json",
+      "exists": true,
+      "sha256": "4ac6a36f01c4b508edaf06e2e049c7f750ca6f56737804ba4ac9b1956986aa4f",
+      "leaf_count": 10,
+      "labels": [
+        "String.assign",
+        "String.assign",
+        "Dictionary.put",
+        "Dictionary.put",
+        "DLL.Open",
+        "DLL.Open",
+        "DLL.Run function",
+        "MessageBox.messageBox",
+        "DLL.Close",
+        "DLL.Close"
+      ],
+      "operator_counts": {
+        "sequence": 1
+      }
+    },
+    "prediction_tree": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv\\converted_recommendation\\pm4py\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend.tree.json",
+      "exists": true,
+      "sha256": "af2f44eb396a0e1c221422895b0e0330cf86e1d3c46d07bb63f4c7b200b535a3",
+      "leaf_count": 6,
+      "labels": [
+        "Word.mswordOpenDocument",
+        "CSV/TXT.cloudOpeningCsvTextFile",
+        "File.filePackageGetPathAction",
+        "Word.mswordReadTable",
+        "CSV/TXT.cloudOpeningCsvTextFile",
+        "Word.mswordReadText"
+      ],
+      "operator_counts": {
+        "sequence": 2
+      }
+    },
+    "gold_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pm4py_13\\07_0225_extracttablefromwordtocsv\\ExtractTablefromWordtoCSV.pnml",
+      "exists": true,
+      "sha256": "8c35e04ee2e8f9d5f27b3fdfd47d2939a4f573dd3d1a532084325918d4b66dc4",
+      "readable_by_pm4py": true,
+      "places": 11,
+      "transitions": 10,
+      "visible_transitions": 10,
+      "arcs": 20,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "prediction_pnml": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv\\converted_recommendation\\pm4py\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend.pnml",
+      "exists": true,
+      "sha256": "43c84c73593407be6aae1ac180edde36fd2b00d2f98068b4dcc68687fc7349ec",
+      "readable_by_pm4py": true,
+      "places": 7,
+      "transitions": 6,
+      "visible_transitions": 6,
+      "arcs": 12,
+      "initial_marking_size": 1,
+      "final_marking_size": 1
+    },
+    "tree_leaf_count_delta": -4,
+    "tree_hash_equal": false,
+    "pnml_hash_equal": false
+  },
+  "worfbench": {
+    "mode": "actual_worfbench_t_eval_nodes",
+    "gold_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\normalized_workflows_13\\07_0225_extracttablefromwordtocsv\\ExtractTablefromWordtoCSV.goldset.json",
+    "prediction_normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv\\converted_recommendation\\normalized\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend.goldset.json",
+    "gold_action_count_after_preprocessing": 10,
+    "prediction_action_count_after_preprocessing": 6,
+    "gold_worfbench_fidelity": "exact",
+    "prediction_worfbench_fidelity": "exact",
+    "gold_control_flow_types": [],
+    "prediction_control_flow_types": [],
+    "excluded_gold_actions": [],
+    "excluded_prediction_actions": [],
+    "action_equivalence_member_count": 61,
+    "status": "ok",
+    "precision": 0.1667,
+    "recall": 0.0833,
+    "f1_score": 0.1111
+  },
+  "worfbench_diagnostic_artifact_f1": {
+    "gold": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\worfbench_13\\07_0225_extracttablefromwordtocsv\\ExtractTablefromWordtoCSV.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/07_0225_extracttablefromwordtocsv/ExtractTablefromWordtoCSV",
+      "fidelity": "exact",
+      "control_flow_types": []
+    },
+    "prediction": {
+      "path": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv\\converted_recommendation\\worfbench\\runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend.worfbench.json",
+      "exists": true,
+      "record_id": "03_broad_sequential_workflow/runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend/runner_v1_batch_20260716_13pdfs__06_0225_extracttablefromwordtocsv__turnRecommend",
+      "fidelity": "approximated",
+      "control_flow_types": [
+        "container"
+      ]
+    },
+    "node_label_f1": {
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "overlap": 0,
+      "gold_count": 10,
+      "prediction_count": 6
+    },
+    "edge_f1": {
+      "precision": 0.8571428571428571,
+      "recall": 0.5454545454545454,
+      "f1": 0.6666666666666665,
+      "overlap": 6,
+      "gold_count": 11,
+      "prediction_count": 7
+    },
+    "gold_node_count": 10,
+    "prediction_node_count": 6,
+    "gold_edge_count": 11,
+    "prediction_edge_count": 7
+  }
+}

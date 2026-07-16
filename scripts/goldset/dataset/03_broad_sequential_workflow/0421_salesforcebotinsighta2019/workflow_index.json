@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0421_salesforcebotinsighta2019",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "SalesforceBotInsightA2019",
+      "manual_dependencies": [],
+      "output_file": "workflows/SalesforceBotInsightA2019.json",
+      "scanned_dependencies": []
+    }
+  ]
+}

@@ -1,0 +1,332 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "taskbot",
+          "value": {
+            "taskbotFile": {
+              "string": "repository:///Automation%20Anywhere/Bot%20Store/OraclePRCreation-OpsVeda/OraclePurchaseRequisitionCreationRRM",
+              "type": "FILE"
+            },
+            "taskbotInput": {
+              "dictionary": [
+                {
+                  "key": "path_to_chrome_rrm",
+                  "value": {
+                    "expression": "$path_to_chrome_parent$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "params_for_chrome_rrm",
+                  "value": {
+                    "expression": "$params_to_chrome_parent$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "type": "DICTIONARY"
+            },
+            "type": "TASKBOT"
+          }
+        },
+        {
+          "name": "repeatOption",
+          "value": {
+            "string": "DO_NOT_REPEAT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayNextRepetition",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "continueOnError",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "runTask",
+      "disabled": false,
+      "packageName": "TaskBot",
+      "uid": "aa764070-26b2-4128-b8a7-689ab1a1da9f"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "2",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "302d74e6-4596-4c80-92fc-699dae57ffe3"
+    },
+    {
+      "attributes": [
+        {
+          "name": "taskbot",
+          "value": {
+            "taskbotFile": {
+              "string": "repository:///Automation%20Anywhere/Bot%20Store/OraclePRCreation-OpsVeda/OraclePurchaseRequisitionCreationExcelOps",
+              "type": "FILE"
+            },
+            "taskbotInput": {
+              "dictionary": [
+                {
+                  "key": "excel_file_path",
+                  "value": {
+                    "expression": "$path_to_excel_parent$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "type": "DICTIONARY"
+            },
+            "type": "TASKBOT"
+          }
+        },
+        {
+          "name": "repeatOption",
+          "value": {
+            "string": "DO_NOT_REPEAT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayNextRepetition",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "continueOnError",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "runTask",
+      "disabled": false,
+      "packageName": "TaskBot",
+      "uid": "bb6d90c0-00b0-4237-84cc-56313c5d1818"
+    },
+    {
+      "attributes": [
+        {
+          "name": "delayType",
+          "value": {
+            "string": "REGULAR",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayTime",
+          "value": {
+            "number": "2",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "timeUnit",
+          "value": {
+            "string": "SECONDS",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "delay",
+      "disabled": false,
+      "packageName": "Delay",
+      "uid": "a3b16dda-22d6-4438-ac49-878213863e69"
+    },
+    {
+      "attributes": [
+        {
+          "name": "taskbot",
+          "value": {
+            "taskbotFile": {
+              "string": "repository:///Automation%20Anywhere/Bot%20Store/OraclePRCreation-OpsVeda/OraclePurchaseRequisitionCreationPRinOracle",
+              "type": "FILE"
+            },
+            "taskbotInput": {
+              "dictionary": [
+                {
+                  "key": "oracle_ie_path",
+                  "value": {
+                    "expression": "$path_to_ie_oracle_parent$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "excel_file_path_for_oracle",
+                  "value": {
+                    "expression": "$path_to_excel_oracle_parent$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "key": "oracle_link",
+                  "value": {
+                    "expression": "$link_to_oracle_parent$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "type": "DICTIONARY"
+            },
+            "type": "TASKBOT"
+          }
+        },
+        {
+          "name": "repeatOption",
+          "value": {
+            "string": "DO_NOT_REPEAT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delayNextRepetition",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "continueOnError",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "runTask",
+      "disabled": false,
+      "packageName": "TaskBot",
+      "uid": "6171cdd6-646b-4867-b863-71c68cad35d3"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Delay",
+      "version": "2.2.0-20200831-031026"
+    },
+    {
+      "name": "TaskBot",
+      "version": "2.0.1-20200907-072949"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "path_to_chrome_parent",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "params_to_chrome_parent",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "path_to_excel_parent",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "path_to_ie_oracle_parent",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "path_to_excel_oracle_parent",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "link_to_oracle_parent",
+      "output": true,
+      "readOnly": false,
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

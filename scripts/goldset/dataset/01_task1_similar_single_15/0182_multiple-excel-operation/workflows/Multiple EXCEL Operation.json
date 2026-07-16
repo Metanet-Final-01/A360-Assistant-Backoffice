@@ -1,0 +1,3912 @@
+{
+  "breakpoints": [],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "Multiple Excel Operations Bot",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "440d7b99-f69f-4907-bdcb-13e30a603b96"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Approot Creation",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Approot creation C:\\ProgramData\\AutomationAnywhere\\Bots\\Multiple EXCEL Operations Bot",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "ac9020f1-0d33-4baa-baf9-6a8f17239a0c"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Assigning the path values to a string variable",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "string": "C:\\ProgramData\\AutomationAnywhere\\Bots\\Multiple EXCEL Operations Bot",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "RootDirectory"
+              },
+              "uid": "101b770e-51d6-47bc-b71a-179e8bc50cc4"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$RootDirectory$/Logs",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "LogFolder"
+              },
+              "uid": "1139ac28-52ce-498a-95d6-8f341677d34f"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$LogFolder$/Log_File.csv",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "RunLogPath"
+              },
+              "uid": "6bb89734-b39c-49b8-b90d-d07706088e7e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$RootDirectory$/Output",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "Output"
+              },
+              "uid": "bf541080-801d-4007-a3c7-456622049b8d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "packageName": "System",
+                    "type": "VARIABLE",
+                    "variableName": "Date"
+                  }
+                },
+                {
+                  "name": "selectPattern",
+                  "value": {
+                    "string": "PREBUILT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "preBuiltPattern",
+                  "value": {
+                    "string": "RFC_1123_DATE_TIME",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "toString",
+              "disabled": false,
+              "packageName": "Datetime",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "presentDate"
+              },
+              "uid": "3680d6ba-764b-49e6-b8d8-5c0fda690b3a"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "ce2d10f5-5ef7-41e6-a42b-5ddd7fda44e9"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Check for folder exist",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$RootDirectory$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderDoesNotExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "Approot already exist",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "805d6cf1-4dc9-455b-81b7-644ced764cec"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "aa053781-f290-4281-b032-56d9a7ede942"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Creating approot folder",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "95e89859-81e7-4b14-a6b8-b780e8ab6982"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$RootDirectory$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "createFolder",
+                  "disabled": false,
+                  "packageName": "Folder",
+                  "uid": "d0dc88a1-5b69-46dc-869c-a21e5def3bd6"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "001f3aef-cc1a-4fdb-8fbd-6136cacc0bc4"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Log File Creation",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "e1ceab22-54e8-4640-9829-a4206af3b160"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$LogFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderDoesNotExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "folder already exist",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "02fda5cb-c66c-44b2-bc64-405dd6ffcdff"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "4effb711-a93a-481e-83d7-1344e6c0aa61"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$LogFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "createFolder",
+                  "disabled": false,
+                  "packageName": "Folder",
+                  "uid": "4d13bc3e-6191-4f8a-a271-e12e02b3e18a"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "7a7e07bd-2914-4197-8178-3bec6739ab8f"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$RunLogPath$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "fileNotExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "file already exist",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "ec51d4e3-8a37-441e-a7a5-8030f12c519b"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "87a71429-c29a-41ed-a43c-6e8ee19cb992"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$RunLogPath$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "createFile",
+                  "disabled": false,
+                  "packageName": "File",
+                  "uid": "685d61ae-b593-4a74-a06f-054ae83e22eb"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$LogFolder$/Log_File.csv",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "string": "\"Timestamp\" , \"System\" , \"TaskName\" , \"Error Message\" , \"Error Line Number\"",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "logToFile",
+                  "disabled": false,
+                  "packageName": "LogToFile",
+                  "uid": "86277aff-9a64-4a27-bb4a-3bdf04620166"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "b7640571-3aab-4f49-a7a9-1dc077eccd3f"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$Output$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderDoesNotExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "folder already exist",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "24cc889b-009f-403b-9d9e-01a10305e236"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "0e456ba4-120c-4d69-8162-8dcfbf50856f"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Output folder creation",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "491dd932-698f-4d8c-89cb-8d6cbf884c2b"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$Output$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "createFolder",
+                  "disabled": false,
+                  "packageName": "Folder",
+                  "uid": "0e93fbe9-946a-4ce9-8032-207e820ad568"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "63dd10ef-9584-4161-8842-879d1397a54c"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "ddf2622f-9e8b-4481-aa50-85c2f419eb08"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "75b0af92-56e5-4c56-8cd6-6e0db0b39f4c"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Catching all Errors while executing the bot",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "9c114da8-6e57-4bee-8134-83045b19e1b7"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "Error Message : $errorMessage$ , $ErrorLine-Number$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "messageBox",
+              "disabled": false,
+              "packageName": "MessageBox",
+              "uid": "7e5f0e0c-e5e7-443c-99a7-e42aec6e5bfe"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "errorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "errorMessage"
+            }
+          },
+          "uid": "f18edb49-ddd0-4ce8-bd1c-9d543395b8ed"
+        },
+        {
+          "children": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$errorLineNumber$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "input",
+                          "value": {
+                            "expression": "$errorLineNumber$",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "numFormatDigits",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "commandName": "toString",
+                      "disabled": false,
+                      "packageName": "Number",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "ErrorLine-Number"
+                      },
+                      "uid": "d96ff35a-2805-4811-b3cc-d761b3e4e3c2"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "Logging error to file matching",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "df714b44-f6d3-451d-aebc-ed3246b607bd"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$LogFolder$/Log_File.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "$presentDate$,$System:Machine$,$System:AATaskName$,$errorMessage$,$errorLineNumber.Number:toString$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "logToFile",
+                      "disabled": false,
+                      "packageName": "LogToFile",
+                      "uid": "ebbe760d-4947-4161-80e0-88636df7c2fa"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "0e39619f-5c2d-47c4-8664-03054263d540"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "$errorLineNumber$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "numFormatDigits",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "toString",
+                  "disabled": false,
+                  "packageName": "Number",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "ErrorLine-Number"
+                  },
+                  "uid": "372c95ab-851b-456b-90bf-57315f348a6d"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Logging error to file matching",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "2331c1dc-8219-44d8-9564-61d15c587736"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$LogFolder$/Log_File.csv",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "$presentDate$,$System:Machine$,$System:AATaskName$,All actions are completed,$errorLineNumber.Number:toString$ ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "logToFile",
+                  "disabled": false,
+                  "packageName": "LogToFile",
+                  "uid": "d87093a1-75dd-4bca-b467-81f68db8b906"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "dfc0de07-5771-4a9c-accd-ef8841bd96eb"
+            }
+          ],
+          "commandName": "finally",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "63a99c7e-146d-45b3-b64d-9a937d7143f1"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Bot Logic",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Main Form",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "formVar",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "fMainForm"
+                      }
+                    },
+                    {
+                      "name": "alwaysOnTop",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "uiFormDisplay",
+                  "disabled": false,
+                  "packageName": "Forms",
+                  "uid": "411abbcf-e53d-41cf-8589-6c3ea3430a0c"
+                },
+                {
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "formId",
+                              "value": {
+                                "type": "VARIABLE",
+                                "variableName": "fMainForm"
+                              }
+                            },
+                            {
+                              "name": "formElementId",
+                              "value": {
+                                "formElementId": "Button0",
+                                "formElementType": "Button",
+                                "type": "FORMELEMENT"
+                              }
+                            },
+                            {
+                              "name": "clickAction",
+                              "value": {
+                                "string": "onclick",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "name": "trigger",
+                          "value": {
+                            "packageName": "Forms",
+                            "triggerName": "formEvents",
+                            "type": "TRIGGER"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "formVar",
+                              "value": {
+                                "type": "VARIABLE",
+                                "variableName": "fMainForm"
+                              }
+                            },
+                            {
+                              "name": "formElementId",
+                              "value": {
+                                "formElementId": "File0",
+                                "formElementType": "File",
+                                "type": "FORMELEMENT"
+                              }
+                            }
+                          ],
+                          "commandName": "uiformGetValue",
+                          "disabled": false,
+                          "packageName": "Forms",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "sInputFilePath"
+                          },
+                          "uid": "0ac8f11e-3016-4ef2-b301-0febac50beb2"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "formVar",
+                              "value": {
+                                "type": "VARIABLE",
+                                "variableName": "fMainForm"
+                              }
+                            },
+                            {
+                              "name": "formElementId",
+                              "value": {
+                                "formElementId": "Dropdown0",
+                                "formElementType": "Dropdown",
+                                "type": "FORMELEMENT"
+                              }
+                            }
+                          ],
+                          "commandName": "uiformGetValue",
+                          "disabled": false,
+                          "packageName": "Forms",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "sExcelOperations"
+                          },
+                          "uid": "e2604a9e-2f99-46f6-959a-9a331197c03a"
+                        },
+                        {
+                          "commandName": "TriggerLoop.commands.break",
+                          "disabled": false,
+                          "packageName": "TriggerLoop",
+                          "uid": "19905346-7edf-4da9-864f-52801a216978"
+                        }
+                      ],
+                      "commandName": "TriggerLoop.commands.handle",
+                      "disabled": false,
+                      "packageName": "TriggerLoop",
+                      "uid": "bed6853e-a543-47e2-b0bc-857f479523b5"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "formId",
+                              "value": {
+                                "type": "VARIABLE",
+                                "variableName": "fMainForm"
+                              }
+                            },
+                            {
+                              "name": "formElementId",
+                              "value": {
+                                "formElementId": "Button1",
+                                "formElementType": "Button",
+                                "type": "FORMELEMENT"
+                              }
+                            },
+                            {
+                              "name": "clickAction",
+                              "value": {
+                                "string": "onclick",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "name": "trigger",
+                          "value": {
+                            "packageName": "Forms",
+                            "triggerName": "formEvents",
+                            "type": "TRIGGER"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "title",
+                              "value": {
+                                "string": "Automation Anywhere Enterprise Client",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "content",
+                              "value": {
+                                "string": "The bot canceled",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "scrollLines",
+                              "value": {
+                                "number": "30",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "closeMsgBox",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "timeOut",
+                              "value": {
+                                "number": "3",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "commandName": "messageBox",
+                          "disabled": false,
+                          "packageName": "MessageBox",
+                          "uid": "4897d414-8238-4d1c-b26e-6e3845d72737"
+                        },
+                        {
+                          "commandName": "stopTask",
+                          "disabled": false,
+                          "packageName": "TaskBot",
+                          "uid": "b9516ae5-87db-4c01-bea0-41db5fb1dbb8"
+                        }
+                      ],
+                      "commandName": "TriggerLoop.commands.handle",
+                      "disabled": false,
+                      "packageName": "TriggerLoop",
+                      "uid": "b84fc8f8-0c1f-49bc-bcc1-90f33f85d479"
+                    }
+                  ],
+                  "commandName": "TriggerLoop.commands.loop",
+                  "disabled": false,
+                  "packageName": "TriggerLoop",
+                  "uid": "32374d0d-4347-4454-b31c-4d9720c45ee1"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "c62c443d-4810-4a1b-aa93-dc27e9e13b0d"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "95ba26be-94f5-4c66-a215-d1d390c6bb6f"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Operation Execution",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sInputFilePath$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isSpecificSheet",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "fileAccessMode",
+                  "value": {
+                    "string": "EDIT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isSecure",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "containsHeader",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "loadAddIns",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "session",
+                  "value": {
+                    "string": "S1",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "OpenSpreadsheet",
+              "disabled": false,
+              "packageName": "Excel_MS",
+              "uid": "3665fbe1-18ba-49c7-a929-2e2beeeddaf0"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$sExcelOperations$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "Excel to PDF",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Get number of worksheets",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To retrieve number of worksheets in a workbook",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "excludeHiddenWorksheets",
+                              "value": {
+                                "string": "true",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "S1",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "RetrieveSheetsCount",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ExcelSheetsCount"
+                          },
+                          "uid": "01320090-9680-4640-b08f-8b7e8c3af31d"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "variable",
+                                  "value": {
+                                    "expression": "$ExcelSheetsCount.Number:toString$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "operator",
+                                  "value": {
+                                    "string": "EQ",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "value",
+                                  "value": {
+                                    "string": "",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "matchCase",
+                                  "value": {
+                                    "boolean": true,
+                                    "type": "BOOLEAN"
+                                  }
+                                },
+                                {
+                                  "name": "isIgnoreCarriage",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "name": "condition",
+                              "value": {
+                                "conditionalName": "stringVariable",
+                                "packageName": "String",
+                                "type": "CONDITIONAL"
+                              }
+                            }
+                          ],
+                          "branches": [
+                            {
+                              "children": [
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "title",
+                                      "value": {
+                                        "string": "Automation Anywhere Enterprise Client",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "content",
+                                      "value": {
+                                        "expression": "Total Sheets is $ExcelSheetsCount.Number:toString$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "scrollLines",
+                                      "value": {
+                                        "number": "30",
+                                        "type": "NUMBER"
+                                      }
+                                    },
+                                    {
+                                      "name": "closeMsgBox",
+                                      "value": {
+                                        "boolean": false,
+                                        "type": "BOOLEAN"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "messageBox",
+                                  "disabled": false,
+                                  "packageName": "MessageBox",
+                                  "uid": "49a64451-d5d0-424a-9500-cf6d0369394e"
+                                }
+                              ],
+                              "commandName": "else",
+                              "disabled": false,
+                              "packageName": "If",
+                              "uid": "448bfaeb-6d6d-4d05-a11d-9ea9ed175ac9"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "title",
+                                  "value": {
+                                    "string": "Automation Anywhere Enterprise Client",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "content",
+                                  "value": {
+                                    "string": "The workbook is empty",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "scrollLines",
+                                  "value": {
+                                    "number": "30",
+                                    "type": "NUMBER"
+                                  }
+                                },
+                                {
+                                  "name": "closeMsgBox",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "commandName": "messageBox",
+                              "disabled": false,
+                              "packageName": "MessageBox",
+                              "uid": "c3ebd19e-b8de-42ac-8eb3-b944ff353545"
+                            }
+                          ],
+                          "commandName": "if",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "e094f60c-5ed3-47f3-8975-1bd0bf225ad7"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "124fdeb5-f060-458f-9113-d52e684f6c09"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "7f4c1e78-dbdb-462e-b991-3e901f6e31ce"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Read cell Formula",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To Read Cell Formula",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowCaption",
+                              "value": {
+                                "string": "To Read Cell Formula",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "promptMessage",
+                              "value": {
+                                "string": "Enter the specific cell address to read cell formula",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encryptKeystroke",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "ForValue",
+                          "disabled": false,
+                          "packageName": "Prompt",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "sReadCellFormula"
+                          },
+                          "uid": "68c639f9-e8c4-4f58-b345-8e39d98dee20"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "activeCell",
+                              "value": {
+                                "string": "false",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "cellAddress",
+                              "value": {
+                                "expression": "$sReadCellFormula$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "S1",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "ReadCellFormula",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ExcelCellFormula"
+                          },
+                          "uid": "55a53c49-6c90-4920-aa1d-69fdec1e8977"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "variable",
+                                  "value": {
+                                    "expression": "$ExcelCellFormula$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "operator",
+                                  "value": {
+                                    "string": "EQ",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "value",
+                                  "value": {
+                                    "string": "",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "matchCase",
+                                  "value": {
+                                    "boolean": true,
+                                    "type": "BOOLEAN"
+                                  }
+                                },
+                                {
+                                  "name": "isIgnoreCarriage",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "name": "condition",
+                              "value": {
+                                "conditionalName": "stringVariable",
+                                "packageName": "String",
+                                "type": "CONDITIONAL"
+                              }
+                            }
+                          ],
+                          "branches": [
+                            {
+                              "children": [
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "title",
+                                      "value": {
+                                        "string": "Automation Anywhere Enterprise Client",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "content",
+                                      "value": {
+                                        "expression": "The cell formula is $ExcelCellFormula$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "scrollLines",
+                                      "value": {
+                                        "number": "30",
+                                        "type": "NUMBER"
+                                      }
+                                    },
+                                    {
+                                      "name": "closeMsgBox",
+                                      "value": {
+                                        "boolean": false,
+                                        "type": "BOOLEAN"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "messageBox",
+                                  "disabled": false,
+                                  "packageName": "MessageBox",
+                                  "uid": "918d5de4-1dc6-43da-95c6-9d57c7eceff3"
+                                }
+                              ],
+                              "commandName": "else",
+                              "disabled": false,
+                              "packageName": "If",
+                              "uid": "fdc552e3-a1d9-4cd8-9ee9-dcb16da3a1d6"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "title",
+                                  "value": {
+                                    "string": "Automation Anywhere Enterprise Client",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "content",
+                                  "value": {
+                                    "string": "The cell formula is NULL",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "scrollLines",
+                                  "value": {
+                                    "number": "30",
+                                    "type": "NUMBER"
+                                  }
+                                },
+                                {
+                                  "name": "closeMsgBox",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "commandName": "messageBox",
+                              "disabled": false,
+                              "packageName": "MessageBox",
+                              "uid": "8aa1fe04-5f74-439a-b562-b7e14fba464b"
+                            }
+                          ],
+                          "commandName": "if",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "865e31e5-e06d-4d80-8ae4-a7edff827a1c"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "0ddac6f9-547d-4b69-956c-125e0eacfa88"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "784a2058-61a8-4cb6-bab0-5b850424e089"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Get worksheet name",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To Get Worksheet Name",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "S1",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "getWorksheetNames",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ExcelWorksheetName"
+                          },
+                          "uid": "8c5a62d2-1f66-4813-a2f7-409cd38e7458"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "title",
+                              "value": {
+                                "string": "Automation Anywhere Enterprise Client",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "content",
+                              "value": {
+                                "expression": "Current Worksheet name is $ExcelWorksheetName[0]$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "scrollLines",
+                              "value": {
+                                "number": "30",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "closeMsgBox",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "messageBox",
+                          "disabled": false,
+                          "packageName": "MessageBox",
+                          "uid": "a53f7fc7-1e61-4671-b1b3-5eb0702cf827"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "4b614498-44f4-46b6-a11f-f1c022dd9e12"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "12ba4550-66d0-43e9-983a-799df82379be"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Get Single cell",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To Get Single Cell",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowCaption",
+                              "value": {
+                                "string": "To Get Single cell  ",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "promptMessage",
+                              "value": {
+                                "string": "Enter the specific cell address to get single cell value",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encryptKeystroke",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "ForValue",
+                          "disabled": false,
+                          "packageName": "Prompt",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "GetSingleCell"
+                          },
+                          "uid": "686e3d0d-f5d6-442a-a610-c3dec65dd3fa"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "activeCell",
+                              "value": {
+                                "string": "false",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "cell",
+                              "value": {
+                                "expression": "$GetSingleCell$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "readOption",
+                              "value": {
+                                "string": "READ_CELL_TEXT",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "readOption_readCellText_Help",
+                              "value": {
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "S1",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "GetSingleCell",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "SingleCellValue"
+                          },
+                          "uid": "e2fc7bcf-1af2-4637-8833-134fe5f756a4"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "variable",
+                                  "value": {
+                                    "expression": "$SingleCellValue$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "operator",
+                                  "value": {
+                                    "string": "EQ",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "value",
+                                  "value": {
+                                    "string": "",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "matchCase",
+                                  "value": {
+                                    "boolean": true,
+                                    "type": "BOOLEAN"
+                                  }
+                                },
+                                {
+                                  "name": "isIgnoreCarriage",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "name": "condition",
+                              "value": {
+                                "conditionalName": "stringVariable",
+                                "packageName": "String",
+                                "type": "CONDITIONAL"
+                              }
+                            }
+                          ],
+                          "branches": [
+                            {
+                              "children": [
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "title",
+                                      "value": {
+                                        "string": "Automation Anywhere Enterprise Client",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "content",
+                                      "value": {
+                                        "expression": "The Single Cell Value is $SingleCellValue$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "scrollLines",
+                                      "value": {
+                                        "number": "30",
+                                        "type": "NUMBER"
+                                      }
+                                    },
+                                    {
+                                      "name": "closeMsgBox",
+                                      "value": {
+                                        "boolean": false,
+                                        "type": "BOOLEAN"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "messageBox",
+                                  "disabled": false,
+                                  "packageName": "MessageBox",
+                                  "uid": "add4fab1-8d2a-4d0e-9b70-533d4a3b94b6"
+                                }
+                              ],
+                              "commandName": "else",
+                              "disabled": false,
+                              "packageName": "If",
+                              "uid": "c431363e-d1f6-43d6-80f3-291585707c04"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "title",
+                                  "value": {
+                                    "string": "Automation Anywhere Enterprise Client",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "content",
+                                  "value": {
+                                    "string": "The Single Cell Value is Empty",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "scrollLines",
+                                  "value": {
+                                    "number": "30",
+                                    "type": "NUMBER"
+                                  }
+                                },
+                                {
+                                  "name": "closeMsgBox",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "commandName": "messageBox",
+                              "disabled": false,
+                              "packageName": "MessageBox",
+                              "uid": "7ab669f3-c033-4ebf-ae2f-d856479a6d53"
+                            }
+                          ],
+                          "commandName": "if",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "dafe3ff4-493c-4394-b37a-44718e7470ba"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "153df8b6-12d8-4cb1-b870-82258e806cf2"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "7129820f-0712-406a-8d0b-e4bd67877760"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Get number of rows",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To Get Number Of Rows in a Worksheet",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowCaption",
+                              "value": {
+                                "string": "To Get Number Of Rows in a Worksheet",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "promptMessage",
+                              "value": {
+                                "string": "Enter the Current Worksheet number ",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encryptKeystroke",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "ForValue",
+                          "disabled": false,
+                          "packageName": "Prompt",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "WorkSheetIndex"
+                          },
+                          "uid": "a57d485d-6b99-48ff-acea-e7031615b0df"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "sheetOption",
+                              "value": {
+                                "string": "BYINDEX",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "sheetIndex",
+                              "value": {
+                                "expression": "$WorkSheetIndex.String:toNumber$",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "fetchRowsType",
+                              "value": {
+                                "string": "NONEMPTY",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "S1",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "getNumberOfRows",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ExcelRowsCount"
+                          },
+                          "uid": "e550ee9a-0fa9-4c93-9bf5-2ab25eda695c"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "title",
+                              "value": {
+                                "string": "Automation Anywhere Enterprise Client",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "content",
+                              "value": {
+                                "expression": "Total Number Of Rows in a worksheet is $ExcelRowsCount.Number:toString$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "scrollLines",
+                              "value": {
+                                "number": "30",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "closeMsgBox",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "messageBox",
+                          "disabled": false,
+                          "packageName": "MessageBox",
+                          "uid": "944c9e93-8788-4ce3-9813-30ec00c6e14a"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "562f775d-281f-4ee6-90ec-cbb819671888"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "d3f9cb78-ef48-408b-9e6a-0a2b5a695d27"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Get Row Data",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To Read Row Data from Excel",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowCaption",
+                              "value": {
+                                "string": "To Read Row Data from Excel",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "promptMessage",
+                              "value": {
+                                "string": "Enter the specific Cell address to read Row data",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encryptKeystroke",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "ForValue",
+                          "disabled": false,
+                          "packageName": "Prompt",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ReadRow"
+                          },
+                          "uid": "548affeb-9822-40ad-93b9-6a50a3abacec"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "activeCell",
+                              "value": {
+                                "string": "false",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "cellAddress",
+                              "value": {
+                                "expression": "$ReadRow$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "readFullRow",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "readOption",
+                              "value": {
+                                "string": "READ_CELL_TEXT",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "readOption_readCellText_Help",
+                              "value": {
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "S1",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "readExcelRow",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ExcelRowData"
+                          },
+                          "uid": "2b26db54-ad67-44cd-8ea8-de1c4d2b6100"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "title",
+                              "value": {
+                                "string": "Automation Anywhere Enterprise Client",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "content",
+                              "value": {
+                                "expression": "The Row Data is : $ExcelRowData.LegacyAutomation:listToString$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "scrollLines",
+                              "value": {
+                                "number": "30",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "closeMsgBox",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "messageBox",
+                          "disabled": false,
+                          "packageName": "MessageBox",
+                          "uid": "7733e1b5-4aa8-4f23-9657-ef4bb76d6c90"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "5095e708-a9b4-42e3-91d6-27ba4f18d9b0"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "503b5c23-f158-43fc-a725-414cfacd4adc"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Get Column Data",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To Read Column Data from Excel",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowCaption",
+                              "value": {
+                                "string": "To Read Column Data from Excel",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "promptMessage",
+                              "value": {
+                                "string": "Enter the specific Cell address to read Column data",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encryptKeystroke",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "ForValue",
+                          "disabled": false,
+                          "packageName": "Prompt",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ReadColumn"
+                          },
+                          "uid": "502f900a-da3e-42ad-bd88-1f62a0b2e91d"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "activeCell",
+                              "value": {
+                                "string": "false",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "cellAddress",
+                              "value": {
+                                "expression": "$ReadColumn$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "readFullColumn",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "readOption",
+                              "value": {
+                                "string": "READ_CELL_TEXT",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "readOption_readCellText_Help",
+                              "value": {
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "S1",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "ReadExcelColumn",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ExcelColumnData"
+                          },
+                          "uid": "0e9c22af-f6bb-4c3f-8f51-0df5f503c7cc"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "title",
+                              "value": {
+                                "string": "Automation Anywhere Enterprise Client",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "content",
+                              "value": {
+                                "expression": "The Column Data is : $ExcelColumnData.LegacyAutomation:listToString$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "scrollLines",
+                              "value": {
+                                "number": "30",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "closeMsgBox",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "messageBox",
+                          "disabled": false,
+                          "packageName": "MessageBox",
+                          "uid": "a51e6ad2-26ed-49ed-8c1a-2b1e13fa0020"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "9e2d2f6a-9631-4301-8b40-84babf44d007"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "fb1af4e4-8032-4940-9c44-e0c08cab89d8"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Get Cell color",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To get cell color",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowCaption",
+                              "value": {
+                                "string": "To Get cell color from Excel",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "promptMessage",
+                              "value": {
+                                "string": "Enter the specific Cell address to get cell color",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encryptKeystroke",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "ForValue",
+                          "disabled": false,
+                          "packageName": "Prompt",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "CellColor"
+                          },
+                          "uid": "71084c69-fc2a-43c4-9139-c4abe869ca9b"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "cellColorOption",
+                              "value": {
+                                "string": "false",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "cellOption",
+                              "value": {
+                                "string": "false",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "cellAddress",
+                              "value": {
+                                "expression": "$CellColor$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "Default",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "GetCellColor",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ExcelCellColor"
+                          },
+                          "uid": "6ac8232c-b973-4166-b414-ab3eef2a5389"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "title",
+                              "value": {
+                                "string": "Automation Anywhere Enterprise Client",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "content",
+                              "value": {
+                                "expression": "The Cell color is : $ExcelCellColor$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "scrollLines",
+                              "value": {
+                                "number": "30",
+                                "type": "NUMBER"
+                              }
+                            },
+                            {
+                              "name": "closeMsgBox",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "messageBox",
+                          "disabled": false,
+                          "packageName": "MessageBox",
+                          "uid": "dc097b4c-a2fc-49c0-ab57-ddb6f9f8ef64"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "2d205b32-f0f1-4bfa-a613-3e98d99cb9ad"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "3ad31703-a8f5-4108-a21a-c1e81b4cc5db"
+                },
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$sExcelOperations$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "Find content",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "To Find contents in a cell",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "windowCaption",
+                              "value": {
+                                "string": "To Find contents in an Excel File",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "promptMessage",
+                              "value": {
+                                "string": "Enter the content you want to find in your Excel",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encryptKeystroke",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "commandName": "ForValue",
+                          "disabled": false,
+                          "packageName": "Prompt",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "FindContent"
+                          },
+                          "uid": "7aedbb25-3ee8-4218-aaa7-df34ecc73b4d"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "name": "from",
+                              "value": {
+                                "string": "BEGINNING",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "till",
+                              "value": {
+                                "string": "END",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "findText",
+                              "value": {
+                                "expression": "$FindContent$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "searchOptions",
+                              "value": {
+                                "string": "BYROWS",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "matchCase",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "matchEntireCell",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "session",
+                              "value": {
+                                "sessionName": {
+                                  "string": "S1",
+                                  "type": "STRING"
+                                },
+                                "type": "SESSION"
+                              }
+                            }
+                          ],
+                          "commandName": "find",
+                          "disabled": false,
+                          "packageName": "Excel_MS",
+                          "returnTo": {
+                            "type": "VARIABLE",
+                            "variableName": "ExcelFindContent"
+                          },
+                          "uid": "668cf21c-980d-43bc-8941-42c8f6023f81"
+                        },
+                        {
+                          "attributes": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "variable",
+                                  "value": {
+                                    "expression": "$ExcelFindContent.LegacyAutomation:listToString$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "operator",
+                                  "value": {
+                                    "string": "EQ",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "value",
+                                  "value": {
+                                    "string": "",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "matchCase",
+                                  "value": {
+                                    "boolean": true,
+                                    "type": "BOOLEAN"
+                                  }
+                                },
+                                {
+                                  "name": "isIgnoreCarriage",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "name": "condition",
+                              "value": {
+                                "conditionalName": "stringVariable",
+                                "packageName": "String",
+                                "type": "CONDITIONAL"
+                              }
+                            }
+                          ],
+                          "branches": [
+                            {
+                              "children": [
+                                {
+                                  "attributes": [
+                                    {
+                                      "name": "title",
+                                      "value": {
+                                        "string": "Automation Anywhere Enterprise Client",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "content",
+                                      "value": {
+                                        "expression": "The content found at : $ExcelFindContent.LegacyAutomation:listToString$",
+                                        "type": "STRING"
+                                      }
+                                    },
+                                    {
+                                      "name": "scrollLines",
+                                      "value": {
+                                        "number": "30",
+                                        "type": "NUMBER"
+                                      }
+                                    },
+                                    {
+                                      "name": "closeMsgBox",
+                                      "value": {
+                                        "boolean": false,
+                                        "type": "BOOLEAN"
+                                      }
+                                    }
+                                  ],
+                                  "commandName": "messageBox",
+                                  "disabled": false,
+                                  "packageName": "MessageBox",
+                                  "uid": "490917f7-f373-484b-93ea-0f76ed1726da"
+                                }
+                              ],
+                              "commandName": "else",
+                              "disabled": false,
+                              "packageName": "If",
+                              "uid": "2b1fb67e-1cb1-4f07-bcc7-8ae269675ca9"
+                            }
+                          ],
+                          "children": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "title",
+                                  "value": {
+                                    "string": "Automation Anywhere Enterprise Client",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "content",
+                                  "value": {
+                                    "string": "No content found",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "scrollLines",
+                                  "value": {
+                                    "number": "30",
+                                    "type": "NUMBER"
+                                  }
+                                },
+                                {
+                                  "name": "closeMsgBox",
+                                  "value": {
+                                    "boolean": false,
+                                    "type": "BOOLEAN"
+                                  }
+                                }
+                              ],
+                              "commandName": "messageBox",
+                              "disabled": false,
+                              "packageName": "MessageBox",
+                              "uid": "b39cb8d5-b508-4d58-893e-0a84dc31de44"
+                            }
+                          ],
+                          "commandName": "if",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "44de6c39-aa50-439a-9c16-3c5a4a793007"
+                        }
+                      ],
+                      "commandName": "step",
+                      "disabled": false,
+                      "packageName": "Step",
+                      "uid": "7aeca123-ba6a-433d-b73c-3dfb9cbb2c65"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "2f0e349b-583c-4834-87ee-fbbf81fd8d83"
+                },
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "There is no matching cases",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "38699021-ce88-4dc9-b1f0-0bd45981a4ed"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "Automation Anywhere Enterprise Client",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "content",
+                          "value": {
+                            "string": "There is no matching cases",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "scrollLines",
+                          "value": {
+                            "number": "30",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "closeMsgBox",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "messageBox",
+                      "disabled": false,
+                      "packageName": "MessageBox",
+                      "uid": "23dcca94-df7c-4d12-bda3-e56b6e17110d"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "ea6aab89-81f6-437d-9c67-94d9e6577774"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Convert Excel to PDF",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "convertSheetType",
+                          "value": {
+                            "string": "ENTIRE_EXCEL",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "fileStorageLocation",
+                          "value": {
+                            "expression": "$Output$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "overwriteFile",
+                          "value": {
+                            "string": "OVERWRITE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "session",
+                          "value": {
+                            "sessionName": {
+                              "string": "S1",
+                              "type": "STRING"
+                            },
+                            "type": "SESSION"
+                          }
+                        }
+                      ],
+                      "commandName": "ConvertToPDF",
+                      "disabled": false,
+                      "packageName": "Excel_MS",
+                      "uid": "edb408a5-49f0-447d-ac8b-80850337ceb2"
+                    }
+                  ],
+                  "commandName": "step",
+                  "disabled": false,
+                  "packageName": "Step",
+                  "uid": "42229568-1334-4a0d-b509-4553a29f84e7"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "c1151a1a-bc30-43bb-9b77-03471058ae49"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "cb3f9945-7703-470a-8d22-c64d5c73e768"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "b3154a4a-480d-4881-ba00-936f65dd2751"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Closing Excel File",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "S1",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "commandName": "CloseSpreadsheet",
+          "disabled": false,
+          "packageName": "Excel_MS",
+          "uid": "8bdde0c2-4f98-4c5f-9f7c-6b574424ab1d"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "087dcf86-10eb-46e9-bb0c-af0326eb347c"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.5.0-20210227-025428"
+    },
+    {
+      "name": "Datetime",
+      "version": "2.2.0-20210227-025439"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.5.0-20210227-025450"
+    },
+    {
+      "name": "Excel_MS",
+      "version": "5.5.0-20210223-002448"
+    },
+    {
+      "name": "File",
+      "version": "3.3.0-20210227-025452"
+    },
+    {
+      "name": "Folder",
+      "version": "3.2.0-20210227-025456"
+    },
+    {
+      "name": "If",
+      "version": "2.1.0-20210227-025501"
+    },
+    {
+      "name": "Forms",
+      "version": "2.20.3-20210319-112928"
+    },
+    {
+      "name": "LegacyAutomation",
+      "version": "3.5.0-20210309-032955"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.2.0-20210227-025720"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.1.0-20210227-025722"
+    },
+    {
+      "name": "Number",
+      "version": "2.3.0-20210227-025737"
+    },
+    {
+      "name": "Prompt",
+      "version": "2.2.0-20210223-003045"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.1-20210304-145803"
+    },
+    {
+      "name": "String",
+      "version": "3.3.0-20210227-030040"
+    },
+    {
+      "name": "System",
+      "version": "3.2.0-20210223-115227"
+    },
+    {
+      "name": "TaskBot",
+      "version": "2.0.1-20210210-232054"
+    },
+    {
+      "name": "TriggerLoop",
+      "version": "0.5.0-20210302-121335"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "file": {
+          "string": "repository:///Automation%20Anywhere/Bot%20Store/Multiple%20EXCEL%20Operations%20-%20KLOUDPAD%20Mobility%20Research%20Pvt%20Ltd/Excel%20Operations",
+          "type": "FILE"
+        },
+        "type": "FORM"
+      },
+      "description": "",
+      "input": false,
+      "name": "fMainForm",
+      "output": false,
+      "readOnly": false,
+      "type": "FORM"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sInputFilePath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sExcelOperations",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "RootDirectory",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "LogFolder",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\ProgramData\\AutomationAnywhere\\Bots\\Multiple EXCEL Operations Bot\\Output",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "Output",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "RunLogPath",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "presentDate",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "ExcelSheetsCount",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "ExcelCellFormula",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sReadCellFormula",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "list": [],
+        "type": "LIST"
+      },
+      "description": "",
+      "input": false,
+      "name": "ExcelWorksheetName",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "LIST"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "SingleCellValue",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "GetSingleCell",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "ExcelRowsCount",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "WorkSheetIndex",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "ReadRow",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "list": [],
+        "type": "LIST"
+      },
+      "description": "",
+      "input": false,
+      "name": "ExcelRowData",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "LIST"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "ReadColumn",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "list": [],
+        "type": "LIST"
+      },
+      "description": "",
+      "input": false,
+      "name": "ExcelColumnData",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "LIST"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "CellColor",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "ExcelCellColor",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "FindContent",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "list": [],
+        "type": "LIST"
+      },
+      "description": "",
+      "input": false,
+      "name": "ExcelFindContent",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "LIST"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "errorMessage",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "errorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "ErrorLine-Number",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

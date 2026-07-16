@@ -1,0 +1,1557 @@
+{
+  "breakpoints": [],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "Summary: This taskbot will create letters based on the input template document with place holders replaced by actual values",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "769d6b14-ae8d-4164-a784-a0b0fcaaa804"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            },
+            {
+              "name": "continueOnError",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$vLogFilePath$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "Error occured at line number: $ErrorLineNumber.Number:toString$ with error message: $ErrorMessage$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "logToFile",
+              "disabled": false,
+              "packageName": "LogToFile",
+              "uid": "5a327635-9891-46c8-8dac-5e4197ad5dbe"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "ErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "ErrorMessage"
+            }
+          },
+          "uid": "9551168f-6e16-446c-b648-3b93c3d61a50"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Initialize variables",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Set timestamp",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "e65abed1-8b83-4375-b099-161eac0daddb"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$System:Year.Number:toString$$System:Month.Number:toString$$System:Day.Number:toString$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vTimeStamp"
+              },
+              "uid": "147158ea-669f-4aa6-ae2f-484dd34b65dd"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Get username from Environment Variables",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "332499f8-a328-4221-9702-30c2ba0558c8"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "variableOption",
+                  "value": {
+                    "string": "BY_SELECTION",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "systemNameBySelection",
+                  "value": {
+                    "label": "USERNAME",
+                    "string": "USERNAME",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "systemInformation",
+              "disabled": false,
+              "packageName": "System",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vUserName"
+              },
+              "uid": "0fc1e3de-729e-4fca-acc8-432f7c454f2f"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Set project folder path",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "9f495aa8-d318-4407-9824-cca104e509cd"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "C:\\Users\\$vUserName$\\Documents\\AA\\Template to Letter",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vProjectFolderPath"
+              },
+              "uid": "8fcea7fe-2020-489a-a922-bab7013bbf2d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Get current task name",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "bcefc90e-0e63-4e52-bcbc-a3f4620099af"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$System:AATaskName$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vTaskName"
+              },
+              "uid": "9b92df0b-ff41-4535-8fe0-2bdd78979d78"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Create sub folders in project folder if they do not exist",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "1fd33b54-0744-4037-9719-d4df72ea8aef"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceList",
+                  "value": {
+                    "list": [
+                      {
+                        "string": "Input",
+                        "type": "STRING"
+                      },
+                      {
+                        "string": "Logs",
+                        "type": "STRING"
+                      },
+                      {
+                        "string": "Output",
+                        "type": "STRING"
+                      },
+                      {
+                        "string": "Template",
+                        "type": "STRING"
+                      },
+                      {
+                        "string": "Logs\\Error Screenshots",
+                        "type": "STRING"
+                      },
+                      {
+                        "string": "Temp",
+                        "type": "STRING"
+                      }
+                    ],
+                    "type": "LIST"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "List",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vFoldersList"
+              },
+              "uid": "bb2e6a01-09bc-424e-86eb-9e3f229374ee"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "loopType",
+                  "value": {
+                    "string": "ITERATOR",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "list",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "vFoldersList"
+                      }
+                    },
+                    {
+                      "name": "forOptions",
+                      "value": {
+                        "string": "all",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "name": "iterator",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "vFolderName"
+                  },
+                  "value": {
+                    "iteratorName": "list.iterators.list",
+                    "packageName": "List",
+                    "type": "ITERATOR"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$vProjectFolderPath$\\$vFolderName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "folderDoesNotExists",
+                        "packageName": "Folder",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$vProjectFolderPath$\\$vFolderName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFolder",
+                      "disabled": false,
+                      "packageName": "Folder",
+                      "uid": "235bf63e-47b5-48e5-b6a0-ec304751baf7"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "d6957d71-1eb7-46e2-b7df-4b866ca4ff08"
+                }
+              ],
+              "commandName": "loop.commands.start",
+              "disabled": false,
+              "packageName": "Loop",
+              "uid": "cc2163ff-44d1-433a-afad-f6bcccb2cb7d"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Set log path",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "81dfe1d9-d5d9-4d5d-a4bf-0cd7b702e289"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$vProjectFolderPath$\\Logs\\Log_$vTimeStamp$.txt",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vLogFilePath"
+              },
+              "uid": "e8f7e45c-3b4b-4f42-ab41-04fc077be455"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$vLogFilePath$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "$vTaskName$ started",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "logToFile",
+              "disabled": false,
+              "packageName": "LogToFile",
+              "uid": "09142314-81a6-426f-8c1e-e23ce3b18ada"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Set Template file path",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "f7a081ee-a8bf-4381-a90f-0990405e0dbd"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$vProjectFolderPath$\\Template\\Template_Letter.docx",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vTemplateFilePath"
+              },
+              "uid": "2d62acba-8930-4114-a7f8-50e5ebda65d9"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Set Temporary folder path",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "73bab6ad-b58e-4096-8245-bd033cfa3163"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$vProjectFolderPath$\\Temp",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vTempFolderPath"
+              },
+              "uid": "a841aba2-fe2f-4c5f-96e3-d469ea63a6f4"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Read keys (place holders) from text file",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "ca7599de-9f7d-477e-983a-8219804c06a4"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$vProjectFolderPath$/Template/Keys.txt",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "encoding",
+                  "value": {
+                    "string": "FILE-ENCODING",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "trimLeadingSpace",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "trimTrailingSpace",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "convertDictKeyToLowercase",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "ReadVariables",
+              "disabled": false,
+              "packageName": "TextFile",
+              "returnTo": {
+                "dictionary": [
+                  {
+                    "key": "vFindTextKeys",
+                    "value": {
+                      "type": "VARIABLE",
+                      "variableName": "vFindTextKeys"
+                    }
+                  }
+                ],
+                "type": "DICTIONARY"
+              },
+              "uid": "28e2aeda-3630-4384-982d-e9298e54febc"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Set input excel file path",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "02e21fc1-cbfe-4faf-abac-507c7d9f930e"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$vProjectFolderPath$\\Input\\Records to process.xlsx",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "assign",
+              "disabled": false,
+              "packageName": "String",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "vInputExcelFilePath"
+              },
+              "uid": "a2ee953c-32ca-49ae-afd2-5a94381ecd2a"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Read values from input file and create letter",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$vInputExcelFilePath$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "containsHeader",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isSpecificSheet",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "fileAccessMode",
+                      "value": {
+                        "string": "EDIT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isSecure",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "OpenSpreadsheet",
+                  "disabled": false,
+                  "packageName": "Excel",
+                  "returnTo": {
+                    "sessionName": {
+                      "string": "Input",
+                      "type": "STRING"
+                    },
+                    "sessionTarget": "LOCAL",
+                    "type": "SESSION"
+                  },
+                  "uid": "8555677e-0f93-4044-b954-1724e9e73878"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "loopSelection",
+                      "value": {
+                        "string": "ALL_ROWS",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "session",
+                      "value": {
+                        "sessionName": {
+                          "string": "Input",
+                          "type": "STRING"
+                        },
+                        "type": "SESSION"
+                      }
+                    }
+                  ],
+                  "commandName": "GetMultipleCells",
+                  "disabled": false,
+                  "packageName": "Excel",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "vInputDataTable"
+                  },
+                  "uid": "8d4ce392-aec8-4ff8-bcdf-8f94c5804716"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "isSave",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "session",
+                      "value": {
+                        "sessionName": {
+                          "string": "Input",
+                          "type": "STRING"
+                        },
+                        "type": "SESSION"
+                      }
+                    }
+                  ],
+                  "commandName": "CloseSpreadsheet",
+                  "disabled": false,
+                  "packageName": "Excel",
+                  "uid": "9f3a923b-3a11-4bf4-b37c-ab11df0f14d6"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "loopType",
+                      "value": {
+                        "string": "ITERATOR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceTable",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "vInputDataTable"
+                          }
+                        }
+                      ],
+                      "name": "iterator",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "vDataRow"
+                      },
+                      "value": {
+                        "iteratorName": "iteratorTableRow",
+                        "packageName": "DataTable",
+                        "type": "ITERATOR"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceString",
+                          "value": {
+                            "expression": "$vDataRow[0]$;$vDataRow[1]$;$vDataRow[2]$;$vDataRow[3]$;$vDataRow[4]$;$vDataRow[5]$;$vDataRow[6]$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "assign",
+                      "disabled": false,
+                      "packageName": "String",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "vReplaceTextValues"
+                      },
+                      "uid": "40f563bc-2c22-4103-9f0e-1fc8f29c6ae0"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceString",
+                          "value": {
+                            "expression": "$vProjectFolderPath$\\Output\\$vDataRow[0]$_Recommendation_Letter.pdf",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "assign",
+                      "disabled": false,
+                      "packageName": "String",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "vPDFFilePath"
+                      },
+                      "uid": "e02d838f-26d5-45bc-a2d5-d991806c91c3"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceList",
+                          "value": {
+                            "list": [
+                              {
+                                "expression": "$vTemplateFilePath$",
+                                "type": "STRING"
+                              },
+                              {
+                                "expression": "$vFindTextKeys$",
+                                "type": "STRING"
+                              },
+                              {
+                                "expression": "$vReplaceTextValues$",
+                                "type": "STRING"
+                              },
+                              {
+                                "expression": "$vPDFFilePath$",
+                                "type": "STRING"
+                              }
+                            ],
+                            "type": "LIST"
+                          }
+                        }
+                      ],
+                      "commandName": "assign",
+                      "disabled": false,
+                      "packageName": "List",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "vVBInputList"
+                      },
+                      "uid": "63c082f5-cdd6-45e7-bd6a-595e36a134d8"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "session",
+                          "value": {
+                            "string": "Word",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "scriptOption",
+                          "value": {
+                            "string": "SCRIPT",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "script",
+                          "value": {
+                            "string": "Set Arg = WScript.Arguments\n\nFunction TemplateToLetter(Arg)\n  \n  path = Arg(0)\n  \n  find_text = Split(Arg(1),\";\")\n  \n  replace_text = Split(Arg(2),\";\")\n  \n  PDFFileName = Arg(3)\n\nOn Error Resume Next\nSet objWord = CreateObject(\"Word.Application\")\nobjWord.Visible = False\n\nOn Error Resume Next\nSet objDoc = objWord.Documents.Open(path)\nSet objSelection = objWord.Selection\n\n  For i=0 to UBound(find_text)  \n  With objSelection.Find\n        .ClearFormatting\n        .Replacement.ClearFormatting\n        .MatchWholeWord = True\n        .Text = find_text(i)\n        .Execute ,,,,,,,,,replace_text(i),2\n    End With\n  Next\n\n  objDoc.ExportAsFixedFormat PDFFileName, 17\n  On Error Resume Next\n'Save the doc\n'objDoc.Save\nobjDoc.Close False\nobjWord.Quit\n    \n\nTemplateToLetter = \"Success\"\n  \nIf Err.Number <> 0 Then\n    TemplateToLetter = Err.Description\n    Err.Clear\nEnd If\n\nEnd Function",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "vbscript.commands.openScript",
+                      "disabled": false,
+                      "packageName": "VBScript",
+                      "uid": "3d3c5ae4-5c65-4f97-a64a-c8d8c5289c8d"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "session",
+                          "value": {
+                            "string": "Word",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "functionName",
+                          "value": {
+                            "string": "TemplateToLetter",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "arguments",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "vVBInputList"
+                          }
+                        }
+                      ],
+                      "commandName": "vbscript.commands.executeFunction",
+                      "disabled": false,
+                      "packageName": "VBScript",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "vVBOutput"
+                      },
+                      "uid": "13b8d0fa-cf27-4b3c-9100-c46243602145"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "session",
+                          "value": {
+                            "string": "Word",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "vbscript.commands.closeScript",
+                      "disabled": false,
+                      "packageName": "VBScript",
+                      "uid": "0882b8f2-0391-40ce-a196-4514b17ef82c"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "Automation Anywhere Enterprise Client",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "content",
+                          "value": {
+                            "expression": "$vVBOutput$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "scrollLines",
+                          "value": {
+                            "number": "30",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "closeMsgBox",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "timeOut",
+                          "value": {
+                            "number": "1",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "commandName": "messageBox",
+                      "disabled": false,
+                      "packageName": "MessageBox",
+                      "uid": "201671fe-a878-4f43-b8de-85ceeffece5d"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "variable",
+                              "value": {
+                                "expression": "$vVBOutput$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "operator",
+                              "value": {
+                                "string": "INCLUDE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "value",
+                              "value": {
+                                "string": "Success",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "matchCase",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "isIgnoreCarriage",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "name": "condition",
+                          "value": {
+                            "conditionalName": "stringVariable",
+                            "packageName": "String",
+                            "type": "CONDITIONAL"
+                          }
+                        }
+                      ],
+                      "branches": [
+                        {
+                          "children": [
+                            {
+                              "attributes": [
+                                {
+                                  "name": "message",
+                                  "value": {
+                                    "expression": "Error generating the letter: $vPDFFilePath$",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "exceptionType",
+                                  "value": {
+                                    "exceptionName": "BotException",
+                                    "packageName": "ErrorHandler",
+                                    "type": "EXCEPTION"
+                                  }
+                                }
+                              ],
+                              "commandName": "throw",
+                              "disabled": false,
+                              "packageName": "ErrorHandler",
+                              "uid": "8d844000-ed68-4449-a4ed-29b1ea0805b7"
+                            }
+                          ],
+                          "commandName": "else",
+                          "disabled": false,
+                          "packageName": "If",
+                          "uid": "c6e11bc9-8ffa-4abd-9065-6ed75fef9994"
+                        }
+                      ],
+                      "children": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$vLogFilePath$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "$vPDFFilePath$ generated successfully",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "commandName": "logToFile",
+                          "disabled": false,
+                          "packageName": "LogToFile",
+                          "uid": "8b1dcb67-2d16-4c7e-b2cf-9ba0119740d4"
+                        }
+                      ],
+                      "commandName": "if",
+                      "disabled": false,
+                      "packageName": "If",
+                      "uid": "f9b58a85-97f5-487e-b43e-2286c7c4a0ac"
+                    }
+                  ],
+                  "commandName": "loop.commands.start",
+                  "disabled": false,
+                  "packageName": "Loop",
+                  "uid": "d1226156-dc56-497e-8c26-c4ecd3f6dde0"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "dff8af09-a064-4578-8f74-775bfc01aec8"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$vLogFilePath$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "$vTaskName$ completed successfully",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "logToFile",
+              "disabled": false,
+              "packageName": "LogToFile",
+              "uid": "5644b7ee-ffb3-464d-9b50-80e179d9c882"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "b4a53a10-b334-4ad5-87a2-a5bc8cd9c54a"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "6ebb0906-58fc-43d1-80e5-63989b7becbe"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.12.0"
+    },
+    {
+      "name": "DataTable",
+      "version": "4.6.0-20220920-155212"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.10.0-20220929-040735"
+    },
+    {
+      "name": "Excel",
+      "version": "6.11.0-20220919-135307"
+    },
+    {
+      "name": "Folder",
+      "version": "6.5.0-20221003-160340"
+    },
+    {
+      "name": "If",
+      "version": "3.5.0-20220928-201537"
+    },
+    {
+      "name": "List",
+      "version": "2.9.2-20220919-103920"
+    },
+    {
+      "name": "LogToFile",
+      "version": "3.5.0-20220416-233918"
+    },
+    {
+      "name": "Loop",
+      "version": "3.6.0-20220928-191723"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.1.0-20200831-031541"
+    },
+    {
+      "name": "Number",
+      "version": "3.6.0-20220928-104414"
+    },
+    {
+      "name": "Step",
+      "version": "2.4.0-20220929-044740"
+    },
+    {
+      "name": "String",
+      "version": "5.5.2-20221006-094641"
+    },
+    {
+      "name": "System",
+      "version": "3.10.0-20220921-062556"
+    },
+    {
+      "name": "TextFile",
+      "version": "1.4.2-20221004-130231"
+    },
+    {
+      "name": "VBScript",
+      "version": "2.16.2-20221020-051711"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "4",
+    "improvedNumberSupport": true,
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vVBOutput",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vInputExcelFilePath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vFindText",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vReplaceText",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "list": [],
+        "type": "LIST"
+      },
+      "description": "",
+      "input": false,
+      "name": "vVBInputList",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "LIST"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vFindTextKeys",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vReplaceTextValues",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vProjectFolderPath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vUserName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vTaskName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "list": [],
+        "type": "LIST"
+      },
+      "description": "",
+      "input": false,
+      "name": "vFoldersList",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "LIST"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vFolderName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vTemplateFilePath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vTempFolderPath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "table": {
+          "rows": [
+            {
+              "values": [
+                {
+                  "string": "",
+                  "type": "STRING"
+                }
+              ]
+            }
+          ],
+          "schema": [
+            {
+              "type": "STRING"
+            }
+          ]
+        },
+        "type": "TABLE"
+      },
+      "description": "",
+      "input": false,
+      "name": "vInputDataTable",
+      "output": false,
+      "readOnly": false,
+      "type": "TABLE"
+    },
+    {
+      "defaultValue": {
+        "record": {
+          "schema": [],
+          "values": []
+        },
+        "type": "RECORD"
+      },
+      "description": "",
+      "input": false,
+      "name": "vDataRow",
+      "output": false,
+      "readOnly": false,
+      "type": "RECORD"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vPDFFilePath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vTimeStamp",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vLogFilePath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "ErrorMessage",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "ErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    }
+  ],
+  "workItemTemplateName": null
+}

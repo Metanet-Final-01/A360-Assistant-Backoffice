@@ -1,0 +1,429 @@
+{
+  "breakpoints": [],
+  "migrationJournalReviewIds": [],
+  "nodes": [
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "input",
+                  "value": {
+                    "expression": "$errorLineNumber$",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "numFormatDigits",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "commandName": "toString",
+              "disabled": false,
+              "packageName": "Number",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "errLineNum"
+              },
+              "uid": "ac780724-6ae8-481f-9798-ccefd17fb2c4"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "errorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "errorMessage"
+            }
+          },
+          "uid": "e471f2a6-10d2-40b9-bfb5-a10dbc020580"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "promptCaption",
+              "value": {
+                "string": "Sub Domain urls destination path",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "promptMessage",
+              "value": {
+                "string": "select the folder to save the sub URLS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "forFolder",
+          "disabled": false,
+          "packageName": "Prompt",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "DestPath"
+          },
+          "uid": "7a3ab87e-7164-4aaf-bcf9-016c5db7e633"
+        },
+        {
+          "attributes": [
+            {
+              "name": "windowCaption",
+              "value": {
+                "string": "Sub domain extractor",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "promptMessage",
+              "value": {
+                "string": "Please enter the fully qualified URL name",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encryptKeystroke",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "commandName": "ForValue",
+          "disabled": false,
+          "packageName": "Prompt",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "URL"
+          },
+          "uid": "98b79629-68b5-493d-bf01-e3bf9fff4d25"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$DestPath$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "find",
+              "value": {
+                "string": "\\",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isCaseSensitive",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isRegularExpression",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "startIndex",
+              "value": {
+                "number": "1",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "count",
+              "value": {
+                "number": "-1",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "replaceWith",
+              "value": {
+                "string": "\\\\",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "replace",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "DestPath"
+          },
+          "uid": "18601c53-1d62-44b0-9661-bc1095079b42"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$DestPath$\\\\subURLS$SystemVariablesPackage:CurrentDate$.csv",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "DestPath"
+          },
+          "uid": "5ac93b36-1e39-472a-89c3-bf5c0a935935"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$URL$, $DestPath$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "Arg1"
+          },
+          "uid": "a8270eb8-dd6b-450c-92a1-299387d2f25d"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "URL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "scriptOption",
+              "value": {
+                "string": "SCRIPT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "script",
+              "value": {
+                "string": "import requests\nfrom bs4 import BeautifulSoup\n\n\n\ndef subURL(urls):\n\turl=urls\n\tURLS, FilePath = url.split(\", \")\n\tgrab = requests.get(URLS)\n\tsoup = BeautifulSoup(grab.text, 'html.parser')\n\n\tf = open(FilePath, \"w\")\n\n\tfor link in soup.find_all(\"a\"):\n\t\tdata = link.get('href')\n\t\tf.write(data)\n\t\tf.write(\"\\n\")\n\n\tf.close()",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "version",
+              "value": {
+                "string": "3",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "python.commands.openScript",
+          "disabled": false,
+          "packageName": "Python",
+          "uid": "e8acd468-067e-4ee8-a718-2be4c5effb80"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "URL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "functionName",
+              "value": {
+                "string": "subURL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "argument",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "Arg1"
+              }
+            }
+          ],
+          "commandName": "python.commands.executeFunction",
+          "disabled": false,
+          "packageName": "Python",
+          "uid": "0b612479-bb62-44ae-b531-db85131343ac"
+        },
+        {
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "URL",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "python.commands.closeScript",
+          "disabled": false,
+          "packageName": "Python",
+          "uid": "202be802-3e59-4e74-80fd-bdcdaaa2f407"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "baff4bff-1bdd-4705-aa76-7d3eaf37877f"
+    }
+  ],
+  "packages": [
+    {
+      "name": "ErrorHandler",
+      "version": "2.7.0-20210722-143834"
+    },
+    {
+      "name": "Number",
+      "version": "3.1.1-20210821-042642"
+    },
+    {
+      "name": "Prompt",
+      "version": "2.2.0-20210726-125517"
+    },
+    {
+      "name": "Python",
+      "version": "2.7.0-20210504-153138"
+    },
+    {
+      "name": "String",
+      "version": "4.3.0-20210722-144812"
+    },
+    {
+      "name": "SystemVariablesPackage",
+      "version": "2.0.4-20201005-084352"
+    }
+  ],
+  "properties": {
+    "automationPriority": "PRIORITY_MEDIUM",
+    "botCodeVersion": "2",
+    "improvedNumberSupport": true,
+    "timeout": "0s"
+  },
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "DestPath",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "URL",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "Arg1",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "errorMessage",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "errorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "errLineNum",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    }
+  ],
+  "workItemTemplateName": null
+}

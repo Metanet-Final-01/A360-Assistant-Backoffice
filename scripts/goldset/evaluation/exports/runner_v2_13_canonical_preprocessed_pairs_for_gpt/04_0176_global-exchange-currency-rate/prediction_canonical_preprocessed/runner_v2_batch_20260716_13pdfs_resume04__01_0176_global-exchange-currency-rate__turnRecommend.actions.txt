@@ -1,0 +1,13 @@
+Folder.folderCreate
+File.filePackageCreateAction
+Folder.folderCreate
+Logging.cloudInsertingLogToFileCommand
+Browser.launchWebsite
+Browser.browserPackageRunJavascriptAction
+CSV/TXT.cloudOpeningCsvTextFile
+Data Table.dataTablePackageSetValueSinlgeCellAction
+Data Table.cloudWriteToFileAction
+Number.numberIncrement
+Logging.cloudInsertingLogToFileCommand
+Logging.cloudInsertingLogToFileCommand
+Browser.browserPackageCloseAction

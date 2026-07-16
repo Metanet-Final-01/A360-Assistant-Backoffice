@@ -1,0 +1,381 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784123786.1257625" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784123786.1257625</text>
+    </name>
+    <page id="n0">
+      <place id="p_21">
+        <name>
+          <text>p_21</text>
+        </name>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_20">
+        <name>
+          <text>p_20</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="p_19">
+        <name>
+          <text>p_19</text>
+        </name>
+      </place>
+      <place id="p_17">
+        <name>
+          <text>p_17</text>
+        </name>
+      </place>
+      <place id="p_15">
+        <name>
+          <text>p_15</text>
+        </name>
+      </place>
+      <place id="p_13">
+        <name>
+          <text>p_13</text>
+        </name>
+      </place>
+      <place id="p_24">
+        <name>
+          <text>p_24</text>
+        </name>
+      </place>
+      <place id="p_23">
+        <name>
+          <text>p_23</text>
+        </name>
+      </place>
+      <place id="p_29">
+        <name>
+          <text>p_29</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_22">
+        <name>
+          <text>p_22</text>
+        </name>
+      </place>
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_12">
+        <name>
+          <text>p_12</text>
+        </name>
+      </place>
+      <place id="p_14">
+        <name>
+          <text>p_14</text>
+        </name>
+      </place>
+      <place id="p_18">
+        <name>
+          <text>p_18</text>
+        </name>
+      </place>
+      <place id="p_16">
+        <name>
+          <text>p_16</text>
+        </name>
+      </place>
+      <place id="p_25">
+        <name>
+          <text>p_25</text>
+        </name>
+      </place>
+      <place id="p_27">
+        <name>
+          <text>p_27</text>
+        </name>
+      </place>
+      <place id="p_26">
+        <name>
+          <text>p_26</text>
+        </name>
+      </place>
+      <place id="p_28">
+        <name>
+          <text>p_28</text>
+        </name>
+      </place>
+      <place id="p_30">
+        <name>
+          <text>p_30</text>
+        </name>
+      </place>
+      <transition id="2d2372b3-3c13-4cc6-81ee-0769d1540204">
+        <name>
+          <text>MessageBox.messageBox</text>
+        </name>
+      </transition>
+      <transition id="skip_1">
+        <name>
+          <text>skip_1</text>
+        </name>
+        <toolspecific tool="ProM" version="6.4" activity="$invisible$" localNodeID="678dc65c-28fd-4fe3-9f74-daf7d7a92ac4"/>
+      </transition>
+      <transition id="85b01a16-d6be-4c41-b2f2-51f8d6b84081">
+        <name>
+          <text>File.deleteFiles</text>
+        </name>
+      </transition>
+      <transition id="e86d48dc-6c94-4861-9d25-2f4d68cfd07d">
+        <name>
+          <text>File.downloadTo</text>
+        </name>
+      </transition>
+      <transition id="30ad256b-5116-4dc8-a9cd-2ea76c3318c6">
+        <name>
+          <text>Datetime.subtract</text>
+        </name>
+      </transition>
+      <transition id="5783493b-080a-4aaa-9813-dc910c5afd69">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="179c7bc3-8039-4419-814e-f4e27061f3e9">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="14b8c490-4e6e-422c-b15a-758f23002e8f">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="fa30a9a1-5527-4e66-a979-d7ed1be34ec9">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <transition id="7a43983f-2cdd-413f-b9a1-4a436103450d">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <transition id="9b3e29b2-b7dc-4633-8594-a7993221ee8a">
+        <name>
+          <text>DLL.Open</text>
+        </name>
+      </transition>
+      <transition id="d0375650-5856-4b3f-b9a7-ddcb39acf2cc">
+        <name>
+          <text>DLL.Close</text>
+        </name>
+      </transition>
+      <transition id="c421f771-20d1-4964-8bfb-a91ce59c5233">
+        <name>
+          <text>LogToFile.logToFile</text>
+        </name>
+      </transition>
+      <transition id="0765d65f-38b9-4dad-9e15-7c431d5655ca">
+        <name>
+          <text>Number.toString</text>
+        </name>
+      </transition>
+      <transition id="c8ae5e16-3d2e-4495-b5c3-a45f3da25b36">
+        <name>
+          <text>Screen.captureDesktop</text>
+        </name>
+      </transition>
+      <transition id="e113f6ce-fce1-4d83-9ff4-0d67b081a7d8">
+        <name>
+          <text>File.downloadTo</text>
+        </name>
+      </transition>
+      <transition id="b09732c9-2385-4f50-92e9-f0b4fbe67d29">
+        <name>
+          <text>File.deleteFiles</text>
+        </name>
+      </transition>
+      <transition id="df827567-eee1-4266-92b0-c436ec4103a3">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="539317a3-587d-4f24-bd94-36ca1e3aafad">
+        <name>
+          <text>TaskBot.stopTask</text>
+        </name>
+      </transition>
+      <transition id="1c231394-625b-4ed7-bc30-a2784fbda00e">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="466c6b67-f829-4f5c-9305-964680458411">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <transition id="9f1716cd-2891-4cae-a5e7-3b4a7e59fa3a">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <transition id="20127402-5836-4d64-ba2e-a1dc414bf7d2">
+        <name>
+          <text>Datetime.toString</text>
+        </name>
+      </transition>
+      <transition id="302b4b7e-8536-4ecb-8155-c67888e40bcd">
+        <name>
+          <text>Datetime.toString</text>
+        </name>
+      </transition>
+      <transition id="bcf293df-350f-45ec-8778-6aed5d00c232">
+        <name>
+          <text>DLL.RunCSharpDLL_V1</text>
+        </name>
+      </transition>
+      <transition id="4e6a0a2f-d723-4286-ac56-8f5cdec24067">
+        <name>
+          <text>File.createFile</text>
+        </name>
+      </transition>
+      <transition id="3fd92a35-22dd-41a3-85d4-54b67c7d4f44">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <transition id="27559638-00c5-42c4-996b-1d12b35ab31f">
+        <name>
+          <text>Datetime.toString</text>
+        </name>
+      </transition>
+      <transition id="cd3b3e2e-c006-4d68-9c35-e4830ea99f71">
+        <name>
+          <text>LogToFile.logToFile</text>
+        </name>
+      </transition>
+      <transition id="641d35af-edf6-422e-b3b9-3e802a9390dd">
+        <name>
+          <text>Folder.createFolder</text>
+        </name>
+      </transition>
+      <arc id="1561468035584" source="source" target="5783493b-080a-4aaa-9813-dc910c5afd69"/>
+      <arc id="1561468037376" source="p_5" target="179c7bc3-8039-4419-814e-f4e27061f3e9"/>
+      <arc id="1561468038272" source="p_8" target="14b8c490-4e6e-422c-b15a-758f23002e8f"/>
+      <arc id="1561468039168" source="p_10" target="fa30a9a1-5527-4e66-a979-d7ed1be34ec9"/>
+      <arc id="1561468040064" source="p_12" target="7a43983f-2cdd-413f-b9a1-4a436103450d"/>
+      <arc id="1561468040960" source="p_14" target="30ad256b-5116-4dc8-a9cd-2ea76c3318c6"/>
+      <arc id="1561468041856" source="p_16" target="85b01a16-d6be-4c41-b2f2-51f8d6b84081"/>
+      <arc id="1561470403200" source="p_22" target="e86d48dc-6c94-4861-9d25-2f4d68cfd07d"/>
+      <arc id="1561470404096" source="p_19" target="9b3e29b2-b7dc-4633-8594-a7993221ee8a"/>
+      <arc id="1561470404992" source="d0375650-5856-4b3f-b9a7-ddcb39acf2cc" target="p_23"/>
+      <arc id="1561470406784" source="0765d65f-38b9-4dad-9e15-7c431d5655ca" target="p_29"/>
+      <arc id="1561470404880" source="p_25" target="d0375650-5856-4b3f-b9a7-ddcb39acf2cc"/>
+      <arc id="1561470405776" source="p_27" target="c421f771-20d1-4964-8bfb-a91ce59c5233"/>
+      <arc id="1561470406672" source="p_28" target="0765d65f-38b9-4dad-9e15-7c431d5655ca"/>
+      <arc id="1561470407568" source="c8ae5e16-3d2e-4495-b5c3-a45f3da25b36" target="p_23"/>
+      <arc id="1561470405440" source="p_19" target="4e6a0a2f-d723-4286-ac56-8f5cdec24067"/>
+      <arc id="1561470402976" source="e113f6ce-fce1-4d83-9ff4-0d67b081a7d8" target="p_22"/>
+      <arc id="1561470407456" source="p_30" target="c8ae5e16-3d2e-4495-b5c3-a45f3da25b36"/>
+      <arc id="1561468036144" source="df827567-eee1-4266-92b0-c436ec4103a3" target="p_4"/>
+      <arc id="1561468037040" source="539317a3-587d-4f24-bd94-36ca1e3aafad" target="p_5"/>
+      <arc id="1561468037936" source="1c231394-625b-4ed7-bc30-a2784fbda00e" target="p_8"/>
+      <arc id="1561468038832" source="466c6b67-f829-4f5c-9305-964680458411" target="p_10"/>
+      <arc id="1561468039728" source="9f1716cd-2891-4cae-a5e7-3b4a7e59fa3a" target="p_12"/>
+      <arc id="1561468040624" source="20127402-5836-4d64-ba2e-a1dc414bf7d2" target="p_14"/>
+      <arc id="1561468041520" source="302b4b7e-8536-4ecb-8155-c67888e40bcd" target="p_16"/>
+      <arc id="1561468042416" source="b09732c9-2385-4f50-92e9-f0b4fbe67d29" target="p_18"/>
+      <arc id="1561470402864" source="p_21" target="e113f6ce-fce1-4d83-9ff4-0d67b081a7d8"/>
+      <arc id="1561470404656" source="bcf293df-350f-45ec-8778-6aed5d00c232" target="p_25"/>
+      <arc id="1561470406336" source="27559638-00c5-42c4-996b-1d12b35ab31f" target="p_28"/>
+      <arc id="1561468036032" source="p_3" target="df827567-eee1-4266-92b0-c436ec4103a3"/>
+      <arc id="1561468036928" source="p_6" target="539317a3-587d-4f24-bd94-36ca1e3aafad"/>
+      <arc id="1561468037824" source="p_7" target="1c231394-625b-4ed7-bc30-a2784fbda00e"/>
+      <arc id="1561468038720" source="p_9" target="466c6b67-f829-4f5c-9305-964680458411"/>
+      <arc id="1561468039616" source="p_11" target="9f1716cd-2891-4cae-a5e7-3b4a7e59fa3a"/>
+      <arc id="1561468040512" source="p_13" target="20127402-5836-4d64-ba2e-a1dc414bf7d2"/>
+      <arc id="1561468041408" source="p_15" target="302b4b7e-8536-4ecb-8155-c67888e40bcd"/>
+      <arc id="1561468042304" source="p_17" target="b09732c9-2385-4f50-92e9-f0b4fbe67d29"/>
+      <arc id="1561470403648" source="3fd92a35-22dd-41a3-85d4-54b67c7d4f44" target="p_19"/>
+      <arc id="1561470404544" source="p_24" target="bcf293df-350f-45ec-8778-6aed5d00c232"/>
+      <arc id="1561470405552" source="4e6a0a2f-d723-4286-ac56-8f5cdec24067" target="p_27"/>
+      <arc id="1561468043088" source="641d35af-edf6-422e-b3b9-3e802a9390dd" target="p_21"/>
+      <arc id="1561470403536" source="p_20" target="3fd92a35-22dd-41a3-85d4-54b67c7d4f44"/>
+      <arc id="1561470406224" source="p_26" target="27559638-00c5-42c4-996b-1d12b35ab31f"/>
+      <arc id="1561470407120" source="p_29" target="cd3b3e2e-c006-4d68-9c35-e4830ea99f71"/>
+      <arc id="1561470407232" source="cd3b3e2e-c006-4d68-9c35-e4830ea99f71" target="p_30"/>
+      <arc id="1561470407792" source="p_23" target="skip_1"/>
+      <arc id="1561468036704" source="2d2372b3-3c13-4cc6-81ee-0769d1540204" target="p_6"/>
+      <arc id="1561468042976" source="p_18" target="641d35af-edf6-422e-b3b9-3e802a9390dd"/>
+      <arc id="1561470407904" source="skip_1" target="sink"/>
+      <arc id="1561470405888" source="c421f771-20d1-4964-8bfb-a91ce59c5233" target="p_26"/>
+      <arc id="1561468036592" source="p_4" target="2d2372b3-3c13-4cc6-81ee-0769d1540204"/>
+      <arc id="1561468035696" source="5783493b-080a-4aaa-9813-dc910c5afd69" target="p_3"/>
+      <arc id="1561468037488" source="179c7bc3-8039-4419-814e-f4e27061f3e9" target="p_7"/>
+      <arc id="1561468038384" source="14b8c490-4e6e-422c-b15a-758f23002e8f" target="p_9"/>
+      <arc id="1561468039280" source="fa30a9a1-5527-4e66-a979-d7ed1be34ec9" target="p_11"/>
+      <arc id="1561468040176" source="7a43983f-2cdd-413f-b9a1-4a436103450d" target="p_13"/>
+      <arc id="1561468041072" source="30ad256b-5116-4dc8-a9cd-2ea76c3318c6" target="p_15"/>
+      <arc id="1561468041968" source="85b01a16-d6be-4c41-b2f2-51f8d6b84081" target="p_17"/>
+      <arc id="1561470403312" source="e86d48dc-6c94-4861-9d25-2f4d68cfd07d" target="p_20"/>
+      <arc id="1561470404208" source="9b3e29b2-b7dc-4633-8594-a7993221ee8a" target="p_24"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

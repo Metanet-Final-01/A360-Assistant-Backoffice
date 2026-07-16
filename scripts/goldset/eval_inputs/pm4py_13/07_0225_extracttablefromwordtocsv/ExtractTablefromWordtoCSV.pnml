@@ -1,0 +1,145 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<pnml>
+  <net id="imdf_net_1784123785.9511573" type="http://www.pnml.org/version-2009/grammar/pnmlcoremodel">
+    <name>
+      <text>imdf_net_1784123785.9511573</text>
+    </name>
+    <page id="n0">
+      <place id="source">
+        <name>
+          <text>source</text>
+        </name>
+        <initialMarking>
+          <text>1</text>
+        </initialMarking>
+      </place>
+      <place id="sink">
+        <name>
+          <text>sink</text>
+        </name>
+      </place>
+      <place id="p_5">
+        <name>
+          <text>p_5</text>
+        </name>
+      </place>
+      <place id="p_6">
+        <name>
+          <text>p_6</text>
+        </name>
+      </place>
+      <place id="p_7">
+        <name>
+          <text>p_7</text>
+        </name>
+      </place>
+      <place id="p_8">
+        <name>
+          <text>p_8</text>
+        </name>
+      </place>
+      <place id="p_10">
+        <name>
+          <text>p_10</text>
+        </name>
+      </place>
+      <place id="p_11">
+        <name>
+          <text>p_11</text>
+        </name>
+      </place>
+      <place id="p_3">
+        <name>
+          <text>p_3</text>
+        </name>
+      </place>
+      <place id="p_4">
+        <name>
+          <text>p_4</text>
+        </name>
+      </place>
+      <place id="p_9">
+        <name>
+          <text>p_9</text>
+        </name>
+      </place>
+      <transition id="fdc82be9-720f-4ccd-a00d-31d1dca2f4c7">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="3819fa23-b0f9-4ac0-9ebb-3676721d25b9">
+        <name>
+          <text>String.assign</text>
+        </name>
+      </transition>
+      <transition id="7e1745d0-9a28-4bdd-8c95-c45e3593385e">
+        <name>
+          <text>DLL.Open</text>
+        </name>
+      </transition>
+      <transition id="88297e54-87aa-4d21-92ab-5b5dc87a2b14">
+        <name>
+          <text>DLL.Run function</text>
+        </name>
+      </transition>
+      <transition id="9b71d409-078f-4683-96bc-9871dfac3525">
+        <name>
+          <text>MessageBox.messageBox</text>
+        </name>
+      </transition>
+      <transition id="e003c037-6f90-411a-8ce5-7f6f612456d1">
+        <name>
+          <text>Dictionary.put</text>
+        </name>
+      </transition>
+      <transition id="552e4b63-75db-4d39-ae4c-b5b0ba833bba">
+        <name>
+          <text>Dictionary.put</text>
+        </name>
+      </transition>
+      <transition id="525838a3-f8e1-4869-ad7e-81608c48a046">
+        <name>
+          <text>DLL.Open</text>
+        </name>
+      </transition>
+      <transition id="ea94521f-6392-46d2-9eeb-3cc112522800">
+        <name>
+          <text>DLL.Close</text>
+        </name>
+      </transition>
+      <transition id="6e0d0976-3408-40f0-a3ba-923db0b2c046">
+        <name>
+          <text>DLL.Close</text>
+        </name>
+      </transition>
+      <arc id="1561467835392" source="p_4" target="552e4b63-75db-4d39-ae4c-b5b0ba833bba"/>
+      <arc id="1561467838080" source="6e0d0976-3408-40f0-a3ba-923db0b2c046" target="sink"/>
+      <arc id="1561467837072" source="p_10" target="ea94521f-6392-46d2-9eeb-3cc112522800"/>
+      <arc id="1561467833488" source="p_5" target="e003c037-6f90-411a-8ce5-7f6f612456d1"/>
+      <arc id="1561467836176" source="p_7" target="525838a3-f8e1-4869-ad7e-81608c48a046"/>
+      <arc id="1561467835168" source="p_6" target="7e1745d0-9a28-4bdd-8c95-c45e3593385e"/>
+      <arc id="1561467836064" source="7e1745d0-9a28-4bdd-8c95-c45e3593385e" target="p_7"/>
+      <arc id="1561467836960" source="ea94521f-6392-46d2-9eeb-3cc112522800" target="p_11"/>
+      <arc id="1561467838752" source="p_11" target="6e0d0976-3408-40f0-a3ba-923db0b2c046"/>
+      <arc id="1561467835056" source="525838a3-f8e1-4869-ad7e-81608c48a046" target="p_8"/>
+      <arc id="1561467835952" source="p_8" target="88297e54-87aa-4d21-92ab-5b5dc87a2b14"/>
+      <arc id="1561467831360" source="3819fa23-b0f9-4ac0-9ebb-3676721d25b9" target="p_4"/>
+      <arc id="1561467834048" source="fdc82be9-720f-4ccd-a00d-31d1dca2f4c7" target="p_3"/>
+      <arc id="1561467833040" source="source" target="fdc82be9-720f-4ccd-a00d-31d1dca2f4c7"/>
+      <arc id="1561467835728" source="p_3" target="3819fa23-b0f9-4ac0-9ebb-3676721d25b9"/>
+      <arc id="1561467837520" source="p_9" target="9b71d409-078f-4683-96bc-9871dfac3525"/>
+      <arc id="1561467837408" source="9b71d409-078f-4683-96bc-9871dfac3525" target="p_10"/>
+      <arc id="1561467835504" source="552e4b63-75db-4d39-ae4c-b5b0ba833bba" target="p_5"/>
+      <arc id="1561467837296" source="e003c037-6f90-411a-8ce5-7f6f612456d1" target="p_6"/>
+      <arc id="1561467836400" source="88297e54-87aa-4d21-92ab-5b5dc87a2b14" target="p_9"/>
+    </page>
+    <finalmarkings>
+      <marking>
+        <place idref="sink">
+          <text>1</text>
+        </place>
+      </marking>
+    </finalmarkings>
+  </net>
+</pnml>

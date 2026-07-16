@@ -1,0 +1,12 @@
+{
+  "bot_dir": "03_broad_sequential_workflow\\0193_pdf-to-word-converter-with-keyword-highlight",
+  "workflows": [
+    {
+      "content_type": "application/vnd.aa.taskbot",
+      "filename": "PDF to Word Converter (with Keyword Highlight)",
+      "manual_dependencies": [],
+      "output_file": "workflows/PDF to Word Converter (with Keyword Highlight).json",
+      "scanned_dependencies": []
+    }
+  ]
+}

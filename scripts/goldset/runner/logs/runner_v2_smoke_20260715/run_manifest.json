@@ -1,0 +1,136 @@
+{
+  "run_id": "runner_v2_smoke_20260715",
+  "created_at": "2026-07-15T09:40:53.767245+00:00",
+  "runner": "runner_v2",
+  "base_url": "http://127.0.0.1:8000",
+  "agent_version": "v2",
+  "input": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0131_currency-rate---oanda__Currency Rate - Oanda.pdf",
+  "frontend_equivalent_flow": [
+    "POST /api/documents",
+    "POST /api/documents/{id}/parse",
+    "POST /api/sessions/{session_id}/turn analyze",
+    "POST /api/sessions/{session_id}/turn recommend"
+  ],
+  "steps": [
+    {
+      "name": "uploadDocument",
+      "started_at": "2026-07-15T09:40:53.767303+00:00",
+      "finished_at": "2026-07-15T09:40:55.106726+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents",
+        "file": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0131_currency-rate---oanda__Currency Rate - Oanda.pdf"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 09:40:53 GMT",
+          "server": "uvicorn",
+          "content-length": "296",
+          "content-type": "application/json",
+          "x-request-id": "65169170022e",
+          "connection": "close"
+        },
+        "data": {
+          "id": "3f3a737f-26cd-4191-ba62-b025de04e731",
+          "session_id": "3edcbe39-d364-40d7-8e93-c9055b8b1419",
+          "filename": "0131_currency-rate---oanda__Currency Rate - Oanda.pdf",
+          "size_bytes": 34149,
+          "status": "uploaded",
+          "error": null,
+          "page_count": null,
+          "warnings": [],
+          "created_at": "2026-07-15T09:40:54.424134+00:00"
+        }
+      },
+      "events_log": null,
+      "error": null
+    },
+    {
+      "name": "parseDocument",
+      "started_at": "2026-07-15T09:40:55.110546+00:00",
+      "finished_at": "2026-07-15T09:40:58.164753+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents/3f3a737f-26cd-4191-ba62-b025de04e731/parse"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 09:40:54 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "6e94f62fb28d",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 1,
+          "done": 1
+        },
+        "duration_seconds": 3.054,
+        "final_event": {
+          "event": "done",
+          "stage": "parsing",
+          "message": "파싱 완료",
+          "data": {
+            "id": "3f3a737f-26cd-4191-ba62-b025de04e731",
+            "session_id": "3edcbe39-d364-40d7-8e93-c9055b8b1419",
+            "filename": "0131_currency-rate---oanda__Currency Rate - Oanda.pdf",
+            "size_bytes": 34149,
+            "status": "parsed",
+            "error": null,
+            "page_count": 1,
+            "warnings": [],
+            "created_at": "2026-07-15T09:40:54.424134+00:00"
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_smoke_20260715\\02_parseDocument.events.jsonl",
+      "error": null
+    },
+    {
+      "name": "turnAnalyze",
+      "started_at": "2026-07-15T09:40:58.167831+00:00",
+      "finished_at": "2026-07-15T09:41:13.959536+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/sessions/3edcbe39-d364-40d7-8e93-c9055b8b1419/turn",
+        "json": {
+          "message": "이 업무정의서를 분석해서 자동화 흐름도까지 만들어줘",
+          "operation": "chat",
+          "agent_version": "v2"
+        }
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 09:40:57 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "b546110d228f",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 1,
+          "error": 1
+        },
+        "duration_seconds": 15.791,
+        "final_event": {
+          "event": "error",
+          "message": "OpenAI 인증 실패 — API 키를 확인하세요"
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_smoke_20260715\\03_turn_analyze.events.jsonl",
+      "error": null
+    }
+  ]
+}

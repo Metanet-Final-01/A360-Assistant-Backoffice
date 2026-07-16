@@ -1,0 +1,90 @@
+{
+  "operator": "sequence",
+  "label": null,
+  "children": [
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "XML.xmlStartSession",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "XML.xmlGetSingleNode",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "XML.xmlGetSingleNode",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": null,
+          "label": "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Microsoft 365 Outlook.ms365OutlookDisconnect",
+          "children": []
+        }
+      ]
+    },
+    {
+      "operator": null,
+      "label": "Excel advanced.cloudExcelOpen",
+      "children": []
+    },
+    {
+      "operator": "sequence",
+      "label": null,
+      "children": [
+        {
+          "operator": "sequence",
+          "label": null,
+          "children": [
+            {
+              "operator": null,
+              "label": "Excel advanced.excelAdvancedPackageReadRowAction",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "Jira.jiraCreateIssue",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "JSON utilities.jsonStartSession",
+              "children": []
+            },
+            {
+              "operator": null,
+              "label": "JSON utilities.convertJsonToDictionary",
+              "children": []
+            }
+          ]
+        },
+        {
+          "operator": null,
+          "label": "Message box.usingMessageBoxAction",
+          "children": []
+        },
+        {
+          "operator": null,
+          "label": "Excel advanced.excelAdvancedPackageCloseAction",
+          "children": []
+        }
+      ]
+    }
+  ]
+}

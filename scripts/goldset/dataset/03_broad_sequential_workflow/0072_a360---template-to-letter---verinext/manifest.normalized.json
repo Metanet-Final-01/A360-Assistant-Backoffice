@@ -1,0 +1,97 @@
+{
+  "files": [
+    {
+      "contentType": "application/vnd.aa.taskbot",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\Template to Letter\\A360 - Template to Letter - Verinext",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": []
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "path": "bot-command-comment-2.12.0.jar",
+      "version": "2.12.0"
+    },
+    {
+      "name": "DataTable",
+      "path": "bot-command-table-4.6.0-20220920-155212.jar",
+      "version": "4.6.0-20220920-155212"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.10.0-20220929-040735.jar",
+      "version": "2.10.0-20220929-040735"
+    },
+    {
+      "name": "Excel",
+      "path": "bot-command-poi-6.11.0-20220919-135307.jar",
+      "version": "6.11.0-20220919-135307"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-6.5.0-20221003-160340.jar",
+      "version": "6.5.0-20221003-160340"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-3.5.0-20220928-201537.jar",
+      "version": "3.5.0-20220928-201537"
+    },
+    {
+      "name": "List",
+      "path": "bot-command-list-2.9.2-20220919-103920.jar",
+      "version": "2.9.2-20220919-103920"
+    },
+    {
+      "name": "LogToFile",
+      "path": "bot-command-logtofile-3.5.0-20220416-233918.jar",
+      "version": "3.5.0-20220416-233918"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-3.6.0-20220928-191723.jar",
+      "version": "3.6.0-20220928-191723"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-2.1.0-20200831-031541.jar",
+      "version": "2.1.0-20200831-031541"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-3.6.0-20220928-104414.jar",
+      "version": "3.6.0-20220928-104414"
+    },
+    {
+      "name": "Step",
+      "path": "bot-command-step-2.4.0-20220929-044740.jar",
+      "version": "2.4.0-20220929-044740"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-5.5.2-20221006-094641.jar",
+      "version": "5.5.2-20221006-094641"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-3.10.0-20220921-062556.jar",
+      "version": "3.10.0-20220921-062556"
+    },
+    {
+      "name": "TextFile",
+      "path": "bot-command-textfile-1.4.2-20221004-130231.jar",
+      "version": "1.4.2-20221004-130231"
+    },
+    {
+      "name": "VBScript",
+      "path": "bot-command-vbscript-2.16.2-20221020-051711.jar",
+      "version": "2.16.2-20221020-051711"
+    }
+  ]
+}

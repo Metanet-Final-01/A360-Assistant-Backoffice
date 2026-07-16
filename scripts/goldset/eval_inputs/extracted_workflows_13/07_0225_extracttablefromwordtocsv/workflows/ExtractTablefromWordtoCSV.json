@@ -1,0 +1,361 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "string": "D:\\AA\\Basserah\\extract data from word to excel\\Table.docx",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "assign",
+      "disabled": false,
+      "packageName": "String",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "vWordPath"
+      },
+      "uid": "19e0b4de-7e8b-46c1-a6c8-96f016d3cb2f"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "string": "D:\\AA\\Basserah\\extract data from word to excel\\TableCSV.csv",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "assign",
+      "disabled": false,
+      "packageName": "String",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "vCSVFilePath"
+      },
+      "uid": "4329444b-a7bf-4049-bcb1-04fc944a01ac"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sourceMap",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "vExtractTableWordToCSV"
+          }
+        },
+        {
+          "name": "key",
+          "value": {
+            "string": "wordDocPath",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "newValue",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "vWordPath"
+          }
+        }
+      ],
+      "commandName": "put",
+      "disabled": false,
+      "packageName": "Dictionary",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "vOutput"
+      },
+      "uid": "b596ef18-9632-4490-8086-48cd3ee1ae35"
+    },
+    {
+      "attributes": [
+        {
+          "name": "sourceMap",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "vExtractTableWordToCSV"
+          }
+        },
+        {
+          "name": "key",
+          "value": {
+            "string": "csvPath",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "newValue",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "vCSVFilePath"
+          }
+        }
+      ],
+      "commandName": "put",
+      "disabled": false,
+      "packageName": "Dictionary",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "vOutput"
+      },
+      "uid": "af32e550-0f11-448b-9947-670f577dacf0"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default1",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "file",
+          "value": {
+            "string": "repository:///Automation%20Anywhere/Bot%20Store/DocumentFormat.OpenXml.dll",
+            "type": "FILE"
+          }
+        }
+      ],
+      "commandName": "Open",
+      "disabled": false,
+      "packageName": "DLL",
+      "uid": "b128f134-1344-4921-9168-e942cf683830"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "file",
+          "value": {
+            "string": "repository:///Automation%20Anywhere/Bot%20Store/ExtractTableFromWordToCSV.dll",
+            "type": "FILE"
+          }
+        }
+      ],
+      "commandName": "Open",
+      "disabled": false,
+      "packageName": "DLL",
+      "uid": "030a17ac-ae4e-40d4-90bd-cc9367ad93b9"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "nameSpace",
+          "value": {
+            "string": "ExtractTableFromWordToCSV",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "className",
+          "value": {
+            "string": "TableFromWordToCSV",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "functionName",
+          "value": {
+            "string": "FromTableWordToCSV",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "arguments",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "vExtractTableWordToCSV"
+          }
+        }
+      ],
+      "commandName": "Run function",
+      "disabled": false,
+      "packageName": "DLL",
+      "returnTo": {
+        "type": "VARIABLE",
+        "variableName": "vOutput"
+      },
+      "uid": "91c2b209-be98-4ed1-8095-bd6b3064f6b2"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Automation Anywhere Enterprise Client",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "content",
+          "value": {
+            "expression": "$vOutput$",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "scrollLines",
+          "value": {
+            "number": "30",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "closeMsgBox",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "commandName": "messageBox",
+      "disabled": false,
+      "packageName": "MessageBox",
+      "uid": "3b6f932d-1edd-4a2f-8144-da6292069f7d"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default2",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Close",
+      "disabled": false,
+      "packageName": "DLL",
+      "uid": "d3cd388d-6a08-47d1-8b21-8a102dc118bf"
+    },
+    {
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "string": "Default1",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Close",
+      "disabled": false,
+      "packageName": "DLL",
+      "uid": "4cb6b0d0-6803-45a5-9640-a76af548a564"
+    }
+  ],
+  "packages": [
+    {
+      "name": "DLL",
+      "version": "3.3.0-20201126-165850"
+    },
+    {
+      "name": "Dictionary",
+      "version": "3.2.0-20201126-165138"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.1.0-20201126-165430"
+    },
+    {
+      "name": "String",
+      "version": "3.1.0-20201126-165909"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vOutput",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vWordPath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "vCSVFilePath",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [
+          {
+            "key": "wordDocPath",
+            "value": {
+              "string": "",
+              "type": "STRING"
+            }
+          },
+          {
+            "key": "csvPath",
+            "value": {
+              "string": "",
+              "type": "STRING"
+            }
+          }
+        ],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "vExtractTableWordToCSV",
+      "output": false,
+      "readOnly": false,
+      "subtype": "ANY",
+      "type": "DICTIONARY"
+    }
+  ],
+  "workItemTemplateName": null
+}

@@ -1,0 +1,406 @@
+{
+  "files": [
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.aiagent",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\EmailComposerAPI",
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\FormatDataAPI",
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\SendEmailTask",
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\VerificationForm",
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\ExtractionDocData"
+      ],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\DetailsVerificationAgent",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "MAC_OS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "REALTIME_CLOUD"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "ONDEMAND_CLOUD"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "MAC_OS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "ONDEMAND_CLOUD"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "REALTIME_CLOUD"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.prompt",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\EmailComposer",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "model_connection_name",
+          "value": "AISkills-4.1"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.headlessbot",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\EmailComposerAPI",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\EmailComposer"
+      ],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "ONDEMAND_CLOUD"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "MAC_OS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "REALTIME_CLOUD"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.taskbot",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\EmailDetailsDownload",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "MAC_OS"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "WINDOWS"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.taskbot",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\ExtractionDocData",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "MAC_OS"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.headlessbot",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\FormatDataAPI",
+      "scannedDependencies": [
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\FormatDetails"
+      ],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "MAC_OS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "REALTIME_CLOUD"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "ONDEMAND_CLOUD"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "WINDOWS"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.prompt",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\FormatDetails",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "model_connection_name",
+          "value": "AISkills-4.1"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.aiagent",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\EmailComposerAPI",
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\SendEmailTask",
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\DetailsVerificationAgent",
+        "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\EmailDetailsDownload"
+      ],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\MainEmployeeOnboardingAiAgent",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "ONDEMAND_CLOUD"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "REALTIME_CLOUD"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "REALTIME_CLOUD"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "MAC_OS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "MAC_OS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "ONDEMAND_CLOUD"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.taskbot",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\SendEmailTask",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": [],
+      "tags": [
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "WINDOWS"
+        },
+        {
+          "namespace": "COMPATIBLE_TARGET",
+          "value": "MAC_OS"
+        },
+        {
+          "namespace": "INTENDED_TARGET",
+          "value": "WINDOWS"
+        }
+      ]
+    },
+    {
+      "author": "",
+      "contentType": "application/vnd.aa.form",
+      "description": "",
+      "excluded": false,
+      "manualDependencies": [],
+      "manualDependenciesNewPaths": [],
+      "metadataForFile": null,
+      "newPath": null,
+      "path": "Automation Anywhere\\Bot Store\\EmployeeOnboardingAiAgent\\VerificationForm",
+      "scannedDependencies": [],
+      "scannedDependenciesNewPaths": [],
+      "tags": []
+    }
+  ],
+  "globalValues": [],
+  "packages": [
+    {
+      "name": "DataTable",
+      "path": "bot-command-table-4.15.2.jar",
+      "version": "4.15.2"
+    },
+    {
+      "name": "Datetime",
+      "path": "bot-command-datetime-2.16.1.jar",
+      "version": "2.16.1"
+    },
+    {
+      "name": "Delay",
+      "path": "bot-command-delay-3.10.0.jar",
+      "version": "3.10.0"
+    },
+    {
+      "name": "Dictionary",
+      "path": "bot-command-dictionary-3.15.0.jar",
+      "version": "3.15.0"
+    },
+    {
+      "name": "Email",
+      "path": "bot-command-email-3.31.1.jar",
+      "version": "3.31.1"
+    },
+    {
+      "name": "ErrorHandler",
+      "path": "bot-command-error-handler-2.13.0-20241115-120032.jar",
+      "version": "2.13.0-20241115-120032"
+    },
+    {
+      "name": "File",
+      "path": "bot-command-file-6.13.0.jar",
+      "version": "6.13.0"
+    },
+    {
+      "name": "Folder",
+      "path": "bot-command-folder-6.13.0.jar",
+      "version": "6.13.0"
+    },
+    {
+      "name": "GenAIPrompt",
+      "path": "bot-command-genaiprompt-8.0.2.jar",
+      "version": "8.0.2"
+    },
+    {
+      "name": "If",
+      "path": "bot-command-if-3.8.0-20241115-115929.jar",
+      "version": "3.8.0-20241115-115929"
+    },
+    {
+      "name": "LegacyAutomation",
+      "path": "bot-command-legacyautomation-6.6.1.jar",
+      "version": "6.6.1"
+    },
+    {
+      "name": "Loop",
+      "path": "bot-command-loop-3.10.0-20251030-061555.jar",
+      "version": "3.10.0-20251030-061555"
+    },
+    {
+      "name": "MessageBox",
+      "path": "bot-command-messagebox-3.8.1.jar",
+      "version": "3.8.1"
+    },
+    {
+      "name": "Number",
+      "path": "bot-command-number-3.10.0.jar",
+      "version": "3.10.0"
+    },
+    {
+      "name": "PDF",
+      "path": "bot-command-pdf-3.11.0.jar",
+      "version": "3.11.0"
+    },
+    {
+      "name": "Record",
+      "path": "bot-command-record-1.11.0.jar",
+      "version": "1.11.0"
+    },
+    {
+      "name": "String",
+      "path": "bot-command-string-5.11.3.jar",
+      "version": "5.11.3"
+    },
+    {
+      "name": "System",
+      "path": "bot-command-system-3.17.0.jar",
+      "version": "3.17.0"
+    },
+    {
+      "name": "TextFile",
+      "path": "bot-command-textfile-1.8.0.jar",
+      "version": "1.8.0"
+    }
+  ]
+}

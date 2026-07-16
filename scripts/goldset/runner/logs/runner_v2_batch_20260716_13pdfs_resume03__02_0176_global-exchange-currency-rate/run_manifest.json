@@ -1,0 +1,97 @@
+{
+  "run_id": "runner_v2_batch_20260716_13pdfs_resume03__02_0176_global-exchange-currency-rate",
+  "created_at": "2026-07-15T17:02:28.533517+00:00",
+  "runner": "runner_v2",
+  "base_url": "http://127.0.0.1:8000",
+  "agent_version": "v2",
+  "input": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf",
+  "frontend_equivalent_flow": [
+    "POST /api/documents",
+    "POST /api/documents/{id}/parse",
+    "POST /api/sessions/{session_id}/turn analyze",
+    "POST /api/sessions/{session_id}/turn recommend"
+  ],
+  "steps": [
+    {
+      "name": "uploadDocument",
+      "started_at": "2026-07-15T17:02:28.533631+00:00",
+      "finished_at": "2026-07-15T17:02:30.679354+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents",
+        "file": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\eval_inputs\\pdfs\\0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf"
+      },
+      "response": {
+        "status": 201,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:02:29 GMT",
+          "server": "uvicorn",
+          "content-length": "312",
+          "content-type": "application/json",
+          "x-request-id": "1c91ffb58760",
+          "connection": "close"
+        },
+        "data": {
+          "id": "982ddf6a-d37f-4b91-9fa2-260309c698d7",
+          "session_id": "e98fea08-41f9-4a42-bf3c-fd53ce57139a",
+          "filename": "0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf",
+          "size_bytes": 50436,
+          "status": "uploaded",
+          "error": null,
+          "page_count": null,
+          "warnings": [],
+          "created_at": "2026-07-15T17:02:29.841164+00:00"
+        }
+      },
+      "events_log": null,
+      "error": null
+    },
+    {
+      "name": "parseDocument",
+      "started_at": "2026-07-15T17:02:30.683866+00:00",
+      "finished_at": "2026-07-15T17:02:32.227439+00:00",
+      "status": "ok",
+      "request": {
+        "method": "POST",
+        "path": "/api/documents/982ddf6a-d37f-4b91-9fa2-260309c698d7/parse"
+      },
+      "response": {
+        "status": 200,
+        "headers": {
+          "date": "Wed, 15 Jul 2026 17:02:29 GMT",
+          "server": "uvicorn",
+          "cache-control": "no-cache",
+          "x-accel-buffering": "no",
+          "content-type": "text/event-stream; charset=utf-8",
+          "x-request-id": "0c0c62da5ca0",
+          "connection": "close",
+          "transfer-encoding": "chunked"
+        },
+        "counts": {
+          "stage": 1,
+          "done": 1
+        },
+        "duration_seconds": 1.543,
+        "final_event": {
+          "event": "done",
+          "stage": "parsing",
+          "message": "파싱 완료",
+          "data": {
+            "id": "982ddf6a-d37f-4b91-9fa2-260309c698d7",
+            "session_id": "e98fea08-41f9-4a42-bf3c-fd53ce57139a",
+            "filename": "0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf",
+            "size_bytes": 50436,
+            "status": "parsed",
+            "error": null,
+            "page_count": 2,
+            "warnings": [],
+            "created_at": "2026-07-15T17:02:29.841164+00:00"
+          }
+        }
+      },
+      "events_log": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume03__02_0176_global-exchange-currency-rate\\02_parseDocument.events.jsonl",
+      "error": null
+    }
+  ]
+}

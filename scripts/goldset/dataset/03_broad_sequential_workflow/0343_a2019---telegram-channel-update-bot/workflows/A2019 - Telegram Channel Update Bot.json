@@ -1,0 +1,2637 @@
+{
+  "breakpoints": [],
+  "nodes": [
+    {
+      "attributes": [
+        {
+          "name": "comment",
+          "value": {
+            "string": "REQUIRED: Fill in the Bot Name and Vendor Name fields in the lines below . These values are used for logging purposes.",
+            "type": "STRING"
+          }
+        }
+      ],
+      "commandName": "Comment",
+      "disabled": false,
+      "packageName": "Comment",
+      "uid": "89896c23-9659-437c-95fd-e81f94178a06"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Verify Bot Name and Vendor Name",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Bot Name and Vendor Name will drive logging - and are required to be filled. Additionaly, these values should be passed to a subtask (if subtasks are expected) or passed from a parent task if this bot will be called as a subtask.",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "fa5a07fb-4dd3-4568-8aa9-4393c85b44aa"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Telegram Channel Update",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sBotName"
+          },
+          "uid": "cd39079d-7970-486c-8f51-497af66d76b5"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Automation Anywhere",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sVendorName"
+          },
+          "uid": "7cdb7915-39f1-444d-a89c-55b75e81e282"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$sBotName$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$sNull$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "matchCase",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isIgnoreCarriage",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "name": "condition",
+              "operatorAttribute": {
+                "attributes": [
+                  {
+                    "name": "variable",
+                    "value": {
+                      "expression": "$sVendorName$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "operator",
+                    "value": {
+                      "string": "EQ",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "value",
+                    "value": {
+                      "expression": "$sNull$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "matchCase",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "name": "isIgnoreCarriage",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  }
+                ],
+                "operator": "OR",
+                "value": {
+                  "conditionalName": "stringVariable",
+                  "packageName": "String",
+                  "type": "CONDITIONAL"
+                }
+              },
+              "value": {
+                "conditionalName": "stringVariable",
+                "packageName": "String",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "string": "Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines.",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "messageBox",
+              "disabled": false,
+              "packageName": "MessageBox",
+              "uid": "cccb83ae-4134-4184-9cf7-143111ee3c0d"
+            },
+            {
+              "commandName": "stopTask",
+              "disabled": false,
+              "packageName": "TaskBot",
+              "uid": "6c5e48fa-5a3e-4f27-b086-a152601cc46b"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "86290375-ab5c-482e-9a84-8b641e4e92be"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "5b864cb4-875e-4450-b0b7-6e5d89f42423"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Setup Log Folders/Locations",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Bot logging root set by default to logging location used by the bot agent. See the variables pane for sRootLogDirectory.",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "128a8c20-6f1c-447a-ab4a-4e56e8c99972"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$sRootLogDirectory$\\$sBotName$-$sVendorName$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sErrorFolder"
+          },
+          "uid": "73514e70-8a33-4715-8599-784a783adf73"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$sRootLogDirectory$\\$sBotName$-$sVendorName$\\Logs",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sLogFolder"
+          },
+          "uid": "bc7ae2ce-9d34-49c2-a640-52383583a39f"
+        },
+        {
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$sRootLogDirectory$\\$sBotName$-$sVendorName$\\Snapshots",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "assign",
+          "disabled": false,
+          "packageName": "String",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sSnapshotsFolder"
+          },
+          "uid": "e6c3cd0f-beb6-4d0c-8e49-bb652d9f5b73"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Creating default log/error directories specific to this bot",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "85f0cc48-82d9-4fca-a5ea-d9a1473354f6"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sRootLogDirectory$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sRootLogDirectory$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "2a1ffe07-7a93-46ff-9c5a-914292e7a73f"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "6d44e986-d4f2-4b56-988a-e460799430c0"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sErrorFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sErrorFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "c2265f24-0c4a-4eda-9a17-49b6afb2ae78"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "7bb7d0bf-1c05-4d07-95ec-009ea15a4b9f"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "670a81ea-c3cb-45a1-89f8-63dd685a2975"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "411506ec-0b01-4259-bf55-ece5dd81d582"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "PREBUILT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "preBuiltPattern",
+              "value": {
+                "string": "ISO_LOCAL_DATE",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "toString",
+          "disabled": false,
+          "packageName": "Datetime",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sCurrentDate"
+          },
+          "uid": "492c8e5b-1fec-40a1-98ec-bd47cff8c37e"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Creating file if it doesnt previously exist so that the header row can be created",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "cd49e66d-f618-40a1-98b6-883702cc3f6b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFile",
+              "disabled": false,
+              "packageName": "File",
+              "uid": "3f89f81f-4240-4308-8fdd-ee06bcb26aca"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "string": "Date,System,TaskName,ErrorLine,ErrorDescription,API Response",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "logToFile",
+              "disabled": false,
+              "packageName": "LogToFile",
+              "uid": "eb62bf03-8eb8-4d50-a834-200dcb016d88"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "9bce5db5-f6a5-498e-80d9-81f2a87f53e6"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "PREBUILT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "preBuiltPattern",
+              "value": {
+                "string": "ISO_LOCAL_DATE_TIME",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "toString",
+          "disabled": false,
+          "packageName": "Datetime",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sDateTime"
+          },
+          "uid": "5013380d-b88e-4e79-ab57-25c34e437c98"
+        },
+        {
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "expression": "$nErrorLineNumber$",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "numFormatDigits",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "commandName": "toString",
+          "disabled": false,
+          "packageName": "Number",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sErrorLineNumber"
+          },
+          "uid": "46ea4013-f090-4d89-abd6-a033d7fdbac2"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "commandName": "createFolder",
+              "disabled": false,
+              "packageName": "Folder",
+              "uid": "ce71fde6-0655-4c9f-992f-c9e8cb9cd393"
+            }
+          ],
+          "commandName": "if",
+          "disabled": false,
+          "packageName": "If",
+          "uid": "a07c8322-89a5-45ba-9caa-d007ca57271b"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "3b04fec6-de4b-4e49-90d5-68eceff37844"
+    },
+    {
+      "attributes": [
+        {
+          "name": "title",
+          "value": {
+            "string": "Clear out old logs",
+            "type": "STRING"
+          }
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Setting lookback period for how long to keep logs for. Default is 30, can be customized as desired.",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "c06d1b13-0438-470f-b446-4693e63348d0"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "val",
+              "value": {
+                "expression": "$nLoggingPeriod$",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "unit",
+              "value": {
+                "string": "DAYS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "subtract",
+          "disabled": false,
+          "packageName": "Datetime",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "dtLogCutoffDate"
+          },
+          "uid": "d268f370-3182-4164-a28b-7ff908707f08"
+        },
+        {
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "dtLogCutoffDate"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "MM/dd/yy",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "toString",
+          "disabled": false,
+          "packageName": "Datetime",
+          "returnTo": {
+            "type": "VARIABLE",
+            "variableName": "sLogCutoffDate"
+          },
+          "uid": "60a43ec8-f2a7-40df-a07c-8cac5b42c6bb"
+        },
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "Surrounding delete actions in try handlers as to not cause the bot to fail its run in the case a log file couldnt be deleted. ",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "de8792ef-cc48-4788-b530-fa80b2998499"
+        },
+        {
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Deleting all files from logs folder older than nLoggingPeriod days since last modification",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "2b1ea342-5a3c-45e4-863e-93b4cc61c394"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sLogFolder$/*.csv",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "dateValue",
+                  "value": {
+                    "string": "Modified",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "dateRangeValue",
+                  "value": {
+                    "string": "Before",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "beforeDate",
+                  "value": {
+                    "expression": "$sLogCutoffDate$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "deleteFiles",
+              "disabled": false,
+              "packageName": "File",
+              "uid": "78c4f069-4d23-48ac-bdfb-9c60f053fbf0"
+            }
+          ],
+          "commandName": "try",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "95eab5af-9286-4078-a04e-dcfd077bad08"
+        },
+        {
+          "branches": [],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Deleting all files from snapshots folder older than nLoggingPeriod days since last modification",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "97213a13-7d25-455d-ba76-dadd1ced8874"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$sSnapshotsFolder$/*.jpg",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "dateValue",
+                  "value": {
+                    "string": "Modified",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "dateRangeValue",
+                  "value": {
+                    "string": "Before",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "beforeDate",
+                  "value": {
+                    "expression": "$sLogCutoffDate$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "deleteFiles",
+              "disabled": false,
+              "packageName": "File",
+              "uid": "719fd232-7bdb-41d2-8a7f-82144bb55a45"
+            }
+          ],
+          "commandName": "try",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "uid": "49f2ef6c-2cfb-4df2-91f2-7059230c453a"
+        }
+      ],
+      "commandName": "step",
+      "disabled": false,
+      "packageName": "Step",
+      "uid": "c7e19961-755f-4f99-86ff-d0ce86e03f15"
+    },
+    {
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Logic Runs on Error",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "870b159c-92b5-4b73-84bd-c9797086fe72"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Log Error",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "sourceFilePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "fileNotExists",
+                        "packageName": "File",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "comment",
+                          "value": {
+                            "string": "Creating file if it doesnt previously exist so that the header row can be created",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "Comment",
+                      "disabled": false,
+                      "packageName": "Comment",
+                      "uid": "ac14632f-e991-490f-ae24-7f197a732c05"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "createFile",
+                      "disabled": false,
+                      "packageName": "File",
+                      "uid": "b4b4cacf-06da-45ba-90fb-ec61a92eb192"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "Date,System,TaskName,ErrorLine,ErrorDescription",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "logToFile",
+                      "disabled": false,
+                      "packageName": "LogToFile",
+                      "uid": "f0fc8a70-1eca-48f7-b767-c636f9cdeaea"
+                    }
+                  ],
+                  "commandName": "if",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "11a68baf-d4fc-4d29-be81-fb8124bb15a5"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "packageName": "System",
+                        "type": "VARIABLE",
+                        "variableName": "Date"
+                      }
+                    },
+                    {
+                      "name": "selectPattern",
+                      "value": {
+                        "string": "PREBUILT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "preBuiltPattern",
+                      "value": {
+                        "string": "ISO_LOCAL_DATE_TIME",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "toString",
+                  "disabled": false,
+                  "packageName": "Datetime",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sDateTime"
+                  },
+                  "uid": "4b805343-189c-475a-93a4-526af84ff8e5"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "$nErrorLineNumber$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "numFormatDigits",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "toString",
+                  "disabled": false,
+                  "packageName": "Number",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sErrorLineNumber"
+                  },
+                  "uid": "601ef24d-c854-4e9a-bd8c-a63fbe0156d1"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Logging error to file matching header row established format",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "07d66009-84d9-44fe-8ce5-75d22dcb57cf"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "$sDateTime$,$System:Machine$,$System:AATaskName$,$sErrorLineNumber$,\"$sErrorDescription$\"",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "logToFile",
+                  "disabled": false,
+                  "packageName": "LogToFile",
+                  "uid": "6dd9e224-7f28-4f81-b2ce-a08be9b18d26"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "359d1a00-2680-453f-9079-60366eab4b05"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Record Snapshot",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "comment",
+                      "value": {
+                        "string": "Taking snapshot. Please disable/remove this action if your screen could potential contain plain text PII",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "Comment",
+                  "disabled": false,
+                  "packageName": "Comment",
+                  "uid": "ae16dc65-c123-48e1-9d12-ab68386efb8e"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sSnapshotsFolder$/$sCurrentDate$_$sBotName$.jpg",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "isOverwriteFile",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "commandName": "captureDesktop",
+                  "disabled": false,
+                  "packageName": "Screen",
+                  "uid": "535851c4-9801-432a-8feb-79480f2eb598"
+                }
+              ],
+              "commandName": "step",
+              "disabled": false,
+              "packageName": "Step",
+              "uid": "45b7a25c-38c1-4a07-beec-d360bfca4dc9"
+            }
+          ],
+          "commandName": "catch",
+          "disabled": false,
+          "packageName": "ErrorHandler",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "nErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "sErrorDescription"
+            }
+          },
+          "uid": "60be7a36-4aa8-4850-869c-7124d855a4e7"
+        }
+      ],
+      "children": [
+        {
+          "attributes": [
+            {
+              "name": "comment",
+              "value": {
+                "string": "*********Bot Logic Goes Inside Here************* ",
+                "type": "STRING"
+              }
+            }
+          ],
+          "commandName": "Comment",
+          "disabled": false,
+          "packageName": "Comment",
+          "uid": "fd0baa02-21cf-4f57-a182-fe50894399c8"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Initialization",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Create log folder/log file, if not present",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "6524c5a4-42f9-47e7-a221-88895f67204b"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Check if Telegram Bot Token is present",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "a39381d3-b34b-4c9d-b6ba-e09f94355edd"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$sBotToken$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "expression": "$sNull$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "windowCaption",
+                          "value": {
+                            "string": "Enter the bot token",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "promptMessage",
+                          "value": {
+                            "string": "Telegram Bot Token Not Found! Please input the bot token.",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encryptKeystroke",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "ForValue",
+                      "disabled": false,
+                      "packageName": "Prompt",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "sBotToken"
+                      },
+                      "uid": "506cbd4f-cc96-472a-bf56-73dd4b812b8b"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "8d2ed956-a86b-4fec-ac17-8b3d53c72d7a"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "string": "Telegram Bot Token Found!",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "timeOut",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "messageBox",
+                  "disabled": false,
+                  "packageName": "MessageBox",
+                  "uid": "e183a543-3d30-41b9-bbee-94d1bf80d78e"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "53c7b514-bfe8-41ee-8c50-b35bc552cce8"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Check if Telegram Chat ID is present",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "660c4823-8d89-41d6-962f-c5196955cbc7"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$sChatID$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "expression": "$sNull$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "windowCaption",
+                          "value": {
+                            "string": "Enter the chat id",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "promptMessage",
+                          "value": {
+                            "string": "Telegram Chat ID Not Found! Please input the Chat ID.",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encryptKeystroke",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "ForValue",
+                      "disabled": false,
+                      "packageName": "Prompt",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "sChatID"
+                      },
+                      "uid": "a8d2ea00-e5ad-4005-bc07-8eafbfece3c6"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "da6b3b21-93a6-42a7-a6d0-d83ef3ce3efd"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "string": "Telegram Chat ID Found!",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "timeOut",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "messageBox",
+                  "disabled": false,
+                  "packageName": "MessageBox",
+                  "uid": "bbe4f24f-3e8b-411d-b983-43bf8dbcdbc8"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "1e242377-d9b6-4ed6-ae53-c2cb6b55aa25"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Check if Telegram Message Text is present",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "81f6aefa-db6b-4eaf-812e-fb34a6f87bd1"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$sMessageText$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "expression": "$sNull$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "windowCaption",
+                          "value": {
+                            "string": "Please input the Text Message.",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "promptMessage",
+                          "value": {
+                            "string": "Telegram Message text Not Found! Please input the Text Message.",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encryptKeystroke",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "ForValue",
+                      "disabled": false,
+                      "packageName": "Prompt",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "sMessageText"
+                      },
+                      "uid": "ad591a2e-1b4f-4700-90be-86c3b40fe2fd"
+                    }
+                  ],
+                  "commandName": "else",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "ab3e7992-9aba-4e53-b8dd-dce54614b253"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "string": "Telegram Message Text Found!",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "timeOut",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "messageBox",
+                  "disabled": false,
+                  "packageName": "MessageBox",
+                  "uid": "af32073d-d1e4-4de9-bbfe-0b206908a2a9"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "1b3f881f-1d7d-4b07-9249-2983e24b7d32"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "1336a72d-4a9d-44c4-a3c8-44f61a1f84dc"
+        },
+        {
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Telegram sendMessage API",
+                "type": "STRING"
+              }
+            }
+          ],
+          "children": [
+            {
+              "attributes": [
+                {
+                  "name": "comment",
+                  "value": {
+                    "string": "Invoke Telegram sendMessage API",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "Comment",
+              "disabled": false,
+              "packageName": "Comment",
+              "uid": "68c3dc47-f8b9-4657-8544-8a9d58b6b6da"
+            },
+            {
+              "attributes": [
+                {
+                  "name": "uri",
+                  "value": {
+                    "expression": "https://api.telegram.org/bot$sBotToken$/sendMessage?chat_id=$sChatID$&parse_mode=Markdown&text=$sMessageText$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "authenticationMode",
+                  "value": {
+                    "string": "NoAuthentication",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "headerContentType",
+                  "value": {
+                    "string": "application/json",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "jsonPostParameters",
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "commandName": "restPost",
+              "disabled": false,
+              "packageName": "Rest",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "dTelegramResponse"
+              },
+              "uid": "cec3f685-e3b0-4818-b837-f679e31b7ed3"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$dTelegramResponse{Body}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "INCLUDE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "\"ok\":true",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$dTelegramResponse{Body}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "INCLUDE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "error_code",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "children": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "Automation Anywhere Enterprise Client",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "content",
+                          "value": {
+                            "expression": "$dTelegramResponse{Body}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "scrollLines",
+                          "value": {
+                            "number": "30",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "closeMsgBox",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "commandName": "messageBox",
+                      "disabled": false,
+                      "packageName": "MessageBox",
+                      "uid": "12580487-7fdc-42a8-89b4-1036ea59b826"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "$sDateTime$,$System:Machine$,$System:AATaskName$,$sErrorLineNumber$,\"$sErrorDescription$\",'$dTelegramResponse{Body}$'",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "commandName": "logToFile",
+                      "disabled": false,
+                      "packageName": "LogToFile",
+                      "uid": "a5d61127-7135-40b3-aad3-1c2c9037dbe9"
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "title",
+                          "value": {
+                            "string": "Automation Anywhere Enterprise Client",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "content",
+                          "value": {
+                            "string": "Error Sending Telegram message.\nCheck error log for troubleshooting.\n\nThis bot will end now.",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "scrollLines",
+                          "value": {
+                            "number": "30",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "closeMsgBox",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "timeOut",
+                          "value": {
+                            "number": "2",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "commandName": "messageBox",
+                      "disabled": false,
+                      "packageName": "MessageBox",
+                      "uid": "c4065622-5d86-4bfe-976c-8829e816e219"
+                    }
+                  ],
+                  "commandName": "elseIf",
+                  "disabled": false,
+                  "packageName": "If",
+                  "uid": "27d9b3cb-9ceb-45e7-a430-0db996bf1d7d"
+                }
+              ],
+              "children": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "string": "No Errors",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sErrorLineNumber"
+                  },
+                  "uid": "23b0f33e-8c1a-4b71-b233-5f556279c855"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "string": "No Errors",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "assign",
+                  "disabled": false,
+                  "packageName": "String",
+                  "returnTo": {
+                    "type": "VARIABLE",
+                    "variableName": "sErrorDescription"
+                  },
+                  "uid": "71747cc6-073a-453f-b9f3-34d5dc618740"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sLogFolder$/$sCurrentDate$_$sBotName$.csv",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "$sDateTime$,$System:Machine$,$System:AATaskName$,$sErrorLineNumber$,\"$sErrorDescription$\",$dTelegramResponse{Body}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "commandName": "logToFile",
+                  "disabled": false,
+                  "packageName": "LogToFile",
+                  "uid": "f822d3dd-1652-4788-82d8-7d13b4cd5d8a"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "string": "Telegram message successfully sent!\n\nThis bot will end now.",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "timeOut",
+                      "value": {
+                        "number": "2",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "commandName": "messageBox",
+                  "disabled": false,
+                  "packageName": "MessageBox",
+                  "uid": "71111f6a-78c1-454f-9d72-e9d78dfe512a"
+                }
+              ],
+              "commandName": "if",
+              "disabled": false,
+              "packageName": "If",
+              "uid": "408dd3a8-f93d-4ede-bb00-2fe95721a7e2"
+            }
+          ],
+          "commandName": "step",
+          "disabled": false,
+          "packageName": "Step",
+          "uid": "2eb1db7a-6402-4de5-ad0c-633566c8aaf2"
+        }
+      ],
+      "commandName": "try",
+      "disabled": false,
+      "packageName": "ErrorHandler",
+      "uid": "2d733bef-a91a-4c63-8ef4-9ed343611949"
+    }
+  ],
+  "packages": [
+    {
+      "name": "Comment",
+      "version": "2.2.0-20201014-042520"
+    },
+    {
+      "name": "Datetime",
+      "version": "2.2.0-20201014-042531"
+    },
+    {
+      "name": "ErrorHandler",
+      "version": "2.2.0-20201014-042541"
+    },
+    {
+      "name": "File",
+      "version": "3.1.0-20201016-065515"
+    },
+    {
+      "name": "Folder",
+      "version": "3.0.0-20201016-065517"
+    },
+    {
+      "name": "If",
+      "version": "2.1.0-20200921-085758"
+    },
+    {
+      "name": "LogToFile",
+      "version": "2.2.0-20201014-042806"
+    },
+    {
+      "name": "MessageBox",
+      "version": "2.1.0-20201014-042808"
+    },
+    {
+      "name": "Number",
+      "version": "2.1.0-20201014-042823"
+    },
+    {
+      "name": "Prompt",
+      "version": "2.1.0-20200918-081201"
+    },
+    {
+      "name": "Rest",
+      "version": "3.1.0-20200928-231420"
+    },
+    {
+      "name": "Screen",
+      "version": "2.1.0-20201014-043037"
+    },
+    {
+      "name": "Step",
+      "version": "2.0.0-20201023-202658"
+    },
+    {
+      "name": "String",
+      "version": "3.1.0-20201014-043052"
+    },
+    {
+      "name": "System",
+      "version": "3.0.0-20200921-090225"
+    },
+    {
+      "name": "TaskBot",
+      "version": "2.0.1-20201023-202703"
+    }
+  ],
+  "triggers": [],
+  "variables": [
+    {
+      "description": "A variable you can use for assignments",
+      "input": false,
+      "name": "prompt-assignment",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "C:\\ProgramData\\AutomationAnywhere\\Bots\\Logs",
+        "type": "STRING"
+      },
+      "description": "Root directory for creating bot logs - can be customized or left as default",
+      "input": false,
+      "name": "sRootLogDirectory",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Bot Specific Error Folder within Logging Root Directory",
+      "input": false,
+      "name": "sErrorFolder",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "REQUIRED: Bot Name (as listed in Bot Store) of the submitted Bot - doesn't have to match the file name of bot itself",
+      "input": false,
+      "name": "sBotName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "REQUIRED: Vendor Name as listed in Bot Store submission",
+      "input": false,
+      "name": "sVendorName",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Log Folder Location for Bot Specific Logs",
+      "input": false,
+      "name": "sLogFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Snapshot folder for Bot Specific Snapshots",
+      "input": false,
+      "name": "sSnapshotsFolder",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sErrorDescription",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "Error Line Number as returned by the Catch Error Handler",
+      "input": false,
+      "name": "nErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "String representation of the Error Line Number returned by the Catch Error Handler",
+      "input": false,
+      "name": "sErrorLineNumber",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Current Date used for Logging Purposes",
+      "input": false,
+      "name": "sCurrentDate",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Current Date/Time for use inside of Logging files",
+      "input": false,
+      "name": "sDateTime",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "number": "0",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nErrorTest",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "type": "WINDOW",
+        "window": {
+          "class": "IEFrame",
+          "handle": "8127950",
+          "isChild": false,
+          "location": {
+            "left": -8,
+            "top": -8
+          },
+          "name": "ESPN: Serving sports fans. Anytime. Anywhere. - Internet Explorer",
+          "path": "C:\\Program Files\\internet explorer\\iexplore.exe",
+          "presetType": "NONE",
+          "size": {
+            "height": 951,
+            "width": 1936
+          }
+        }
+      },
+      "description": "",
+      "input": false,
+      "name": "window-1",
+      "output": false,
+      "readOnly": true,
+      "type": "WINDOW"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dFileList",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    },
+    {
+      "defaultValue": {
+        "number": "30",
+        "type": "NUMBER"
+      },
+      "description": "",
+      "input": false,
+      "name": "nLoggingPeriod",
+      "output": false,
+      "readOnly": false,
+      "type": "NUMBER"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "DATETIME"
+      },
+      "description": "",
+      "input": false,
+      "name": "dtLogCutoffDate",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "DATETIME"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": false,
+      "name": "sLogCutoffDate",
+      "output": false,
+      "readOnly": false,
+      "subtype": "UNDEFINED",
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "Empty value to check for the presence of empty strings",
+      "input": false,
+      "name": "sNull",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sBotToken",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sChatID",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "string": "Default Message. Overwrite this message by setting the input variable 'sMessageText'.",
+        "type": "STRING"
+      },
+      "description": "",
+      "input": true,
+      "name": "sMessageText",
+      "output": false,
+      "readOnly": false,
+      "type": "STRING"
+    },
+    {
+      "defaultValue": {
+        "dictionary": [],
+        "type": "DICTIONARY"
+      },
+      "description": "",
+      "input": false,
+      "name": "dTelegramResponse",
+      "output": false,
+      "readOnly": false,
+      "subtype": "STRING",
+      "type": "DICTIONARY"
+    }
+  ],
+  "workItemTemplateName": null
+}
