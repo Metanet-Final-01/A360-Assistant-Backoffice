@@ -60,26 +60,36 @@ RAG_PERIODIC_TEST_INDEX=rag_documents_periodic_test
 
 ## Cleanup
 
+Use the configured test resource names. If variables are unset, the documented
+defaults below are used.
+
+```powershell
+$PeriodicTable = $env:RAG_PERIODIC_TEST_TABLE; if (-not $PeriodicTable) { $PeriodicTable = "rag_documents_periodic_test" }
+$PeriodicIndex = $env:RAG_PERIODIC_TEST_INDEX; if (-not $PeriodicIndex) { $PeriodicIndex = "rag_documents_periodic_test" }
+$CrudTable = $env:RAG_TEST_TABLE; if (-not $CrudTable) { $CrudTable = "rag_documents_test" }
+$CrudIndex = $env:RAG_TEST_INDEX; if (-not $CrudIndex) { $CrudIndex = "rag_documents_test" }
+```
+
 Drop periodic smoke resources:
 
 ```sql
-DROP TABLE IF EXISTS rag_documents_periodic_test;
+DROP TABLE IF EXISTS <RAG_PERIODIC_TEST_TABLE>;
 ```
 
 OpenSearch:
 
 ```http
-DELETE /rag_documents_periodic_test
+DELETE /<RAG_PERIODIC_TEST_INDEX>
 ```
 
 Drop CRUD smoke resources:
 
 ```sql
-DROP TABLE IF EXISTS rag_documents_test;
+DROP TABLE IF EXISTS <RAG_TEST_TABLE>;
 ```
 
 OpenSearch:
 
 ```http
-DELETE /rag_documents_test
+DELETE /<RAG_TEST_INDEX>
 ```

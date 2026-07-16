@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from datetime import datetime, timezone
 
 import psycopg
@@ -17,8 +18,21 @@ load_dotenv(os.path.join(ROOT, ".env"))
 TABLE = os.getenv("RAG_PERIODIC_TEST_TABLE", "rag_documents_periodic_test")
 INDEX = os.getenv("RAG_PERIODIC_TEST_INDEX", "rag_documents_periodic_test")
 EMBEDDING_DIM = int(os.getenv("EMBEDDING_DIM", "1536"))
+IDENTIFIER_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,62}$")
 
 app = FastAPI(title="A360 Periodic Ingest Smoke Server")
+
+
+def require_test_identifier(value: str, *, kind: str) -> str:
+    if not IDENTIFIER_RE.fullmatch(value):
+        raise RuntimeError(f"{kind} must be a safe SQL/OpenSearch identifier: {value!r}")
+    if value == "rag_documents" or "test" not in value:
+        raise RuntimeError(f"{kind} must point to a dedicated test resource: {value!r}")
+    return value
+
+
+TABLE = require_test_identifier(TABLE, kind="RAG_PERIODIC_TEST_TABLE")
+INDEX = require_test_identifier(INDEX, kind="RAG_PERIODIC_TEST_INDEX")
 
 
 def database_dsn() -> str:

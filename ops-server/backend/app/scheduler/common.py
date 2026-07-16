@@ -46,7 +46,14 @@ def scheduler_identity(schedule_id: str, group_name: str) -> dict:
 def build_state_update_payload(current_schedule: dict, state: str) -> dict:
     """Keep the required EventBridge fields while changing only State."""
     required_fields = ("Name", "GroupName", "ScheduleExpression", "FlexibleTimeWindow", "Target")
-    optional_fields = ("ScheduleExpressionTimezone", "Description", "StartDate", "EndDate")
+    optional_fields = (
+        "ScheduleExpressionTimezone",
+        "Description",
+        "StartDate",
+        "EndDate",
+        "ActionAfterCompletion",
+        "KmsKeyArn",
+    )
 
     payload = {field: current_schedule[field] for field in required_fields if field in current_schedule}
     for field in optional_fields:

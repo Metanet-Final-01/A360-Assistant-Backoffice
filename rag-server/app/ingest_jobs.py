@@ -53,6 +53,47 @@ def _write_json_atomic(path: Path, payload: dict[str, Any]) -> None:
     tmp.replace(path)
 
 
+def _pid_is_alive(pid: int | None) -> bool:
+    if not pid:
+        return False
+    try:
+        os.kill(pid, 0)
+    except ProcessLookupError:
+        return False
+    except PermissionError:
+        return True
+    except OSError:
+        return False
+    return True
+
+
+def _read_lock() -> dict[str, Any]:
+    return _read_json(config.INGEST_JOB_LOCK_DIR / "owner.json")
+
+
+def _write_lock(run_id: str, pid: int | None) -> None:
+    _write_json_atomic(
+        config.INGEST_JOB_LOCK_DIR / "owner.json",
+        {"run_id": run_id, "pid": pid, "updated_at": _now()},
+    )
+
+
+def _remove_lock() -> None:
+    if _lock_exists():
+        shutil.rmtree(config.INGEST_JOB_LOCK_DIR, ignore_errors=True)
+
+
+def _cleanup_stale_lock() -> None:
+    if not _lock_exists():
+        return
+    state = _read_json(config.INGEST_JOB_STATE_JSON)
+    lock = _read_lock()
+    pid = lock.get("pid")
+    if state and state.get("returncode") is None and _pid_is_alive(pid):
+        return
+    _remove_lock()
+
+
 def _tail_text(path: str | Path | None, max_chars: int = _MAX_STATUS_LOG_CHARS) -> str:
     if not path:
         return ""
@@ -80,6 +121,7 @@ def reserve_job(option: int, clean: bool) -> dict[str, Any] | None:
     if option not in OPTION_SCRIPTS:
         raise ValueError("option must be one of 1, 2, 3")
     _ensure_dirs()
+    _cleanup_stale_lock()
     try:
         config.INGEST_JOB_LOCK_DIR.mkdir()
     except FileExistsError:
@@ -100,16 +142,20 @@ def reserve_job(option: int, clean: bool) -> dict[str, Any] | None:
         "log": "",
         "error": None,
     }
-    _write_json_atomic(config.INGEST_JOB_STATE_JSON, state)
-    return state
+    try:
+        _write_lock(run_id, os.getpid())
+        _write_json_atomic(config.INGEST_JOB_STATE_JSON, state)
+        return state
+    except Exception:
+        _remove_lock()
+        raise
 
 
 def mark_finished(state: dict[str, Any], returncode: int, error: str | None = None) -> None:
     state = {**state, "running": False, "returncode": returncode, "finished_at": _now(), "error": error}
     state["log"] = _tail_text(state.get("log_path"))
     _write_json_atomic(config.INGEST_JOB_STATE_JSON, state)
-    if _lock_exists():
-        shutil.rmtree(config.INGEST_JOB_LOCK_DIR, ignore_errors=True)
+    _remove_lock()
 
 
 def run_reserved_job(state: dict[str, Any]) -> None:
@@ -135,6 +181,7 @@ def run_reserved_job(state: dict[str, Any]) -> None:
             )
             state["pid"] = proc.pid
             state["log"] = _tail_text(log_path)
+            _write_lock(state["run_id"], proc.pid)
             _write_json_atomic(config.INGEST_JOB_STATE_JSON, state)
 
             assert proc.stdout is not None
@@ -151,6 +198,7 @@ def run_reserved_job(state: dict[str, Any]) -> None:
 
 
 def status() -> dict[str, Any]:
+    _cleanup_stale_lock()
     state = _read_json(config.INGEST_JOB_STATE_JSON)
     if not state:
         return {"running": False, "option": None, "clean": None, "returncode": None, "log": ""}

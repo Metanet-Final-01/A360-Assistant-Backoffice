@@ -121,8 +121,6 @@ def upsert_documents(
                     vector,
                 ),
             )
-            if (i + 1) % batch_size == 0:
-                conn.commit()
         conn.commit()
     return len(documents)
 

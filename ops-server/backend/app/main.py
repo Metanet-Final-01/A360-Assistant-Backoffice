@@ -59,35 +59,35 @@ def root() -> dict:
 def upsert_rag_ingest_schedule(
     req: RagIngestScheduleRequest,
     provider: str | None = None,
-    dry_run: bool = True,
+    dry_run: bool = False,
 ) -> ScheduleApplyResult:
     try:
         return rag_scheduler.upsert_schedule(req, provider_name=provider, dry_run=dry_run)
-    except Exception as exc:
+    except ValueError as exc:
         raise HTTPException(400, f"{type(exc).__name__}: {exc}") from exc
 
 
 @app.post("/schedules/rag-ingest/{schedule_id}/pause", response_model=ScheduleApplyResult)
-def pause_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = True) -> ScheduleApplyResult:
+def pause_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = False) -> ScheduleApplyResult:
     try:
         return rag_scheduler.pause_schedule(schedule_id, provider_name=provider, dry_run=dry_run)
-    except Exception as exc:
+    except ValueError as exc:
         raise HTTPException(400, f"{type(exc).__name__}: {exc}") from exc
 
 
 @app.post("/schedules/rag-ingest/{schedule_id}/resume", response_model=ScheduleApplyResult)
-def resume_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = True) -> ScheduleApplyResult:
+def resume_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = False) -> ScheduleApplyResult:
     try:
         return rag_scheduler.resume_schedule(schedule_id, provider_name=provider, dry_run=dry_run)
-    except Exception as exc:
+    except ValueError as exc:
         raise HTTPException(400, f"{type(exc).__name__}: {exc}") from exc
 
 
 @app.delete("/schedules/rag-ingest/{schedule_id}", response_model=ScheduleApplyResult)
-def delete_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = True) -> ScheduleApplyResult:
+def delete_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = False) -> ScheduleApplyResult:
     try:
         return rag_scheduler.delete_schedule(schedule_id, provider_name=provider, dry_run=dry_run)
-    except Exception as exc:
+    except ValueError as exc:
         raise HTTPException(400, f"{type(exc).__name__}: {exc}") from exc
 
 

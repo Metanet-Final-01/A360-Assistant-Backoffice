@@ -3,7 +3,7 @@ from __future__ import annotations
 from datetime import datetime, timezone
 from typing import Literal
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class RagIngestScheduleRequest(BaseModel):
@@ -36,17 +36,13 @@ class RagIngestScheduleRequest(BaseModel):
             raise ValueError("schedule_expression must start with cron(...), rate(...), or at(...)")
         return value
 
-    @field_validator("target_tag_value")
-    @classmethod
-    def validate_target(cls, value: str | None, info):
-        instance_ids = info.data.get("instance_ids") or []
-        target_tag_key = info.data.get("target_tag_key")
-        sqs_queue_url = info.data.get("sqs_queue_url")
-        if sqs_queue_url:
-            return value
-        if not instance_ids and not (target_tag_key and value):
+    @model_validator(mode="after")
+    def validate_target(self):
+        if self.sqs_queue_url:
+            return self
+        if not self.instance_ids and not (self.target_tag_key and self.target_tag_value):
             raise ValueError("set either instance_ids or target_tag_key/target_tag_value")
-        return value
+        return self
 
 
 class RagIngestScheduleRecord(RagIngestScheduleRequest):

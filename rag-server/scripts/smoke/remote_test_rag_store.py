@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import re
 from dataclasses import dataclass
 
 import psycopg
@@ -16,6 +17,19 @@ load_dotenv(os.path.join(ROOT, ".env"))
 TEST_TABLE = os.getenv("RAG_TEST_TABLE", "rag_documents_test")
 TEST_INDEX = os.getenv("RAG_TEST_INDEX", "rag_documents_test")
 EMBEDDING_DIM = int(os.getenv("EMBEDDING_DIM", "1536"))
+IDENTIFIER_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]{0,62}$")
+
+
+def require_test_identifier(value: str, *, kind: str) -> str:
+    if not IDENTIFIER_RE.fullmatch(value):
+        raise SystemExit(f"{kind} must be a safe SQL/OpenSearch identifier: {value!r}")
+    if value == "rag_documents" or "test" not in value:
+        raise SystemExit(f"{kind} must point to a dedicated test resource: {value!r}")
+    return value
+
+
+TEST_TABLE = require_test_identifier(TEST_TABLE, kind="RAG_TEST_TABLE")
+TEST_INDEX = require_test_identifier(TEST_INDEX, kind="RAG_TEST_INDEX")
 
 
 def database_dsn() -> str:
@@ -148,16 +162,17 @@ def pg_column_compare(conn: psycopg.Connection) -> dict:
             SELECT table_name, column_name
             FROM information_schema.columns
             WHERE table_schema = 'public'
-              AND table_name IN ('rag_documents', 'rag_documents_test')
+              AND table_name = ANY(%s)
             ORDER BY table_name, ordinal_position
-            """
+            """,
+            (["rag_documents", TEST_TABLE],),
         )
         rows = cur.fetchall()
     by_table: dict[str, list[str]] = {}
     for table_name, column_name in rows:
         by_table.setdefault(table_name, []).append(column_name)
     prod = by_table.get("rag_documents", [])
-    test = by_table.get("rag_documents_test", [])
+    test = by_table.get(TEST_TABLE, [])
     return {
         "rag_documents_columns": len(prod),
         "rag_documents_test_columns": len(test),
@@ -270,17 +285,48 @@ def os_mapping_compare(client: OpenSearch) -> dict:
     test_mapping = client.indices.get_mapping(index=TEST_INDEX)
     prod_index = next(iter(prod_mapping))
     test_index = next(iter(test_mapping))
-    prod_fields = sorted(prod_mapping[prod_index]["mappings"]["properties"].keys())
-    test_fields = sorted(test_mapping[test_index]["mappings"]["properties"].keys())
+    prod_properties = prod_mapping[prod_index]["mappings"]["properties"]
+    test_properties = test_mapping[test_index]["mappings"]["properties"]
+    prod_fields = sorted(prod_properties.keys())
+    test_fields = sorted(test_properties.keys())
     return {
         "prod_index": prod_index,
         "test_index": test_index,
         "prod_fields": len(prod_fields),
         "test_fields": len(test_fields),
         "same_field_names": prod_fields == test_fields,
+        "same_mapping_properties": prod_properties == test_properties,
         "prod_only": [field for field in prod_fields if field not in test_fields],
         "test_only": [field for field in test_fields if field not in prod_fields],
+        "different_properties": [
+            field for field in sorted(set(prod_fields) & set(test_fields))
+            if prod_properties[field] != test_properties[field]
+        ],
     }
+
+
+def assert_smoke_result(report: dict) -> None:
+    failures = []
+    postgres = report["postgres"]
+    opensearch = report["opensearch"]
+    if postgres["before_update_count"] != 4:
+        failures.append("postgres before_update_count must be 4")
+    if postgres["after_crud_count"] != 3:
+        failures.append("postgres after_crud_count must be 3 after delete")
+    if any(row["id"] == "scheduler-test-delete-me" for row in postgres["rows"]):
+        failures.append("deleted postgres row still exists")
+    if not postgres["schema_compare"]["same_column_names"]:
+        failures.append(f"postgres schema mismatch: {postgres['schema_compare']}")
+    if opensearch["count"] != 3:
+        failures.append("opensearch count must be 3 after delete")
+    if "scheduler-test-delete-me" in opensearch["ids"]:
+        failures.append("deleted opensearch document still exists")
+    if not opensearch["mapping_compare"]["same_field_names"]:
+        failures.append(f"opensearch field mismatch: {opensearch['mapping_compare']}")
+    if not opensearch["mapping_compare"]["same_mapping_properties"]:
+        failures.append(f"opensearch mapping property mismatch: {opensearch['mapping_compare']}")
+    if failures:
+        raise SystemExit("Remote RAG store smoke failed:\n- " + "\n- ".join(failures))
 
 
 def main() -> None:
@@ -350,27 +396,22 @@ def main() -> None:
     os_index_docs(client, [updated])
     os_delete(client, "scheduler-test-delete-me")
 
-    print(
-        json.dumps(
-            {
-                "postgres": {
-                    "table": TEST_TABLE,
-                    "before_update_count": len(before_update),
-                    "after_crud_count": len(after_crud),
-                    "schema_compare": pg_compare,
-                    "rows": after_crud,
-                },
-                "opensearch": {
-                    "index": TEST_INDEX,
-                    **os_snapshot(client),
-                    "mapping_compare": os_mapping_compare(client),
-                },
-            },
-            ensure_ascii=False,
-            indent=2,
-            default=str,
-        )
-    )
+    report = {
+        "postgres": {
+            "table": TEST_TABLE,
+            "before_update_count": len(before_update),
+            "after_crud_count": len(after_crud),
+            "schema_compare": pg_compare,
+            "rows": after_crud,
+        },
+        "opensearch": {
+            "index": TEST_INDEX,
+            **os_snapshot(client),
+            "mapping_compare": os_mapping_compare(client),
+        },
+    }
+    assert_smoke_result(report)
+    print(json.dumps(report, ensure_ascii=False, indent=2, default=str))
 
 
 if __name__ == "__main__":
