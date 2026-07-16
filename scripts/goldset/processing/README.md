@@ -165,10 +165,12 @@ CreateProjectInJIRAusingAPI.goldset.json -> CreateProjectInJIRAusingAPI.json
 
 This script builds a temporary dataset-shaped workspace, runs the normal processing
 steps there, then copies only the 13-case artifacts back under `eval_inputs/`.
-For multi-source PDF cases, it collapses the component normalized workflows into one
-case-level artifact before PM4Py/WorFBench conversion. Today that applies to
-`0338_lettergenerationbot`, which becomes
-`LetterGenerationBot+SendPOF_Email.goldset.json`.
+For multi-source PDF cases, it keeps each backing workflow as a separate required
+component instead of concatenating them. Today that applies to
+`0338_lettergenerationbot`, which keeps `LetterGenerationBot.goldset.json` and
+`SendPOF_Email.goldset.json` as independent scoring artifacts. This avoids
+inflating one gold trace with duplicated setup/logging actions and lets evaluators
+score document generation and email sending separately before aggregating the case.
 
 Use this when the eval input set needs clean, folder-separated artifacts without
 polluting `dataset/` with regenerated scoring outputs.

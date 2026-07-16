@@ -78,29 +78,34 @@ def run_processing_script(root: Path, script_name: str, temp_dir: Path) -> None:
     )
 
 
-def collapse_multi_source_cases(temp_dir: Path, manifest: dict[str, Any]) -> None:
+def preserve_multi_source_components(temp_dir: Path, manifest: dict[str, Any]) -> None:
+    """Keep each backing workflow as its own scoring component.
+
+    A multi-source PDF case such as 0338_lettergenerationbot is a required set of
+    component workflows, not one long workflow. Concatenating the components makes
+    common setup/logging actions look like duplicates and compares a bloated gold
+    trace against a single prediction. Keeping separate artifacts lets evaluators
+    score document-generation and email-send components independently, then
+    aggregate at the case level.
+    """
     for entry in manifest["entries"]:
         if entry["source_count"] <= 1:
             continue
 
         workflows_dir = temp_dir / TEMP_CATEGORY / entry["case_dir"] / "workflows"
-        component_paths = [
+        component_paths = sorted(
             workflows_dir / f"{Path(source['extracted_workflow_file']).stem}.goldset.json"
             for source in entry["sources"]
-        ]
-        components = [json.loads(path.read_text(encoding="utf-8")) for path in component_paths]
-        combined = {
-            "source_file": f"{case_stem(entry)}.json",
-            "source_files": [component.get("source_file") for component in components],
-            "combined_from": [path.name for path in component_paths],
-            "triggers": [trigger for component in components for trigger in component.get("triggers", [])],
-            "steps": [step for component in components for step in component.get("steps", [])],
-        }
-
-        combined_path = workflows_dir / f"{case_stem(entry)}.goldset.json"
-        combined_path.write_text(json.dumps(combined, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+        )
         for path in component_paths:
-            path.unlink()
+            component = json.loads(path.read_text(encoding="utf-8"))
+            component["component_case"] = {
+                "case_dir": entry["case_dir"],
+                "bot_name": entry["bot_name"],
+                "required_component_count": entry["source_count"],
+                "required_components": [Path(source["extracted_workflow_file"]).stem for source in entry["sources"]],
+            }
+            path.write_text(json.dumps(component, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
 
 
 def copy_case_artifacts(root: Path, temp_dir: Path, manifest: dict[str, Any]) -> None:
@@ -234,7 +239,7 @@ def main() -> None:
     try:
         create_temp_dataset(root, manifest, temp_dir)
         run_processing_script(root, "normalize_extracted_workflows.py", temp_dir)
-        collapse_multi_source_cases(temp_dir, manifest)
+        preserve_multi_source_components(temp_dir, manifest)
         run_processing_script(root, "convert_to_pm4py.py", temp_dir)
         run_processing_script(root, "convert_to_worfbench.py", temp_dir)
         copy_case_artifacts(root, temp_dir, manifest)
