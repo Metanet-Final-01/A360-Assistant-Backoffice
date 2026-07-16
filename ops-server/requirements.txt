@@ -11,6 +11,7 @@ fastapi
 uvicorn[standard]
 httpx
 python-dotenv
+boto3
 
 # ── 평가(eval) 결과 정리·조회 ──
 pydantic

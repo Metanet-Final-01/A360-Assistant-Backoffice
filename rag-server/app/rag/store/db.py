@@ -71,7 +71,13 @@ def clear_all(conn: psycopg.Connection) -> None:
     conn.commit()
 
 
-def upsert_documents(conn: psycopg.Connection, documents: list[dict], embeddings: list | None) -> int:
+def upsert_documents(
+    conn: psycopg.Connection,
+    documents: list[dict],
+    embeddings: list | None,
+    *,
+    batch_size: int = 200,
+) -> int:
     sql = """
         INSERT INTO rag_documents
             (id, source_type, package_name, action_name, locale, title, url, content, metadata,
@@ -115,7 +121,9 @@ def upsert_documents(conn: psycopg.Connection, documents: list[dict], embeddings
                     vector,
                 ),
             )
-    conn.commit()
+            if (i + 1) % batch_size == 0:
+                conn.commit()
+        conn.commit()
     return len(documents)
 
 

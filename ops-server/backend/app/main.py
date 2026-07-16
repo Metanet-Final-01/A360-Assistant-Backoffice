@@ -39,6 +39,8 @@ from app.loadtest.schema import LoadTestRunRecord
 from app.loadtest.store import append_run as append_loadtest_run, load_runs as load_loadtest_runs
 from app.observability import backend_client, collector, log_store as obs_log_store
 from app.settings import backend_settings
+from app.scheduler import scheduler as rag_scheduler
+from app.scheduler.schema import RagIngestScheduleRequest, ScheduleApplyResult
 
 app = FastAPI(title="A360 Assistant Monitoring Server")
 
@@ -51,6 +53,42 @@ def health() -> dict:
 @app.get("/")
 def root() -> dict:
     return {"message": "A360 Assistant Monitoring Server가 살아있습니다."}
+
+
+@app.post("/schedules/rag-ingest", response_model=ScheduleApplyResult)
+def upsert_rag_ingest_schedule(
+    req: RagIngestScheduleRequest,
+    provider: str | None = None,
+    dry_run: bool = True,
+) -> ScheduleApplyResult:
+    try:
+        return rag_scheduler.upsert_schedule(req, provider_name=provider, dry_run=dry_run)
+    except Exception as exc:
+        raise HTTPException(400, f"{type(exc).__name__}: {exc}") from exc
+
+
+@app.post("/schedules/rag-ingest/{schedule_id}/pause", response_model=ScheduleApplyResult)
+def pause_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = True) -> ScheduleApplyResult:
+    try:
+        return rag_scheduler.pause_schedule(schedule_id, provider_name=provider, dry_run=dry_run)
+    except Exception as exc:
+        raise HTTPException(400, f"{type(exc).__name__}: {exc}") from exc
+
+
+@app.post("/schedules/rag-ingest/{schedule_id}/resume", response_model=ScheduleApplyResult)
+def resume_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = True) -> ScheduleApplyResult:
+    try:
+        return rag_scheduler.resume_schedule(schedule_id, provider_name=provider, dry_run=dry_run)
+    except Exception as exc:
+        raise HTTPException(400, f"{type(exc).__name__}: {exc}") from exc
+
+
+@app.delete("/schedules/rag-ingest/{schedule_id}", response_model=ScheduleApplyResult)
+def delete_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dry_run: bool = True) -> ScheduleApplyResult:
+    try:
+        return rag_scheduler.delete_schedule(schedule_id, provider_name=provider, dry_run=dry_run)
+    except Exception as exc:
+        raise HTTPException(400, f"{type(exc).__name__}: {exc}") from exc
 
 
 @app.post("/eval/runs")

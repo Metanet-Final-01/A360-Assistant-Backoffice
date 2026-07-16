@@ -49,6 +49,9 @@ NAIVE_LEAF_ACTIONS_JSONL = DATA_DIR / "naive_leaf_actions.jsonl"
 
 # 적재 파이프라인 각 단계 로그 (JSON Lines, 날짜별 파일) — observability.py가 씀
 LOG_DIR = Path(os.getenv("RAG_LOG_DIR") or "app/rag/logs")
+INGEST_JOB_STATE_JSON = LOG_DIR / "ingest_state.json"
+INGEST_JOB_LOCK_DIR = LOG_DIR / "ingest.lock"
+INGEST_RUN_LOG_DIR = LOG_DIR / "ingest_runs"
 
 # 청킹: chunk_size 초과 문서만 분할한다. 기본값은 NongSabu DocumentChunker 프라이어(1200/200) —
 # `pipeline.py eda`로 실제 문서 길이 분포를 확인한 뒤 필요시 .env에서 조정한다.

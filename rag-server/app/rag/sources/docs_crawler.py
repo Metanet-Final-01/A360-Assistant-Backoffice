@@ -56,6 +56,15 @@ def find_map(locale: str = "ko-KR", title: str = "Automation 360") -> dict:
     raise ValueError(f"map not found: title={title!r} locale={locale!r}")
 
 
+def list_maps_for_locale(locale: str) -> list[dict]:
+    result = []
+    for m in list_maps():
+        metadata = {x["key"]: x["values"] for x in m.get("metadata", [])}
+        if metadata.get("ft:locale") == [locale]:
+            result.append(m)
+    return result
+
+
 def get_menu(map_id: str) -> list[dict]:
     """문서 사이트 좌측 사이드바 메뉴(목차) 트리를 그대로 받아온다."""
     with _client() as client:
@@ -64,7 +73,7 @@ def get_menu(map_id: str) -> list[dict]:
         return data if isinstance(data, list) else data.get("toc", [])
 
 
-def flatten_menu(menu: list[dict]) -> list[dict]:
+def flatten_menu(menu: list[dict], *, map_id: str | None = None, map_title: str | None = None) -> list[dict]:
     """메뉴 트리를 breadcrumbs가 붙은 평평한 토픽 리스트로 변환.
 
     `parent_menu_id`를 같이 남긴다 — 메뉴의 `children`이 사이트 사이드바와 정확히
@@ -83,6 +92,8 @@ def flatten_menu(menu: list[dict]) -> list[dict]:
                 "content_id": node.get("contentId"),
                 "menu_id": menu_id,
                 "parent_menu_id": parent_menu_id,
+                "map_id": map_id,
+                "map_title": map_title,
                 "title": title,
                 "breadcrumbs": ancestors,
                 "pretty_url": node.get("prettyUrl", ""),
@@ -135,7 +146,8 @@ def crawl_topics(
         for i, topic in enumerate(topics):
             if topic["content_id"] in done:
                 continue
-            html = fetch_topic_html(client, map_id, topic["content_id"])
+            topic_map_id = topic.get("map_id") or map_id
+            html = fetch_topic_html(client, topic_map_id, topic["content_id"])
             record = {
                 **topic,
                 "url": DOCS_BASE_URL + topic["pretty_url"] if topic["pretty_url"] else "",
