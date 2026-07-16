@@ -1,2 +1,0 @@
-{"received_at": "2026-07-15T21:55:31.151330+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
-{"received_at": "2026-07-15T21:55:31.964522+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "8145a173-8471-48b0-a841-115cffc253a8", "session_id": "74cc86ca-c566-4e31-a815-88a889267a89", "filename": "0245_merge-multiple-csv-files__Merge Multiple CSV Files.pdf", "size_bytes": 51989, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T21:55:29.594786+00:00"}}

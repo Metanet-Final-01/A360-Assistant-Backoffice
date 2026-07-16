@@ -1,2 +1,0 @@
-{"received_at": "2026-07-15T21:51:03.582598+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
-{"received_at": "2026-07-15T21:51:03.888894+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "2efd1259-795d-45a1-a60c-f247d8a2b9b8", "session_id": "2cfd1575-1696-4398-a2b1-2a20e6d663ea", "filename": "0224_extracttablesfrompdftocsv__ExtractTablesfromPDFtoCSV.pdf", "size_bytes": 43616, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T21:51:02.119083+00:00"}}

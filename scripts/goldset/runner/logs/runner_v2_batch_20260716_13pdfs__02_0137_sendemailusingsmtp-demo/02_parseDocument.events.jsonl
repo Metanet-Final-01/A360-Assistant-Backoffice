@@ -1,2 +1,0 @@
-{"received_at": "2026-07-15T16:46:42.725217+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
-{"received_at": "2026-07-15T16:46:42.729924+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "2960f86f-e189-4da5-8fec-7016729442ee", "session_id": "abb659b4-36dc-482b-ad50-b8dd3c28d857", "filename": "0137_sendemailusingsmtp-demo__SendEmailUsingSMTP_Demo.pdf", "size_bytes": 46266, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T16:46:40.650952+00:00"}}

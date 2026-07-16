@@ -1,2 +1,0 @@
-{"received_at": "2026-07-15T21:48:02.721176+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
-{"received_at": "2026-07-15T21:48:03.032645+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "87ca9696-0a50-4997-be5d-c7e280c2283c", "session_id": "9eadcdb7-f98b-4932-9e1e-87b4b60a2f95", "filename": "0176_global-exchange-currency-rate__Global Exchange Currency Rate.pdf", "size_bytes": 50436, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T21:48:01.105982+00:00"}}

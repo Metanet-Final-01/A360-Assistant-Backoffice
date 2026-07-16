@@ -1,2 +1,0 @@
-{"received_at": "2026-07-15T09:50:21.278007+00:00", "event": "stage", "stage": "routing", "message": "요청 분석 중"}
-{"received_at": "2026-07-15T09:50:21.281508+00:00", "event": "error", "message": "OpenAI 인증 실패 — API 키를 확인하세요"}

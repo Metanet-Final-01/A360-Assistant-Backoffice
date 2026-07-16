@@ -11,7 +11,7 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from action_filters import action_label, is_browser_session_lifecycle_action
+from action_filters import action_label, is_browser_session_lifecycle_action, is_disabled_step
 from adapters.pm4py_adapter import compare_pm4py_artifacts, score_pm4py_conformance
 from adapters.worfbench_adapter import score_worfbench, score_worfbench_f1chain
 
@@ -101,6 +101,10 @@ def canonicalize_actions(actions: list[str], mapping: dict[str, str]) -> list[st
 def flatten_actions(steps: list[dict[str, Any]], excluded: list[str] | None = None) -> list[str]:
     actions: list[str] = []
     for step in steps:
+        if is_disabled_step(step):
+            if excluded is not None:
+                excluded.append(action_label(step.get("package"), step.get("action")) or step.get("type", "disabled"))
+            continue
         step_type = step.get("type")
         if step_type == "action":
             package = step.get("package")
@@ -113,10 +117,15 @@ def flatten_actions(steps: list[dict[str, Any]], excluded: list[str] | None = No
             actions.append(label)
         elif step_type == "container":
             actions.extend(flatten_actions(step.get("steps", []) or [], excluded))
-        elif step_type in {"if", "loop", "trigger_loop", "try"}:
+        elif step_type in {"if", "loop", "trigger_loop"}:
             actions.extend(flatten_actions(step.get("steps", []) or [], excluded))
             for branch in step.get("branches", []) or []:
                 actions.extend(flatten_actions(branch.get("steps", []) or [], excluded))
+        elif step_type == "try":
+            actions.extend(flatten_actions(step.get("steps", []) or [], excluded))
+            for branch in step.get("branches", []) or []:
+                if branch.get("branch") == "finally":
+                    actions.extend(flatten_actions(branch.get("steps", []) or [], excluded))
         else:
             raise ValueError(f"Unknown step type: {step_type!r}")
     return actions

@@ -11,7 +11,7 @@ GOLDSET_ROOT = Path(__file__).resolve().parents[2]
 if str(GOLDSET_ROOT) not in sys.path:
     sys.path.insert(0, str(GOLDSET_ROOT))
 
-from action_filters import action_label, is_browser_session_lifecycle_action  # noqa: E402
+from action_filters import action_label, is_browser_session_lifecycle_action, is_disabled_step  # noqa: E402
 
 
 def default_workspace_root() -> Path:
@@ -138,6 +138,10 @@ def _canonical_label(package: str | None, action: str | None, mapping: dict[str,
 
 
 def _transform_step(step: dict[str, Any], mapping: dict[str, str], excluded: list[str]) -> dict[str, Any] | None:
+    if is_disabled_step(step):
+        excluded.append(action_label(step.get("package"), step.get("action")) or step.get("type", "disabled"))
+        return None
+
     step_type = step.get("type")
     if step_type == "action":
         package = step.get("package")
@@ -179,13 +183,20 @@ def _transform_steps(steps: list[dict[str, Any]], mapping: dict[str, str], exclu
 def _flatten_action_labels(steps: list[dict[str, Any]]) -> list[str]:
     labels: list[str] = []
     for step in steps:
+        if is_disabled_step(step):
+            continue
         step_type = step.get("type")
         if step_type == "action":
             labels.append(action_label(step.get("package"), step.get("action")))
-        elif step_type in {"container", "if", "loop", "trigger_loop", "try"}:
+        elif step_type in {"container", "if", "loop", "trigger_loop"}:
             labels.extend(_flatten_action_labels(step.get("steps", []) or []))
             for branch in step.get("branches", []) or []:
                 labels.extend(_flatten_action_labels(branch.get("steps", []) or []))
+        elif step_type == "try":
+            labels.extend(_flatten_action_labels(step.get("steps", []) or []))
+            for branch in step.get("branches", []) or []:
+                if branch.get("branch") == "finally":
+                    labels.extend(_flatten_action_labels(branch.get("steps", []) or []))
         else:
             raise ValueError(f"Unknown normalized step type for flattening: {step_type!r}")
     return labels

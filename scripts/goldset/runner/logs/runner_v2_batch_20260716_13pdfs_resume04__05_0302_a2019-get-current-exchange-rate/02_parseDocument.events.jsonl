@@ -1,2 +1,0 @@
-{"received_at": "2026-07-15T17:31:32.472101+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
-{"received_at": "2026-07-15T17:31:32.856153+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "bff43464-aecf-4493-b791-c84bede4a48a", "session_id": "e7459115-23ad-430b-a3ad-4740b29b7240", "filename": "0302_a2019-get-current-exchange-rate__A2019 Get Current Exchange Rate.pdf", "size_bytes": 50475, "status": "parsed", "error": null, "page_count": 2, "warnings": [], "created_at": "2026-07-15T17:31:30.882342+00:00"}}

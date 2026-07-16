@@ -11,7 +11,7 @@ GOLDSET_ROOT = Path(__file__).resolve().parents[2]
 if str(GOLDSET_ROOT) not in sys.path:
     sys.path.insert(0, str(GOLDSET_ROOT))
 
-from action_filters import action_label, is_browser_session_lifecycle_action  # noqa: E402
+from action_filters import action_label, is_browser_session_lifecycle_action, is_disabled_step  # noqa: E402
 from adapters.pm4py_adapter import (  # noqa: E402
     _is_control_flow_marker_action,
     _split_action_label,
@@ -124,6 +124,9 @@ def _canonical_action(package: str | None, action: str | None, mapping: dict[str
 def _canonical_path(steps: list[dict[str, Any]], mapping: dict[str, str], found_types: set[str], excluded: list[str]) -> list[dict[str, str]]:
     actions: list[dict[str, str]] = []
     for step in steps:
+        if is_disabled_step(step):
+            excluded.append(action_label(step.get("package"), step.get("action")) or step.get("type", "disabled"))
+            continue
         step_type = step.get("type")
         if step_type == "action":
             converted = _canonical_action(step.get("package"), step.get("action"), mapping)

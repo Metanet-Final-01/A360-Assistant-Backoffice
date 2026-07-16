@@ -77,7 +77,9 @@
       "canonical": "Email.emailSaveAttachmentAction",
       "members": [
         "Email.saveAttachment",
-        "Email.emailSaveAttachmentAction"
+        "Email.emailSaveAttachmentAction",
+        "Microsoft 365 Outlook.ms365OutlookSaveAttachments",
+        "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments"
       ]
     },
     {
@@ -91,6 +93,7 @@
       "canonical": "Excel advanced.excelAdvancedPackageGetMultipleCellsAction",
       "members": [
         "Excel.GetMultipleCells",
+        "Excel_MS.GetMultipleCells",
         "Excel advanced.excelAdvancedPackageGetMultipleCellsAction"
       ]
     },
@@ -99,7 +102,8 @@
       "members": [
         "Excel.OpenSpreadsheet",
         "Excel advanced.cloudExcelOpen",
-        "Excel_MS.OpenSpreadsheet"
+        "Excel_MS.OpenSpreadsheet",
+        "Microsoft 365 Excel package in Automation 360.usingOpenWorkbookAction"
       ]
     },
     {
@@ -107,7 +111,8 @@
       "members": [
         "Excel.SetCell",
         "Excel advanced.excelAdvancedPackageSetCellAction",
-        "Excel_MS.SetCell"
+        "Excel_MS.SetCell",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelSetCell"
       ]
     },
     {
@@ -191,7 +196,8 @@
       "canonical": "Excel advanced.excelAdvancedPackageCloseAction",
       "members": [
         "Excel advanced.excelAdvancedPackageCloseAction",
-        "Excel_MS.CloseSpreadsheet"
+        "Excel_MS.CloseSpreadsheet",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelClose"
       ]
     },
     {
@@ -199,6 +205,113 @@
       "members": [
         "Excel advanced.excelAdvancedPackageReadRowAction",
         "Excel_MS.readExcelRow"
+      ]
+    },
+    {
+      "canonical": "Browser.browserPackageCloseAction",
+      "members": [
+        "Browser.browserPackageCloseAction",
+        "WebAutomation.EndSessionWebAutomation"
+      ]
+    },
+    {
+      "canonical": "Browser.browserPackageDownloadFilesAction",
+      "members": [
+        "Browser.downloadFile",
+        "Browser.browserPackageDownloadFilesAction"
+      ]
+    },
+    {
+      "canonical": "Email.emailDisconnectAction",
+      "members": [
+        "Email.closeEmail",
+        "Email.emailDisconnectAction",
+        "Microsoft 365 Outlook.ms365OutlookDisconnect"
+      ]
+    },
+    {
+      "canonical": "Message box.usingMessageBoxAction",
+      "members": [
+        "MessageBox.messageBox",
+        "Message box.usingMessageBoxAction"
+      ]
+    },
+    {
+      "canonical": "Number.numberToString",
+      "members": [
+        "Number.toString",
+        "Number.numberToString"
+      ]
+    },
+    {
+      "canonical": "REST Web Services.cloudUsingGetAction",
+      "members": [
+        "Rest.restGet",
+        "REST Web Services.cloudUsingGetAction"
+      ]
+    },
+    {
+      "canonical": "Task Bot.taskBotPackageStopAction",
+      "members": [
+        "TaskBot.stopTask",
+        "Task Bot.taskBotPackageStopAction"
+      ]
+    },
+    {
+      "canonical": "XML.xmlStartSession",
+      "members": [
+        "XML.startSession",
+        "XML.xmlStartSession"
+      ]
+    },
+    {
+      "canonical": "XML.xmlGetSingleNode",
+      "members": [
+        "XML.getSingleNode",
+        "XML.xmlGetSingleNode"
+      ]
+    },
+    {
+      "canonical": "Logging.cloudInsertingLogToFileCommand",
+      "members": [
+        "LogToFile.logToFile",
+        "Logging.cloudInsertingLogToFileCommand",
+        "Logging.logToFileLogVariablesToFile"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedGetWorksheetAsDataTable",
+      "members": [
+        "Excel advanced.excelAdvancedGetWorksheetAsDataTable",
+        "Microsoft 365 Excel package in Automation 360.getWorksheetAsDataTableIn"
+      ]
+    },
+    {
+      "canonical": "CSV/TXT.cloudOpeningCsvTextFile",
+      "members": [
+        "CSV/TXT.cloudOpeningCsvTextFile",
+        "CSV/TXT/cloudOpeningCsvTextFile.CSV/TXT 파일에 대한 열기 작업 사용"
+      ]
+    },
+    {
+      "canonical": "Loop.cloudUsingLoopAction",
+      "members": [
+        "Loop.cloudUsingLoopAction",
+        "Loop.loop.commands.start"
+      ]
+    },
+    {
+      "canonical": "JSON utilities.jsonStartSession",
+      "members": [
+        "JSONHandler.Initialize",
+        "JSON utilities.jsonStartSession"
+      ]
+    },
+    {
+      "canonical": "JSON utilities.jsonGetNodeValue",
+      "members": [
+        "JSONHandler.Query",
+        "JSON utilities.jsonGetNodeValue"
       ]
     }
   ]

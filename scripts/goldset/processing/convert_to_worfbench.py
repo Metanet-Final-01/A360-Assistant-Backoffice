@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from action_filters import is_browser_session_lifecycle_action
+from action_filters import is_browser_session_lifecycle_action, is_disabled_step
 
 CATEGORY_DIRS = (
     "01_task1_similar_single_15",
@@ -68,6 +68,8 @@ def canonical_path(steps: list[dict], found_types: set[str]) -> list[dict]:
     can tag worfbench_fidelity=exact only when nothing was actually approximated."""
     actions: list[dict] = []
     for step in steps:
+        if is_disabled_step(step):
+            continue
         step_type = step["type"]
         if step_type == "action":
             if is_browser_session_lifecycle_action(step.get("package"), step.get("action")):

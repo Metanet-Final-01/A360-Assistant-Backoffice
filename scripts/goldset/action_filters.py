@@ -11,6 +11,10 @@ def action_label(package: str | None, action: str | None) -> str:
     return f"{package or ''}.{action or ''}".strip(".")
 
 
+def is_disabled_step(step: dict) -> bool:
+    return step.get("disabled") is True
+
+
 def is_browser_session_lifecycle_action(package: str | None, action: str | None) -> bool:
     """Browser/WebAutomation session lifecycle disappeared in the newer Browser model.
 

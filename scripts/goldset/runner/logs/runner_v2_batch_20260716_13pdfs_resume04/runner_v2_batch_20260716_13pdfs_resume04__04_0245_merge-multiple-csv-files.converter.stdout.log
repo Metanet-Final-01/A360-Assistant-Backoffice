@@ -1,7 +1,0 @@
-{
-  "normalized": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files\\converted_recommendation\\normalized\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files__turnRecommend.goldset.json",
-  "steps": 3,
-  "actions": 6,
-  "pm4py": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files\\converted_recommendation\\pm4py",
-  "worfbench": "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops\\scripts\\goldset\\runner\\logs\\runner_v2_batch_20260716_13pdfs_resume04__04_0245_merge-multiple-csv-files\\converted_recommendation\\worfbench"
-}

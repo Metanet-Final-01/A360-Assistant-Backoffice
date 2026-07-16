@@ -1,0 +1,157 @@
+﻿action_label,package,action,in_gold,in_agent
+Apple Mail.appleMailConnectDisconnect,Apple Mail,appleMailConnectDisconnect,N,Y
+Application.applicationPackageOpenProgramFileAction,Application,applicationPackageOpenProgramFileAction,N,Y
+Boolean.assign,Boolean,assign,Y,N
+Box.boxCrtFldr,Box,boxCrtFldr,N,Y
+Browser.browserPackageCloseAction,Browser,browserPackageCloseAction,N,Y
+Browser.browserPackageDownloadFilesAction,Browser,browserPackageDownloadFilesAction,N,Y
+Browser.browserPackageOpenAction,Browser,browserPackageOpenAction,N,Y
+Browser.browserPackageRunJavascriptAction,Browser,browserPackageRunJavascriptAction,N,Y
+Browser.downloadFile,Browser,downloadFile,Y,N
+Browser.launchWebsite,Browser,launchWebsite,Y,N
+Browser.openbrowser,Browser,openbrowser,Y,N
+CSV/TXT.cloudOpeningCsvTextFile,CSV/TXT,cloudOpeningCsvTextFile,N,Y
+Data Table.cloudWriteToFileAction,Data Table,cloudWriteToFileAction,N,Y
+Data Table.dataTablePackageSetValueSinlgeCellAction,Data Table,dataTablePackageSetValueSinlgeCellAction,N,Y
+Databricks.getjoboutDbricks,Databricks,getjoboutDbricks,N,Y
+Databricks.getjobstatusDbricks,Databricks,getjobstatusDbricks,N,Y
+Datetime.cloudUsingAddAction,Datetime,cloudUsingAddAction,N,Y
+Datetime.getActionInDatetime,Datetime,getActionInDatetime,N,Y
+Datetime.subtract,Datetime,subtract,Y,N
+Datetime.toString,Datetime,toString,Y,N
+Datetime.usingSubtractAction,Datetime,usingSubtractAction,N,Y
+Delay.delay,Delay,delay,Y,N
+Dictionary.dictionaryPut,Dictionary,dictionaryPut,N,Y
+Dictionary.put,Dictionary,put,Y,N
+DLL.Close,DLL,Close,Y,N
+DLL.dllPackageCloseAction,DLL,dllPackageCloseAction,N,Y
+DLL.Open,DLL,Open,Y,N
+DLL.Run function,DLL,Run function,Y,N
+DLL.RunCSharpDLL_V1,DLL,RunCSharpDLL_V1,Y,N
+Email.closeEmail,Email,closeEmail,Y,N
+Email.cloudUsingForwardAction,Email,cloudUsingForwardAction,N,Y
+Email.cloudUsingSendAction,Email,cloudUsingSendAction,N,Y
+Email.emailConnect,Email,emailConnect,Y,N
+Email.emailDisconnectAction,Email,emailDisconnectAction,N,Y
+Email.saveAttachment,Email,saveAttachment,Y,N
+Email.sendMail,Email,sendMail,Y,N
+Error handler.errorHandlerCatch,Error handler,errorHandlerCatch,N,Y
+Error handler.errorHandlerThrow,Error handler,errorHandlerThrow,N,Y
+Error handler.errorHandlerTry,Error handler,errorHandlerTry,N,Y
+Excel advanced.cloudExcelOpen,Excel advanced,cloudExcelOpen,N,Y
+Excel advanced.excelAdvancedGetWorksheetAsDataTable,Excel advanced,excelAdvancedGetWorksheetAsDataTable,N,Y
+Excel advanced.excelAdvancedPackageCloseAction,Excel advanced,excelAdvancedPackageCloseAction,N,Y
+Excel advanced.excelAdvancedPackageCreateWorkbookAction,Excel advanced,excelAdvancedPackageCreateWorkbookAction,N,Y
+Excel advanced.excelAdvancedPackageGetSingleCellAction,Excel advanced,excelAdvancedPackageGetSingleCellAction,N,Y
+Excel advanced.excelAdvancedPackageReadRowAction,Excel advanced,excelAdvancedPackageReadRowAction,N,Y
+Excel advanced.excelAdvancedPackageSetCellAction,Excel advanced,excelAdvancedPackageSetCellAction,N,Y
+Excel advanced.excelAdvPkgBrkWrbkLinks,Excel advanced,excelAdvPkgBrkWrbkLinks,N,Y
+Excel.GetMultipleCells,Excel,GetMultipleCells,Y,N
+Excel.OpenSpreadsheet,Excel,OpenSpreadsheet,Y,N
+Excel.SaveSpreadSheet,Excel,SaveSpreadSheet,Y,N
+Excel.SetCell,Excel,SetCell,Y,N
+Excel_MS.CloseSpreadsheet,Excel_MS,CloseSpreadsheet,Y,N
+Excel_MS.GetMultipleCells,Excel_MS,GetMultipleCells,Y,N
+Excel_MS.GoToCell,Excel_MS,GoToCell,Y,N
+Excel_MS.OpenSpreadsheet,Excel_MS,OpenSpreadsheet,Y,N
+Excel_MS.readExcelRow,Excel_MS,readExcelRow,Y,N
+Excel_MS.SetCell,Excel_MS,SetCell,Y,N
+File.copyFiles,File,copyFiles,Y,N
+File.createFile,File,createFile,Y,N
+File.deleteFiles,File,deleteFiles,Y,N
+File.downloadTo,File,downloadTo,Y,N
+File.filePackageCopyControlRoomFileAction,File,filePackageCopyControlRoomFileAction,N,Y
+File.filePackageCreateAction,File,filePackageCreateAction,N,Y
+File.filePackageGetPathAction,File,filePackageGetPathAction,N,Y
+Folder.cloudZipFilesAndFolders,Folder,cloudZipFilesAndFolders,N,Y
+Folder.createFolder,Folder,createFolder,Y,N
+Folder.folderCreate,Folder,folderCreate,N,Y
+Gmail.sendGmailPkg,Gmail,sendGmailPkg,N,Y
+Google Sheets.googleSheetsCreateWorkbook,Google Sheets,googleSheetsCreateWorkbook,N,Y
+If.if,If,if,N,Y
+If.ifPackageElseIfOptionalAction,If,ifPackageElseIfOptionalAction,N,Y
+IQ Bot Extraction.cloudExtractionAction,IQ Bot Extraction,cloudExtractionAction,N,Y
+JavaScript.javascriptRun,JavaScript,javascriptRun,N,Y
+Jira.jiraCreateIssue,Jira,jiraCreateIssue,N,Y
+Jira.jiraCreateProject,Jira,jiraCreateProject,N,Y
+JSON utilities.convertJsonToDictionary,JSON utilities,convertJsonToDictionary,N,Y
+JSON utilities.jsonGetNodeValue,JSON utilities,jsonGetNodeValue,N,Y
+JSON utilities.jsonStartSession,JSON utilities,jsonStartSession,N,Y
+JSON utilities.jsonValidate,JSON utilities,jsonValidate,N,Y
+JSONHandler.Initialize,JSONHandler,Initialize,Y,N
+JSONHandler.Query,JSONHandler,Query,Y,N
+JSONHandler.Set,JSONHandler,Set,Y,N
+List.addItem,List,addItem,Y,N
+List.listSize,List,listSize,Y,Y
+Logging.cloudInsertingLogToFileCommand,Logging,cloudInsertingLogToFileCommand,N,Y
+Logging.logToFileLogVariablesToFile,Logging,logToFileLogVariablesToFile,N,Y
+LogToFile.logToFile,LogToFile,logToFile,Y,N
+Loop.cloudUsingLoopAction,Loop,cloudUsingLoopAction,N,Y
+Loop.loop.commands.start,Loop.loop.commands,start,N,Y
+Message box.usingMessageBoxAction,Message box,usingMessageBoxAction,N,Y
+MessageBox.messageBox,MessageBox,messageBox,Y,N
+Microsoft 365 Excel package in Automation 360.getWorksheetAsDataTableIn,Microsoft 365 Excel package in Automation 360,getWorksheetAsDataTableIn,N,Y
+Microsoft 365 Excel package in Automation 360.office365ExcelClose,Microsoft 365 Excel package in Automation 360,office365ExcelClose,N,Y
+Microsoft 365 Excel package in Automation 360.office365ExcelReadColumn,Microsoft 365 Excel package in Automation 360,office365ExcelReadColumn,N,Y
+Microsoft 365 Excel package in Automation 360.office365ExcelSetCell,Microsoft 365 Excel package in Automation 360,office365ExcelSetCell,N,Y
+Microsoft 365 Excel package in Automation 360.usingOpenWorkbookAction,Microsoft 365 Excel package in Automation 360,usingOpenWorkbookAction,N,Y
+Microsoft 365 Excel package in Automation 360.writeFromDataTableIn,Microsoft 365 Excel package in Automation 360,writeFromDataTableIn,N,Y
+Microsoft 365 OneDrive.oneDriveMoveFileOrFolderAction,Microsoft 365 OneDrive,oneDriveMoveFileOrFolderAction,N,Y
+Microsoft 365 Outlook.ms365OutlookDisconnect,Microsoft 365 Outlook,ms365OutlookDisconnect,N,Y
+Microsoft 365 Outlook.ms365OutlookSaveAllAttachments,Microsoft 365 Outlook,ms365OutlookSaveAllAttachments,N,Y
+Microsoft 365 Outlook.ms365OutlookSaveAttachments,Microsoft 365 Outlook,ms365OutlookSaveAttachments,N,Y
+Microsoft Outlook (macOS).macMsOutlookConnectDisconnect,Microsoft Outlook (macOS),macMsOutlookConnectDisconnect,N,Y
+MSWordPackage.Bookmark,MSWordPackage,Bookmark,Y,N
+MSWordPackage.ReplaceText,MSWordPackage,ReplaceText,Y,N
+Number.assignToNumber,Number,assignToNumber,Y,N
+Number.increment,Number,increment,Y,N
+Number.numberIncrement,Number,numberIncrement,N,Y
+Number.numberToString,Number,numberToString,N,Y
+Number.toString,Number,toString,Y,N
+PDF.cloudExtractingField,PDF,cloudExtractingField,N,Y
+Process Composer.processComposerAssignHumanTask,Process Composer,processComposerAssignHumanTask,N,Y
+Process Composer.processComposerCreateARequest,Process Composer,processComposerCreateARequest,N,Y
+Prompt.promptForFile,Prompt,promptForFile,N,Y
+Prompt.promptForValue,Prompt,promptForValue,N,Y
+Python Script.pythonCloseAction,Python Script,pythonCloseAction,N,Y
+Python Script.pythonOpenAction,Python Script,pythonOpenAction,N,Y
+Recorder.capture,Recorder,capture,Y,N
+REST Web Services.cloudUsingGetAction,REST Web Services,cloudUsingGetAction,N,Y
+Rest.restGet,Rest,restGet,Y,N
+Rest.restPost,Rest,restPost,Y,N
+Screen.captureDesktop,Screen,captureDesktop,Y,N
+Screen.cloudUsingScreenCaptureArea,Screen,cloudUsingScreenCaptureArea,N,Y
+Screen.cloudUsingScreenCaptureWindow,Screen,cloudUsingScreenCaptureWindow,N,Y
+ServiceNow.servicenowGetAttachment,ServiceNow,servicenowGetAttachment,N,Y
+SharePoint.sharepointGetFolder,SharePoint,sharepointGetFolder,N,Y
+String.assign,String,assign,Y,N
+String.replace,String,replace,Y,N
+String.stringPackageAssignAction,String,stringPackageAssignAction,N,Y
+String.toNumber,String,toNumber,Y,N
+System.systemInformation,System,systemInformation,Y,N
+System.usingTheGetEnvironmentVariableAction,System,usingTheGetEnvironmentVariableAction,N,Y
+Task Bot.taskBotPackageStopAction,Task Bot,taskBotPackageStopAction,N,Y
+TaskBot.stopTask,TaskBot,stopTask,Y,N
+Twilio.Place a call from Twilio,Twilio,Place a call from Twilio,Y,N
+Twilio.Send SMS from Twilio,Twilio,Send SMS from Twilio,Y,N
+Wait.waitPackageWaitForConditionAction,Wait,waitPackageWaitForConditionAction,N,Y
+WebAutomation.clickelement,WebAutomation,clickelement,Y,N
+WebAutomation.elementloaded,WebAutomation,elementloaded,Y,N
+WebAutomation.EndSessionWebAutomation,WebAutomation,EndSessionWebAutomation,Y,N
+WebAutomation.getvalueelement,WebAutomation,getvalueelement,Y,N
+WebAutomation.isloaded,WebAutomation,isloaded,Y,N
+WebAutomation.openpage,WebAutomation,openpage,Y,N
+WebAutomation.sendkeys,WebAutomation,sendkeys,Y,N
+WebAutomation.StartSessionWebAutomation,WebAutomation,StartSessionWebAutomation,Y,N
+Window.windowClose,Window,windowClose,N,Y
+Word.mswordCloseDocument,Word,mswordCloseDocument,N,Y
+Word.mswordInsertText,Word,mswordInsertText,N,Y
+Word.mswordOpenDocument,Word,mswordOpenDocument,N,Y
+Word.mswordReadTable,Word,mswordReadTable,N,Y
+Word.mswordReadText,Word,mswordReadText,N,Y
+Word.mswordSaveDocumentAs,Word,mswordSaveDocumentAs,N,Y
+XML.endSession,XML,endSession,Y,N
+XML.getSingleNode,XML,getSingleNode,Y,N
+XML.startSession,XML,startSession,Y,N
+XML.xmlGetSingleNode,XML,xmlGetSingleNode,N,Y
+XML.xmlStartSession,XML,xmlStartSession,N,Y

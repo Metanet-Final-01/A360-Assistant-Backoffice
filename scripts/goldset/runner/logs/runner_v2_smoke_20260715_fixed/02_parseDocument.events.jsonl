@@ -1,2 +1,0 @@
-{"received_at": "2026-07-15T09:42:53.970768+00:00", "event": "stage", "stage": "parsing", "message": "문서를 분석용으로 파싱하고 있습니다"}
-{"received_at": "2026-07-15T09:42:53.974122+00:00", "event": "done", "stage": "parsing", "message": "파싱 완료", "data": {"id": "aa2e3de3-9aad-4f8d-9d0a-c76b55a2bebb", "session_id": "a4ed20ff-e6b9-4b4e-b7a1-af16585965b6", "filename": "0131_currency-rate---oanda__Currency Rate - Oanda.pdf", "size_bytes": 34149, "status": "parsed", "error": null, "page_count": 1, "warnings": [], "created_at": "2026-07-15T09:42:52.560244+00:00"}}
