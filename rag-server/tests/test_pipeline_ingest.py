@@ -8,6 +8,12 @@ from app.rag.store import db
 
 
 class _Conn:
+    def __init__(self):
+        self.commits = 0
+
+    def commit(self):
+        self.commits += 1
+
     def close(self):
         pass
 
@@ -33,8 +39,9 @@ def test_ingest_skips_only_embedding_for_unchanged_content(monkeypatch, tmp_path
     jsonl.write_text("\n".join(json.dumps(d, ensure_ascii=False) for d in docs), encoding="utf-8")
     monkeypatch.setattr(pipeline.config, "RAG_DOCUMENTS_JSONL", jsonl)
 
+    conn = _Conn()
     captured = {}
-    monkeypatch.setattr(db, "connect", lambda: _Conn())
+    monkeypatch.setattr(db, "connect", lambda: conn)
     monkeypatch.setattr(db, "ensure_schema", lambda conn: None)
     monkeypatch.setattr(
         db,
@@ -76,3 +83,4 @@ def test_ingest_skips_only_embedding_for_unchanged_content(monkeypatch, tmp_path
     assert captured["opensearch_ids"] == ["doc-unchanged", "doc-new"]
     assert captured["embedding_slots"][0] is None
     assert captured["embedding_slots"][1] == [0.1, 0.2]
+    assert conn.commits == 1
