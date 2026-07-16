@@ -258,27 +258,7 @@ So this step is safe to run over the whole normalized corpus.
 Caveat: WorFBench cannot faithfully represent every branchy workflow. This converter
 uses a canonical path approximation and labels outputs with `worfbench_fidelity`.
 
-### 10. Merge Subworkflows
-
-`merge_subworkflows.py`
-
-- Input: normalized `*.goldset.json` files.
-- Output: `<name>.merged.goldset.json`.
-- Purpose: replace `TaskBot.runTask` steps with referenced sub-workflow steps.
-
-This is optional and manual. It is not called by `resolve_subtask_coverage.py` and is
-not part of the default pipeline.
-
-Use it only after `resolve_subtask_coverage.py` shows that a candidate:
-
-- has real resolved subtasks (`resolved_subtask_files` is not empty)
-- is transitively covered (`transitive_fully_covered: true`)
-- needs one self-contained normalized workflow instead of a parent workflow plus
-  sibling sub-workflow files
-
-If there are no subtasks, do not run this step. There is nothing to merge.
-
-### 11. Convert Backend Recommendations
+### 10. Convert Backend Recommendations
 
 `convert_backend_recommendation.py`
 
