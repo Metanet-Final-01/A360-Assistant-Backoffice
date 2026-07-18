@@ -3,6 +3,8 @@
 업로드(파일 교체) 두 가지 쓰기 동작만 공통으로 구현한다."""
 
 import json
+import os
+import tempfile
 from pathlib import Path
 from typing import TypeVar
 
@@ -22,8 +24,20 @@ def read_raw(path: Path) -> list[dict]:
 
 
 def _write_raw(path: Path, items: list[dict]) -> None:
+    """임시 파일에 다 쓰고 fsync 후 원자적으로 교체 — 쓰는 도중 죽어도 기존 파일이
+    반쯤 잘린 채로 남는 걸 방지한다(RAGAS 골드셋 승인/반려 UI 붙이면서 쓰기 빈도가
+    늘어나 추가함)."""
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(items, ensure_ascii=False, indent=2), encoding="utf-8")
+    fd, tmp_path = tempfile.mkstemp(dir=path.parent, suffix=".tmp")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as f:
+            f.write(json.dumps(items, ensure_ascii=False, indent=2))
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp_path, path)
+    except BaseException:
+        Path(tmp_path).unlink(missing_ok=True)
+        raise
 
 
 def append_case(path: Path, model_cls: type[T], new_item: dict, id_field: str) -> T:
@@ -36,6 +50,23 @@ def append_case(path: Path, model_cls: type[T], new_item: dict, id_field: str) -
     if any(item.get(id_field) == new_id for item in items):
         raise GoldsetWriteError(f"{id_field}={new_id!r}가 이미 있습니다")
     items.append(validated.model_dump())
+    _write_raw(path, items)
+    return validated
+
+
+def update_case(path: Path, model_cls: type[T], id_field: str, case_id: str, patch: dict) -> T:
+    """기존 케이스 하나를 부분 수정(merge)한다 — RAGAS 승인/반려(status)·수정 UI용.
+    patch에 없는 필드는 기존 값을 유지한다."""
+    items = read_raw(path)
+    idx = next((i for i, item in enumerate(items) if item.get(id_field) == case_id), None)
+    if idx is None:
+        raise GoldsetWriteError(f"{id_field}={case_id!r} 케이스를 찾을 수 없습니다")
+    merged = {**items[idx], **patch}
+    try:
+        validated = model_cls.model_validate(merged)
+    except ValidationError as e:
+        raise GoldsetWriteError(f"스키마 검증 실패: {e}") from e
+    items[idx] = validated.model_dump()
     _write_raw(path, items)
     return validated
 

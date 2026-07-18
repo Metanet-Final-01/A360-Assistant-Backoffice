@@ -81,16 +81,30 @@ class RagasGoldsetError(RuntimeError):
     않기 위해 별도 예외로 구분한다(CodeRabbit 지적 반영)."""
 
 
-def load_cases() -> list[RagasCase]:
+def load_all_cases() -> list[RagasCase]:
     if not _CASES_PATH.exists():
         raise RagasGoldsetError(f"골드셋 파일이 없습니다: {_CASES_PATH}")
     import json
 
     raw = json.loads(_CASES_PATH.read_text(encoding="utf-8"))
-    cases = [RagasCase.model_validate(c) for c in raw]
+    cases = [
+        RagasCase.model_validate(case)
+        for case in raw
+    ]
     if not cases:
-        raise RagasGoldsetError(f"골드셋이 비어 있습니다: {_CASES_PATH}")
+        raise RagasGoldsetError(f"승인된 RAGAS 골드셋이 없습니다: {_CASES_PATH}")
     return cases
+
+
+def load_cases() -> list[RagasCase]:
+    approved_cases = [
+        case
+        for case in load_all_cases()
+        if case.status == "approved"
+    ]
+    if not approved_cases:
+        raise RagasGoldsetError(f"승인된 RAGAS 골드셋이 없습니다: {_CASES_PATH}")
+    return approved_cases
 
 
 def _search_backend(backend_url: str, question: str, limit: int = 5) -> list[dict]:
@@ -243,6 +257,9 @@ def execute_and_save(agent_label: str, judge_model: str = "gpt-4o-mini") -> None
     남긴다 — 그러지 않으면 FastAPI 백그라운드 태스크 예외가 로그에만 찍히고 프론트는
     영원히 "실행 중"으로 보게 된다."""
     try:
+        case_count = len(load_cases())
+        state.update({"saved": 0, "cases": case_count})
+        _append_log(state["log"], f"승인된 RAGAS 케이스 {case_count}건 평가 시작")
         results = run_ragas_eval(judge_model=judge_model, on_progress=lambda msg: _append_log(state["log"], msg))
         evaluation_id = uuid4().hex[:12]  # 배치 전체를 하나로 묶는 id — 버전 비교가
         # agent_label만으로 그룹핑하면 같은 라벨로 재실행할 때마다 케이스가 섞여
@@ -262,6 +279,7 @@ def execute_and_save(agent_label: str, judge_model: str = "gpt-4o-mini") -> None
             append_run(record)
             saved += 1
         state.update({"saved": saved, "cases": len(results)})
+        _append_log(state["log"], f"RAGAS 평가 결과 {saved}/{len(results)}건 저장 완료")
     except Exception as e:  # noqa: BLE001 - 백그라운드 태스크 예외를 상태로 남겨야 프론트가 안다
         logger.exception("RAGAS 평가 실행 실패")
         state["error"] = str(e)

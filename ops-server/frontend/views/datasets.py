@@ -1,6 +1,8 @@
-"""평가/입력 데이터셋 관리 (RPA-136) — BFCL/RAGAS/Workflow 골드셋과 Workflow 입력
+"""평가/입력 데이터셋 관리 (RPA-136) — BFCL/Workflow 골드셋과 Workflow 입력
 데이터셋(업무정의서 원문)이 리포 내 정적 JSON 파일로만 존재해 팀원이 직접 편집해야
 했다. 조회·업로드(파일 교체)·수동 입력(폼) 세 가지 방식으로 웹에서 관리한다.
+RAGAS 골드셋은 ragas_datasets.py의 별도 페이지로 분리됐다(문서 브라우저·ChatGPT
+JSON 자동 채우기·검증 로그 등 RAGAS 전용 흐름이 커져서).
 
 BFCL은 스키마가 turns/expected_targets로 중첩돼 있어 폼으로는 흔한 형태
 (단일 턴, target 최대 2개 x 파라미터 최대 2개)만 지원한다 — multi_turn_state/
@@ -18,17 +20,16 @@ _SESSION = requests.Session()
 
 
 def render() -> None:
+    # RAGAS 탭은 ragas_datasets.py의 별도 페이지로 옮겼다 — 여기서는 BFCL/Workflow만.
     page_header(
         "DATASETS", "평가/입력 데이터셋 관리",
-        "BFCL·RAGAS·Workflow 골드셋과 Workflow 입력 데이터셋(업무정의서 원문)을 조회·업로드·수동 등록합니다.",
+        "BFCL·Workflow 골드셋과 Workflow 입력 데이터셋(업무정의서 원문)을 조회·업로드·수동 등록합니다.",
     )
-    tab_bfcl, tab_ragas, tab_wf_goldset, tab_wf_input = st.tabs(
-        ["BFCL 평가 데이터셋", "RAGAS 평가 데이터셋", "Workflow 평가 데이터셋", "Workflow 입력 데이터셋"]
+    tab_bfcl, tab_wf_goldset, tab_wf_input = st.tabs(
+        ["BFCL 평가 데이터셋", "Workflow 평가 데이터셋", "Workflow 입력 데이터셋"]
     )
     with tab_bfcl:
         _render_bfcl_tab()
-    with tab_ragas:
-        _render_ragas_tab()
     with tab_wf_goldset:
         _render_workflow_goldset_tab()
     with tab_wf_input:
@@ -195,51 +196,6 @@ def _render_bfcl_tab() -> None:
             ok, msg = _post_json("/eval/bfcl/cases", payload)
             if ok:
                 st.session_state.pop("/eval/bfcl/cases", None)
-                st.success("등록했습니다.")
-                st.rerun()
-            else:
-                st.error(f"등록 실패: {msg}")
-
-
-# ── RAGAS ─────────────────────────────────────────────────────────────
-
-
-def _render_ragas_tab() -> None:
-    filtered: list[dict] = []
-    with card("ragas_goldset_view"):
-        section_header("조회", "골드셋 케이스 목록.")
-        data, err = _get("/eval/ragas/cases")
-        if err:
-            st.warning(f"불러오지 못했습니다: {err}")
-        else:
-            query = _search_box("ragas")
-            filtered = _search_filter(data, query)
-            st.caption(f"{len(filtered)}/{len(data)}개 케이스")
-            st.dataframe(filtered, width="stretch", hide_index=True)
-
-    _render_delete_section("ragas", "/eval/ragas/cases", [c["case_id"] for c in filtered], "/eval/ragas/cases", "case_id")
-
-    _render_upload_section(
-        "ragas_upload", "/eval/ragas/cases", "/eval/ragas/cases/upload",
-        "전체 골드셋 배열([...])을 통째로 교체합니다 — RagasCase 스키마 검증을 통과해야 저장됩니다.",
-    )
-
-    with card("ragas_manual_add"):
-        section_header("수동 입력으로 생성", "")
-        with st.form("ragas_manual_add_form"):
-            case_id = st.text_input("case_id", placeholder="rag_case_011")
-            question = st.text_area("question", height=80)
-            ground_truth = st.text_area("ground_truth (사람이 검증한 정답 요약)", height=80)
-            ref_docs = st.text_input("reference_doc_ids (쉼표로 구분, 선택)", placeholder="doc-001, doc-002")
-            submitted = st.form_submit_button("RAGAS 케이스 등록", type="primary")
-        if submitted:
-            payload = {
-                "case_id": case_id.strip(), "question": question.strip(), "ground_truth": ground_truth.strip(),
-                "reference_doc_ids": [d.strip() for d in ref_docs.split(",") if d.strip()],
-            }
-            ok, msg = _post_json("/eval/ragas/cases", payload)
-            if ok:
-                st.session_state.pop("/eval/ragas/cases", None)
                 st.success("등록했습니다.")
                 st.rerun()
             else:
