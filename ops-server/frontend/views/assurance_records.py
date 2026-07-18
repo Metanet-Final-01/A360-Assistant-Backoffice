@@ -46,7 +46,12 @@ def _safe_message(response: requests.Response) -> str:
     return "요청을 처리하지 못했습니다."
 
 
-def _get(path: str, params: dict | None = None) -> dict | None:
+def _get(
+    path: str,
+    params: dict | None = None,
+    *,
+    not_found_message: str = "Backend에 검증 판정 기록 조회 API가 아직 배포되지 않았습니다.",
+) -> dict | None:
     try:
         response = requests.get(f"{OPS_BACKEND_URL}{path}", params=params, timeout=_TIMEOUT)
     except requests.RequestException:
@@ -56,7 +61,7 @@ def _get(path: str, params: dict | None = None) -> dict | None:
         st.error("조회 권한이 없습니다. Backend 운영 인증 설정을 확인하세요.")
         return None
     if response.status_code == 404:
-        st.warning("Backend에 검증 판정 기록 조회 API가 아직 배포되지 않았습니다.")
+        st.warning(not_found_message)
         return None
     if response.status_code == 502:
         st.error("Ops Backend가 A360 Backend에 연결하지 못했습니다.")
@@ -75,21 +80,21 @@ def _get(path: str, params: dict | None = None) -> dict | None:
     return data
 
 
-def _fetch(filters: dict, *, append: bool) -> None:
+def _fetch(filters: dict, *, append: bool) -> bool:
     params = dict(filters)
     if append:
         cursor = st.session_state.get(_STATE_CURSOR)
         if not cursor:
-            return
+            return False
         params.pop("since", None)
         params["cursor"] = cursor
     data = _get("/assurance/records", params)
     if data is None:
-        return
+        return False
     records = data.get("receipts", [])
     if not isinstance(records, list):
         st.error("검증 판정 기록 목록 형식이 올바르지 않습니다.")
-        return
+        return False
     current = st.session_state.get(_STATE_ROWS, []) if append else []
     known = {row.get("receipt_digest") for row in current if isinstance(row, dict)}
     current.extend(
@@ -99,6 +104,7 @@ def _fetch(filters: dict, *, append: bool) -> None:
     )
     st.session_state[_STATE_ROWS] = current
     st.session_state[_STATE_CURSOR] = data.get("next_cursor")
+    return True
 
 
 def _render_filters() -> tuple[dict, tuple]:
@@ -210,7 +216,10 @@ def _render_detail(row: dict) -> None:
     digest = row.get("receipt_digest")
     if not isinstance(digest, str):
         return
-    detail = _get(f"/assurance/records/{digest}")
+    detail = _get(
+        f"/assurance/records/{digest}",
+        not_found_message="해당 검증 판정 기록을 찾을 수 없습니다. 목록을 새로고침하세요.",
+    )
     if detail is None:
         return
 
@@ -281,8 +290,8 @@ def render() -> None:
         st.dataframe(pd.DataFrame(_table_rows(rows)), width="stretch", hide_index=True)
         if st.session_state.get(_STATE_CURSOR):
             if st.button("다음 기록", icon=":material/expand_more:"):
-                _fetch(filters, append=True)
-                st.rerun()
+                if _fetch(filters, append=True):
+                    st.rerun()
 
     choices = {
         f"{row.get('created_at', '-')} · {_status_text(row)} · {str(row.get('receipt_digest', ''))[:20]}…": row
