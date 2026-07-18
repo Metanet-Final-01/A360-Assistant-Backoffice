@@ -54,6 +54,22 @@ class AssuranceRecordsTest(unittest.TestCase):
 
         self.assertEqual(response.status_code, 404)
 
+    @patch("app.main.backend_client.fetch_assurance_records")
+    def test_list_preserves_backend_rate_limit(self, fetch):
+        fetch.side_effect = backend_client.BackendResponseError(429, "rate limited")
+
+        response = self.client.get("/assurance/records")
+
+        self.assertEqual(response.status_code, 429)
+
+    @patch("app.main.backend_client.fetch_assurance_records")
+    def test_list_masks_backend_server_error_as_bad_gateway(self, fetch):
+        fetch.side_effect = backend_client.BackendResponseError(500, "Backend server error")
+
+        response = self.client.get("/assurance/records")
+
+        self.assertEqual(response.status_code, 502)
+
     def test_assurance_routes_are_read_only(self):
         methods = {
             method

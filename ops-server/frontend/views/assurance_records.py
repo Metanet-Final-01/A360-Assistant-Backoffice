@@ -276,10 +276,13 @@ def render() -> None:
     refresh = refresh_col.button(
         "새로고침", icon=":material/refresh:", width="stretch"
     )
+    fetch_succeeded = None
     if changed or refresh or _STATE_ROWS not in st.session_state:
-        _fetch(filters, append=False)
+        fetch_succeeded = _fetch(filters, append=False)
 
     rows = st.session_state.get(_STATE_ROWS, [])
+    if fetch_succeeded is False and not rows:
+        return
     if not rows:
         st.info("선택한 조건에 해당하는 검증 판정 기록이 없습니다.")
         return

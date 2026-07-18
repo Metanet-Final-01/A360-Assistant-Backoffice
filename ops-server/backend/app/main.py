@@ -466,7 +466,7 @@ def _run_collect(fn, *args, **kwargs) -> dict:
     except backend_client.BackendUnavailableError as e:
         raise HTTPException(502, str(e)) from e
     except backend_client.BackendResponseError as e:
-        status_code = e.status_code if e.status_code in {400, 404, 422} else 502
+        status_code = e.status_code if 400 <= e.status_code < 500 else 502
         raise HTTPException(status_code, str(e)) from e
 
 
