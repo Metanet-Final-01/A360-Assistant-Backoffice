@@ -43,6 +43,14 @@ class BackendUnavailableError(RuntimeError):
     """A360-Assistant-Backend에 연결 자체가 안 될 때."""
 
 
+class BackendResponseError(RuntimeError):
+    """Backend가 인증 외의 오류 HTTP 응답을 반환함."""
+
+    def __init__(self, status_code: int, message: str):
+        super().__init__(message)
+        self.status_code = status_code
+
+
 def credentials_configured() -> bool:
     """API 키 또는 관리자 로그인 자격 중 하나라도 있으면 True."""
     return bool(_OPS_API_KEY) or bool(_ADMIN_EMAIL and _ADMIN_PASSWORD)
@@ -104,10 +112,51 @@ def _authed_get(path: str, params: dict) -> dict:
             _raise_for_auth(resp)
             resp.raise_for_status()
             return resp.json()
+        except httpx.HTTPStatusError as e:
+            status_code = e.response.status_code
+            detail = e.response.text if status_code < 500 else "Backend server error"
+            raise BackendResponseError(
+                status_code,
+                f"A360-Assistant-Backend 조회 실패({status_code}): {detail}",
+            ) from e
         except httpx.RequestError as e:
             # 전송 실패(네트워크·타임아웃)만 '연결 실패'로. raise_for_status가 던지는
-            # HTTPStatusError(4xx/5xx)는 그대로 전파 — 응답 상태를 '연결 실패'로 오인시키지 않는다.
+            # HTTPStatusError(4xx/5xx)는 위에서 BackendResponseError로 분리해 응답 상태를 보존한다.
             raise BackendUnavailableError(f"{BACKEND_URL} 연결 실패: {e}") from e
+
+
+def fetch_assurance_records(
+    *,
+    limit: int = 100,
+    harness: str | None = None,
+    decision: str | None = None,
+    assurance_verdict: str | None = None,
+    request_id: str | None = None,
+    session_id: str | None = None,
+    since: str | None = None,
+    cursor: str | None = None,
+) -> dict:
+    """Backend가 보관하는 AI 출력 검증 판정 기록을 수정 없이 전달한다."""
+    params = {
+        key: value
+        for key, value in {
+            "limit": limit,
+            "harness": harness,
+            "decision": decision,
+            "assurance_verdict": assurance_verdict,
+            "request_id": request_id,
+            "session_id": session_id,
+            "since": since,
+            "cursor": cursor,
+        }.items()
+        if value is not None
+    }
+    return _authed_get("/api/admin/assurance-receipts", params)
+
+
+def fetch_assurance_record_detail(receipt_digest: str) -> dict:
+    """검증 판정 기록 한 건의 마스킹된 상세와 무결성 결과를 조회한다."""
+    return _authed_get(f"/api/admin/assurance-receipts/{receipt_digest}", {})
 
 
 def probe_health() -> dict:

@@ -6,11 +6,13 @@
 프로세스**로 구성된다:
 
 - **백엔드 (FastAPI, :8100)** — `/observability/*`(감사·LLM·RAG 로그 수집/조회,
-  metrics-daily/usage-daily/turn-events 롤업 조회), `/eval/*`(데이터셋·결과·
+  metrics-daily/usage-daily/turn-events 롤업 조회), `/assurance/*`(Backend의 AI 출력
+  검증 판정 기록을 저장 없이 읽기 전용 중계), `/eval/*`(데이터셋·결과·
   pm4py/WorFBench 변환·A/B·xlsx, RAGAS 기반 RAG 검색 품질 평가), 그리고
   `app/scheduler`(rag-server로 주기 트리거 — 현재 stub).
 - **프론트 (Streamlit, :8501)** — 홈(대시보드) / RAG 데이터 적재 / 평가(결과 조회·비교,
-  실행, 데이터셋 관리, RAG 품질(RAGAS) 4탭으로 통합된 한 페이지) / 모니터링 로그.
+  실행, 데이터셋 관리, RAG 품질(RAGAS) 4탭으로 통합된 한 페이지) / 모니터링 로그 /
+  AI 출력 검증 기록.
 
 ```
 ops-server/
@@ -49,6 +51,19 @@ cd ops-server\backend ; uvicorn app.main:app --reload --port 8100
 # 프론트 (다른 터미널)
 cd ops-server\frontend ; streamlit run app.py --server.port 8501
 ```
+
+## AI 출력 검증 판정 기록
+
+`AI 출력 검증 기록` 화면은 Backend의 Output/Change 하네스가 남긴 판정 이력을 운영자가
+조회하는 화면이다. 여기서 `관찰됨`은 검증기가 후보를 관찰했다는 뜻이며, 사람의 승인·배포
+허가·업무 결과의 정당성을 의미하지 않는다.
+
+- Ops Backend는 `GET /assurance/records`와 `GET /assurance/records/{receipt_digest}`만
+  제공한다. 생성·수정·삭제 API는 없다.
+- 판정 기록의 원본은 A360-Assistant-Backend에 있으며, Ops 서버는 로컬 JSONL이나 별도 DB에
+  복제하지 않는다.
+- Backend 운영 API 인증은 `A360_BACKEND_OPS_API_KEY`를 우선 사용하고, 관리자 JWT 로그인은
+  하위 호환 경로로만 사용한다.
 
 ## rag-server 연동
 
