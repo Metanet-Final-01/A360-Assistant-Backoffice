@@ -18,7 +18,7 @@
 ops-server/
   backend/
     app/
-      main.py            # FastAPI: /observability/*, /eval/*
+      main.py            # FastAPI: /observability/*, /assurance/*, /eval/*
       observability/     # A360-Assistant-Backend 로그 수집/조회
       eval/              # 평가 데이터셋·결과·변환·비교
       scheduler/         # rag-server 주기 트리거 (stub — 다음 작업)

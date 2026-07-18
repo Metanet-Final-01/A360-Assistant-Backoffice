@@ -1,6 +1,7 @@
 """모니터링 서버 백엔드 진입점 (FastAPI).
 
 - /observability/*: A360-Assistant-Backend의 감사 로그·LLM 사용량·RAG 요청 로그 수집/조회.
+- /assurance/*: Backend의 AI 출력 검증 판정 기록을 저장 없이 읽기 전용 중계.
 - /eval/*: 평가 데이터셋·결과 로그·pm4py/WorFBench 변환·A/B 비교·xlsx 내보내기.
 
 RAG 적재 트리거(/rag/ingest)는 여기 없다 — 별도 rag-server가 담당하고, 프론트의 '적재'
