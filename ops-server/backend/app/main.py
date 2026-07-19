@@ -311,11 +311,20 @@ class ExecuteRagasRequest(BaseModel):
 
 @app.get("/eval/ragas/cases")
 def ragas_cases() -> list:
-    """골드셋 케이스 목록(채점 실행 전 미리보기용)."""
+    """골드셋 케이스 목록(채점 실행 전 미리보기용). 전체목록 탭의 문서유형/출처
+    필터를 위해 각 케이스에 source_type/schema_source를 붙이고, chunk_size
+    실험(eval_runs.jsonl의 ragas_chunk_experiment 기록)에 실제로 쓰인 적이
+    있는지도 used_in_experiment로 붙여준다 — 새로 추가한 케이스(아직 실험
+    미실행)와 기존 실험 표본을 구분해서 볼 수 있게."""
     try:
-        return [case.model_dump() for case in ragas_runner.load_all_cases()]
+        cases = [case.model_dump() for case in ragas_runner.load_all_cases()]
     except ragas_runner.RagasGoldsetError as e:
         raise HTTPException(500, str(e)) from e
+    ragas_source_documents.enrich_cases_with_document_meta(cases)
+    experiment_case_ids = {r.case_id for r in load_runs(source="ragas_chunk_experiment")}
+    for case in cases:
+        case["used_in_experiment"] = case["case_id"] in experiment_case_ids
+    return cases
 
 
 @app.post("/eval/ragas/cases")
@@ -381,11 +390,19 @@ def post_ragas_validation_log(req: RagasValidationLogRequest) -> dict:
 
 
 @app.get("/eval/ragas/source-documents")
-def ragas_source_documents_search(q: str = "", source_type: str | None = None) -> list[dict]:
+def ragas_source_documents_search(
+    q: str = "",
+    source_type: str | None = None,
+    schema_source: Literal["jar", "llm_agent"] | None = None,
+) -> list[dict]:
     """골드셋 작성 화면의 문서 브라우저 — 로컬 source_documents 테이블 조회
-    (scripts/ragas_eval/datasets/build_source_documents.py로 미리 채워둬야 함)."""
+    (scripts/ragas_eval/datasets/build_source_documents.py로 미리 채워둬야 함).
+    schema_source(jar/llm_agent)는 action_schema/package_overview 문서에 한해
+    원격 RAG 코퍼스에서 조회 시점에 붙여서 필터링한다(로컬 테이블엔 해당 컬럼이 없음)."""
     try:
-        return ragas_source_documents.search(query=q, source_type=source_type)
+        return ragas_source_documents.search(
+            query=q, source_type=source_type, schema_source=schema_source,
+        )
     except ragas_source_documents.SourceDocumentsUnavailableError as e:
         raise HTTPException(503, str(e)) from e
 
@@ -396,6 +413,7 @@ def ragas_source_documents_random(
     limit: int = Query(default=5, ge=1, le=100),
     exclude_used: bool = True,
     min_content_length: int = Query(default=0, ge=0),
+    schema_source: Literal["jar", "llm_agent"] | None = None,
 ) -> list[dict]:
     """골드셋 작성용 랜덤 문서 추출. exclude_used=True면 이미 골드셋에 근거로 쓰인
     문서(reference_doc_ids + reference_contexts의 source_document_id)는 제외한다 —
@@ -415,7 +433,7 @@ def ragas_source_documents_random(
     try:
         return ragas_source_documents.random_sample(
             source_type=source_type, limit=limit, exclude_ids=exclude_ids,
-            min_content_length=min_content_length,
+            min_content_length=min_content_length, schema_source=schema_source,
         )
     except ragas_source_documents.SourceDocumentsUnavailableError as e:
         raise HTTPException(503, str(e)) from e

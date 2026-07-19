@@ -46,6 +46,14 @@ class RagasCase(BaseModel):
             "개수로 계산 가능해 별도 필드로 안 둠 — difficulty도 기준이 모호해서 의도적으로 제외."
         ),
     )
+    created_at: str | None = Field(
+        default=None, description="등록 시각(UTC ISO 8601, goldset_admin.append_case가 채움). "
+        "이 필드 추가 이전 기존 케이스는 None."
+    )
+    updated_at: str | None = Field(
+        default=None, description="마지막 수정 시각(UTC ISO 8601, goldset_admin이 쓰기 때마다 갱신). "
+        "이 필드 추가 이전 기존 케이스는 None."
+    )
 
 
 class RagasCaseResult(BaseModel):

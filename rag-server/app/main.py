@@ -93,6 +93,33 @@ class RagasValidationAttemptRequest(BaseModel):
     failed_snippets: str | None = None
 
 
+@app.get("/rag/schema-sources")
+def rag_schema_sources(parent_ids: str) -> dict:
+    """parent_id 목록(콤마 구분)에 대응하는 schema_source(jar/llm_agent)를 조회한다.
+
+    ops-server의 골드셋 작성 화면이 로컬 source_documents 테이블(schema_source 컬럼
+    없음)에 없는 이 구분을 문서 브라우저에 표시/필터링하기 위해 호출한다 — ops-server는
+    RAG DB에 직접 연결하지 않고 이 API를 거친다(관측/RAG DB 직접 접근은 rag-server
+    전용이라는 정책, validation_log.py와 동일).
+
+    반드시 parent_id로 조회한다 — rag_documents는 청크 단위로 저장되어 있어서(운영
+    chunk_size=1200) id는 청크마다 다르고, 원본 문서를 가리키는 건 parent_id뿐이다."""
+    ids = [pid for pid in parent_ids.split(",") if pid]
+    if not ids:
+        return {"schema_sources": {}}
+    from app.rag import config
+    import psycopg
+
+    with psycopg.connect(config.database_dsn(), connect_timeout=5) as conn:
+        with conn.cursor() as cur:
+            cur.execute(
+                "select distinct parent_id, metadata->>'schema_source' "
+                "from rag_documents where parent_id = any(%s::text[])",
+                (ids,),
+            )
+            return {"schema_sources": {row[0]: (row[1] or "unknown") for row in cur.fetchall()}}
+
+
 @app.post("/observability/ragas-validation-attempts")
 def record_ragas_validation_attempt(req: RagasValidationAttemptRequest) -> dict:
     """RAGAS 골드셋 작성 화면의 근거 검증 시도를 관측 DB에 기록한다 — 통계용, 실패해도

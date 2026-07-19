@@ -6,7 +6,8 @@
     "reference_doc_ids": [
       "97b74de0e11a7b70"
     ],
-    "status": "approved"
+    "status": "rejected",
+    "review_note": "참조 문서(reference_doc_ids[0])가 로컬/원격 어디에도 없음(진짜 고아, 2026-07-19 재검증) — 예전 방식(레거시)으로 만들어진 케이스로 추정, 원인 미확정"
   },
   {
     "case_id": "excel_get_single_cell",
@@ -33,7 +34,8 @@
     "reference_doc_ids": [
       "ba20a932f13d8897"
     ],
-    "status": "approved"
+    "status": "rejected",
+    "review_note": "참조 문서(reference_doc_ids[0])가 로컬/원격 어디에도 없음(진짜 고아, 2026-07-19 재검증) — 예전 방식(레거시)으로 만들어진 케이스로 추정, 원인 미확정"
   },
   {
     "case_id": "file_copy",
@@ -2035,5 +2037,73 @@
     "status": "approved",
     "review_note": null,
     "question_type": "비교·판단"
+  },
+  {
+    "case_id": "rag_891d0f8c_d6e7fa",
+    "question": "Microsoft 365 Excel에서 기존 값을 덮어쓰지 않고 현재 워크시트에 범위를 삽입하려면 어떤 작업을 사용해야 하나요?",
+    "ground_truth": "Microsoft 365 Excel의 범위 삽입 작업(office365ExcelInsertRange)을 사용합니다.",
+    "reference_doc_ids": [
+      "891d0f8c6c4a53c4"
+    ],
+    "reference_contexts": [
+      {
+        "source_document_id": "891d0f8c6c4a53c4",
+        "snippet": "액션: Microsoft 365 Excel의 범위 삽입 작업 (office365ExcelInsertRange) 설명: 현재 워크시트에 범위를 삽입하며 기존 값을 덮어쓰지 않습니다."
+      }
+    ],
+    "status": "approved",
+    "review_note": null,
+    "question_type": "조건 조회"
+  },
+  {
+    "case_id": "rag_25fddbbc_c00418",
+    "question": "Google Drive에서 다운로드할 때 동일한 이름의 기존 파일을 덮어쓰려면 어떤 옵션을 선택해야 하나요?",
+    "ground_truth": "기존 파일 덮어쓰기 옵션을 선택합니다.",
+    "reference_doc_ids": [
+      "25fddbbcdcfeebdf"
+    ],
+    "reference_contexts": [
+      {
+        "source_document_id": "25fddbbcdcfeebdf",
+        "snippet": "선택 사항: 동일한 이름의 파일을 덮어쓰려면 기존 파일 덮어쓰기 옵션을 선택합니다."
+      }
+    ],
+    "status": "rejected",
+    "review_note": "문서 변별력 없음(일반적 패턴)",
+    "question_type": "조건 조회"
+  },
+  {
+    "case_id": "rag_d1af609b_340460",
+    "question": "Excel 고급의 행 개수 가져오기 작업은 어떤 파일 형식에서 사용할 수 있나요?",
+    "ground_truth": "xlsx, xls, xlsb, xlsm 및 csv 파일에서 사용할 수 있습니다.",
+    "reference_doc_ids": [
+      "d1af609bcbe91f5c"
+    ],
+    "reference_contexts": [
+      {
+        "source_document_id": "d1af609bcbe91f5c",
+        "snippet": "설명: 행 수를 검색합니다. 이 작업은 xlsx, xls, xlsb, xlsm 및 csv 파일에서 작동합니다."
+      }
+    ],
+    "status": "approved",
+    "review_note": null,
+    "question_type": "단순 조회"
+  },
+  {
+    "case_id": "rag_f41a0414_45376d",
+    "question": "Microsoft 365 Excel의 셀 가져오기 작업은 어떤 값을 반환하나요?",
+    "ground_truth": "셀 값을 문자열로 반환합니다.",
+    "reference_doc_ids": [
+      "f41a0414f7978704"
+    ],
+    "reference_contexts": [
+      {
+        "source_document_id": "f41a0414f7978704",
+        "snippet": "리턴: string (셀 값)"
+      }
+    ],
+    "status": "approved",
+    "review_note": null,
+    "question_type": "단순 조회"
   }
 ]

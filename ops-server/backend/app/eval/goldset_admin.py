@@ -2,6 +2,7 @@
 조회는 이미 각 runner.load_cases()로 있었고, 여기서는 추가(수동 입력)와
 업로드(파일 교체) 두 가지 쓰기 동작만 공통으로 구현한다."""
 
+import datetime
 import json
 import os
 import tempfile
@@ -16,6 +17,10 @@ T = TypeVar("T", bound=BaseModel)
 
 class GoldsetWriteError(RuntimeError):
     """검증 실패 또는 중복 id — 그대로 HTTP 400으로 변환된다."""
+
+
+def _now_iso() -> str:
+    return datetime.datetime.now(datetime.timezone.utc).isoformat()
 
 
 # 파일 하나당 락 하나 — 같은 골드셋 파일에 동시에 두 PATCH/추가/삭제 요청이 들어오면
@@ -62,6 +67,11 @@ def _write_raw(path: Path, items: list[dict]) -> None:
 
 
 def append_case(path: Path, model_cls: type[T], new_item: dict, id_field: str) -> T:
+    # created_at/updated_at은 RagasCase에만 있는 필드다 — 그 필드가 없는 모델(BFCL/Workflow)
+    # 로 넘어가면 pydantic이 조용히 무시한다(extra='forbid' 아님), 그래서 모델별 분기 없이
+    # 여기서 공통으로 채워도 안전하다.
+    now = _now_iso()
+    new_item = {**new_item, "created_at": new_item.get("created_at") or now, "updated_at": now}
     try:
         validated = model_cls.model_validate(new_item)
     except ValidationError as e:
@@ -88,7 +98,7 @@ def update_case(path: Path, model_cls: type[T], id_field: str, case_id: str, pat
         idx = next((i for i, item in enumerate(items) if item.get(id_field) == case_id), None)
         if idx is None:
             raise GoldsetWriteError(f"{id_field}={case_id!r} 케이스를 찾을 수 없습니다")
-        merged = {**items[idx], **patch}
+        merged = {**items[idx], **patch, "updated_at": _now_iso()}
         try:
             validated = model_cls.model_validate(merged)
         except ValidationError as e:
@@ -116,6 +126,11 @@ def replace_from_upload(path: Path, model_cls: type[T], raw_bytes: bytes) -> int
         raise GoldsetWriteError(f"JSON 파싱 실패: {e}") from e
     if not isinstance(items, list):
         raise GoldsetWriteError("최상위가 배열([...])이어야 합니다")
+    now = _now_iso()
+    for item in items:
+        if isinstance(item, dict):
+            item.setdefault("created_at", now)
+            item.setdefault("updated_at", now)
     try:
         validated = [model_cls.model_validate(item) for item in items]
     except ValidationError as e:

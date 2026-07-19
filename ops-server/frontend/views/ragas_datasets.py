@@ -36,6 +36,21 @@ _STATUS_BADGE_COLORS = {"draft": "gray", "approved": "green", "rejected": "red"}
 # 나머지는 "기타"로 흡수한다 — 근거 없이 항목을 늘리지 않는다.
 _REJECT_REASONS = ["없음", "문서 변별력 없음(일반적 패턴)", "근거가 원문과 불일치", "기타"]
 _QUESTION_TYPES = ["단순 조회", "조건 조회", "절차 설명", "비교·판단"]
+# created_at/updated_at은 2026-07-20에 추가된 필드라 그 이전 케이스는 값이 없다(None) —
+# 정렬 키에서 빈 문자열로 취급하면 "최신순"에서 자연스럽게 맨 뒤로 밀린다.
+_CASE_SORT_OPTIONS: dict[str, tuple[str, bool]] = {
+    "등록시간 최신순": ("created_at", True),
+    "등록시간 오래된순": ("created_at", False),
+    "수정시간 최신순": ("updated_at", True),
+    "수정시간 오래된순": ("updated_at", False),
+    "케이스 ID": ("case_id", False),
+}
+
+
+def _format_timestamp(value: str | None) -> str:
+    if not value:
+        return "-"
+    return value[:16].replace("T", " ")
 
 _CHATGPT_PROMPT_TEMPLATE = """다음 공식 문서를 근거로 RAGAS 평가 문항 1개를 작성하라.
 
@@ -170,6 +185,25 @@ def _most_similar(question: str, candidates: list[str], threshold: float = 0.6) 
     return best
 
 
+def _find_similar_question(
+    source_document_id: str, question: str, existing_cases: list[dict]
+) -> tuple[str, float] | None:
+    """같은 문서를 근거로 쓴 기존 케이스들 중 문자열 유사도가 높은 질문을 찾는다 —
+    저장 폼 실시간 경고와 저장 시점 차단 둘 다 이 함수 하나로 판단해야 기준이
+    어긋나지 않는다."""
+    if not question.strip():
+        return None
+    same_doc_questions = [
+        c["question"] for c in existing_cases
+        if source_document_id in c.get("reference_doc_ids", [])
+        or any(
+            context.get("source_document_id") == source_document_id
+            for context in c.get("reference_contexts", [])
+        )
+    ]
+    return _most_similar(question, same_doc_questions)
+
+
 def _build_question_type_status(cases: list[dict]) -> str:
     type_counts = Counter(case.get("question_type") for case in cases if case.get("question_type"))
     smallest_type_count = min(type_counts.get(question_type, 0) for question_type in _QUESTION_TYPES)
@@ -188,9 +222,32 @@ def _build_question_type_status(cases: list[dict]) -> str:
 
 
 def _render_write_tab() -> None:
-    col_type, col_exclude, col_btn = st.columns([2, 2, 1])
+    # schema_source(jar/llm_agent)는 action_schema/package_overview 문서에만 있는
+    # 구분이라, 그 두 유형을 골랐을 때만 필터를 보여준다 — 직전 렌더의 선택값
+    # (session_state)으로 미리 판단한다.
+    current_source_type = st.session_state.get("ragas_write_source_type", _SOURCE_TYPES[0])
+    show_schema_source_filter = current_source_type in ("action_schema", "package_overview")
+    if show_schema_source_filter:
+        col_type, col_schema, col_exclude, col_btn = st.columns([2, 2, 2, 1])
+    else:
+        col_type, col_exclude, col_btn = st.columns([2, 2, 1])
+        col_schema = None
+
     with col_type:
         source_type = st.selectbox("문서 유형", _SOURCE_TYPES, key="ragas_write_source_type")
+
+    schema_source_filter = None
+    if col_schema is not None:
+        with col_schema:
+            schema_source_label = st.selectbox(
+                "출처(jar/llm_agent)",
+                ["(전체)", "jar", "llm_agent"],
+                key="ragas_write_schema_source",
+                help="action_schema/package_overview 문서에만 있는 구분입니다. "
+                "jar = JAR 파일 파싱, llm_agent = JAR 없는 패키지를 LLM이 파싱.",
+            )
+            schema_source_filter = None if schema_source_label == "(전체)" else schema_source_label
+
     with col_exclude:
         st.markdown("<div style='height: 2.1rem'></div>", unsafe_allow_html=True)
         exclude_used = st.checkbox("이미 작성된 문서 제외", value=True, key="ragas_write_exclude_used")
@@ -198,10 +255,10 @@ def _render_write_tab() -> None:
         st.markdown("<div style='height: 2.1rem'></div>", unsafe_allow_html=True)
         if st.button("무작위 선택", key="ragas_write_sample_btn", type="primary", width="stretch"):
             filter_type = None if source_type == "(전체)" else source_type
-            docs, err = _get(
-                "/eval/ragas/source-documents/random",
-                {"source_type": filter_type, "limit": 5, "exclude_used": str(exclude_used).lower()},
-            )
+            params = {"source_type": filter_type, "limit": 5, "exclude_used": str(exclude_used).lower()}
+            if schema_source_filter:
+                params["schema_source"] = schema_source_filter
+            docs, err = _get("/eval/ragas/source-documents/random", params)
             if err:
                 st.warning(f"추출 실패: {err}")
             else:
@@ -216,7 +273,11 @@ def _render_write_tab() -> None:
         )
         return
 
-    options = {f"[{d['source_type']}] {d['title']}": d["id"] for d in sampled}
+    def _doc_option_label(d: dict) -> str:
+        schema_tag = f"/{d['schema_source']}" if d.get("schema_source") else ""
+        return f"[{d['source_type']}{schema_tag}] {d['title']}"
+
+    options = {_doc_option_label(d): d["id"] for d in sampled}
     selected_label = st.selectbox("문서 선택", list(options.keys()), key="ragas_write_doc_select")
     st.session_state.ragas_selected_doc_id = options[selected_label]
     selected_doc = next(d for d in sampled if d["id"] == st.session_state.ragas_selected_doc_id)
@@ -248,6 +309,8 @@ def _render_write_tab() -> None:
                     f"package: {selected_doc['package_name']}"
                     + (f" / action: {selected_doc['action_name']}" if selected_doc.get("action_name") else "")
                 )
+            if selected_doc.get("schema_source"):
+                st.caption(f"schema_source: {selected_doc['schema_source']}")
             tab_raw, tab_prompt = st.tabs(["원문만", "ChatGPT용 프롬프트"])
             with tab_raw:
                 st.code(selected_doc.get("content", ""), language=None, wrap_lines=True, height=520)
@@ -335,6 +398,15 @@ def _fill_case_form_from_chatgpt_json(
     question_type = parsed_data.get("question_type")
     if question_type in _QUESTION_TYPES:
         st.session_state[f"ragas_question_type_{source_document_id}"] = question_type
+    else:
+        # 이전 문서에서 고른 유형이 새 JSON을 불러온 뒤에도 그대로 남으면 안 된다 —
+        # 유형이 없거나 허용 목록 밖 값이면 반드시 미선택으로 되돌린다.
+        st.session_state[f"ragas_question_type_{source_document_id}"] = "선택하세요"
+        if question_type is not None:
+            _queue_flash_message(
+                "write", "warning",
+                f"JSON의 문항 유형 값이 올바르지 않아 초기화했습니다: {question_type!r}",
+            )
 
     previous_snippet_count = st.session_state.get(snippet_count_key, 1)
     for snippet_index in range(previous_snippet_count):
@@ -358,15 +430,6 @@ def _load_chatgpt_json_into_form(source_document: dict, snippet_count_key: str, 
         return
     _fill_case_form_from_chatgpt_json(source_document["id"], snippet_count_key, parsed_data)
     st.rerun()
-
-
-def _save_chatgpt_json_directly(source_document: dict, snippet_count_key: str, json_text: str) -> None:
-    """JSON 옆 '저장' 버튼 동작: 불러오기를 누르지 않아도 바로 저장한다."""
-    parsed_data = _parse_chatgpt_response_json(source_document, json_text)
-    if parsed_data is None:
-        return
-    _fill_case_form_from_chatgpt_json(source_document["id"], snippet_count_key, parsed_data)
-    _save_current_case_form(source_document, snippet_count_key)
 
 
 def _log_validation_attempt(
@@ -457,18 +520,22 @@ def _save_current_case_form(source_document: dict, snippet_count_key: str) -> No
     normalized_new = _normalize_question(question)
     if any(_normalize_question(c["question"]) == normalized_new for c in existing_cases):
         st.error("동일한 질문이 이미 골드셋에 있습니다.")
-        _log_validation_attempt(source_document, question, "success", None, inline=True)
+        _log_validation_attempt(source_document, question, "failure", "동일 질문 중복", inline=True)
         return
 
-    same_doc_questions = [
-        c["question"] for c in existing_cases
-        if source_document_id in c.get("reference_doc_ids", [])
-        or any(
-            context.get("source_document_id") == source_document_id
-            for context in c.get("reference_contexts", [])
+    # 유사 질문은 하드 차단하지 않는다(문자열 유사도일 뿐 의미 중복 판정이 아니라서) —
+    # 대신 저장 "전"에 경고하고, 폼 아래 확인 체크박스(_render_case_form)를 체크해야만
+    # 통과시킨다. 예전엔 저장을 먼저 끝내고 나서야 경고가 떴는데, 그건 차단이 아니라
+    # 사후 통지라 의미가 없었다.
+    similar_ack_key = f"ragas_similar_ack_{source_document_id}"
+    similar = _find_similar_question(source_document_id, question, existing_cases)
+    if similar is not None and not st.session_state.get(similar_ack_key, False):
+        similar_q, ratio = similar
+        st.error(
+            f"비슷한 질문이 이미 있습니다(유사도 {ratio:.0%}): {similar_q[:60]} "
+            "— 확인 체크박스를 선택한 뒤 다시 저장하세요."
         )
-    ]
-    similar = _most_similar(question, same_doc_questions)
+        return
 
     reject_reason = st.session_state.get(f"ragas_save_reject_reason_{source_document_id}", "없음")
 
@@ -489,7 +556,6 @@ def _save_current_case_form(source_document: dict, snippet_count_key: str) -> No
         payload["review_note"] = reject_reason
     case_saved, error_message = _post_json("/eval/ragas/cases", payload)
     if case_saved:
-        st.session_state.pop("/eval/ragas/cases", None)
         # 저장 성공 후 폼을 비운다 — 안 비우면 이미 저장된 내용이 계속 남아있어서
         # 다음 케이스를 쓰다가 실수로 중복 저장하기 쉽다.
         st.session_state.pop(f"ragas_question_{source_document_id}", None)
@@ -497,25 +563,18 @@ def _save_current_case_form(source_document: dict, snippet_count_key: str) -> No
         st.session_state.pop(f"ragas_question_type_{source_document_id}", None)
         st.session_state.pop(f"ragas_save_status_{source_document_id}", None)
         st.session_state.pop(f"ragas_save_reject_reason_{source_document_id}", None)
+        st.session_state.pop(similar_ack_key, None)
         for snippet_index in range(snippet_count):
             st.session_state.pop(f"ragas_snippet_{source_document_id}_{snippet_index}", None)
         st.session_state[snippet_count_key] = 1
         _queue_flash_message("write", "success", f"{case_id}를 저장했습니다. 상태: {save_status}")
-        if similar is not None:
-            similar_q, ratio = similar
-            _queue_flash_message(
-                "write",
-                "warning",
-                f"비슷한 질문이 이미 있습니다. 유사도 {ratio:.0%}: {similar_q[:40]}",
-            )
         _log_validation_attempt(source_document, question, "success", None)
         st.rerun()
     else:
         st.error(f"저장 실패: {error_message}")
-        if similar is not None:
-            similar_q, ratio = similar
-            st.warning(f"비슷한 질문이 이미 있습니다. 유사도 {ratio:.0%}: {similar_q[:40]}")
-        _log_validation_attempt(source_document, question, "success", None, inline=True)
+        _log_validation_attempt(
+            source_document, question, "failure", f"케이스 저장 API 실패: {error_message}", inline=True,
+        )
 
 
 def _render_case_form(source_document: dict, existing_cases: list[dict]) -> None:
@@ -531,20 +590,24 @@ def _render_case_form(source_document: dict, existing_cases: list[dict]) -> None
             key=f"ragas_json_paste_{source_document_id}",
             label_visibility="collapsed",
         )
-        load_button_column, quick_save_button_column = st.columns([3, 1])
-        if load_button_column.button("불러오기", key=f"ragas_json_load_{source_document_id}", width="stretch"):
+        if st.button("불러오기", key=f"ragas_json_load_{source_document_id}", width="stretch"):
             _load_chatgpt_json_into_form(source_document, snippet_count_key, json_paste)
-        if quick_save_button_column.button(
-            "저장",
-            key=f"ragas_quick_save_{source_document_id}",
-            type="primary",
-            width="stretch",
-        ):
-            _save_chatgpt_json_directly(source_document, snippet_count_key, json_paste)
 
-    # 저장 함수는 JSON 빠른 저장 버튼과 일반 저장 버튼이 같이 쓰므로 session_state에서 값을 읽는다.
+    # 저장 함수(_save_current_case_form)는 이 위젯들의 key로 session_state에서 값을 읽는다.
     st.text_area("질문", height=80, key=f"ragas_question_{source_document_id}")
     st.text_area("정답", height=100, key=f"ragas_ground_truth_{source_document_id}")
+
+    # 유사 질문 경고는 저장을 누르기 전에 실시간으로 보여준다 — 저장 시점 차단
+    # (_save_current_case_form)과 판정 기준(_find_similar_question)을 공유한다.
+    similar_ack_key = f"ragas_similar_ack_{source_document_id}"
+    current_question = st.session_state.get(f"ragas_question_{source_document_id}", "")
+    similar = _find_similar_question(source_document_id, current_question, existing_cases)
+    if similar is not None:
+        similar_q, ratio = similar
+        st.warning(f"비슷한 질문이 이미 있습니다(유사도 {ratio:.0%}): {similar_q[:60]}")
+        st.checkbox("유사 질문을 확인했으며 그래도 저장합니다", key=similar_ack_key)
+    else:
+        st.session_state.pop(similar_ack_key, None)
 
     st.caption(_build_question_type_status(existing_cases))
     st.selectbox(
@@ -603,17 +666,64 @@ def _render_list_tab() -> None:
         st.warning(f"불러오지 못했습니다: {err}")
         return
 
-    col_filter, col_count = st.columns([1, 3])
-    with col_filter:
+    # schema_source(jar/llm_agent) 필터는 문서 유형이 action_schema/package_overview일
+    # 때만 의미가 있다 — 작성 탭과 동일한 조건부 노출 방식(직전 렌더의 session_state로 판단).
+    current_type_filter = st.session_state.get("ragas_review_type_filter", _SOURCE_TYPES[0])
+    show_schema_filter = current_type_filter in ("action_schema", "package_overview")
+
+    if show_schema_filter:
+        col_status, col_type, col_schema, col_search = st.columns([1, 1, 1, 2])
+    else:
+        col_status, col_type, col_search = st.columns([1, 1, 2])
+        col_schema = None
+
+    with col_status:
         status_filter = st.selectbox(
             "상태", ["전체"] + [_STATUS_LABELS[s] for s in _STATUS_OPTIONS], key="ragas_review_status_filter",
         )
-    filtered = cases if status_filter == "전체" else [
-        c for c in cases if _STATUS_LABELS.get(c.get("status", "draft")) == status_filter
-    ]
-    with col_count:
-        st.markdown("<div style='height: 2.1rem'></div>", unsafe_allow_html=True)
-        st.caption(f"전체 {len(cases)}건 · 표시 {len(filtered)}건")
+    with col_type:
+        type_filter = st.selectbox("문서 유형", _SOURCE_TYPES, key="ragas_review_type_filter")
+    schema_filter = None
+    if col_schema is not None:
+        with col_schema:
+            schema_filter_label = st.selectbox(
+                "출처(jar/llm_agent)", ["(전체)", "jar", "llm_agent"], key="ragas_review_schema_filter",
+            )
+            schema_filter = None if schema_filter_label == "(전체)" else schema_filter_label
+    with col_search:
+        search_query = st.text_input(
+            "질문 검색", key="ragas_review_search", placeholder="질문에 포함된 단어로 검색",
+        )
+
+    col_experiment, col_sort, _ = st.columns([1, 1, 2])
+    with col_experiment:
+        experiment_filter = st.selectbox(
+            "실험 사용 여부", ["전체", "사용됨", "미사용(신규 후보)"], key="ragas_review_experiment_filter",
+            help="chunk_size 실험(eval_runs.jsonl)에 실제로 쓰인 적이 있는 케이스인지 — "
+            "새로 추가만 하고 아직 실험을 안 돌린 후보를 구분하기 위함.",
+        )
+    with col_sort:
+        sort_label = st.selectbox("정렬", list(_CASE_SORT_OPTIONS.keys()), key="ragas_review_sort")
+
+    filtered = cases
+    if status_filter != "전체":
+        filtered = [c for c in filtered if _STATUS_LABELS.get(c.get("status", "draft")) == status_filter]
+    if type_filter != "(전체)":
+        filtered = [c for c in filtered if c.get("source_type") == type_filter]
+    if schema_filter:
+        filtered = [c for c in filtered if c.get("schema_source") == schema_filter]
+    if search_query.strip():
+        q = search_query.strip().lower()
+        filtered = [c for c in filtered if q in c["question"].lower()]
+    if experiment_filter == "사용됨":
+        filtered = [c for c in filtered if c.get("used_in_experiment")]
+    elif experiment_filter == "미사용(신규 후보)":
+        filtered = [c for c in filtered if not c.get("used_in_experiment")]
+
+    sort_field, sort_desc = _CASE_SORT_OPTIONS[sort_label]
+    filtered = sorted(filtered, key=lambda c: c.get(sort_field) or "", reverse=sort_desc)
+
+    st.caption(f"전체 {len(cases)}건 · 표시 {len(filtered)}건")
 
     if not filtered:
         return
@@ -622,8 +732,13 @@ def _render_list_tab() -> None:
         {
             "케이스 ID": c["case_id"],
             "상태": _STATUS_LABELS.get(c.get("status", "draft"), c.get("status", "draft")),
+            "문서 유형": c.get("source_type") or "-",
+            "출처": c.get("schema_source") or "-",
+            "실험 사용": "사용됨" if c.get("used_in_experiment") else "신규 후보",
             "질문": c["question"],
             "정답 근거": f"{len(c.get('reference_contexts', []))}개",
+            "등록시간": _format_timestamp(c.get("created_at")),
+            "수정시간": _format_timestamp(c.get("updated_at")),
         }
         for c in filtered
     ]
@@ -697,7 +812,11 @@ def _render_list_tab() -> None:
         action_succeeded, error_message = _patch_json(f"/eval/ragas/cases/{target_id}", patch)
         _handle_review_action(action_succeeded, error_message, f"{target_id}를 반려했습니다.")
 
-    with delete_button_column.popover("삭제", width="stretch"):
+    case_used_in_experiment = target.get("used_in_experiment", False)
+    with delete_button_column.popover(
+        "삭제", width="stretch", disabled=case_used_in_experiment,
+        help="실험에 사용된 케이스는 결과 재현성을 위해 삭제할 수 없습니다." if case_used_in_experiment else None,
+    ):
         st.write("이 평가 케이스를 삭제하시겠습니까?")
         st.caption("삭제한 데이터는 복구할 수 없습니다.")
         if st.button("삭제 확정", key=f"ragas_delete_confirm_{target_id}", type="primary"):
@@ -710,7 +829,6 @@ def _handle_review_action(action_succeeded: bool, error_message: str, success_me
     rerun에 지워져서(작성 탭과 같은 이유) flash 메시지로 예약해야 다음 화면에서 보인다.
     실패는 rerun이 없으니 바로 그린다."""
     if action_succeeded:
-        st.session_state.pop("/eval/ragas/cases", None)
         _queue_flash_message("list", "success", success_message)
         st.rerun()
     else:
