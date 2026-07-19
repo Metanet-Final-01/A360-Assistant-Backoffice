@@ -13,6 +13,11 @@ import os
 import sys
 
 os.environ["RAG_DATABASE_URL"] = ""  # config의 `if url:` 폴백 유도 (dotenv는 override 안 함)
+# OpenSearch도 .env는 Bonsai(팀 공유)를 보므로 로컬로 강제 — run_local.py와 동일한 차단
+# (--skip-opensearch를 빠뜨려도 공유 인덱스에 쓰지 않게)
+os.environ["OPENSEARCH_HOST"] = "http://127.0.0.1:9200"
+os.environ["OPENSEARCH_USERNAME"] = ""
+os.environ["OPENSEARCH_PASSWORD"] = ""
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 

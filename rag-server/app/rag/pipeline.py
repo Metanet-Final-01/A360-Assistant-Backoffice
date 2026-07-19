@@ -498,7 +498,8 @@ def cmd_ingest(args: argparse.Namespace) -> None:
     # 항상 출력하고, 원격 DSN에 대한 --clean은 명시 환경변수 없이는 거부한다.
     dsn = config.database_dsn()
     is_remote = "127.0.0.1" not in dsn and "localhost" not in dsn and "host=db" not in dsn
-    target = re.sub(r":[^:@/]+@", ":***@", dsn)  # 비밀번호 마스킹
+    target = re.sub(r":[^:@/]+@", ":***@", dsn)  # URL 포맷(user:pass@host) 마스킹
+    target = re.sub(r"password=\S+", "password=***", target)  # key=value 폴백 포맷 마스킹
     print(f"[ingest] 접속 대상: {target}  ({'원격/공유' if is_remote else '로컬'})")
     if args.clean and is_remote and os.getenv("RAG_ALLOW_REMOTE_CLEAN") != "1":
         sys.exit(

@@ -103,13 +103,21 @@ def _load_bodies(dump: Path, locale: str) -> dict[str, dict]:
 
 
 def _parse_roster_tables(html: str) -> dict[str, dict]:
-    """로스터 페이지의 Name/macOS/Windows 테이블 → {norm_key: {name, macos, windows}}."""
+    """로스터 페이지의 **플랫폼 매트릭스** 테이블 → {norm_key: {name, macos, windows}}.
+
+    주의(실측 2026-07-19): 이 페이지에는 첫 열이 Name인 테이블이 둘 있다 —
+    ① 플랫폼 호환성 매트릭스(Name/macOS/Windows), ② 최근 업데이트 목록(Name/Updated in
+    v.xx/Version/…). 첫 th만 보고 잡으면 ②를 집어 "Updated 여부"가 macos로 오염된다
+    (CodeRabbit 리뷰 계기로 발견). 헤더에 macOS·Windows 열이 실제로 있는 테이블만 파싱한다.
+    """
     out: dict[str, dict] = {}
     soup = BeautifulSoup(html or "", "html.parser")
     for tbl in soup.find_all("table"):
-        ths = [th.get_text(" ", strip=True).lower() for th in tbl.find_all("th")[:3]]
+        ths = [th.get_text(" ", strip=True).lower() for th in tbl.find_all("th")[:4]]
         if not ths or "name" not in ths[0]:
             continue
+        if len(ths) < 3 or "macos" not in ths[1] or "windows" not in ths[2]:
+            continue  # 플랫폼 매트릭스가 아닌 Name 테이블(업데이트 목록 등)은 건너뜀
         for tr in tbl.find_all("tr"):
             cells = tr.find_all("td")
             if not cells:
@@ -118,10 +126,15 @@ def _parse_roster_tables(html: str) -> dict[str, dict]:
             if not name:
                 continue
             plat = [c.get_text(" ", strip=True) for c in cells[1:3]]
+
+            def _supported(cell: str) -> bool:
+                return bool(cell and cell not in ("-", "No"))
+
             out[norm_key(name)] = {
                 "name": name,
-                "macos": bool(plat and plat[0] and plat[0] not in ("-", "No")),
-                "windows": True,
+                "macos": _supported(plat[0]) if len(plat) > 0 else False,
+                # Windows 열도 동일 규칙으로 파싱 — Apple 계열처럼 Windows 미지원 패키지가 있다
+                "windows": _supported(plat[1]) if len(plat) > 1 else True,
             }
     return out
 
@@ -184,12 +197,25 @@ def build_registry(dump_dir: str | Path) -> dict:
         entry["release_page"] = child.get("contentId")
 
     # ② 로스터 페이지 테이블 (플랫폼)
+    #
+    # 문서 특정 주의(실측 2026-07-19): 덤프에는 "Packages available in v.40/39/38/37"
+    # (버전별 업데이트 표)도 함께 있어, 부분 일치 next()로 고르면 엉뚱한 문서를 집는다.
+    # 플랫폼 매트릭스는 "Packages available in Automation 360" 본체에만 있다.
     roster_doc = next(
-        (d for d in bodies_en.values() if "Packages available" in d.get("title", "")), None
+        (
+            d for d in bodies_en.values()
+            if "packages available in automation 360" in d.get("title", "").lower()
+        ),
+        None,
     )
     if roster_doc:
-        for key, row in _parse_roster_tables(roster_doc.get("html") or "").items():
-            entry = ensure(row["name"], "roster_page")
+        for row in _parse_roster_tables(roster_doc.get("html") or "").values():
+            # 매트릭스 Name 셀은 링크 제목이라 "Apple Mail package"/"~ package updates"
+            # 접미어가 붙어 온다 — 정규화 없이 등기하면 중복 항목이 생긴다(실측 251개 폭증).
+            name = canonical_name(row["name"])
+            if not name:
+                continue
+            entry = ensure(name, "roster_page")
             entry["platform"] = {"macos": row["macos"], "windows": row["windows"]}
 
     # ③ 본문 트리 서브트리 발견 (Release Notes 브랜치 제외, 얕은 매치 우선)
