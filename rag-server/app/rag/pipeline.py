@@ -459,19 +459,26 @@ def cmd_ingest(args: argparse.Namespace) -> None:
             skipped = len(documents) - len(to_embed)
             if skipped:
                 print(f"내용이 안 바뀐 문서 {skipped}개는 재임베딩만 건너뜁니다 (전체 {len(documents)}개 중).")
+    finally:
+        conn.close()
 
-        embeddings = None
-        if to_embed and not args.skip_embedding:
-            from .retrieval.embed import embed_texts
+    embeddings = None
+    if to_embed and not args.skip_embedding:
+        from .retrieval.embed import embed_texts
 
-            print(f"임베딩 생성 중 ({config.EMBEDDING_PROVIDER}/{config.EMBEDDING_MODEL}, {len(to_embed)}개)...")
-            new_embeddings = embed_texts(
-                [d["content"] for d in to_embed],
-                on_progress=lambda done, total: print(f"  {done}/{total}"),
-            )
-            embeddings_by_id = {doc["id"]: emb for doc, emb in zip(to_embed, new_embeddings)}
-            embeddings = [embeddings_by_id.get(doc["id"]) for doc in documents]
+        print(f"임베딩 생성 중 ({config.EMBEDDING_PROVIDER}/{config.EMBEDDING_MODEL}, {len(to_embed)}개)...")
+        new_embeddings = embed_texts(
+            [d["content"] for d in to_embed],
+            on_progress=lambda done, total: print(f"  {done}/{total}"),
+        )
+        embeddings_by_id = {doc["id"]: emb for doc, emb in zip(to_embed, new_embeddings)}
+        embeddings = [embeddings_by_id.get(doc["id"]) for doc in documents]
 
+    # 임베딩 생성(수 분 소요 가능) 동안 커넥션을 열어두면 Neon pooler가 유휴 SSL 연결을
+    # 끊어(SSLError: connection has been closed unexpectedly) upsert 시점에 죽는다 —
+    # 임베딩이 끝난 뒤 새 커넥션으로 붙는다.
+    conn = db.connect()
+    try:
         count = db.upsert_documents(conn, documents, embeddings) if documents else 0
         print(f"pgvector 적재 완료: {count}개")
     finally:
