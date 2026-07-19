@@ -12,6 +12,7 @@ from views import (
     log_eda,
     monitoring_logs,
     rag_ingest,
+    ragas_datasets,
     runtime_settings,
     trace,
 )
@@ -26,6 +27,7 @@ pages = [
     st.Page(rag_ingest.render, title="RAG 데이터 적재", url_path="rag-ingest", icon=":material/database:"),
     st.Page(evaluation.render, title="평가", url_path="evaluation", icon=":material/assessment:"),
     st.Page(datasets.render, title="데이터셋 관리", url_path="datasets", icon=":material/folder_managed:"),
+    st.Page(ragas_datasets.render, title="RAGAS 데이터셋", url_path="ragas-datasets", icon=":material/description:"),
     st.Page(monitoring_logs.render, title="모니터링 로그", url_path="monitoring-logs", icon=":material/monitoring:"),
     st.Page(assurance_records.render, title="AI 출력 검증 기록", url_path="assurance-records", icon=":material/verified_user:"),
     st.Page(trace.render, title="사건 추적", url_path="trace", icon=":material/search:"),

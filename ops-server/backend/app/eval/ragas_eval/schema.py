@@ -6,19 +6,46 @@
 ground_truth, workflow 아님).
 """
 
+from typing import Literal
+
 from pydantic import BaseModel, Field
+
+
+class ReferenceContext(BaseModel):
+    """정답의 근거가 되는 원문 발췌 — chunk_size 후보마다 청크 경계/id가 달라지므로,
+    id가 아니라 원문 그대로의 텍스트로 저장해야 어느 후보 테이블에서든(부분 문자열
+    매칭으로) 재사용할 수 있다. source_document_id는 scripts/ragas_eval/datasets/
+    build_source_documents.py가 채운 로컬 source_documents.id를 가리킨다."""
+
+    source_document_id: str = Field(min_length=1)
+    snippet: str = Field(min_length=1, description="원문에서 그대로 발췌 — 지어내면 안 됨")
 
 
 class RagasCase(BaseModel):
     """RAG 검색 품질 평가 케이스 1건. ground_truth는 사람이 검증한 정답 요약이고,
     reference_doc_ids는 "이상적으로는 이 문서(들)가 검색돼야 한다"는 참고용 기록—
     RAGAS 지표 계산에는 안 쓰이고(LLM judge가 관련성을 직접 판단), 사람이 결과를
-    검토할 때 참고하는 용도."""
+    검토할 때 참고하는 용도. reference_contexts는 chunk_size 후보 비교(runner.py가
+    아니라 scripts/ragas_eval 쪽 grid search)에서 쓰는 원문 발췌."""
 
     case_id: str = Field(min_length=1)
     question: str = Field(min_length=1)
     ground_truth: str = Field(min_length=1, description="사람이 검증한 정답 요약")
     reference_doc_ids: list[str] = Field(default_factory=list, description="참고용 — 채점에 안 쓰임")
+    reference_contexts: list[ReferenceContext] = Field(
+        default_factory=list, description="chunk_size 후보 비교용 원문 발췌(여러 개 가능)"
+    )
+    status: Literal["draft", "approved", "rejected"] = Field(
+        default="draft", description="draft=검수 전, approved=평가에 사용, rejected=제외"
+    )
+    review_note: str | None = Field(default=None, description="검수 메모(반려 사유 등)")
+    question_type: Literal["단순 조회", "조건 조회", "절차 설명", "비교·판단"] | None = Field(
+        default=None,
+        description=(
+            "질문 유형별 채점 분석용. retrieval_scope(단일/복수 근거)는 reference_contexts "
+            "개수로 계산 가능해 별도 필드로 안 둠 — difficulty도 기준이 모호해서 의도적으로 제외."
+        ),
+    )
 
 
 class RagasCaseResult(BaseModel):
