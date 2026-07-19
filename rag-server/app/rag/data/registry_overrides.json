@@ -1,0 +1,39 @@
+{
+  "_comment": "등기부 수동 보정 — 2026-07-18 khub 전수 실측(회의록/2026-07-18-khub-실측-저장전략.md F1)에서 확인된 예외를 명시 등록한다. 휴리스틱 확장 대신 여기에 적는 것이 원칙.",
+
+  "exclude_titles": [
+    "Periodic package updates - summary list",
+    "Periodic package updates - FAQ",
+    "Package update history",
+    "Advanced search option in Bot editor",
+    "Search and replace option in Bot editor"
+  ],
+
+  "rollup_titles": [
+    "Google packages"
+  ],
+
+  "canonical_aliases": {
+    "Conditional": "Process Conditional",
+    "Excel basic": "Excel basic",
+    "Message box": "Message Box"
+  },
+
+  "trigger_usage": {
+    "Email trigger": ["Creating an email trigger"],
+    "File Folder trigger": ["Creating a file and folder trigger"],
+    "Hotkey trigger": ["Creating a hot key trigger"],
+    "Service trigger": ["Creating a service trigger"],
+    "Microsoft 365 Outlook trigger": ["Creating a Microsoft 365 Outlook trigger"],
+    "Window trigger": ["Window trigger", "Using Window trigger - Application option", "Using Window trigger - Browser option"],
+    "Universal web trigger": ["Universal web trigger"]
+  },
+
+  "non_action_leaf_markers": [
+    "support matrix",
+    "supported controls",
+    "Example for",
+    "Examples of",
+    "Configuring SharePoint app"
+  ]
+}
