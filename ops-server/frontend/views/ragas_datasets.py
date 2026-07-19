@@ -220,7 +220,12 @@ def _render_write_tab() -> None:
     selected_label = st.selectbox("문서 선택", list(options.keys()), key="ragas_write_doc_select")
     st.session_state.ragas_selected_doc_id = options[selected_label]
     selected_doc = next(d for d in sampled if d["id"] == st.session_state.ragas_selected_doc_id)
-    existing_cases, _ = _get("/eval/ragas/cases")
+    existing_cases, cases_error = _get("/eval/ragas/cases")
+    if cases_error:
+        # 조회 실패를 조용히 빈 목록으로 넘기면 문항유형 안내가 틀리게 보일 뿐 아니라,
+        # 저장 시점 중복검사(다른 함수)도 같은 API를 쓰므로 여기서부터 사용자가 문제를
+        # 알아야 한다(CodeRabbit #42 지적).
+        st.warning(f"기존 케이스 목록을 불러오지 못했습니다 — 문항유형 안내가 부정확할 수 있습니다: {cases_error}")
     existing_cases = existing_cases or []
     question_type_status = _build_question_type_status(existing_cases)
 
@@ -288,6 +293,33 @@ def _parse_chatgpt_response_json(source_document: dict, json_text: str) -> dict 
     if not isinstance(parsed_data, dict):
         st.error("JSON 최상위 값은 객체({ ... })여야 합니다.")
         return None
+
+    # 최상위가 객체인 것만으론 부족하다 — question이 null이거나 reference_contexts의
+    # text가 문자열이 아니면 폼에 채운 뒤 .strip() 호출에서 화면이 죽는다(CodeRabbit
+    # #42 지적). 폼에 채우기 전에 필드 타입을 검증한다.
+    for field_name in ("question", "ground_truth"):
+        value = parsed_data.get(field_name)
+        if value is not None and not isinstance(value, str):
+            st.error(f"JSON의 '{field_name}' 값은 문자열이어야 합니다(받은 값: {type(value).__name__}).")
+            return None
+
+    raw_snippets = parsed_data.get("reference_contexts")
+    if raw_snippets is not None:
+        if not isinstance(raw_snippets, list):
+            st.error("JSON의 'reference_contexts' 값은 배열이어야 합니다.")
+            return None
+        for snippet in raw_snippets:
+            if not isinstance(snippet, dict):
+                st.error("'reference_contexts'의 각 항목은 객체({ \"text\": ... })여야 합니다.")
+                return None
+            text_value = snippet.get("text")
+            if text_value is not None and not isinstance(text_value, str):
+                st.error(
+                    f"'reference_contexts'의 'text' 값은 문자열이어야 합니다"
+                    f"(받은 값: {type(text_value).__name__})."
+                )
+                return None
+
     return parsed_data
 
 
@@ -391,7 +423,15 @@ def _save_current_case_form(source_document: dict, snippet_count_key: str) -> No
         st.error("문항 유형을 선택해야 합니다.")
         return
 
+    save_status = st.session_state.get(f"ragas_save_status_{source_document_id}", "승인")
     reference_snippets = [snippet.strip() for snippet in snippet_inputs if snippet.strip()]
+    if save_status == "승인" and not reference_snippets:
+        # 승인 상태인데 근거가 하나도 없으면 "원문 검증을 통과한 문항"이라는 승인의
+        # 의미 자체가 깨진다(CodeRabbit #42 지적) — 반려는 근거 없이도 저장 가능(편집상
+        # 문제로 반려하는 경우엔 근거를 아예 안 적었을 수 있어서).
+        st.error("승인 상태로 저장하려면 정답 근거를 최소 1개 입력해야 합니다.")
+        return
+
     source_content = source_document.get("content", "")
     for snippet_text in reference_snippets:
         if not _content_contains(source_content, snippet_text):
@@ -406,7 +446,12 @@ def _save_current_case_form(source_document: dict, snippet_count_key: str) -> No
             _log_validation_attempt(source_document, question, "failure", "\n".join(missing_lines), inline=True)
             return
 
-    existing_cases, _ = _get("/eval/ragas/cases")
+    existing_cases, cases_error = _get("/eval/ragas/cases")
+    if cases_error:
+        # 조용히 빈 목록으로 넘기면 안 된다 — 중복 질문 검사가 우회돼서 같은 질문이
+        # 두 번 저장될 수 있다(CodeRabbit #42 지적). 저장 자체를 막는다.
+        st.error(f"기존 케이스 목록을 불러오지 못해 중복 검사를 할 수 없습니다 — 저장을 중단합니다: {cases_error}")
+        return
     existing_cases = existing_cases or []
 
     normalized_new = _normalize_question(question)
@@ -425,7 +470,6 @@ def _save_current_case_form(source_document: dict, snippet_count_key: str) -> No
     ]
     similar = _most_similar(question, same_doc_questions)
 
-    save_status = st.session_state.get(f"ragas_save_status_{source_document_id}", "승인")
     reject_reason = st.session_state.get(f"ragas_save_reject_reason_{source_document_id}", "없음")
 
     case_id = f"rag_{source_document_id[:8]}_{uuid4().hex[:6]}"
@@ -640,9 +684,12 @@ def _render_list_tab() -> None:
     # 저장 시점에 이미 approved라 승인 버튼은 주 동작이 아니다 — 반려를 되돌릴 때만 쓴다.
     approve_button_column, reject_button_column, _, delete_button_column = st.columns([1, 1, 2, 1])
     if approve_button_column.button("승인", key=f"ragas_approve_{target_id}", width="stretch"):
+        # review_note를 명시적으로 비운다 — 안 비우면 update_case의 부분병합(merge) 특성상
+        # 예전 반려 사유가 그대로 남아, 승인된 케이스인데 반려 사유가 계속 보인다
+        # (CodeRabbit #42 지적).
         action_succeeded, error_message = _patch_json(
             f"/eval/ragas/cases/{target_id}",
-            {"status": "approved"},
+            {"status": "approved", "review_note": None},
         )
         _handle_review_action(action_succeeded, error_message, f"{target_id}를 승인했습니다.")
     if reject_button_column.button("반려", key=f"ragas_reject_{target_id}", type="primary", width="stretch"):

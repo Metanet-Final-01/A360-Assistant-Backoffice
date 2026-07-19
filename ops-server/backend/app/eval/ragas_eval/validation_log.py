@@ -1,25 +1,21 @@
 """RAGAS 골드셋 작성 화면의 근거(reference_contexts) 검증 시도를 관측 DB에 기록한다.
 
-테이블(ragas_validation_attempts)은 A360-Assistant-Backend의 app/models.py가 소유·생성한다
-(다른 관측 테이블과 동일한 관례) — 여기서는 rag-server의 llm.py::record_usage와 같은 방식으로
-psycopg 원시 INSERT만 한다. 기록 실패가 골드셋 저장 자체를 막으면 안 되므로 예외는 삼킨다.
+관측 DB 쓰기는 rag-server 적재 파이프라인에만 허용한다는 정책에 따라, 여기서는
+관측 DB에 직접 연결하지 않는다 — rag-server의 POST /observability/ragas-validation-
+attempts를 호출해서 기록을 위임한다(CodeRabbit #42 지적 반영, 이전엔 psycopg로
+직접 INSERT했음). rag-server가 안 떠 있거나 기록에 실패해도 골드셋 저장 자체를
+막으면 안 되므로 예외는 삼킨다.
 """
 
 import logging
 import os
 
+import requests
+
 logger = logging.getLogger(__name__)
 
-
-def _observability_dsn() -> str | None:
-    url = os.getenv("OBSERVABILITY_DATABASE_URL", "").strip()
-    if not url:
-        return None
-    return (
-        url.replace("postgresql+psycopg://", "postgresql://")
-        .replace("postgresql+psycopg2://", "postgresql://")
-        .replace("postgresql+asyncpg://", "postgresql://")
-    )
+_RAG_SERVER_URL = os.getenv("RAG_SERVER_URL", "http://127.0.0.1:8200").rstrip("/")
+_TIMEOUT_SECONDS = 5
 
 
 def record_attempt(
@@ -30,22 +26,18 @@ def record_attempt(
     outcome: str,
     failed_snippets: str | None = None,
 ) -> None:
-    dsn = _observability_dsn()
-    if not dsn:
-        return
     try:
-        import psycopg
-
-        with psycopg.connect(dsn, connect_timeout=5) as conn:
-            with conn.cursor() as cur:
-                cur.execute(
-                    """
-                    INSERT INTO ragas_validation_attempts
-                        (doc_id, doc_title, question, outcome, failed_snippets)
-                    VALUES (%s, %s, %s, %s, %s)
-                    """,
-                    (doc_id, doc_title, question, outcome, failed_snippets),
-                )
-            conn.commit()
-    except Exception as e:  # noqa: BLE001 — 기록 실패가 저장을 막으면 안 된다
+        response = requests.post(
+            f"{_RAG_SERVER_URL}/observability/ragas-validation-attempts",
+            json={
+                "doc_id": doc_id,
+                "doc_title": doc_title,
+                "question": question,
+                "outcome": outcome,
+                "failed_snippets": failed_snippets,
+            },
+            timeout=_TIMEOUT_SECONDS,
+        )
+        response.raise_for_status()
+    except requests.RequestException as e:  # noqa: BLE001 — 기록 실패가 저장을 막으면 안 된다
         logger.warning("RAGAS 검증 시도 기록 실패 (저장은 정상 진행): %s", e)

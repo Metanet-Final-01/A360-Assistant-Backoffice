@@ -19,7 +19,11 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
 
-_RAG_SERVER_ROOT = Path(__file__).resolve().parents[3] / "rag-server"
+_SCRIPT_DIR = Path(__file__).resolve().parent
+_RAG_SERVER_ROOT = _SCRIPT_DIR.parents[2] / "rag-server"
+# local_dsn.py는 이 스크립트와 같은 디렉터리에 있다 — os.chdir로 CWD를 바꾸기
+# 전에 절대경로로 넣어야 어디서 실행하든(-m 실행 포함) 찾는다.
+sys.path.insert(0, str(_SCRIPT_DIR))
 sys.path.insert(0, str(_RAG_SERVER_ROOT))
 os.chdir(_RAG_SERVER_ROOT)
 
@@ -30,15 +34,7 @@ from app.rag import config  # noqa: E402
 from app.rag.build.merge import build_rag_documents, load_docs  # noqa: E402
 from app.rag.pipeline import _load_source_inputs  # noqa: E402
 
-
-def local_dsn() -> str:
-    """로컬 전용 DSN. RAG_DATABASE_URL(원격 Neon)은 의도적으로 안 본다."""
-    host = os.getenv("DATABASE_HOST") or "127.0.0.1"
-    port = os.getenv("DATABASE_PORT") or "5432"
-    name = os.getenv("DATABASE_NAME") or "a360"
-    user = os.getenv("DATABASE_USERNAME") or "a360_admin"
-    password = os.getenv("DATABASE_PASSWORD") or "a360_local_password"
-    return f"host={host} port={port} dbname={name} user={user} password={password}"
+from local_dsn import local_dsn  # noqa: E402
 
 
 _DDL = """
@@ -112,7 +108,11 @@ def build() -> int:
         "VALUES (%(id)s, %(source_type)s, %(title)s, %(content)s, %(package_name)s, %(action_name)s, "
         " %(parent_menu_id)s, %(menu_id)s, %(depth)s, %(path_titles)s, %(url)s) "
         "ON CONFLICT (id) DO UPDATE SET "
-        " content = EXCLUDED.content, title = EXCLUDED.title, path_titles = EXCLUDED.path_titles"
+        " source_type = EXCLUDED.source_type, title = EXCLUDED.title, "
+        " content = EXCLUDED.content, package_name = EXCLUDED.package_name, "
+        " action_name = EXCLUDED.action_name, parent_menu_id = EXCLUDED.parent_menu_id, "
+        " menu_id = EXCLUDED.menu_id, depth = EXCLUDED.depth, "
+        " path_titles = EXCLUDED.path_titles, url = EXCLUDED.url"
     )
 
     with psycopg.connect(dsn) as conn:

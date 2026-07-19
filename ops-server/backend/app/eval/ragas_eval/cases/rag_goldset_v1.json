@@ -5,7 +5,8 @@
     "ground_truth": "Excel 기본 패키지의 '열기'(OpenSpreadsheet) 액션입니다. 필수 파라미터는 파일 경로(filePath)이며, 특정 시트를 열지 여부(isSpecificSheet), 읽기전용/편집 모드(fileAccessMode), 비밀번호 필요 여부(isSecure) 등을 옵션으로 설정할 수 있습니다.",
     "reference_doc_ids": [
       "97b74de0e11a7b70"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "excel_get_single_cell",
@@ -13,7 +14,8 @@
     "ground_truth": "Excel 기본 패키지의 '단일 셀 가져오기'(GetSingleCell) 액션을 사용합니다. 활성 셀 옵션과 세션 이름을 지정하면 셀 내용을 STRING 타입 변수로 반환합니다.",
     "reference_doc_ids": [
       "ce2534865f703e5d"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "excel_save_spreadsheet",
@@ -21,7 +23,8 @@
     "ground_truth": "Excel 기본 패키지의 '통합 문서 저장'(SaveSpreadSheet) 액션입니다. 세션 이름만 지정하면 열었던 위치에 그대로 저장하며, 리턴값은 없습니다.",
     "reference_doc_ids": [
       "6ad51d5c7d44c5a6"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "email_send_mail",
@@ -29,7 +32,8 @@
     "ground_truth": "이메일 패키지의 '보내기'(sendMail) 액션에서 필수 파라미터는 받는사람 주소(toAddress), 제목(subject), 메시지 본문(message)입니다. 참조(cc), 숨은참조(bcc), 첨부파일은 선택 항목입니다.",
     "reference_doc_ids": [
       "ba20a932f13d8897"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "file_copy",
@@ -37,7 +41,8 @@
     "ground_truth": "파일 패키지의 '복사'(copyFiles) 액션입니다. 필수 파라미터는 소스 파일 경로(sourceFilePath), 대상 경로(destinationPath), 기존 파일 덮어쓰기 여부(isOverwrite)입니다.",
     "reference_doc_ids": [
       "234fb25918e9cd74"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "file_delete",
@@ -45,7 +50,8 @@
     "ground_truth": "파일 패키지의 '삭제'(deleteFiles) 액션이며, 필수 파라미터는 삭제할 파일 경로(filePath)입니다. 리턴값은 없습니다.",
     "reference_doc_ids": [
       "38bc6bdc97d23a3f"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "delay_wait",
@@ -53,7 +59,8 @@
     "ground_truth": "지연 패키지의 '지연'(delay) 액션을 사용합니다. 지연 유형(REGULAR/RANDOM)과 시간 단위(MILLISECONDS/SECONDS)를 지정할 수 있고, 리턴값은 없습니다.",
     "reference_doc_ids": [
       "f260dd84b9e57084"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "datetime_add",
@@ -61,7 +68,8 @@
     "ground_truth": "날짜 시간 패키지의 '추가'(add) 액션입니다. 소스 날짜/시간 변수(source), 추가할 시간 값(val), 시간 단위(unit: MILLIS/SECONDS/MINUTES/HOURS/DAYS/WEEKS/MONTHS/YEARS)가 필수 파라미터이며, 결과는 DATETIME 타입으로 반환됩니다.",
     "reference_doc_ids": [
       "533cee55b028eb69"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "dictionary_get",
@@ -69,7 +77,8 @@
     "ground_truth": "사전 패키지의 '가져오기'(get) 액션을 사용합니다. 사전 변수(sourceMap)와 키(key)가 필수 파라미터이며, 해당 키의 값을 ANY 타입으로 반환합니다.",
     "reference_doc_ids": [
       "b9b7bd3e8919c4f2"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "browser_launch_website",
@@ -77,7 +86,8 @@
     "ground_truth": "브라우저 패키지의 '웹사이트 열기(레거시)'(launchWebsite) 액션입니다. 열 URL(url)이 필수 파라미터이고, 사용할 브라우저 종류(DEFAULT/INTERNET_EXPLORER/FIREFOX/CHROME/EDGE)를 선택할 수 있습니다.",
     "reference_doc_ids": [
       "8683971736fd8d99"
-    ]
+    ],
+    "status": "approved"
   },
   {
     "case_id": "rag_fefd084b_d818bf",
@@ -1532,8 +1542,8 @@
         "snippet": "작업은 Gmail 루프 컨텍스트 외부에서 사용됩니다."
       }
     ],
-    "status": "approved",
-    "review_note": null,
+    "status": "rejected",
+    "review_note": "근거가 원문과 불일치 — 근거 스니펫에 \"루프 외부 사용 시 오류\" 내용이 없음(CodeRabbit #42 지적, 원본 문서 재확인 전까지 반려)",
     "question_type": "비교·판단"
   },
   {

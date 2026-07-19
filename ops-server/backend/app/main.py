@@ -11,6 +11,7 @@ import asyncio
 import json
 import os
 import uuid
+from typing import Literal
 
 from fastapi import BackgroundTasks, FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
@@ -46,11 +47,22 @@ from app.observability import backend_client, collector, log_store as obs_log_st
 from app.settings import backend_settings
 
 app = FastAPI(title="A360 Assistant Monitoring Server")
+
+# 임의의 웹 페이지가 PATCH/POST 같은 변경 API를 호출하지 못하도록, 실제 Streamlit
+# 프론트 origin만 허용한다(CodeRabbit #42 지적). 로컬 개발 기본값은 Streamlit
+# 기본 포트(8501) — 배포 환경은 OPS_FRONTEND_ORIGINS(콤마 구분)로 재정의한다.
+_frontend_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "OPS_FRONTEND_ORIGINS", "http://127.0.0.1:8501,http://localhost:8501"
+    ).split(",")
+    if origin.strip()
+]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=_frontend_origins,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allow_headers=["Content-Type", "Authorization"],
 )
 
 
@@ -343,15 +355,27 @@ async def upload_ragas_cases(file: UploadFile = File(...)) -> dict:
     return {"saved": count}
 
 
+class RagasValidationLogRequest(BaseModel):
+    """doc_id는 필수(빈 문자열 거부), outcome은 success/failure만 허용한다 — 예전엔
+    임의 dict를 그대로 받아 빈 doc_id·임의 outcome도 성공 응답과 함께 기록됐음
+    (CodeRabbit #42 지적)."""
+
+    doc_id: str = Field(min_length=1)
+    doc_title: str | None = None
+    question: str | None = None
+    outcome: Literal["success", "failure"] = "failure"
+    failed_snippets: str | None = None
+
+
 @app.post("/eval/ragas/validation-log")
-def post_ragas_validation_log(payload: dict) -> dict:
+def post_ragas_validation_log(req: RagasValidationLogRequest) -> dict:
     """근거 검증 시도 1건 기록(성공/실패 둘 다) — 통계용, 실패해도 골드셋 저장을 막지 않는다."""
     ragas_validation_log.record_attempt(
-        doc_id=payload.get("doc_id", ""),
-        doc_title=payload.get("doc_title"),
-        question=payload.get("question"),
-        outcome=payload.get("outcome", "failure"),
-        failed_snippets=payload.get("failed_snippets"),
+        doc_id=req.doc_id,
+        doc_title=req.doc_title,
+        question=req.question,
+        outcome=req.outcome,
+        failed_snippets=req.failed_snippets,
     )
     return {"ok": True}
 
@@ -369,9 +393,9 @@ def ragas_source_documents_search(q: str = "", source_type: str | None = None) -
 @app.get("/eval/ragas/source-documents/random")
 def ragas_source_documents_random(
     source_type: str | None = None,
-    limit: int = 5,
+    limit: int = Query(default=5, ge=1, le=100),
     exclude_used: bool = True,
-    min_content_length: int = 0,
+    min_content_length: int = Query(default=0, ge=0),
 ) -> list[dict]:
     """골드셋 작성용 랜덤 문서 추출. exclude_used=True면 이미 골드셋에 근거로 쓰인
     문서(reference_doc_ids + reference_contexts의 source_document_id)는 제외한다 —
