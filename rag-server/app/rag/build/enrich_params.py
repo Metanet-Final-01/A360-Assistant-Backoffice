@@ -154,7 +154,13 @@ def _apply(doc: dict, params: list[dict], cut_kind: str) -> None:
     # Delete method)는 '없음'을 주장할 근거 자체가 없다. []로 적재하면 검수 R2가 정당한
     # 파라미터를 전건 위반 처리한다(위험 비대칭: 잘못된 []=오탐, 잘못된 미상=침묵).
     # 캐시의 기존 [] 항목도 이 함수를 다시 지나므로 재호출 없이 소급 정규화된다.
-    doc["metadata"]["schema"] = {"name": doc.get("action_name"), "parameters": params or None}
+    # label은 빌드 때 metadata에 계산돼 있다(merge_v2.action_label_ko) — 백엔드 edit의
+    # 한국어 이름 지목 리졸버(label_candidates)가 스펙 label을 읽으므로 schema에 동봉한다.
+    doc["metadata"]["schema"] = {
+        "name": doc.get("action_name"),
+        "label": doc["metadata"].get("action_label_ko"),
+        "parameters": params or None,
+    }
     doc["metadata"]["params_source"] = "prose_llm"
     doc["metadata"]["enrich_input"] = cut_kind
     _rewrite_content(doc, params)

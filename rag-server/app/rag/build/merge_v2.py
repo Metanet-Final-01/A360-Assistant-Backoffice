@@ -170,6 +170,28 @@ def _load_bodies(dump: Path, locale: str) -> dict[str, dict]:
     return docs
 
 
+_KO_LABEL_SUFFIX = re.compile(r"\s*작업(\s*사용)?$")  # "~ 작업" / "~ 작업 사용"(Using the ~ action의 ko형)
+
+
+def action_label_ko(display: str, pkg_label_ko: str | None, ko_title: str | None) -> str | None:
+    """ko 문서 제목에서 한국어 액션 라벨을 뽑는다 — '<패키지>의 <라벨> 작업' 관용 표기 제거.
+
+    백엔드 edit의 이름 지목 리졸버(label_candidates)가 스펙 label을 사용자 문장에 부분
+    일치시키므로, 문서 원제("Google Drive의 파일 이동 작업")보다 짧은 라벨("파일 이동")이
+    필요하다. 실측 관용형: "<pkg|pkg_ko>의 <라벨> 작업" / "<라벨> 작업" / 접미 없는 원제
+    ("삭제 방법"). 정제 결과가 비면 원제를 그대로 쓴다.
+    """
+    if not ko_title:
+        return None
+    label = _KO_LABEL_SUFFIX.sub("", ko_title).strip()
+    for prefix in filter(None, (display, pkg_label_ko)):
+        p = f"{prefix}의 "
+        if label.startswith(p):
+            label = label[len(p):].strip()
+            break
+    return label or ko_title
+
+
 def build_documents_v2(dump_dir: str | Path, registry: dict, chunk_size: int, chunk_overlap: int,
                        enricher=None) -> list[dict]:
     dump = Path(dump_dir)
@@ -261,6 +283,7 @@ def build_documents_v2(dump_dir: str | Path, registry: dict, chunk_size: int, ch
                         "metadata": {
                             "doc_uid": _doc_uid(node.get("pretty_url", "")),
                             "label_ko": ko["title"] if ko else None,
+                            "action_label_ko": action_label_ko(display, pkg.get("label_ko"), ko["title"] if ko else None),
                             "kind": "trigger",
                             "params_source": "uicontrol_candidates",
                             "param_candidates": candidates,
@@ -347,6 +370,7 @@ def build_documents_v2(dump_dir: str | Path, registry: dict, chunk_size: int, ch
             dl_params = _dl_params(soup)
             candidates = [] if dl_params else _uicontrol_candidates(soup, {name.casefold(), display.casefold()})
             ko = ko_pair(node.get("pretty_url", ""))
+            label = action_label_ko(display, pkg.get("label_ko"), ko["title"] if ko else None)
             confidence = "table_confirmed" if norm_key(name) in table_keys else "leaf_unconfirmed"
             category = [p for p in node["path"] if p not in (pkg["subtree_root"]["path"][0] if pkg["subtree_root"]["path"] else "",)][-1:] if node["path"] else []
 
@@ -375,10 +399,11 @@ def build_documents_v2(dump_dir: str | Path, registry: dict, chunk_size: int, ch
                         "doc_uid": _doc_uid(node.get("pretty_url", "")),
                         "label_en": title,
                         "label_ko": ko["title"] if ko else None,
+                        "action_label_ko": label,
                         "category_path": category,
                         "identity_confidence": confidence,
                         "params_source": "dl" if dl_params else "uicontrol_candidates",
-                        "schema": {"name": name, "parameters": dl_params} if dl_params else None,
+                        "schema": {"name": name, "label": label, "parameters": dl_params} if dl_params else None,
                         "param_candidates": candidates,
                         "schema_source": "docs_rule",
                     },

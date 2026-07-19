@@ -12,7 +12,7 @@ def _doc():
     return {
         "action_name": "Move file",
         "content": "패키지: X\n액션: Move file\n설명: 파일 이동\n파라미터:\n없음",
-        "metadata": {},
+        "metadata": {"action_label_ko": "파일 이동"},
     }
 
 
@@ -21,6 +21,14 @@ def test_empty_params_recorded_as_unknown_none():
     _apply(d, [], "settings")
     assert d["metadata"]["schema"]["parameters"] is None
     assert "미상" in d["content"]
+
+
+def test_schema_carries_korean_label_for_name_pointing():
+    # edit의 한국어 이름 지목 리졸버(label_candidates)가 스펙 label을 읽는다 — 빌드 때
+    # metadata에 계산된 라벨이 schema로 전달되어야 v2 카탈로그에서도 지목이 성립한다.
+    d = _doc()
+    _apply(d, [{"name": "File path"}], "settings")
+    assert d["metadata"]["schema"]["label"] == "파일 이동"
 
 
 def test_nonempty_params_kept_as_list():
