@@ -143,12 +143,18 @@ def _rewrite_content(doc: dict, params: list[dict]) -> None:
             for p in params
         )
     else:
-        lines = "없음"
+        lines = "미상(문서에 필드명이 명시되지 않음)"
     doc["content"] = head + "\n파라미터:\n" + lines
 
 
 def _apply(doc: dict, params: list[dict], cut_kind: str) -> None:
-    doc["metadata"]["schema"] = {"name": doc.get("action_name"), "parameters": params}
+    # 빈 결과는 '파라미터 없음 확정'([])이 아니라 '미상'(None)으로 기록한다 — 50건 실측
+    # (2026-07-19): 문서가 필드를 서술하되 필드명은 UI 스크린샷에만 있어(Google Drive
+    # Move file 등) 이름 불명으로 빈 결과가 나오는 경우가 다수였고, 한 줄짜리 문서(REST
+    # Delete method)는 '없음'을 주장할 근거 자체가 없다. []로 적재하면 검수 R2가 정당한
+    # 파라미터를 전건 위반 처리한다(위험 비대칭: 잘못된 []=오탐, 잘못된 미상=침묵).
+    # 캐시의 기존 [] 항목도 이 함수를 다시 지나므로 재호출 없이 소급 정규화된다.
+    doc["metadata"]["schema"] = {"name": doc.get("action_name"), "parameters": params or None}
     doc["metadata"]["params_source"] = "prose_llm"
     doc["metadata"]["enrich_input"] = cut_kind
     _rewrite_content(doc, params)
