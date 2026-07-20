@@ -118,8 +118,7 @@ def apply_global_styles() -> None:
         }
 
         /* ---------- 사이드바(메뉴바) — 프론트엔드 app-sidebar와 동일한 네이비 그라데이션.
-        폭도 프론트엔드(240px)에 맞춰 고정한다. 관리자용 도구임을 표시하려고 로고 옆
-        OPS 뱃지(앰버)만 톤을 다르게 둔다. ---------- */
+        폭도 프론트엔드(240px)에 맞춰 고정한다. ---------- */
         section[data-testid="stSidebar"] {
             width: 240px !important;
             min-width: 240px !important;
@@ -129,55 +128,20 @@ def apply_global_styles() -> None:
             position: relative;
         }
 
-        /* Streamlit이 sidebar 안의 모든 elementContainer에 자체 position:relative를 줘서,
-        .app-sidebar-footer(absolute)의 기준점이 section[data-testid="stSidebar"] 전체가
-        아니라 그 elementContainer 자신(내용이 없어 height:0)으로 잡히는 문제가 있었다 —
-        sidebar 안에서만 static으로 되돌려 기준점이 진짜 사이드바 전체로 올라가게 한다. */
-        section[data-testid="stSidebar"] div[data-testid="stElementContainer"] {
-            position: static !important;
-        }
-
-        .app-sidebar-footer {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 14px 16px 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .app-sidebar-footer__title {
-            color: #8fd8e8;
-            font-weight: 800;
-            font-size: 0.72rem;
-            letter-spacing: 0.06em;
-        }
-
-        .app-sidebar-footer__desc {
-            color: #7d8f9b;
-            font-size: 0.7rem;
-            margin-top: 2px;
-            line-height: 1.4;
-        }
-
-        /* st.navigation은 항상 stSidebarHeader 바로 아래에 그려지고, render_sidebar()로 추가한
-        내용(stSidebarUserContent — 로고+타이틀+뱃지 한 줄)은 원래 그 아래(네비게이션보다 더
-        아래)에 붙는다. 브랜드 행이 네비게이션보다 위에 오도록 flex order로 시각적 순서만
-        바꾼다. stSidebarHeader는 이제 로고를 그리지 않아(st.logo 미사용) 접기 화살표만
-        남기고 여백을 최소로 줄인다. */
+        /* st.navigation은 position="hidden"이라 자체 네비게이션 UI를 그리지 않고,
+        render_sidebar()가 브랜드 행 + 카테고리 메뉴를 stSidebarUserContent 하나에 전부
+        직접 그린다 — 예전처럼 stSidebarNav를 order로 끌어올릴 필요가 없다. stSidebarHeader는
+        이제 로고를 그리지 않아(st.logo 미사용) 접기 화살표만 남기고, 로고 위 여백은 여기서
+        직접 늘린다(브랜드 행 padding-top과 합쳐 로고 아래쪽 여백과 비슷한 크기로 맞춘다). */
         div[data-testid="stSidebarContent"] {
             display: flex;
             flex-direction: column;
         }
 
-        /* 헤더 자체가 콘텐츠와 무관하게 고정 높이(60px)를 가지고 있어서 padding/min-height만으로는
-        안 줄어든다 — 로고 자리 예약분(stLogoSpacer, 32px)을 없애고 접기 버튼(28px) + 위쪽
-        여백(6px)만 남도록 높이도 직접 지정한다. */
         section[data-testid="stSidebar"] div[data-testid="stSidebarHeader"] {
-            order: 0;
-            height: 34px !important;
+            height: 40px !important;
             min-height: 0;
-            padding: 6px 8px 0;
+            padding: 12px 8px 0;
             margin: 0 !important;
         }
 
@@ -185,20 +149,9 @@ def apply_global_styles() -> None:
             display: none !important;
         }
 
-        /* Streamlit이 이 블록에 기본으로 padding-bottom(약 96px)을 붙이는데, 브랜드 행 하나만
-        들어있는 지금은 그게 고스란히 네비게이션 위 빈 여백이 되어 전부 0으로 지운다. */
         section[data-testid="stSidebar"] div[data-testid="stSidebarUserContent"] {
-            order: 1;
             padding: 0 !important;
-            /* Streamlit이 이 컨테이너에 자체 position을 줘서 .app-sidebar-footer의
-            absolute 기준점이 사이드바 전체가 아니라 이 작은 박스로 잡히는 문제가 있었다 —
-            static으로 되돌려 기준점이 section[data-testid="stSidebar"](position:relative)로
-            올라가게 한다. */
             position: static !important;
-        }
-
-        section[data-testid="stSidebar"] div[data-testid="stSidebarNav"] {
-            order: 2;
         }
 
         .app-sidebar-brand {
@@ -206,9 +159,9 @@ def apply_global_styles() -> None:
             align-items: center;
             justify-content: flex-start;
             gap: 10px;
-            padding: 4px 12px 16px;
+            padding: 4px 12px 11px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-            margin-bottom: 6px;
+            margin-bottom: 4px;
             line-height: 1;
         }
 
@@ -252,52 +205,82 @@ def apply_global_styles() -> None:
         }
 
         /* Streamlit이 사이드바 콘텐츠 전체에 기본으로 좌우 10px를 두는데, 그 안에 다시
-        stSidebarNavItems·링크 자체 padding이 겹겹이 쌓여 메뉴 좌우 여백이 과하게 컸다 —
+        page_link·expander 자체 padding이 겹겹이 쌓여 메뉴 좌우 여백이 과하게 컸다 —
         세 겹을 전부 줄인다. */
         section[data-testid="stSidebar"] div[data-testid="stSidebarContent"] {
-            padding: 0 6px !important;
+            padding: 0 6px 16px !important;
         }
 
-        /* 하단 고정 설명 블록(app-sidebar-footer)이 네비게이션 마지막 항목과 겹치지 않도록
-        여백을 남겨둔다 — 위의 "padding: 0 6px" 뒤에 와야 bottom 값이 지워지지 않는다. */
-        section[data-testid="stSidebar"] div[data-testid="stSidebarContent"] {
-            padding-bottom: 84px !important;
-        }
-
-        section[data-testid="stSidebar"] [data-testid="stSidebarNavItems"] {
-            padding: 6px 4px;
+        /* ---------- 카테고리 메뉴(render_sidebar) — st.navigation 기본 UI 대신 st.page_link +
+        st.expander로 직접 그린 홈 링크·카테고리·하위 메뉴. 예전 stSidebarNavLink와 같은
+        톤으로 맞춘다. ---------- */
+        section[data-testid="stSidebar"] div[data-testid="stVerticalBlock"] {
             gap: 3px;
-            display: flex;
-            flex-direction: column;
         }
 
-        section[data-testid="stSidebar"] a[data-testid="stSidebarNavLink"] {
+        section[data-testid="stSidebar"] [data-testid="stPageLink"] {
             border-radius: 10px;
-            padding: 10px 10px;
             font-weight: 700;
             font-size: 0.92rem;
-            color: #93a5b1;
-            gap: 10px;
         }
 
-        section[data-testid="stSidebar"] a[data-testid="stSidebarNavLink"]:hover {
-            color: #e3edf2;
+        section[data-testid="stSidebar"] [data-testid="stPageLink"] a {
+            padding: 8px 10px;
+            gap: 10px;
+            color: #93a5b1 !important;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stPageLink"] a:hover {
+            color: #e3edf2 !important;
             background: rgba(255, 255, 255, 0.06);
         }
 
-        section[data-testid="stSidebar"] a[data-testid="stSidebarNavLink"][aria-current="page"] {
-            color: #8fd8e8;
-            background: rgba(31, 111, 139, 0.28);
-            font-weight: 800;
-        }
+        /* 현재 페이지 강조는 render_sidebar()가 st.container(key=...)로 감싼 항목을 골라
+        st.html로 별도 <style>을 주입해 처리한다 — st.page_link가 남기는 emotion 클래스명은
+        빌드마다 바뀌어 CSS만으로는 "현재 페이지"를 안정적으로 고를 수 없다. */
 
-        section[data-testid="stSidebar"] a[data-testid="stSidebarNavLink"] span {
+        section[data-testid="stSidebar"] [data-testid="stPageLink"] a span {
             color: inherit;
         }
 
-        section[data-testid="stSidebar"] div[data-testid="stSidebarNavSeparator"] {
-            border-color: rgba(255, 255, 255, 0.08);
-            margin: 8px 20px;
+        /* 카테고리(st.expander) — 얇은 소제목처럼 보이도록 기본 카드 테두리·배경을 지운다.
+        summary/details 자체에 Streamlit이 배경·테두리를 직접 박아넣어서 래퍼뿐 아니라
+        각 요소에 !important로 따로 지워야 한다. 카테고리 사이 구분은 details의 기본
+        테두리 대신, 래퍼 위쪽에 얇은 선 하나만 남겨(border-top) 위 메뉴와 구분한다. */
+        section[data-testid="stSidebar"] [data-testid="stExpander"] details {
+            border: none !important;
+            background: transparent !important;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stExpander"] {
+            border: none !important;
+            background: transparent !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+            margin-top: 10px;
+            padding-top: 10px;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stExpander"] summary {
+            padding: 6px 10px;
+            border-radius: 8px;
+            background: transparent !important;
+            color: #7d8f9b !important;
+            font-weight: 800;
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stExpander"] summary:hover {
+            color: #e3edf2 !important;
+            background: rgba(255, 255, 255, 0.06) !important;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stExpander"] summary svg {
+            fill: #7d8f9b;
+        }
+
+        section[data-testid="stSidebar"] [data-testid="stExpanderDetails"] {
+            padding: 3px 0 0;
         }
 
         section[data-testid="stSidebar"] div[data-testid="stSidebarUserContent"] p,

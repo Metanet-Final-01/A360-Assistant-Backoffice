@@ -1,17 +1,23 @@
 """모니터링 서버 백엔드 진입점 (FastAPI).
 
 - /observability/*: A360-Assistant-Backend의 감사 로그·LLM 사용량·RAG 요청 로그 수집/조회.
+- /assurance/*: Backend의 AI 출력 검증 판정 기록을 저장 없이 읽기 전용 중계.
 - /eval/*: 평가 데이터셋·결과 로그·pm4py/WorFBench 변환·A/B 비교·xlsx 내보내기.
 
 RAG 적재 트리거(/rag/ingest)는 여기 없다 — 별도 rag-server가 담당하고, 프론트의 '적재'
 버튼과 (향후) app/scheduler가 rag-server로 직접 요청을 보낸다.
 """
 
+import asyncio
+import json
 import os
+import re
 import uuid
+from typing import Literal
 
-from fastapi import BackgroundTasks, FastAPI, File, HTTPException, Query, UploadFile
-from fastapi.responses import Response
+from fastapi import BackgroundTasks, FastAPI, File, HTTPException, Query, Request, UploadFile
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import Response, StreamingResponse
 from pydantic import BaseModel, Field, field_validator
 
 from app.eval.format_guide import build_format_guide
@@ -24,6 +30,8 @@ from app.eval.workflow_eval import runner as workflow_runner
 from app.eval.workflow_eval.schema import WorkflowCase
 from app.eval.ragas_eval import runner as ragas_runner
 from app.eval.ragas_eval import pass_k as ragas_pass_k
+from app.eval.ragas_eval import source_documents as ragas_source_documents
+from app.eval.ragas_eval import validation_log as ragas_validation_log
 from app.eval.ragas_eval.schema import RagasCase
 from app.eval.bfcl_eval import runner as bfcl_runner
 from app.eval.bfcl_eval import pass_k as bfcl_pass_k
@@ -43,6 +51,23 @@ from app.scheduler import scheduler as rag_scheduler
 from app.scheduler.schema import RagIngestScheduleRequest, ScheduleApplyResult
 
 app = FastAPI(title="A360 Assistant Monitoring Server")
+
+# 임의의 웹 페이지가 PATCH/POST 같은 변경 API를 호출하지 못하도록, 실제 Streamlit
+# 프론트 origin만 허용한다(CodeRabbit #42 지적). 로컬 개발 기본값은 Streamlit
+# 기본 포트(8501) — 배포 환경은 OPS_FRONTEND_ORIGINS(콤마 구분)로 재정의한다.
+_frontend_origins = [
+    origin.strip()
+    for origin in os.getenv(
+        "OPS_FRONTEND_ORIGINS", "http://127.0.0.1:8501,http://localhost:8501"
+    ).split(",")
+    if origin.strip()
+]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=_frontend_origins,
+    allow_methods=["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allow_headers=["Content-Type", "Authorization"],
+)
 
 
 @app.get("/health")
@@ -328,7 +353,7 @@ class ExecuteRagasRequest(BaseModel):
 def ragas_cases() -> list:
     """골드셋 케이스 목록(채점 실행 전 미리보기용)."""
     try:
-        return [c.model_dump() for c in ragas_runner.load_cases()]
+        return [case.model_dump() for case in ragas_runner.load_all_cases()]
     except ragas_runner.RagasGoldsetError as e:
         raise HTTPException(500, str(e)) from e
 
@@ -337,6 +362,18 @@ def ragas_cases() -> list:
 def add_ragas_case(case: dict) -> dict:
     try:
         return goldset_admin.append_case(ragas_runner._CASES_PATH, RagasCase, case, "case_id").model_dump()
+    except goldset_admin.GoldsetWriteError as e:
+        raise HTTPException(400, str(e)) from e
+
+
+@app.patch("/eval/ragas/cases/{case_id}")
+def patch_ragas_case(case_id: str, patch: dict) -> dict:
+    """부분 수정 — 승인/반려(status) 처리용. 예: {"status": "approved"} 또는
+    {"status": "rejected", "review_note": "..."}."""
+    try:
+        return goldset_admin.update_case(
+            ragas_runner._CASES_PATH, RagasCase, "case_id", case_id, patch
+        ).model_dump()
     except goldset_admin.GoldsetWriteError as e:
         raise HTTPException(400, str(e)) from e
 
@@ -358,6 +395,83 @@ async def upload_ragas_cases(file: UploadFile = File(...)) -> dict:
     return {"saved": count}
 
 
+class RagasValidationLogRequest(BaseModel):
+    """doc_id는 필수(빈 문자열 거부), outcome은 success/failure만 허용한다 — 예전엔
+    임의 dict를 그대로 받아 빈 doc_id·임의 outcome도 성공 응답과 함께 기록됐음
+    (CodeRabbit #42 지적)."""
+
+    doc_id: str = Field(min_length=1)
+    doc_title: str | None = None
+    question: str | None = None
+    outcome: Literal["success", "failure"] = "failure"
+    failed_snippets: str | None = None
+
+
+@app.post("/eval/ragas/validation-log")
+def post_ragas_validation_log(req: RagasValidationLogRequest) -> dict:
+    """근거 검증 시도 1건 기록(성공/실패 둘 다) — 통계용, 실패해도 골드셋 저장을 막지 않는다."""
+    ragas_validation_log.record_attempt(
+        doc_id=req.doc_id,
+        doc_title=req.doc_title,
+        question=req.question,
+        outcome=req.outcome,
+        failed_snippets=req.failed_snippets,
+    )
+    return {"ok": True}
+
+
+@app.get("/eval/ragas/source-documents")
+def ragas_source_documents_search(q: str = "", source_type: str | None = None) -> list[dict]:
+    """골드셋 작성 화면의 문서 브라우저 — 로컬 source_documents 테이블 조회
+    (scripts/ragas_eval/datasets/build_source_documents.py로 미리 채워둬야 함)."""
+    try:
+        return ragas_source_documents.search(query=q, source_type=source_type)
+    except ragas_source_documents.SourceDocumentsUnavailableError as e:
+        raise HTTPException(503, str(e)) from e
+
+
+@app.get("/eval/ragas/source-documents/random")
+def ragas_source_documents_random(
+    source_type: str | None = None,
+    limit: int = Query(default=5, ge=1, le=100),
+    exclude_used: bool = True,
+    min_content_length: int = Query(default=0, ge=0),
+) -> list[dict]:
+    """골드셋 작성용 랜덤 문서 추출. exclude_used=True면 이미 골드셋에 근거로 쓰인
+    문서(reference_doc_ids + reference_contexts의 source_document_id)는 제외한다 —
+    다만 한 문서에서 여러 질문을 뽑을 수도 있으니 완전 배제가 항상 맞는 건 아니다,
+    필요하면 exclude_used=false로 재추출."""
+    exclude_ids: list[str] | None = None
+    if exclude_used:
+        try:
+            cases = ragas_runner.load_all_cases()
+        except ragas_runner.RagasGoldsetError:
+            cases = []
+        used: set[str] = set()
+        for c in cases:
+            used.update(c.reference_doc_ids)
+            used.update(rc.source_document_id for rc in c.reference_contexts)
+        exclude_ids = sorted(used) or None
+    try:
+        return ragas_source_documents.random_sample(
+            source_type=source_type, limit=limit, exclude_ids=exclude_ids,
+            min_content_length=min_content_length,
+        )
+    except ragas_source_documents.SourceDocumentsUnavailableError as e:
+        raise HTTPException(503, str(e)) from e
+
+
+@app.get("/eval/ragas/source-documents/{doc_id}")
+def ragas_source_document_detail(doc_id: str) -> dict:
+    try:
+        doc = ragas_source_documents.get_by_id(doc_id)
+    except ragas_source_documents.SourceDocumentsUnavailableError as e:
+        raise HTTPException(503, str(e)) from e
+    if doc is None:
+        raise HTTPException(404, f"id={doc_id!r} 문서를 찾을 수 없습니다")
+    return doc
+
+
 @app.post("/eval/ragas/execution")
 def start_ragas_evaluation(req: ExecuteRagasRequest, background_tasks: BackgroundTasks) -> dict:
     if not os.getenv("OPENAI_API_KEY"):
@@ -375,6 +489,28 @@ def start_ragas_evaluation(req: ExecuteRagasRequest, background_tasks: Backgroun
 @app.get("/eval/ragas/execution/status")
 def ragas_evaluation_status() -> dict:
     return ragas_runner.state
+
+
+@app.get("/eval/ragas/execution/events")
+async def ragas_evaluation_events(request: Request) -> StreamingResponse:
+    async def event_stream():
+        previous_payload = ""
+        while True:
+            if await request.is_disconnected():
+                break
+            payload = json.dumps(ragas_runner.state, ensure_ascii=False)
+            if payload != previous_payload:
+                yield f"event: status\ndata: {payload}\n\n"
+                previous_payload = payload
+            else:
+                yield ": heartbeat\n\n"
+            await asyncio.sleep(1)
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
 
 
 class ExecuteRagasPassKRequest(BaseModel):
@@ -502,6 +638,42 @@ def _run_collect(fn, *args, **kwargs) -> dict:
         raise HTTPException(403, str(e)) from e
     except backend_client.BackendUnavailableError as e:
         raise HTTPException(502, str(e)) from e
+    except backend_client.BackendResponseError as e:
+        status_code = e.status_code if 400 <= e.status_code < 500 else 502
+        raise HTTPException(status_code, str(e)) from e
+
+
+@app.get("/assurance/records")
+def get_assurance_records(
+    limit: int = Query(100, ge=1, le=500),
+    harness: str | None = Query(None, pattern="^(change|output)$"),
+    decision: str | None = Query(None, pattern="^(allow_candidate|deny|unassured)$"),
+    assurance_verdict: str | None = Query(None, pattern="^(observed|deny|refused)$"),
+    request_id: str | None = Query(None, max_length=32),
+    session_id: str | None = None,
+    since: str | None = None,
+    cursor: str | None = None,
+) -> dict:
+    """권위 원본인 Backend의 검증 판정 기록을 저장하지 않고 read-only로 중계한다."""
+    return _run_collect(
+        backend_client.fetch_assurance_records,
+        limit=limit,
+        harness=harness,
+        decision=decision,
+        assurance_verdict=assurance_verdict,
+        request_id=request_id,
+        session_id=session_id,
+        since=since,
+        cursor=cursor,
+    )
+
+
+@app.get("/assurance/records/{receipt_digest}")
+def get_assurance_record_detail(receipt_digest: str) -> dict:
+    """검증 판정 기록의 마스킹된 상세를 read-only로 중계한다."""
+    if not re.fullmatch(r"sha256:[0-9a-f]{64}", receipt_digest):
+        raise HTTPException(400, "receipt_digest 형식이 올바르지 않습니다.")
+    return _run_collect(backend_client.fetch_assurance_record_detail, receipt_digest)
 
 
 @app.post("/observability/audit-logs/collect")

@@ -21,10 +21,22 @@ _MARK_SVG = (
 _MARK_DATA_URI = "data:image/svg+xml;base64," + base64.b64encode(_MARK_SVG.encode()).decode()
 
 
-def render_sidebar() -> None:
-    """st.navigation이 그리는 페이지 목록 바로 위에 브랜드 행(로고+타이틀+OPS 뱃지)을 한 줄로
-    붙인다. 여기서 그리는 내용(stSidebarUserContent)은 원래 네비게이션보다 아래에 붙지만,
-    apply_global_styles()의 CSS order로 그 사이로 끌어올린다."""
+def _nav_key(page: st.Page) -> str:
+    return f"nav_{page.url_path or 'home'}"
+
+
+def render_sidebar(
+    home_page: st.Page,
+    sections: list[tuple[str, list[st.Page]]],
+    current_page: st.Page,
+) -> None:
+    """브랜드 행(로고+타이틀) + 카테고리별 접이식 메뉴를 사이드바에 그린다.
+
+    메뉴가 12개로 늘어나 한눈에 보기 힘들어져서, st.navigation의 기본 목록 UI는 숨기고
+    (app.py의 position="hidden") 여기서 홈은 단독으로, 나머지는 st.expander로 묶어
+    카테고리째로 접었다 펼 수 있게 직접 그린다. 각 링크를 st.container(key=...)로 감싸는 건
+    현재 페이지 강조 때문 — st.page_link가 남기는 클래스명은 emotion이 빌드마다 새로 해시
+    하므로, CSS만으로 "지금 보고 있는 페이지"를 안정적으로 고를 방법이 없다."""
     with st.sidebar:
         st.html(
             '<div class="app-sidebar-brand">'
@@ -35,14 +47,21 @@ def render_sidebar() -> None:
             "</span>"
             "</div>"
         )
-        # 사이드바 맨 아래 고정 설명 블록. stSidebarUserContent는 네비게이션(stSidebarNav)보다
-        # 위에 오도록 CSS order가 이미 고정돼 있어(apply_global_styles), DOM 순서로는 뒤로
-        # 보낼 수 없다 — 그래서 position:absolute; bottom:0으로 사이드바 자체의 바닥에
-        # 붙이고(app-sidebar-footer), 네비게이션 쪽에 그만큼 padding-bottom을 남겨 겹치지
-        # 않게 한다.
+
+        with st.container(key=_nav_key(home_page)):
+            st.page_link(home_page, use_container_width=True)
+
+        for title, pages in sections:
+            with st.expander(title, expanded=True):
+                for page in pages:
+                    with st.container(key=_nav_key(page)):
+                        st.page_link(page, use_container_width=True)
+
         st.html(
-            '<div class="app-sidebar-footer">'
-            '<div class="app-sidebar-footer__title">OPS</div>'
-            '<div class="app-sidebar-footer__desc">RAG 적재 · 평가(준비/실행/결과) · 모니터링 도구</div>'
-            "</div>"
+            f'<style>div[class*="st-key-{_nav_key(current_page)}"] '
+            "a[data-testid=\"stPageLink-NavLink\"] {"
+            "background: rgba(31, 111, 139, 0.28) !important;"
+            "color: #8fd8e8 !important;"
+            "font-weight: 800 !important;"
+            "}</style>"
         )

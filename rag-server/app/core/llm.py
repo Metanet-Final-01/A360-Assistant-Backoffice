@@ -23,6 +23,7 @@ from contextlib import contextmanager
 from dataclasses import dataclass
 
 from app.rag import config
+from app.rag.observability import get_request_id
 
 logger = logging.getLogger(__name__)
 
@@ -189,6 +190,7 @@ def record_usage(
     output_tokens: int,
     latency_ms: int | None = None,
     session_id: uuid.UUID | None = None,
+    request_id: str | None = None,
     ctx: UsageContext | None = None,
 ) -> None:
     """공유 llm_usage 테이블에 한 건 기록한다 — 백엔드와 동일 컬럼(ORM 대신 psycopg 원시 INSERT).
@@ -196,9 +198,15 @@ def record_usage(
     귀속 정보는 ctx(명시) 또는 현재 ContextVar에서 온다. 백엔드 record_usage와 마찬가지로
     기록 실패(DB 다운·테이블 부재 등)가 호출을 실패시키면 안 되므로 예외는 삼킨다.
     llm_usage 테이블 자체는 백엔드가 소유·마이그레이션하므로 여기서 만들지 않는다.
+
+    request_id: 명시적으로 안 넘기면 현재 ContextVar(get_request_id())에서 가져온다.
+    이전엔 이 함수가 request_id를 아예 안 남겨서(컬럼 자체가 INSERT에 없었음), 이
+    테이블의 rag_embed/rag_rerank/rag_parse 행 대부분이 request_id NULL이었다 —
+    ContextVar 자체는 이미 있었는데 여기 연결만 안 되어 있던 단순 누락.
     """
     ctx = ctx or current_usage_context()
     resolved_session = session_id if session_id is not None else ctx.session_id
+    resolved_request_id = request_id if request_id is not None else get_request_id()
     try:
         import psycopg
 
@@ -208,8 +216,8 @@ def record_usage(
                     """
                     INSERT INTO llm_usage
                         (session_id, actor_type, user_id, component, purpose, model,
-                         input_tokens, output_tokens, cost_usd, latency_ms)
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                         input_tokens, output_tokens, cost_usd, latency_ms, request_id)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                     """,
                     (
                         str(resolved_session) if resolved_session else None,
@@ -222,8 +230,40 @@ def record_usage(
                         output_tokens,
                         cost_usd(input_tokens, output_tokens, model),
                         latency_ms,
+                        resolved_request_id,
                     ),
                 )
             conn.commit()
     except Exception as e:  # noqa: BLE001 — 기록 실패가 호출을 실패시키면 안 된다 (백엔드와 동일)
         logger.warning("LLM 사용량 기록 실패 (호출은 정상): %s", e)
+
+
+def record_ragas_validation_attempt(
+    *,
+    doc_id: str,
+    doc_title: str | None,
+    question: str | None,
+    outcome: str,
+    failed_snippets: str | None = None,
+) -> None:
+    """RAGAS 골드셋 작성 화면의 근거 검증 시도를 관측 DB(ragas_validation_attempts)에
+    기록한다 — 관측 DB 쓰기는 rag-server 적재 경로에만 허용한다는 정책에 따라, ops-server는
+    이 함수를 직접 호출하지 않고 HTTP로 요청해서(POST /observability/ragas-validation-
+    attempts) 여기로 위임한다. 기록 실패가 골드셋 저장 자체를 막으면 안 되므로 예외는 삼킨다
+    (record_usage와 동일 원칙)."""
+    try:
+        import psycopg
+
+        with psycopg.connect(_observability_dsn()) as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO ragas_validation_attempts
+                        (doc_id, doc_title, question, outcome, failed_snippets)
+                    VALUES (%s, %s, %s, %s, %s)
+                    """,
+                    (doc_id, doc_title, question, outcome, failed_snippets),
+                )
+            conn.commit()
+    except Exception as e:  # noqa: BLE001 — 기록 실패가 골드셋 저장을 막으면 안 된다
+        logger.warning("RAGAS 검증 시도 기록 실패 (저장은 정상 진행): %s", e)

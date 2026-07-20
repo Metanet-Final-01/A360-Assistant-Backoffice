@@ -18,6 +18,9 @@ pydantic
 pyyaml
 openpyxl
 
+# ── RAGAS 골드셋 작성용 원본 문서 조회 (scripts/ragas_eval의 로컬 Postgres 직접 조회) ──
+psycopg[binary]
+
 # ── RAG 검색 품질 평가(RAGAS) ──
 # ragas>=0.3은 langchain-community 최신판과 임포트 충돌(ragas.llms.base가
 # langchain_community.chat_models.vertexai를 무조건 임포트하는데, 그 서브모듈이
