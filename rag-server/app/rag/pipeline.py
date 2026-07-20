@@ -37,10 +37,16 @@ if TYPE_CHECKING:
 def cmd_crawl(args: argparse.Namespace) -> None:
     from .sources import docs_crawler as dc
 
-    m = dc.find_map(locale=args.locale, title="Automation 360")
-    print(f"map: {m['title']} ({args.locale}) id={m['id']}")
-    menu = dc.get_menu(m["id"])
-    topics = dc.flatten_menu(menu)
+    maps = dc.list_maps_for_locale(args.locale)
+    if not maps:
+        raise ValueError(f"no maps found for locale={args.locale!r}")
+    topics = []
+    print(f"maps: {len(maps)} ({args.locale})")
+    for m in maps:
+        menu = dc.get_menu(m["id"])
+        map_topics = dc.flatten_menu(menu, map_id=m["id"], map_title=m["title"])
+        topics.extend(map_topics)
+        print(f"  - {m['title']} id={m['id']} topics={len(map_topics)}")
 
     if args.url_filter:
         topics = [t for t in topics if args.url_filter in t["pretty_url"]]
@@ -58,7 +64,7 @@ def cmd_crawl(args: argparse.Namespace) -> None:
         print(f"  [{i}/{total}] {title}")
 
     out_path = config.docs_jsonl_for_locale(args.locale)
-    written = dc.crawl_topics(m["id"], topics, out_path, on_progress=progress, locale=args.locale)
+    written = dc.crawl_topics("", topics, out_path, on_progress=progress, locale=args.locale)
     print(f"저장: {written}개 신규 → {out_path}")
 
 
@@ -526,6 +532,7 @@ def cmd_ingest(args: argparse.Namespace) -> None:
             # 저장된 것과 같은 문서는 임베딩만 건너뛴다. title/url/metadata는 content가 같아도
             # 바뀔 수 있으므로 DB upsert와 OpenSearch 색인은 전체 문서 기준으로 수행한다.
             existing_hashes = db.get_content_hashes(conn, [d["id"] for d in documents])
+            conn.commit()
             to_embed = [d for d in documents if existing_hashes.get(d["id"]) != db.content_hash(d["content"])]
             skipped = len(documents) - len(to_embed)
             if skipped:
@@ -598,7 +605,7 @@ def main() -> None:
 
     p_crawl = sub.add_parser("crawl", help="Fluid Topics API로 문서 크롤링")
     p_crawl.add_argument("--locale", default="ko-KR")
-    p_crawl.add_argument("--url-filter", default="cloud-commands-panel", help="prettyUrl 부분 일치 필터")
+    p_crawl.add_argument("--url-filter", default=None, help="prettyUrl 부분 일치 필터")
     p_crawl.add_argument("--contains", default=None, help="제목/breadcrumb 부분 일치 필터")
     p_crawl.set_defaults(func=cmd_crawl)
 

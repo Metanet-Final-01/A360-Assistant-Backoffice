@@ -3,44 +3,19 @@
 모니터링 서버(또는 사람이 프론트 버튼으로)가 POST /rag/ingest를 호출하면 수집→빌드→
 pgvector/OpenSearch 적재 파이프라인을 백그라운드로 실행한다. 적재 대상 DB는
 A360-Assistant-Backend와 동일 인스턴스라 여기서 적재한 게 실서비스에 그대로 반영된다.
+
+실행 상태·락·로그 관리는 ingest_jobs가 담당한다(프로세스 재시작/다중 워커에도 살아남는
+파일 기반 상태) — 이 모듈은 HTTP 표면만 정의한다.
 """
 
-import subprocess
-import sys
-from pathlib import Path
 from typing import Literal
 
 from fastapi import BackgroundTasks, FastAPI, HTTPException
 from pydantic import BaseModel, Field
 
+from . import ingest_jobs
+
 app = FastAPI(title="A360 RAG Ingest Server")
-
-_REPO_ROOT = Path(__file__).resolve().parents[1]
-_OPTION_SCRIPTS = {
-    1: _REPO_ROOT / "app" / "rag" / "scripts" / "run_option1_jar_only.py",
-    2: _REPO_ROOT / "app" / "rag" / "scripts" / "run_option2_with_naive_actions.py",
-    3: _REPO_ROOT / "app" / "rag" / "scripts" / "run_option3_with_doc_agent.py",
-}
-
-# 파이프라인은 실행에 몇 분~몇십 분이 걸릴 수 있어 백그라운드로 돌린다 — 프로세스 재시작하면
-# 사라지는 인메모리 상태로 충분하다(가벼운 운영 도구 용도, 별도 job 큐 불필요).
-_run_state: dict = {"running": False, "option": None, "clean": None, "returncode": None, "log": ""}
-
-
-def _run_pipeline(option: int, clean: bool) -> None:
-    _run_state.update(running=True, option=option, clean=clean, returncode=None, log="")
-    args = [sys.executable, str(_OPTION_SCRIPTS[option])]
-    if clean:
-        args.append("--clean")
-    proc = subprocess.run(
-        args,
-        cwd=_REPO_ROOT,
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-    )
-    _run_state.update(running=False, returncode=proc.returncode, log=proc.stdout + proc.stderr)
 
 
 @app.get("/health")
@@ -67,18 +42,30 @@ def trigger_rag_ingest(option: int, background_tasks: BackgroundTasks, clean: bo
     유지). clean=True: 적재 전 기존 rag_documents/OpenSearch를 전부 지우고 이번 build
     결과로 완전히 새로 채운다(재적재) — A360-Assistant-Backend와 같은 DB를 지우므로
     실행 중 RAG 검색이 잠깐 비거나 불완전할 수 있다.
+
+    이미 실행 중이면 409 — 동시 실행은 ingest_jobs의 락으로 막는다(다중 워커/스케줄러와
+    수동 버튼이 겹치는 경우 포함).
     """
-    if option not in _OPTION_SCRIPTS:
-        raise HTTPException(400, "option은 1, 2, 3 중 하나여야 합니다")
-    if _run_state["running"]:
-        raise HTTPException(409, "이미 실행 중입니다 — /rag/ingest/status로 확인하세요")
-    background_tasks.add_task(_run_pipeline, option, clean)
-    return {"status": "started", "option": option, "clean": clean}
+    if option not in ingest_jobs.OPTION_SCRIPTS:
+        raise HTTPException(status_code=400, detail="option은 1, 2, 3 중 하나여야 합니다")
+
+    state = ingest_jobs.reserve_job(option, clean)
+    if state is None:
+        raise HTTPException(status_code=409, detail="이미 실행 중입니다 — /rag/ingest/status로 확인하세요")
+
+    background_tasks.add_task(ingest_jobs.run_reserved_job, state)
+    return {
+        "status": "started",
+        "run_id": state["run_id"],
+        "option": option,
+        "clean": clean,
+        "log_path": state["log_path"],
+    }
 
 
 @app.get("/rag/ingest/status")
 def rag_ingest_status() -> dict:
-    return _run_state
+    return ingest_jobs.status()
 
 
 class RagasValidationAttemptRequest(BaseModel):
