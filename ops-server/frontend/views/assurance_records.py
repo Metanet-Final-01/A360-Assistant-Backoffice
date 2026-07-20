@@ -24,7 +24,24 @@ _DECISION_LABELS = {
 _VERDICT_LABELS = {
     "observed": "관찰됨",
     "deny": "거부",
-    "refused": "보증 거절",
+    "refused": "보증 불충족",
+}
+
+_CONTROL_STATUS_LABELS = {
+    "pass": "통과",
+    "fail": "실패",
+    "deny": "거부",
+    "unassured": "추가 검토 필요",
+    "error": "검사 오류",
+}
+_CONTROL_REASON_LABELS = {
+    "MANIFEST_DERIVED_FROM_GIT": "변경 목록을 Git 기준으로 생성함",
+    "RISK_PROFILE_DERIVED": "변경 내용에서 위험도를 산정함",
+    "DEPENDENCY_CLOSURE_DENIED": "의존성 검증을 통과하지 못함",
+    "DEPENDENCY_EVIDENCE_INCOMPLETE": "의존성 취약점·라이선스 증거가 부족함",
+    "PROTECTED_ORACLE_REVIEW_REQUIRED": "보호 대상 변경에 별도 사람 리뷰가 필요함",
+    "SUBJECT_BOUND": "판정 대상 커밋과 증거가 일치함",
+    "EVIDENCE_DIGESTS_VERIFIED": "증거 파일 지문이 검증됨",
 }
 
 
@@ -159,7 +176,7 @@ def _status_text(row: dict) -> str:
     verdict = row.get("assurance_verdict")
     decision = row.get("decision")
     if verdict == "refused":
-        return "보증 거절"
+        return "보증 불충족"
     if decision == "deny" or verdict == "deny":
         return "계약 위반"
     if decision == "unassured":
@@ -178,14 +195,77 @@ def _business_persisted_text(row: dict) -> str:
     return "미확인"
 
 
+def _change_control_rows(payload: dict) -> list[dict]:
+    controls = payload.get("controls", [])
+    if not isinstance(controls, list):
+        return []
+    rows = []
+    for control in controls:
+        if not isinstance(control, dict):
+            continue
+        reason_code = control.get("reason_code")
+        rows.append({
+            "통제": control.get("control_id"),
+            "상태": _CONTROL_STATUS_LABELS.get(
+                control.get("status"), control.get("status")
+            ),
+            "판정 설명": _CONTROL_REASON_LABELS.get(reason_code, reason_code),
+            "사유 코드": reason_code,
+            "증거 위치": control.get("evidence_uri"),
+            "증거 지문": control.get("evidence_digest"),
+        })
+    return rows
+
+
+def _change_subject(payload: dict) -> dict:
+    subject = payload.get("subject")
+    subject = subject if isinstance(subject, dict) else {}
+    provenance = payload.get("provenance")
+    provenance = provenance if isinstance(provenance, dict) else {}
+    return {
+        "repository": subject.get("repository"),
+        "pull_request_number": subject.get("pull_request_number"),
+        "workflow_name": provenance.get("workflow_name"),
+        "workflow_run_id": subject.get("workflow_run_id"),
+        "run_attempt": subject.get("run_attempt"),
+        "base_sha": subject.get("base_sha"),
+        "head_sha": subject.get("head_sha"),
+    }
+
+
+def _status_notice(detail: dict) -> tuple[str, str]:
+    status = _status_text(detail)
+    integrity = detail.get("integrity_valid")
+    decision = detail.get("decision")
+    verdict = detail.get("assurance_verdict")
+    if integrity is False:
+        return "error", status
+    if integrity is not True:
+        return "warning", status
+    if detail.get("harness") == "change" and verdict == "refused":
+        mode = detail.get("rollout_mode") or "unknown"
+        effect = detail.get("enforcement_effect")
+        suffix = (
+            "현재 Observe 모드이므로 PR 병합을 자동 차단하지 않습니다."
+            if mode == "observe" and effect != "blocked"
+            else "통제별 판정과 적용 모드를 확인하세요."
+        )
+        return "warning", f"보증 조건이 충족되지 않아 추가 검토가 필요합니다. {suffix}"
+    if decision == "deny" or verdict == "deny":
+        return "error", status
+    if decision == "allow_candidate" and verdict == "observed":
+        return "info", "관찰 기록입니다. 승인·인증 또는 배포 허가를 의미하지 않습니다."
+    return "warning", status
+
+
 def _render_summary(rows: list[dict]) -> None:
     metric_strip([
         ("조회 기록", f"{len(rows)}건"),
         ("관찰됨", sum(_status_text(row) == "관찰됨" for row in rows)),
         ("계약 위반", sum(_status_text(row) == "계약 위반" for row in rows)),
         (
-            "판단 불가·거절",
-            sum(_status_text(row) in {"판단 불가", "보증 거절"} for row in rows),
+            "판단 불가·불충족",
+            sum(_status_text(row) in {"판단 불가", "보증 불충족"} for row in rows),
         ),
         (
             "무결성 이상",
@@ -224,47 +304,63 @@ def _render_detail(row: dict) -> None:
         return
 
     section_header("검증 판정 상세")
-    status = _status_text(detail)
-    if status == "관찰됨":
-        st.info("관찰 기록입니다. 승인·인증 또는 배포 허가를 의미하지 않습니다.")
-    elif status in {"계약 위반", "무결성 실패"}:
-        st.error(status)
-    else:
-        st.warning(status)
+    notice_level, notice_message = _status_notice(detail)
+    getattr(st, notice_level)(notice_message)
 
-    left, right = st.columns(2)
-    left.json({
-        "request_id": detail.get("request_id"),
-        "session_id": detail.get("session_id"),
-        "recommendation_id": detail.get("recommendation_id"),
-        "recommendation_version": detail.get("recommendation_version"),
-        "candidate_id": detail.get("candidate_id"),
-        "business_persisted": detail.get("business_persisted"),
-    })
-    right.json({
+    payload = detail.get("receipt_payload")
+    payload = payload if isinstance(payload, dict) else {}
+    decision_summary = {
         "decision": detail.get("decision"),
         "assurance_verdict": detail.get("assurance_verdict"),
         "evidence_valid": detail.get("evidence_valid"),
         "completeness_status": detail.get("completeness_status"),
         "missing_evidence": detail.get("missing_evidence"),
         "integrity_valid": detail.get("integrity_valid"),
-    })
+        "rollout_mode": detail.get("rollout_mode"),
+        "enforcement_effect": detail.get("enforcement_effect"),
+    }
 
-    payload = detail.get("receipt_payload")
-    payload = payload if isinstance(payload, dict) else {}
-    st.json({
-        "validator_version": detail.get("validator_version"),
-        "policy_digest": detail.get("policy_digest"),
-        "catalog_digest": detail.get("catalog_digest"),
-        "payload_digest": detail.get("payload_digest"),
-        "requested_agent_version": detail.get("requested_agent_version"),
-        "resolved_agent_version": detail.get("resolved_agent_version"),
-        "findings": payload.get("findings", []),
-    })
+    left, right = st.columns(2)
+    if detail.get("harness") == "change":
+        left.json(_change_subject(payload))
+        right.json(decision_summary)
+
+        section_header("통제별 판정")
+        control_rows = _change_control_rows(payload)
+        if control_rows:
+            st.dataframe(pd.DataFrame(control_rows), width="stretch", hide_index=True)
+        else:
+            st.warning("저장된 통제별 판정이 없습니다. 증거 기록을 확인하세요.")
+
+        st.json({
+            "validator_version": detail.get("validator_version"),
+            "policy_digest": detail.get("policy_digest"),
+            "payload_digest": detail.get("payload_digest"),
+            "source_observation_id": payload.get("source_observation_id"),
+        })
+    else:
+        left.json({
+            "request_id": detail.get("request_id"),
+            "session_id": detail.get("session_id"),
+            "recommendation_id": detail.get("recommendation_id"),
+            "recommendation_version": detail.get("recommendation_version"),
+            "candidate_id": detail.get("candidate_id"),
+            "business_persisted": detail.get("business_persisted"),
+        })
+        right.json(decision_summary)
+        st.json({
+            "validator_version": detail.get("validator_version"),
+            "policy_digest": detail.get("policy_digest"),
+            "catalog_digest": detail.get("catalog_digest"),
+            "payload_digest": detail.get("payload_digest"),
+            "requested_agent_version": detail.get("requested_agent_version"),
+            "resolved_agent_version": detail.get("resolved_agent_version"),
+            "findings": payload.get("findings", []),
+        })
 
 
 def render() -> None:
-    page_header("AI 출력 검증 기록", "Backend 저장 경계에서 생성된 검증 판정 이력")
+    page_header("AI 보증 판정 기록", "코드 변경과 AI 출력의 검증 판정 이력")
     filters, filter_key = _render_filters()
     changed = st.session_state.get(_STATE_FILTERS) != filter_key
     if changed:

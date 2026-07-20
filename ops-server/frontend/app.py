@@ -33,7 +33,7 @@ nav_sections = [
     ]),
     ("로그 · 추적", [
         st.Page(monitoring_logs.render, title="모니터링 로그", url_path="monitoring-logs", icon=":material/monitoring:"),
-        st.Page(assurance_records.render, title="AI 출력 검증 기록", url_path="assurance-records", icon=":material/verified_user:"),
+        st.Page(assurance_records.render, title="AI 보증 판정 기록", url_path="assurance-records", icon=":material/verified_user:"),
         st.Page(trace.render, title="사건 추적", url_path="trace", icon=":material/search:"),
         st.Page(log_eda.render, title="로그 탐색(EDA)", url_path="log-eda", icon=":material/biotech:"),
     ]),
