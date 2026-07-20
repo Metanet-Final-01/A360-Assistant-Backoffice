@@ -22,7 +22,7 @@ _SESSION = requests.Session()
 def render() -> None:
     # RAGAS 탭은 ragas_datasets.py의 별도 페이지로 옮겼다 — 여기서는 BFCL/Workflow만.
     page_header(
-        "DATASETS", "평가/입력 데이터셋 관리",
+        "평가/입력 데이터셋 관리",
         "BFCL·Workflow 골드셋과 Workflow 입력 데이터셋(업무정의서 원문)을 조회·업로드·수동 등록합니다.",
     )
     tab_bfcl, tab_wf_goldset, tab_wf_input = st.tabs(
