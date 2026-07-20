@@ -235,7 +235,14 @@ def _change_subject(payload: dict) -> dict:
 
 def _status_notice(detail: dict) -> tuple[str, str]:
     status = _status_text(detail)
-    if detail.get("harness") == "change" and status == "보증 불충족":
+    integrity = detail.get("integrity_valid")
+    decision = detail.get("decision")
+    verdict = detail.get("assurance_verdict")
+    if integrity is False:
+        return "error", status
+    if integrity is not True:
+        return "warning", status
+    if detail.get("harness") == "change" and verdict == "refused":
         mode = detail.get("rollout_mode") or "unknown"
         effect = detail.get("enforcement_effect")
         suffix = (
@@ -244,10 +251,10 @@ def _status_notice(detail: dict) -> tuple[str, str]:
             else "통제별 판정과 적용 모드를 확인하세요."
         )
         return "warning", f"보증 조건이 충족되지 않아 추가 검토가 필요합니다. {suffix}"
-    if status == "관찰됨":
-        return "info", "관찰 기록입니다. 승인·인증 또는 배포 허가를 의미하지 않습니다."
-    if status in {"계약 위반", "무결성 실패"}:
+    if decision == "deny" or verdict == "deny":
         return "error", status
+    if decision == "allow_candidate" and verdict == "observed":
+        return "info", "관찰 기록입니다. 승인·인증 또는 배포 허가를 의미하지 않습니다."
     return "warning", status
 
 

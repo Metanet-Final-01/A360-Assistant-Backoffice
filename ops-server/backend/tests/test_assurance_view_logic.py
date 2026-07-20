@@ -106,6 +106,21 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertIn("추가 검토", message)
         self.assertIn("병합을 자동 차단하지 않습니다", message)
 
+    @patch("views.assurance_records._status_text", return_value="표시 문구 변경")
+    def test_change_notice_uses_raw_contract_not_display_label(self, status_text):
+        level, message = _status_notice({
+            "harness": "change",
+            "integrity_valid": True,
+            "decision": "unassured",
+            "assurance_verdict": "refused",
+            "rollout_mode": "observe",
+            "enforcement_effect": "none",
+        })
+
+        self.assertEqual(level, "warning")
+        self.assertIn("병합을 자동 차단하지 않습니다", message)
+        status_text.assert_called_once()
+
     @patch("views.assurance_records.section_header")
     @patch("views.assurance_records.st.json")
     @patch("views.assurance_records.st.dataframe")
