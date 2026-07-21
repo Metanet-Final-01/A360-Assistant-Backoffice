@@ -12,6 +12,8 @@ from views.assurance_records import (  # noqa: E402
     _change_subject,
     _fetch,
     _get,
+    _human_review_summary,
+    _human_review_text,
     _render_detail,
     _status_notice,
     _status_text,
@@ -74,6 +76,29 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertEqual(rows[0]["상태"], "추가 검토 필요")
         self.assertEqual(rows[0]["판정 설명"], "의존성 취약점·라이선스 증거가 부족함")
         self.assertEqual(rows[0]["사유 코드"], "DEPENDENCY_EVIDENCE_INCOMPLETE")
+
+    def test_human_review_status_distinguishes_current_and_stale_approval(self):
+        approved = {
+            "human_review": {
+                "status": "approved",
+                "reason_code": "HUMAN_REVIEW_VERIFIED",
+                "review": {
+                    "reviewer_login": "reviewer",
+                    "submitted_at": "2026-07-21T08:00:00Z",
+                    "commit_id": "a" * 40,
+                },
+            }
+        }
+        self.assertEqual(_human_review_text(approved), "검토 완료")
+        self.assertEqual(_human_review_summary(approved)["승인자"], "reviewer")
+        self.assertEqual(
+            _human_review_text({"human_review": {"status": "stale"}}),
+            "재검토 필요",
+        )
+
+    def test_human_review_can_be_read_from_detail_payload(self):
+        detail = {"receipt_payload": {"human_review": {"status": "dismissed"}}}
+        self.assertEqual(_human_review_text(detail), "승인 취소")
 
     def test_change_subject_uses_workflow_context(self):
         subject = _change_subject({
@@ -151,6 +176,11 @@ class AssuranceViewLogicTest(unittest.TestCase):
                     "status": "unassured",
                     "reason_code": "PROTECTED_ORACLE_REVIEW_REQUIRED",
                 }],
+                "human_review": {
+                    "status": "missing",
+                    "reason_code": "HUMAN_REVIEW_NOT_SUBMITTED",
+                    "review": None,
+                },
             },
         }
 
@@ -162,8 +192,10 @@ class AssuranceViewLogicTest(unittest.TestCase):
         rendered = dataframe.call_args.args[0]
         self.assertEqual(rendered.iloc[0]["통제"], "CH-06")
         self.assertEqual(rendered.iloc[0]["상태"], "추가 검토 필요")
-        warning.assert_called_once()
-        self.assertIn("병합을 자동 차단하지 않습니다", warning.call_args.args[0])
+        self.assertEqual(warning.call_count, 2)
+        messages = [call.args[0] for call in warning.call_args_list]
+        self.assertTrue(any("병합을 자동 차단하지 않습니다" in message for message in messages))
+        self.assertTrue(any("유효한 사람 승인이 없습니다" in message for message in messages))
 
     @patch("views.assurance_records.st.warning")
     @patch("views.assurance_records.requests.get")

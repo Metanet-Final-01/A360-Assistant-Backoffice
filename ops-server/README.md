@@ -62,6 +62,8 @@ cd ops-server\frontend ; streamlit run app.py --server.port 8501
   제공한다. 생성·수정·삭제 API는 없다.
 - 판정 기록의 원본은 A360-Assistant-Backend에 있으며, Ops 서버는 로컬 JSONL이나 별도 DB에
   복제하지 않는다.
+- Change 하네스의 최초 판정과 사람 승인 후 후속 판정은 서로 다른 append-only 기록이다. 화면은
+  최신 기록을 먼저 보여주며, 상세에서 해당 판정 시점의 승인자·승인 시각·대상 커밋을 확인할 수 있다.
 - Backend 운영 API 인증은 `A360_BACKEND_OPS_API_KEY`를 우선 사용하고, 관리자 JWT 로그인은
   하위 호환 경로로만 사용한다.
 
