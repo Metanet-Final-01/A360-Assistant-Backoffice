@@ -40,6 +40,7 @@ _CONTROL_REASON_LABELS = {
     "DEPENDENCY_CLOSURE_DENIED": "의존성 검증을 통과하지 못함",
     "DEPENDENCY_EVIDENCE_INCOMPLETE": "의존성 취약점·라이선스 증거가 부족함",
     "PROTECTED_ORACLE_REVIEW_REQUIRED": "보호 대상 변경에 별도 사람 리뷰가 필요함",
+    "PROTECTED_ORACLE_REVIEW_VERIFIED": "현재 커밋에 대한 별도 사람 리뷰를 확인함",
     "SUBJECT_BOUND": "판정 대상 커밋과 증거가 일치함",
     "EVIDENCE_DIGESTS_VERIFIED": "증거 파일 지문이 검증됨",
 }
@@ -195,6 +196,40 @@ def _business_persisted_text(row: dict) -> str:
     return "미확인"
 
 
+def _human_review(row: dict) -> dict:
+    value = row.get("human_review")
+    if isinstance(value, dict):
+        return value
+    payload = row.get("receipt_payload")
+    if isinstance(payload, dict) and isinstance(payload.get("human_review"), dict):
+        return payload["human_review"]
+    return {}
+
+
+def _human_review_text(row: dict) -> str:
+    status = _human_review(row).get("status")
+    return {
+        "approved": "검토 완료",
+        "missing": "검토 필요",
+        "stale": "재검토 필요",
+        "dismissed": "승인 취소",
+        "rejected": "검토 불인정",
+    }.get(status, "해당 없음")
+
+
+def _human_review_summary(row: dict) -> dict:
+    human_review = _human_review(row)
+    review = human_review.get("review")
+    review = review if isinstance(review, dict) else {}
+    return {
+        "현재 사람 검토 상태": _human_review_text(row),
+        "승인자": review.get("reviewer_login"),
+        "승인 시각": review.get("submitted_at"),
+        "승인 대상 커밋": review.get("commit_id"),
+        "상태 사유": human_review.get("reason_code"),
+    }
+
+
 def _change_control_rows(payload: dict) -> list[dict]:
     controls = payload.get("controls", [])
     if not isinstance(controls, list):
@@ -281,6 +316,7 @@ def _table_rows(rows: list[dict]) -> list[dict]:
             "상태": _status_text(row),
             "검사 경계": row.get("harness"),
             "판정": _DECISION_LABELS.get(row.get("decision"), row.get("decision")),
+            "사람 검토": _human_review_text(row) if row.get("harness") == "change" else "해당 없음",
             "증거": row.get("completeness_status"),
             "업무 저장": _business_persisted_text(row),
             "요청": row.get("request_id"),
@@ -331,6 +367,14 @@ def _render_detail(row: dict) -> None:
             st.dataframe(pd.DataFrame(control_rows), width="stretch", hide_index=True)
         else:
             st.warning("저장된 통제별 판정이 없습니다. 증거 기록을 확인하세요.")
+
+        section_header("사람 검토 상태")
+        review_summary = _human_review_summary(detail)
+        if review_summary["현재 사람 검토 상태"] == "검토 완료":
+            st.success("현재 PR 커밋에 대한 별도 사람 검토가 완료되었습니다.")
+        elif review_summary["현재 사람 검토 상태"] != "해당 없음":
+            st.warning("현재 PR 커밋에는 유효한 사람 승인이 없습니다.")
+        st.json(review_summary)
 
         st.json({
             "validator_version": detail.get("validator_version"),
