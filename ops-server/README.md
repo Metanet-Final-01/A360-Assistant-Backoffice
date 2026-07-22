@@ -87,8 +87,11 @@ cd ops-server\frontend ; streamlit run app.py --server.port 8501
 cd backend ; $env:A360_OBSERVABILITY_DATABASE_URL="<읽기 전용 롤 DSN>" ; python scripts\verify_obs_db_schema.py
 ```
 
-- `trace` / `rag-logs` / `llm-usage snapshots`는 아직 수집 사본(JSONL) 기반이라
-  배포에서는 컨테이너 재시작 시 사라진다(후속 작업).
+- 사건 추적·RAG 요청 로그·비용 리포트도 직접 조회다(RPA-256). 특히 **RAG 요청 로그는
+  별도 수집이 필요 없다** — 같은 데이터가 이미 `rag_events`에 `event='http_request'`로
+  중앙화돼 있어 그쪽을 읽는다(RPA-128).
+- 수집(`POST .../collect`)과 `log_store`(JSONL 사본)는 로컬 분석용으로만 남아 있다.
+  화면은 쓰지 않으므로 배포 동작에 영향이 없다.
 
 ## rag-server 연동
 
