@@ -62,11 +62,16 @@ def _check_writes_are_blocked() -> bool:
     처음 구현은 커서에서 `SET default_transaction_read_only = on`을 실행했는데, 그 설정은
     다음 트랜잭션의 기본값이라 이미 열린 트랜잭션엔 적용되지 않았고 CREATE TEMP TABLE이
     그대로 통과했다. 단위 테스트로는 잡히지 않는 종류라 여기서 실물로 확인한다.
-    TEMP 테이블이라 혹 성공하더라도 세션 한정이고 DB에 남지 않는다.
+
+    프로브로는 `SELECT ... FOR UPDATE`를 쓴다. 읽기 전용 트랜잭션이 거부하는 문장이면서
+    **아무것도 만들지 않기** 때문이다 — 처음엔 CREATE TEMP TABLE을 썼는데, 세션 한정이라
+    흔적은 안 남아도 ops-server가 관측 DB에 생성 문장을 내는 모양새가 된다(Qodo 지적).
+    `show transaction_read_only`로 설정값을 읽는 방법도 있지만, 그건 '선언'을 확인할 뿐
+    실제로 막히는지를 확인하지 못한다 — 애초에 그 착각 때문에 생긴 버그였다.
     """
     try:
         with obs_db._cursor() as cur:
-            cur.execute("create temp table _obs_readonly_probe (x int)")
+            cur.execute("select 1 from audit_logs limit 1 for update")
     except Exception:  # noqa: BLE001 — 무엇으로 막히든 '막혔다'가 확인하려는 바다
         print(f"  OK   {'writes blocked':26s} (read-only 강제됨)")
         return True

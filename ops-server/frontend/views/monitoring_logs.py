@@ -232,13 +232,19 @@ def _load(source: str, params: dict, state_key: str) -> None:
         resp = requests.get(f"{OPS_BACKEND_URL}/observability/{source}", params=params, timeout=15)
         if resp.status_code == 503:
             # 조용히 옛 사본을 보여주지 않는다 — 구성 오류를 화면에 드러낸다.
+            st.session_state.pop(state_key, None)
             st.error(f"관측 DB 직접 조회가 구성되지 않았습니다: {resp.text}")
             return
         resp.raise_for_status()
         data = resp.json()
         if not isinstance(data, list):
+            st.session_state.pop(state_key, None)
             st.error(f"조회 응답 형식이 예상과 다릅니다: {data}")
             return
         st.session_state[state_key] = data
     except (requests.RequestException, ValueError) as e:
+        # 실패했는데 앞선 조회 결과를 그대로 두면, 새로고침을 눌렀는데도 옛 행이 계속
+        # 그려진다 — 에러 문구는 위에 뜨지만 표가 남아 있으면 유효한 데이터로 읽힌다.
+        # 그건 사본 폴백을 없앤 이 변경의 취지와 정면으로 어긋난다.
+        st.session_state.pop(state_key, None)
         st.error(f"관측 DB 조회 실패: {e}")

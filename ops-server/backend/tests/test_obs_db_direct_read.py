@@ -298,10 +298,21 @@ def test_daily_rollups_shape(monkeypatch):
 
 def test_probe_runs_real_query_not_just_connect(monkeypatch):
     """health가 '연결됨'만 보고 속지 않게, 실제 SELECT까지 돌린다 (RPA-249 교훈)."""
-    cur = _install_cursor(monkeypatch, [(42,)])
+    cur = _install_cursor(monkeypatch, [(1,)])
     out = obs_db.probe()
-    assert out == {"ok": True, "audit_logs_rows": 42}
-    assert any("select count(*) from audit_logs" in s for s, _ in cur.executed)
+    assert out == {"ok": True, "has_rows": True}
+    assert any("from audit_logs" in s for s, _ in cur.executed)
+
+
+def test_probe_does_not_scan_the_whole_table(monkeypatch):
+    """확인하려는 건 '붙어서 읽히나'이지 행 수가 아니다. count(*)는 관측 DB가 커질수록
+    풀스캔이 되어 statement_timeout에 걸리고, 그러면 프로브가 무거워서 실패한 것을
+    'DB가 죽었다'로 오판하게 된다."""
+    cur = _install_cursor(monkeypatch, [(1,)])
+    obs_db.probe()
+    sql = [s for s, _ in cur.executed if "audit_logs" in s][0]
+    assert "count(*)" not in sql
+    assert "limit 1" in sql
 
 
 class _FakeConn:
