@@ -7,3 +7,4 @@
 - 스크립트는 `ops-server/backend/local_llm_experiment/`에 있고, `cd ops-server/backend`에서 실행해야 함(상대 import 기준).
 - `build_generation_comparison.py`, `build_judge_comparison_xlsx.py`의 `OUTPUT_PATH`는 원래 컴퓨터의 임시 스크래치패드 절대경로라 이 컴퓨터에 맞게 고쳐야 함.
 - 다음 할 일: gpt-4o-mini 생성 vs 로컬 생성 비교, judge 4조건 비교 다 끝남 — 사용자에게 다음 방향(전체 129케이스로 확대할지, chunk_size 다른 조합도 로컬모델로 돌릴지 등) 확인 필요.
+- 실험용 임베딩 테이블(`rag_documents_eval_*`)은 git으로 안 옮겨져서 원격 Neon(`RAG_DATABASE_URL`)에 `rag_documents_eval_cs1200_ov0`만 복사해뒀음(9570건) — Neon 프로젝트 용량 한도가 512MB라 13개 전부는 못 옮김. 다른 chunk_size 조합 필요하면 원격에 올리지 말고 `scripts/ragas_eval/chunk_candidates/build_candidate.py --chunk-size N --overlap M`으로 그 컴퓨터 로컬 DB에 직접 재생성할 것(원본 문서+OpenAI 임베딩으로 100% 재현 가능).
