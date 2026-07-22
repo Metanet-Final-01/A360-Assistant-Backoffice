@@ -121,12 +121,17 @@ class LlmUsageStatsReadPathTest(unittest.TestCase):
         fetch_db.return_value = {"period_days": 7, "group_by": "user", "total": {}, "breakdown": []}
 
         response = self.client.get(
-            "/observability/llm-usage/stats", params={"days": 7, "group_by": "user"}
+            "/observability/llm-usage/stats",
+            params={"days": 7, "group_by": "user", "order_by": "cost"},
         )
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["group_by"], "user")
-        self.assertEqual(fetch_db.call_args.kwargs, {"days": 7, "group_by": "user"})
+        # order_by가 서버까지 전달돼야 한다 — 여기서 끊기면 화면은 비용 상위를 요청했는데
+        # 서버는 호출 수 상위를 잘라 보내고, 비용 1위가 조용히 빠진다.
+        self.assertEqual(
+            fetch_db.call_args.kwargs, {"days": 7, "group_by": "user", "order_by": "cost"}
+        )
 
     @patch("app.main.obs_db.fetch_llm_usage_stats")
     def test_invalid_group_by_is_400(self, fetch_db):

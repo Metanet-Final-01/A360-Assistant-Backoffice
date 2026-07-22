@@ -55,6 +55,17 @@ _MAX_LIMIT_METRICS = 2000  # request_metrics · rag_events (백엔드 le=2000)
 _MAX_LIMIT_TURN_EVENTS = 1000  # turn_events (백엔드 le=1000)
 # llm-usage 집계의 breakdown 상한 — user/session 축은 행 수가 사용자·세션 수만큼 늘어난다.
 _MAX_BREAKDOWN = 200
+
+# breakdown을 자를 때 **무엇을 기준으로 상위 N을 고를지**. 정렬식은 SQL에 그대로 들어가므로
+# 바인드가 불가능하다 — group_by와 같은 이유로 화이트리스트가 유일한 방어다.
+#
+# 기준을 고를 수 있어야 하는 이유: 비용 리포트는 '가장 비싼' 축을 보는 화면인데 호출 수로
+# 자르면 **호출은 적지만 비싼 세션이 응답에서 통째로 빠진다.** 화면은 받은 것만 정렬하므로
+# 그 사실조차 드러나지 않는다.
+_BREAKDOWN_ORDERS = {
+    "calls": "count(*)",
+    "cost": "coalesce(sum(cost_usd), 0.0)",
+}
 _STATEMENT_TIMEOUT_MS = 10_000
 
 # llm-usage/stats의 group_by → 컬럼. 백엔드 _GROUP_COLS와 같은 매핑이어야 한다.
@@ -425,7 +436,10 @@ def fetch_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
 
 
 def fetch_llm_usage_stats(
-    days: int = 30, group_by: str = "component", limit: int = _MAX_BREAKDOWN
+    days: int = 30,
+    group_by: str = "component",
+    limit: int = _MAX_BREAKDOWN,
+    order_by: str = "calls",
 ) -> dict:
     """LLM 사용량 집계 — 백엔드 `GET /api/admin/llm-usage/stats`와 같은 키를 반환한다.
 
@@ -433,7 +447,12 @@ def fetch_llm_usage_stats(
 
     group_by가 user/session이면 행 수가 사용자·세션 수만큼 늘어난다(실측: session 축이
     이미 300개를 넘었고 계속 는다). 화면은 이걸 표·차트로 전부 그리므로 상한이 없으면
-    응답 크기와 렌더링 비용이 선형으로 커진다. 호출이 많은 순으로 상위 N개만 준다.
+    응답 크기와 렌더링 비용이 선형으로 커진다. 그래서 상위 N개만 준다.
+
+    **무엇의 상위인지는 호출부가 정한다**(order_by). 비용 리포트는 '가장 비싼' 축을 보는
+    화면인데 호출 수로 자르면 호출은 적지만 비싼 세션이 응답에서 통째로 빠지고, 화면은
+    받은 것만 정렬하므로 그 사실조차 드러나지 않는다. 기본값은 백엔드 admin API와 같은
+    calls 기준이다.
 
     ## total은 잘린 합이 아니다
 
@@ -449,6 +468,9 @@ def fetch_llm_usage_stats(
     col = _GROUP_COLS.get(group_by)
     if col is None:
         raise ValueError(f"group_by는 {sorted(_GROUP_COLS)} 중 하나여야 합니다: {group_by!r}")
+    order_expr = _BREAKDOWN_ORDERS.get(order_by)
+    if order_expr is None:
+        raise ValueError(f"order_by는 {sorted(_BREAKDOWN_ORDERS)} 중 하나여야 합니다: {order_by!r}")
     days = max(1, min(int(days), 365))
     since = _utcnow() - timedelta(days=days)
     n = _clamp(limit, _MAX_BREAKDOWN)
@@ -471,7 +493,8 @@ def fetch_llm_usage_stats(
             "coalesce(sum(output_tokens), 0) as output_tokens, "
             "coalesce(sum(cost_usd), 0.0) as cost_usd "
             "from llm_usage where created_at >= %s "
-            f"group by {col} order by count(*) desc limit %s",
+            # 동점일 때 순서가 흔들리지 않게 키를 tie-breaker로 둔다.
+            f"group by {col} order by {order_expr} desc, {col} limit %s",
             [since, n],
         )
         rows = cur.fetchall()
@@ -495,6 +518,7 @@ def fetch_llm_usage_stats(
     return {
         "period_days": days,
         "group_by": group_by,
+        "order_by": order_by,
         "total": total,
         "breakdown": breakdown,
         # 잘렸다는 사실을 숨기지 않는다 — 화면이 "상위 N개만"을 표시할 수 있어야

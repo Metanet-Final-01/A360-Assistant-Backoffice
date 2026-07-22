@@ -44,8 +44,13 @@ def render() -> None:
 
 
 def _render_axis(axis: str, key_label: str, days: int) -> None:
+    # order_by=cost — 이 화면은 '가장 비싼' 축을 보는 곳이다. 기본값(calls)으로 받으면
+    # 호출은 적지만 비싼 세션이 상위 N에서 잘려 나가고, 화면은 받은 것만 정렬하므로
+    # 그 사실조차 드러나지 않는다.
     snap = _safe_get(
-        OPS_BACKEND_URL, "/observability/llm-usage/stats", {"group_by": axis, "days": days}
+        OPS_BACKEND_URL,
+        "/observability/llm-usage/stats",
+        {"group_by": axis, "days": days, "order_by": "cost"},
     )
     # 실패를 '사용량 없음'으로 삼키지 않는다 — 빈 화면과 조회 실패는 다른 상태다
     # (CodeRabbit #13에서 지적됐던 것과 같은 이유).

@@ -350,6 +350,30 @@ def test_group_count_includes_the_null_group(monkeypatch):
     assert "filter (where user_id is null)" in sql
 
 
+def test_truncation_criterion_is_chosen_by_the_caller(monkeypatch):
+    """**무엇의 상위 N인지**는 화면이 정해야 한다.
+
+    비용 리포트는 '가장 비싼' 축을 보는 화면인데 호출 수로 자르면, 호출은 적지만 비싼
+    세션이 응답에서 통째로 빠진다. 화면은 받은 것만 정렬하므로 그 사실조차 드러나지
+    않는다 — 비용 1위가 목록에 없는데 아무도 모른다.
+    """
+    cur = _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    obs_db.fetch_llm_usage_stats(group_by="session", order_by="cost")
+    sql = [s for s, _ in cur.executed if "group by" in s][0]
+    assert "order by coalesce(sum(cost_usd), 0.0) desc" in sql
+
+    cur2 = _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    obs_db.fetch_llm_usage_stats(group_by="session")  # 기본은 백엔드와 같은 calls 기준
+    assert "order by count(*) desc" in [s for s, _ in cur2.executed if "group by" in s][0]
+
+
+def test_order_by_is_whitelisted(monkeypatch):
+    """정렬식은 SQL에 그대로 들어가 바인드가 불가능하다 — group_by와 같은 방어가 필요하다."""
+    _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    with pytest.raises(ValueError):
+        obs_db.fetch_llm_usage_stats(order_by="cost_usd; drop table llm_usage --")
+
+
 def test_breakdown_is_capped(monkeypatch):
     """user/session 축은 행 수가 사용자·세션 수만큼 늘어난다(실측 300+). 상한이 없으면
     응답 크기와 렌더링 비용이 선형으로 커진다."""

@@ -726,7 +726,9 @@ def collect_llm_usage(days: int = 30, group_by: str = "component") -> dict:
 
 @app.get("/observability/llm-usage/stats")
 def get_llm_usage_stats(
-    days: int = Query(30, ge=1, le=365), group_by: str = Query("component"),
+    days: int = Query(30, ge=1, le=365),
+    group_by: str = Query("component"),
+    order_by: str = Query("calls", description="breakdown 상위 N을 고르는 기준: calls | cost"),
 ) -> dict:
     """LLM 사용량 집계를 관측 DB에서 직접 계산한다 — 비용 리포트 화면의 소스.
 
@@ -734,7 +736,9 @@ def get_llm_usage_stats(
     읽었다. 이력이 목적이 아니라 "지금 집계"를 보려던 것이라, 사본은 중간 저장소일 뿐이었다.
     직접 조회 한 번으로 대체한다(사본은 배포에서 재시작마다 사라진다).
     """
-    return _direct_read(obs_db.fetch_llm_usage_stats, days=days, group_by=group_by)
+    return _direct_read(
+        obs_db.fetch_llm_usage_stats, days=days, group_by=group_by, order_by=order_by
+    )
 
 
 @app.get("/observability/llm-usage/snapshots")
