@@ -96,6 +96,17 @@ def _cursor():
     """읽기 전용 조회용 커서. 매 호출 새 연결 — 수집은 주기 폴링이라 풀이 불필요하다.
 
     statement_timeout을 걸어 대시보드가 무거운 쿼리로 관측 DB를 붙잡지 않게 한다.
+
+    ## 읽기 전용을 **연결 속성**으로 거는 이유 (실측으로 고친 자리)
+
+    처음엔 커서에서 `SET default_transaction_read_only = on`을 실행했다. 그런데 그 설정은
+    **다음 트랜잭션**의 기본값이라, 앞선 문장(statement_timeout) 때문에 이미 열린
+    트랜잭션에는 적용되지 않는다. 실제로 그 상태에서 `CREATE TEMP TABLE`이 **통과했다** —
+    "롤이 잘못 발급돼도 한 겹 더 막는다"고 적어둔 방어가 실은 아무것도 막지 않았다.
+    가드가 걸렸다고 주장하는 자리와 동작이 실제로 읽는 자리가 달랐던 셈이다.
+
+    psycopg의 `conn.read_only`는 트랜잭션이 열리기 전에 설정해야 하므로, 첫 문장을
+    실행하기 **전에** 건다.
     """
     import psycopg
 
@@ -104,13 +115,23 @@ def _cursor():
     except ObservabilityDBUnavailable:
         raise
     except Exception as e:  # noqa: BLE001 — 연결 실패도 '직접 조회 불가'로 통일해 올린다
+        # 사용자에게 보이는 메시지는 최소로 두되(DSN·크레덴셜이 새면 안 된다), 원인은
+        # 로그에 남긴다 — 안 그러면 "직접 조회 불가"만 보이고 왜인지는 아무도 모른다.
+        logger.warning("관측 DB 연결 실패: %s", type(e).__name__, exc_info=True)
         raise ObservabilityDBUnavailable(f"관측 DB 연결 실패: {type(e).__name__}") from e
     try:
+        conn.read_only = True  # 트랜잭션이 열리기 전에 — 위 docstring 참고
         with conn.cursor() as cur:
             cur.execute(f"SET statement_timeout = {_STATEMENT_TIMEOUT_MS}")
-            # 읽기 전용 롤이 기대지만, 롤이 잘못 발급돼도 쓰기가 나가지 않게 한 겹 더 막는다.
-            cur.execute("SET default_transaction_read_only = on")
             yield cur
+    except psycopg.Error as e:
+        # 스키마·권한 오류(UndefinedTable, InsufficientPrivilege 등)가 raw로 새면 호출부는
+        # 500을 낸다. 읽기 전용 롤을 새로 발급받는 구성에서 권한 부족은 흔한 시나리오라,
+        # 이 모듈의 단일 오류 계약으로 모아 503으로 드러낸다.
+        # psycopg.Error로 좁힌다 — 우리 로직 버그(KeyError 등)까지 'DB 불가'로 둔갑시키면
+        # 원인을 숨기게 된다.
+        logger.warning("관측 DB 조회 실패: %s", type(e).__name__, exc_info=True)
+        raise ObservabilityDBUnavailable(f"관측 DB 조회 실패: {type(e).__name__}") from e
     finally:
         conn.close()
 

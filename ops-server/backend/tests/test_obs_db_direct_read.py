@@ -304,34 +304,118 @@ def test_probe_runs_real_query_not_just_connect(monkeypatch):
     assert any("select count(*) from audit_logs" in s for s, _ in cur.executed)
 
 
-def test_cursor_forces_read_only_transaction(monkeypatch):
-    """읽기 전용 롤이 전제지만, 롤이 잘못 발급돼도 쓰기가 나가지 않게 한 겹 더 막는다."""
-    import types
+class _FakeConn:
+    """실행 순서를 기록하는 연결 흉내 — read_only를 언제 걸었는지가 핵심이라 순서를 남긴다."""
 
-    calls: list[str] = []
+    def __init__(self, events, execute_error=None):
+        object.__setattr__(self, "events", events)
+        object.__setattr__(self, "_execute_error", execute_error)
 
-    class _C:
-        def execute(self, sql, params=None):
-            calls.append(sql)
+    def __setattr__(self, key, value):
+        self.events.append((key, value))
 
-        def __enter__(self):
-            return self
+    def cursor(self):
+        conn = self
 
-        def __exit__(self, *a):
-            return False
+        class _C:
+            def execute(self, sql, params=None):
+                conn.events.append(("execute", sql))
+                if conn._execute_error is not None:
+                    raise conn._execute_error
 
-    class _Conn:
-        def cursor(self):
-            return _C()
+            def fetchall(self):
+                return []
 
-        def close(self):
-            pass
+            def fetchone(self):
+                return (0,)
 
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *a):
+                return False
+
+        return _C()
+
+    def close(self):
+        self.events.append(("close", None))
+
+
+def test_cursor_sets_read_only_before_any_statement(monkeypatch):
+    """읽기 전용을 **첫 문장보다 먼저** 걸어야 실제로 막힌다.
+
+    처음엔 커서에서 `SET default_transaction_read_only = on`을 실행했는데, 그 설정은
+    '다음 트랜잭션'의 기본값이라 앞선 문장(statement_timeout)이 연 트랜잭션에는 적용되지
+    않는다. 실제 DB에 걸어보니 그 상태에서 CREATE TEMP TABLE이 **통과했다** — 문서에는
+    "한 겹 더 막는다"고 적혀 있었지만 아무것도 막지 않고 있었다.
+
+    이전 테스트는 'SET 문이 실행됐다'만 확인해서 그 구멍을 그대로 통과시켰다(가짜 초록불).
+    그래서 존재가 아니라 **순서**를 본다.
+    """
+    import psycopg
+
+    events: list[tuple] = []
     monkeypatch.setenv("A360_OBSERVABILITY_DATABASE_URL", "postgresql://u:p@h/db")
-    monkeypatch.setitem(
-        sys.modules, "psycopg", types.SimpleNamespace(connect=lambda *a, **k: _Conn())
-    )
+    monkeypatch.setattr(psycopg, "connect", lambda *a, **k: _FakeConn(events))
+
     with obs_db._cursor():
         pass
-    assert any("default_transaction_read_only = on" in c for c in calls)
-    assert any("statement_timeout" in c for c in calls)
+
+    keys = [k for k, _ in events]
+    assert ("read_only", True) in events, "읽기 전용을 연결 속성으로 걸지 않았다"
+    assert keys.index("read_only") < keys.index("execute"), (
+        "read_only가 첫 문장보다 뒤면 이미 열린 트랜잭션엔 적용되지 않는다"
+    )
+    assert any("statement_timeout" in sql for k, sql in events if k == "execute")
+
+
+def test_query_errors_become_the_single_unavailable_contract(monkeypatch):
+    """스키마·권한 오류가 raw psycopg 예외로 새면 호출부는 500을 낸다.
+
+    읽기 전용 롤을 새로 발급받는 구성에서 권한 부족·테이블 부재는 흔한 시나리오다.
+    이 모듈의 단일 오류 계약으로 모아야 화면이 503("직접 조회 불가")으로 드러낸다.
+    """
+    import psycopg
+
+    monkeypatch.setenv("A360_OBSERVABILITY_DATABASE_URL", "postgresql://u:p@h/db")
+    monkeypatch.setattr(
+        psycopg,
+        "connect",
+        lambda *a, **k: _FakeConn([], execute_error=psycopg.errors.UndefinedTable("없음")),
+    )
+
+    with pytest.raises(obs_db.ObservabilityDBUnavailable):
+        with obs_db._cursor() as cur:
+            cur.execute("select 1 from nope")
+
+
+def test_logic_bugs_are_not_disguised_as_db_unavailable(monkeypatch):
+    """psycopg.Error로 좁힌 이유 — 우리 로직 버그까지 'DB 불가'로 둔갑하면 원인을 숨긴다."""
+    import psycopg
+
+    monkeypatch.setenv("A360_OBSERVABILITY_DATABASE_URL", "postgresql://u:p@h/db")
+    monkeypatch.setattr(psycopg, "connect", lambda *a, **k: _FakeConn([]))
+
+    with pytest.raises(KeyError):
+        with obs_db._cursor():
+            raise KeyError("우리 쪽 버그")
+
+
+def test_connection_failure_is_logged_without_leaking_dsn(monkeypatch, caplog):
+    """메시지는 최소로(크레덴셜 유출 방지), 원인은 로그로 — 안 그러면 '조회 불가'만 보이고
+    왜인지는 아무도 모른다."""
+    import psycopg
+
+    def _boom(*a, **k):
+        raise OSError("connection refused")
+
+    monkeypatch.setenv("A360_OBSERVABILITY_DATABASE_URL", "postgresql://user:secret@h/db")
+    monkeypatch.setattr(psycopg, "connect", _boom)
+
+    with caplog.at_level("WARNING"):
+        with pytest.raises(obs_db.ObservabilityDBUnavailable) as e:
+            with obs_db._cursor():
+                pass
+
+    assert "secret" not in str(e.value)  # 사용자에게 보이는 메시지엔 크레덴셜이 없다
+    assert any("OSError" in r.getMessage() for r in caplog.records)

@@ -56,6 +56,24 @@ def _row_count(out: dict) -> int:
     return int(out.get("audit_logs_rows", 0))
 
 
+def _check_writes_are_blocked() -> bool:
+    """쓰기가 실제로 막히는지 — 가드가 '있다고 주장하는 것'과 '실제로 막는 것'은 다르다.
+
+    처음 구현은 커서에서 `SET default_transaction_read_only = on`을 실행했는데, 그 설정은
+    다음 트랜잭션의 기본값이라 이미 열린 트랜잭션엔 적용되지 않았고 CREATE TEMP TABLE이
+    그대로 통과했다. 단위 테스트로는 잡히지 않는 종류라 여기서 실물로 확인한다.
+    TEMP 테이블이라 혹 성공하더라도 세션 한정이고 DB에 남지 않는다.
+    """
+    try:
+        with obs_db._cursor() as cur:
+            cur.execute("create temp table _obs_readonly_probe (x int)")
+    except Exception:  # noqa: BLE001 — 무엇으로 막히든 '막혔다'가 확인하려는 바다
+        print(f"  OK   {'writes blocked':26s} (read-only 강제됨)")
+        return True
+    print(f"  FAIL {'writes blocked':26s} 쓰기가 통과했다 — read-only 가드가 무효다")
+    return False
+
+
 def main() -> int:
     if not obs_db.configured():
         print("A360_OBSERVABILITY_DATABASE_URL이 없습니다 — 관측 DB 크레덴셜을 주입하고 실행하세요.")
@@ -68,6 +86,9 @@ def main() -> int:
         except Exception as e:  # noqa: BLE001 — 어떤 실패든 계약 위반으로 보고한다
             failed += 1
             print(f"  FAIL {name:26s} {type(e).__name__}: {e}")
+
+    if not _check_writes_are_blocked():
+        failed += 1
 
     print("FAILED" if failed else "ALL OK")
     return 1 if failed else 0
