@@ -193,8 +193,11 @@ def test_rag_events_shape(monkeypatch):
     from datetime import datetime, timezone
 
     ts = datetime(2026, 7, 22, 1, 2, 3, tzinfo=timezone.utc)
+    # detail은 DB에서 Text 컬럼이라 **문자열**로 온다(dict가 아니다). 백엔드가 적재 시점에
+    # json.dumps + 마스킹을 끝내 넣기 때문 — 조회 시점 마스킹이 아니므로 직접 조회가
+    # 마스킹을 우회하지 않는다(그래서 이 경로가 안전하다).
     cur = _install_cursor(
-        monkeypatch, [(3, "req-1", "search", "hybrid_search", "ok", 42, {"k": 1}, ts)]
+        monkeypatch, [(3, "req-1", "search", "hybrid_search", "ok", 42.0, '{"k": 1}', ts)]
     )
     out = obs_db.fetch_rag_events(limit=5, request_id="req-1")
     assert set(out) == {"events"}
@@ -204,8 +207,8 @@ def test_rag_events_shape(monkeypatch):
         "event": "search",
         "function": "hybrid_search",
         "status": "ok",
-        "duration_ms": 42,
-        "detail": {"k": 1},
+        "duration_ms": 42.0,
+        "detail": '{"k": 1}',
         "created_at": "2026-07-22T01:02:03+00:00",
     }
     sql, params = [x for x in cur.executed if "from rag_events" in x[0]][0]

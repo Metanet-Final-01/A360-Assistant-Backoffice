@@ -4,7 +4,7 @@
 
 from datetime import datetime, timezone
 
-from . import backend_client, log_store
+from . import backend_client, log_store, obs_db
 from .log_schema import (
     AuditLogRecord,
     MetricsDailyRecord,
@@ -165,5 +165,8 @@ def status() -> dict:
     return {
         **_collect_state,
         "credentials_configured": backend_client.credentials_configured(),
+        # 관측 DB 직접 조회 구성 여부 — 화면이 "직접 조회 미구성" 배너를 띄우는 근거다.
+        # 미구성이면 조회 엔드포인트가 503을 낸다(사본으로 조용히 되돌아가지 않는다).
+        "obs_db_configured": obs_db.configured(),
         "backend_health": dict(_health_state),
     }

@@ -45,7 +45,7 @@ from app.eval.xlsx_report import build_comparison_xlsx
 from app.loadtest import executor as loadtest_executor
 from app.loadtest.schema import LoadTestRunRecord
 from app.loadtest.store import append_run as append_loadtest_run, load_runs as load_loadtest_runs
-from app.observability import backend_client, collector, log_store as obs_log_store
+from app.observability import backend_client, collector, log_store as obs_log_store, obs_db
 from app.settings import backend_settings
 from app.scheduler import scheduler as rag_scheduler
 from app.scheduler.schema import RagIngestScheduleRequest, ScheduleApplyResult
@@ -630,6 +630,22 @@ def bfcl_pass_k_status() -> dict:
     return bfcl_pass_k.state
 
 
+def _direct_read(fn, *args, **kwargs):
+    """관측 DB 직접 조회 예외를 HTTP로 옮긴다.
+
+    **미구성/연결 실패를 503으로 드러낸다** — 여기서 사본 조회로 조용히 되돌아가면
+    "직접 읽는 줄 알았는데 실은 화면이 옛 사본을 보고 있는" 상태를 아무도 모른다.
+    백엔드에서 조용한 폴백이 장애를 숨긴 사례가 이미 둘 있었다(OPENSEARCH_HOST 빈 값,
+    RAG_DATABASE_URL 미주입). 화면은 503을 받아 "직접 조회 미구성"을 띄워야 한다.
+    """
+    try:
+        return fn(*args, **kwargs)
+    except obs_db.ObservabilityDBUnavailable as e:
+        raise HTTPException(503, str(e)) from e
+    except ValueError as e:  # session_id 형식 오류 등 — 백엔드의 400 INVALID_ID에 대응
+        raise HTTPException(400, str(e)) from e
+
+
 def _run_collect(fn, *args, **kwargs) -> dict:
     """backend_client 예외를 사람이 읽을 수 있는 HTTPException으로 변환."""
     try:
@@ -684,7 +700,15 @@ def collect_audit_logs(limit: int = 500, method: str | None = None, status_code:
 
 @app.get("/observability/audit-logs")
 def get_audit_logs(limit: int = 200, method: str | None = None, status_code: int | None = None, user_id: str | None = None) -> list:
-    return obs_log_store.load_audit_logs(limit=limit, method=method, status_code=status_code, user_id=user_id)
+    """관측 DB를 **직접** 읽는다 — 수집 사본(JSONL)이 아니다.
+
+    사본은 컨테이너 파일시스템에 있어 배포에서 재시작마다 사라진다. 화면이 사본을 읽던
+    구조에서는 배포 후 "수집 버튼을 누르기 전까지 빈 화면"이었고, 정작 백엔드가 죽었을 때
+    원인을 보려던 과거 데이터도 없었다(관측 시스템이 관측 대상에 의존하는 안티패턴).
+    """
+    return _direct_read(
+        obs_db.fetch_audit_logs, limit=limit, method=method, status_code=status_code, user_id=user_id
+    )["logs"]
 
 
 @app.delete("/observability/audit-logs")
@@ -732,9 +756,17 @@ def collect_metrics_daily(
 
 @app.get("/observability/metrics-daily")
 def get_metrics_daily(
-    method: str | None = None, path_contains: str | None = None, limit: int = Query(500, ge=1, le=2000),
+    method: str | None = None,
+    path_contains: str | None = None,
+    limit: int = Query(500, ge=1, le=2000),
+    days: int = Query(90, ge=1, le=90),
 ) -> list:
-    return obs_log_store.load_metrics_daily(method=method, path_contains=path_contains, limit=limit)
+    """관측 DB 직접 조회. days는 새로 추가한 선택 인자다 — 사본 조회 시절엔 기간 개념이
+    없어(수집된 것 전부) 프론트가 보내지 않는다. 기본값을 상한(90일)으로 둬 기존 화면이
+    보던 범위를 좁히지 않는다."""
+    return _direct_read(
+        obs_db.fetch_metrics_daily, days=days, method=method, path=path_contains, limit=limit
+    )["rows"]
 
 
 @app.post("/observability/usage-daily/collect")
@@ -746,8 +778,17 @@ def collect_usage_daily(
 
 
 @app.get("/observability/usage-daily")
-def get_usage_daily(component: str | None = None, limit: int = Query(500, ge=1, le=2000)) -> list:
-    return obs_log_store.load_usage_daily(component=component, limit=limit)
+def get_usage_daily(
+    component: str | None = None,
+    model: str | None = None,
+    limit: int = Query(500, ge=1, le=2000),
+    days: int = Query(365, ge=1, le=365),
+) -> list:
+    """관측 DB 직접 조회. days·model은 새로 추가한 선택 인자이고, 기본값은
+    get_metrics_daily와 같은 이유로 상한이다(기존 화면 범위를 좁히지 않기 위해)."""
+    return _direct_read(
+        obs_db.fetch_usage_daily, days=days, component=component, model=model, limit=limit
+    )["rows"]
 
 
 @app.post("/observability/turn-events/collect")
@@ -758,7 +799,8 @@ def collect_turn_events(session_id: str | None = None, limit: int = Query(200, g
 
 @app.get("/observability/turn-events")
 def get_turn_events(session_id: str | None = None, limit: int = Query(200, ge=1, le=1000)) -> list:
-    return obs_log_store.load_turn_events(session_id=session_id, limit=limit)
+    """관측 DB 직접 조회 — get_audit_logs와 같은 이유."""
+    return _direct_read(obs_db.fetch_turn_events, session_id=session_id, limit=limit)["events"]
 
 
 @app.delete("/observability/turn-events")
@@ -775,7 +817,10 @@ def collect_rag_events(request_id: str | None = None, limit: int = Query(500, ge
 
 @app.get("/observability/rag-events")
 def get_rag_events(request_id: str | None = None, event: str | None = None, limit: int = Query(500, ge=1, le=2000)) -> list:
-    return obs_log_store.load_rag_events(request_id=request_id, event=event, limit=limit)
+    """관측 DB 직접 조회 — get_audit_logs와 같은 이유."""
+    return _direct_read(
+        obs_db.fetch_rag_events, request_id=request_id, event=event, limit=limit
+    )["events"]
 
 
 @app.delete("/observability/rag-events")
@@ -796,7 +841,10 @@ def collect_request_metrics(
 def get_request_metrics(
     method: str | None = None, path_contains: str | None = None, limit: int = Query(500, ge=1, le=2000),
 ) -> list:
-    return obs_log_store.load_request_metrics(method=method, path_contains=path_contains, limit=limit)
+    """관측 DB 직접 조회 — get_audit_logs와 같은 이유."""
+    return _direct_read(
+        obs_db.fetch_request_metrics, method=method, path=path_contains, limit=limit
+    )["rows"]
 
 
 @app.get("/observability/backend-health")

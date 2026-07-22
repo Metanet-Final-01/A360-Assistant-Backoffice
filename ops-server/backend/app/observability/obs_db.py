@@ -255,13 +255,21 @@ def fetch_request_metrics(
 def fetch_rag_events(
     limit: int = 200,
     request_id: str | None = None,
+    event: str | None = None,
 ) -> dict:
-    """RAG 호출 이벤트 — 백엔드 `GET /api/admin/rag-events`와 동일한 반환 형태."""
+    """RAG 호출 이벤트 — 백엔드 `GET /api/admin/rag-events`와 동일한 반환 형태.
+
+    event는 백엔드 admin API에 없는 필터다 — 사본 조회(log_store.load_rag_events)가
+    제공하던 축이라, 직접 조회로 갈아끼워도 화면이 그대로 동작하게 여기서 받는다.
+    """
     where: list[str] = []
     params: list[Any] = []
     if request_id:
         where.append("request_id = %s")
         params.append(request_id)
+    if event:
+        where.append("event = %s")
+        params.append(event)
 
     sql = (
         "select id, request_id, event, function, status, duration_ms, detail, created_at "
@@ -390,8 +398,14 @@ def fetch_metrics_daily(
     days: int = 7,
     method: str | None = None,
     path: str | None = None,
+    limit: int | None = None,
 ) -> dict:
-    """일별 요청 성능 롤업 — 백엔드 `GET /api/admin/metrics-daily`와 동일한 반환 형태."""
+    """일별 요청 성능 롤업 — 백엔드 `GET /api/admin/metrics-daily`와 동일한 반환 형태.
+
+    limit은 백엔드에 없는 인자다. 백엔드는 days만 걸고 전량을 내보내는데, 실제 관측 DB에서
+    days=7이 이미 15,000행이 넘는다(일자×method×path 조합이라 금세 불어난다). 화면은
+    limit을 주고, 기본값 None이면 백엔드와 똑같이 전량이라 계약은 그대로다.
+    """
     days = max(1, min(int(days), 90))
     where = ["day >= %s"]
     params: list[Any] = [_today() - timedelta(days=days)]
@@ -408,6 +422,9 @@ def fetch_metrics_daily(
         f"where {' and '.join(where)} "
         "order by day desc, calls desc"
     )
+    if limit is not None:
+        sql += " limit %s"
+        params.append(_clamp(limit, _MAX_LIMIT_METRICS))
     with _cursor() as cur:
         cur.execute(sql, params)
         rows = cur.fetchall()
@@ -434,8 +451,12 @@ def fetch_usage_daily(
     days: int = 30,
     component: str | None = None,
     model: str | None = None,
+    limit: int | None = None,
 ) -> dict:
-    """일별 LLM 사용량 롤업 — 백엔드 `GET /api/admin/usage-daily`와 동일한 반환 형태."""
+    """일별 LLM 사용량 롤업 — 백엔드 `GET /api/admin/usage-daily`와 동일한 반환 형태.
+
+    limit은 fetch_metrics_daily와 같은 이유로 추가한 인자다(기본 None이면 백엔드와 동일).
+    """
     days = max(1, min(int(days), 365))
     where = ["day >= %s"]
     params: list[Any] = [_today() - timedelta(days=days)]
@@ -452,6 +473,9 @@ def fetch_usage_daily(
         f"where {' and '.join(where)} "
         "order by day desc"
     )
+    if limit is not None:
+        sql += " limit %s"
+        params.append(_clamp(limit, _MAX_LIMIT_METRICS))
     with _cursor() as cur:
         cur.execute(sql, params)
         rows = cur.fetchall()
