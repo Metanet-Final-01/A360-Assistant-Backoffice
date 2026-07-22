@@ -124,6 +124,11 @@ def _cursor():
         raise ObservabilityDBUnavailable(f"관측 DB 연결 실패: {type(e).__name__}") from e
     try:
         conn.read_only = True  # 트랜잭션이 열리기 전에 — 위 docstring 참고
+        # 한 조회가 쿼리를 두 번 이상 던지는 경우(집계+내역, 사건 추적의 5종)가 있어
+        # REPEATABLE READ로 묶는다. PostgreSQL 기본은 READ COMMITTED라 **읽기 전용이어도
+        # 문장마다 새 스냅샷을 본다** — 동시 삽입이 있으면 합계와 내역이 서로 다른 시점을
+        # 보고 어긋난다. read_only와 마찬가지로 트랜잭션이 열리기 전에 설정해야 한다.
+        conn.isolation_level = psycopg.IsolationLevel.REPEATABLE_READ
         with conn.cursor() as cur:
             cur.execute(f"SET statement_timeout = {_STATEMENT_TIMEOUT_MS}")
             yield cur
@@ -408,9 +413,12 @@ def fetch_llm_usage_stats(
 
     처음엔 total을 breakdown 합으로 계산했다. 거기에 상한을 얹으면 **"이번 달 비용"이
     조용히 축소돼 보인다** — 숫자를 근거로 쓰는 화면에서 가장 나쁜 종류의 오류다.
-    그래서 total은 전체 집계를 따로 센다. "두 쿼리가 다른 시점을 봐서 어긋난다"는
-    원래 우려는 여기선 성립하지 않는다: 읽기 전용 트랜잭션 안이라 두 쿼리가 **같은
-    스냅샷**을 본다.
+    그래서 total은 전체 집계를 따로 센다.
+
+    두 쿼리로 나뉘면 "서로 다른 시점을 봐서 합계와 내역이 어긋난다"는 문제가 생기는데,
+    처음엔 "읽기 전용 트랜잭션이라 같은 스냅샷을 본다"고 적어뒀다. **그건 사실이 아니다** —
+    PostgreSQL 기본 격리 수준은 READ COMMITTED라 읽기 전용이어도 문장마다 새 스냅샷을
+    본다. 그래서 `_cursor()`에서 REPEATABLE READ로 묶어 실제로 같은 스냅샷을 보게 했다.
     """
     col = _GROUP_COLS.get(group_by)
     if col is None:

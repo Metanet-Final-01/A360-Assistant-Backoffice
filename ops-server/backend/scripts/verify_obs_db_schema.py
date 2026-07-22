@@ -59,7 +59,11 @@ def _row_count(out: dict) -> int:
         if key in out:
             return len(out[key])
     if "matched_request_ids" in out:  # trace — 종류별 합계
-        return sum(len(v) for v in out.values() if isinstance(v, list))
+        # matched_request_ids는 조회 대상 id 목록이지 '가져온 행'이 아니다. 같이 더하면
+        # 로그가 0건이어도 rows가 최소 1로 찍혀 "뭔가 조회됐다"로 오해하게 된다.
+        return sum(
+            len(v) for k, v in out.items() if isinstance(v, list) and k != "matched_request_ids"
+        )
     if "has_rows" in out:  # probe는 행 수를 세지 않는다(probe docstring 참고)
         return 1 if out["has_rows"] else 0
     return int(out.get("audit_logs_rows", 0))

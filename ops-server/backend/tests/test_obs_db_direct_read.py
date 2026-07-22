@@ -468,6 +468,11 @@ def test_cursor_sets_read_only_before_any_statement(monkeypatch):
     assert keys.index("read_only") < keys.index("execute"), (
         "read_only가 첫 문장보다 뒤면 이미 열린 트랜잭션엔 적용되지 않는다"
     )
+    # 한 조회가 쿼리를 두 번 이상 던지는 경우(집계+내역, 사건 추적)가 있다. PostgreSQL
+    # 기본은 READ COMMITTED라 **읽기 전용이어도 문장마다 새 스냅샷**을 본다 —
+    # "읽기 전용이니 같은 스냅샷"이라고 적어뒀던 게 사실이 아니었다.
+    assert "isolation_level" in keys, "REPEATABLE READ로 묶지 않으면 합계와 내역이 어긋난다"
+    assert keys.index("isolation_level") < keys.index("execute")
     assert any("statement_timeout" in sql for k, sql in events if k == "execute")
 
 
