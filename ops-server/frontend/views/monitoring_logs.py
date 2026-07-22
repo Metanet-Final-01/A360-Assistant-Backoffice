@@ -235,8 +235,11 @@ def _load(source: str, params: dict, state_key: str) -> None:
         resp = requests.get(f"{OPS_BACKEND_URL}/observability/{source}", params=params, timeout=15)
         if resp.status_code == 503:
             # 조용히 옛 사본을 보여주지 않는다 — 구성 오류를 화면에 드러낸다.
+            # 다만 원인을 단정하지 않는다: 백엔드는 미설정·연결 실패·권한/스키마 오류를
+            # 모두 503으로 모으므로, "구성되지 않았습니다"로 못박으면 실제 장애를
+            # 설정 문제로 오인해 엉뚱한 곳을 뒤지게 된다. 원문을 그대로 보여준다.
             st.session_state.pop(state_key, None)
-            st.error(f"관측 DB 직접 조회가 구성되지 않았습니다: {resp.text}")
+            st.error(f"관측 DB를 조회할 수 없습니다 (503): {resp.text}")
             return
         resp.raise_for_status()
         data = resp.json()

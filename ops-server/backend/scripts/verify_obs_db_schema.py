@@ -81,9 +81,19 @@ def _check_writes_are_blocked() -> bool:
     try:
         with obs_db._cursor() as cur:
             cur.execute("select 1 from audit_logs limit 1 for update")
-    except Exception:  # noqa: BLE001 — 무엇으로 막히든 '막혔다'가 확인하려는 바다
+    except obs_db.ObservabilityDBUnavailable as e:
+        # **아무 예외나 '막혔다'로 세면 안 된다.** 연결 실패·권한 부족·테이블 부재도
+        # 예외이므로, 그걸 성공으로 치면 가드가 무효인 채로도 초록불이 뜬다 —
+        # 이 스크립트가 확인하려던 바로 그 착각을 스크립트가 되풀이하는 꼴이다.
+        # 읽기 전용 트랜잭션이 거부했을 때만 통과로 인정한다.
+        if "ReadOnlySqlTransaction" not in str(e):
+            print(f"  FAIL {'writes blocked':26s} 다른 이유로 실패했다({e}) — 차단 여부 확인 불가")
+            return False
         print(f"  OK   {'writes blocked':26s} (read-only 강제됨)")
         return True
+    except Exception as e:  # noqa: BLE001 — 예상 밖 실패도 '확인 불가'로 보고한다
+        print(f"  FAIL {'writes blocked':26s} 예상 밖 오류({type(e).__name__}) — 차단 여부 확인 불가")
+        return False
     print(f"  FAIL {'writes blocked':26s} 쓰기가 통과했다 — read-only 가드가 무효다")
     return False
 

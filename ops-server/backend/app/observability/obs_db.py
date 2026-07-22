@@ -662,7 +662,9 @@ def fetch_metrics_daily(
     """
     days = max(1, min(int(days), 90))
     where = ["day >= %s"]
-    params: list[Any] = [_today() - timedelta(days=days)]
+    # days-1을 빼야 "최근 N일"이 오늘 포함 N일이 된다. days를 그대로 빼면 days=1인데도
+    # 어제+오늘 2일이 잡혀 화면의 "최근 며칠"이 조용히 하루씩 넓어진다.
+    params: list[Any] = [_today() - timedelta(days=days - 1)]
     if method:
         where.append("method = %s")
         params.append(method.upper())
@@ -713,7 +715,7 @@ def fetch_usage_daily(
     """
     days = max(1, min(int(days), 365))
     where = ["day >= %s"]
-    params: list[Any] = [_today() - timedelta(days=days)]
+    params: list[Any] = [_today() - timedelta(days=days - 1)]  # fetch_metrics_daily와 같은 이유
     if component:
         where.append("component = %s")
         params.append(component)
