@@ -422,7 +422,11 @@ def fetch_llm_usage_stats(
     with _cursor() as cur:
         cur.execute(
             "select count(*), coalesce(sum(input_tokens), 0), coalesce(sum(output_tokens), 0), "
-            f"coalesce(sum(cost_usd), 0.0), count(distinct {col}) "
+            "coalesce(sum(cost_usd), 0.0), "
+            # count(distinct)는 NULL을 세지 않지만 GROUP BY는 NULL을 **한 그룹으로** 만든다.
+            # 그래서 그냥 두면 group_count가 breakdown보다 작아져 truncated 판정이 뒤집힌다
+            # (실제로는 잘렸는데 "다 보여줬다"고 표시된다). NULL 그룹이 있으면 1을 더한다.
+            f"count(distinct {col}) + (count(*) filter (where {col} is null) > 0)::int "
             "from llm_usage where created_at >= %s",
             [since],
         )

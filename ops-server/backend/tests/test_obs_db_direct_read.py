@@ -325,6 +325,19 @@ def test_truncation_is_disclosed_not_hidden(monkeypatch):
     assert obs_db.fetch_llm_usage_stats(group_by="component")["breakdown_truncated"] is False
 
 
+def test_group_count_includes_the_null_group(monkeypatch):
+    """`count(distinct col)`은 NULL을 세지 않지만 GROUP BY는 NULL을 **한 그룹으로** 만든다.
+
+    그냥 두면 group_count가 breakdown보다 작아져 truncated 판정이 뒤집히고(실제로는
+    잘렸는데 "다 보여줬다"고 표시된다), 전체 그룹 수도 축소돼 보인다. 실 DB의 user 축에
+    NULL 그룹이 실제로 있다 — 보정 전 47, GROUP BY 기준 실제 48.
+    """
+    cur = _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    obs_db.fetch_llm_usage_stats(group_by="user")
+    sql = [s for s, _ in cur.executed if "count(distinct" in s][0]
+    assert "filter (where user_id is null)" in sql
+
+
 def test_breakdown_is_capped(monkeypatch):
     """user/session 축은 행 수가 사용자·세션 수만큼 늘어난다(실측 300+). 상한이 없으면
     응답 크기와 렌더링 비용이 선형으로 커진다."""
