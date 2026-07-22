@@ -134,7 +134,12 @@ def _cursor():
         logger.warning("관측 DB 조회 실패: %s", type(e).__name__, exc_info=True)
         raise ObservabilityDBUnavailable(f"관측 DB 조회 실패: {type(e).__name__}") from e
     finally:
-        conn.close()
+        # close 실패가 원래 예외를 덮으면 호출부는 503 대신 예상 못한 500을 보고,
+        # 진단에 필요한 예외 체인도 잃는다. 닫기 실패는 로그로만 남긴다.
+        try:
+            conn.close()
+        except Exception:  # noqa: BLE001 — 정리 실패로 조회 결과·원인을 잃지 않는다
+            logger.warning("관측 DB 연결 종료 실패", exc_info=True)
 
 
 def _clamp(limit: int, maximum: int = _MAX_LIMIT) -> int:
@@ -175,11 +180,15 @@ def probe() -> dict:
 
     백엔드에서 OpenSearch가 '도달 ok'인데 색인이 비어 검색이 반쪽이던 일이 있었다.
     여기선 실제 SELECT를 한 번 돌려 권한·스키마까지 확인한다.
+
+    확인하려는 건 "붙어서 읽히나"이지 행 수가 아니다. `count(*)`는 관측 DB가 커질수록
+    풀스캔이 되어(일 8천 행씩 쌓인다) statement_timeout에 걸릴 수 있다 — 프로브가
+    무거워서 실패하면 "DB가 죽었다"로 오판하게 된다. 한 행만 읽어 같은 것을 확인한다.
     """
     with _cursor() as cur:
-        cur.execute("select count(*) from audit_logs")
-        (n,) = cur.fetchone()
-    return {"ok": True, "audit_logs_rows": int(n)}
+        cur.execute("select 1 from audit_logs limit 1")
+        row = cur.fetchone()
+    return {"ok": True, "has_rows": row is not None}
 
 
 def fetch_audit_logs(
