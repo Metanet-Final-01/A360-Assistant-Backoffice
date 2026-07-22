@@ -86,7 +86,10 @@ def _render_top_bar() -> None:
 
 def _render_audit_logs() -> None:
     col_btn, col_limit = st.columns([1, 3])
-    limit = col_limit.number_input("최근 몇 건", min_value=10, max_value=2000, value=200, label_visibility="collapsed", key="audit_limit")
+    # 상한 500은 서버가 실제로 잘라내는 값이다(obs_db._MAX_LIMIT, 백엔드 le=500과 동일).
+    # 2000을 고를 수 있게 두면 사용자가 2000을 요청해도 조용히 500행만 와서, 그게 전부인 줄
+    # 안다 — 에러도 안 나는 종류의 오답이다.
+    limit = col_limit.number_input("최근 몇 건", min_value=10, max_value=500, value=200, label_visibility="collapsed", key="audit_limit")
     if col_btn.button("새로고침", key="audit_refresh_btn") or "obs_audit_logs" not in st.session_state:
         _load("audit-logs", {"limit": limit}, "obs_audit_logs")
 
