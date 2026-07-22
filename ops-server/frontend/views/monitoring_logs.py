@@ -11,40 +11,39 @@ from components.monitoring.styles import inject_dashboard_styles
 from components.monitoring.volume_chart import render_volume_chart
 from config import OPS_BACKEND_URL
 
-# 감사 로그·LLM 사용량(원시) UI는 아직 없다 — A360-Assistant-Backend의 관리자 계정
-# (ADMIN_EMAILS, RPA-109)이 준비되기 전까지는 백엔드(collect_audit_logs/collect_llm_usage
-# 등, backend/app/main.py)만 만들어 두고 화면은 계정이 준비됐을 때 만든다. 아래
-# metrics-daily/usage-daily/turn-events는 같은 관리자 인증을 쓰지만, RPA-109 설정이
-# 끝나는 순간 바로 켜지도록 미리 붙여 둔다(RPA-110) — 코드는 이미 검증됨, 자격증명
-# 미설정이면 403이 사람이 읽을 수 있는 메시지로 뜬다.
+# 이 화면들은 관측 DB를 **직접** 읽는다(읽기 전용 롤). 예전엔 백엔드 admin API를 거쳐서
+# 관리자 계정(ADMIN_EMAILS, RPA-109)이 전제였는데, 관측이 관측 대상에 의존하는 구조라
+# 백엔드가 죽으면 원인을 보려던 과거 데이터까지 못 봤다. 이제 백엔드 계정과 무관하게
+# 뜨고, 관측 DB 크레덴셜이 없으면 503이 사람이 읽을 수 있는 메시지로 뜬다.
 
 
 def render() -> None:
     inject_dashboard_styles()
     _render_top_bar()
+    _render_obs_db_banner()
     _render_log_dashboard()
 
-    with st.expander("관리자 지표 (준비 중 — RPA-109 계정 설정 후 사용 가능)"):
+    with st.expander("관측 DB 지표 (직접 조회)"):
         with card("obs_audit_logs"):
-            section_header("감사 로그", "RPA-109 — 누가 무엇을 바꿨나, 관리자 계정 필요")
+            section_header("감사 로그", "RPA-109 — 누가 무엇을 바꿨나")
             _render_audit_logs()
 
         with card("obs_rag_events"):
             section_header(
-                "RAG 파이프라인 단계 로그", "RPA-128 — embed/search/rerank 등 단계별 소요·설정, request_id로 조회, 관리자 계정 필요",
+                "RAG 파이프라인 단계 로그", "RPA-128 — embed/search/rerank 등 단계별 소요·설정, request_id로 조회",
             )
             _render_rag_events()
 
         with card("obs_metrics_daily"):
-            section_header("요청 성능 일별 롤업", "RPA-104 — 관리자 계정 설정(RPA-109) 필요")
+            section_header("요청 성능 일별 롤업", "RPA-104 — 일자×method×path 롤업")
             _render_metrics_daily()
 
         with card("obs_usage_daily"):
-            section_header("LLM 사용량 일별 롤업", "RPA-104 — 관리자 계정 설정(RPA-109) 필요")
+            section_header("LLM 사용량 일별 롤업", "RPA-104 — 일자×component×model 롤업")
             _render_usage_daily()
 
         with card("obs_turn_events"):
-            section_header("에이전트 턴 타임라인", "RPA-105 — session_id로 조회, 관리자 계정 필요")
+            section_header("에이전트 턴 타임라인", "RPA-105 — session_id로 조회")
             _render_turn_events()
 
 
@@ -86,37 +85,18 @@ def _render_top_bar() -> None:
             st.rerun()
 
 
-def _render_delete_widget(source: str, filter_params: dict, state_key: str, key_prefix: str) -> None:
-    """필터 조건(위에서 이미 고른 것)에 맞는 로컬 캐시 로그를 삭제한다 — Backend 원본
-    관측 DB는 그대로, Ops가 가져온 사본만 지운다. 실수 방지로 확인 체크박스를 거친다."""
-    active_filters = {k: v for k, v in filter_params.items() if v not in (None, "")}
-    label = "필터 조건에 맞는 로그 삭제" if active_filters else "⚠ 전체 로그 삭제(필터 없음)"
-    with st.expander(f"🗑 {label}"):
-        if active_filters:
-            st.caption(f"삭제 조건: {active_filters}")
-        else:
-            st.warning("현재 필터가 없어 이 소스의 로컬 로그 전체가 삭제됩니다.")
-        confirmed = st.checkbox("정말 삭제하겠습니다", key=f"{key_prefix}_delete_confirm")
-        if st.button("삭제 실행", key=f"{key_prefix}_delete_btn", disabled=not confirmed, type="primary"):
-            try:
-                resp = requests.delete(f"{OPS_BACKEND_URL}/observability/{source}", params=active_filters, timeout=15)
-                resp.raise_for_status()
-                st.session_state.pop(state_key, None)
-                st.success(f"{resp.json().get('deleted', 0)}건 삭제했습니다.")
-                st.rerun()
-            except (requests.RequestException, ValueError) as e:
-                st.error(f"삭제 실패: {e}")
-
-
 def _render_audit_logs() -> None:
     col_btn, col_limit = st.columns([1, 3])
-    limit = col_limit.number_input("최근 몇 건", min_value=10, max_value=2000, value=200, label_visibility="collapsed", key="audit_limit")
+    # 상한 500은 서버가 실제로 잘라내는 값이다(obs_db._MAX_LIMIT, 백엔드 le=500과 동일).
+    # 2000을 고를 수 있게 두면 사용자가 2000을 요청해도 조용히 500행만 와서, 그게 전부인 줄
+    # 안다 — 에러도 안 나는 종류의 오답이다.
+    limit = col_limit.number_input("최근 몇 건", min_value=10, max_value=500, value=200, label_visibility="collapsed", key="audit_limit")
     if col_btn.button("새로고침", key="audit_refresh_btn") or "obs_audit_logs" not in st.session_state:
-        _collect_and_load("audit-logs", {"limit": limit}, "obs_audit_logs")
+        _load("audit-logs", {"limit": limit}, "obs_audit_logs")
 
     rows = st.session_state.get("obs_audit_logs", [])
     if not rows:
-        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 가져오세요(관리자 계정 필요).")
+        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 조회하세요.")
         return
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}건")
@@ -136,11 +116,6 @@ def _render_audit_logs() -> None:
         view = view[view["status_code"] >= 400]
     st.dataframe(view[["created_at", "user_id", "method", "path", "status_code", "latency_ms"]], width="stretch", hide_index=True)
 
-    _render_delete_widget(
-        "audit-logs",
-        {"method": method_filter if method_filter != "(전체)" else None, "user_id": user_filter or None},
-        "obs_audit_logs", "audit_logs",
-    )
 
 
 def _render_log_dashboard() -> None:
@@ -183,14 +158,13 @@ def _render_metrics_daily() -> None:
     col_btn, col_days = st.columns([1, 3])
     days = col_days.number_input("최근 며칠", min_value=1, max_value=90, value=7, key="metrics_daily_days", label_visibility="collapsed")
     if col_btn.button("새로고침", key="metrics_daily_refresh_btn") or "obs_metrics_daily" not in st.session_state:
-        # GET /observability/metrics-daily는 days를 받지 않는다(method/path_contains/limit만) —
-        # collect(수집 범위)와 get(조회)에 같은 params를 그대로 재사용하면 "최근 며칠" 입력이
-        # 조회 결과엔 반영되지 않는다(CodeRabbit 지적). collect엔 days, get엔 limit을 따로 준다.
-        _collect_and_load("metrics-daily", {"days": days}, "obs_metrics_daily", get_params={"limit": 2000})
+        # 직접 조회 GET이 days를 받으므로 "최근 며칠" 입력이 그대로 조회 범위가 된다 —
+        # 수집 범위와 조회 범위가 어긋나던 문제(CodeRabbit 지적)가 구조적으로 사라졌다.
+        _load("metrics-daily", {"days": days, "limit": 2000}, "obs_metrics_daily")
 
     rows = st.session_state.get("obs_metrics_daily", [])
     if not rows:
-        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 가져오세요(관리자 계정 필요).")
+        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 조회하세요.")
         return
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}행 (일자×method×path)")
@@ -201,12 +175,12 @@ def _render_usage_daily() -> None:
     col_btn, col_days = st.columns([1, 3])
     days = col_days.number_input("최근 며칠", min_value=1, max_value=365, value=30, key="usage_daily_days", label_visibility="collapsed")
     if col_btn.button("새로고침", key="usage_daily_refresh_btn") or "obs_usage_daily" not in st.session_state:
-        # metrics-daily와 같은 이유로 get엔 days 대신 limit을 준다.
-        _collect_and_load("usage-daily", {"days": days}, "obs_usage_daily", get_params={"limit": 2000})
+        # metrics-daily와 같은 이유로 days를 조회에 그대로 싣는다.
+        _load("usage-daily", {"days": days, "limit": 2000}, "obs_usage_daily")
 
     rows = st.session_state.get("obs_usage_daily", [])
     if not rows:
-        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 가져오세요(관리자 계정 필요).")
+        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 조회하세요.")
         return
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}행 (일자×component×purpose×model)")
@@ -218,17 +192,16 @@ def _render_turn_events() -> None:
     session_id = col_sid.text_input("session_id (비우면 전체 최신순)", key="turn_events_session_id", label_visibility="collapsed")
     if col_btn.button("새로고침", key="turn_events_refresh_btn") or "obs_turn_events" not in st.session_state:
         params = {"session_id": session_id} if session_id else {}
-        _collect_and_load("turn-events", params, "obs_turn_events")
+        _load("turn-events", params, "obs_turn_events")
 
     rows = st.session_state.get("obs_turn_events", [])
     if not rows:
-        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 가져오세요(관리자 계정 필요).")
+        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 조회하세요.")
         return
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}건")
     st.dataframe(df[["created_at", "session_id", "seq", "kind", "stage", "message", "elapsed_ms"]], width="stretch", hide_index=True)
 
-    _render_delete_widget("turn-events", {"session_id": session_id or None}, "obs_turn_events", "turn_events")
 
 
 def _render_rag_events() -> None:
@@ -236,34 +209,70 @@ def _render_rag_events() -> None:
     request_id = col_rid.text_input("request_id (비우면 전체 최신순)", key="rag_events_request_id", label_visibility="collapsed")
     if col_btn.button("새로고침", key="rag_events_refresh_btn") or "obs_rag_events" not in st.session_state:
         params = {"request_id": request_id} if request_id else {}
-        _collect_and_load("rag-events", params, "obs_rag_events")
+        _load("rag-events", params, "obs_rag_events")
 
     rows = st.session_state.get("obs_rag_events", [])
     if not rows:
-        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 가져오세요(관리자 계정 필요).")
+        st.info("아직 데이터가 없습니다 — 위 \"새로고침\"을 눌러 조회하세요.")
         return
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}건 (event별: {', '.join(f'{k} {v}건' for k, v in df['event'].value_counts().items())})")
     st.dataframe(df[["created_at", "request_id", "event", "function", "status", "duration_ms"]], width="stretch", hide_index=True)
 
-    _render_delete_widget("rag-events", {"request_id": request_id or None}, "obs_rag_events", "rag_events")
 
 
-def _collect_and_load(source: str, collect_params: dict, state_key: str, get_params: dict | None = None) -> None:
-    """collect_params는 수집(POST .../collect) 범위 지정용, get_params는 조회(GET) 필터용 —
-    둘의 파라미터 셋이 다른 엔드포인트(metrics-daily/usage-daily의 days 등)가 있어 분리한다.
-    get_params가 없으면 collect_params를 그대로 재사용한다."""
+def _render_obs_db_banner() -> None:
+    """관측 DB 직접 조회가 구성돼 있는지 **미리** 알린다.
+
+    백엔드가 status에 obs_db_configured를 내보내지만 화면이 쓰지 않고 있었다 — 그래서
+    "구성 오류를 드러낸다"는 의도가 실제로는 구현되지 않았고, 운영자는 조회 버튼을 눌러
+    503을 받고 나서야 문제를 알았다. 노출만 하고 소비하지 않는 신호는 없는 것과 같다.
+    """
     try:
-        collect_resp = requests.post(f"{OPS_BACKEND_URL}/observability/{source}/collect", params=collect_params, timeout=15)
-        if collect_resp.status_code != 200:
-            st.error(f"수집 실패: {collect_resp.text}")
+        resp = requests.get(f"{OPS_BACKEND_URL}/observability/status", timeout=10)
+        resp.raise_for_status()
+        configured = resp.json().get("obs_db_configured")
+    except (requests.RequestException, ValueError):
+        return  # 상태 조회 자체가 실패하면 조용히 넘긴다 — 조회 시 어차피 오류로 드러난다
+    if configured is False:
+        st.warning(
+            "관측 DB 직접 조회가 구성되지 않았습니다 — 아래 조회는 503이 됩니다."
+            " 배포·운영 담당에게 읽기 전용 롤 크레덴셜(A360_OBSERVABILITY_DATABASE_URL)"
+            " 주입을 요청하세요."
+        )
+
+
+def _load(source: str, params: dict, state_key: str) -> None:
+    """관측 DB를 직접 읽는 Ops API를 호출한다.
+
+    예전엔 수집(POST .../collect) → 사본(JSONL) 조회(GET) 2단이었다. 그 구조에는 두 문제가
+    있었다: (1) 사본은 컨테이너 파일시스템이라 배포에서 재시작마다 사라지고, (2) **수집이
+    실패하면 곧바로 return해 조회까지 건너뛰었다** — 그래서 백엔드가 죽으면 "왜 죽었는지"
+    보려던 과거 데이터마저 화면에서 사라졌다(관측이 관측 대상에 의존하는 안티패턴).
+
+    이제 GET이 관측 DB를 직접 읽으므로 수집 단계 자체가 없다. days 같은 범위 인자도
+    조회에 그대로 실려, 수집 범위와 조회 범위가 어긋나던 문제도 함께 사라졌다.
+    """
+    try:
+        resp = requests.get(f"{OPS_BACKEND_URL}/observability/{source}", params=params, timeout=15)
+        if resp.status_code == 503:
+            # 조용히 옛 사본을 보여주지 않는다 — 구성 오류를 화면에 드러낸다.
+            # 다만 원인을 단정하지 않는다: 백엔드는 미설정·연결 실패·권한/스키마 오류를
+            # 모두 503으로 모으므로, "구성되지 않았습니다"로 못박으면 실제 장애를
+            # 설정 문제로 오인해 엉뚱한 곳을 뒤지게 된다. 원문을 그대로 보여준다.
+            st.session_state.pop(state_key, None)
+            st.error(f"관측 DB를 조회할 수 없습니다 (503): {resp.text}")
             return
-        resp = requests.get(f"{OPS_BACKEND_URL}/observability/{source}", params=get_params if get_params is not None else collect_params, timeout=10)
         resp.raise_for_status()
         data = resp.json()
         if not isinstance(data, list):
+            st.session_state.pop(state_key, None)
             st.error(f"조회 응답 형식이 예상과 다릅니다: {data}")
             return
         st.session_state[state_key] = data
     except (requests.RequestException, ValueError) as e:
-        st.error(f"백엔드 연결 실패: {e}")
+        # 실패했는데 앞선 조회 결과를 그대로 두면, 새로고침을 눌렀는데도 옛 행이 계속
+        # 그려진다 — 에러 문구는 위에 뜨지만 표가 남아 있으면 유효한 데이터로 읽힌다.
+        # 그건 사본 폴백을 없앤 이 변경의 취지와 정면으로 어긋난다.
+        st.session_state.pop(state_key, None)
+        st.error(f"관측 DB 조회 실패: {e}")
