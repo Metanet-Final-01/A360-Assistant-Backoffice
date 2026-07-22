@@ -92,7 +92,16 @@ def cmd_validate(args: argparse.Namespace) -> None:
     docs = [json.loads(line) for line in open(config.RAG_DOCUMENTS_JSONL, encoding="utf-8")]
 
     dump = Path(args.dump_dir)
-    toc = json.loads((dump / "toc_en-US.json").read_text(encoding="utf-8"))["toc"]
+    # 게이트 단계는 traceback이 아니라 명확한 실패 메시지 + 종료코드로 끝나야 한다 — 덤프
+    # 오입력/부분 생성/스키마 변경 시 toc를 그대로 읽으면 FileNotFoundError·JSONDecodeError·
+    # KeyError로 죽어 운영 디버깅이 어렵다(Qodo 리뷰). 존재·파싱을 먼저 검증한다.
+    toc_path = dump / "toc_en-US.json"
+    if not toc_path.exists():
+        sys.exit(f"{toc_path}이 없습니다 — crawl-khub를 먼저 실행하거나 --dump-dir을 확인하세요.")
+    try:
+        toc = json.loads(toc_path.read_text(encoding="utf-8"))["toc"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        sys.exit(f"{toc_path} 읽기/파싱 실패({type(exc).__name__}): {exc} — 덤프가 온전한지 확인하세요.")
     flat = walk_toc(toc)
     bodies_have = set()
     for locale in ("en-US", "ko-KR"):

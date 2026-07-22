@@ -21,6 +21,7 @@ import hashlib
 import json
 import logging
 import re
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -117,6 +118,10 @@ def extract_action_tables(items: list[dict], *, model: str | None = None) -> tup
               llm_items=len(todo), model=model)
     print(f"[table] 개요 페이지 {len(items)} (캐시 {stats['cached']}, LLM {len(todo)})", flush=True)
 
+    # 여러 worker가 공유 stats를 갱신하므로 락으로 직렬화한다 — read-modify-write(+=)와
+    # setdefault().append()가 레이스로 유실되면 build_stats.json 근거가 왜곡된다(Qodo 리뷰).
+    _stats_lock = threading.Lock()
+
     def one(it: dict) -> tuple[str, list[dict], str]:
         messages = [
             {"role": "system", "content": _SYSTEM},
@@ -126,14 +131,16 @@ def extract_action_tables(items: list[dict], *, model: str | None = None) -> tup
             res = chat_json(messages, purpose=PURPOSE, model_cls=_TableResult, model=model)
         except Exception as exc:  # noqa: BLE001 — 한 페이지 실패가 빌드를 막지 않는다
             logger.warning("액션 표 추출 실패 (건너뜀): %s — %s", it["package"], exc)
-            stats["failed"] += 1
+            with _stats_lock:
+                stats["failed"] += 1
             return it["package"], None, it["_hash"]  # None = 판단 못 함 → 규칙 결과를 그대로 쓴다
         if not res.has_action_list:
             # 액션 목록이 아니라고 판단하면 **규칙 파싱 결과도 무효**가 된다(호출자가 처리).
             # 실측: Excel advanced 표 5행은 전부 카테고리명('Cell operations' 등)인데
             # 규칙은 이를 액션으로 넣고 있었다. 형식이 아니라 내용으로 판단한 결과다.
-            stats["no_action_list"] += 1
-            stats.setdefault("no_action_list_packages", []).append(it["package"])
+            with _stats_lock:
+                stats["no_action_list"] += 1
+                stats.setdefault("no_action_list_packages", []).append(it["package"])
             return it["package"], {"has_action_list": False, "actions": []}, it["_hash"]
         hay = _norm_txt(it["text"])
         kept = []
@@ -142,8 +149,9 @@ def extract_action_tables(items: list[dict], *, model: str | None = None) -> tup
             if not name:
                 continue
             if _norm_txt(name) not in hay:  # 축자 검증 — 원문에 없는 이름은 버린다
-                stats["rejected_not_verbatim"] += 1
-                stats.setdefault("rejected_samples", []).append(f"{it['package']}/{name}")
+                with _stats_lock:
+                    stats["rejected_not_verbatim"] += 1
+                    stats.setdefault("rejected_samples", []).append(f"{it['package']}/{name}")
                 continue
             kept.append({"action": name[:120], "description": (a.description or "").strip()[:2000]})
         return it["package"], {"has_action_list": True, "actions": kept}, it["_hash"]

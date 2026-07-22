@@ -26,6 +26,7 @@ v1과 다른 점 셋 — v1이 버린 것을 도로 들여오지 않기 위해:
 import hashlib
 import json
 import logging
+import threading
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 
@@ -106,6 +107,8 @@ def _run_batches(work: list[dict], model: str | None, stats: dict) -> dict[int, 
 
     batch_size = max(1, config.AGENT_PARSE_BATCH_SIZE)
     out: dict[int, _JudgedItem] = {}
+    # worker가 공유 stats를 갱신하므로 락으로 직렬화한다(table_llm과 동일, Qodo 리뷰).
+    _stats_lock = threading.Lock()
 
     def one_batch(chunk: list[tuple[int, dict]]) -> dict[int, _JudgedItem]:
         items = [it for _, it in chunk]
@@ -118,7 +121,8 @@ def _run_batches(work: list[dict], model: str | None, stats: dict) -> dict[int, 
             batch = chat_json(messages, purpose=PURPOSE, model_cls=_JudgedBatch, model=model)
         except Exception as exc:  # noqa: BLE001 — 한 배치 실패가 전체 빌드를 막지 않는다
             logger.warning("판별 배치 실패 (건너뜀): %d개 — %s", len(chunk), exc)
-            stats["failed"] = stats.get("failed", 0) + len(chunk)
+            with _stats_lock:
+                stats["failed"] = stats.get("failed", 0) + len(chunk)
             return got
         seen = set()
         for item in batch.results:
@@ -129,7 +133,8 @@ def _run_batches(work: list[dict], model: str | None, stats: dict) -> dict[int, 
         missing = len(chunk) - len(seen)
         if missing:
             # 응답이 짧으면 반환분만 채택한다 — 배치 전체를 버리면 멀쩡한 판정까지 잃는다.
-            stats["missing_in_response"] = stats.get("missing_in_response", 0) + missing
+            with _stats_lock:
+                stats["missing_in_response"] = stats.get("missing_in_response", 0) + missing
         return got
 
     chunks = [
