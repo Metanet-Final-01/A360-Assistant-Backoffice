@@ -1,0 +1,128 @@
+# Qodo Git integration policy for A360 Assistant Backoffice (ops-server / rag-server).
+# Reference: https://docs.qodo.ai/qodo-documentation/code-review/get-started/configuration-overview/configuration-file
+#
+# A360-Assistant-Backend의 .pr_agent.toml과 같은 방침이다 — 세 리포의 리뷰 기준을 통일한다.
+# 백엔드 전용 규칙(app/agent 담당 영역, SSE 계약 등)은 옮기지 않고, 이 리포에 실제로
+# 존재하는 위험(관측 DB 직접 조회·Streamlit 조용한 실패·크레덴셜)으로 대체했다.
+
+[config]
+response_language = "ko-KR"
+enable_comment_approval = false
+enable_auto_approval = false
+
+[ignore]
+glob = [
+  "**/data/**",
+  "**/*.jsonl",
+]
+
+[github_app]
+feedback_on_draft_pr = false
+pr_commands = [
+  "/review",
+]
+# push마다 재리뷰 — 이게 없으면 지적을 반영해도 리뷰가 갱신되지 않아, 재리뷰를 받으려면
+# PR을 close/reopen 해야 한다(설정 없이 기본값으로 돌던 시절 실제로 그랬다).
+handle_push_trigger = true
+push_commands = [
+  "/review",
+]
+
+[pr_reviewer]
+persistent_comment = true
+final_update_message = false
+enable_help_text = false
+require_score_review = false
+require_tests_review = true
+require_estimate_effort_to_review = false
+require_can_be_split_review = false
+require_security_review = true
+require_ticket_analysis_review = true
+enable_review_labels_security = false
+enable_review_labels_effort = false
+extra_instructions = """
+항상 한국어로 답변한다 — **지적 제목(title)까지 반드시 한국어**다.
+심각하고 실제 영향이 있는 결함만 지적한다 — 다음만 대상으로 한다:
+런타임 에러·크래시·멈춤(hang), 잘못된 결과, 보안 취약점, 개인정보·시크릿 노출,
+데이터 손실·무결성 위반, 동시성 결함, 성능 회귀,
+API·스키마·DB·배포 계약 위반, 요구사항 누락과 그 결함을 막는 필수 테스트 누락.
+다음은 지적하지 않는다(노이즈):
+- 순수 문서·주석·테스트 설명이 코드와 다른 것으로, 런타임·보안·데이터 영향이 없는 경우.
+- 재현·영향을 구체적으로 댈 수 없는 이론적·저확률 리스크.
+- 심각도가 낮은(minor/low) 지적, 사소한 스타일, 취향성 리팩터링, 설명 가능한 명명 선호.
+각 지적에는 재현 경로, 실제 영향, 최소 수정 방향을 반드시 포함하고,
+재현이나 영향을 구체적으로 댈 수 없으면 지적하지 않는다.
+고유명사·코드 심볼·식별자(`obs_db`, `rag_events`, 클래스·함수·파일명)는 원문 그대로 둔다.
+
+## 관측 데이터 읽기 (ops-server/backend/app/observability/**)
+
+관측 **조회는 관측 DB를 직접 읽는 것이 정상 경로**다(읽기 전용 롤). 백엔드 admin API를
+거치면 관측이 관측 대상에 의존해, 백엔드가 죽었을 때 원인을 보려던 과거 데이터까지 못 본다.
+"admin API를 경유해야 한다"고 지적하지 않는다 — 그 방침은 이미 뒤집혔다.
+**쓰기(설정 변경)만 admin API를 쓴다.**
+이 영역에서 실제로 볼 것은 다음이다:
+- **조용한 폴백 금지**: 크레덴셜 미설정·조회 실패를 수집 사본이나 백엔드 경유로 슬쩍
+  되돌리면 "직접 읽는 줄 알았는데 실은 옛 사본을 보는" 상태를 아무도 모른다. 명시적
+  실패(503)로 드러나야 한다. 실패를 '데이터 없음'으로 삼키는 것도 같은 결함이다.
+- **읽기 전용이 실제로 강제되는가**: 선언만으로는 부족하다. 트랜잭션이 열린 뒤 거는
+  설정은 이미 열린 트랜잭션에 적용되지 않아 쓰기가 통과한 전례가 있다.
+- **raw SQL이라 스키마와 결합**한다: 컬럼명·타입(특히 uuid 컬럼 캐스팅)·정렬·limit 상한이
+  백엔드 admin API 계약과 어긋나는지 본다. 입력 형식 오류가 DB 장애(503)로 둔갑하면
+  운영이 원인을 오판한다 — 입력 오류는 400이어야 한다.
+- **마스킹 우회**: 마스킹이 쓰기 시점이면 직접 조회도 안전하지만, 읽기 시점 마스킹을
+  건너뛰는 경로가 생기면 지적한다.
+- 필터는 바인드 파라미터여야 한다. 식별자(정렬 컬럼·group by)는 화이트리스트로만 받는다.
+
+## Streamlit 화면 (ops-server/frontend/**)
+
+- 시크릿을 화면·URL 쿼리·세션 상태에 싣지 않는다.
+- **조용한 실패 금지**: 백엔드 호출 실패를 '데이터 없음'으로 보여주면 운영이 장애를
+  인지하지 못한다. 실패와 빈 결과는 다른 상태로 표시돼야 한다.
+- 화면이 표시하는 필드가 실제 API 반환 형태와 맞는지 본다(사본→직접 조회처럼 반환
+  구조가 바뀔 때 화면만 남아 KeyError나 빈 표가 되는 일이 있었다).
+- Streamlit 위젯 key 충돌, rerun 중 상태 유실.
+
+## RAG 적재 (rag-server/**)
+
+적재(쓰기)는 이 목적의 코드에만. 외부 입력(크롤링·URL·업로드) 신뢰 금지(SSRF·경로 조작).
+자격증명 하드코딩 금지.
+
+## 공통
+
+Python 변경은 시크릿 하드코딩, 외부 입력 검증, SSRF, 우회 가능한 권한 검사를 확인한다.
+`.env`는 커밋 금지이고 `.env.example`에는 키 이름만 둔다 — 새 환경변수를 추가하고
+`.env.example`에 넣지 않으면 다음 사람이 그 기능을 켤 방법이 없으므로 지적한다.
+Markdown 변경은 문서를 정답으로 가정하지 말고 실제 코드·테스트·환경변수와 대조해,
+어느 쪽이 최신인지 사람이 판단할 수 있게 불일치를 짚는다.
+
+배포 환경을 전제로 검토한다: ops-server는 FastAPI(:8100) + Streamlit(:8501) 2프로세스로
+뜨고, 프라이빗 서브넷 배포가 예정돼 있다.
+- 프로세스 전역 상태(모듈 전역 캐시·카운터·수집 상태)는 프로세스가 재시작되면 사라진다.
+  그 상태에 의존하는 화면이 재시작 후 빈 화면이 되지 않는지 본다.
+- 컨테이너 파일시스템에 쓰는 로컬 사본(JSONL 등)은 재배포·재시작마다 사라진다 —
+  그걸 정상 동작의 전제로 삼는 코드는 지적한다.
+- secret(토큰·키·비밀번호·DB DSN)이 로그·bash xtrace(set -x)·평문 파일 권한(.env)·
+  예외 메시지로 새지 않는지 확인한다.
+"""
+
+[pr_code_suggestions]
+persistent_comment = true
+focus_only_on_problems = true
+suggestions_score_threshold = 7
+commitable_code_suggestions = false
+apply_suggestions_checkbox = false
+enable_more_suggestions_checkbox = false
+enable_help_text = false
+enable_chat_text = false
+publish_output_no_suggestions = false
+wiki_page_accepted_suggestions = false
+auto_extended_mode = true
+num_code_suggestions_per_chunk = 3
+max_number_of_calls = 3
+extra_instructions = """
+한국어로 답변하고, 실제 결함을 해결하는 최소 변경만 제안한다.
+보안·데이터·동시성·성능·계약·테스트 문제를 우선하며
+스타일 변경이나 대규모 리팩터링은 제안하지 않는다.
+관측 조회는 관측 DB 직접 읽기가 정상 경로다 — admin API 경유로 되돌리자고 제안하지 않는다.
+프로세스 전역 상태·로컬 사본 의존·secret 노출은 배포(재시작·프라이빗 서브넷) 기준으로 본다.
+"""

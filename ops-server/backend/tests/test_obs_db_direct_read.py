@@ -117,6 +117,18 @@ def test_since_switches_to_ascending_cursor_order(monkeypatch):
     assert "created_at desc" in sql2
 
 
+def test_ordering_has_a_tiebreaker(monkeypatch):
+    """created_at만으로 정렬하면 같은 timestamp 행들의 순서가 비결정적이고, limit 경계에서
+    반환 집합 자체가 새로고침마다 흔들린다. 두 테이블 모두 id를 tie-breaker로 둔다."""
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.fetch_audit_logs(limit=10)
+    assert "created_at desc, id desc" in _sql_of(cur, "audit_logs")
+
+    cur2 = _install_cursor(monkeypatch, [])
+    obs_db.fetch_request_metrics(limit=10)
+    assert "created_at desc, id desc" in _sql_of(cur2, "request_metrics")
+
+
 def test_limit_is_clamped_to_max(monkeypatch):
     """상한을 넘겨도 전체 스캔이 되지 않게 잘린다(백엔드 le=500과 동일)."""
     cur = _install_cursor(monkeypatch, [])
@@ -506,6 +518,23 @@ def test_logic_bugs_are_not_disguised_as_db_unavailable(monkeypatch):
     with pytest.raises(KeyError):
         with obs_db._cursor():
             raise KeyError("우리 쪽 버그")
+
+
+def test_redaction_removes_credentials_from_any_message(monkeypatch):
+    """로그는 CloudWatch로 나가 보존된다 — 한 번 새면 회수할 수 없다.
+
+    현재 psycopg 실패 모드에서는 DSN이 예외 메시지에 들어가지 않는 것을 확인했지만
+    (연결 실패·잘못된 옵션·형식 오류·포트 오류 4종), psycopg 버전이나 다른 예외 경로는
+    우리 통제 밖이라 미리 막는다. **DSN이 통째로 섞인 최악의 경우**를 가정해 검증한다.
+    """
+    dsn = "postgresql://someuser:SuperSecret123@db.example.com:5432/obs"
+    monkeypatch.setenv("A360_OBSERVABILITY_DATABASE_URL", dsn)
+
+    assert "SuperSecret123" not in obs_db._redact(f'connection failed for "{dsn}"')
+    assert "SuperSecret123" not in obs_db._redact("auth failed (password=SuperSecret123)")
+    # 크레덴셜이 없는 메시지는 그대로 둔다 — 진단 정보까지 지우면 로그가 쓸모없어진다.
+    plain = "connection to server at 127.0.0.1 port 5432 failed"
+    assert obs_db._redact(plain) == plain
 
 
 def test_connection_failure_is_logged_without_leaking_dsn(monkeypatch, caplog):

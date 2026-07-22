@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import logging
 import os
+import re
 import uuid
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
@@ -120,7 +121,10 @@ def _cursor():
     except Exception as e:  # noqa: BLE001 — 연결 실패도 '직접 조회 불가'로 통일해 올린다
         # 사용자에게 보이는 메시지는 최소로 두되(DSN·크레덴셜이 새면 안 된다), 원인은
         # 로그에 남긴다 — 안 그러면 "직접 조회 불가"만 보이고 왜인지는 아무도 모른다.
-        logger.warning("관측 DB 연결 실패: %s", type(e).__name__, exc_info=True)
+        # traceback(exc_info)은 남기지 않는다: 예외 문자열에 DSN이 섞이는 경로가 생기면
+        # 그대로 로그에 박히고, 로그는 보존되므로 회수할 수 없다. 타입과 마스킹된
+        # 메시지만으로도 "무엇 때문에 못 붙었나"는 판별된다.
+        logger.warning("관측 DB 연결 실패: %s: %s", type(e).__name__, _redact(str(e)))
         raise ObservabilityDBUnavailable(f"관측 DB 연결 실패: {type(e).__name__}") from e
     try:
         conn.read_only = True  # 트랜잭션이 열리기 전에 — 위 docstring 참고
@@ -138,7 +142,7 @@ def _cursor():
         # 이 모듈의 단일 오류 계약으로 모아 503으로 드러낸다.
         # psycopg.Error로 좁힌다 — 우리 로직 버그(KeyError 등)까지 'DB 불가'로 둔갑시키면
         # 원인을 숨기게 된다.
-        logger.warning("관측 DB 조회 실패: %s", type(e).__name__, exc_info=True)
+        logger.warning("관측 DB 조회 실패: %s: %s", type(e).__name__, _redact(str(e)))
         raise ObservabilityDBUnavailable(f"관측 DB 조회 실패: {type(e).__name__}") from e
     finally:
         # close 실패가 원래 예외를 덮으면 호출부는 503 대신 예상 못한 500을 보고,
@@ -146,7 +150,26 @@ def _cursor():
         try:
             conn.close()
         except Exception:  # noqa: BLE001 — 정리 실패로 조회 결과·원인을 잃지 않는다
-            logger.warning("관측 DB 연결 종료 실패", exc_info=True)
+            logger.warning("관측 DB 연결 종료 실패")
+
+
+def _redact(text: str) -> str:
+    """예외 메시지에 섞여 들어왔을 수 있는 크레덴셜을 지운다.
+
+    현재 psycopg 실패 모드에서는 DSN이 메시지에 들어가지 않는 것을 확인했다(연결 실패·
+    잘못된 옵션·형식 오류·포트 오류 4종 모두 비밀번호가 나타나지 않았다). 그래도 막는
+    이유는 **로그가 CloudWatch로 나가 보존되기 때문**이다 — 한 번 새면 회수할 수 없고,
+    psycopg 버전이나 다른 예외 경로에서 들어갈 여지는 우리 통제 밖이다. 방어 비용이
+    몇 줄이라 미리 막는다.
+    """
+    raw = (os.getenv(_ENV_KEY) or "").strip()
+    if not raw:
+        return text
+    text = text.replace(raw, "[DSN]")
+    match = re.match(r"[^:]+://[^:/@]+:([^@]+)@", raw)
+    if match and match.group(1):
+        text = text.replace(match.group(1), "[REDACTED]")
+    return text
 
 
 def _clamp(limit: int, maximum: int = _MAX_LIMIT) -> int:
@@ -225,7 +248,10 @@ def fetch_audit_logs(
         where.append("user_id = %s::uuid")
         params.append(_as_uuid(user_id, "user_id"))
 
-    order = "created_at asc, id asc" if since else "created_at desc"
+    # id를 tie-breaker로 둔다 — created_at만으로 정렬하면 같은 timestamp 행들의 순서가
+    # 비결정적이고, limit 경계에서 **반환 집합 자체가 새로고침마다 흔들린다**.
+    # request_metrics는 이미 그렇게 하고 있었는데 여기만 빠져 있었다.
+    order = "created_at asc, id asc" if since else "created_at desc, id desc"
     sql = (
         "select request_id, user_id, method, path, status_code, latency_ms, created_at "
         "from audit_logs "

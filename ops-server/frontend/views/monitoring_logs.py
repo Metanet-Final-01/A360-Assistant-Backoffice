@@ -20,6 +20,7 @@ from config import OPS_BACKEND_URL
 def render() -> None:
     inject_dashboard_styles()
     _render_top_bar()
+    _render_obs_db_banner()
     _render_log_dashboard()
 
     with st.expander("관측 DB 지표 (직접 조회)"):
@@ -218,6 +219,27 @@ def _render_rag_events() -> None:
     st.caption(f"{len(df)}건 (event별: {', '.join(f'{k} {v}건' for k, v in df['event'].value_counts().items())})")
     st.dataframe(df[["created_at", "request_id", "event", "function", "status", "duration_ms"]], width="stretch", hide_index=True)
 
+
+
+def _render_obs_db_banner() -> None:
+    """관측 DB 직접 조회가 구성돼 있는지 **미리** 알린다.
+
+    백엔드가 status에 obs_db_configured를 내보내지만 화면이 쓰지 않고 있었다 — 그래서
+    "구성 오류를 드러낸다"는 의도가 실제로는 구현되지 않았고, 운영자는 조회 버튼을 눌러
+    503을 받고 나서야 문제를 알았다. 노출만 하고 소비하지 않는 신호는 없는 것과 같다.
+    """
+    try:
+        resp = requests.get(f"{OPS_BACKEND_URL}/observability/status", timeout=10)
+        resp.raise_for_status()
+        configured = resp.json().get("obs_db_configured")
+    except (requests.RequestException, ValueError):
+        return  # 상태 조회 자체가 실패하면 조용히 넘긴다 — 조회 시 어차피 오류로 드러난다
+    if configured is False:
+        st.warning(
+            "관측 DB 직접 조회가 구성되지 않았습니다 — 아래 조회는 503이 됩니다."
+            " 배포·운영 담당에게 읽기 전용 롤 크레덴셜(A360_OBSERVABILITY_DATABASE_URL)"
+            " 주입을 요청하세요."
+        )
 
 
 def _load(source: str, params: dict, state_key: str) -> None:
