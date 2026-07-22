@@ -52,6 +52,8 @@ _ENV_KEY = "A360_OBSERVABILITY_DATABASE_URL"
 _MAX_LIMIT = 500  # audit_logs (백엔드 le=500)
 _MAX_LIMIT_METRICS = 2000  # request_metrics · rag_events (백엔드 le=2000)
 _MAX_LIMIT_TURN_EVENTS = 1000  # turn_events (백엔드 le=1000)
+# llm-usage 집계의 breakdown 상한 — user/session 축은 행 수가 사용자·세션 수만큼 늘어난다.
+_MAX_BREAKDOWN = 200
 _STATEMENT_TIMEOUT_MS = 10_000
 
 # llm-usage/stats의 group_by → 컬럼. 백엔드 _GROUP_COLS와 같은 매핑이어야 한다.
@@ -391,28 +393,49 @@ def fetch_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
     }
 
 
-def fetch_llm_usage_stats(days: int = 30, group_by: str = "component") -> dict:
-    """LLM 사용량 집계 — 백엔드 `GET /api/admin/llm-usage/stats`와 동일한 반환 형태.
+def fetch_llm_usage_stats(
+    days: int = 30, group_by: str = "component", limit: int = _MAX_BREAKDOWN
+) -> dict:
+    """LLM 사용량 집계 — 백엔드 `GET /api/admin/llm-usage/stats`와 같은 키를 반환한다.
 
-    total은 DB에서 따로 세지 않고 breakdown을 합산한다(백엔드와 같은 방식) — 두 쿼리가
-    서로 다른 시점을 보고 합계와 내역이 어긋나는 일을 없애기 위함이다.
+    ## breakdown에 상한이 있는 이유
+
+    group_by가 user/session이면 행 수가 사용자·세션 수만큼 늘어난다(실측: session 축이
+    이미 300개를 넘었고 계속 는다). 화면은 이걸 표·차트로 전부 그리므로 상한이 없으면
+    응답 크기와 렌더링 비용이 선형으로 커진다. 호출이 많은 순으로 상위 N개만 준다.
+
+    ## total은 잘린 합이 아니다
+
+    처음엔 total을 breakdown 합으로 계산했다. 거기에 상한을 얹으면 **"이번 달 비용"이
+    조용히 축소돼 보인다** — 숫자를 근거로 쓰는 화면에서 가장 나쁜 종류의 오류다.
+    그래서 total은 전체 집계를 따로 센다. "두 쿼리가 다른 시점을 봐서 어긋난다"는
+    원래 우려는 여기선 성립하지 않는다: 읽기 전용 트랜잭션 안이라 두 쿼리가 **같은
+    스냅샷**을 본다.
     """
     col = _GROUP_COLS.get(group_by)
     if col is None:
         raise ValueError(f"group_by는 {sorted(_GROUP_COLS)} 중 하나여야 합니다: {group_by!r}")
     days = max(1, min(int(days), 365))
     since = _utcnow() - timedelta(days=days)
+    n = _clamp(limit, _MAX_BREAKDOWN)
 
-    sql = (
-        f"select {col} as key, count(*) as calls, "
-        "coalesce(sum(input_tokens), 0) as input_tokens, "
-        "coalesce(sum(output_tokens), 0) as output_tokens, "
-        "coalesce(sum(cost_usd), 0.0) as cost_usd "
-        "from llm_usage where created_at >= %s "
-        f"group by {col} order by count(*) desc"
-    )
     with _cursor() as cur:
-        cur.execute(sql, [since])
+        cur.execute(
+            "select count(*), coalesce(sum(input_tokens), 0), coalesce(sum(output_tokens), 0), "
+            f"coalesce(sum(cost_usd), 0.0), count(distinct {col}) "
+            "from llm_usage where created_at >= %s",
+            [since],
+        )
+        t_calls, t_in, t_out, t_cost, group_count = cur.fetchone()
+        cur.execute(
+            f"select {col} as key, count(*) as calls, "
+            "coalesce(sum(input_tokens), 0) as input_tokens, "
+            "coalesce(sum(output_tokens), 0) as output_tokens, "
+            "coalesce(sum(cost_usd), 0.0) as cost_usd "
+            "from llm_usage where created_at >= %s "
+            f"group by {col} order by count(*) desc limit %s",
+            [since, n],
+        )
         rows = cur.fetchall()
 
     breakdown = [
@@ -426,12 +449,21 @@ def fetch_llm_usage_stats(days: int = 30, group_by: str = "component") -> dict:
         for r in rows
     ]
     total = {
-        "calls": sum(b["calls"] for b in breakdown),
-        "input_tokens": sum(b["input_tokens"] for b in breakdown),
-        "output_tokens": sum(b["output_tokens"] for b in breakdown),
-        "cost_usd": round(sum(b["cost_usd"] for b in breakdown), 6),
+        "calls": int(t_calls or 0),
+        "input_tokens": int(t_in or 0),
+        "output_tokens": int(t_out or 0),
+        "cost_usd": round(float(t_cost or 0.0), 6),
     }
-    return {"period_days": days, "group_by": group_by, "total": total, "breakdown": breakdown}
+    return {
+        "period_days": days,
+        "group_by": group_by,
+        "total": total,
+        "breakdown": breakdown,
+        # 잘렸다는 사실을 숨기지 않는다 — 화면이 "상위 N개만"을 표시할 수 있어야
+        # 합계와 내역의 차이를 오해하지 않는다.
+        "breakdown_truncated": int(group_count or 0) > len(breakdown),
+        "group_count": int(group_count or 0),
+    }
 
 
 def _request_ids_for_user(cur, user_id: str, limit: int) -> list[str]:
@@ -494,21 +526,33 @@ def trace_by(
         if request_ids:
             # = any(%s)는 목록을 배열 파라미터 하나로 넘긴다 — IN 절을 %s 개수만큼 만들면
             # request_id가 늘어날 때마다 SQL 문자열이 달라져 계획 재사용이 안 된다.
+            #
+            # 세 조회 모두 **최신 n건을 먼저 고른 뒤 표시 순서로 되돌린다.** 오름차순에
+            # 바로 limit을 걸면, limit에 걸렸을 때 오래된 것만 남고 최신이 잘린다 —
+            # 장애를 좇는 화면에서 정작 방금 일어난 일이 사라진다. user_id 축은
+            # request_id가 여러 개라 실제로 걸린다. fetch_turn_events에서 이미 같은
+            # 이유로 서브쿼리를 썼는데 여기엔 적용하지 않았던 자리다.
             cur.execute(
                 "select request_id, user_id, method, path, status_code, latency_ms, created_at "
-                "from audit_logs where request_id = any(%s) order by created_at limit %s",
+                "from (select * from audit_logs where request_id = any(%s) "
+                "      order by created_at desc, id desc limit %s) recent "
+                "order by created_at",
                 [request_ids, n],
             )
             audit = cur.fetchall()
             cur.execute(
                 "select id, request_id, user_id, method, path, status_code, latency_ms, created_at "
-                "from request_metrics where request_id = any(%s) order by created_at limit %s",
+                "from (select * from request_metrics where request_id = any(%s) "
+                "      order by created_at desc, id desc limit %s) recent "
+                "order by created_at",
                 [request_ids, n],
             )
             metrics = cur.fetchall()
             cur.execute(
                 "select id, request_id, event, function, status, duration_ms, detail, created_at "
-                "from rag_events where request_id = any(%s) order by id limit %s",
+                "from (select * from rag_events where request_id = any(%s) "
+                "      order by created_at desc, id desc limit %s) recent "
+                "order by id",
                 [request_ids, n],
             )
             rag_all = cur.fetchall()
@@ -525,11 +569,14 @@ def trace_by(
         if turn_where:
             cur.execute(
                 "select session_id, request_id, seq, kind, stage, message, detail, elapsed_ms, "
-                "created_at from turn_events "
-                f"where {' or '.join(turn_where)} "
+                "created_at from ("
+                "  select * from turn_events "
+                f" where {' or '.join(turn_where)} "
+                "  order by created_at desc nulls last, id desc limit %s"
+                ") recent "
                 # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러
                 # 요청이 실제 발생 순서와 어긋난다(사본 구현에서 이미 고친 지점).
-                "order by created_at nulls last, seq limit %s",
+                "order by created_at nulls last, seq",
                 [*turn_params, n],
             )
             turns = cur.fetchall()

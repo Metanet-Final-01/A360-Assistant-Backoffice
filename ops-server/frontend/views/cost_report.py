@@ -56,6 +56,12 @@ def _render_axis(axis: str, key_label: str, days: int) -> None:
         )
         return
     breakdown = snap.get("breakdown", [])
+    if snap.get("breakdown_truncated"):
+        # 합계는 전체인데 표는 상위 N개다 — 말하지 않으면 "표를 더하면 합계"라고 오해한다.
+        st.caption(
+            f"내역은 호출이 많은 상위 {len(breakdown)}개만 표시합니다"
+            f" (전체 {snap.get('group_count', '?')}개). 합계는 전체 기준입니다."
+        )
     if not breakdown:
         st.info("해당 기간 사용량이 없습니다.")
         return

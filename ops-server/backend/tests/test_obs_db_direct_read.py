@@ -265,18 +265,73 @@ def test_llm_usage_group_by_is_whitelisted(monkeypatch):
         obs_db.fetch_llm_usage_stats(group_by="component; drop table llm_usage --")
 
 
-def test_llm_usage_total_is_sum_of_breakdown(monkeypatch):
-    """total을 별도 쿼리로 세면 두 시점이 달라 합계와 내역이 어긋난다(백엔드와 같은 방식)."""
-    _install_cursor(monkeypatch, [("agent", 2, 10, 5, 0.001), ("rag", 1, 3, 1, 0.0005)])
+class _ScriptedCursor(_FakeCursor):
+    """집계와 breakdown이 별개 쿼리라, fetchone/fetchall에 다른 결과를 주는 커서."""
+
+    def __init__(self, total_row, breakdown_rows):
+        super().__init__(breakdown_rows)
+        self._total_row = total_row
+
+    def fetchone(self):
+        return self._total_row
+
+
+def _install_scripted(monkeypatch, total_row, breakdown_rows):
+    cur = _ScriptedCursor(total_row, breakdown_rows)
+
+    class _Ctx:
+        def __enter__(self):
+            return cur
+
+        def __exit__(self, *a):
+            return False
+
+    monkeypatch.setattr(obs_db, "_cursor", lambda: _Ctx())
+    return cur
+
+
+def test_llm_usage_total_is_the_whole_period_not_the_visible_rows(monkeypatch):
+    """**합계는 잘린 내역의 합이 아니라 전체 집계다.**
+
+    breakdown에 상한을 두면서 total을 그 합으로 두면 "이번 달 비용"이 조용히 축소돼
+    보인다 — 숫자를 근거로 쓰는 화면에서 가장 나쁜 오류다. 전체는 30콜인데 화면에
+    보이는 2행의 합은 3콜뿐인 상황을 만들어, total이 전체를 유지하는지 본다.
+    """
+    _install_scripted(
+        monkeypatch,
+        total_row=(30, 130, 60, 0.05, 7),  # calls, in, out, cost, group_count
+        breakdown_rows=[("agent", 2, 10, 5, 0.001), ("rag", 1, 3, 1, 0.0005)],
+    )
+
     out = obs_db.fetch_llm_usage_stats(days=7, group_by="component")
+
     assert out["period_days"] == 7 and out["group_by"] == "component"
     assert out["total"] == {
-        "calls": 3,
-        "input_tokens": 13,
-        "output_tokens": 6,
-        "cost_usd": 0.0015,
+        "calls": 30,
+        "input_tokens": 130,
+        "output_tokens": 60,
+        "cost_usd": 0.05,
     }
+    assert sum(b["calls"] for b in out["breakdown"]) == 3  # 보이는 건 일부뿐
     assert out["breakdown"][0]["key"] == "agent"
+
+
+def test_truncation_is_disclosed_not_hidden(monkeypatch):
+    """합계는 전체인데 표는 일부다 — 말하지 않으면 "표를 더하면 합계"라고 오해한다."""
+    _install_scripted(monkeypatch, (30, 130, 60, 0.05, 7), [("agent", 2, 10, 5, 0.001)])
+    assert obs_db.fetch_llm_usage_stats(group_by="session")["breakdown_truncated"] is True
+
+    _install_scripted(monkeypatch, (3, 13, 6, 0.0015, 1), [("agent", 3, 13, 6, 0.0015)])
+    assert obs_db.fetch_llm_usage_stats(group_by="component")["breakdown_truncated"] is False
+
+
+def test_breakdown_is_capped(monkeypatch):
+    """user/session 축은 행 수가 사용자·세션 수만큼 늘어난다(실측 300+). 상한이 없으면
+    응답 크기와 렌더링 비용이 선형으로 커진다."""
+    cur = _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    obs_db.fetch_llm_usage_stats(group_by="session", limit=99999)
+    sql, params = [x for x in cur.executed if "group by" in x[0]][0]
+    assert "limit %s" in sql and params[-1] == 200
 
 
 def test_daily_rollups_shape(monkeypatch):

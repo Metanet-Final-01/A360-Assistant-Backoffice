@@ -27,7 +27,10 @@ _SESSION = requests.Session()
 # 상한은 각 GET 엔드포인트의 Query(le=...)와 반드시 일치해야 한다 — 안 맞으면 422
 # (turn-events가 1000인데 여기서 2000을 보내 실제로 겪은 버그).
 _SOURCES = {
-    "감사 로그 (audit_logs)": ("audit-logs", "limit", 2000, False, 10000),
+    # 감사 로그 상한은 500 — obs_db.fetch_audit_logs가 500으로 클램프한다(백엔드 le=500과
+    # 동일). 여기서 10000을 노출하면 사용자가 10000을 골라도 조용히 500행만 로드돼
+    # "전부 봤다"고 오해한 채 EDA를 하게 된다.
+    "감사 로그 (audit_logs)": ("audit-logs", "limit", 500, False, 500),
     # rag-logs는 rag_events(event='http_request') 직접 조회로 바뀌어 정형 컬럼이다 —
     # 더 이상 raw 평탄화가 필요 없고, 서버 상한도 rag-events와 같은 2000이다.
     "RAG 요청 로그 (rag_logs)": ("rag-logs", "limit", 2000, False, 2000),
@@ -36,8 +39,8 @@ _SOURCES = {
     "에이전트 턴 (turn_events)": ("turn-events", "limit", 1000, False, 1000),
     "RAG 파이프라인 단계 (rag_events)": ("rag-events", "limit", 2000, False, 2000),
 }
-# 감사 로그는 서버 GET이 limit에 상한이 없다(plain int) — UI 쪽에서만 과도한 조회를
-# 막기 위해 10000을 임의 상한으로 둔다.
+# 상한은 UI 임의값이 아니라 **서버가 실제로 잘라내는 값**과 맞춘다. 서버 Query(le=...)가
+# 없는 엔드포인트라도 obs_db가 클램프하므로, 그 값보다 크게 노출하면 조용한 절단이 된다.
 
 # EDA 대상에서 뺄 컬럼 — 값 자체가 길거나(원문 텍스트) 카디널리티가 높아 필터/차트에 안 맞음.
 _EXCLUDE_COLS = {"detail", "message", "raw"}
