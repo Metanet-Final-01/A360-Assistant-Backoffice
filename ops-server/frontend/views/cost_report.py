@@ -43,6 +43,10 @@ def render() -> None:
         _render_axis("session", "session_id", days_queried)
 
 
+# 절단 기준(order_by) → 사용자에게 보여줄 말. 서버 값과 1:1로 두어 문구가 따로 놀지 않게 한다.
+_ORDER_LABEL = {"cost": "비용이 큰", "calls": "호출이 많은"}
+
+
 def _render_axis(axis: str, key_label: str, days: int) -> None:
     # order_by=cost — 이 화면은 '가장 비싼' 축을 보는 곳이다. 기본값(calls)으로 받으면
     # 호출은 적지만 비싼 세션이 상위 N에서 잘려 나가고, 화면은 받은 것만 정렬하므로
@@ -63,8 +67,12 @@ def _render_axis(axis: str, key_label: str, days: int) -> None:
     breakdown = snap.get("breakdown", [])
     if snap.get("breakdown_truncated"):
         # 합계는 전체인데 표는 상위 N개다 — 말하지 않으면 "표를 더하면 합계"라고 오해한다.
+        # 기준 문구는 **서버가 알려준 order_by**로 만든다. 여기에 문구를 하드코딩해 두면
+        # 절단 기준을 바꿀 때(호출 수 → 비용) 설명만 옛것으로 남아 사용자가 표를 오해한다
+        # — 실제로 한 번 그렇게 어긋났다.
+        criterion = _ORDER_LABEL.get(snap.get("order_by"), "상위")
         st.caption(
-            f"내역은 호출이 많은 상위 {len(breakdown)}개만 표시합니다"
+            f"내역은 {criterion} 상위 {len(breakdown)}개만 표시합니다"
             f" (전체 {snap.get('group_count', '?')}개). 합계는 전체 기준입니다."
         )
     if not breakdown:
