@@ -337,6 +337,28 @@ def test_truncation_is_disclosed_not_hidden(monkeypatch):
     assert obs_db.fetch_llm_usage_stats(group_by="component")["breakdown_truncated"] is False
 
 
+def test_trace_outer_ordering_is_deterministic_and_time_first(monkeypatch):
+    """표시 순서에도 tie-breaker가 있어야 하고, 시간이 기준이어야 한다.
+
+    안쪽 서브쿼리(시간축 절단)만 결정적이면 같은 timestamp 행들의 **표시 순서가
+    새로고침마다 흔들린다.** rag_events는 id로 정렬하고 있었는데 id는 삽입 순서라
+    시간축과 어긋날 수 있다 — 사건 추적은 "요청이 시스템을 통과한 순서"를 보는 화면이다.
+
+    처음엔 이걸 `inspect.getsource`로 소스 문자열을 세어 검사했는데, 그건 **동작이 아니라
+    코드 모양**을 보는 것이라 줄바꿈·문자열 분할만 바꿔도 깨진다(Qodo 지적). 실제로
+    실행된 SQL을 붙잡아 검증한다.
+    """
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.trace_by(request_id="req-1")
+    sqls = [sql for sql, _ in cur.executed]
+
+    for table in ("audit_logs", "request_metrics", "rag_events"):
+        outer = [s for s in sqls if f"from {table}" in s][0]
+        assert outer.rstrip().endswith("order by created_at, id"), table
+    turns = [s for s in sqls if "from turn_events" in s][0]
+    assert turns.rstrip().endswith("order by created_at nulls last, seq, id")
+
+
 def test_group_count_includes_the_null_group(monkeypatch):
     """`count(distinct col)`은 NULL을 세지 않지만 GROUP BY는 NULL을 **한 그룹으로** 만든다.
 

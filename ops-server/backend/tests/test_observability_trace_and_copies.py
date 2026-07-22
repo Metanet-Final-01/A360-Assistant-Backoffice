@@ -53,24 +53,6 @@ class TraceReadPathTest(unittest.TestCase):
         copy_trace.assert_not_called()
 
 
-class TraceOrderingTest(unittest.TestCase):
-    """표시 순서에도 tie-breaker가 있어야 한다.
-
-    안쪽 서브쿼리(시간축 절단)만 결정적이면, 같은 timestamp 행들의 **표시 순서가
-    새로고침마다 흔들린다.** rag_events는 id로 정렬하고 있었는데 id는 삽입 순서라
-    시간축과 어긋날 수 있다 — 이 화면은 "요청이 시스템을 통과한 순서"를 보는 곳이다.
-    """
-
-    def test_outer_ordering_is_deterministic_and_time_first(self):
-        import inspect
-
-        src = inspect.getsource(obs_db.trace_by)
-        # 바깥 정렬 4종이 모두 created_at 우선 + id tie-breaker여야 한다.
-        assert src.count('"order by created_at, id"') == 3, "감사·성능·RAG 바깥 정렬"
-        assert '"order by created_at nulls last, seq, id"' in src, "턴 바깥 정렬"
-        assert '"order by id"' not in src, "id만으로 정렬하면 시간순과 어긋날 수 있다"
-
-
 class RagLogsReadPathTest(unittest.TestCase):
     def setUp(self):
         self.client = TestClient(app)
