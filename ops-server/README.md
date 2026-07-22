@@ -5,8 +5,9 @@
 "모니터링 서버"가 아니라 "ops-server"로 뒀다. **화면 있음.** 내부적으로 **2개
 프로세스**로 구성된다:
 
-- **백엔드 (FastAPI, :8100)** — `/observability/*`(감사·LLM·RAG 로그 수집/조회,
-  metrics-daily/usage-daily/turn-events 롤업 조회), `/assurance/*`(Backend의 AI 출력
+- **백엔드 (FastAPI, :8100)** — `/observability/*`(감사·LLM·RAG 로그 조회,
+  metrics-daily/usage-daily/turn-events 롤업 조회 — **관측 DB를 직접 읽는다**,
+  아래 "관측 데이터 읽기" 참고), `/assurance/*`(Backend의 AI 출력
   검증 판정 기록을 저장 없이 읽기 전용 중계), `/eval/*`(데이터셋·결과·
   pm4py/WorFBench 변환·A/B·xlsx, RAGAS 기반 RAG 검색 품질 평가), 그리고
   `app/scheduler`(rag-server로 주기 트리거 — 현재 stub).
@@ -19,7 +20,7 @@ ops-server/
   backend/
     app/
       main.py            # FastAPI: /observability/*, /assurance/*, /eval/*
-      observability/     # A360-Assistant-Backend 로그 수집/조회
+      observability/     # 관측 DB 직접 조회(obs_db) + 백엔드 API 경유 수집(레거시)
       eval/              # 평가 데이터셋·결과·변환·비교
       scheduler/         # rag-server 주기 트리거 (stub — 다음 작업)
     tests/               # eval 단위 테스트
@@ -66,6 +67,28 @@ cd ops-server\frontend ; streamlit run app.py --server.port 8501
   최신 기록을 먼저 보여주며, 상세에서 해당 판정 시점의 승인자·승인 시각·대상 커밋을 확인할 수 있다.
 - Backend 운영 API 인증은 `A360_BACKEND_OPS_API_KEY`를 우선 사용하고, 관리자 JWT 로그인은
   하위 호환 경로로만 사용한다.
+
+## 관측 데이터 읽기
+
+관측 데이터 **조회**는 백엔드 admin API를 거치지 않고 관측 DB를 직접 읽는다
+(`A360_OBSERVABILITY_DATABASE_URL`, 읽기 전용 롤). 백엔드를 거치면 관측이 관측 대상에
+의존해, 백엔드가 죽었을 때 "왜 죽었는지" 보려던 과거 데이터까지 못 본다(APM 안티패턴).
+**쓰기(설정 변경)는 계속 admin API를 쓴다** — 검증·권한·감사가 필요하기 때문이다.
+
+- 크레덴셜이 없으면 조회 API가 **503**을 낸다. 수집 사본으로 조용히 폴백하지 않는다 —
+  구성 오류를 숨기면 "직접 읽는 줄 알았는데 실은 옛 사본을 보는" 상태를 아무도 모른다.
+  화면 상태는 `GET /observability/status`의 `obs_db_configured`로 확인한다.
+- 반환 형태는 백엔드 admin API와 동일하게 맞춰 두었다(호출부 무변경으로 갈아끼우기 위함).
+  대신 백엔드는 ORM, 이쪽은 raw SQL이라 **컬럼이 바뀌면 양쪽을 같이 고쳐야 한다.**
+- 스키마를 건드렸다면 실 DB에 걸어 확인한다(단위 테스트는 커서를 가짜로 갈아끼우므로
+  컬럼명·문법 오류를 잡지 못한다). 쓰기 차단 여부까지 함께 확인한다:
+
+```powershell
+cd backend ; $env:A360_OBSERVABILITY_DATABASE_URL="<읽기 전용 롤 DSN>" ; python scripts\verify_obs_db_schema.py
+```
+
+- `trace` / `rag-logs` / `llm-usage snapshots`는 아직 수집 사본(JSONL) 기반이라
+  배포에서는 컨테이너 재시작 시 사라진다(후속 작업).
 
 ## rag-server 연동
 
