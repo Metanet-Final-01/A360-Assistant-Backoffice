@@ -23,7 +23,10 @@ def render() -> None:
     labels = sorted({r["agent_label"] for r in runs if r.get("agent_label")})
     rag_status = _safe_get(RAG_SERVER_URL, "/rag/ingest/status") or {}
     obs_status = _safe_get(OPS_BACKEND_URL, "/observability/status") or {}
-    rag_logs = _safe_get(OPS_BACKEND_URL, "/observability/rag-logs") or []
+    # `or []`로 뭉개지 않는다 — 조회 실패(예: 관측 DB 미구성 503)와 "로그가 없음"은
+    # 다른 상태다. 실패를 빈 데이터로 바꾸면 미구성·장애가 '표시할 로그 없음'으로 보여
+    # 아무도 눈치채지 못한다(직접 조회로 503을 드러내기로 한 결정과 정면으로 어긋난다).
+    rag_logs = _safe_get(OPS_BACKEND_URL, "/observability/rag-logs")
 
     # 차트(그래프 전용 카드)와 2x2 지표 카드를 거의 1:1 너비로 나란히 둔다 — 기존엔
     # 차트:지표 = 3:2였고 차트+지표+백엔드 상태가 카드 하나를 같이 썼는데, 지표 카드가
@@ -44,26 +47,41 @@ def render() -> None:
 
     with card("home_backend_status"):
         _render_backend_health_banner(obs_status.get("backend_health") or {})
-        rag_logs_info = obs_status.get("rag_logs", {})
-        last_collected = rag_logs_info.get("last_collected_at")
+        # 예전엔 collector의 '마지막 수집 시각'을 보여줬는데, 이제 rag-logs는 관측 DB를
+        # 직접 읽으므로 그 시각은 화면 데이터의 최신성과 아무 상관이 없다(수집 자체를 안 한다).
+        # 운영자가 "언제까지의 데이터인가"를 오해하지 않도록, 실제로 받아온 로그의 최신
+        # 시각을 보여준다.
+        latest = max(
+            (log.get("created_at") for log in (rag_logs or []) if log.get("created_at")),
+            default=None,
+        )
         st.caption(
-            f"모니터링 로그 마지막 수집: {last_collected[:19].replace('T', ' ') if last_collected else '아직 없음'}"
+            f"RAG 요청 로그 최신 기록: {latest[:19].replace('T', ' ') if latest else '없음'}"
+            " (관측 DB 직접 조회)"
         )
 
 
-def _render_recent_logs_chart(rag_logs: list[dict]) -> None:
+def _render_recent_logs_chart(rag_logs: list[dict] | None) -> None:
     """RAG 파이프라인 요청의 최근 응답시간 추이 — 단일 시계열이라 범례 없이 직관적으로 보여준다."""
     section_header("RAG 요청 응답시간 추이")
+    if rag_logs is None:
+        # 조회 실패를 빈 차트로 그리면 "요청이 없었다"로 읽힌다 — 실패는 실패로 보여준다.
+        st.error(
+            "RAG 요청 로그를 불러오지 못했습니다 — 모니터링 백엔드 상태와 관측 DB 직접 조회"
+            " 구성(A360_OBSERVABILITY_DATABASE_URL)을 확인하세요."
+        )
+        return
+    # rag_events(event='http_request')를 직접 읽으므로 raw dict가 아니라 정형 컬럼이다.
     rows = [
         {
-            "started_at": log["raw"].get("started_at"),
-            "duration_ms": log["raw"].get("duration_ms"),
+            "started_at": log.get("created_at"),
+            "duration_ms": log.get("duration_ms"),
         }
         for log in rag_logs
-        if log.get("raw", {}).get("duration_ms") is not None and log["raw"].get("started_at")
+        if log.get("duration_ms") is not None and log.get("created_at")
     ]
     if not rows:
-        st.info("아직 수집된 RAG 요청 로그가 없습니다 — \"모니터링 로그\" 메뉴에서 새로고침해 보세요.")
+        st.info("표시할 RAG 요청 로그가 없습니다 — 관측 DB에 http_request 이벤트가 있는지 확인하세요.")
         return
 
     df = pd.DataFrame(rows).sort_values("started_at").tail(50)

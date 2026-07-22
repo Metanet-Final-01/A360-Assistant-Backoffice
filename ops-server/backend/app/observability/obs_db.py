@@ -37,6 +37,7 @@ from __future__ import annotations
 import logging
 import os
 import re
+import uuid
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
@@ -52,6 +53,19 @@ _ENV_KEY = "A360_OBSERVABILITY_DATABASE_URL"
 _MAX_LIMIT = 500  # audit_logs (백엔드 le=500)
 _MAX_LIMIT_METRICS = 2000  # request_metrics · rag_events (백엔드 le=2000)
 _MAX_LIMIT_TURN_EVENTS = 1000  # turn_events (백엔드 le=1000)
+# llm-usage 집계의 breakdown 상한 — user/session 축은 행 수가 사용자·세션 수만큼 늘어난다.
+_MAX_BREAKDOWN = 200
+
+# breakdown을 자를 때 **무엇을 기준으로 상위 N을 고를지**. 정렬식은 SQL에 그대로 들어가므로
+# 바인드가 불가능하다 — group_by와 같은 이유로 화이트리스트가 유일한 방어다.
+#
+# 기준을 고를 수 있어야 하는 이유: 비용 리포트는 '가장 비싼' 축을 보는 화면인데 호출 수로
+# 자르면 **호출은 적지만 비싼 세션이 응답에서 통째로 빠진다.** 화면은 받은 것만 정렬하므로
+# 그 사실조차 드러나지 않는다.
+_BREAKDOWN_ORDERS = {
+    "calls": "count(*)",
+    "cost": "coalesce(sum(cost_usd), 0.0)",
+}
 _STATEMENT_TIMEOUT_MS = 10_000
 
 # llm-usage/stats의 group_by → 컬럼. 백엔드 _GROUP_COLS와 같은 매핑이어야 한다.
@@ -125,6 +139,11 @@ def _cursor():
         raise ObservabilityDBUnavailable(f"관측 DB 연결 실패: {type(e).__name__}") from e
     try:
         conn.read_only = True  # 트랜잭션이 열리기 전에 — 위 docstring 참고
+        # 한 조회가 쿼리를 두 번 이상 던지는 경우(집계+내역, 사건 추적의 5종)가 있어
+        # REPEATABLE READ로 묶는다. PostgreSQL 기본은 READ COMMITTED라 **읽기 전용이어도
+        # 문장마다 새 스냅샷을 본다** — 동시 삽입이 있으면 합계와 내역이 서로 다른 시점을
+        # 보고 어긋난다. read_only와 마찬가지로 트랜잭션이 열리기 전에 설정해야 한다.
+        conn.isolation_level = psycopg.IsolationLevel.REPEATABLE_READ
         with conn.cursor() as cur:
             cur.execute(f"SET statement_timeout = {_STATEMENT_TIMEOUT_MS}")
             yield cur
@@ -170,6 +189,20 @@ def _clamp(limit: int, maximum: int = _MAX_LIMIT) -> int:
 
 def _iso(value: Any) -> str | None:
     return value.isoformat() if value is not None and hasattr(value, "isoformat") else None
+
+
+def _as_uuid(value: str, field: str) -> str:
+    """uuid 컬럼에 넣을 값을 검증한다.
+
+    `user_id`·`session_id`는 DB에서 uuid 타입이라, 형식이 틀린 문자열을 그대로 넘기면
+    psycopg가 InvalidTextRepresentation을 낸다. 그걸 잡지 않으면 **입력 형식 오류가
+    "관측 DB 조회 실패"(503)로 둔갑해** 운영이 DB 장애를 의심하게 된다 — 실제로 화면에서
+    user_id 칸에 아무 값이나 넣으면 그렇게 됐다. 여기서 걸러 400으로 내보낸다.
+    """
+    try:
+        return str(uuid.UUID(value))
+    except (ValueError, AttributeError, TypeError) as e:
+        raise ValueError(f"{field} 형식이 올바르지 않습니다(UUID여야 합니다).") from e
 
 
 def _utcnow() -> datetime:
@@ -223,8 +256,8 @@ def fetch_audit_logs(
         where.append("status_code = %s")
         params.append(int(status_code))
     if user_id:
-        where.append("user_id = %s")
-        params.append(user_id)
+        where.append("user_id = %s::uuid")
+        params.append(_as_uuid(user_id, "user_id"))
 
     # id를 tie-breaker로 둔다 — created_at만으로 정렬하면 같은 timestamp 행들의 순서가
     # 비결정적이고, limit 경계에서 **반환 집합 자체가 새로고침마다 흔들린다**.
@@ -369,12 +402,7 @@ def fetch_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
         "session_id, request_id, seq, kind, stage, message, detail, elapsed_ms, created_at"
     )
     if session_id:
-        import uuid as _uuid
-
-        try:
-            sid = str(_uuid.UUID(session_id))
-        except ValueError as e:
-            raise ValueError("session_id 형식이 올바르지 않습니다.") from e
+        sid = _as_uuid(session_id, "session_id")
         sql = (
             f"select {cols} from ("
             f"  select id, {cols} from turn_events where session_id = %s::uuid"
@@ -407,28 +435,68 @@ def fetch_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
     }
 
 
-def fetch_llm_usage_stats(days: int = 30, group_by: str = "component") -> dict:
-    """LLM 사용량 집계 — 백엔드 `GET /api/admin/llm-usage/stats`와 동일한 반환 형태.
+def fetch_llm_usage_stats(
+    days: int = 30,
+    group_by: str = "component",
+    limit: int = _MAX_BREAKDOWN,
+    order_by: str = "calls",
+) -> dict:
+    """LLM 사용량 집계 — 백엔드 `GET /api/admin/llm-usage/stats`와 같은 키를 반환한다.
 
-    total은 DB에서 따로 세지 않고 breakdown을 합산한다(백엔드와 같은 방식) — 두 쿼리가
-    서로 다른 시점을 보고 합계와 내역이 어긋나는 일을 없애기 위함이다.
+    ## breakdown에 상한이 있는 이유
+
+    group_by가 user/session이면 행 수가 사용자·세션 수만큼 늘어난다(실측: session 축이
+    이미 300개를 넘었고 계속 는다). 화면은 이걸 표·차트로 전부 그리므로 상한이 없으면
+    응답 크기와 렌더링 비용이 선형으로 커진다. 그래서 상위 N개만 준다.
+
+    **무엇의 상위인지는 호출부가 정한다**(order_by). 비용 리포트는 '가장 비싼' 축을 보는
+    화면인데 호출 수로 자르면 호출은 적지만 비싼 세션이 응답에서 통째로 빠지고, 화면은
+    받은 것만 정렬하므로 그 사실조차 드러나지 않는다. 기본값은 백엔드 admin API와 같은
+    calls 기준이다.
+
+    ## total은 잘린 합이 아니다
+
+    처음엔 total을 breakdown 합으로 계산했다. 거기에 상한을 얹으면 **"이번 달 비용"이
+    조용히 축소돼 보인다** — 숫자를 근거로 쓰는 화면에서 가장 나쁜 종류의 오류다.
+    그래서 total은 전체 집계를 따로 센다.
+
+    두 쿼리로 나뉘면 "서로 다른 시점을 봐서 합계와 내역이 어긋난다"는 문제가 생기는데,
+    처음엔 "읽기 전용 트랜잭션이라 같은 스냅샷을 본다"고 적어뒀다. **그건 사실이 아니다** —
+    PostgreSQL 기본 격리 수준은 READ COMMITTED라 읽기 전용이어도 문장마다 새 스냅샷을
+    본다. 그래서 `_cursor()`에서 REPEATABLE READ로 묶어 실제로 같은 스냅샷을 보게 했다.
     """
     col = _GROUP_COLS.get(group_by)
     if col is None:
         raise ValueError(f"group_by는 {sorted(_GROUP_COLS)} 중 하나여야 합니다: {group_by!r}")
+    order_expr = _BREAKDOWN_ORDERS.get(order_by)
+    if order_expr is None:
+        raise ValueError(f"order_by는 {sorted(_BREAKDOWN_ORDERS)} 중 하나여야 합니다: {order_by!r}")
     days = max(1, min(int(days), 365))
     since = _utcnow() - timedelta(days=days)
+    n = _clamp(limit, _MAX_BREAKDOWN)
 
-    sql = (
-        f"select {col} as key, count(*) as calls, "
-        "coalesce(sum(input_tokens), 0) as input_tokens, "
-        "coalesce(sum(output_tokens), 0) as output_tokens, "
-        "coalesce(sum(cost_usd), 0.0) as cost_usd "
-        "from llm_usage where created_at >= %s "
-        f"group by {col} order by count(*) desc"
-    )
     with _cursor() as cur:
-        cur.execute(sql, [since])
+        cur.execute(
+            "select count(*), coalesce(sum(input_tokens), 0), coalesce(sum(output_tokens), 0), "
+            "coalesce(sum(cost_usd), 0.0), "
+            # count(distinct)는 NULL을 세지 않지만 GROUP BY는 NULL을 **한 그룹으로** 만든다.
+            # 그래서 그냥 두면 group_count가 breakdown보다 작아져 truncated 판정이 뒤집힌다
+            # (실제로는 잘렸는데 "다 보여줬다"고 표시된다). NULL 그룹이 있으면 1을 더한다.
+            f"count(distinct {col}) + (count(*) filter (where {col} is null) > 0)::int "
+            "from llm_usage where created_at >= %s",
+            [since],
+        )
+        t_calls, t_in, t_out, t_cost, group_count = cur.fetchone()
+        cur.execute(
+            f"select {col} as key, count(*) as calls, "
+            "coalesce(sum(input_tokens), 0) as input_tokens, "
+            "coalesce(sum(output_tokens), 0) as output_tokens, "
+            "coalesce(sum(cost_usd), 0.0) as cost_usd "
+            "from llm_usage where created_at >= %s "
+            # 동점일 때 순서가 흔들리지 않게 키를 tie-breaker로 둔다.
+            f"group by {col} order by {order_expr} desc, {col} limit %s",
+            [since, n],
+        )
         rows = cur.fetchall()
 
     breakdown = [
@@ -442,12 +510,202 @@ def fetch_llm_usage_stats(days: int = 30, group_by: str = "component") -> dict:
         for r in rows
     ]
     total = {
-        "calls": sum(b["calls"] for b in breakdown),
-        "input_tokens": sum(b["input_tokens"] for b in breakdown),
-        "output_tokens": sum(b["output_tokens"] for b in breakdown),
-        "cost_usd": round(sum(b["cost_usd"] for b in breakdown), 6),
+        "calls": int(t_calls or 0),
+        "input_tokens": int(t_in or 0),
+        "output_tokens": int(t_out or 0),
+        "cost_usd": round(float(t_cost or 0.0), 6),
     }
-    return {"period_days": days, "group_by": group_by, "total": total, "breakdown": breakdown}
+    return {
+        "period_days": days,
+        "group_by": group_by,
+        "order_by": order_by,
+        "total": total,
+        "breakdown": breakdown,
+        # 잘렸다는 사실을 숨기지 않는다 — 화면이 "상위 N개만"을 표시할 수 있어야
+        # 합계와 내역의 차이를 오해하지 않는다.
+        "breakdown_truncated": int(group_count or 0) > len(breakdown),
+        "group_count": int(group_count or 0),
+    }
+
+
+def _request_ids_for_user(cur, user_id: str, limit: int) -> list[str]:
+    """user_id로 관련 request_id를 찾는다.
+
+    request_id/session_id는 사람이 외우기 어려운 opaque id라, 사람이 아는 값(user_id)으로
+    먼저 요청들을 찾아 그 집합을 추적 대상으로 삼는다. 감사·성능 **두 곳을 모두** 본다 —
+    한쪽에만 남는 요청이 있어서 하나만 보면 추적이 끊긴다.
+    """
+    cur.execute(
+        "select request_id from ("
+        "  select request_id, created_at from audit_logs"
+        "   where user_id = %s::uuid and request_id is not null"
+        "  union all"
+        "  select request_id, created_at from request_metrics"
+        "   where user_id = %s::uuid and request_id is not null"
+        ") u group by request_id order by max(created_at) desc limit %s",
+        [user_id, user_id, limit],
+    )
+    return [r[0] for r in cur.fetchall()]
+
+
+def trace_by(
+    request_id: str | None = None,
+    session_id: str | None = None,
+    user_id: str | None = None,
+    limit: int = 500,
+) -> dict:
+    """한 사건에 연결된 관측 레코드를 종류별로 모은다 (대시보드 #5).
+
+    반환 **형태**는 사본 기반이던 `log_store.trace_by`와 같게 둔다. 다만 `rag_logs`의
+    **내용물은 바뀐다**: 예전엔 RAG 서버 파일 로그를 그대로 담은 `{"raw": {...}}`였는데,
+    같은 내용이 이미 관측 DB의 `rag_events`에 `event='http_request'`로 중앙화돼 있어
+    그쪽을 쓴다(정형 컬럼). 화면도 함께 고쳤다.
+
+    - request_id: HTTP 요청 1건 축 — 감사·성능·턴·RAG 전부 연결된다.
+    - session_id: 대화 축 — turn_events만 직접 연결된다(나머지는 요청 축이라 세션 키가 없다).
+    - user_id: 위 `_request_ids_for_user` 참고.
+
+    사본 조회는 JSONL 전체를 읽어 파이썬에서 걸렀지만 여기선 WHERE로 넘긴다. 대신
+    user_id 축은 request_id 집합이 커질 수 있어 limit으로 자른다 — 사본 시절엔 상한이
+    없어 요청이 많은 사용자를 조회하면 화면이 통째로 느려질 수 있었다.
+    """
+    n = _clamp(limit, _MAX_LIMIT_METRICS)
+    sid: str | None = _as_uuid(session_id, "session_id") if session_id else None
+    uid: str | None = _as_uuid(user_id, "user_id") if user_id else None
+
+    audit: list[tuple] = []
+    metrics: list[tuple] = []
+    rag_all: list[tuple] = []
+    turns: list[tuple] = []
+
+    with _cursor() as cur:
+        request_ids: list[str] = [request_id] if request_id else []
+        if uid:
+            request_ids += [
+                r for r in _request_ids_for_user(cur, uid, n) if r not in request_ids
+            ]
+
+        if request_ids:
+            # = any(%s)는 목록을 배열 파라미터 하나로 넘긴다 — IN 절을 %s 개수만큼 만들면
+            # request_id가 늘어날 때마다 SQL 문자열이 달라져 계획 재사용이 안 된다.
+            #
+            # 바깥 정렬에도 id를 tie-breaker로 둔다 — 안쪽(시간축 절단)만 결정적이면
+            # 같은 timestamp 행들의 표시 순서가 새로고침마다 흔들린다.
+            # 세 조회 모두 **최신 n건을 먼저 고른 뒤 표시 순서로 되돌린다.** 오름차순에
+            # 바로 limit을 걸면, limit에 걸렸을 때 오래된 것만 남고 최신이 잘린다 —
+            # 장애를 좇는 화면에서 정작 방금 일어난 일이 사라진다. user_id 축은
+            # request_id가 여러 개라 실제로 걸린다. fetch_turn_events에서 이미 같은
+            # 이유로 서브쿼리를 썼는데 여기엔 적용하지 않았던 자리다.
+            cur.execute(
+                "select request_id, user_id, method, path, status_code, latency_ms, created_at "
+                "from (select * from audit_logs where request_id = any(%s) "
+                "      order by created_at desc, id desc limit %s) recent "
+                "order by created_at, id",
+                [request_ids, n],
+            )
+            audit = cur.fetchall()
+            cur.execute(
+                "select id, request_id, user_id, method, path, status_code, latency_ms, created_at "
+                "from (select * from request_metrics where request_id = any(%s) "
+                "      order by created_at desc, id desc limit %s) recent "
+                "order by created_at, id",
+                [request_ids, n],
+            )
+            metrics = cur.fetchall()
+            cur.execute(
+                "select id, request_id, event, function, status, duration_ms, detail, created_at "
+                "from (select * from rag_events where request_id = any(%s) "
+                "      order by created_at desc, id desc limit %s) recent "
+                "order by created_at, id",
+                [request_ids, n],
+            )
+            rag_all = cur.fetchall()
+
+        # 턴은 요청 축(request_id)과 대화 축(session_id) 둘 다로 붙는다.
+        turn_where: list[str] = []
+        turn_params: list[Any] = []
+        if request_ids:
+            turn_where.append("request_id = any(%s)")
+            turn_params.append(request_ids)
+        if sid:
+            turn_where.append("session_id = %s::uuid")
+            turn_params.append(sid)
+        if turn_where:
+            cur.execute(
+                "select session_id, request_id, seq, kind, stage, message, detail, elapsed_ms, "
+                "created_at from ("
+                "  select * from turn_events "
+                f" where {' or '.join(turn_where)} "
+                "  order by created_at desc nulls last, id desc limit %s"
+                ") recent "
+                # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러
+                # 요청이 실제 발생 순서와 어긋난다(사본 구현에서 이미 고친 지점).
+                "order by created_at nulls last, seq, id",
+                [*turn_params, n],
+            )
+            turns = cur.fetchall()
+
+    def _rag_row(r: tuple) -> dict:
+        return {
+            "id": r[0],
+            "request_id": r[1],
+            "event": r[2],
+            "function": r[3],
+            "status": r[4],
+            "duration_ms": r[5],
+            "detail": r[6],
+            "created_at": _iso(r[7]),
+        }
+
+    return {
+        "request_id": request_id,
+        "session_id": session_id,
+        "user_id": user_id,
+        "matched_request_ids": sorted(request_ids),
+        "audit_logs": [
+            {
+                "request_id": r[0],
+                "user_id": str(r[1]) if r[1] else None,
+                "method": r[2],
+                "path": r[3],
+                "status_code": r[4],
+                "latency_ms": r[5],
+                "created_at": _iso(r[6]),
+            }
+            for r in audit
+        ],
+        "request_metrics": [
+            {
+                "id": r[0],
+                "request_id": r[1],
+                "user_id": str(r[2]) if r[2] else None,
+                "method": r[3],
+                "path": r[4],
+                "status_code": r[5],
+                "latency_ms": r[6],
+                "created_at": _iso(r[7]),
+            }
+            for r in metrics
+        ],
+        "turn_events": [
+            {
+                "session_id": str(r[0]) if r[0] else None,
+                "request_id": r[1],
+                "seq": r[2],
+                "kind": r[3],
+                "stage": r[4],
+                "message": r[5],
+                "detail": r[6],
+                "elapsed_ms": r[7],
+                "created_at": _iso(r[8]),
+            }
+            for r in turns
+        ],
+        # HTTP 요청 로그와 파이프라인 단계 로그는 성격이 달라 화면에서도 나눠 보여준다.
+        # 한 번 조회한 결과를 나눌 뿐, 쿼리를 두 번 돌리지 않는다.
+        "rag_logs": [_rag_row(r) for r in rag_all if r[2] == "http_request"],
+        "rag_events": [_rag_row(r) for r in rag_all if r[2] != "http_request"],
+    }
 
 
 def fetch_metrics_daily(

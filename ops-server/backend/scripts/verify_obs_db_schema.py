@@ -46,6 +46,11 @@ CHECKS = [
     ),
     ("metrics_daily", lambda: obs_db.fetch_metrics_daily(days=7)),
     ("usage_daily", lambda: obs_db.fetch_usage_daily(days=30)),
+    # 사건 추적은 축마다 SQL 모양이 달라(요청 축은 = any(...), 대화 축은 uuid 캐스팅)
+    # 셋을 따로 건다 — 한 축만 확인하면 나머지 축의 문법 오류를 못 잡는다.
+    ("trace(request_id)", lambda: obs_db.trace_by(request_id="verify-probe")),
+    ("trace(user_id)", lambda: obs_db.trace_by(user_id=_DUMMY_SESSION)),
+    ("trace(session_id)", lambda: obs_db.trace_by(session_id=_DUMMY_SESSION)),
 ]
 
 
@@ -53,6 +58,12 @@ def _row_count(out: dict) -> int:
     for key in ("logs", "rows", "events", "breakdown"):
         if key in out:
             return len(out[key])
+    if "matched_request_ids" in out:  # trace — 종류별 합계
+        # matched_request_ids는 조회 대상 id 목록이지 '가져온 행'이 아니다. 같이 더하면
+        # 로그가 0건이어도 rows가 최소 1로 찍혀 "뭔가 조회됐다"로 오해하게 된다.
+        return sum(
+            len(v) for k, v in out.items() if isinstance(v, list) and k != "matched_request_ids"
+        )
     if "has_rows" in out:  # probe는 행 수를 세지 않는다(probe docstring 참고)
         return 1 if out["has_rows"] else 0
     return int(out.get("audit_logs_rows", 0))

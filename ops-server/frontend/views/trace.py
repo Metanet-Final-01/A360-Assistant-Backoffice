@@ -17,15 +17,8 @@ def render() -> None:
     st.caption(
         "request_id로 조회하면 한 요청이 남긴 감사·성능·에이전트 턴·RAG 로그를 한 타임라인으로, "
         "session_id로 조회하면 그 대화의 모든 턴을 순서대로 보여줍니다. request_id/session_id는 "
-        "사람이 외우기 어려운 값이라, user_id로 먼저 찾아 관련된 요청들을 한 번에 볼 수도 있습니다."
-    )
-
-    # 이 화면은 아직 수집 사본(JSONL)을 읽는다. 그런데 이 PR에서 모니터링 로그 화면의
-    # 수집 단계를 없앴으므로 사본을 채울 경로가 남아 있지 않다 — 안내대로 "먼저 수집하라"고
-    # 해봐야 방법이 없다. 후속(RPA-256)에서 이 화면도 직접 조회로 옮긴다.
-    st.warning(
-        "사건 추적은 아직 수집 사본을 읽습니다 — 관측 DB 직접 조회로 옮기는 작업(RPA-256)이"
-        " 끝나기 전까지는 결과가 비어 있을 수 있습니다."
+        "사람이 외우기 어려운 값이라, user_id로 먼저 찾아 관련된 요청들을 한 번에 볼 수도 있습니다. "
+        "관측 DB를 직접 조회하므로 별도 수집 단계는 없습니다."
     )
 
     with card("trace_input"):
@@ -46,7 +39,7 @@ def render() -> None:
     if key_type == "user_id":
         matched = data.get("matched_request_ids", [])
         if not matched:
-            st.warning("이 user_id로 연결된 request_id를 찾지 못했습니다 — 감사 로그·성능 메트릭이 수집돼 있는지 확인하세요.")
+            st.warning("이 user_id로 연결된 request_id를 찾지 못했습니다 — user_id가 맞는지 확인하세요.")
             return
         st.caption(f"이 user_id의 요청 {len(matched)}건: {', '.join(matched)}")
 
@@ -57,7 +50,7 @@ def render() -> None:
     rag_events = data.get("rag_events", [])
     total = len(audit) + len(metrics) + len(turns) + len(rag) + len(rag_events)
     if total == 0:
-        st.warning("연결된 로그가 없습니다 — 해당 id의 로그가 수집돼 있는지(모니터링 로그 화면), id가 맞는지 확인하세요.")
+        st.warning("연결된 로그가 없습니다 — id가 맞는지, 해당 기간 로그가 관측 DB에 있는지 확인하세요.")
         return
 
     with card("trace_summary"):
@@ -79,9 +72,10 @@ def render() -> None:
                 rows.append({"시각": r.get("created_at"), "종류": "감사", "내용": f'{r.get("method")} {r.get("path")} → {r.get("status_code")} ({r.get("latency_ms")}ms)'})
             for r in metrics:
                 rows.append({"시각": r.get("created_at"), "종류": "성능", "내용": f'{r.get("method")} {r.get("path")} {r.get("latency_ms")}ms'})
+            # rag_events(event='http_request')를 직접 읽으므로 raw dict가 아니라 정형 컬럼이다.
             for r in rag:
-                raw = r.get("raw", {})
-                rows.append({"시각": raw.get("started_at") or raw.get("timestamp"), "종류": "RAG", "내용": f'{raw.get("event")} {raw.get("path") or ""}'})
+                rows.append({"시각": r.get("created_at"), "종류": "RAG",
+                             "내용": f'{r.get("event")} {r.get("function") or ""} ({r.get("duration_ms")}ms)'})
             for t in turns:  # 에이전트 턴도 통합 타임라인에 포함(CodeRabbit #13)
                 rows.append({"시각": t.get("created_at"), "종류": "턴",
                              "내용": f'{t.get("stage") or t.get("kind")} · {t.get("message") or ""}'})

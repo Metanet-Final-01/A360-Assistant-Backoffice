@@ -137,13 +137,36 @@ def test_limit_is_clamped_to_max(monkeypatch):
     assert params[-1] == 500
 
 
+_UID = "11111111-2222-3333-4444-555555555555"
+
+
 def test_filters_are_parameterized_not_interpolated(monkeypatch):
     """필터는 바인드 파라미터로 — 문자열 보간이면 SQL 인젝션 면이 생긴다."""
     cur = _install_cursor(monkeypatch, [])
-    obs_db.fetch_audit_logs(method="post", status_code=500, user_id="u-9", limit=5)
+    obs_db.fetch_audit_logs(method="post", status_code=500, user_id=_UID, limit=5)
     sql, params = [x for x in cur.executed if "from audit_logs" in x[0]][0]
-    assert "%s" in sql and "u-9" not in sql          # 값이 SQL에 박히지 않았다
-    assert "POST" in params and 500 in params and "u-9" in params  # 값은 파라미터로
+    assert "%s" in sql and _UID not in sql            # 값이 SQL에 박히지 않았다
+    assert "POST" in params and 500 in params and _UID in params  # 값은 파라미터로
+
+
+def test_malformed_user_id_is_input_error_not_db_failure(monkeypatch):
+    """user_id는 DB에서 uuid 타입이다. 형식이 틀린 값을 그대로 넘기면 psycopg가
+    InvalidTextRepresentation을 내고, 그게 '관측 DB 조회 실패'(503)로 둔갑해 운영이
+    DB 장애를 의심하게 된다 — 실제로 화면 user_id 칸에 아무 값이나 넣으면 그랬다.
+    입력 오류는 입력 오류로 보고해야 한다(400)."""
+    _install_cursor(monkeypatch, [])
+    with pytest.raises(ValueError):
+        obs_db.fetch_audit_logs(user_id="abc")
+    with pytest.raises(ValueError):
+        obs_db.trace_by(user_id="abc")
+
+
+def test_uuid_columns_are_cast_explicitly(monkeypatch):
+    """uuid 컬럼 비교에 캐스팅이 빠지면 텍스트로 넘어가 타입 불일치가 난다."""
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.fetch_audit_logs(user_id=_UID)
+    sql = [s for s, _ in cur.executed if "from audit_logs" in s][0]
+    assert "user_id = %s::uuid" in sql
 
 
 # --- 2-b. 나머지 5종도 같은 계약을 지킨다 ---
@@ -254,18 +277,132 @@ def test_llm_usage_group_by_is_whitelisted(monkeypatch):
         obs_db.fetch_llm_usage_stats(group_by="component; drop table llm_usage --")
 
 
-def test_llm_usage_total_is_sum_of_breakdown(monkeypatch):
-    """total을 별도 쿼리로 세면 두 시점이 달라 합계와 내역이 어긋난다(백엔드와 같은 방식)."""
-    _install_cursor(monkeypatch, [("agent", 2, 10, 5, 0.001), ("rag", 1, 3, 1, 0.0005)])
+class _ScriptedCursor(_FakeCursor):
+    """집계와 breakdown이 별개 쿼리라, fetchone/fetchall에 다른 결과를 주는 커서."""
+
+    def __init__(self, total_row, breakdown_rows):
+        super().__init__(breakdown_rows)
+        self._total_row = total_row
+
+    def fetchone(self):
+        return self._total_row
+
+
+def _install_scripted(monkeypatch, total_row, breakdown_rows):
+    cur = _ScriptedCursor(total_row, breakdown_rows)
+
+    class _Ctx:
+        def __enter__(self):
+            return cur
+
+        def __exit__(self, *a):
+            return False
+
+    monkeypatch.setattr(obs_db, "_cursor", lambda: _Ctx())
+    return cur
+
+
+def test_llm_usage_total_is_the_whole_period_not_the_visible_rows(monkeypatch):
+    """**합계는 잘린 내역의 합이 아니라 전체 집계다.**
+
+    breakdown에 상한을 두면서 total을 그 합으로 두면 "이번 달 비용"이 조용히 축소돼
+    보인다 — 숫자를 근거로 쓰는 화면에서 가장 나쁜 오류다. 전체는 30콜인데 화면에
+    보이는 2행의 합은 3콜뿐인 상황을 만들어, total이 전체를 유지하는지 본다.
+    """
+    _install_scripted(
+        monkeypatch,
+        total_row=(30, 130, 60, 0.05, 7),  # calls, in, out, cost, group_count
+        breakdown_rows=[("agent", 2, 10, 5, 0.001), ("rag", 1, 3, 1, 0.0005)],
+    )
+
     out = obs_db.fetch_llm_usage_stats(days=7, group_by="component")
+
     assert out["period_days"] == 7 and out["group_by"] == "component"
     assert out["total"] == {
-        "calls": 3,
-        "input_tokens": 13,
-        "output_tokens": 6,
-        "cost_usd": 0.0015,
+        "calls": 30,
+        "input_tokens": 130,
+        "output_tokens": 60,
+        "cost_usd": 0.05,
     }
+    assert sum(b["calls"] for b in out["breakdown"]) == 3  # 보이는 건 일부뿐
     assert out["breakdown"][0]["key"] == "agent"
+
+
+def test_truncation_is_disclosed_not_hidden(monkeypatch):
+    """합계는 전체인데 표는 일부다 — 말하지 않으면 "표를 더하면 합계"라고 오해한다."""
+    _install_scripted(monkeypatch, (30, 130, 60, 0.05, 7), [("agent", 2, 10, 5, 0.001)])
+    assert obs_db.fetch_llm_usage_stats(group_by="session")["breakdown_truncated"] is True
+
+    _install_scripted(monkeypatch, (3, 13, 6, 0.0015, 1), [("agent", 3, 13, 6, 0.0015)])
+    assert obs_db.fetch_llm_usage_stats(group_by="component")["breakdown_truncated"] is False
+
+
+def test_trace_outer_ordering_is_deterministic_and_time_first(monkeypatch):
+    """표시 순서에도 tie-breaker가 있어야 하고, 시간이 기준이어야 한다.
+
+    안쪽 서브쿼리(시간축 절단)만 결정적이면 같은 timestamp 행들의 **표시 순서가
+    새로고침마다 흔들린다.** rag_events는 id로 정렬하고 있었는데 id는 삽입 순서라
+    시간축과 어긋날 수 있다 — 사건 추적은 "요청이 시스템을 통과한 순서"를 보는 화면이다.
+
+    처음엔 이걸 `inspect.getsource`로 소스 문자열을 세어 검사했는데, 그건 **동작이 아니라
+    코드 모양**을 보는 것이라 줄바꿈·문자열 분할만 바꿔도 깨진다(Qodo 지적). 실제로
+    실행된 SQL을 붙잡아 검증한다.
+    """
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.trace_by(request_id="req-1")
+    sqls = [sql for sql, _ in cur.executed]
+
+    for table in ("audit_logs", "request_metrics", "rag_events"):
+        outer = [s for s in sqls if f"from {table}" in s][0]
+        assert outer.rstrip().endswith("order by created_at, id"), table
+    turns = [s for s in sqls if "from turn_events" in s][0]
+    assert turns.rstrip().endswith("order by created_at nulls last, seq, id")
+
+
+def test_group_count_includes_the_null_group(monkeypatch):
+    """`count(distinct col)`은 NULL을 세지 않지만 GROUP BY는 NULL을 **한 그룹으로** 만든다.
+
+    그냥 두면 group_count가 breakdown보다 작아져 truncated 판정이 뒤집히고(실제로는
+    잘렸는데 "다 보여줬다"고 표시된다), 전체 그룹 수도 축소돼 보인다. 실 DB의 user 축에
+    NULL 그룹이 실제로 있다 — 보정 전 47, GROUP BY 기준 실제 48.
+    """
+    cur = _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    obs_db.fetch_llm_usage_stats(group_by="user")
+    sql = [s for s, _ in cur.executed if "count(distinct" in s][0]
+    assert "filter (where user_id is null)" in sql
+
+
+def test_truncation_criterion_is_chosen_by_the_caller(monkeypatch):
+    """**무엇의 상위 N인지**는 화면이 정해야 한다.
+
+    비용 리포트는 '가장 비싼' 축을 보는 화면인데 호출 수로 자르면, 호출은 적지만 비싼
+    세션이 응답에서 통째로 빠진다. 화면은 받은 것만 정렬하므로 그 사실조차 드러나지
+    않는다 — 비용 1위가 목록에 없는데 아무도 모른다.
+    """
+    cur = _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    obs_db.fetch_llm_usage_stats(group_by="session", order_by="cost")
+    sql = [s for s, _ in cur.executed if "group by" in s][0]
+    assert "order by coalesce(sum(cost_usd), 0.0) desc" in sql
+
+    cur2 = _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    obs_db.fetch_llm_usage_stats(group_by="session")  # 기본은 백엔드와 같은 calls 기준
+    assert "order by count(*) desc" in [s for s, _ in cur2.executed if "group by" in s][0]
+
+
+def test_order_by_is_whitelisted(monkeypatch):
+    """정렬식은 SQL에 그대로 들어가 바인드가 불가능하다 — group_by와 같은 방어가 필요하다."""
+    _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    with pytest.raises(ValueError):
+        obs_db.fetch_llm_usage_stats(order_by="cost_usd; drop table llm_usage --")
+
+
+def test_breakdown_is_capped(monkeypatch):
+    """user/session 축은 행 수가 사용자·세션 수만큼 늘어난다(실측 300+). 상한이 없으면
+    응답 크기와 렌더링 비용이 선형으로 커진다."""
+    cur = _install_scripted(monkeypatch, (0, 0, 0, 0.0, 0), [])
+    obs_db.fetch_llm_usage_stats(group_by="session", limit=99999)
+    sql, params = [x for x in cur.executed if "group by" in x[0]][0]
+    assert "limit %s" in sql and params[-1] == 200
 
 
 def test_daily_rollups_shape(monkeypatch):
@@ -389,6 +526,11 @@ def test_cursor_sets_read_only_before_any_statement(monkeypatch):
     assert keys.index("read_only") < keys.index("execute"), (
         "read_only가 첫 문장보다 뒤면 이미 열린 트랜잭션엔 적용되지 않는다"
     )
+    # 한 조회가 쿼리를 두 번 이상 던지는 경우(집계+내역, 사건 추적)가 있다. PostgreSQL
+    # 기본은 READ COMMITTED라 **읽기 전용이어도 문장마다 새 스냅샷**을 본다 —
+    # "읽기 전용이니 같은 스냅샷"이라고 적어뒀던 게 사실이 아니었다.
+    assert "isolation_level" in keys, "REPEATABLE READ로 묶지 않으면 합계와 내역이 어긋난다"
+    assert keys.index("isolation_level") < keys.index("execute")
     assert any("statement_timeout" in sql for k, sql in events if k == "execute")
 
 
