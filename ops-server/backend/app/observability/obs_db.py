@@ -37,6 +37,7 @@ from __future__ import annotations
 import logging
 import os
 from contextlib import contextmanager
+from datetime import date, datetime, timedelta, timezone
 from typing import Any
 
 logger = logging.getLogger(__name__)
@@ -45,9 +46,22 @@ logger = logging.getLogger(__name__)
 # 백엔드의 OBSERVABILITY_DATABASE_URL과 **다른 롤**이다: 이쪽은 SELECT 권한만 가진다.
 _ENV_KEY = "A360_OBSERVABILITY_DATABASE_URL"
 
-# 조회 상한 — 화면·수집기가 실수로 전체 스캔을 걸지 않게. admin API의 le=500과 맞춘다.
-_MAX_LIMIT = 500
+# 조회 상한 — 화면·수집기가 실수로 전체 스캔을 걸지 않게. **admin API의 le=값과 종류별로
+# 맞춘다**: 하나로 뭉뚱그리면 백오피스가 백엔드보다 적게/많이 가져와 계약이 어긋난다.
+_MAX_LIMIT = 500  # audit_logs (백엔드 le=500)
+_MAX_LIMIT_METRICS = 2000  # request_metrics · rag_events (백엔드 le=2000)
+_MAX_LIMIT_TURN_EVENTS = 1000  # turn_events (백엔드 le=1000)
 _STATEMENT_TIMEOUT_MS = 10_000
+
+# llm-usage/stats의 group_by → 컬럼. 백엔드 _GROUP_COLS와 같은 매핑이어야 한다.
+# **화이트리스트가 곧 방어다** — group_by는 SQL에 식별자로 들어가므로 바인드가 불가능하고,
+# 사전에 없는 값은 여기서 막지 않으면 그대로 SQL에 박힌다.
+_GROUP_COLS = {
+    "component": "component",
+    "model": "model",
+    "user": "user_id",
+    "session": "session_id",
+}
 
 
 class ObservabilityDBUnavailable(RuntimeError):
@@ -101,12 +115,23 @@ def _cursor():
         conn.close()
 
 
-def _clamp(limit: int) -> int:
-    return max(1, min(int(limit), _MAX_LIMIT))
+def _clamp(limit: int, maximum: int = _MAX_LIMIT) -> int:
+    return max(1, min(int(limit), maximum))
 
 
 def _iso(value: Any) -> str | None:
     return value.isoformat() if value is not None and hasattr(value, "isoformat") else None
+
+
+def _utcnow() -> datetime:
+    """UTC 기준 현재 — llm_usage.created_at이 timestamptz라 tz-aware여야 비교가 맞다."""
+    return datetime.now(timezone.utc)
+
+
+def _today() -> date:
+    """롤업 테이블의 day 경계. 백엔드가 date.today()(서버 로컬)를 쓰므로 같게 맞춘다 —
+    여기만 UTC로 바꾸면 같은 화면이 백엔드 경유일 때와 하루 어긋난다."""
+    return date.today()
 
 
 def probe() -> dict:
@@ -169,6 +194,278 @@ def fetch_audit_logs(
                 "status_code": r[4],
                 "latency_ms": r[5],
                 "created_at": _iso(r[6]),
+            }
+            for r in rows
+        ]
+    }
+
+
+def fetch_request_metrics(
+    since: str | None = None,
+    limit: int = 500,
+    method: str | None = None,
+    path: str | None = None,
+) -> dict:
+    """raw 요청 메트릭 — 백엔드 `GET /api/admin/request-metrics`와 동일한 반환 형태.
+
+    audit-logs와 같은 커서 규칙(since면 오름차순)이고, id는 수집기 중복 제거용이라
+    반드시 포함한다.
+    """
+    where: list[str] = []
+    params: list[Any] = []
+    if since:
+        where.append("created_at > %s")
+        params.append(since)
+    if method:
+        where.append("method = %s")
+        params.append(method.upper())
+    if path:
+        # 백엔드 .contains()와 동일한 부분일치. 값은 파라미터로 넘겨 SQL에 %를 박지 않는다.
+        where.append("path like %s")
+        params.append(f"%{path}%")
+
+    order = "created_at asc, id asc" if since else "created_at desc, id desc"
+    sql = (
+        "select id, request_id, user_id, method, path, status_code, latency_ms, created_at "
+        "from request_metrics "
+        + (f"where {' and '.join(where)} " if where else "")
+        + f"order by {order} limit %s"
+    )
+    params.append(_clamp(limit, _MAX_LIMIT_METRICS))
+    with _cursor() as cur:
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+    return {
+        "rows": [
+            {
+                "id": r[0],
+                "request_id": r[1],
+                "user_id": str(r[2]) if r[2] else None,
+                "method": r[3],
+                "path": r[4],
+                "status_code": r[5],
+                "latency_ms": r[6],
+                "created_at": _iso(r[7]),
+            }
+            for r in rows
+        ]
+    }
+
+
+def fetch_rag_events(
+    limit: int = 200,
+    request_id: str | None = None,
+) -> dict:
+    """RAG 호출 이벤트 — 백엔드 `GET /api/admin/rag-events`와 동일한 반환 형태."""
+    where: list[str] = []
+    params: list[Any] = []
+    if request_id:
+        where.append("request_id = %s")
+        params.append(request_id)
+
+    sql = (
+        "select id, request_id, event, function, status, duration_ms, detail, created_at "
+        "from rag_events "
+        + (f"where {' and '.join(where)} " if where else "")
+        + "order by created_at desc, id desc limit %s"
+    )
+    params.append(_clamp(limit, _MAX_LIMIT_METRICS))
+    with _cursor() as cur:
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+    return {
+        "events": [
+            {
+                "id": r[0],
+                "request_id": r[1],
+                "event": r[2],
+                "function": r[3],
+                "status": r[4],
+                "duration_ms": r[5],
+                "detail": r[6],
+                "created_at": _iso(r[7]),
+            }
+            for r in rows
+        ]
+    }
+
+
+def fetch_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
+    """에이전트 턴 타임라인 — 백엔드 `GET /api/admin/turn-events`와 동일한 반환 형태.
+
+    session_id를 주면 **시간축으로 최근 limit건을 먼저 고른 뒤** 화면 순서(request_id, seq)로
+    정렬한다. request_id는 uuid4라 시간과 무관해서, (request_id, seq)에 바로 limit을 걸면
+    최신 턴이 아니라 사전순으로 앞선 임의의 턴이 잘린다 — 백엔드가 CodeRabbit 지적으로
+    고친 지점이고, 여기서 순진하게 옮기면 그 버그를 되살린다.
+
+    잘못된 session_id는 ValueError를 올린다(백엔드의 400 INVALID_ID에 대응).
+    """
+    n = _clamp(limit, _MAX_LIMIT_TURN_EVENTS)
+    cols = (
+        "session_id, request_id, seq, kind, stage, message, detail, elapsed_ms, created_at"
+    )
+    if session_id:
+        import uuid as _uuid
+
+        try:
+            sid = str(_uuid.UUID(session_id))
+        except ValueError as e:
+            raise ValueError("session_id 형식이 올바르지 않습니다.") from e
+        sql = (
+            f"select {cols} from ("
+            f"  select id, {cols} from turn_events where session_id = %s::uuid"
+            "   order by created_at desc, id desc limit %s"
+            ") recent order by request_id, seq"
+        )
+        params: list[Any] = [sid, n]
+    else:
+        sql = f"select {cols} from turn_events order by created_at desc limit %s"
+        params = [n]
+
+    with _cursor() as cur:
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+    return {
+        "events": [
+            {
+                "session_id": str(r[0]) if r[0] else None,
+                "request_id": r[1],
+                "seq": r[2],
+                "kind": r[3],
+                "stage": r[4],
+                "message": r[5],
+                "detail": r[6],
+                "elapsed_ms": r[7],
+                "created_at": _iso(r[8]),
+            }
+            for r in rows
+        ]
+    }
+
+
+def fetch_llm_usage_stats(days: int = 30, group_by: str = "component") -> dict:
+    """LLM 사용량 집계 — 백엔드 `GET /api/admin/llm-usage/stats`와 동일한 반환 형태.
+
+    total은 DB에서 따로 세지 않고 breakdown을 합산한다(백엔드와 같은 방식) — 두 쿼리가
+    서로 다른 시점을 보고 합계와 내역이 어긋나는 일을 없애기 위함이다.
+    """
+    col = _GROUP_COLS.get(group_by)
+    if col is None:
+        raise ValueError(f"group_by는 {sorted(_GROUP_COLS)} 중 하나여야 합니다: {group_by!r}")
+    days = max(1, min(int(days), 365))
+    since = _utcnow() - timedelta(days=days)
+
+    sql = (
+        f"select {col} as key, count(*) as calls, "
+        "coalesce(sum(input_tokens), 0) as input_tokens, "
+        "coalesce(sum(output_tokens), 0) as output_tokens, "
+        "coalesce(sum(cost_usd), 0.0) as cost_usd "
+        "from llm_usage where created_at >= %s "
+        f"group by {col} order by count(*) desc"
+    )
+    with _cursor() as cur:
+        cur.execute(sql, [since])
+        rows = cur.fetchall()
+
+    breakdown = [
+        {
+            "key": str(r[0]) if r[0] is not None else None,
+            "calls": int(r[1]),
+            "input_tokens": int(r[2]),
+            "output_tokens": int(r[3]),
+            "cost_usd": round(float(r[4] or 0.0), 6),
+        }
+        for r in rows
+    ]
+    total = {
+        "calls": sum(b["calls"] for b in breakdown),
+        "input_tokens": sum(b["input_tokens"] for b in breakdown),
+        "output_tokens": sum(b["output_tokens"] for b in breakdown),
+        "cost_usd": round(sum(b["cost_usd"] for b in breakdown), 6),
+    }
+    return {"period_days": days, "group_by": group_by, "total": total, "breakdown": breakdown}
+
+
+def fetch_metrics_daily(
+    days: int = 7,
+    method: str | None = None,
+    path: str | None = None,
+) -> dict:
+    """일별 요청 성능 롤업 — 백엔드 `GET /api/admin/metrics-daily`와 동일한 반환 형태."""
+    days = max(1, min(int(days), 90))
+    where = ["day >= %s"]
+    params: list[Any] = [_today() - timedelta(days=days)]
+    if method:
+        where.append("method = %s")
+        params.append(method.upper())
+    if path:
+        where.append("path like %s")
+        params.append(f"%{path}%")
+
+    sql = (
+        "select day, method, path, calls, err_4xx, err_5xx, p50_ms, p95_ms, avg_ms, max_ms "
+        "from metrics_daily "
+        f"where {' and '.join(where)} "
+        "order by day desc, calls desc"
+    )
+    with _cursor() as cur:
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+    return {
+        "rows": [
+            {
+                "day": _iso(r[0]),
+                "method": r[1],
+                "path": r[2],
+                "calls": r[3],
+                "err_4xx": r[4],
+                "err_5xx": r[5],
+                "p50_ms": r[6],
+                "p95_ms": r[7],
+                "avg_ms": r[8],
+                "max_ms": r[9],
+            }
+            for r in rows
+        ]
+    }
+
+
+def fetch_usage_daily(
+    days: int = 30,
+    component: str | None = None,
+    model: str | None = None,
+) -> dict:
+    """일별 LLM 사용량 롤업 — 백엔드 `GET /api/admin/usage-daily`와 동일한 반환 형태."""
+    days = max(1, min(int(days), 365))
+    where = ["day >= %s"]
+    params: list[Any] = [_today() - timedelta(days=days)]
+    if component:
+        where.append("component = %s")
+        params.append(component)
+    if model:
+        where.append("model = %s")
+        params.append(model)
+
+    sql = (
+        "select day, component, purpose, model, calls, input_tokens, output_tokens, cost_usd "
+        "from usage_daily "
+        f"where {' and '.join(where)} "
+        "order by day desc"
+    )
+    with _cursor() as cur:
+        cur.execute(sql, params)
+        rows = cur.fetchall()
+    return {
+        "rows": [
+            {
+                "day": _iso(r[0]),
+                "component": r[1],
+                "purpose": r[2],
+                "model": r[3],
+                "calls": r[4],
+                "input_tokens": r[5],
+                "output_tokens": r[6],
+                "cost_usd": round(float(r[7]), 6) if r[7] is not None else None,
             }
             for r in rows
         ]

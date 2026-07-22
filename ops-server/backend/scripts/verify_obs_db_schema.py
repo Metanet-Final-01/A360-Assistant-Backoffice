@@ -1,0 +1,77 @@
+"""obs_db의 raw SQL을 **실제 관측 DB 스키마**에 걸어보는 스모크.
+
+## 왜 별도로 있나
+
+obs_db는 백엔드 ORM이 아니라 raw SQL이라, 컬럼명 한 글자만 틀려도 죽는다. 그런데
+단위 테스트는 커서를 가짜로 갈아끼우므로 **문법·컬럼명 오류를 원리적으로 못 잡는다** —
+초록불이 "쿼리가 맞다"는 뜻이 아니다. 그래서 실제 DB에 한 번 거는 이 스크립트가 있다.
+크레덴셜이 필요해 CI에서는 못 돌리므로, 스키마를 건드리는 변경 때 수동으로 돌린다.
+
+## 실행
+
+    A360_OBSERVABILITY_DATABASE_URL=... python scripts/verify_obs_db_schema.py
+
+크레덴셜은 출력하지 않는다. 성공 시 종료코드 0, 하나라도 실패하면 1.
+"""
+
+from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from app.observability import obs_db  # noqa: E402
+
+# 형식만 맞는 더미 — 세션 경로의 서브쿼리 문법을 확인하는 게 목적이라 0행이어도 성공이다.
+_DUMMY_SESSION = "11111111-2222-3333-4444-555555555555"
+
+CHECKS = [
+    ("probe", lambda: obs_db.probe()),
+    ("audit_logs", lambda: obs_db.fetch_audit_logs(limit=3)),
+    ("audit_logs(since)", lambda: obs_db.fetch_audit_logs(since="2026-01-01T00:00:00Z", limit=3)),
+    ("request_metrics", lambda: obs_db.fetch_request_metrics(limit=3, path="/api")),
+    (
+        "request_metrics(since)",
+        lambda: obs_db.fetch_request_metrics(since="2026-01-01T00:00:00Z", limit=3),
+    ),
+    ("rag_events", lambda: obs_db.fetch_rag_events(limit=3)),
+    ("turn_events", lambda: obs_db.fetch_turn_events(limit=3)),
+    # 세션 지정 경로는 서브쿼리라 SQL 모양이 다르다 — 여기서만 검증된다.
+    ("turn_events(session)", lambda: obs_db.fetch_turn_events(session_id=_DUMMY_SESSION, limit=3)),
+    ("llm_usage_stats", lambda: obs_db.fetch_llm_usage_stats(days=30, group_by="component")),
+    (
+        "llm_usage_stats(session)",
+        lambda: obs_db.fetch_llm_usage_stats(days=30, group_by="session"),
+    ),
+    ("metrics_daily", lambda: obs_db.fetch_metrics_daily(days=7)),
+    ("usage_daily", lambda: obs_db.fetch_usage_daily(days=30)),
+]
+
+
+def _row_count(out: dict) -> int:
+    for key in ("logs", "rows", "events", "breakdown"):
+        if key in out:
+            return len(out[key])
+    return int(out.get("audit_logs_rows", 0))
+
+
+def main() -> int:
+    if not obs_db.configured():
+        print("A360_OBSERVABILITY_DATABASE_URL이 없습니다 — 관측 DB 크레덴셜을 주입하고 실행하세요.")
+        return 2
+
+    failed = 0
+    for name, fn in CHECKS:
+        try:
+            print(f"  OK   {name:26s} rows={_row_count(fn())}")
+        except Exception as e:  # noqa: BLE001 — 어떤 실패든 계약 위반으로 보고한다
+            failed += 1
+            print(f"  FAIL {name:26s} {type(e).__name__}: {e}")
+
+    print("FAILED" if failed else "ALL OK")
+    return 1 if failed else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

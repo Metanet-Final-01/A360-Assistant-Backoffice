@@ -134,6 +134,163 @@ def test_filters_are_parameterized_not_interpolated(monkeypatch):
     assert "POST" in params and 500 in params and "u-9" in params  # 값은 파라미터로
 
 
+# --- 2-b. 나머지 5종도 같은 계약을 지킨다 ---
+
+def _sql_of(cur, table):
+    return [s for s, _ in cur.executed if f"from {table}" in s][0]
+
+
+def _params_of(cur, table):
+    return [p for s, p in cur.executed if f"from {table}" in s][0]
+
+
+def test_request_metrics_shape_and_cursor_rule(monkeypatch):
+    """id를 포함해야 수집기가 중복 제거를 한다. since면 오름차순(백엔드와 같은 커서 규칙)."""
+    from datetime import datetime, timezone
+
+    ts = datetime(2026, 7, 22, 1, 2, 3, tzinfo=timezone.utc)
+    cur = _install_cursor(monkeypatch, [(7, "req-1", "u-1", "GET", "/api/x", 200, 12, ts)])
+    out = obs_db.fetch_request_metrics(limit=10)
+    assert set(out) == {"rows"}
+    assert out["rows"][0] == {
+        "id": 7,
+        "request_id": "req-1",
+        "user_id": "u-1",
+        "method": "GET",
+        "path": "/api/x",
+        "status_code": 200,
+        "latency_ms": 12,
+        "created_at": "2026-07-22T01:02:03+00:00",
+    }
+    assert "created_at desc" in _sql_of(cur, "request_metrics")
+
+    cur2 = _install_cursor(monkeypatch, [])
+    obs_db.fetch_request_metrics(since="2026-07-22T00:00:00Z")
+    assert "created_at asc" in _sql_of(cur2, "request_metrics")
+
+
+def test_metrics_limit_uses_its_own_ceiling_not_audit_ceiling(monkeypatch):
+    """상한을 하나로 뭉뚱그리면 백오피스가 백엔드(le=2000)보다 적게 가져와 계약이 어긋난다."""
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.fetch_request_metrics(limit=99999)
+    assert _params_of(cur, "request_metrics")[-1] == 2000
+
+    cur2 = _install_cursor(monkeypatch, [])
+    obs_db.fetch_turn_events(limit=99999)
+    assert _params_of(cur2, "turn_events")[-1] == 1000
+
+
+def test_path_filter_is_partial_match_by_parameter(monkeypatch):
+    """백엔드 .contains()와 같은 부분일치. 와일드카드는 파라미터에 넣어 SQL에 %를 안 박는다."""
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.fetch_request_metrics(path="/api/sessions")
+    sql, params = [x for x in cur.executed if "from request_metrics" in x[0]][0]
+    assert "path like %s" in sql and "/api/sessions" not in sql
+    assert "%/api/sessions%" in params
+
+
+def test_rag_events_shape(monkeypatch):
+    from datetime import datetime, timezone
+
+    ts = datetime(2026, 7, 22, 1, 2, 3, tzinfo=timezone.utc)
+    cur = _install_cursor(
+        monkeypatch, [(3, "req-1", "search", "hybrid_search", "ok", 42, {"k": 1}, ts)]
+    )
+    out = obs_db.fetch_rag_events(limit=5, request_id="req-1")
+    assert set(out) == {"events"}
+    assert out["events"][0] == {
+        "id": 3,
+        "request_id": "req-1",
+        "event": "search",
+        "function": "hybrid_search",
+        "status": "ok",
+        "duration_ms": 42,
+        "detail": {"k": 1},
+        "created_at": "2026-07-22T01:02:03+00:00",
+    }
+    sql, params = [x for x in cur.executed if "from rag_events" in x[0]][0]
+    assert "created_at desc, id desc" in sql
+    assert "req-1" in params and "req-1" not in sql
+
+
+def test_turn_events_picks_recent_by_time_then_orders_by_turn_progress(monkeypatch):
+    """request_id는 uuid4라 시간과 무관하다 — (request_id, seq)에 바로 limit을 걸면 최신 턴이
+    아니라 사전순으로 앞선 임의의 턴이 잘린다(백엔드가 CodeRabbit 지적으로 고친 지점).
+    시간축으로 먼저 자르고, 화면 순서는 바깥에서 맞춘 형태여야 한다."""
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.fetch_turn_events(session_id="11111111-2222-3333-4444-555555555555", limit=10)
+    sql = _sql_of(cur, "turn_events")
+    inner = sql.index("created_at desc, id desc")
+    outer = sql.index("order by request_id, seq")
+    assert inner < outer, "시간축 절단이 안쪽, 턴 순서 정렬이 바깥이어야 한다"
+
+
+def test_turn_events_rejects_malformed_session_id(monkeypatch):
+    """백엔드의 400 INVALID_ID에 대응 — 형식 오류가 조용히 전체 조회로 새지 않는다."""
+    _install_cursor(monkeypatch, [])
+    with pytest.raises(ValueError):
+        obs_db.fetch_turn_events(session_id="not-a-uuid")
+
+
+def test_llm_usage_group_by_is_whitelisted(monkeypatch):
+    """group_by는 식별자라 바인드가 불가능하다 — 화이트리스트가 유일한 방어다."""
+    _install_cursor(monkeypatch, [])
+    with pytest.raises(ValueError):
+        obs_db.fetch_llm_usage_stats(group_by="component; drop table llm_usage --")
+
+
+def test_llm_usage_total_is_sum_of_breakdown(monkeypatch):
+    """total을 별도 쿼리로 세면 두 시점이 달라 합계와 내역이 어긋난다(백엔드와 같은 방식)."""
+    _install_cursor(monkeypatch, [("agent", 2, 10, 5, 0.001), ("rag", 1, 3, 1, 0.0005)])
+    out = obs_db.fetch_llm_usage_stats(days=7, group_by="component")
+    assert out["period_days"] == 7 and out["group_by"] == "component"
+    assert out["total"] == {
+        "calls": 3,
+        "input_tokens": 13,
+        "output_tokens": 6,
+        "cost_usd": 0.0015,
+    }
+    assert out["breakdown"][0]["key"] == "agent"
+
+
+def test_daily_rollups_shape(monkeypatch):
+    from datetime import date
+
+    cur = _install_cursor(
+        monkeypatch, [(date(2026, 7, 22), "GET", "/api/x", 10, 1, 0, 5, 9, 6.0, 20)]
+    )
+    out = obs_db.fetch_metrics_daily(days=7)
+    assert out["rows"][0] == {
+        "day": "2026-07-22",
+        "method": "GET",
+        "path": "/api/x",
+        "calls": 10,
+        "err_4xx": 1,
+        "err_5xx": 0,
+        "p50_ms": 5,
+        "p95_ms": 9,
+        "avg_ms": 6.0,
+        "max_ms": 20,
+    }
+    assert "order by day desc, calls desc" in _sql_of(cur, "metrics_daily")
+
+    cur2 = _install_cursor(
+        monkeypatch, [(date(2026, 7, 22), "agent", "chat", "gpt-x", 3, 10, 5, 0.0012345678)]
+    )
+    out2 = obs_db.fetch_usage_daily(days=30, component="agent")
+    assert out2["rows"][0] == {
+        "day": "2026-07-22",
+        "component": "agent",
+        "purpose": "chat",
+        "model": "gpt-x",
+        "calls": 3,
+        "input_tokens": 10,
+        "output_tokens": 5,
+        "cost_usd": 0.001235,
+    }
+    assert "agent" in _params_of(cur2, "usage_daily")
+
+
 # --- 3. probe: 도달성이 아니라 실제 조회를 본다 ---
 
 def test_probe_runs_real_query_not_just_connect(monkeypatch):
