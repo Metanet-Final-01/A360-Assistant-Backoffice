@@ -41,3 +41,8 @@ scripts/goldset/evaluation/action_equivalence_candidates/
 scripts/goldset/evaluation/action_equivalence_candidates_agent_gold/
 scripts/goldset/evaluation/action_equivalence_candidates_v2_batch_actual/
 scripts/goldset/evaluation/action_equivalence_candidates_v2_batch_actual_13/
+
+# AI 도구가 만드는 로컬 git worktree — 각자 별도 저장소라 `git add -A`가 gitlink로
+# 잡아넣는다(실제로 한 번 커밋에 섞였다). 작업 산출물은 각 워크트리의 브랜치에 있다.
+.codex/worktrees/
+.claude/worktrees/
