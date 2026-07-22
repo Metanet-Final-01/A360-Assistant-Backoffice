@@ -19,11 +19,10 @@ from typing import Any
 from .rag import config
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-OPTION_SCRIPTS = {
-    1: REPO_ROOT / "app" / "rag" / "scripts" / "run_option1_jar_only.py",
-    2: REPO_ROOT / "app" / "rag" / "scripts" / "run_option2_with_naive_actions.py",
-    3: REPO_ROOT / "app" / "rag" / "scripts" / "run_option3_with_doc_agent.py",
-}
+# v2 정본 파이프라인: crawl-khub → registry → build-v2(트리우선) → validate → ingest.
+# 팀 결정으로 웹크롤 v2만 쓴다 — 과거 옵션 1~3(JAR) 스크립트는 제거됐다. run_option4가
+# _run_steps로 5단계를 순차 실행한다(한 단계라도 실패하면 멈춤 → ingest에 도달 안 함).
+V2_PIPELINE = REPO_ROOT / "app" / "rag" / "scripts" / "run_option4_full_v2.py"
 
 _MAX_STATUS_LOG_CHARS = 12000
 
@@ -111,15 +110,15 @@ def _lock_exists() -> bool:
     return config.INGEST_JOB_LOCK_DIR.exists()
 
 
-def reserve_job(option: int, clean: bool) -> dict[str, Any] | None:
+def reserve_job(option: int | None, clean: bool) -> dict[str, Any] | None:
     """Atomically reserve one ingest slot.
 
     `mkdir` is atomic on local filesystems and works on Windows/Linux, so this
     protects against multiple uvicorn workers or an external scheduler racing
     with a manual button click.
+
+    option은 하위호환용으로 받되 무시한다 — 파이프라인은 v2(V2_PIPELINE) 하나뿐이다.
     """
-    if option not in OPTION_SCRIPTS:
-        raise ValueError("option must be one of 1, 2, 3")
     _ensure_dirs()
     _cleanup_stale_lock()
     try:
@@ -160,7 +159,7 @@ def mark_finished(state: dict[str, Any], returncode: int, error: str | None = No
 
 def run_reserved_job(state: dict[str, Any]) -> None:
     """Run a previously reserved job and stream combined stdout/stderr to a file."""
-    args = [sys.executable, str(OPTION_SCRIPTS[int(state["option"])])]
+    args = [sys.executable, str(V2_PIPELINE)]
     if state.get("clean"):
         args.append("--clean")
 
