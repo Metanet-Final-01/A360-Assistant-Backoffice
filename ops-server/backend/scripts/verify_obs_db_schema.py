@@ -53,6 +53,8 @@ def _row_count(out: dict) -> int:
     for key in ("logs", "rows", "events", "breakdown"):
         if key in out:
             return len(out[key])
+    if "has_rows" in out:  # probe는 행 수를 세지 않는다(probe docstring 참고)
+        return 1 if out["has_rows"] else 0
     return int(out.get("audit_logs_rows", 0))
 
 
