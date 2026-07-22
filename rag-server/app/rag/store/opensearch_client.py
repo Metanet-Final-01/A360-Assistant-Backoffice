@@ -1,10 +1,12 @@
 """OpenSearch BM25 키워드 검색. pgvector와 별도로 rag_documents를 동일 id로 색인한다."""
 
+import time
+
 from opensearchpy import OpenSearch
 from opensearchpy.helpers import bulk
 
 from .. import config
-from ..observability import log_call
+from ..observability import log_call, log_event
 
 _INDEX_BODY = {
     "settings": {
@@ -66,9 +68,33 @@ def delete_index(client: OpenSearch) -> None:
         client.indices.delete(index=config.OPENSEARCH_INDEX)
 
 
-def bulk_index(client: OpenSearch, documents: list[dict]) -> int:
-    def _actions():
-        for doc in documents:
+def _partition_errors(errors: list, ignore_statuses: tuple[int, ...] = ()) -> tuple[list[str], int]:
+    """bulk()가 돌려준 실패 항목을 (진짜 실패 id, 무시한 상태코드 건수)로 나눈다.
+    항목은 {op: {_id, status, error}} 형태.
+
+    무시 건수를 따로 세는 이유: opensearch-py는 ignore_status를 줘도 success 카운터엔 넣지
+    않는다(ok는 2xx일 때만 True). 삭제의 404처럼 "이미 목표 상태"인 건은 호출부가 반환값에
+    더해야 집계가 실제와 맞는다."""
+    failed: list[str] = []
+    ignored = 0
+    for item in errors:
+        for info in (item or {}).values():
+            if not isinstance(info, dict):
+                continue
+            if info.get("status") in ignore_statuses:
+                ignored += 1
+            else:
+                failed.append(info.get("_id"))
+    return failed, ignored
+
+
+def bulk_index(client: OpenSearch, documents: list[dict], retries: int = 5) -> int:
+    """documents를 색인한다. 부분 실패(429/5xx)는 실패한 문서만 지수 백오프로 재시도하고,
+    끝내 남으면 실패 id를 남기고 예외를 던진다 — PG 커밋 뒤에 도는 단계라 조용히 넘기면
+    PG와 OpenSearch가 발산한 채로 "성공" 로그만 남는다(임베딩 쪽 재시도와 같은 정책)."""
+
+    def _actions(docs: list[dict]):
+        for doc in docs:
             yield {
                 "_op_type": "index",
                 "_index": config.OPENSEARCH_INDEX,
@@ -88,8 +114,59 @@ def bulk_index(client: OpenSearch, documents: list[dict]) -> int:
                 },
             }
 
-    success, _ = bulk(client, _actions())
-    return success
+    by_id = {doc["id"]: doc for doc in documents}
+    pending = list(documents)
+    total_success = 0
+    for attempt in range(retries):
+        try:
+            # raise_on_error=False: 예외로 뭉개면 어떤 문서가 실패했는지 알 수 없다 —
+            # errors를 받아서 실패분만 다시 보낸다.
+            success, errors = bulk(client, _actions(pending), raise_on_error=False)
+        except Exception as exc:  # 연결/타임아웃 등 요청 전체 실패도 재시도 대상
+            if attempt == retries - 1:
+                raise
+            log_event("opensearch_bulk_attempt", attempt=attempt + 1, retries=retries,
+                      status="error", error_type=type(exc).__name__, error_message=str(exc))
+            time.sleep(2**attempt)
+            continue
+
+        total_success += success
+        failed, _ = _partition_errors(errors)
+        if not failed:
+            return total_success
+        log_event("opensearch_bulk_attempt", attempt=attempt + 1, retries=retries,
+                  status="partial_failure", failed=len(failed), failed_ids=failed[:20])
+        print(f"  [OpenSearch] 색인 실패 {len(failed)}개 (시도 {attempt + 1}/{retries}): {failed[:10]}")
+        if attempt == retries - 1:
+            raise RuntimeError(f"OpenSearch 색인이 {len(failed)}개 문서에서 실패했습니다: {failed[:10]}")
+        # 실패 id를 원본 문서로 되돌리지 못하면(응답의 _id가 비었거나 매핑 불가) 그 문서는
+        # 조용히 재시도 대상에서 빠지고, 다음 라운드가 성공하면 "전부 성공"으로 보고된다 —
+        # PG와 발산한 채 성공 로그만 남는 경로라 예외로 막는다.
+        retry_docs = [by_id[i] for i in failed if i in by_id]
+        if len(retry_docs) != len(failed):
+            missing = [i for i in failed if i not in by_id]
+            raise RuntimeError(
+                f"OpenSearch 색인 실패 문서를 재시도 목록으로 복원하지 못했습니다: {missing[:10]}"
+            )
+        pending = retry_docs
+        time.sleep(2**attempt)
+    return total_success
+
+
+def delete_by_ids(client: OpenSearch, ids: list[str]) -> int:
+    """주어진 id를 색인에서 삭제한다 — pgvector에서 지운 고아 row를 OpenSearch에도 반영해
+    두 저장소가 발산하지 않게 한다(bulk_index는 op_type=index라 옛 문서를 안 지운다).
+    이미 없는 문서(404)는 목표 상태와 같으므로 실패로 치지 않고, 반환값에도 성공으로 센다 —
+    빼면 "고아 삭제 0개"처럼 실제와 다른 과소 집계가 로그에 남는다."""
+    if not ids:
+        return 0
+    actions = [{"_op_type": "delete", "_index": config.OPENSEARCH_INDEX, "_id": doc_id} for doc_id in ids]
+    success, errors = bulk(client, actions, raise_on_error=False, ignore_status=(404,))
+    failed, already_gone = _partition_errors(errors, ignore_statuses=(404,))
+    if failed:
+        log_event("opensearch_delete_failed", failed=len(failed), failed_ids=failed[:20])
+        print(f"  [OpenSearch] 고아 삭제 실패 {len(failed)}개: {failed[:10]}")
+    return success + already_gone
 
 
 @log_call("bm25_search", capture_args=("query", "size"), capture_result=lambda r: {"count": len(r)})

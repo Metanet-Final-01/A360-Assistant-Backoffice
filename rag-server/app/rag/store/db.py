@@ -143,3 +143,53 @@ def search(conn: psycopg.Connection, query_embedding: list[float], limit: int = 
         )
         columns = [d.name for d in cur.description]
         return [dict(zip(columns, row)) for row in cur.fetchall()]
+
+
+def corpus_overlap_stats(conn: psycopg.Connection, parent_ids: list[str]) -> dict:
+    """기존 코퍼스와 이번 빌드의 겹침을 한 쿼리로 요약한다 (읽기 전용 — 감사/경고용).
+
+    반환: total_rows(DB 전체 행), total_parents(DB의 distinct parent_id),
+          unseen_parents(DB에만 있고 이번 빌드에는 없는 parent_id 수).
+
+    delete_orphans의 범위가 "이번 빌드에 등장한 parent_id"로 한정돼 있어서, id/parent_id
+    산식 자체가 바뀐 재적재(v1 코퍼스 위에 v2 산출물을 비-clean 적재)에서는 옛 행이 단
+    한 건도 안 지워진다 — 유효한 임베딩을 단 채 검색에 계속 잡힌다(M3). 호출부가 이
+    통계로 그 상황을 감지해 "--clean이 필요하다"고 경고한다."""
+    with conn.cursor() as cur:
+        cur.execute(
+            "SELECT count(*), count(DISTINCT parent_id),"
+            " count(DISTINCT parent_id) FILTER (WHERE NOT (parent_id = ANY(%s)))"
+            " FROM rag_documents",
+            (list(parent_ids),),
+        )
+        total_rows, total_parents, unseen_parents = cur.fetchone()
+    return {
+        "total_rows": total_rows or 0,
+        "total_parents": total_parents or 0,
+        "unseen_parents": unseen_parents or 0,
+    }
+
+
+def delete_orphans(conn: psycopg.Connection, keep_ids: list[str], parent_ids: list[str]) -> list[str]:
+    """이번 빌드에 없는 옛 row를 지운다. 커밋하지 않는다 — 호출부가 upsert_documents와
+    같은 트랜잭션에 묶어 확정한다(중간에 실패하면 삭제도 함께 롤백되도록).
+
+    범위를 "이번 빌드에 등장한 parent_id"로 한정하는 이유: ingest는 `--source docs`/`github`
+    처럼 코퍼스의 일부만 재적재할 수 있어서, 이번 빌드에 없는 parent는 남의 소스일 뿐
+    고아가 아니다. 그 범위 안에서 id가 keep_ids에 없는 row를 지우면 (a) 문서가 사라진 경우와
+    (b) 청크 수가 5→2로 줄어 뒤쪽 청크(idx 2~4)만 옛 본문으로 잔존하는 경우가 함께 정리된다.
+
+    안전장치: keep_ids가 비면 아무것도 지우지 않는다 — 빌드 산출물이 비었거나 로드에
+    실패했을 때 DELETE가 전량 삭제로 돌변하는 사고를 막는다.
+
+    반환: 삭제된 row의 id 목록 (건수는 len(), OpenSearch에서도 같은 id를 지우는 데 쓴다)."""
+    if not keep_ids or not parent_ids:
+        return []
+    with conn.cursor() as cur:
+        cur.execute(
+            "DELETE FROM rag_documents WHERE parent_id = ANY(%s) AND NOT (id = ANY(%s)) RETURNING id",
+            (parent_ids, keep_ids),
+        )
+        return [row[0] for row in cur.fetchall()]
+
+

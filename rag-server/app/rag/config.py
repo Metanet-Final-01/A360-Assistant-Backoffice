@@ -55,8 +55,28 @@ INGEST_RUN_LOG_DIR = LOG_DIR / "ingest_runs"
 
 # 청킹: chunk_size 초과 문서만 분할한다. 기본값은 NongSabu DocumentChunker 프라이어(1200/200) —
 # `pipeline.py eda`로 실제 문서 길이 분포를 확인한 뒤 필요시 .env에서 조정한다.
+# 아래 CHUNK_PARAMS_BY_SOURCE_TYPE에 없는 소스 타입이 이 값을 쓴다(package_overview 등).
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1200"))
 CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "200"))
+
+# 소스 타입별 청킹 기본값 — 텍스트 성격이 달라 한 값으로 맞추면 한쪽이 손해다.
+#   doc_page      1200 / 10%(120) — 크롤링한 산문. 문단 경계가 촘촘해 겹침이 적어도
+#                 문맥이 이어지고, 겹침을 키우면 같은 문단이 여러 청크에 중복 색인돼
+#                 검색 결과가 한 문서로 쏠린다.
+#   action_schema 1500 / 20%(300) — "라벨: 값" 정형에 ko 본문까지 붙어 훨씬 길다.
+#                 파라미터 목록이 경계에서 잘리면 뒤 청크가 어떤 액션의 무슨 필드인지
+#                 잃으므로, 폭을 넓히고 겹침도 크게 잡아 경계 손실을 복구한다.
+# 값은 (chunk_size, chunk_overlap). .env로 타입별 오버라이드 가능 — 스윕할 때 쓴다.
+CHUNK_PARAMS_BY_SOURCE_TYPE = {
+    "doc_page": (
+        int(os.getenv("CHUNK_SIZE_DOC_PAGE", "1200")),
+        int(os.getenv("CHUNK_OVERLAP_DOC_PAGE", "120")),
+    ),
+    "action_schema": (
+        int(os.getenv("CHUNK_SIZE_ACTION_SCHEMA", "1500")),
+        int(os.getenv("CHUNK_OVERLAP_ACTION_SCHEMA", "300")),
+    ),
+}
 
 OPENSEARCH_HOST = os.getenv("OPENSEARCH_HOST") or "http://127.0.0.1:9200"
 OPENSEARCH_INDEX = os.getenv("OPENSEARCH_INDEX", "rag_documents")
