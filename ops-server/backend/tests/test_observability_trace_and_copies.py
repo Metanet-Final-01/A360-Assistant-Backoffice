@@ -89,6 +89,16 @@ class RagLogsReadPathTest(unittest.TestCase):
         self.assertEqual(fetch_db.call_args.kwargs["event"], "http_request")
 
     @patch("app.main.obs_db.fetch_rag_events")
+    def test_out_of_range_limit_is_rejected_not_silently_clamped(self, fetch_db):
+        """범위를 벗어난 limit이 통과되면 obs_db에서만 조용히 잘려, 호출자는 "요청한 만큼
+        받았다"고 오해한다. 같은 파일의 다른 observability GET들은 Query(ge/le)로 범위를
+        명시하고 있어 계약도 어긋났다."""
+        response = self.client.get("/observability/rag-logs", params={"limit": 999999})
+
+        self.assertEqual(response.status_code, 422)
+        fetch_db.assert_not_called()
+
+    @patch("app.main.obs_db.fetch_rag_events")
     def test_path_contains_is_rejected_not_silently_ignored(self, fetch_db):
         """rag_events에는 경로 컬럼이 없다. 그냥 무시하면 필터를 줬는데 전량이 돌아와
         화면은 멀쩡해 보이는데 결과가 틀린다 — 에러조차 나지 않는다."""

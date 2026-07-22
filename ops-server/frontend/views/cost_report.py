@@ -71,7 +71,9 @@ def _render_axis(axis: str, key_label: str, days: int) -> None:
         ("총 비용", f"${total.get('cost_usd', 0):.4f}"),
         ("총 호출", f"{total.get('calls', 0):,}"),
         ("총 토큰", f"{total.get('input_tokens', 0) + total.get('output_tokens', 0):,}"),
-        (f"{axis} 수", f"{len(breakdown)}"),
+        # 표시 행 수가 아니라 **전체 그룹 수**다 — 나머지 지표(총 비용·호출·토큰)가 전부
+        # 전체 기준인데 여기만 잘린 행 수를 쓰면 같은 줄에서 숫자가 서로 어긋난다.
+        (f"{axis} 수", f"{snap.get('group_count', len(breakdown)):,}"),
     ])
 
     df = pd.DataFrame(breakdown)

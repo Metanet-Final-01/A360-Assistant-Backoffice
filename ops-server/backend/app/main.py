@@ -754,7 +754,11 @@ def collect_rag_logs(limit: int = 100) -> dict:
 
 
 @app.get("/observability/rag-logs")
-def get_rag_logs(event: str | None = None, path_contains: str | None = None, limit: int = 200) -> list:
+def get_rag_logs(
+    event: str | None = None,
+    path_contains: str | None = None,
+    limit: int = Query(200, ge=1, le=2000),
+) -> list:
     """RAG 요청 로그 — 관측 DB의 `rag_events` 중 `event='http_request'`를 읽는다.
 
     예전엔 RAG 서버의 파일 로그를 수집해 `{"raw": {...}}`로 담았는데, **같은 내용이 이미
