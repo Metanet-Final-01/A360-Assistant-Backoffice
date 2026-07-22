@@ -565,6 +565,8 @@ def trace_by(
             # = any(%s)는 목록을 배열 파라미터 하나로 넘긴다 — IN 절을 %s 개수만큼 만들면
             # request_id가 늘어날 때마다 SQL 문자열이 달라져 계획 재사용이 안 된다.
             #
+            # 바깥 정렬에도 id를 tie-breaker로 둔다 — 안쪽(시간축 절단)만 결정적이면
+            # 같은 timestamp 행들의 표시 순서가 새로고침마다 흔들린다.
             # 세 조회 모두 **최신 n건을 먼저 고른 뒤 표시 순서로 되돌린다.** 오름차순에
             # 바로 limit을 걸면, limit에 걸렸을 때 오래된 것만 남고 최신이 잘린다 —
             # 장애를 좇는 화면에서 정작 방금 일어난 일이 사라진다. user_id 축은
@@ -574,7 +576,7 @@ def trace_by(
                 "select request_id, user_id, method, path, status_code, latency_ms, created_at "
                 "from (select * from audit_logs where request_id = any(%s) "
                 "      order by created_at desc, id desc limit %s) recent "
-                "order by created_at",
+                "order by created_at, id",
                 [request_ids, n],
             )
             audit = cur.fetchall()
@@ -582,7 +584,7 @@ def trace_by(
                 "select id, request_id, user_id, method, path, status_code, latency_ms, created_at "
                 "from (select * from request_metrics where request_id = any(%s) "
                 "      order by created_at desc, id desc limit %s) recent "
-                "order by created_at",
+                "order by created_at, id",
                 [request_ids, n],
             )
             metrics = cur.fetchall()
@@ -590,7 +592,7 @@ def trace_by(
                 "select id, request_id, event, function, status, duration_ms, detail, created_at "
                 "from (select * from rag_events where request_id = any(%s) "
                 "      order by created_at desc, id desc limit %s) recent "
-                "order by id",
+                "order by created_at, id",
                 [request_ids, n],
             )
             rag_all = cur.fetchall()
@@ -614,7 +616,7 @@ def trace_by(
                 ") recent "
                 # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러
                 # 요청이 실제 발생 순서와 어긋난다(사본 구현에서 이미 고친 지점).
-                "order by created_at nulls last, seq",
+                "order by created_at nulls last, seq, id",
                 [*turn_params, n],
             )
             turns = cur.fetchall()
