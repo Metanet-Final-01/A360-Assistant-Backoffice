@@ -66,7 +66,10 @@ def post_with_retry(url: str, headers: dict, payload: dict, retries: int = 5) ->
                 continue
 
             last_status = resp.status_code
-            last_body = resp.text[:500]
+            # resp.text는 전체 바이트를 디코딩한 뒤 슬라이스한다 — 응답이 비정상적으로
+            # 크면(프록시 오류 페이지 등) 미리보기 500자만 필요한데도 전체를 메모리에
+            # 올리다 MemoryError가 날 수 있어, 바이트 단계에서 먼저 잘라 디코딩한다.
+            last_body = resp.content[:500].decode("utf-8", errors="replace")
             if resp.status_code == 429 or resp.status_code >= 500:
                 wait = float(resp.headers.get("retry-after", 2**attempt))
                 log_event(

@@ -23,6 +23,13 @@ class EvalRunRecord(BaseModel):
     run_id: str | None = Field(None, description="이 기록 고유 id — 없으면 저장 시 자동 생성")
     logged_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     evaluation_id: str | None = Field(None, description="한 번의 배치 평가 실행을 묶는 id")
+    case_execution_id: str | None = Field(
+        None, description="케이스 하나를 특정 설정으로 한 번 실행한 고유 id — 관측 DB의 trace_id/request_id와 이어붙이는 용도"
+    )
+    trace_id: str | None = Field(None, description="이 케이스 실행이 Backend를 호출했다면, 그 호출 전체를 묶는 추적 id")
+    request_ids: list[str] = Field(
+        default_factory=list, description="이 케이스 실행 중 실제로 나간 HTTP request_id들(재시도로 여러 개일 수 있음)"
+    )
     dataset_id: str | None = Field(None, description="평가 데이터셋 id")
     dataset_version: str | None = Field(None, description="평가 데이터셋 버전")
     case_id: str = Field(description="평가 케이스 id, 예: web_excel_email_001")

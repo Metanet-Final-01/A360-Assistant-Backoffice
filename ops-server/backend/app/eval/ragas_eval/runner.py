@@ -97,13 +97,17 @@ def load_all_cases() -> list[RagasCase]:
 
 
 def load_cases() -> list[RagasCase]:
+    """평가 실행에 실제로 쓸 케이스만 고른다 — status=approved AND dataset_membership=active.
+    후보(candidate)/제외(excluded)는 검수는 통과했어도 "지금 실험 세트에 넣을지"가 별개
+    축이라, 여기서 함께 걸러야 신규 후보를 추가해도 기존 실험 세트가 의도치 않게
+    커지지 않는다."""
     approved_cases = [
         case
         for case in load_all_cases()
-        if case.status == "approved"
+        if case.status == "approved" and case.dataset_membership == "active"
     ]
     if not approved_cases:
-        raise RagasGoldsetError(f"승인된 RAGAS 골드셋이 없습니다: {_CASES_PATH}")
+        raise RagasGoldsetError(f"실험 세트(active)로 지정된 RAGAS 골드셋이 없습니다: {_CASES_PATH}")
     return approved_cases
 
 

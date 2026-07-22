@@ -240,10 +240,14 @@ def cmd_export_for_agent(args: argparse.Namespace) -> None:
     """JAR 스키마가 없는 패키지들을, 확정적으로 풀리는 부분(패키지 판별 + 메뉴 계층)까지만
     정리해서 향후 LLM 기반 파싱 Agent(팀원이 별도 개발)가 바로 쓸 수 있는 형태로 내보낸다.
 
-    "이 리프가 진짜 액션인지 참고자료/사용예시일 뿐인지"는 규칙 기반으로 안 풀린다고
-    확인됐다(app/rag/_investigation_notes/HTML_STRUCTURE_INSIGHTS.md) — 그 판단은 여기서 안 하고, 각 리프의
+    "이 문서가 진짜 액션인지 참고자료/사용예시일 뿐인지"는 규칙 기반으로 안 풀린다고
+    확인됐다(app/rag/_investigation_notes/HTML_STRUCTURE_INSIGHTS.md) — 그 판단은 여기서 안 하고, 각 문서의
     `structured_html`(CSS/JS/이미지 데이터 제거된 압축 구조, docs_crawler.py가 크롤링
     시점에 이미 계산해둠)을 그대로 실어서 Agent에게 넘긴다.
+
+    리프뿐 아니라 카테고리(중간) 노드도 같이 내보낸다 — 실측 확인 결과 일부 액션이
+    카테고리 레벨 문서로 들어가 있어서, 리프로만 한정하면 그 액션들을 놓친다.
+    `node_type`으로 리프/카테고리를 구분해 Agent가 참고할 수 있게 한다.
     """
     from .build.merge import load_docs
 
@@ -271,21 +275,28 @@ def cmd_export_for_agent(args: argparse.Namespace) -> None:
             if tree is None:
                 print(f"  [skip] {pkg_name}: 트리를 못 찾음 (먼저 crawl 필요)")
                 continue
-            for leaf in tree.leaves:
+            nodes = [("leaf", leaf) for leaf in tree.leaves] + [
+                ("category", cat) for cat in tree.category_docs
+            ]
+            for node_type, entry in nodes:
                 record = {
                     "package_name": pkg_name,
-                    "depth": leaf.depth,
-                    "path_titles": leaf.path_titles,
-                    "title": leaf.doc.get("title"),
-                    "url": leaf.doc.get("url"),
-                    "menu_id": leaf.doc.get("menu_id"),
-                    "structured_html": leaf.doc.get("structured_html"),
+                    "node_type": node_type,
+                    "depth": entry.depth,
+                    "path_titles": entry.path_titles,
+                    "title": entry.doc.get("title"),
+                    "url": entry.doc.get("url"),
+                    "menu_id": entry.doc.get("menu_id"),
+                    "structured_html": entry.doc.get("structured_html"),
                 }
                 f.write(json.dumps(record, ensure_ascii=False) + "\n")
                 written += 1
-            print(f"  [{pkg_name}] 리프 {len(tree.leaves)}개 (카테고리 경유 {len(tree.category_docs)}개)")
+            print(
+                f"  [{pkg_name}] 리프 {len(tree.leaves)}개 + 카테고리 {len(tree.category_docs)}개 "
+                f"= {len(nodes)}개 Agent 판단 대상"
+            )
 
-    print(f"저장 → {config.AGENT_HANDOFF_JSONL} ({written}개 리프)")
+    print(f"저장 → {config.AGENT_HANDOFF_JSONL} ({written}개, 리프+카테고리)")
 
 
 def cmd_parse_docs_agent(args: argparse.Namespace) -> None:
@@ -433,6 +444,17 @@ def cmd_build(args: argparse.Namespace) -> None:
         print(f"  {source_type}: {count}")
 
 
+def _load_embedding_cache() -> dict[str, list[float]]:
+    if not config.EMBEDDING_CACHE_JSON.exists():
+        return {}
+    return json.loads(config.EMBEDDING_CACHE_JSON.read_text(encoding="utf-8"))
+
+
+def _save_embedding_cache(cache: dict[str, list[float]]) -> None:
+    config.EMBEDDING_CACHE_JSON.parent.mkdir(parents=True, exist_ok=True)
+    config.EMBEDDING_CACHE_JSON.write_text(json.dumps(cache), encoding="utf-8")
+
+
 def cmd_ingest(args: argparse.Namespace) -> None:
     from .store import db
 
@@ -442,6 +464,10 @@ def cmd_ingest(args: argparse.Namespace) -> None:
         json.loads(line) for line in open(config.RAG_DOCUMENTS_JSONL, encoding="utf-8")
     ]
 
+    # 1단계: 스키마 보장 + content-hash 조회만 하고 바로 닫는다 — 뒤이은 임베딩(OpenAI
+    # 호출, 문서 많으면 수 분)까지 커넥션을 붙잡고 있다가 Neon의 idle-in-transaction
+    # timeout에 걸려 upsert 직전에 연결이 끊기는 사고가 있었다(RPA-150). 임베딩 동안은
+    # DB 연결을 아예 안 들고 있는 걸로 구조를 바꾼다.
     conn = db.connect()
     try:
         db.ensure_schema(conn)
@@ -459,19 +485,39 @@ def cmd_ingest(args: argparse.Namespace) -> None:
             skipped = len(documents) - len(to_embed)
             if skipped:
                 print(f"내용이 안 바뀐 문서 {skipped}개는 재임베딩만 건너뜁니다 (전체 {len(documents)}개 중).")
+    finally:
+        conn.close()
 
-        embeddings = None
-        if to_embed and not args.skip_embedding:
-            from .retrieval.embed import embed_texts
+    # 2단계: 임베딩은 DB 연결 없이 순수 오프라인으로 수행하고, 계산되는 즉시 로컬
+    # 캐시(content_hash 키)에 저장한다 — 이후 단계가 뭐가 됐든 실패해도 이미 낸 임베딩
+    # 비용은 다음 실행에서 재사용된다.
+    embeddings_by_id: dict[str, list[float]] = {}
+    if to_embed and not args.skip_embedding:
+        from .retrieval.embed import embed_texts
 
-            print(f"임베딩 생성 중 ({config.EMBEDDING_PROVIDER}/{config.EMBEDDING_MODEL}, {len(to_embed)}개)...")
+        cache = _load_embedding_cache()
+        still_needed = [d for d in to_embed if db.content_hash(d["content"]) not in cache]
+        if len(still_needed) < len(to_embed):
+            print(f"임베딩 캐시 재사용: {len(to_embed) - len(still_needed)}개")
+
+        if still_needed:
+            print(f"임베딩 생성 중 ({config.EMBEDDING_PROVIDER}/{config.EMBEDDING_MODEL}, {len(still_needed)}개)...")
             new_embeddings = embed_texts(
-                [d["content"] for d in to_embed],
+                [d["content"] for d in still_needed],
                 on_progress=lambda done, total: print(f"  {done}/{total}"),
             )
-            embeddings_by_id = {doc["id"]: emb for doc, emb in zip(to_embed, new_embeddings)}
-            embeddings = [embeddings_by_id.get(doc["id"]) for doc in documents]
+            for doc, emb in zip(still_needed, new_embeddings):
+                cache[db.content_hash(doc["content"])] = emb
+            _save_embedding_cache(cache)
 
+        embeddings_by_id = {doc["id"]: cache[db.content_hash(doc["content"])] for doc in to_embed}
+
+    embeddings = [embeddings_by_id.get(doc["id"]) for doc in documents] if embeddings_by_id else None
+
+    # 3단계: upsert 직전에 새 연결을 연다 — 임베딩 단계 동안 연결을 안 붙잡았으니
+    # 여기선 타임아웃 걱정 없이 바로 커밋까지 간다.
+    conn = db.connect()
+    try:
         count = db.upsert_documents(conn, documents, embeddings) if documents else 0
         print(f"pgvector 적재 완료: {count}개")
     finally:

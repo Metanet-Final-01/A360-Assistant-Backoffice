@@ -69,7 +69,10 @@ class LeafEntry:
 class PackageActionTree:
     root_doc: dict
     leaves: list[LeafEntry] = field(default_factory=list)
-    category_docs: list[dict] = field(default_factory=list)
+    # 카테고리(중간) 노드도 LeafEntry로 통일 — 실측 확인 결과 일부 액션이 리프가 아니라
+    # 카테고리 레벨 문서로 들어가 있어서, "진짜 액션인지" 판단을 Agent가 리프와 동일하게
+    # 내릴 수 있어야 한다(depth/path_titles 감사 정보도 리프와 동일하게 필요).
+    category_docs: list[LeafEntry] = field(default_factory=list)
 
 
 def resolve_tree(root_doc: dict, children_index: dict[str, list[dict]]) -> PackageActionTree:
@@ -85,7 +88,7 @@ def resolve_tree(root_doc: dict, children_index: dict[str, list[dict]]) -> Packa
         for child in children:
             child_path_titles = path_titles + [child["title"]]
             if children_index.get(child["menu_id"]):
-                tree.category_docs.append(child)
+                tree.category_docs.append(LeafEntry(child, depth + 1, child_path_titles))
                 dfs(child, depth + 1, child_path_titles)
             else:
                 tree.leaves.append(LeafEntry(child, depth + 1, child_path_titles))
@@ -111,7 +114,13 @@ def tree_to_dict(tree: PackageActionTree) -> dict:
         "root_title": tree.root_doc.get("title"),
         "root_url": tree.root_doc.get("url"),
         "categories": [
-            {"title": c.get("title"), "url": c.get("url"), "menu_id": c.get("menu_id")}
+            {
+                "title": c.doc.get("title"),
+                "url": c.doc.get("url"),
+                "menu_id": c.doc.get("menu_id"),
+                "depth": c.depth,
+                "path_titles": c.path_titles,
+            }
             for c in tree.category_docs
         ],
         "leaves": [

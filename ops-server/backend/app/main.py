@@ -11,6 +11,7 @@ import asyncio
 import json
 import os
 import uuid
+from pathlib import Path
 from typing import Literal
 
 from fastapi import BackgroundTasks, FastAPI, File, HTTPException, Query, Request, UploadFile
@@ -26,7 +27,11 @@ from app.eval import executor
 from app.eval import goldset_admin
 from app.eval.workflow_eval import runner as workflow_runner
 from app.eval.workflow_eval.schema import WorkflowCase
+from app.eval.workflow_goldset_pipeline import case_store as goldset_case_store
+from app.eval.workflow_goldset_pipeline import pipeline_runner as goldset_pipeline_runner
+from app.eval.workflow import action_rules
 from app.eval.ragas_eval import runner as ragas_runner
+from app.eval.ragas_eval import chunk_experiment_runner as ragas_chunk_experiment
 from app.eval.ragas_eval import pass_k as ragas_pass_k
 from app.eval.ragas_eval import source_documents as ragas_source_documents
 from app.eval.ragas_eval import validation_log as ragas_validation_log
@@ -291,6 +296,83 @@ def delete_workflow_input(source_bot: str) -> dict:
     return {"deleted": True}
 
 
+# ── 액션 동치 규칙 (pm4py/WorFBench 채점 전 "같은 액션, 다른 이름" 정규화) ──
+
+
+class CreateActionRuleRequest(BaseModel):
+    canonical: str = Field(min_length=1)
+    members: list[str] = Field(min_length=2)
+    rationale: str = Field(min_length=1)
+    evidence: list[dict] = Field(default_factory=list)
+    actor: str = Field(default="", description="규칙을 등록하는 사람 이름(선택)")
+
+
+@app.get("/eval/workflow/action-rules")
+def list_action_rules() -> list[dict]:
+    return action_rules.list_rules()
+
+
+@app.get("/eval/workflow/action-rules/version")
+def action_rules_version() -> dict:
+    return {"current_version": action_rules.get_current_ruleset_version()}
+
+
+@app.get("/eval/workflow/action-rules/events")
+def action_rules_events(limit: int = Query(default=200, ge=1, le=1000)) -> list[dict]:
+    return action_rules.list_events(limit=limit)
+
+
+@app.post("/eval/workflow/action-rules/check-conflicts")
+def check_action_rule_conflicts(members: list[str], exclude_rule_id: str | None = None) -> dict:
+    conflicts = action_rules.find_conflicting_members(members, exclude_rule_id=exclude_rule_id)
+    return {"conflicts": conflicts}
+
+
+@app.post("/eval/workflow/action-rules")
+def create_action_rule(req: CreateActionRuleRequest) -> dict:
+    try:
+        created = action_rules.create_rule(
+            {"canonical": req.canonical, "members": req.members, "rationale": req.rationale, "evidence": req.evidence},
+            actor=req.actor,
+        )
+    except goldset_admin.GoldsetWriteError as e:
+        raise HTTPException(400, str(e)) from e
+    return created.model_dump()
+
+
+class UpdateActionRuleFieldsRequest(BaseModel):
+    canonical: str | None = None
+    members: list[str] | None = None
+    rationale: str | None = None
+    evidence: list[dict] | None = None
+    actor: str = ""
+
+
+@app.patch("/eval/workflow/action-rules/{rule_id}")
+def update_action_rule_fields(rule_id: str, req: UpdateActionRuleFieldsRequest) -> dict:
+    patch = {key: value for key, value in req.model_dump(exclude={"actor"}).items() if value is not None}
+    try:
+        updated = action_rules.update_rule_fields(rule_id, patch, actor=req.actor)
+    except goldset_admin.GoldsetWriteError as e:
+        raise HTTPException(400, str(e)) from e
+    return updated.model_dump()
+
+
+class UpdateActionRuleStatusRequest(BaseModel):
+    status: str = Field(min_length=1)
+    actor: str = ""
+    note: str = ""
+
+
+@app.post("/eval/workflow/action-rules/{rule_id}/status")
+def update_action_rule_status(rule_id: str, req: UpdateActionRuleStatusRequest) -> dict:
+    try:
+        updated = action_rules.update_rule_status(rule_id, req.status, actor=req.actor, note=req.note)
+    except goldset_admin.GoldsetWriteError as e:
+        raise HTTPException(400, str(e)) from e
+    return updated.model_dump()
+
+
 @app.post("/eval/workflow/execution")
 def start_workflow_evaluation(req: ExecuteWorkflowRequest, background_tasks: BackgroundTasks) -> dict:
     if not workflow_runner.reserve():
@@ -489,6 +571,158 @@ async def ragas_evaluation_events(request: Request) -> StreamingResponse:
         media_type="text/event-stream",
         headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
     )
+
+
+class ExecuteChunkExperimentRequest(BaseModel):
+    chunk_sizes: list[int] = Field(default_factory=lambda: list(ragas_chunk_experiment.CHUNK_SIZES))
+    overlap: int = ragas_chunk_experiment.DEFAULT_OVERLAP
+    top_k: int = ragas_chunk_experiment.DEFAULT_TOP_K
+    max_cases: int | None = None
+
+
+@app.post("/eval/ragas/chunk-experiment/prepare-embeddings")
+def prepare_chunk_experiment_embeddings() -> dict:
+    """실험 실행 버튼과 별개로, 승인된 골드셋 질문 임베딩을 미리 캐시에 채운다
+    (캐시는 영구 파일이라 이후 실험 실행/재실행에서 그대로 재사용된다)."""
+    if not os.getenv("OPENAI_API_KEY"):
+        raise HTTPException(400, "OPENAI_API_KEY가 설정되지 않았습니다 (ops-server/backend/.env)")
+    return ragas_chunk_experiment.prepare_question_embeddings()
+
+
+@app.post("/eval/ragas/chunk-experiment/execution")
+def start_chunk_experiment(req: ExecuteChunkExperimentRequest, background_tasks: BackgroundTasks) -> dict:
+    """1단계(chunk_size) 등 검색 하이퍼파라미터 그리드서치 — 라이브 검색이 아니라
+    로컬 chunk_size 후보 테이블(rag_documents_eval_cs*)에 직접 붙는다."""
+    if not os.getenv("OPENAI_API_KEY"):
+        raise HTTPException(400, "OPENAI_API_KEY가 설정되지 않았습니다 (ops-server/backend/.env)")
+    if not req.chunk_sizes:
+        raise HTTPException(400, "chunk_sizes가 비어 있습니다")
+    if not ragas_chunk_experiment.reserve():
+        raise HTTPException(409, "이미 chunk_size 실험이 실행 중입니다")
+    background_tasks.add_task(
+        ragas_chunk_experiment.run_chunk_experiment, req.chunk_sizes, req.overlap, req.top_k,
+        None, req.max_cases,
+    )
+    return {"status": "started"}
+
+
+@app.get("/eval/ragas/chunk-experiment/execution/status")
+def chunk_experiment_status() -> dict:
+    return ragas_chunk_experiment.state
+
+
+@app.get("/eval/ragas/chunk-experiment/execution/events")
+async def chunk_experiment_events(request: Request) -> StreamingResponse:
+    async def event_stream():
+        previous_payload = ""
+        while True:
+            if await request.is_disconnected():
+                break
+            payload = json.dumps(ragas_chunk_experiment.state, ensure_ascii=False)
+            if payload != previous_payload:
+                yield f"event: status\ndata: {payload}\n\n"
+                previous_payload = payload
+            else:
+                yield ": heartbeat\n\n"
+            await asyncio.sleep(1)
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
+# ── 워크플로우 골든데이터셋 파이프라인 (zip -> canonical -> pm4py/WorFBench 변환) ──
+# 위 RAGAS 청크 실험과 같은 모양(reserve -> background task -> status/events)이다.
+
+_GOLDSET_PIPELINE_UPLOAD_DIR = Path(__file__).resolve().parents[1] / "data" / "workflow_goldset_pipeline_uploads"
+
+
+@app.post("/eval/workflow-goldset-pipeline/execution/upload-zip")
+async def start_goldset_pipeline_from_zip(
+    background_tasks: BackgroundTasks, file: UploadFile = File(...),
+) -> dict:
+    """A360 봇 zip 파일 하나를 받아서 전처리 -> canonical 변환 -> pm4py/WorFBench
+    변환까지 백그라운드로 실행한다."""
+    if not goldset_pipeline_runner.reserve():
+        raise HTTPException(409, "이미 파이프라인이 실행 중입니다")
+
+    _GOLDSET_PIPELINE_UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    saved_zip_path = _GOLDSET_PIPELINE_UPLOAD_DIR / f"{uuid.uuid4().hex[:12]}_{file.filename}"
+    saved_zip_path.write_bytes(await file.read())
+
+    background_tasks.add_task(goldset_pipeline_runner.run_pipeline_from_zip, saved_zip_path)
+    background_tasks.add_task(goldset_pipeline_runner.delete_old_temp_upload, saved_zip_path)
+    return {"status": "started"}
+
+
+class GoldsetPipelinePastedTextRequest(BaseModel):
+    raw_workflow_json: str = Field(min_length=1)
+    source_label: str = Field(default="붙여넣은 워크플로우", min_length=1)
+
+
+@app.post("/eval/workflow-goldset-pipeline/execution/paste-text")
+def start_goldset_pipeline_from_text(req: GoldsetPipelinePastedTextRequest, background_tasks: BackgroundTasks) -> dict:
+    """zip 대신, A360 워크플로우 JSON 원문을 텍스트로 직접 붙여넣어 실행한다
+    (압축 해제 단계 없이 바로 canonical 변환부터 진행)."""
+    if not goldset_pipeline_runner.reserve():
+        raise HTTPException(409, "이미 파이프라인이 실행 중입니다")
+
+    background_tasks.add_task(
+        goldset_pipeline_runner.run_pipeline_from_pasted_workflow, req.raw_workflow_json, req.source_label,
+    )
+    return {"status": "started"}
+
+
+@app.get("/eval/workflow-goldset-pipeline/execution/status")
+def goldset_pipeline_status() -> dict:
+    return goldset_pipeline_runner.state
+
+
+@app.get("/eval/workflow-goldset-pipeline/execution/events")
+async def goldset_pipeline_events(request: Request) -> StreamingResponse:
+    async def event_stream():
+        previous_payload = ""
+        while True:
+            if await request.is_disconnected():
+                break
+            payload = json.dumps(goldset_pipeline_runner.state, ensure_ascii=False)
+            if payload != previous_payload:
+                yield f"event: status\ndata: {payload}\n\n"
+                previous_payload = payload
+            else:
+                yield ": heartbeat\n\n"
+            await asyncio.sleep(1)
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no"},
+    )
+
+
+# ── 워크플로우 정답 케이스 (파이프라인이 만든 draft를 사람이 검수/승인) ──
+
+
+@app.get("/eval/workflow-goldset-pipeline/cases")
+def list_goldset_pipeline_cases() -> list[dict]:
+    return goldset_case_store.list_cases()
+
+
+class UpdateGoldsetCaseStatusRequest(BaseModel):
+    status: str = Field(min_length=1)
+    actor: str = ""
+    note: str = ""
+
+
+@app.post("/eval/workflow-goldset-pipeline/cases/{case_id}/status")
+def update_goldset_pipeline_case_status(case_id: str, req: UpdateGoldsetCaseStatusRequest) -> dict:
+    try:
+        updated = goldset_case_store.update_case_status(case_id, req.status, actor=req.actor, note=req.note)
+    except goldset_admin.GoldsetWriteError as e:
+        raise HTTPException(400, str(e)) from e
+    return updated.model_dump()
 
 
 class ExecuteRagasPassKRequest(BaseModel):

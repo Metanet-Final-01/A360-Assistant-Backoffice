@@ -30,6 +30,11 @@ PACKAGES_JSON = DATA_DIR / "packages.json"
 BOTS_JSONL = DATA_DIR / "bots.jsonl"
 EXPORTS_DIR = DATA_DIR / "exports"
 RAG_DOCUMENTS_JSONL = DATA_DIR / "rag_documents.jsonl"
+# content_hash → embedding 벡터 로컬 캐시. 임베딩(OpenAI 호출, 대량이면 수 분)과 DB
+# upsert 사이에 커넥션을 안 붙잡으려고 분리했는데, 그 브리지 역할 — 중간에 프로세스가
+# 죽어도 이미 낸 임베딩 비용을 다음 실행에서 재사용할 수 있게 남긴다(RPA-150 ingest
+# 중 IdleInTransactionSessionTimeout으로 5482개 임베딩을 날린 사고 이후 추가).
+EMBEDDING_CACHE_JSON = DATA_DIR / "embedding_cache.json"
 EDA_REPORT_JSON = DATA_DIR / "eda_report.json"
 # doc_action_tree 트리 해석 결과 요약(패키지별 리프/카테고리 수) — export-for-agent
 # 실행마다 갱신되는 감사용 사이드카 파일. build가 읽지 않음, 사람이 검토하는 용도.

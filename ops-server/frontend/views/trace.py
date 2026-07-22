@@ -4,12 +4,20 @@
 사건 단위로 추적할 수 있어야 운영에서 의미가 있다.
 """
 
+from datetime import datetime
+
 import pandas as pd
-import requests
 import streamlit as st
 
-from components.layout import card, metric_strip, page_header, section_header
-from config import OPS_BACKEND_URL
+from components.layout import (
+    card,
+    metric_strip,
+    page_header,
+    render_fetch_error,
+    render_last_fetched,
+    safe_api_get,
+    section_header,
+)
 
 
 def render() -> None:
@@ -26,15 +34,18 @@ def render() -> None:
         value = st.text_input(f"{key_type} 입력", key="trace_value", placeholder="예: 5f2a3c309fd1")
         go = st.button("추적", key="trace_go", type="primary")
 
+    render_last_fetched(st.session_state.get("trace_fetched_at"))
+
     if not (go and value.strip()):
         st.info("조회 축을 고르고 id를 입력한 뒤 \"추적\"을 누르세요.")
         return
 
     params = {key_type: value.strip()}
-    data = _safe_get(OPS_BACKEND_URL, "/observability/trace", params)
-    if data is None:
-        st.error("조회에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
+    result = safe_api_get("/observability/trace", params)
+    if not render_fetch_error(result, "조회"):
         return
+    st.session_state["trace_fetched_at"] = datetime.now()
+    data = result.data
 
     if key_type == "user_id":
         matched = data.get("matched_request_ids", [])
@@ -92,8 +103,8 @@ def render() -> None:
 def _render_turns(turns: list) -> None:
     if not turns:
         return
-    with card("trace_turns"):
-        section_header("에이전트 턴 타임라인", "노드별 진행·소요(elapsed_ms는 턴 시작부터 누적)")
+    with card("trace_turns"), st.expander("에이전트 턴 타임라인", expanded=False):
+        st.caption("노드별 진행·소요(elapsed_ms는 턴 시작부터 누적)")
         df = pd.DataFrame([
             {
                 "req": (t.get("request_id") or "")[:8],
@@ -112,8 +123,8 @@ def _render_turns(turns: list) -> None:
 def _render_rag_events(rag_events: list) -> None:
     if not rag_events:
         return
-    with card("trace_rag_events"):
-        section_header("RAG 파이프라인 단계", "embed/search/rerank 등 단계별 소요·설정(RPA-128) — duration_ms는 그 단계만의 소요")
+    with card("trace_rag_events"), st.expander("RAG 파이프라인 단계", expanded=False):
+        st.caption("embed/search/rerank 등 단계별 소요·설정(RPA-128) — duration_ms는 그 단계만의 소요")
         df = pd.DataFrame([
             {
                 "event": e.get("event"),
@@ -125,11 +136,3 @@ def _render_rag_events(rag_events: list) -> None:
             for e in rag_events
         ])
         st.dataframe(df, use_container_width=True, hide_index=True)
-
-
-def _safe_get(base_url: str, path: str, params: dict) -> dict | None:
-    try:
-        resp = requests.get(f"{base_url}{path}", params=params, timeout=10)
-        return resp.json() if resp.status_code == 200 else None
-    except requests.RequestException:
-        return None

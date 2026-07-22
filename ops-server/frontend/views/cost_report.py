@@ -4,12 +4,14 @@
 집계해 주고(RPA-97 모델별 단가·RPA-124 세션 축), 여기서 표·차트로 보여준다.
 """
 
+from datetime import datetime
+
 import altair as alt
 import pandas as pd
 import requests
 import streamlit as st
 
-from components.layout import card, metric_strip, page_header, section_header
+from components.layout import card, metric_strip, page_header, render_fetch_error, render_last_fetched, safe_api_get, section_header
 from config import OPS_BACKEND_URL
 
 
@@ -34,6 +36,9 @@ def render() -> None:
                 except requests.RequestException:
                     status[axis] = None  # 연결 실패
             st.session_state["cost_axis_status"] = status
+            st.session_state["cost_fetched_at"] = datetime.now()
+
+    render_last_fetched(st.session_state.get("cost_fetched_at"))
 
     status = st.session_state.get("cost_axis_status")
     if not status:
@@ -57,10 +62,13 @@ def _render_axis(axis: str, key_label: str, collect_status: int | None) -> None:
     if collect_status != 200:
         st.error(f"{axis} 축 수집 실패 (HTTP {collect_status}) — 백엔드가 group_by={axis}를 지원하는지·관리자 자격이 유효한지 확인하세요.")
         return
-    snaps = _safe_get(OPS_BACKEND_URL, "/observability/llm-usage/snapshots", {"group_by": axis, "limit": 1})
-    if snaps is None:
-        st.error(f"{axis} 축 조회에 실패했습니다 — 모니터링 백엔드 상태를 확인하세요.")
+    # limit=1이 아니라 30 — 최신 스냅샷(snaps[0], 백엔드가 fetched_at 내림차순으로 준다)은
+    # 지금까지처럼 요약·표에 쓰고, 나머지는 "이번 수집이 이전 수집들보다 늘었는지"에
+    # 답하는 추세 차트에 쓴다.
+    result = safe_api_get("/observability/llm-usage/snapshots", {"group_by": axis, "limit": 30})
+    if not render_fetch_error(result, f"{axis} 축 조회"):
         return
+    snaps = result.data
     if not snaps:
         st.info("해당 기간 사용량이 없습니다.")
         return
@@ -78,6 +86,21 @@ def _render_axis(axis: str, key_label: str, collect_status: int | None) -> None:
         (f"{axis} 수", f"{len(breakdown)}"),
     ])
 
+    if len(snaps) >= 2:
+        trend_df = pd.DataFrame([
+            {"수집 시각": pd.to_datetime(s["fetched_at"]), "총 비용(USD)": s.get("total", {}).get("cost_usd", 0)}
+            for s in snaps
+        ]).sort_values("수집 시각")
+        trend_chart = alt.Chart(trend_df).mark_line(point=True).encode(
+            x=alt.X("수집 시각:T"),
+            y=alt.Y("총 비용(USD):Q"),
+            tooltip=["수집 시각:T", "총 비용(USD):Q"],
+        ).properties(height=180)
+        st.caption("이번 수집이 이전 수집들보다 비용이 늘었는지 보여줍니다.")
+        st.altair_chart(trend_chart, use_container_width=True)
+    else:
+        st.caption("\"수집\"을 2회 이상 하면 이전 대비 비용 추세를 볼 수 있습니다.")
+
     df = pd.DataFrame(breakdown)
     df[key_label] = df["key"].fillna("(시스템)").astype(str).str[:12]
     df = df.rename(columns={"cost_usd": "cost_usd", "calls": "calls"}).sort_values("cost_usd", ascending=False)
@@ -92,11 +115,3 @@ def _render_axis(axis: str, key_label: str, collect_status: int | None) -> None:
         tooltip=[key_label, "cost_usd", "calls"],
     )
     st.altair_chart(chart, use_container_width=True)
-
-
-def _safe_get(base_url: str, path: str, params: dict) -> list | dict | None:
-    try:
-        resp = requests.get(f"{base_url}{path}", params=params, timeout=10)
-        return resp.json() if resp.status_code == 200 else None
-    except requests.RequestException:
-        return None

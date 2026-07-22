@@ -54,6 +54,16 @@ class RagasCase(BaseModel):
         default=None, description="마지막 수정 시각(UTC ISO 8601, goldset_admin이 쓰기 때마다 갱신). "
         "이 필드 추가 이전 기존 케이스는 None."
     )
+    dataset_membership: Literal["active", "candidate", "excluded"] | None = Field(
+        default=None,
+        description=(
+            "현재 평가 데이터셋 소속 — status(approved/rejected, 문항 품질 판정)와는 별개 축. "
+            "active=현재 실험 세트에 포함(러너가 이걸로 케이스를 고름), "
+            "candidate=승인됐지만 아직 실험 세트에 안 넣음(신규 후보), "
+            "excluded=문항은 유효하나 지금 평가 목적엔 안 씀. "
+            "rejected 케이스는 이 필드를 안 씀(None)."
+        ),
+    )
 
 
 class RagasCaseResult(BaseModel):

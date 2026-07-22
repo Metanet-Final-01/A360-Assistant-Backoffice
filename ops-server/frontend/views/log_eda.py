@@ -14,14 +14,12 @@ multiselect, 숫자는 범위 슬라이더, 시각 컬럼은 날짜 범위). 소
 그대로 재사용된다.
 """
 
+from datetime import datetime
+
 import pandas as pd
-import requests
 import streamlit as st
 
-from components.layout import card, page_header, section_header
-from config import OPS_BACKEND_URL
-
-_SESSION = requests.Session()
+from components.layout import card, page_header, render_last_fetched, safe_api_get, section_header
 
 # (표시 이름, API 경로, limit 파라미터명, 기본 limit, "raw" 평탄화 필요 여부, 서버 측 limit 상한)
 # 상한은 각 GET 엔드포인트의 Query(le=...)와 반드시 일치해야 한다 — 안 맞으면 422
@@ -53,13 +51,19 @@ def render() -> None:
             f"최대 조회 건수(이 소스는 최대 {max_limit}건)",
             min_value=100, max_value=max_limit, value=min(default_limit, max_limit), step=100,
         )
-        if st.button("불러오기", type="primary") or f"eda_df_{source_label}" not in st.session_state:
+        # 소스를 처음 고르면(세션에 값이 없으면) 자동으로 조회하고, 그 뒤로는 "새로고침"을
+        # 눌러야 다시 불러온다 — 버튼 이름을 "불러오기"로 두면 이미 로드된 걸 다시
+        # 가져오는 동작인데도 "최초 로드"처럼 보여서 새로고침으로 통일한다.
+        if st.button("새로고침", type="primary") or f"eda_df_{source_label}" not in st.session_state:
             df = _load(source_label, limit)
             st.session_state[f"eda_df_{source_label}"] = df
+            st.session_state["eda_fetched_at"] = datetime.now()
+
+    render_last_fetched(st.session_state.get("eda_fetched_at"))
 
     df = st.session_state.get(f"eda_df_{source_label}")
     if df is None or df.empty:
-        st.info("데이터가 없습니다 — 위에서 '불러오기'를 눌러주세요.")
+        st.info("데이터가 없습니다 — 위에서 '새로고침'을 눌러주세요.")
         return
 
     with card("eda_filter"):
@@ -71,13 +75,11 @@ def render() -> None:
 
 def _load(source_label: str, limit: int) -> pd.DataFrame:
     path, limit_param, _, flatten_raw, _max = _SOURCES[source_label]
-    try:
-        resp = _SESSION.get(f"{OPS_BACKEND_URL}/observability/{path}", params={limit_param: limit}, timeout=15)
-        resp.raise_for_status()
-        rows = resp.json()
-    except (requests.RequestException, ValueError) as exc:
-        st.error(f"불러오기 실패: {exc}")
+    result = safe_api_get(f"/observability/{path}", {limit_param: limit}, timeout=15)
+    if result.error_message:
+        st.error(f"불러오기 실패: {result.error_message}")
         return pd.DataFrame()
+    rows = result.data
     if not isinstance(rows, list):
         st.error(f"예상치 못한 응답 형식입니다: {rows}")
         return pd.DataFrame()

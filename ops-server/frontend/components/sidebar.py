@@ -35,14 +35,10 @@ def render_sidebar() -> None:
             "</span>"
             "</div>"
         )
-        # 사이드바 맨 아래 고정 설명 블록. stSidebarUserContent는 네비게이션(stSidebarNav)보다
-        # 위에 오도록 CSS order가 이미 고정돼 있어(apply_global_styles), DOM 순서로는 뒤로
-        # 보낼 수 없다 — 그래서 position:absolute; bottom:0으로 사이드바 자체의 바닥에
-        # 붙이고(app-sidebar-footer), 네비게이션 쪽에 그만큼 padding-bottom을 남겨 겹치지
-        # 않게 한다.
-        st.html(
-            '<div class="app-sidebar-footer">'
-            '<div class="app-sidebar-footer__title">OPS</div>'
-            '<div class="app-sidebar-footer__desc">RAG 적재 · 평가(준비/실행/결과) · 모니터링 도구</div>'
-            "</div>"
-        )
+        user_email = st.session_state.get("ops_user_email")
+        if user_email:
+            st.caption(user_email)
+            if st.button("로그아웃", use_container_width=True):
+                from components.auth import logout
+
+                logout()

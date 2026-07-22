@@ -55,29 +55,31 @@ def _format_timestamp(value: str | None) -> str:
 _CHATGPT_PROMPT_TEMPLATE = """다음 공식 문서를 근거로 RAGAS 평가 문항 1개를 작성하라.
 
 작성 기준:
-- 공식 문서에 명시된 내용만 사용하고 추측하거나 보완하지 않는다.
-- 질문은 문서 제목을 그대로 베끼는 퀴즈보다 실제 사용자가 검색창이나 챗봇에 물어볼 법한
-  자연스러운 표현으로 작성한다.
-- 단, 실제 사용자처럼 쓰더라도 회사·프로젝트·개인 상황처럼 문서에 없는 맥락은 넣지 않는다.
-- 질문 하나에 핵심 평가 대상 하나만 담는다.
-- 정답은 질문에 직접 답하되, 공식 문서 범위를 벗어나지 않는다.
-- 정답 근거는 정답을 실제로 뒷받침하는 원문만 발췌하되, 단어는 바꾸지 말고 줄바꿈·공백만
-  자연스러운 한 문장으로 이어 적는다(원문의 줄바꿈을 그대로 따라 적지 않는다).
-- 정답 근거 안에 따옴표(")가 들어가면 JSON 문자열 규칙에 맞게 \\\"로 적는다.
-- 파일 경로처럼 역슬래시가 들어가는 내용은 JSON 문자열 규칙에 맞게 역슬래시를 두 번 겹쳐 적는다.
-  예: Inbox\\\\folder1;Inbox\\\\folder2
-- 문항 유형은 아래 기준으로 하나만 선택한다.
-  - 단순 조회: 명칭, 기능, 지원 여부, 선택지 등 하나의 사실을 직접 묻는 질문
-  - 조건 조회: 특정 조건에 필요한 파라미터, 값 또는 설정을 묻는 질문
-  - 절차 설명: 작업 순서나 설정 방법을 설명하도록 요구하는 질문
-  - 비교·판단: 원문에 여러 선택지와 선택 기준이 함께 있고, 상황에 따라 무엇을 고르는 게 나은지 판단하는 질문
-- "어떤 값/옵션/자료/패키지를 사용해야 하나"처럼 하나의 정답을 묻는 질문은 비교·판단이 아니라 조건 조회다.
-- 비교·판단은 A/B 차이, 상황별 권장 선택, 선택 기준이 원문에 있을 때만 만든다.
-- 현재 분포에서 부족한 유형은 참고만 한다. 문서 내용이 자연스럽게 맞지 않으면 억지로 맞추지 않는다.
-  현재 분포: {question_type_status}
-- 유형이 애매하면 문서 근거와 질문 의도에 가장 직접적으로 맞는 유형을 선택한다.
-- 정답 근거가 여러 구간에 있으면 reference_contexts 배열에 각각 나눈다.
-- 출력은 설명 없이 유효한 JSON 하나만 제공한다.
+- 공식 문서에 명시된 내용만 쓴다(추측·보완 금지).
+- 질문은 짧고 자연스러운 한 문장으로 목적 하나만 묻는다. 파라미터·선택지를 전부
+  나열해서 채우지 않는다(질문이 스펙 요약이 되면 안 됨).
+- 정답(액션 이름)이 질문의 목적 설명과 사실상 같은 말이면 그 질문은 버린다. 예: "창을
+  활성화하려면 어떤 작업을 쓰나요?" → 정답 "창의 활성화 작업" — 액션 이름을 몰라도 뜻으로
+  다 맞힐 수 있어 문서를 안 봐도 풀리므로 RAG 검색을 전혀 테스트하지 못한다. 이럴 땐
+  "어떤 액션을 쓰나" 대신 그 액션의 파라미터·제약·동작 방식처럼 문서를 실제로 봐야만
+  알 수 있는 내용을 정답으로 삼는 질문으로 바꾼다.
+- 질문만 읽고도 무엇에 대한 질문인지 알 수 있어야 한다. "가져온 값", "이 작업"처럼 대상을
+  안 밝히는 표현만 쓰지 말고, 어느 패키지·액션·상황에 대한 질문인지 반드시 명시한다.
+- 회사·프로젝트·개인 상황 등 문서에 없는 맥락은 넣지 않는다.
+- 질문 하나 = 평가 대상 하나. 정답은 질문에 직접 답하되 문서 범위를 안 벗어난다.
+- 정답 근거는 원문 그대로 발췌(단어 변경 금지, 줄바꿈·공백만 자연스러운 한 문장으로 이음).
+  따옴표는 \\", 역슬래시는 \\\\로 이스케이프(예: Inbox\\\\folder1). 여러 구간이면
+  reference_contexts에 나눠 담는다.
+- 문항 유형(하나만 선택):
+  - 단순 조회: 명칭·기능·지원여부 등 사실 하나를 직접 물음
+  - 조건 조회: 특정 조건에 필요한 파라미터·값·설정을 물음("어떤 값/옵션/자료/패키지를
+    써야 하나"도 여기 — 비교·판단 아님)
+  - 절차 설명: 순서·설정 방법을 설명하도록 요구
+  - 비교·판단: 원문에 선택지+선택 기준이 함께 있어 상황별로 뭘 고를지 판단(A/B 차이·
+    상황별 권장이 원문에 있을 때만 — 없으면 만들지 않음)
+  - 애매하면 문서 근거와 질문 의도에 가장 맞는 쪽으로. 현재 분포는 참고만(부족한 유형에
+    억지로 안 맞춤): {question_type_status}
+- 출력은 설명 없이 아래 형식의 유효한 JSON 하나만.
 
 출력 형식:
 {{
@@ -218,6 +220,55 @@ def _build_question_type_status(cases: list[dict]) -> str:
     )
 
 
+def _effective_prompt_template() -> str:
+    """세션에서 수정한 프롬프트가 있으면 그걸, 없으면 기본 템플릿을 쓴다 — 파일을 안
+    고치고도 문구를 바로 시험해볼 수 있게. 브라우저 세션이 끝나면 사라진다(영구 저장
+    아님, 계속 쓸 문구면 코드 자체를 고쳐달라고 요청해야 함)."""
+    return st.session_state.get("ragas_prompt_template_override") or _CHATGPT_PROMPT_TEMPLATE
+
+
+def _render_prompt_tab(question_type_status: str, content: str) -> None:
+    editing = st.session_state.get("ragas_prompt_editing", False)
+    has_override = bool(st.session_state.get("ragas_prompt_template_override"))
+
+    col_edit, col_reset, _ = st.columns([1, 1, 2])
+    if col_edit.button("수정 취소" if editing else "프롬프트 수정", key="ragas_prompt_edit_toggle"):
+        st.session_state["ragas_prompt_editing"] = not editing
+        st.rerun()
+    if has_override and col_reset.button("기본값으로 되돌리기", key="ragas_prompt_reset"):
+        st.session_state.pop("ragas_prompt_template_override", None)
+        st.session_state["ragas_prompt_editing"] = False
+        st.rerun()
+
+    if editing:
+        st.caption("{content}와 {question_type_status}는 실제 값으로 자동 치환되는 자리표시자입니다 — 지우지 마세요.")
+        edited = st.text_area(
+            "프롬프트 지침 편집", value=_effective_prompt_template(), height=400,
+            key="ragas_prompt_edit_area", label_visibility="collapsed",
+        )
+        if st.button("이 프롬프트 적용", key="ragas_prompt_apply", type="primary"):
+            st.session_state["ragas_prompt_template_override"] = edited
+            st.session_state["ragas_prompt_editing"] = False
+            st.rerun()
+        return
+
+    if has_override:
+        st.caption("이번 세션에서 수정한 프롬프트를 쓰는 중입니다.")
+    try:
+        full_prompt = _effective_prompt_template().format(
+            question_type_status=question_type_status, content=content,
+        )
+    except (KeyError, ValueError) as e:
+        # 편집 중 {content}/{question_type_status}를 지우거나 JSON 예시의 {{ }} 이스케이프를
+        # 깨뜨리면 format()이 죽는다 — 화면 전체가 죽지 않고 여기서 바로 원인을 보여준다.
+        st.error(
+            f"프롬프트 형식이 깨졌습니다: {e} — {{content}}/{{question_type_status}} 자리표시자와 "
+            "JSON 예시의 중괄호({{ }})가 그대로 있는지 확인하세요."
+        )
+        return
+    st.code(full_prompt, language=None, wrap_lines=True, height=490)
+
+
 # ── 작성 탭 ──────────────────────────────────────────────────────────────
 
 
@@ -316,11 +367,7 @@ def _render_write_tab() -> None:
                 st.code(selected_doc.get("content", ""), language=None, wrap_lines=True, height=520)
             with tab_prompt:
                 st.caption("지침 + 원문이 합쳐진 상태 — 그대로 복사해서 ChatGPT에 붙여넣으면 됩니다.")
-                full_prompt = _CHATGPT_PROMPT_TEMPLATE.format(
-                    question_type_status=question_type_status,
-                    content=selected_doc.get("content", ""),
-                )
-                st.code(full_prompt, language=None, wrap_lines=True, height=490)
+                _render_prompt_tab(question_type_status, selected_doc.get("content", ""))
 
     with col_form:
         with st.container(border=True):
@@ -552,6 +599,11 @@ def _save_current_case_form(source_document: dict, snippet_count_key: str) -> No
         "status": "approved" if save_status == "승인" else "rejected",
         "question_type": question_type,
     }
+    if save_status == "승인":
+        # 승인 저장 == 곧바로 실험 세트(active) 편입이 아니다 — 새 문항이 계속 쌓이면
+        # 기존 실험 세트가 의도 없이 커진다. 일단 candidate(후보)로 넣고, 전체목록 탭의
+        # 후보 화면에서 사람이 골라 실험 세트에 편입한다.
+        payload["dataset_membership"] = "candidate"
     if save_status == "반려":
         payload["review_note"] = reject_reason
     case_saved, error_message = _post_json("/eval/ragas/cases", payload)
@@ -567,7 +619,14 @@ def _save_current_case_form(source_document: dict, snippet_count_key: str) -> No
         for snippet_index in range(snippet_count):
             st.session_state.pop(f"ragas_snippet_{source_document_id}_{snippet_index}", None)
         st.session_state[snippet_count_key] = 1
-        _queue_flash_message("write", "success", f"{case_id}를 저장했습니다. 상태: {save_status}")
+        if save_status == "승인":
+            success_message = (
+                f"{case_id}를 승인 후보로 저장했습니다. "
+                "전체목록 탭 > 후보에서 실험 세트에 추가할 수 있습니다."
+            )
+        else:
+            success_message = f"{case_id}를 저장했습니다. 상태: {save_status}"
+        _queue_flash_message("write", "success", success_message)
         _log_validation_attempt(source_document, question, "success", None)
         st.rerun()
     else:
@@ -653,21 +712,96 @@ def _render_case_form(source_document: dict, existing_cases: list[dict]) -> None
 
 # ── 전체목록 탭 ───────────────────────────────────────────────────────────
 
+# dataset_membership(현재 데이터셋 소속)과 used_in_experiment(과거 실행 이력)는 서로 다른
+# 축이다 — 전자는 "앞으로 뭘 실험에 쓸지"를 사람이 정하는 값, 후자는 eval_runs.jsonl에서
+# 그냥 계산되는 값. 하나로 섞으면 "신규 후보를 추가했더니 기존 실험 세트까지 같이
+# 흔들린다" 같은 문제가 생긴다(2026-07-20).
+_MEMBERSHIP_LABELS = {"active": "실험 세트", "candidate": "후보", "excluded": "제외"}
 
-def _render_list_tab() -> None:
-    # 승인/반려/삭제 뒤 결과를 여기서 보여준다 — 목록 아래(선택된 행 상세)에서 보여주면
-    # 삭제로 목록이 줄어 선택이 풀렸을 때 그 아래 코드가 안 돌아 메시지가 영영 안 뜰
-    # 위험이 있다(작성 탭에서 이미 겪은 "메시지가 큐에 남아 미아가 되는" 문제와 같은
-    # 종류). 조회 결과와 무관하게 항상 도달하는 자리라 여기서 소비한다.
-    _render_flash_messages("list")
 
-    cases, err = _get("/eval/ragas/cases")
-    if err:
-        st.warning(f"불러오지 못했습니다: {err}")
+def _bulk_set_membership(case_ids: list[str], new_membership: str) -> tuple[int, list[str]]:
+    """선택된 케이스들의 dataset_membership을 일괄 변경한다. (성공 건수, 실패한 case_id 목록)."""
+    succeeded = 0
+    failed_ids = []
+    for case_id in case_ids:
+        ok, _err = _patch_json(f"/eval/ragas/cases/{case_id}", {"dataset_membership": new_membership})
+        if ok:
+            succeeded += 1
+        else:
+            failed_ids.append(case_id)
+    return succeeded, failed_ids
+
+
+def _render_membership_bulk_view(cases: list[dict], from_membership: str) -> None:
+    """실험 세트/후보/제외 화면 — 여러 건을 한 번에 다른 소속으로 옮기는 용도라
+    단일 행 선택이 아니라 체크박스 다중 선택(st.data_editor)을 쓴다."""
+    if not cases:
+        st.caption("해당하는 케이스가 없습니다.")
         return
 
-    # schema_source(jar/llm_agent) 필터는 문서 유형이 action_schema/package_overview일
-    # 때만 의미가 있다 — 작성 탭과 동일한 조건부 노출 방식(직전 렌더의 session_state로 판단).
+    rows = [
+        {
+            "선택": False,
+            "케이스 ID": c["case_id"],
+            "문항 유형": c.get("question_type") or "-",
+            "질문": c["question"],
+            "문서 유형": c.get("source_type") or "-",
+            "등록시간": _format_timestamp(c.get("created_at")),
+        }
+        for c in cases
+    ]
+    edited_rows = st.data_editor(
+        rows, hide_index=True, width="stretch", height=320,
+        disabled=["케이스 ID", "문항 유형", "질문", "문서 유형", "등록시간"],
+        column_config={
+            "선택": st.column_config.CheckboxColumn(width="small"),
+            "질문": st.column_config.TextColumn(width="large"),
+        },
+        key=f"ragas_bulk_editor_{from_membership}",
+    )
+    selected_ids = [row["케이스 ID"] for row in edited_rows if row["선택"]]
+    st.caption(f"{len(selected_ids)}건 선택됨")
+
+    def _run_bulk_move(case_ids: list[str], new_membership: str, verb: str) -> None:
+        succeeded, failed_ids = _bulk_set_membership(case_ids, new_membership)
+        if failed_ids:
+            _queue_flash_message(
+                "list", "warning",
+                f"{succeeded}건 {verb} 완료, {len(failed_ids)}건 실패: {', '.join(failed_ids)}",
+            )
+        else:
+            _queue_flash_message("list", "success", f"{succeeded}건 {verb} 완료")
+        st.rerun()
+
+    if from_membership == "active":
+        if st.button(
+            f"선택 항목({len(selected_ids)}건)을 후보로 이동", disabled=not selected_ids,
+            key=f"ragas_bulk_to_candidate_{from_membership}",
+        ):
+            _run_bulk_move(selected_ids, "candidate", "후보로 이동")
+    elif from_membership == "candidate":
+        col_to_active, col_to_excluded = st.columns(2)
+        if col_to_active.button(
+            f"선택 항목({len(selected_ids)}건)을 실험 세트에 추가", disabled=not selected_ids,
+            key="ragas_bulk_to_active", type="primary", width="stretch",
+        ):
+            _run_bulk_move(selected_ids, "active", "실험 세트 편입")
+        if col_to_excluded.button(
+            f"선택 항목({len(selected_ids)}건) 제외", disabled=not selected_ids,
+            key="ragas_bulk_to_excluded", width="stretch",
+        ):
+            _run_bulk_move(selected_ids, "excluded", "제외")
+    elif from_membership == "excluded":
+        if st.button(
+            f"선택 항목({len(selected_ids)}건)을 후보로 복원", disabled=not selected_ids,
+            key="ragas_bulk_to_candidate_from_excluded",
+        ):
+            _run_bulk_move(selected_ids, "candidate", "후보로 복원")
+
+
+def _render_all_cases_view(cases: list[dict]) -> None:
+    """상태/문서유형/출처/데이터셋소속/과거사용이력 필터 + 검색 + 정렬 + 단일 케이스
+    상세(승인·반려·소속변경·삭제) — 개별 케이스를 자세히 들여다볼 때 쓰는 화면."""
     current_type_filter = st.session_state.get("ragas_review_type_filter", _SOURCE_TYPES[0])
     show_schema_filter = current_type_filter in ("action_schema", "package_overview")
 
@@ -695,12 +829,16 @@ def _render_list_tab() -> None:
             "질문 검색", key="ragas_review_search", placeholder="질문에 포함된 단어로 검색",
         )
 
-    col_experiment, col_sort, _ = st.columns([1, 1, 2])
-    with col_experiment:
-        experiment_filter = st.selectbox(
-            "실험 사용 여부", ["전체", "사용됨", "미사용(신규 후보)"], key="ragas_review_experiment_filter",
-            help="chunk_size 실험(eval_runs.jsonl)에 실제로 쓰인 적이 있는 케이스인지 — "
-            "새로 추가만 하고 아직 실험을 안 돌린 후보를 구분하기 위함.",
+    col_membership, col_history, col_sort = st.columns([1, 1, 1])
+    with col_membership:
+        membership_filter_label = st.selectbox(
+            "데이터셋 소속", ["전체", "실험 세트", "후보", "제외", "(미지정)"], key="ragas_review_membership_filter",
+        )
+    with col_history:
+        history_filter = st.selectbox(
+            "과거 사용 이력", ["전체", "사용 이력 있음", "사용 이력 없음"], key="ragas_review_history_filter",
+            help="chunk_size 실험(eval_runs.jsonl)에 실제로 쓰인 적이 있는지 — "
+            "지금 데이터셋 소속과는 별개로, 과거에 한 번이라도 실행됐는지만 본다.",
         )
     with col_sort:
         sort_label = st.selectbox("정렬", list(_CASE_SORT_OPTIONS.keys()), key="ragas_review_sort")
@@ -715,9 +853,14 @@ def _render_list_tab() -> None:
     if search_query.strip():
         q = search_query.strip().lower()
         filtered = [c for c in filtered if q in c["question"].lower()]
-    if experiment_filter == "사용됨":
+    if membership_filter_label == "(미지정)":
+        filtered = [c for c in filtered if not c.get("dataset_membership")]
+    elif membership_filter_label != "전체":
+        target_membership = next(k for k, v in _MEMBERSHIP_LABELS.items() if v == membership_filter_label)
+        filtered = [c for c in filtered if c.get("dataset_membership") == target_membership]
+    if history_filter == "사용 이력 있음":
         filtered = [c for c in filtered if c.get("used_in_experiment")]
-    elif experiment_filter == "미사용(신규 후보)":
+    elif history_filter == "사용 이력 없음":
         filtered = [c for c in filtered if not c.get("used_in_experiment")]
 
     sort_field, sort_desc = _CASE_SORT_OPTIONS[sort_label]
@@ -734,7 +877,8 @@ def _render_list_tab() -> None:
             "상태": _STATUS_LABELS.get(c.get("status", "draft"), c.get("status", "draft")),
             "문서 유형": c.get("source_type") or "-",
             "출처": c.get("schema_source") or "-",
-            "실험 사용": "사용됨" if c.get("used_in_experiment") else "신규 후보",
+            "데이터셋 소속": _MEMBERSHIP_LABELS.get(c.get("dataset_membership"), "-"),
+            "과거 사용": "이력 있음" if c.get("used_in_experiment") else "이력 없음",
             "질문": c["question"],
             "정답 근거": f"{len(c.get('reference_contexts', []))}개",
             "등록시간": _format_timestamp(c.get("created_at")),
@@ -822,6 +966,62 @@ def _render_list_tab() -> None:
         if st.button("삭제 확정", key=f"ragas_delete_confirm_{target_id}", type="primary"):
             action_succeeded, error_message = _delete(f"/eval/ragas/cases/{target_id}")
             _handle_review_action(action_succeeded, error_message, f"{target_id}를 삭제했습니다.")
+
+    if target_status == "approved":
+        st.text("데이터셋 소속 변경")
+        col_membership_select, col_membership_btn = st.columns([2, 1])
+        current_membership = target.get("dataset_membership")
+        membership_options = ["active", "candidate", "excluded"]
+        new_membership = col_membership_select.selectbox(
+            "데이터셋 소속 선택", membership_options,
+            index=membership_options.index(current_membership) if current_membership in membership_options else 1,
+            format_func=lambda m: _MEMBERSHIP_LABELS[m],
+            key=f"ragas_membership_select_{target_id}", label_visibility="collapsed",
+        )
+        if col_membership_btn.button("변경", key=f"ragas_membership_apply_{target_id}", width="stretch"):
+            action_succeeded, error_message = _patch_json(
+                f"/eval/ragas/cases/{target_id}", {"dataset_membership": new_membership},
+            )
+            _handle_review_action(
+                action_succeeded, error_message,
+                f"{target_id}를 {_MEMBERSHIP_LABELS[new_membership]}(으)로 옮겼습니다.",
+            )
+
+
+def _render_list_tab() -> None:
+    # 승인/반려/삭제 뒤 결과를 여기서 보여준다 — 목록 아래(선택된 행 상세)에서 보여주면
+    # 삭제로 목록이 줄어 선택이 풀렸을 때 그 아래 코드가 안 돌아 메시지가 영영 안 뜰
+    # 위험이 있다(작성 탭에서 이미 겪은 "메시지가 큐에 남아 미아가 되는" 문제와 같은
+    # 종류). 조회 결과와 무관하게 항상 도달하는 자리라 여기서 소비한다.
+    _render_flash_messages("list")
+
+    cases, err = _get("/eval/ragas/cases")
+    if err:
+        st.warning(f"불러오지 못했습니다: {err}")
+        return
+
+    active_cases = [c for c in cases if c.get("dataset_membership") == "active"]
+    candidate_cases = [c for c in cases if c.get("dataset_membership") == "candidate"]
+    excluded_cases = [c for c in cases if c.get("dataset_membership") == "excluded"]
+    rejected_cases = [c for c in cases if c.get("status") == "rejected"]
+
+    st.caption(
+        f"실험 세트 {len(active_cases)} · 후보 {len(candidate_cases)} · "
+        f"제외 {len(excluded_cases)} · 반려 {len(rejected_cases)} · 전체 {len(cases)}"
+    )
+
+    view = st.radio(
+        "보기", ["실험 세트", "후보", "제외", "전체"], key="ragas_list_view", horizontal=True,
+    )
+
+    if view == "실험 세트":
+        _render_membership_bulk_view(active_cases, from_membership="active")
+    elif view == "후보":
+        _render_membership_bulk_view(candidate_cases, from_membership="candidate")
+    elif view == "제외":
+        _render_membership_bulk_view(excluded_cases, from_membership="excluded")
+    else:
+        _render_all_cases_view(cases)
 
 
 def _handle_review_action(action_succeeded: bool, error_message: str, success_message: str) -> None:

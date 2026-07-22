@@ -1,0 +1,424 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: "A360 Ops Server - single EC2 instance running rag-server + ops-server backend/frontend via docker-compose. Independent VPC from A360-Assistant-Backend; talks to it over its public HTTPS endpoint."
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: a360-ops
+    AllowedPattern: "^[a-zA-Z][a-zA-Z0-9-]{2,30}$"
+
+  Environment:
+    Type: String
+    Default: dev
+    AllowedValues: [dev, staging, prod]
+
+  RagServerImage:
+    Type: String
+    Description: "rag-server Docker image URI. Example: ghcr.io/org/repo/rag-server:sha"
+
+  OpsBackendImage:
+    Type: String
+    Description: "ops-server backend Docker image URI."
+
+  OpsFrontendImage:
+    Type: String
+    Description: "ops-server frontend Docker image URI."
+
+  VpcCidr:
+    Type: String
+    Default: 10.70.0.0/16
+
+  PublicSubnetCidr:
+    Type: String
+    Default: 10.70.0.0/24
+
+  InstanceType:
+    Type: String
+    Default: t3.small
+    AllowedValues: [t3.small, t3.medium, t3.large]
+
+  LatestAmiId:
+    Type: AWS::SSM::Parameter::Value<AWS::EC2::Image::Id>
+    Default: /aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64
+
+  AllowedIngressCidr:
+    Type: String
+    Default: 0.0.0.0/0
+    Description: "CIDR allowed to reach the Streamlit UI (8501) and ops-backend API (8100). Narrow this to a team/office CIDR when known."
+
+  GithubToken:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: "Optional GitHub token for pulling private GHCR images and rag-server's harvest-github command."
+
+  OpenAiApiKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+
+  VoyageApiKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+
+  RagDatabaseUrl:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: "Shared RAG corpus DB (pgvector) connection string, e.g. Neon. Must match A360-Assistant-Backend's value (same corpus)."
+
+  ObservabilityDatabaseUrl:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: "Shared llm_usage observability DB connection string, e.g. Neon. Must match A360-Assistant-Backend's value."
+
+  OpenSearchHost:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: "OpenSearch endpoint (e.g. Bonsai). Must match A360-Assistant-Backend's value (same index)."
+
+  OpenSearchUsername:
+    Type: String
+    Default: ""
+    NoEcho: true
+
+  OpenSearchPassword:
+    Type: String
+    Default: ""
+    NoEcho: true
+
+  A360BackendUrl:
+    Type: String
+    Description: "A360-Assistant-Backend's public URL (CloudFront), e.g. https://d16c6ojhnrq7gu.cloudfront.net"
+
+  A360BackendOpsApiKey:
+    Type: String
+    Default: ""
+    NoEcho: true
+    Description: "Must match Backend's OPS_API_KEY — service-to-service auth, no human login reuse."
+
+Resources:
+  Vpc:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VpcCidr
+      EnableDnsHostnames: true
+      EnableDnsSupport: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${Environment}-vpc"
+
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${Environment}-igw"
+
+  VpcGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref Vpc
+      InternetGatewayId: !Ref InternetGateway
+
+  PublicSubnet:
+    Type: AWS::EC2::Subnet
+    Properties:
+      VpcId: !Ref Vpc
+      AvailabilityZone: !Select [0, !GetAZs ""]
+      CidrBlock: !Ref PublicSubnetCidr
+      MapPublicIpOnLaunch: true
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${Environment}-public"
+
+  PublicRouteTable:
+    Type: AWS::EC2::RouteTable
+    Properties:
+      VpcId: !Ref Vpc
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${Environment}-public-rt"
+
+  PublicDefaultRoute:
+    Type: AWS::EC2::Route
+    DependsOn: VpcGatewayAttachment
+    Properties:
+      RouteTableId: !Ref PublicRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+      GatewayId: !Ref InternetGateway
+
+  PublicSubnetRouteTableAssociation:
+    Type: AWS::EC2::SubnetRouteTableAssociation
+    Properties:
+      SubnetId: !Ref PublicSubnet
+      RouteTableId: !Ref PublicRouteTable
+
+  AppSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Ops server instance security group
+      VpcId: !Ref Vpc
+      SecurityGroupIngress:
+        - Description: Streamlit UI
+          IpProtocol: tcp
+          FromPort: 8501
+          ToPort: 8501
+          CidrIp: !Ref AllowedIngressCidr
+        - Description: ops-backend API (optional direct access, e.g. for debugging)
+          IpProtocol: tcp
+          FromPort: 8100
+          ToPort: 8100
+          CidrIp: !Ref AllowedIngressCidr
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${Environment}-app-sg"
+
+  AppSecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Name: !Sub "${ProjectName}/${Environment}/app"
+      SecretString: !Sub |
+        {
+          "GITHUB_TOKEN": "${GithubToken}",
+          "OPENAI_API_KEY": "${OpenAiApiKey}",
+          "VOYAGE_API_KEY": "${VoyageApiKey}",
+          "RAG_DATABASE_URL": "${RagDatabaseUrl}",
+          "OBSERVABILITY_DATABASE_URL": "${ObservabilityDatabaseUrl}",
+          "OPENSEARCH_HOST": "${OpenSearchHost}",
+          "OPENSEARCH_USERNAME": "${OpenSearchUsername}",
+          "OPENSEARCH_PASSWORD": "${OpenSearchPassword}",
+          "A360_BACKEND_OPS_API_KEY": "${A360BackendOpsApiKey}"
+        }
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+
+  AppInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
+      Policies:
+        - PolicyName: app-runtime-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource:
+                  - !Ref AppSecret
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${Environment}-app-role"
+
+  AppInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref AppInstanceRole
+
+  AppLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/${ProjectName}/${Environment}/user-data"
+      RetentionInDays: 14
+
+  AppLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: !Sub "${ProjectName}-${Environment}-app"
+      LaunchTemplateData:
+        ImageId: !Ref LatestAmiId
+        InstanceType: !Ref InstanceType
+        IamInstanceProfile:
+          Arn: !GetAtt AppInstanceProfile.Arn
+        NetworkInterfaces:
+          - DeviceIndex: 0
+            AssociatePublicIpAddress: true
+            Groups:
+              - !Ref AppSecurityGroup
+        BlockDeviceMappings:
+          - DeviceName: /dev/xvda
+            Ebs:
+              VolumeSize: 30
+              VolumeType: gp3
+              Encrypted: true
+              DeleteOnTermination: true
+        UserData:
+          Fn::Base64: !Sub |
+            #!/bin/bash -eux
+            exec > /var/log/user-data.log 2>&1
+
+            dnf install -y amazon-cloudwatch-agent
+            mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
+            cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<'CWEOF'
+            {
+              "agent": { "run_as_user": "root", "force_flush_interval": 5 },
+              "logs": {
+                "logs_collected": {
+                  "files": {
+                    "collect_list": [
+                      {
+                        "file_path": "/var/log/user-data.log",
+                        "log_group_name": "${AppLogGroup}",
+                        "log_stream_name": "{instance_id}",
+                        "retention_in_days": 14
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+            CWEOF
+            /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+              -a fetch-config -m ec2 \
+              -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
+
+            dnf update -y
+            dnf install -y docker git python3 python3-pip awscli aws-cfn-bootstrap || dnf install -y docker git python3 python3-pip awscli
+            systemctl enable docker
+            systemctl start docker
+
+            mkdir -p /usr/local/lib/docker/cli-plugins
+            curl -fsSL "https://github.com/docker/compose/releases/latest/download/docker-compose-linux-x86_64" \
+              -o /usr/local/lib/docker/cli-plugins/docker-compose
+            chmod +x /usr/local/lib/docker/cli-plugins/docker-compose
+
+            mkdir -p /opt/a360-ops
+
+            export APP_SECRET_JSON="$(aws secretsmanager get-secret-value --region ${AWS::Region} --secret-id ${AppSecret} --query SecretString --output text)"
+            GITHUB_TOKEN=$(python3 -c 'import json, os; print(json.loads(os.environ["APP_SECRET_JSON"]).get("GITHUB_TOKEN", ""))')
+            OPENAI_API_KEY=$(python3 -c 'import json, os; print(json.loads(os.environ["APP_SECRET_JSON"]).get("OPENAI_API_KEY", ""))')
+            VOYAGE_API_KEY=$(python3 -c 'import json, os; print(json.loads(os.environ["APP_SECRET_JSON"]).get("VOYAGE_API_KEY", ""))')
+            RAG_DATABASE_URL=$(python3 -c 'import json, os; print(json.loads(os.environ["APP_SECRET_JSON"]).get("RAG_DATABASE_URL", ""))')
+            OBSERVABILITY_DATABASE_URL=$(python3 -c 'import json, os; print(json.loads(os.environ["APP_SECRET_JSON"]).get("OBSERVABILITY_DATABASE_URL", ""))')
+            OPENSEARCH_USERNAME=$(python3 -c 'import json, os; print(json.loads(os.environ["APP_SECRET_JSON"]).get("OPENSEARCH_USERNAME", ""))')
+            OPENSEARCH_PASSWORD=$(python3 -c 'import json, os; print(json.loads(os.environ["APP_SECRET_JSON"]).get("OPENSEARCH_PASSWORD", ""))')
+            A360_BACKEND_OPS_API_KEY=$(python3 -c 'import json, os; print(json.loads(os.environ["APP_SECRET_JSON"]).get("A360_BACKEND_OPS_API_KEY", ""))')
+            unset APP_SECRET_JSON
+
+            if [ -n "$GITHUB_TOKEN" ]; then
+              echo "$GITHUB_TOKEN" | docker login ghcr.io -u token --password-stdin
+            fi
+
+            install -m 600 /dev/null /opt/a360-ops/rag-server.env
+            cat > /opt/a360-ops/rag-server.env <<EOF
+            AA_DOCS_BASE_URL=https://docs.automationanywhere.com
+            INGEST_DATA_DIR=data/ingest
+            RAG_LOG_DIR=app/rag/logs
+            CHUNK_SIZE=1200
+            CHUNK_OVERLAP=200
+            RAG_DATABASE_URL=$RAG_DATABASE_URL
+            OPENSEARCH_HOST=${OpenSearchHost}
+            OPENSEARCH_INDEX=rag_documents
+            OPENSEARCH_USERNAME=$OPENSEARCH_USERNAME
+            OPENSEARCH_PASSWORD=$OPENSEARCH_PASSWORD
+            EMBEDDING_PROVIDER=openai
+            EMBEDDING_MODEL=text-embedding-3-small
+            EMBEDDING_DIM=1536
+            VOYAGE_API_KEY=$VOYAGE_API_KEY
+            OPENAI_API_KEY=$OPENAI_API_KEY
+            OBSERVABILITY_DATABASE_URL=$OBSERVABILITY_DATABASE_URL
+            GITHUB_TOKEN=$GITHUB_TOKEN
+            EOF
+
+            install -m 600 /dev/null /opt/a360-ops/ops-backend.env
+            cat > /opt/a360-ops/ops-backend.env <<EOF
+            A360_BACKEND_URL=${A360BackendUrl}
+            A360_BACKEND_OPS_API_KEY=$A360_BACKEND_OPS_API_KEY
+            RAG_SERVER_URL=http://rag-server:8200
+            RAG_INGEST_INTERVAL_MINUTES=1440
+            RAG_INGEST_OPTION=1
+            OPENAI_API_KEY=$OPENAI_API_KEY
+            OBSERVABILITY_DATABASE_URL=$OBSERVABILITY_DATABASE_URL
+            EOF
+
+            cat > /opt/a360-ops/docker-compose.yml <<EOF
+            services:
+              rag-server:
+                image: ${RagServerImage}
+                container_name: a360-ops-rag-server
+                restart: unless-stopped
+                env_file: rag-server.env
+                ports:
+                  - "8200:8200"
+
+              ops-backend:
+                image: ${OpsBackendImage}
+                container_name: a360-ops-backend
+                restart: unless-stopped
+                env_file: ops-backend.env
+                ports:
+                  - "8100:8100"
+                depends_on:
+                  - rag-server
+
+              ops-frontend:
+                image: ${OpsFrontendImage}
+                container_name: a360-ops-frontend
+                restart: unless-stopped
+                env_file: ops-backend.env
+                environment:
+                  OPS_BACKEND_URL: http://ops-backend:8100
+                  RAG_SERVER_URL: http://rag-server:8200
+                ports:
+                  - "8501:8501"
+                depends_on:
+                  - ops-backend
+            EOF
+
+            cd /opt/a360-ops
+            docker compose pull
+            docker compose up -d
+
+            /opt/aws/bin/cfn-signal -e 0 \
+              --stack ${AWS::StackName} \
+              --resource AppAutoScalingGroup \
+              --region ${AWS::Region}
+
+  AppAutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    CreationPolicy:
+      ResourceSignal:
+        Count: 1
+        Timeout: PT20M
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MinInstancesInService: 0
+        MaxBatchSize: 1
+        PauseTime: PT15M
+        WaitOnResourceSignals: true
+    Properties:
+      MinSize: "1"
+      DesiredCapacity: "1"
+      MaxSize: "1"
+      VPCZoneIdentifier:
+        - !Ref PublicSubnet
+      LaunchTemplate:
+        LaunchTemplateId: !Ref AppLaunchTemplate
+        Version: !GetAtt AppLaunchTemplate.LatestVersionNumber
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${Environment}-app"
+          PropagateAtLaunch: true
+
+Outputs:
+  SsmSessionHint:
+    Description: Use SSM Session Manager to access the instance
+    Value: !Sub "aws ssm start-session --target <instance-id> --region ${AWS::Region}"

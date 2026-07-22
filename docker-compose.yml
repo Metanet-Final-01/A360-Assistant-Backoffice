@@ -1,0 +1,42 @@
+services:
+  rag-server:
+    image: ${RAG_SERVER_IMAGE:-a360-ops-rag-server}
+    build:
+      context: ./rag-server
+    container_name: a360-ops-rag-server
+    restart: unless-stopped
+    env_file: rag-server/.env
+    ports:
+      - "8200:8200"
+
+  ops-backend:
+    image: ${OPS_BACKEND_IMAGE:-a360-ops-backend}
+    build:
+      context: ./ops-server
+      dockerfile: backend/Dockerfile
+    container_name: a360-ops-backend
+    restart: unless-stopped
+    env_file: ops-server/backend/.env
+    environment:
+      # 컨테이너 네트워크 안에서는 localhost가 아니라 서비스 이름으로 서로를 찾는다
+      RAG_SERVER_URL: http://rag-server:8200
+    ports:
+      - "8100:8100"
+    depends_on:
+      - rag-server
+
+  ops-frontend:
+    image: ${OPS_FRONTEND_IMAGE:-a360-ops-frontend}
+    build:
+      context: ./ops-server
+      dockerfile: frontend/Dockerfile
+    container_name: a360-ops-frontend
+    restart: unless-stopped
+    env_file: ops-server/backend/.env
+    environment:
+      OPS_BACKEND_URL: http://ops-backend:8100
+      RAG_SERVER_URL: http://rag-server:8200
+    ports:
+      - "8501:8501"
+    depends_on:
+      - ops-backend

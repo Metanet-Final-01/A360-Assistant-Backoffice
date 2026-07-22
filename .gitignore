@@ -28,3 +28,6 @@ ops-server/backend/app/eval/workflow/catalog_actions.json
 
 # 로컬 전용 성능/실험 기록 — 리포에 올리지 않는 개인 참고 문서
 docs/local/
+
+# chunk_size 실험 산출물(일회성 테스트 결과 — 스크립트로 재생성 가능)
+scripts/ragas_eval/chunk_candidates/results/

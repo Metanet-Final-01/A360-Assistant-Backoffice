@@ -1,4 +1,10 @@
+from dataclasses import dataclass
+from datetime import datetime
+
+import requests
 import streamlit as st
+
+from config import OPS_BACKEND_URL
 
 
 def apply_global_styles() -> None:
@@ -129,37 +135,6 @@ def apply_global_styles() -> None:
             position: relative;
         }
 
-        /* Streamlit이 sidebar 안의 모든 elementContainer에 자체 position:relative를 줘서,
-        .app-sidebar-footer(absolute)의 기준점이 section[data-testid="stSidebar"] 전체가
-        아니라 그 elementContainer 자신(내용이 없어 height:0)으로 잡히는 문제가 있었다 —
-        sidebar 안에서만 static으로 되돌려 기준점이 진짜 사이드바 전체로 올라가게 한다. */
-        section[data-testid="stSidebar"] div[data-testid="stElementContainer"] {
-            position: static !important;
-        }
-
-        .app-sidebar-footer {
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            padding: 14px 16px 16px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-        }
-
-        .app-sidebar-footer__title {
-            color: #8fd8e8;
-            font-weight: 800;
-            font-size: 0.72rem;
-            letter-spacing: 0.06em;
-        }
-
-        .app-sidebar-footer__desc {
-            color: #7d8f9b;
-            font-size: 0.7rem;
-            margin-top: 2px;
-            line-height: 1.4;
-        }
-
         /* st.navigation은 항상 stSidebarHeader 바로 아래에 그려지고, render_sidebar()로 추가한
         내용(stSidebarUserContent — 로고+타이틀+뱃지 한 줄)은 원래 그 아래(네비게이션보다 더
         아래)에 붙는다. 브랜드 행이 네비게이션보다 위에 오도록 flex order로 시각적 순서만
@@ -190,11 +165,6 @@ def apply_global_styles() -> None:
         section[data-testid="stSidebar"] div[data-testid="stSidebarUserContent"] {
             order: 1;
             padding: 0 !important;
-            /* Streamlit이 이 컨테이너에 자체 position을 줘서 .app-sidebar-footer의
-            absolute 기준점이 사이드바 전체가 아니라 이 작은 박스로 잡히는 문제가 있었다 —
-            static으로 되돌려 기준점이 section[data-testid="stSidebar"](position:relative)로
-            올라가게 한다. */
-            position: static !important;
         }
 
         section[data-testid="stSidebar"] div[data-testid="stSidebarNav"] {
@@ -256,12 +226,6 @@ def apply_global_styles() -> None:
         세 겹을 전부 줄인다. */
         section[data-testid="stSidebar"] div[data-testid="stSidebarContent"] {
             padding: 0 6px !important;
-        }
-
-        /* 하단 고정 설명 블록(app-sidebar-footer)이 네비게이션 마지막 항목과 겹치지 않도록
-        여백을 남겨둔다 — 위의 "padding: 0 6px" 뒤에 와야 bottom 값이 지워지지 않는다. */
-        section[data-testid="stSidebar"] div[data-testid="stSidebarContent"] {
-            padding-bottom: 84px !important;
         }
 
         section[data-testid="stSidebar"] [data-testid="stSidebarNavItems"] {
@@ -348,3 +312,51 @@ def card(key: str):
     """섹션을 흰 카드처럼 감싸는 컨테이너. 옅은 회색 페이지 배경 위에서 카드가 또렷하게 보이도록
     apply_global_styles()의 그림자 스타일과 짝을 이룬다. 사용법: with card("rag_ingest"): ..."""
     return st.container(border=True, key=f"card_{key}")
+
+
+@dataclass
+class ApiResult:
+    """`safe_api_get` 응답 — 5개 관측 화면(trace/cost_report/loadtest/log_eda/
+    runtime_settings)이 각자 따로 짜뒀던 GET+에러처리를 하나로 합친 것(2026-07-20)."""
+
+    data: object | None
+    error_message: str | None
+    status_code: int | None
+
+
+def safe_api_get(path: str, params: dict | None = None, timeout: int = 10) -> ApiResult:
+    """OPS_BACKEND_URL 기준 GET. 연결 실패/파싱 실패/비200 상태를 전부 ApiResult 하나로
+    돌려준다 — 호출부는 requests.RequestException을 직접 잡을 필요가 없다."""
+    try:
+        resp = requests.get(f"{OPS_BACKEND_URL}{path}", params=params or {}, timeout=timeout)
+    except requests.RequestException as e:
+        return ApiResult(None, f"연결하지 못했습니다: {e}", None)
+    if resp.status_code != 200:
+        return ApiResult(None, resp.text, resp.status_code)
+    try:
+        return ApiResult(resp.json(), None, 200)
+    except ValueError as e:
+        return ApiResult(None, f"응답 파싱 실패: {e}", 200)
+
+
+def render_fetch_error(result: ApiResult, context: str) -> bool:
+    """ApiResult를 상태코드별로 안내하고, 화면을 계속 그려도 되면 True를 돌려준다.
+    (runtime_settings.py의 403/502 구분 문구를 5개 화면 공통 규칙으로 승격)."""
+    if result.status_code == 403:
+        st.error(f"{context} 실패 — 권한이 없습니다.\n\n{result.error_message}")
+        return False
+    if result.status_code == 502:
+        st.error(f"{context} 실패 — 백엔드에 연결하지 못했습니다.\n\n{result.error_message}")
+        return False
+    if result.error_message:
+        st.error(f"{context} 실패: {result.error_message}")
+        return False
+    return True
+
+
+def render_last_fetched(fetched_at: datetime | None) -> None:
+    """"이 표가 방금 것인지 모른다"는 문제를 없애는 최소 표시 — 마지막 조회 시각 한 줄."""
+    if fetched_at is None:
+        st.caption("아직 조회하지 않음")
+    else:
+        st.caption(f"마지막 조회: {fetched_at.strftime('%H:%M:%S')}")
