@@ -117,6 +117,18 @@ def test_since_switches_to_ascending_cursor_order(monkeypatch):
     assert "created_at desc" in sql2
 
 
+def test_ordering_has_a_tiebreaker(monkeypatch):
+    """created_at만으로 정렬하면 같은 timestamp 행들의 순서가 비결정적이고, limit 경계에서
+    반환 집합 자체가 새로고침마다 흔들린다. 두 테이블 모두 id를 tie-breaker로 둔다."""
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.fetch_audit_logs(limit=10)
+    assert "created_at desc, id desc" in _sql_of(cur, "audit_logs")
+
+    cur2 = _install_cursor(monkeypatch, [])
+    obs_db.fetch_request_metrics(limit=10)
+    assert "created_at desc, id desc" in _sql_of(cur2, "request_metrics")
+
+
 def test_limit_is_clamped_to_max(monkeypatch):
     """상한을 넘겨도 전체 스캔이 되지 않게 잘린다(백엔드 le=500과 동일)."""
     cur = _install_cursor(monkeypatch, [])

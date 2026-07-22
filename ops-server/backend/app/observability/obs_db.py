@@ -226,7 +226,10 @@ def fetch_audit_logs(
         where.append("user_id = %s")
         params.append(user_id)
 
-    order = "created_at asc, id asc" if since else "created_at desc"
+    # id를 tie-breaker로 둔다 — created_at만으로 정렬하면 같은 timestamp 행들의 순서가
+    # 비결정적이고, limit 경계에서 **반환 집합 자체가 새로고침마다 흔들린다**.
+    # request_metrics는 이미 그렇게 하고 있었는데 여기만 빠져 있었다.
+    order = "created_at asc, id asc" if since else "created_at desc, id desc"
     sql = (
         "select request_id, user_id, method, path, status_code, latency_ms, created_at "
         "from audit_logs "
