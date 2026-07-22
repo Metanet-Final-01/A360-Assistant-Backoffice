@@ -28,14 +28,16 @@ _SESSION = requests.Session()
 # (turn-events가 1000인데 여기서 2000을 보내 실제로 겪은 버그).
 _SOURCES = {
     "감사 로그 (audit_logs)": ("audit-logs", "limit", 2000, False, 10000),
-    "RAG 요청 로그 (rag_logs)": ("rag-logs", "limit", 2000, True, 10000),
+    # rag-logs는 rag_events(event='http_request') 직접 조회로 바뀌어 정형 컬럼이다 —
+    # 더 이상 raw 평탄화가 필요 없고, 서버 상한도 rag-events와 같은 2000이다.
+    "RAG 요청 로그 (rag_logs)": ("rag-logs", "limit", 2000, False, 2000),
     "요청 성능 롤업 (metrics_daily)": ("metrics-daily", "limit", 2000, False, 2000),
     "LLM 사용량 롤업 (usage_daily)": ("usage-daily", "limit", 2000, False, 2000),
     "에이전트 턴 (turn_events)": ("turn-events", "limit", 1000, False, 1000),
     "RAG 파이프라인 단계 (rag_events)": ("rag-events", "limit", 2000, False, 2000),
 }
-# 감사 로그/RAG 요청 로그는 서버 GET이 limit에 상한이 없다(plain int) — UI 쪽에서만
-# 과도한 조회를 막기 위해 10000을 임의 상한으로 둔다.
+# 감사 로그는 서버 GET이 limit에 상한이 없다(plain int) — UI 쪽에서만 과도한 조회를
+# 막기 위해 10000을 임의 상한으로 둔다.
 
 # EDA 대상에서 뺄 컬럼 — 값 자체가 길거나(원문 텍스트) 카디널리티가 높아 필터/차트에 안 맞음.
 _EXCLUDE_COLS = {"detail", "message", "raw"}

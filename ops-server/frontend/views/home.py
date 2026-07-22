@@ -54,16 +54,17 @@ def render() -> None:
 def _render_recent_logs_chart(rag_logs: list[dict]) -> None:
     """RAG 파이프라인 요청의 최근 응답시간 추이 — 단일 시계열이라 범례 없이 직관적으로 보여준다."""
     section_header("RAG 요청 응답시간 추이")
+    # rag_events(event='http_request')를 직접 읽으므로 raw dict가 아니라 정형 컬럼이다.
     rows = [
         {
-            "started_at": log["raw"].get("started_at"),
-            "duration_ms": log["raw"].get("duration_ms"),
+            "started_at": log.get("created_at"),
+            "duration_ms": log.get("duration_ms"),
         }
         for log in rag_logs
-        if log.get("raw", {}).get("duration_ms") is not None and log["raw"].get("started_at")
+        if log.get("duration_ms") is not None and log.get("created_at")
     ]
     if not rows:
-        st.info("아직 수집된 RAG 요청 로그가 없습니다 — \"모니터링 로그\" 메뉴에서 새로고침해 보세요.")
+        st.info("표시할 RAG 요청 로그가 없습니다 — 관측 DB에 http_request 이벤트가 있는지 확인하세요.")
         return
 
     df = pd.DataFrame(rows).sort_values("started_at").tail(50)

@@ -36,6 +36,7 @@ from __future__ import annotations
 
 import logging
 import os
+import uuid
 from contextlib import contextmanager
 from datetime import date, datetime, timedelta, timezone
 from typing import Any
@@ -144,6 +145,20 @@ def _iso(value: Any) -> str | None:
     return value.isoformat() if value is not None and hasattr(value, "isoformat") else None
 
 
+def _as_uuid(value: str, field: str) -> str:
+    """uuid 컬럼에 넣을 값을 검증한다.
+
+    `user_id`·`session_id`는 DB에서 uuid 타입이라, 형식이 틀린 문자열을 그대로 넘기면
+    psycopg가 InvalidTextRepresentation을 낸다. 그걸 잡지 않으면 **입력 형식 오류가
+    "관측 DB 조회 실패"(503)로 둔갑해** 운영이 DB 장애를 의심하게 된다 — 실제로 화면에서
+    user_id 칸에 아무 값이나 넣으면 그렇게 됐다. 여기서 걸러 400으로 내보낸다.
+    """
+    try:
+        return str(uuid.UUID(value))
+    except (ValueError, AttributeError, TypeError) as e:
+        raise ValueError(f"{field} 형식이 올바르지 않습니다(UUID여야 합니다).") from e
+
+
 def _utcnow() -> datetime:
     """UTC 기준 현재 — llm_usage.created_at이 timestamptz라 tz-aware여야 비교가 맞다."""
     return datetime.now(timezone.utc)
@@ -191,8 +206,8 @@ def fetch_audit_logs(
         where.append("status_code = %s")
         params.append(int(status_code))
     if user_id:
-        where.append("user_id = %s")
-        params.append(user_id)
+        where.append("user_id = %s::uuid")
+        params.append(_as_uuid(user_id, "user_id"))
 
     order = "created_at asc, id asc" if since else "created_at desc"
     sql = (
@@ -334,12 +349,7 @@ def fetch_turn_events(session_id: str | None = None, limit: int = 200) -> dict:
         "session_id, request_id, seq, kind, stage, message, detail, elapsed_ms, created_at"
     )
     if session_id:
-        import uuid as _uuid
-
-        try:
-            sid = str(_uuid.UUID(session_id))
-        except ValueError as e:
-            raise ValueError("session_id 형식이 올바르지 않습니다.") from e
+        sid = _as_uuid(session_id, "session_id")
         sql = (
             f"select {cols} from ("
             f"  select id, {cols} from turn_events where session_id = %s::uuid"
@@ -413,6 +423,169 @@ def fetch_llm_usage_stats(days: int = 30, group_by: str = "component") -> dict:
         "cost_usd": round(sum(b["cost_usd"] for b in breakdown), 6),
     }
     return {"period_days": days, "group_by": group_by, "total": total, "breakdown": breakdown}
+
+
+def _request_ids_for_user(cur, user_id: str, limit: int) -> list[str]:
+    """user_id로 관련 request_id를 찾는다.
+
+    request_id/session_id는 사람이 외우기 어려운 opaque id라, 사람이 아는 값(user_id)으로
+    먼저 요청들을 찾아 그 집합을 추적 대상으로 삼는다. 감사·성능 **두 곳을 모두** 본다 —
+    한쪽에만 남는 요청이 있어서 하나만 보면 추적이 끊긴다.
+    """
+    cur.execute(
+        "select request_id from ("
+        "  select request_id, created_at from audit_logs"
+        "   where user_id = %s::uuid and request_id is not null"
+        "  union all"
+        "  select request_id, created_at from request_metrics"
+        "   where user_id = %s::uuid and request_id is not null"
+        ") u group by request_id order by max(created_at) desc limit %s",
+        [user_id, user_id, limit],
+    )
+    return [r[0] for r in cur.fetchall()]
+
+
+def trace_by(
+    request_id: str | None = None,
+    session_id: str | None = None,
+    user_id: str | None = None,
+    limit: int = 500,
+) -> dict:
+    """한 사건에 연결된 관측 레코드를 종류별로 모은다 (대시보드 #5).
+
+    반환 **형태**는 사본 기반이던 `log_store.trace_by`와 같게 둔다. 다만 `rag_logs`의
+    **내용물은 바뀐다**: 예전엔 RAG 서버 파일 로그를 그대로 담은 `{"raw": {...}}`였는데,
+    같은 내용이 이미 관측 DB의 `rag_events`에 `event='http_request'`로 중앙화돼 있어
+    그쪽을 쓴다(정형 컬럼). 화면도 함께 고쳤다.
+
+    - request_id: HTTP 요청 1건 축 — 감사·성능·턴·RAG 전부 연결된다.
+    - session_id: 대화 축 — turn_events만 직접 연결된다(나머지는 요청 축이라 세션 키가 없다).
+    - user_id: 위 `_request_ids_for_user` 참고.
+
+    사본 조회는 JSONL 전체를 읽어 파이썬에서 걸렀지만 여기선 WHERE로 넘긴다. 대신
+    user_id 축은 request_id 집합이 커질 수 있어 limit으로 자른다 — 사본 시절엔 상한이
+    없어 요청이 많은 사용자를 조회하면 화면이 통째로 느려질 수 있었다.
+    """
+    n = _clamp(limit, _MAX_LIMIT_METRICS)
+    sid: str | None = _as_uuid(session_id, "session_id") if session_id else None
+    uid: str | None = _as_uuid(user_id, "user_id") if user_id else None
+
+    audit: list[tuple] = []
+    metrics: list[tuple] = []
+    rag_all: list[tuple] = []
+    turns: list[tuple] = []
+
+    with _cursor() as cur:
+        request_ids: list[str] = [request_id] if request_id else []
+        if uid:
+            request_ids += [
+                r for r in _request_ids_for_user(cur, uid, n) if r not in request_ids
+            ]
+
+        if request_ids:
+            # = any(%s)는 목록을 배열 파라미터 하나로 넘긴다 — IN 절을 %s 개수만큼 만들면
+            # request_id가 늘어날 때마다 SQL 문자열이 달라져 계획 재사용이 안 된다.
+            cur.execute(
+                "select request_id, user_id, method, path, status_code, latency_ms, created_at "
+                "from audit_logs where request_id = any(%s) order by created_at limit %s",
+                [request_ids, n],
+            )
+            audit = cur.fetchall()
+            cur.execute(
+                "select id, request_id, user_id, method, path, status_code, latency_ms, created_at "
+                "from request_metrics where request_id = any(%s) order by created_at limit %s",
+                [request_ids, n],
+            )
+            metrics = cur.fetchall()
+            cur.execute(
+                "select id, request_id, event, function, status, duration_ms, detail, created_at "
+                "from rag_events where request_id = any(%s) order by id limit %s",
+                [request_ids, n],
+            )
+            rag_all = cur.fetchall()
+
+        # 턴은 요청 축(request_id)과 대화 축(session_id) 둘 다로 붙는다.
+        turn_where: list[str] = []
+        turn_params: list[Any] = []
+        if request_ids:
+            turn_where.append("request_id = any(%s)")
+            turn_params.append(request_ids)
+        if sid:
+            turn_where.append("session_id = %s::uuid")
+            turn_params.append(sid)
+        if turn_where:
+            cur.execute(
+                "select session_id, request_id, seq, kind, stage, message, detail, elapsed_ms, "
+                "created_at from turn_events "
+                f"where {' or '.join(turn_where)} "
+                # created_at 우선 정렬 — request_id 문자열 순으로 묶으면 한 세션의 여러
+                # 요청이 실제 발생 순서와 어긋난다(사본 구현에서 이미 고친 지점).
+                "order by created_at nulls last, seq limit %s",
+                [*turn_params, n],
+            )
+            turns = cur.fetchall()
+
+    def _rag_row(r: tuple) -> dict:
+        return {
+            "id": r[0],
+            "request_id": r[1],
+            "event": r[2],
+            "function": r[3],
+            "status": r[4],
+            "duration_ms": r[5],
+            "detail": r[6],
+            "created_at": _iso(r[7]),
+        }
+
+    return {
+        "request_id": request_id,
+        "session_id": session_id,
+        "user_id": user_id,
+        "matched_request_ids": sorted(request_ids),
+        "audit_logs": [
+            {
+                "request_id": r[0],
+                "user_id": str(r[1]) if r[1] else None,
+                "method": r[2],
+                "path": r[3],
+                "status_code": r[4],
+                "latency_ms": r[5],
+                "created_at": _iso(r[6]),
+            }
+            for r in audit
+        ],
+        "request_metrics": [
+            {
+                "id": r[0],
+                "request_id": r[1],
+                "user_id": str(r[2]) if r[2] else None,
+                "method": r[3],
+                "path": r[4],
+                "status_code": r[5],
+                "latency_ms": r[6],
+                "created_at": _iso(r[7]),
+            }
+            for r in metrics
+        ],
+        "turn_events": [
+            {
+                "session_id": str(r[0]) if r[0] else None,
+                "request_id": r[1],
+                "seq": r[2],
+                "kind": r[3],
+                "stage": r[4],
+                "message": r[5],
+                "detail": r[6],
+                "elapsed_ms": r[7],
+                "created_at": _iso(r[8]),
+            }
+            for r in turns
+        ],
+        # HTTP 요청 로그와 파이프라인 단계 로그는 성격이 달라 화면에서도 나눠 보여준다.
+        # 한 번 조회한 결과를 나눌 뿐, 쿼리를 두 번 돌리지 않는다.
+        "rag_logs": [_rag_row(r) for r in rag_all if r[2] == "http_request"],
+        "rag_events": [_rag_row(r) for r in rag_all if r[2] != "http_request"],
+    }
 
 
 def fetch_metrics_daily(

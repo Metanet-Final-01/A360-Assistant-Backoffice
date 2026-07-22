@@ -16,55 +16,45 @@ from config import OPS_BACKEND_URL
 def render() -> None:
     page_header("비용 리포트")
     st.caption(
-        "사용자별·세션별 LLM 비용을 집계합니다. 아래 \"수집\"을 누르면 A360-Assistant-Backend에서 "
-        "최근 기간 사용량을 축별로 가져옵니다. (세션별은 백엔드 group_by=session 반영 후 활성화됩니다.)"
+        "사용자별·세션별 LLM 비용을 집계합니다. 관측 DB에서 직접 집계하므로 별도 수집 단계가 "
+        "없습니다 — 기간을 고르고 \"조회\"를 누르면 그 시점의 집계를 바로 계산합니다."
     )
 
     with card("cost_controls"):
         col1, col2 = st.columns([1, 3])
         days = col2.slider("집계 기간(일)", 1, 90, 30, key="cost_days")
-        if col1.button("수집", key="cost_collect", type="primary"):
-            # 축별 수집 성공 여부를 상태코드로 기록 — 실패를 '미집계'로 삼키지 않는다(CodeRabbit #13).
-            status: dict = {}
-            for axis in ("user", "session"):
-                try:
-                    resp = requests.post(f"{OPS_BACKEND_URL}/observability/llm-usage/collect",
-                                         params={"days": days, "group_by": axis}, timeout=15)
-                    status[axis] = resp.status_code
-                except requests.RequestException:
-                    status[axis] = None  # 연결 실패
-            st.session_state["cost_axis_status"] = status
+        if col1.button("조회", key="cost_collect", type="primary"):
+            # 수집(POST .../collect) → 사본 저장 → 최신 1건 조회 3단이었는데, 화면이 쓰는 건
+            # 결국 "지금 집계" 한 건뿐이라 직접 조회 한 번으로 줄였다(RPA-256). 사본은
+            # 컨테이너 재시작마다 사라져 배포에서는 애초에 남지도 않았다.
+            st.session_state["cost_days_queried"] = days
 
-    status = st.session_state.get("cost_axis_status")
-    if not status:
-        st.info("\"수집\"을 눌러 사용량을 가져오세요.")
+    days_queried = st.session_state.get("cost_days_queried")
+    if not days_queried:
+        st.info("기간을 고르고 \"조회\"를 누르세요.")
         return
 
     with card("cost_by_user"):
         section_header("사용자별 비용")
-        _render_axis("user", "user_id", status.get("user"))
+        _render_axis("user", "user_id", days_queried)
 
     with card("cost_by_session"):
         section_header("세션별 비용", "백엔드 group_by=session(RPA-124) 필요")
-        _render_axis("session", "session_id", status.get("session"))
+        _render_axis("session", "session_id", days_queried)
 
 
-def _render_axis(axis: str, key_label: str, collect_status: int | None) -> None:
-    # 수집 자체가 실패했으면 데이터를 그리지 않고 상태코드 기반 오류를 표시(원문 미노출).
-    if collect_status is None:
-        st.error(f"{axis} 축 수집 요청이 연결 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
+def _render_axis(axis: str, key_label: str, days: int) -> None:
+    snap = _safe_get(
+        OPS_BACKEND_URL, "/observability/llm-usage/stats", {"group_by": axis, "days": days}
+    )
+    # 실패를 '사용량 없음'으로 삼키지 않는다 — 빈 화면과 조회 실패는 다른 상태다
+    # (CodeRabbit #13에서 지적됐던 것과 같은 이유).
+    if snap is None:
+        st.error(
+            f"{axis} 축 조회에 실패했습니다 — 모니터링 백엔드 상태와 관측 DB 직접 조회 구성"
+            "(A360_OBSERVABILITY_DATABASE_URL)을 확인하세요."
+        )
         return
-    if collect_status != 200:
-        st.error(f"{axis} 축 수집 실패 (HTTP {collect_status}) — 백엔드가 group_by={axis}를 지원하는지·관리자 자격이 유효한지 확인하세요.")
-        return
-    snaps = _safe_get(OPS_BACKEND_URL, "/observability/llm-usage/snapshots", {"group_by": axis, "limit": 1})
-    if snaps is None:
-        st.error(f"{axis} 축 조회에 실패했습니다 — 모니터링 백엔드 상태를 확인하세요.")
-        return
-    if not snaps:
-        st.info("해당 기간 사용량이 없습니다.")
-        return
-    snap = snaps[0]
     breakdown = snap.get("breakdown", [])
     if not breakdown:
         st.info("해당 기간 사용량이 없습니다.")

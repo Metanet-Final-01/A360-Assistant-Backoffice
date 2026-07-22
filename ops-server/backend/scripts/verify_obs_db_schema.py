@@ -46,6 +46,11 @@ CHECKS = [
     ),
     ("metrics_daily", lambda: obs_db.fetch_metrics_daily(days=7)),
     ("usage_daily", lambda: obs_db.fetch_usage_daily(days=30)),
+    # 사건 추적은 축마다 SQL 모양이 달라(요청 축은 = any(...), 대화 축은 uuid 캐스팅)
+    # 셋을 따로 건다 — 한 축만 확인하면 나머지 축의 문법 오류를 못 잡는다.
+    ("trace(request_id)", lambda: obs_db.trace_by(request_id="verify-probe")),
+    ("trace(user_id)", lambda: obs_db.trace_by(user_id=_DUMMY_SESSION)),
+    ("trace(session_id)", lambda: obs_db.trace_by(session_id=_DUMMY_SESSION)),
 ]
 
 
@@ -53,6 +58,8 @@ def _row_count(out: dict) -> int:
     for key in ("logs", "rows", "events", "breakdown"):
         if key in out:
             return len(out[key])
+    if "matched_request_ids" in out:  # trace — 종류별 합계
+        return sum(len(v) for v in out.values() if isinstance(v, list))
     return int(out.get("audit_logs_rows", 0))
 
 

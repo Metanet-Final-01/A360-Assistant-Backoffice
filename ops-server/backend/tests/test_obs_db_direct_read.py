@@ -125,13 +125,36 @@ def test_limit_is_clamped_to_max(monkeypatch):
     assert params[-1] == 500
 
 
+_UID = "11111111-2222-3333-4444-555555555555"
+
+
 def test_filters_are_parameterized_not_interpolated(monkeypatch):
     """필터는 바인드 파라미터로 — 문자열 보간이면 SQL 인젝션 면이 생긴다."""
     cur = _install_cursor(monkeypatch, [])
-    obs_db.fetch_audit_logs(method="post", status_code=500, user_id="u-9", limit=5)
+    obs_db.fetch_audit_logs(method="post", status_code=500, user_id=_UID, limit=5)
     sql, params = [x for x in cur.executed if "from audit_logs" in x[0]][0]
-    assert "%s" in sql and "u-9" not in sql          # 값이 SQL에 박히지 않았다
-    assert "POST" in params and 500 in params and "u-9" in params  # 값은 파라미터로
+    assert "%s" in sql and _UID not in sql            # 값이 SQL에 박히지 않았다
+    assert "POST" in params and 500 in params and _UID in params  # 값은 파라미터로
+
+
+def test_malformed_user_id_is_input_error_not_db_failure(monkeypatch):
+    """user_id는 DB에서 uuid 타입이다. 형식이 틀린 값을 그대로 넘기면 psycopg가
+    InvalidTextRepresentation을 내고, 그게 '관측 DB 조회 실패'(503)로 둔갑해 운영이
+    DB 장애를 의심하게 된다 — 실제로 화면 user_id 칸에 아무 값이나 넣으면 그랬다.
+    입력 오류는 입력 오류로 보고해야 한다(400)."""
+    _install_cursor(monkeypatch, [])
+    with pytest.raises(ValueError):
+        obs_db.fetch_audit_logs(user_id="abc")
+    with pytest.raises(ValueError):
+        obs_db.trace_by(user_id="abc")
+
+
+def test_uuid_columns_are_cast_explicitly(monkeypatch):
+    """uuid 컬럼 비교에 캐스팅이 빠지면 텍스트로 넘어가 타입 불일치가 난다."""
+    cur = _install_cursor(monkeypatch, [])
+    obs_db.fetch_audit_logs(user_id=_UID)
+    sql = [s for s, _ in cur.executed if "from audit_logs" in s][0]
+    assert "user_id = %s::uuid" in sql
 
 
 # --- 2-b. 나머지 5종도 같은 계약을 지킨다 ---

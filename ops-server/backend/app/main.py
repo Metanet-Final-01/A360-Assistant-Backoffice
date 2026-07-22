@@ -724,8 +724,25 @@ def collect_llm_usage(days: int = 30, group_by: str = "component") -> dict:
     return _run_collect(collector.collect_llm_usage, days=days, group_by=group_by)
 
 
+@app.get("/observability/llm-usage/stats")
+def get_llm_usage_stats(
+    days: int = Query(30, ge=1, le=365), group_by: str = Query("component"),
+) -> dict:
+    """LLM 사용량 집계를 관측 DB에서 직접 계산한다 — 비용 리포트 화면의 소스.
+
+    예전엔 수집(POST .../collect)이 집계를 스냅샷으로 사본에 쌓고 화면이 그중 **최신 1건**만
+    읽었다. 이력이 목적이 아니라 "지금 집계"를 보려던 것이라, 사본은 중간 저장소일 뿐이었다.
+    직접 조회 한 번으로 대체한다(사본은 배포에서 재시작마다 사라진다).
+    """
+    return _direct_read(obs_db.fetch_llm_usage_stats, days=days, group_by=group_by)
+
+
 @app.get("/observability/llm-usage/snapshots")
 def get_llm_usage_snapshots(group_by: str | None = None, limit: int = 50) -> list:
+    """수집 사본에 쌓인 집계 스냅샷 이력 — 화면은 더 이상 쓰지 않는다(위 stats 사용).
+
+    사본을 남겨둔 로컬 분석용 경로다. 배포에서는 컨테이너 재시작 시 사라진다.
+    """
     return obs_log_store.load_llm_usage_snapshots(group_by=group_by, limit=limit)
 
 
@@ -738,7 +755,25 @@ def collect_rag_logs(limit: int = 100) -> dict:
 
 @app.get("/observability/rag-logs")
 def get_rag_logs(event: str | None = None, path_contains: str | None = None, limit: int = 200) -> list:
-    return obs_log_store.load_rag_logs(event=event, path_contains=path_contains, limit=limit)
+    """RAG 요청 로그 — 관측 DB의 `rag_events` 중 `event='http_request'`를 읽는다.
+
+    예전엔 RAG 서버의 파일 로그를 수집해 `{"raw": {...}}`로 담았는데, **같은 내용이 이미
+    관측 DB에 중앙화돼 있었다**(RPA-128). 사본을 따로 쌓을 이유가 없어 그쪽을 읽는다.
+    반환 필드는 rag-events와 같은 정형 컬럼이다 — 소비 화면(홈·로그 EDA)도 함께 고쳤다.
+
+    path_contains는 더 이상 지원하지 않는다: 경로는 파일 로그의 raw 필드였고 `rag_events`에는
+    해당 컬럼이 없다. **조용히 무시하지 않고 400으로 거부한다** — 필터를 줬는데 무시하면
+    전량이 돌아오고, 화면은 멀쩡해 보이는데 결과가 틀린다(에러조차 나지 않는다).
+    """
+    if path_contains:
+        raise HTTPException(
+            400,
+            "path_contains는 지원하지 않습니다 — rag_events에는 경로 컬럼이 없습니다. "
+            "필터 없이 조회한 뒤 화면에서 거르거나 request_id로 조회하세요.",
+        )
+    return _direct_read(
+        obs_db.fetch_rag_events, event=event or "http_request", limit=limit
+    )["events"]
 
 
 @app.delete("/observability/rag-logs")
@@ -859,10 +894,15 @@ def observability_trace(request_id: str | None = None, session_id: str | None = 
     """한 사건(request_id/session_id/user_id)에 연결된 관측 레코드를 모아 반환한다 (대시보드 #5).
     감사·성능·턴·RAG를 한 화면에서 추적하기 위한 상관관계 조회 — 저장된 수집분에서 필터.
     user_id는 request_id/session_id처럼 opaque id를 몰라도 조회할 수 있게 하는 축 —
-    audit_logs/request_metrics에서 해당 user_id의 request_id들을 먼저 찾아 확장한다."""
+    audit_logs/request_metrics에서 해당 user_id의 request_id들을 먼저 찾아 확장한다.
+
+    관측 DB를 직접 읽는다. 사본 기반일 때는 **장애 원인을 좇는 이 화면이 정작 배포에서
+    비어 있었다** — 사본이 컨테이너 재시작마다 사라지기 때문이다."""
     if not (request_id or session_id or user_id):
         raise HTTPException(400, "request_id, session_id, user_id 중 하나는 필요합니다")
-    return obs_log_store.trace_by(request_id=request_id, session_id=session_id, user_id=user_id)
+    return _direct_read(
+        obs_db.trace_by, request_id=request_id, session_id=session_id, user_id=user_id
+    )
 
 
 @app.get("/observability/status")
