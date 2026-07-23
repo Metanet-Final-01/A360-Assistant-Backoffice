@@ -121,6 +121,12 @@ async def ops_rag_ingest_capabilities() -> dict:
     return response.json()
 
 
+@app.get("/ops/rag/ingest/health")
+async def ops_rag_ingest_health() -> dict:
+    response = await _rag_request("GET", "/health")
+    return response.json()
+
+
 @app.post("/ops/rag/ingest/jobs")
 async def create_ops_rag_ingest_job(req: RagIngestJobRequest) -> dict:
     response = await _rag_request("POST", "/rag/ingest/jobs", json=req.model_dump())
