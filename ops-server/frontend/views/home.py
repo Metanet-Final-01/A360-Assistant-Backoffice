@@ -22,8 +22,9 @@ def render() -> None:
 
     # 아래 5개 요청은 서로 의존성이 없다 — 순차로 부르면(예전 방식) 각자 최대 5초 타임아웃이
     # 그대로 누적돼 백엔드 하나만 느려져도 최초 화면 렌더가 수 초씩 밀린다. 병렬로 쏘고
-    # 가장 느린 하나의 시간만큼만 기다리게 한다.
-    with ThreadPoolExecutor(max_workers=4) as pool:
+    # 가장 느린 하나의 시간만큼만 기다리게 한다. 워커 수가 요청 수(5개)보다 적으면 하나가
+    # 큐잉되어 최악의 경우 대기 시간이 두 배(웨이브 2회)가 되므로 요청 수만큼 워커를 둔다.
+    with ThreadPoolExecutor(max_workers=5) as pool:
         f_runs = pool.submit(_safe_get, OPS_BACKEND_URL, "/eval/runs")
         f_datasets = pool.submit(_safe_get, OPS_BACKEND_URL, "/eval/datasets")
         f_rag_status = pool.submit(_safe_get, RAG_SERVER_URL, "/rag/ingest/status")
