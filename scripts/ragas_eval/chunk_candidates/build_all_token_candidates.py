@@ -7,10 +7,13 @@ import sys
 import time
 from pathlib import Path
 
+sys.stdout.reconfigure(encoding="utf-8", line_buffering=True)
+sys.stderr.reconfigure(encoding="utf-8", line_buffering=True)
+
 PY = sys.executable
 SCRIPT = Path(__file__).parent / "build_candidate_token.py"
 
-TOKEN_SIZES = [128, 150, 256, 300, 512, 600, 900, 1024, 1200, 1500, 2048]
+TOKEN_SIZES = [150, 256, 300, 512, 600, 900, 1024, 1200, 1500, 2048]  # 128은 이미 완료(46537건)
 
 for ts in TOKEN_SIZES:
     print(f"[{time.strftime('%H:%M:%S')}] === token_size={ts} ov=0 시작 ===", flush=True)
