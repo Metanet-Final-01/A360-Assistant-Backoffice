@@ -1,6 +1,11 @@
 [server]
 runOnSave = true
 
+[browser]
+# 익명 사용량 텔레메트리를 Streamlit 쪽으로 매 세션 전송하는 호출 — 사내 운영 도구라
+# 필요 없고, 페이지 로드 시 걸리는 외부 네트워크 요청 하나를 줄인다.
+gatherUsageStats = false
+
 [theme]
 base = "light"
 primaryColor = "#1f6f8b"
