@@ -264,7 +264,10 @@ def _confirm_delete_dialog(ids: list[str], delete_prefix: str, list_cache_key: s
         for target in ids:
             try:
                 resp = _SESSION.delete(f"{OPS_BACKEND_URL}{delete_prefix}/{quote(str(target), safe='')}", timeout=10)
-                if resp.status_code != 200:
+                # 404(대상 없음=이미 삭제됨)는 실패로 치지 않는다 — 부분 실패 후 다시 "확인"을
+                # 누르면 이 목록(ids)이 그대로 재사용돼 이미 지워진 대상까지 다시 삭제 요청을
+                # 보내는데, 그걸 에러로 잡으면 재시도할 때마다 실패 목록이 늘어나기만 한다.
+                if resp.status_code not in (200, 404):
                     errors.append(f"{target}: {resp.json().get('detail', resp.text)}")
             except (requests.RequestException, ValueError) as exc:
                 errors.append(f"{target}: {exc}")
@@ -401,8 +404,14 @@ def _render_workflow_input_tab() -> None:
 @st.dialog("Workflow 입력 데이터셋 등록/수정")
 def _workflow_input_create_dialog(existing_bots: list[str]) -> None:
     st.caption("이미 있는 source_bot을 입력하면 원문을 덮어씁니다.")
+    options = ["(새로 입력)"] + existing_bots
+    select_key = "workflow_input_source_bot_select"
+    # 고정 key라 세션에 이전 선택값이 남는데, 그 사이 해당 source_bot이 삭제되면
+    # options에 없는 값이 남아 selectbox 생성 시 예외가 난다 — 유효하지 않으면 미리 지운다.
+    if st.session_state.get(select_key) not in options:
+        st.session_state.pop(select_key, None)
     with st.form("workflow_input_manual_add_form"):
-        source_bot = st.selectbox("source_bot", ["(새로 입력)"] + existing_bots, key="workflow_input_source_bot_select")
+        source_bot = st.selectbox("source_bot", options, key=select_key)
         if source_bot == "(새로 입력)":
             source_bot = st.text_input("새 source_bot 이름")
         text = st.text_area("업무정의서 원문", height=220)
