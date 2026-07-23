@@ -65,3 +65,4 @@ def render_sidebar(
             "font-weight: 800 !important;"
             "}</style>"
         )
+        st.html('<div style="height: 72px;"></div>')

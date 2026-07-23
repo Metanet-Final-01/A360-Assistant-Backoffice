@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt \
 COPY rag-server/ ./
 
 # 적재 로그(app/rag/logs)·산출물(data)이 쓰는 경로 — read-only fs여도 여기만 쓰기 가능하게 볼륨.
-RUN mkdir -p /app/data /app/app/rag/logs && chown -R 1000:1000 /app
+RUN mkdir -p /app/data/rag_ingest_jobs/logs /app/app/rag/logs && chown -R 1000:1000 /app
 VOLUME ["/app/data", "/app/app/rag/logs"]
 
 USER 1000:1000
