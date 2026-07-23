@@ -132,3 +132,29 @@ CREATE TABLE IF NOT EXISTS usage_daily (
 );
 
 CREATE INDEX IF NOT EXISTS idx_usage_daily_day ON usage_daily (day DESC);
+
+\connect a360_rag
+
+CREATE EXTENSION IF NOT EXISTS vector;
+
+CREATE TABLE IF NOT EXISTS rag_documents (
+    id text PRIMARY KEY,
+    source_type text NOT NULL,
+    package_name text,
+    action_name text,
+    locale text,
+    title text NOT NULL,
+    url text,
+    content text NOT NULL,
+    metadata jsonb NOT NULL DEFAULT '{}',
+    embedding vector(1024),
+    updated_at timestamptz NOT NULL DEFAULT now()
+);
+
+ALTER TABLE rag_documents ADD COLUMN IF NOT EXISTS parent_id text;
+ALTER TABLE rag_documents ADD COLUMN IF NOT EXISTS chunk_index integer NOT NULL DEFAULT 0;
+ALTER TABLE rag_documents ADD COLUMN IF NOT EXISTS content_hash text;
+
+CREATE INDEX IF NOT EXISTS idx_rag_documents_package ON rag_documents (package_name);
+CREATE INDEX IF NOT EXISTS idx_rag_documents_source ON rag_documents (source_type);
+CREATE INDEX IF NOT EXISTS idx_rag_documents_parent ON rag_documents (parent_id);
