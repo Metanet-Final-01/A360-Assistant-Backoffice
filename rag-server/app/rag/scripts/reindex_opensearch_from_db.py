@@ -98,7 +98,7 @@ def main() -> int:
         before_count = index_count(client)
         summary = {
             "mode": "apply" if args.apply else "dry-run",
-            "connection_source": "RAG_DATABASE_URL" if config.database_dsn() else "DATABASE_* fallback",
+            "connection_source": "RAG_DATABASE_URL",  # 폴백 제거(RPA-262) — 이제 유일 소스
             "database": db_summary(conn),
             "opensearch_index": config.OPENSEARCH_INDEX,
             "opensearch_count_before": before_count,

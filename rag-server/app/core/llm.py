@@ -166,20 +166,22 @@ def chat(
     return response.choices[0].message.content or ""
 
 
-def _observability_dsn() -> str:
-    """사용량 기록 대상 DSN — OBSERVABILITY_DATABASE_URL 우선, 미설정 시 앱 DB로 폴백.
+def _observability_dsn() -> str | None:
+    """사용량 기록 대상 DSN — OBSERVABILITY_DATABASE_URL만 사용한다.
 
-    백엔드 RPA-90(관측 로그를 팀 공유 DB로 분리)과 동일 계약. SQLAlchemy 스타일 URL
-    (postgresql+psycopg://)이 오면 libpq가 받는 형태(postgresql://)로 바꿔 psycopg에 넘긴다.
+    미설정이면 None을 돌려주고 호출측이 기록을 건너뛴다. 예전엔 앱/RAG DB(database_dsn)로
+    폴백했으나, 그러면 관측 사용량이 RAG 코퍼스 DB로 조용히 섞인다 — 폴백을 제거했다
+    (백엔드 RPA-260과 동일 계약). SQLAlchemy 스타일 URL(postgresql+psycopg://)이 오면
+    libpq가 받는 형태(postgresql://)로 바꿔 psycopg에 넘긴다.
     """
     url = config.OBSERVABILITY_DATABASE_URL
-    if url:
-        return (
-            url.replace("postgresql+psycopg://", "postgresql://")
-            .replace("postgresql+psycopg2://", "postgresql://")
-            .replace("postgresql+asyncpg://", "postgresql://")
-        )
-    return config.database_dsn()
+    if not url:
+        return None
+    return (
+        url.replace("postgresql+psycopg://", "postgresql://")
+        .replace("postgresql+psycopg2://", "postgresql://")
+        .replace("postgresql+asyncpg://", "postgresql://")
+    )
 
 
 def record_usage(
@@ -207,10 +209,13 @@ def record_usage(
     ctx = ctx or current_usage_context()
     resolved_session = session_id if session_id is not None else ctx.session_id
     resolved_request_id = request_id if request_id is not None else get_request_id()
+    dsn = _observability_dsn()
+    if dsn is None:
+        return  # OBSERVABILITY_DATABASE_URL 미설정 → 관측 기록 skip (앱/RAG DB로 폴백하지 않음)
     try:
         import psycopg
 
-        with psycopg.connect(_observability_dsn()) as conn:
+        with psycopg.connect(dsn) as conn:
             with conn.cursor() as cur:
                 cur.execute(
                     """
@@ -251,10 +256,13 @@ def record_ragas_validation_attempt(
     이 함수를 직접 호출하지 않고 HTTP로 요청해서(POST /observability/ragas-validation-
     attempts) 여기로 위임한다. 기록 실패가 골드셋 저장 자체를 막으면 안 되므로 예외는 삼킨다
     (record_usage와 동일 원칙)."""
+    dsn = _observability_dsn()
+    if dsn is None:
+        return  # OBSERVABILITY_DATABASE_URL 미설정 → 관측 기록 skip (앱/RAG DB로 폴백하지 않음)
     try:
         import psycopg
 
-        with psycopg.connect(_observability_dsn()) as conn:
+        with psycopg.connect(dsn) as conn:
             with conn.cursor() as cur:
                 cur.execute(
                     """
