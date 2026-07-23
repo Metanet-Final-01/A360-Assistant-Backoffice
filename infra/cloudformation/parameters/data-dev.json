@@ -1,7 +1,0 @@
-[
-  { "ParameterKey": "ProjectName", "ParameterValue": "a360-assistant" },
-  { "ParameterKey": "Environment", "ParameterValue": "dev" },
-  { "ParameterKey": "Owner", "ParameterValue": "team1" },
-  { "ParameterKey": "DeletionProtection", "ParameterValue": "true" },
-  { "ParameterKey": "MultiAZ", "ParameterValue": "false" }
-]
