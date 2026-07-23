@@ -695,6 +695,10 @@ def _build_result_record(
     chunk_size: int,
     overlap: int,
     top_k: int,
+    generator_model: str = GENERATOR_MODEL,
+    evaluator_model: str = GENERATOR_MODEL,
+    evaluator_reasoning: bool | None = None,
+    generator_reasoning: bool | None = None,
 ) -> EvalRunRecord:
     metric_values_by_name = {
         "faithfulness": _to_float_or_none(result_row.get("faithfulness")),
@@ -726,8 +730,10 @@ def _build_result_record(
             "overlap_ratio": round(overlap / chunk_size, 4),
             "top_k": top_k,
             "embedding_model": EMBEDDING_MODEL,
-            "generator_model": GENERATOR_MODEL,
-            "evaluator_model": GENERATOR_MODEL,
+            "generator_model": generator_model,
+            "evaluator_model": evaluator_model,
+            **({"evaluator_reasoning": evaluator_reasoning} if evaluator_reasoning is not None else {}),
+            **({"generator_reasoning": generator_reasoning} if generator_reasoning is not None else {}),
             "prompt_version": PROMPT_VERSION,
         },
         metrics=metrics_to_save,

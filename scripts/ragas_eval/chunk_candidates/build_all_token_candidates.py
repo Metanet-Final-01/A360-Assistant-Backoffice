@@ -13,7 +13,7 @@ sys.stderr.reconfigure(encoding="utf-8", line_buffering=True)
 PY = sys.executable
 SCRIPT = Path(__file__).parent / "build_candidate_token.py"
 
-TOKEN_SIZES = [150, 256, 300, 512, 600, 900, 1024, 1200, 1500, 2048]  # 128은 이미 완료(46537건)
+TOKEN_SIZES = [512, 900, 1024, 1200, 1500, 2048]  # 2026-07-23: 128/150/256/300은 이미 완료, 600만 사용자 판단으로 건너뜀
 
 for ts in TOKEN_SIZES:
     print(f"[{time.strftime('%H:%M:%S')}] === token_size={ts} ov=0 시작 ===", flush=True)
