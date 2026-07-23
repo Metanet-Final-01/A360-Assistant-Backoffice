@@ -124,3 +124,22 @@ def test_fetch_db_ids_paginates_and_counts():
 
 def test_fetch_os_ids_returns_none_when_index_missing():
     assert fetch_os_ids(_FakeOSClient(exists=False)) is None
+
+
+def test_main_returns_2_on_db_failure(monkeypatch, capsys):
+    # DB 접속 실패도 traceback이 아니라 구조화 JSON + exit 2로 나와야 한다(게이트 계약).
+    import json as _json
+
+    import app.rag.store.db as db_module
+    from app.rag.scripts.check_rag_opensearch_consistency import main
+
+    def _boom():
+        raise RuntimeError("connection refused")
+
+    monkeypatch.setattr(db_module, "connect", _boom)
+    rc = main([])
+    assert rc == 2
+    out = _json.loads(capsys.readouterr().out)
+    assert out["in_sync"] is False
+    assert out["db_total"] is None and out["os_total"] is None
+    assert "RAG DB" in out["error"]

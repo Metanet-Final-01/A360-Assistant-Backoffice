@@ -9,15 +9,18 @@
   - os_only: OS엔 있는데 DB엔 없음      → 죽은 hit(존재하지 않는 DB 행을 가리키는 orphan).
 
 기존 reindex_opensearch_from_db.py는 **카운트만** 비교한다(count 일치 ≠ id 일치). 이 스크립트는
-id 집합을 직접 비교해 drift를 드러낸다. 수정은 하지 않는다(그건 reindex --apply의 역할).
+id 집합을 직접 비교해 drift를 드러낸다. **읽기 전용** — 스키마·데이터를 바꾸지 않으므로 읽기
+전용 크레덴셜로도 돌 수 있다(수정은 reindex --apply의 역할).
 
-종료 코드: 0=정합, 1=drift 발견, 2=점검 불가(OS 색인 없음/접속 실패). ops·CI 게이트로 쓸 수 있다.
+종료 코드: 0=정합, 1=drift 발견, 2=점검 불가(DB·OS 접속/조회 실패 또는 OS 색인 없음) — 모든
+인프라 실패는 traceback이 아니라 구조화 JSON + exit 2로 낸다. ops·CI 게이트로 쓸 수 있다.
 
 사용: python -m app.rag.scripts.check_rag_opensearch_consistency [--sample N] [--batch-size N]
 """
 from __future__ import annotations
 
 import argparse
+import heapq
 import json
 import sys
 from typing import Any
@@ -80,17 +83,21 @@ def compare(
 
     db_only = DB에만(OS 색인 누락), os_only = OS에만(DB orphan). 둘 다 비어야 in_sync.
     """
-    db_only = sorted(db_ids - os_ids)
-    os_only = sorted(os_ids - db_ids)
+    db_only = db_ids - os_ids
+    os_only = os_ids - db_ids
+    db_only_count = len(db_only)
+    os_only_count = len(os_only)
+    # 큰 코퍼스에서 전체 diff를 sort 후 슬라이스하면 O(n log n)·메모리 낭비 — 샘플만 필요하므로
+    # heapq.nsmallest로 상위 sample개만 뽑는다(결과는 sorted[:sample]과 동일한 결정적 순서).
     return {
         "in_sync": not db_only and not os_only,
         "db_total": len(db_ids),
         "os_total": len(os_ids),
-        "in_both": len(db_ids & os_ids),
-        "db_only_count": len(db_only),  # DB엔 있는데 OS 색인에 없음 → BM25 검색 불가
-        "os_only_count": len(os_only),  # OS엔 있는데 DB엔 없음 → 죽은 hit(orphan)
-        "db_only_sample": db_only[:sample],
-        "os_only_sample": os_only[:sample],
+        "in_both": len(db_ids) - db_only_count,  # = db_total - db_only (교집합 재계산 없이)
+        "db_only_count": db_only_count,  # DB엔 있는데 OS 색인에 없음 → BM25 검색 불가
+        "os_only_count": os_only_count,  # OS엔 있는데 DB엔 없음 → 죽은 hit(orphan)
+        "db_only_sample": heapq.nsmallest(sample, db_only),
+        "os_only_sample": heapq.nsmallest(sample, os_only),
         "db_by_source_type": dict(sorted(db_by_source.items())),
     }
 
@@ -117,12 +124,25 @@ def main(argv: list[str] | None = None) -> int:
 
     from app.rag.store import db, opensearch_client
 
-    conn = db.connect()
+    # 읽기 전용 계약: ensure_schema(DDL·commit)는 호출하지 않는다 — 진단 스크립트가 스키마를
+    # 바꾸면 안 되고, 읽기 전용 크레덴셜로도 돌 수 있어야 한다(적재 파이프라인만 쓰기 허용).
+    # 테이블이 없으면 fetch_db_ids 쿼리가 실패 → 아래 except가 "점검 불가(exit 2)"로 처리한다.
+    conn = None
     try:
-        db.ensure_schema(conn)
+        conn = db.connect()
         db_ids, db_by_source = fetch_db_ids(conn, batch_size=args.batch_size)
+    except Exception as exc:  # noqa: BLE001 — DB 접속·조회 실패도 구조화 출력+exit 2 (게이트 계약)
+        print(json.dumps({
+            "in_sync": False,
+            "error": f"RAG DB 접속/조회 실패: {type(exc).__name__}: {exc}",
+            "index": config.OPENSEARCH_INDEX,
+            "db_total": None,
+            "os_total": None,
+        }, ensure_ascii=False, indent=2))
+        return 2
     finally:
-        conn.close()
+        if conn is not None:
+            conn.close()
 
     client = opensearch_client.connect()
     try:
