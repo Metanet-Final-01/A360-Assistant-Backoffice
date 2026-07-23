@@ -1,0 +1,7 @@
+[
+  { "ParameterKey": "ProjectName", "ParameterValue": "a360-assistant" },
+  { "ParameterKey": "Environment", "ParameterValue": "dev" },
+  { "ParameterKey": "Owner", "ParameterValue": "team1" },
+  { "ParameterKey": "VpcCidr", "ParameterValue": "10.0.0.0/16" },
+  { "ParameterKey": "EnableVpcFlowLogs", "ParameterValue": "false" }
+]
