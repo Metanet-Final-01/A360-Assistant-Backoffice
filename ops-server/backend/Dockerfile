@@ -18,6 +18,7 @@ RUN pip install --no-cache-dir -r requirements.txt \
 
 # 앱 코드
 COPY ops-server/backend/ ./
+COPY a360-eval-sandbox/Metadata/ /app/a360-eval-sandbox/Metadata/
 
 # JSONL 사본(log_store)이 쓰는 경로 — read-only fs여도 여기만 쓰기 가능하게 볼륨/tmpfs로 마운트한다.
 # (화면은 관측 RDS 직접 조회로 옮겼으나 collect 엔드포인트가 아직 여기 쓴다 — RPA-256 후속)

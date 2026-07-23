@@ -356,7 +356,7 @@ def workflow_cases() -> list:
     try:
         return workflow_runner.load_cases()
     except workflow_runner.WorkflowGoldsetError as e:
-        raise HTTPException(500, str(e)) from e
+        raise HTTPException(503, str(e)) from e
 
 
 @app.post("/eval/workflow/cases")
