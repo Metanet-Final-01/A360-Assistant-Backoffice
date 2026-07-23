@@ -1,0 +1,228 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A360 Assistant data stack - separated Service, Observability, and RAG PostgreSQL plus artifacts and RAG queue.
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: a360-assistant
+  Environment:
+    Type: String
+    Default: dev
+  Owner:
+    Type: String
+    Default: team1
+  ServiceDbInstanceClass:
+    Type: String
+    Default: db.t4g.micro
+  ObservabilityDbInstanceClass:
+    Type: String
+    Default: db.t4g.micro
+  RagDbInstanceClass:
+    Type: String
+    Default: db.t4g.micro
+  ServiceDbAllocatedStorage:
+    Type: Number
+    Default: 20
+  ObservabilityDbAllocatedStorage:
+    Type: Number
+    Default: 20
+  RagDbAllocatedStorage:
+    Type: Number
+    Default: 30
+  MultiAZ:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+  BackupRetentionPeriod:
+    Type: Number
+    Default: 7
+    MinValue: 1
+    MaxValue: 35
+  DeletionProtection:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+  RagVisibilityTimeout:
+    Type: Number
+    Default: 900
+  RagMaxReceiveCount:
+    Type: Number
+    Default: 3
+
+Resources:
+  DbSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: !Sub "${ProjectName}-${Environment} private DB subnets"
+      SubnetIds:
+        Fn::Split:
+          - ","
+          - Fn::ImportValue:
+              Fn::Sub: "${ProjectName}-${Environment}-PrivateDbSubnetIds"
+
+  ServiceDbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Service PostgreSQL access
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+
+  ObservabilityDbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Observability PostgreSQL access
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+
+  RagDbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: RAG PostgreSQL pgvector access
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+
+  ServiceDb:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+    Properties:
+      DBInstanceIdentifier: !Sub "${ProjectName}-${Environment}-service"
+      Engine: postgres
+      DBInstanceClass: !Ref ServiceDbInstanceClass
+      AllocatedStorage: !Ref ServiceDbAllocatedStorage
+      DBSubnetGroupName: !Ref DbSubnetGroup
+      VPCSecurityGroups: [!Ref ServiceDbSecurityGroup]
+      PubliclyAccessible: false
+      StorageEncrypted: true
+      MultiAZ: !Ref MultiAZ
+      BackupRetentionPeriod: !Ref BackupRetentionPeriod
+      AutoMinorVersionUpgrade: true
+      DeletionProtection: !Ref DeletionProtection
+      ManageMasterUserPassword: true
+
+  ObservabilityDb:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+    Properties:
+      DBInstanceIdentifier: !Sub "${ProjectName}-${Environment}-observability"
+      Engine: postgres
+      DBInstanceClass: !Ref ObservabilityDbInstanceClass
+      AllocatedStorage: !Ref ObservabilityDbAllocatedStorage
+      DBSubnetGroupName: !Ref DbSubnetGroup
+      VPCSecurityGroups: [!Ref ObservabilityDbSecurityGroup]
+      PubliclyAccessible: false
+      StorageEncrypted: true
+      MultiAZ: !Ref MultiAZ
+      BackupRetentionPeriod: !Ref BackupRetentionPeriod
+      AutoMinorVersionUpgrade: true
+      DeletionProtection: !Ref DeletionProtection
+      ManageMasterUserPassword: true
+
+  RagDb:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Snapshot
+    Properties:
+      DBInstanceIdentifier: !Sub "${ProjectName}-${Environment}-rag"
+      Engine: postgres
+      DBInstanceClass: !Ref RagDbInstanceClass
+      AllocatedStorage: !Ref RagDbAllocatedStorage
+      DBSubnetGroupName: !Ref DbSubnetGroup
+      VPCSecurityGroups: [!Ref RagDbSecurityGroup]
+      PubliclyAccessible: false
+      StorageEncrypted: true
+      MultiAZ: !Ref MultiAZ
+      BackupRetentionPeriod: !Ref BackupRetentionPeriod
+      AutoMinorVersionUpgrade: true
+      DeletionProtection: !Ref DeletionProtection
+      ManageMasterUserPassword: true
+
+  ArtifactBucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+      VersioningConfiguration:
+        Status: Enabled
+      LifecycleConfiguration:
+        Rules:
+          - Id: expire-temp-prefix
+            Status: Enabled
+            Prefix: temp/
+            ExpirationInDays: 7
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+
+  RagJobDeadLetterQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub "${ProjectName}-${Environment}-rag-jobs-dlq"
+      MessageRetentionPeriod: 1209600
+      SqsManagedSseEnabled: true
+
+  RagJobQueue:
+    Type: AWS::SQS::Queue
+    Properties:
+      QueueName: !Sub "${ProjectName}-${Environment}-rag-jobs"
+      ReceiveMessageWaitTimeSeconds: 20
+      VisibilityTimeout: !Ref RagVisibilityTimeout
+      SqsManagedSseEnabled: true
+      RedrivePolicy:
+        deadLetterTargetArn: !GetAtt RagJobDeadLetterQueue.Arn
+        maxReceiveCount: !Ref RagMaxReceiveCount
+
+Outputs:
+  ArtifactBucketName:
+    Value: !Ref ArtifactBucket
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ArtifactBucketName"
+  RagJobQueueUrl:
+    Value: !Ref RagJobQueue
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-RagJobQueueUrl"
+  RagJobQueueArn:
+    Value: !GetAtt RagJobQueue.Arn
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-RagJobQueueArn"
+  ServiceDbEndpoint:
+    Value: !GetAtt ServiceDb.Endpoint.Address
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ServiceDbEndpoint"
+  ObservabilityDbEndpoint:
+    Value: !GetAtt ObservabilityDb.Endpoint.Address
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ObservabilityDbEndpoint"
+  RagDbEndpoint:
+    Value: !GetAtt RagDb.Endpoint.Address
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-RagDbEndpoint"
+  ServiceDbSecurityGroupId:
+    Value: !Ref ServiceDbSecurityGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ServiceDbSecurityGroupId"
+  ObservabilityDbSecurityGroupId:
+    Value: !Ref ObservabilityDbSecurityGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-ObservabilityDbSecurityGroupId"
+  RagDbSecurityGroupId:
+    Value: !Ref RagDbSecurityGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-RagDbSecurityGroupId"
