@@ -169,6 +169,16 @@ async def get_ops_rag_ingest_job_log(job_id: str, tail: int = Query(400, ge=1, l
     return Response(content=response.text, media_type="text/plain")
 
 
+@app.get("/ops/rag/ingest/jobs/{job_id}/logs/download")
+async def download_ops_rag_ingest_job_log(job_id: str) -> Response:
+    response = await _rag_request("GET", f"/rag/ingest/jobs/{job_id}/logs/download", timeout=60.0)
+    headers = {}
+    content_disposition = response.headers.get("content-disposition")
+    if content_disposition:
+        headers["Content-Disposition"] = content_disposition
+    return Response(content=response.content, media_type="text/plain", headers=headers)
+
+
 @app.post("/schedules/rag-ingest", response_model=ScheduleApplyResult)
 def upsert_rag_ingest_schedule(
     req: RagIngestScheduleRequest,

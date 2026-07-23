@@ -73,6 +73,9 @@ def _connect() -> sqlite3.Connection:
     LOG_DIR.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(DB_PATH, timeout=30, check_same_thread=False)
     conn.row_factory = sqlite3.Row
+    conn.execute("pragma busy_timeout = 30000")
+    conn.execute("pragma journal_mode = wal")
+    conn.execute("pragma synchronous = normal")
     return conn
 
 
@@ -165,14 +168,23 @@ def _stages_for(mode: str, current_stage: str | None = None, status: str | None 
 
 
 def _add_event(job_id: str, event_type: str, data: dict[str, Any]) -> None:
+    _add_events(job_id, [(event_type, data)])
+
+
+def _add_events(job_id: str, events: list[tuple[str, dict[str, Any]]]) -> None:
+    if not events:
+        return
     created_at = _utcnow()
-    payload = dict(data)
-    payload.setdefault("job_id", job_id)
-    payload.setdefault("timestamp", created_at)
+    rows = []
+    for event_type, data in events:
+        payload = dict(data)
+        payload.setdefault("job_id", job_id)
+        payload.setdefault("timestamp", created_at)
+        rows.append((job_id, event_type, json.dumps(payload, ensure_ascii=False), created_at))
     with _connect() as conn:
-        conn.execute(
+        conn.executemany(
             "insert into events(job_id, event_type, data, created_at) values (?, ?, ?, ?)",
-            (job_id, event_type, json.dumps(payload, ensure_ascii=False), created_at),
+            rows,
         )
 
 
@@ -200,14 +212,18 @@ def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_li
         raise RuntimeError("OPENAI_API_KEY is required for Agent Parse mode.")
 
     with _lock:
-        active = active_job()
-        if active:
-            raise ConflictError(active["job_id"])
         job_id = str(uuid.uuid4())
         now = _utcnow()
         if agent_parse_limit is None:
             agent_parse_limit = parse_agent_limit()
         with _connect() as conn:
+            conn.execute("begin immediate")
+            active = conn.execute(
+                "select * from jobs where status in ('QUEUED', 'RUNNING', 'CANCEL_REQUESTED') order by created_at desc limit 1"
+            ).fetchone()
+            if active:
+                conn.rollback()
+                raise ConflictError(active["job_id"])
             conn.execute(
                 """
                 insert into jobs (
@@ -217,6 +233,7 @@ def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_li
                 """,
                 (job_id, mode, int(clean), requested_by, agent_parse_limit, now, now),
             )
+            conn.commit()
         _add_event(job_id, "snapshot", {"status": "QUEUED", "mode": mode, "clean": clean})
         thread = threading.Thread(target=_run_job, args=(job_id,), daemon=True)
         thread.start()
@@ -246,6 +263,8 @@ def _run_job(job_id: str) -> None:
         preexec_fn = os.setsid
 
     exit_code = None
+    pending_log_events: list[tuple[str, dict[str, Any]]] = []
+    last_event_flush = time.monotonic()
     try:
         with log_path.open("a", encoding="utf-8", errors="replace") as log:
             proc = subprocess.Popen(
@@ -267,11 +286,19 @@ def _run_job(job_id: str) -> None:
                 log.write(clean_line + "\n")
                 log.flush()
                 _observe_stage(job_id, job["mode"], clean_line)
-                _add_event(job_id, "log", {"level": _level_for(clean_line), "message": clean_line})
+                pending_log_events.append(("log", {"level": _level_for(clean_line), "message": clean_line}))
+                if len(pending_log_events) >= 50 or time.monotonic() - last_event_flush >= 1:
+                    _add_events(job_id, pending_log_events)
+                    pending_log_events.clear()
+                    last_event_flush = time.monotonic()
             exit_code = proc.wait()
+            _add_events(job_id, pending_log_events)
+            pending_log_events.clear()
     except Exception as exc:
+        _add_events(job_id, pending_log_events)
         _update_job(job_id, status="FAILED", finished_at=_utcnow(), error_message=str(exc), exit_code=exit_code)
         _add_event(job_id, "failed", {"status": "FAILED", "error_message": str(exc), "exit_code": exit_code})
+        _clear_source_document_cache()
         return
     finally:
         with _lock:
@@ -288,6 +315,7 @@ def _run_job(job_id: str) -> None:
         message = f"Pipeline exited with code {exit_code}."
         _update_job(job_id, status="FAILED", finished_at=_utcnow(), exit_code=exit_code, error_message=message)
         _add_event(job_id, "failed", {"status": "FAILED", "exit_code": exit_code, "error_message": message})
+    _clear_source_document_cache()
 
 
 def _observe_stage(job_id: str, mode: str, line: str) -> None:
@@ -385,11 +413,43 @@ def read_log(job_id: str, tail: int | None = 400) -> str:
     path = log_file(job_id)
     if not path.exists():
         return ""
-    text = path.read_text(encoding="utf-8", errors="replace")
-    if tail is None:
-        return text
+    try:
+        if tail is None:
+            return path.read_text(encoding="utf-8", errors="replace")
+        text = _tail_text(path, tail)
+    except OSError:
+        return ""
+    return text
+
+
+def _tail_text(path: Path, tail: int) -> str:
+    if tail <= 0:
+        return ""
+    block_size = 8192
+    chunks = bytearray()
+    newline_count = 0
+    with path.open("rb") as file:
+        file.seek(0, os.SEEK_END)
+        position = file.tell()
+        while position > 0 and newline_count <= tail:
+            read_size = min(block_size, position)
+            position -= read_size
+            file.seek(position)
+            chunk = file.read(read_size)
+            chunks[:0] = chunk
+            newline_count += chunk.count(b"\n")
+    text = chunks.decode("utf-8", errors="replace")
     lines = text.splitlines()
     return "\n".join(lines[-tail:])
+
+
+def _clear_source_document_cache() -> None:
+    try:
+        from app.rag import source_documents
+
+        source_documents.clear_cache()
+    except Exception:
+        return
 
 
 def log_file(job_id: str) -> Path:

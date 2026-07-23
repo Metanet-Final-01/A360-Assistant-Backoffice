@@ -68,6 +68,16 @@ def _api_text(path: str, **params) -> tuple[str, str | None]:
     return resp.text, None
 
 
+def _api_bytes(path: str, **params) -> tuple[bytes, str | None]:
+    try:
+        resp = requests.get(f"{OPS_BACKEND_URL}{path}", params=params, timeout=30)
+    except requests.RequestException as exc:
+        return b"", f"Ops Backend 연결 실패: {exc}"
+    if resp.status_code != 200:
+        return b"", _error_text(resp)
+    return resp.content, None
+
+
 def _error_text(resp: requests.Response) -> str:
     try:
         body = resp.json()
@@ -293,12 +303,16 @@ def _render_logs(job_id: str) -> None:
         lines = _filter_log_lines(text.splitlines(), level_filter, search)
         st.caption(f"표시 {len(lines)}줄 · 마지막 갱신 {datetime.now().strftime('%H:%M:%S')}")
         st.code("\n".join(lines) or "(표시할 로그 없음)", language="text")
+        full_log, download_error = _api_bytes(f"/ops/rag/ingest/jobs/{job_id}/logs/download")
+        if download_error:
+            st.warning(download_error)
         st.download_button(
             "전체 로그 다운로드",
-            data=text,
+            data=full_log,
             file_name=f"{job_id}.log",
             mime="text/plain",
             use_container_width=True,
+            disabled=bool(download_error),
         )
 
 
