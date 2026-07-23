@@ -113,18 +113,18 @@ def _render_backend_health_banner(health: dict) -> None:
     last_ok = _fmt_ts((health or {}).get("last_ok_at"))
 
     if status == "healthy":
-        st.success(f"🟢 백엔드 UP (healthy) · 확인 {checked_at}")
+        st.success(f"🟢 서비스 백엔드 UP (healthy) · 확인 {checked_at}")
     elif status == "degraded":
-        st.warning(f"🟡 백엔드 UP·성능저하 (degraded — 관측 DB 등 일부 이상) · 확인 {checked_at}")
+        st.warning(f"🟡 서비스 백엔드 UP·성능저하 (degraded — 관측 DB 등 일부 이상) · 확인 {checked_at}")
     elif status in ("unhealthy", "unreachable"):
-        st.error(f"🔴 백엔드 DOWN ({status}) · 마지막 정상 {last_ok} · 확인 {checked_at}")
+        st.error(f"🔴 서비스 백엔드 DOWN ({status}) · 마지막 정상 {last_ok} · 확인 {checked_at}")
     else:
-        st.info("⚪ 백엔드 상태 미확인 — 아래 버튼으로 확인하세요.")
+        st.info("⚪ 서비스 백엔드 상태 미확인 — 아래 버튼으로 확인하세요.")
 
-    if st.button("백엔드 상태 새로고침", key="probe_backend_health", type="primary"):
+    if st.button("서비스 백엔드 상태 새로고침", key="probe_backend_health", type="primary"):
         result = _safe_get(OPS_BACKEND_URL, "/observability/backend-health?probe=true")
         if result is None:
-            st.error("백엔드 상태 프로브 요청에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
+            st.error("서비스 백엔드 상태 프로브 요청에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
         else:
             st.rerun()
 
