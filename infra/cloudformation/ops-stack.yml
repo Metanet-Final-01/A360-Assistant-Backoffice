@@ -248,9 +248,15 @@ Resources:
             - |
               #!/bin/bash
               set -euo pipefail
-              dnf update -y
-              dnf install -y docker awscli jq curl aws-cfn-bootstrap
-              trap '/opt/aws/bin/cfn-signal --success false --stack ${AWS::StackName} --resource OpsAutoScalingGroup --region ${AWS::Region}' ERR
+              exec > >(tee -a /var/log/a360-ops-bootstrap.log /var/log/cloud-init-output.log) 2>&1
+              dnf install -y docker awscli jq aws-cfn-bootstrap
+              IMDS_TOKEN=$(curl -fsS -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" || true)
+              INSTANCE_ID=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/instance-id || echo unknown-instance)
+              upload_bootstrap_logs() {
+                aws s3 cp /var/log/a360-ops-bootstrap.log "s3://${ArtifactBucketName}/ops-bootstrap-logs/${AWS::StackName}/$INSTANCE_ID/a360-ops-bootstrap.log" || true
+                aws s3 cp /var/log/cloud-init-output.log "s3://${ArtifactBucketName}/ops-bootstrap-logs/${AWS::StackName}/$INSTANCE_ID/cloud-init-output.log" || true
+              }
+              trap 'upload_bootstrap_logs; /opt/aws/bin/cfn-signal --success false --stack ${AWS::StackName} --resource OpsAutoScalingGroup --region ${AWS::Region}' ERR
               systemctl enable --now docker
 
               mkdir -p /opt/a360
@@ -266,8 +272,12 @@ Resources:
               OBS_DSN="postgresql://$OPS_DB_USER:$OPS_DB_PASSWORD@${ObservabilityDbEndpoint}:5432/${ObservabilityDbName}?sslmode=require"
               RAG_DSN="postgresql://$RAG_DB_USER:$RAG_DB_PASSWORD@${RagDbEndpoint}:5432/${RagDbName}?sslmode=require"
 
-              if [ -s /opt/a360/ghcr_token ] && [ -n '${GhcrUsername}' ]; then
-                cat /opt/a360/ghcr_token | docker login ghcr.io -u '${GhcrUsername}' --password-stdin
+              GHCR_USERNAME='${GhcrUsername}'
+              if [ -s /opt/a360/ghcr_token ]; then
+                if [ -z "$GHCR_USERNAME" ]; then
+                  GHCR_USERNAME=token
+                fi
+                cat /opt/a360/ghcr_token | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
               fi
 
               docker network create a360 || true
@@ -319,6 +329,7 @@ Resources:
                 --stack ${AWS::StackName} \
                 --resource OpsAutoScalingGroup \
                 --region ${AWS::Region}
+              upload_bootstrap_logs
             - OpsReaderSecretArn:
                 Fn::ImportValue:
                   Fn::Sub: "${ProjectName}-${Environment}-OpsReaderSecretArn"
@@ -337,6 +348,9 @@ Resources:
               RagDbName:
                 Fn::ImportValue:
                   Fn::Sub: "${ProjectName}-${Environment}-RagDbName"
+              ArtifactBucketName:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-ArtifactBucketName"
               ReadGhcrSecret: !If
                 - HasGhcrToken
                 - !Sub "aws secretsmanager get-secret-value --secret-id '${GhcrTokenSecretArn}' --query SecretString --output text > /opt/a360/ghcr_token"
