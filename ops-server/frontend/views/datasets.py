@@ -260,22 +260,32 @@ def _confirm_delete_dialog(ids: list[str], delete_prefix: str, list_cache_key: s
     if cancel_col.button("취소", width="stretch"):
         st.rerun()
     if confirm_col.button("확인", type="primary", width="stretch"):
-        errors = []
+        deleted, already_gone, errors = 0, 0, []
         for target in ids:
             try:
                 resp = _SESSION.delete(f"{OPS_BACKEND_URL}{delete_prefix}/{quote(str(target), safe='')}", timeout=10)
                 # 404(대상 없음=이미 삭제됨)는 실패로 치지 않는다 — 부분 실패 후 다시 "확인"을
                 # 누르면 이 목록(ids)이 그대로 재사용돼 이미 지워진 대상까지 다시 삭제 요청을
-                # 보내는데, 그걸 에러로 잡으면 재시도할 때마다 실패 목록이 늘어나기만 한다.
-                if resp.status_code not in (200, 404):
+                # 보내는데, 그걸 에러로 잡으면 재시도할 때마다 실패 목록이 늘어나기만 한다. 다만
+                # 실제 삭제(200)와 이미 없었음(404)을 결과 건수에 뭉뚱그리면 정말 문제(잘못된
+                # id 선택 등)가 있어도 "정상 삭제"로 보여 놓칠 수 있어 메시지에서는 구분한다.
+                if resp.status_code == 200:
+                    deleted += 1
+                elif resp.status_code == 404:
+                    already_gone += 1
+                else:
                     errors.append(f"{target}: {resp.json().get('detail', resp.text)}")
             except (requests.RequestException, ValueError) as exc:
                 errors.append(f"{target}: {exc}")
         st.session_state.pop(list_cache_key, None)
         if errors:
             st.error("일부 삭제에 실패했습니다 — " + "; ".join(errors))
+        elif deleted == 0:
+            st.warning(f"선택한 {already_gone}건이 이미 삭제된 상태였습니다 — 새로 삭제된 건 없습니다.")
+            st.rerun()
         else:
-            st.success(f"{len(ids)}건 삭제했습니다.")
+            suffix = f" (이미 삭제된 {already_gone}건 제외)" if already_gone else ""
+            st.success(f"{deleted}건 삭제했습니다{suffix}.")
             st.rerun()  # 전부 성공했을 때만 닫는다 — 실패분이 있으면 메시지를 보고 다시 시도/취소하게 남겨둔다.
 
 
