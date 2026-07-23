@@ -12,8 +12,9 @@ WORKDIR /app
 
 # 의존성 먼저 — 레이어 캐시 (코드만 바뀌면 재설치 안 함)
 COPY ops-server/backend/requirements.txt ./requirements.txt
+# 바깥 괄호 필수: 없으면 `(pip && curl) || apt-get`으로 파싱돼 pip 실패가 apt-get 성공에 은폐된다.
 RUN pip install --no-cache-dir -r requirements.txt \
-    && curl --version >/dev/null 2>&1 || (apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*)
+    && (curl --version >/dev/null 2>&1 || (apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*))
 
 # 앱 코드
 COPY ops-server/backend/ ./

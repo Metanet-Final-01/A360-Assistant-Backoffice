@@ -11,6 +11,10 @@ uvicorn[standard]
 httpx
 python-dotenv
 boto3
+# 파일 업로드 라우트(UploadFile=File(...): 워크플로/RAGAS/BFCL 케이스 업로드)에 필수.
+# 통합 requirements엔 미선언이라 로컬은 전이 의존성으로 우연히 있었고, 깨끗한 컨테이너에서
+# ensure_multipart_is_installed()가 기동 시 터졌다 — 명시 선언한다 (RPA-259).
+python-multipart
 
 # ── HTTP·데이터 정리 (eval 결과, 관측 응답 가공) ──
 requests
