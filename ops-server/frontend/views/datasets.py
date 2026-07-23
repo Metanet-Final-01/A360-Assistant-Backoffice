@@ -1,12 +1,8 @@
-"""평가/입력 데이터셋 관리 (RPA-136) — BFCL/Workflow 골드셋과 Workflow 입력
+"""평가/입력 데이터셋 관리 (RPA-136) — Workflow 골드셋과 Workflow 입력
 데이터셋(업무정의서 원문)이 리포 내 정적 JSON 파일로만 존재해 팀원이 직접 편집해야
 했다. 조회·업로드(파일 교체)·수동 입력(폼) 세 가지 방식으로 웹에서 관리한다.
 RAGAS 골드셋은 ragas_datasets.py의 별도 페이지로 분리됐다(문서 브라우저·ChatGPT
-JSON 자동 채우기·검증 로그 등 RAGAS 전용 흐름이 커져서).
-
-BFCL은 스키마가 turns/expected_targets로 중첩돼 있어 폼으로는 흔한 형태
-(단일 턴, target 최대 2개 x 파라미터 최대 2개)만 지원한다 — multi_turn_state/
-response_based처럼 턴이 여러 개거나 파라미터가 더 많은 케이스는 업로드를 쓴다."""
+JSON 자동 채우기·검증 로그 등 RAGAS 전용 흐름이 커져서)."""
 
 import json
 
@@ -20,16 +16,12 @@ _SESSION = requests.Session()
 
 
 def render() -> None:
-    # RAGAS 탭은 ragas_datasets.py의 별도 페이지로 옮겼다 — 여기서는 BFCL/Workflow만.
+    # RAGAS 탭은 ragas_datasets.py의 별도 페이지로 옮겼다 — 여기서는 Workflow만 관리한다.
     page_header(
         "평가/입력 데이터셋 관리",
-        "BFCL·Workflow 골드셋과 Workflow 입력 데이터셋(업무정의서 원문)을 조회·업로드·수동 등록합니다.",
+        "Workflow 골드셋과 Workflow 입력 데이터셋(업무정의서 원문)을 조회·업로드·수동 등록합니다.",
     )
-    tab_bfcl, tab_wf_goldset, tab_wf_input = st.tabs(
-        ["BFCL 평가 데이터셋", "Workflow 평가 데이터셋", "Workflow 입력 데이터셋"]
-    )
-    with tab_bfcl:
-        _render_bfcl_tab()
+    tab_wf_goldset, tab_wf_input = st.tabs(["Workflow 평가 데이터셋", "Workflow 입력 데이터셋"])
     with tab_wf_goldset:
         _render_workflow_goldset_tab()
     with tab_wf_input:
@@ -112,94 +104,6 @@ def _render_upload_section(card_key: str, list_path: str, upload_path: str, help
                 st.rerun()
             else:
                 st.error(f"업로드 실패: {msg}")
-
-
-# ── BFCL ──────────────────────────────────────────────────────────────
-
-_BFCL_CATEGORIES = [
-    "simple", "multiple", "irrelevance", "missing_parameters", "missing_functions",
-    "multi_turn_state", "response_based",
-]
-_BFCL_CHECKS = ["exact", "enum", "contains", "nonempty", "bool_true", "bool_false"]
-
-
-def _render_bfcl_tab() -> None:
-    filtered: list[dict] = []
-    with card("bfcl_goldset_view"):
-        section_header("조회", "골드셋 케이스 목록 — 채점에 쓰이는 원본 그대로.")
-        data, err = _get("/eval/bfcl/cases")
-        if err:
-            st.warning(f"불러오지 못했습니다: {err}")
-        else:
-            query = _search_box("bfcl")
-            filtered = _search_filter(data, query)
-            st.caption(f"{len(filtered)}/{len(data)}개 케이스")
-            st.dataframe(
-                [{"case_id": c["case_id"], "category": c["category"], "turns": len(c["turns"]),
-                  "질문": (c.get("document_text") or c["turns"][0]["message"])[:80]} for c in filtered],
-                width="stretch", hide_index=True,
-            )
-
-    _render_delete_section("bfcl", "/eval/bfcl/cases", [c["case_id"] for c in filtered], "/eval/bfcl/cases", "case_id")
-
-    _render_upload_section(
-        "bfcl_upload", "/eval/bfcl/cases", "/eval/bfcl/cases/upload",
-        "전체 골드셋 배열([...])을 통째로 교체합니다 — BFCLCase 스키마 검증을 통과해야 저장됩니다.",
-    )
-
-    with card("bfcl_manual_add"):
-        section_header(
-            "수동 입력으로 생성",
-            "단일 턴 / target 최대 2개 / target당 파라미터 최대 2개만 지원합니다. "
-            "multi_turn_state·response_based나 더 복잡한 케이스는 위 업로드를 쓰세요.",
-        )
-        with st.form("bfcl_manual_add_form"):
-            col1, col2 = st.columns(2)
-            case_id = col1.text_input("case_id", placeholder="simple_send_mail_001")
-            category = col2.selectbox("category", _BFCL_CATEGORIES)
-            document_text = st.text_area("업무 설명(document_text, 선택)", placeholder="irrelevance는 비워둡니다", height=80)
-            message = st.text_input("사용자 메시지(turn message)", value="이 업무를 분석해서 자동화 워크플로우로 추천해줘.")
-            expect_no_action = st.checkbox("이 턴에서는 액션이 전혀 없어야 정답(irrelevance 등)")
-
-            st.markdown("**expected target (최대 2개, 첫 번째는 필수 — package를 비워두면 미사용)**")
-            targets_input = []
-            for i in range(2):
-                st.caption(f"target {i + 1}")
-                tcol1, tcol2 = st.columns(2)
-                pkg = tcol1.text_input("package", key=f"bfcl_target_pkg_{i}")
-                act = tcol2.text_input("action", key=f"bfcl_target_act_{i}")
-                params = []
-                for j in range(2):
-                    pcol1, pcol2, pcol3 = st.columns(3)
-                    pname = pcol1.text_input("param name", key=f"bfcl_param_name_{i}_{j}")
-                    pcheck = pcol2.selectbox("check", _BFCL_CHECKS, key=f"bfcl_param_check_{i}_{j}")
-                    pexpected = pcol3.text_input("expected", key=f"bfcl_param_expected_{i}_{j}")
-                    if pname.strip():
-                        params.append({"name": pname.strip(), "check": pcheck, "expected": pexpected.strip() or None})
-                targets_input.append((pkg.strip(), act.strip(), params))
-
-            submitted = st.form_submit_button("BFCL 케이스 등록", type="primary")
-
-        if submitted:
-            expected_targets = [
-                {"package": pkg, "action": act, "params": params}
-                for pkg, act, params in targets_input if pkg and act
-            ]
-            payload = {
-                "case_id": case_id.strip(), "category": category,
-                "document_text": document_text.strip() or None,
-                "turns": [{
-                    "message": message.strip(), "expected_targets": expected_targets,
-                    "expect_no_action": expect_no_action,
-                }],
-            }
-            ok, msg = _post_json("/eval/bfcl/cases", payload)
-            if ok:
-                st.session_state.pop("/eval/bfcl/cases", None)
-                st.success("등록했습니다.")
-                st.rerun()
-            else:
-                st.error(f"등록 실패: {msg}")
 
 
 # ── Workflow 평가 데이터셋 ────────────────────────────────────────────
