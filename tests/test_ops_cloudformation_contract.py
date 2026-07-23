@@ -20,3 +20,10 @@ def test_ops_ghcr_login_keeps_token_fallback_for_direct_stack_deploys():
     assert "GHCR_USERNAME='${GhcrUsername}'" in template
     assert "GHCR_USERNAME=token" in template
     assert 'docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin' in template
+
+
+def test_ops_stack_uses_network_stack_ops_subnet_export():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+
+    assert "${ProjectName}-${Environment}-PrivateOpsSubnetIds" in template
+    assert "PrivateBackofficeSubnetIds" not in template

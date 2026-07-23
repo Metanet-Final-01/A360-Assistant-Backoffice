@@ -377,7 +377,7 @@ Resources:
         Fn::Split:
           - ","
           - Fn::ImportValue:
-              Fn::Sub: "${ProjectName}-${Environment}-PrivateBackofficeSubnetIds"
+              Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
 
   OpsUiTargetGroup:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
@@ -451,7 +451,7 @@ Resources:
         Fn::Split:
           - ","
           - Fn::ImportValue:
-              Fn::Sub: "${ProjectName}-${Environment}-PrivateBackofficeSubnetIds"
+              Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
       HealthCheckType: ELB
       HealthCheckGracePeriod: 180
       TargetGroupARNs:
