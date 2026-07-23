@@ -1,9 +1,0 @@
-[
-  { "ParameterKey": "ProjectName", "ParameterValue": "a360-assistant" },
-  { "ParameterKey": "Environment", "ParameterValue": "dev" },
-  { "ParameterKey": "EnableClientVpn", "ParameterValue": "false" },
-  { "ParameterKey": "ClientVpnCidr", "ParameterValue": "10.250.0.0/22" },
-  { "ParameterKey": "VpcCidr", "ParameterValue": "10.0.0.0/16" },
-  { "ParameterKey": "ServerCertificateArn", "ParameterValue": "" },
-  { "ParameterKey": "RootCertificateChainArn", "ParameterValue": "" }
-]

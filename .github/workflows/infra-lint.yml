@@ -1,0 +1,30 @@
+name: Infra Lint
+
+on:
+  pull_request:
+    paths:
+      - "infra/cloudformation/**"
+      - ".github/workflows/infra-lint.yml"
+  push:
+    branches: [main, dev]
+    paths:
+      - "infra/cloudformation/**"
+      - ".github/workflows/infra-lint.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  cfn-lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install cfn-lint
+        run: pip install cfn-lint
+      - name: Run cfn-lint
+        run: cfn-lint infra/cloudformation/*.yml
