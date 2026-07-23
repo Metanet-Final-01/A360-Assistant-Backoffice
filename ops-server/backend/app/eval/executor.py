@@ -10,10 +10,13 @@ from .log_store import append_run
 from .metrics import metrics_from_raw
 
 _BACKEND_ROOT = Path(__file__).resolve().parents[2]
-# a360-eval-sandbox는 backoffice 레포의 형제 폴더(예: Desktop 아래)다. 백엔드가
-# ops-server/backend로 한 단계 깊어졌으므로 parents[2](= backoffice의 부모)에서
-# 형제를 찾는다. 샌드박스가 다른 위치면 A360_EVAL_SANDBOX로 명시 지정한다.
-_DEFAULT_SANDBOX = _BACKEND_ROOT.parents[2] / "a360-eval-sandbox"
+# a360-eval-sandbox는 로컬 개발 시 backoffice 레포의 형제 폴더(예: Desktop 아래)다. 백엔드가
+# ops-server/backend로 한 단계 깊어졌으므로 parents[2](= backoffice의 부모)에서 형제를 찾는다.
+# 단, 컨테이너는 backend만 /app으로 복사돼 상위 경로가 얕고 parents[2]가 없어 IndexError가 난다
+# (부팅 자체가 막힌다). 그 경우 백엔드 루트 아래로 떨어뜨린다. 실제 위치는 A360_EVAL_SANDBOX로
+# 명시 지정한다 — 이 기본값은 임포트 시 부팅을 막지 않기 위한 안전판일 뿐이다.
+_sandbox_parents = _BACKEND_ROOT.parents
+_DEFAULT_SANDBOX = (_sandbox_parents[2] if len(_sandbox_parents) > 2 else _BACKEND_ROOT) / "a360-eval-sandbox"
 SANDBOX_ROOT = Path(os.getenv("A360_EVAL_SANDBOX", str(_DEFAULT_SANDBOX))).resolve()
 METADATA_DIR = SANDBOX_ROOT / "Metadata"
 PYTHON = SANDBOX_ROOT / ".venv-verify" / "Scripts" / "python.exe"
