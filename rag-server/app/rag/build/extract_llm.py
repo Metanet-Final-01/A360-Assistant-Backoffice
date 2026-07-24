@@ -251,25 +251,92 @@ def _pack_payload(node: dict) -> str:
     return json.dumps(node, ensure_ascii=False)
 
 
-def _split_children(root: dict, max_chars: int) -> list[dict]:
+def _fit_node(node: dict, budget: int) -> dict:
+    """노드(서브트리 포함)를 예산 안에 들어오게 만든다 — 긴 content부터 보이게 절단(_clip).
+
+    자기 content만 줄여선 안 된다 — 덩치가 자손에 있는 트리(부모는 짧고 손자가 거대)에서는
+    예산을 영영 못 맞춘다. 그래서 서브트리 전체의 content를 **긴 것부터** 깎아 초과분을 흡수한다.
+    구조(노드·제목·URL)는 건드리지 않으므로, 본문을 다 비워도 남는 구조 오버헤드가 예산을
+    넘으면 그대로 돌려준다(그 이상은 트리를 깨뜨린다).
+    """
+    node = json.loads(_pack_payload(node))  # 원본 불변 — 깊은 복사
+    for _ in range(8):  # 절단→재측정을 몇 번 반복(JSON 이스케이프로 감소폭이 정확하지 않다)
+        over = len(_pack_payload(node)) - budget
+        if over <= 0:
+            return node
+        refs: list[dict] = []
+
+        def _collect(n: dict) -> None:
+            if n.get("content"):
+                refs.append(n)
+            for child in n.get("nodes") or []:
+                _collect(child)
+
+        _collect(node)
+        if not refs:
+            return node  # 더 깎을 본문이 없다 — 구조만으로 초과
+        refs.sort(key=lambda n: len(n["content"]), reverse=True)
+        remaining = over + 64  # 꼬리표·이스케이프 여유
+        for ref in refs:
+            if remaining <= 0:
+                break
+            cur = len(ref["content"])
+            cut = min(cur, remaining)
+            ref["content"] = _clip(ref["content"], max(0, cur - cut))
+            remaining -= cut
+    return node
+
+
+def _split_children(root: dict, max_chars: int, stats: dict | None = None) -> list[dict]:
     """입력이 예산 초과면 루트의 직계 자식을 예산 이하로 그리디 패킹해 N개 청크로 나눈다(맵-리듀스 map).
 
     노드 하나를 중간에서 자르지 않는다(파라미터 표 절단 방지). 현재 코퍼스는 이 경로를 안 탄다(폴백).
+
+    ⚠️ 예산 초과는 자식 개수만으로 생기지 않는다 — 루트 자체(제목+본문)가 이미 예산을 넘거나
+    자식 하나가 예산보다 클 수 있다. 그 경우 그리디 패킹만으로는 여전히 초과 청크가 나와
+    보호 장치가 무력해지므로, 각각 content를 절단해 맞추고 통계로 드러낸다.
     """
+
+    def _bump(key: str) -> None:
+        if stats is not None:
+            stats[key] = stats.get(key, 0) + 1
+
     kids = root.get("nodes") or []
+    # 루트 단독(자식 제외)이 예산을 넘으면 루트 본문부터 줄인다.
+    bare = {**root, "nodes": []}
+    if len(_pack_payload(bare)) > max_chars:
+        _bump("oversized_root")
+        root = {**_fit_node(bare, max_chars), "nodes": kids}
+        bare = {**root, "nodes": []}
     if not kids:
         return [root]
-    base = len(_pack_payload({**root, "nodes": []}))
+
+    base = len(_pack_payload(bare))
     chunks: list[list[dict]] = [[]]
     cur = base
     for kid in kids:
-        ksz = len(_pack_payload(kid))
+        # 자식 하나가 남은 예산보다 크면 그 자식의 본문을 절단해 맞춘다.
+        if base + len(_pack_payload(kid)) > max_chars:
+            _bump("oversized_child")
+            kid = _fit_node(kid, max(0, max_chars - base))
+        ksz = len(_pack_payload(kid)) + 1  # +1 = 배열 구분자(,) — 안 세면 자식이 많을수록 누적 드리프트
         if chunks[-1] and cur + ksz > max_chars:
             chunks.append([])
             cur = base
         chunks[-1].append(kid)
         cur += ksz
-    return [{**root, "nodes": ch} for ch in chunks]
+
+    # 최종 보장 — 루트를 줄이고 자식을 절단해도, 자식의 구조적 오버헤드(id·제목·URL)까지는
+    # 없앨 수 없어 청크가 예산을 몇십 자 넘길 수 있다. 남은 초과분은 청크 루트 본문에서 깎아
+    # "예산 이하" 불변식을 실제로 지킨다(안 지키면 이 함수의 존재 이유가 사라진다).
+    out = []
+    for ch in chunks:
+        chunk = {**root, "nodes": ch}
+        if len(_pack_payload(chunk)) > max_chars:
+            _bump("oversized_chunk")
+            chunk = _fit_node(chunk, max_chars)
+        out.append(chunk)
+    return out
 
 
 def _name_fix(rejected: dict[str, tuple[str, str]], index: dict, model: str) -> dict[str, str]:
@@ -321,16 +388,27 @@ def _clean_params(params: list[LLMParam]) -> list[LLMParam]:
     return out
 
 
+def _wrap_payload(package: str, root_node: dict) -> dict:
+    """프롬프트가 명시한 입력 계약 그대로 감싼다 — {"package": 이름, "nodes": [루트]}.
+
+    루트 노드 dict를 그대로 보내면 프롬프트가 설명한 형태(package/nodes 래퍼)와 실제 입력이
+    어긋나, 모델이 잘못된 파싱 전제를 따를 수 있다(계약 불일치).
+    """
+    return {"package": package, "nodes": [root_node]}
+
+
 def _extract_one(payload_node: dict, index: dict, package: str, model: str, stats: dict,
-                 lock: threading.Lock, *, kind: str = "action") -> list[ExtractedAction]:
-    """단일 입력(패키지/트리거 트리 또는 청크) → 채택된 ExtractedAction 리스트.
+                 lock: threading.Lock, *, kind: str = "action") -> tuple[list[ExtractedAction], set[str]]:
+    """단일 입력(패키지/트리거 트리 또는 청크) → (채택된 ExtractedAction 리스트, LLM이 응답한 node_id 집합).
 
     노드 하나가 액션 여럿을 낼 수 있으므로 (node_id, action) 쌍의 평탄한 리스트를 돌려준다.
+    두 번째 값은 **완결 회계용**이다 — 채택 여부와 무관하게 "LLM이 verdict를 돌려준 노드"를
+    모아야 '조용히 흘린 노드'와 '정상 비-액션 판정'을 구분할 수 있다.
     kind="trigger"면 트리거 전용 프롬프트를 쓴다(판정 기준이 다르다).
     """
     messages = [
         {"role": "system", "content": _SYSTEM_TRIGGER if kind == "trigger" else _SYSTEM},
-        {"role": "user", "content": _pack_payload(payload_node)},
+        {"role": "user", "content": _pack_payload(_wrap_payload(package, payload_node))},
     ]
     try:
         result = chat_json(messages, purpose=PURPOSE, model_cls=PackageExtraction, model=model)
@@ -338,7 +416,10 @@ def _extract_one(payload_node: dict, index: dict, package: str, model: str, stat
         logger.warning("추출 실패 (건너뜀): %s — %s", package, exc)
         with lock:
             stats["failed"] += 1
-        return []
+        return [], set()
+
+    # 채택 전에 먼저 모은다 — is_action=false도 '응답했다'는 사실은 완결 회계에 필요하다.
+    returned_ids = {v.node_id for v in result.nodes if v.node_id}
 
     accepted: list[ExtractedAction] = []
     pending: dict[str, tuple[str, str]] = {}          # key → (node_id, 거부된 원본이름)
@@ -377,7 +458,7 @@ def _extract_one(payload_node: dict, index: dict, package: str, model: str, stat
                 with lock:
                     stats["rejected_not_verbatim"] += 1
                     stats.setdefault("rejected_samples", []).append(f"{package}/{old[:60]}")
-    return accepted
+    return accepted, returned_ids
 
 
 def extract_package(pkg_display: str, root_toc: dict, bodies_en: dict, *, model: str,
@@ -390,7 +471,9 @@ def extract_package(pkg_display: str, root_toc: dict, bodies_en: dict, *, model:
     캐시: 입력 JSON + model + prompt_hash 해시가 저장된 것과 같으면 LLM 재호출 없이 재사용.
     """
     payload, index = build_package_input(root_toc, bodies_en)
-    payload_str = _pack_payload(payload)
+    # 해시는 **실제로 모델에 보내는 것**(래퍼 포함)으로 잡는다 — 보내는 것과 캐시 키가 어긋나면
+    # 계약이 바뀌어도 옛 결과를 재사용한다.
+    payload_str = _pack_payload(_wrap_payload(pkg_display, payload))
     h = _input_hash(payload_str + f"|kind={kind}", model)
 
     hit = cache.get(pkg_display)
@@ -400,13 +483,16 @@ def extract_package(pkg_display: str, root_toc: dict, bodies_en: dict, *, model:
         return [ExtractedAction.model_validate(d) for d in hit["verdicts"]], index
 
     content_nodes = {nid for nid, m in index.items() if m["content"]}
+    returned_ids: set[str] = set()
     if len(payload_str) > _MAX_INPUT_CHARS:  # 예산 초과 → 맵-리듀스(현재 미발동)
         with lock:
             stats["map_reduced"] += 1
             stats.setdefault("map_reduced_packages", []).append(f"{pkg_display}({len(payload_str)}자)")
         merged: dict[tuple[str, str], ExtractedAction] = {}
-        for ch in _split_children(payload, _MAX_INPUT_CHARS):
-            for ea in _extract_one(ch, index, pkg_display, model, stats, lock, kind=kind):
+        for ch in _split_children(payload, _MAX_INPUT_CHARS, stats):
+            chunk_accepted, chunk_ids = _extract_one(ch, index, pkg_display, model, stats, lock, kind=kind)
+            returned_ids |= chunk_ids  # 완결 회계는 청크 합집합 기준
+            for ea in chunk_accepted:
                 key = (ea.node_id, _norm(ea.action.name))
                 prev = merged.get(key)
                 if prev is None or len(ea.action.parameters) > len(prev.action.parameters):
@@ -415,7 +501,7 @@ def extract_package(pkg_display: str, root_toc: dict, bodies_en: dict, *, model:
     else:
         with lock:
             stats["called"] += 1
-        accepted = _extract_one(payload, index, pkg_display, model, stats, lock, kind=kind)
+        accepted, returned_ids = _extract_one(payload, index, pkg_display, model, stats, lock, kind=kind)
         # 빈 결과 자기치유: content 노드가 있는데 0건이면 재호출(최대 2회).
         # 동시 호출 부하/출력 절단으로 빈 응답이 오고 교정이 그걸 빈 nodes로 통과시키는 경우가
         # 실측됐다(워커>1). 진짜 비-액션 패키지(UI Agents 등)는 재시도해도 0이면 그대로 수용한다.
@@ -424,9 +510,12 @@ def extract_package(pkg_display: str, root_toc: dict, bodies_en: dict, *, model:
             attempt += 1
             with lock:
                 stats["empty_retry"] = stats.get("empty_retry", 0) + 1
-            accepted = _extract_one(payload, index, pkg_display, model, stats, lock, kind=kind)
+            accepted, returned_ids = _extract_one(payload, index, pkg_display, model, stats, lock, kind=kind)
 
-    missing = content_nodes - {ea.node_id for ea in accepted}
+    # 완결 회계 — 기준은 "채택된 액션"이 아니라 **LLM이 verdict를 돌려준 노드**다.
+    # 채택 기준으로 세면 정상적인 비-액션 판정까지 전부 결손으로 잡혀, 정작 잡으려던
+    # '조용히 흘린 노드'와 구분이 안 돼 통계가 무의미해진다.
+    missing = content_nodes - returned_ids
     if missing:
         with lock:
             stats["completeness_missing"] += len(missing)

@@ -139,26 +139,35 @@ def build_documents_llm(dump_dir: str | Path, registry: dict, chunk_size: int, c
 
     # ── 단계 A: subtree 보유 패키지 LLM 추출 (병렬) ──────────────────────────────
     targets = []
+    failed_packages: dict[str, str] = {}  # display → 실패/스킵 사유 (조용한 누락 방지)
     for pkg in registry["packages"]:
         sr = pkg.get("subtree_root")
         if not sr:
             continue
         root_entry = node_by_cid.get(sr["content_id"])
         if root_entry is None:
+            # 등기부는 서브트리를 가리키는데 ToC에서 그 노드를 못 찾았다 — 조용히 빠지면
+            # 패키지가 코퍼스에서 통째로 사라지고 원인도 안 남는다.
+            failed_packages[pkg["display_en"]] = "root_not_found"
+            logger.warning("서브트리 루트를 ToC에서 못 찾음: %s (content_id=%s)",
+                           pkg["display_en"], sr.get("content_id"))
             continue
         root_toc = {
             "contentId": root_entry["content_id"], "title": root_entry["title"],
             "prettyUrl": root_entry["pretty_url"], "children": root_entry.get("children", []),
         }
-        targets.append((pkg["display_en"], root_toc, root_entry))
+        # 트리거 패키지가 서브트리를 가진 경우 판정 기준이 다르다 — 액션 프롬프트로 보면
+        # 트리거 문서를 절차/개념으로 판정해 버린다.
+        targets.append((pkg["display_en"], root_toc, root_entry, pkg.get("kind") or "action"))
 
     extracted: dict[str, tuple] = {}  # display → (verdicts, index, root_entry)
 
     from app.core.llm import usage_context
 
-    def _run(display: str, root_toc: dict, root_entry: dict):
+    def _run(display: str, root_toc: dict, root_entry: dict, pkg_kind: str):
         verdicts, index = extract_package(
-            display, root_toc, bodies_en, model=model, stats=ex_stats, lock=lock, cache=cache
+            display, root_toc, bodies_en, model=model, stats=ex_stats, lock=lock, cache=cache,
+            kind="trigger" if pkg_kind == "trigger" else "action",
         )
         return display, verdicts, index, root_entry
 
@@ -166,12 +175,23 @@ def build_documents_llm(dump_dir: str | Path, registry: dict, chunk_size: int, c
     print(f"[build-llm] 패키지 {len(targets)}개 LLM 추출 (모델 {model}, 워커 {workers})", flush=True)
     with usage_context(component="rag_parse", actor_type="system"):
         with ThreadPoolExecutor(max_workers=workers) as pool:
-            futures = [pool.submit(_run, d, rt, re_) for d, rt, re_ in targets]
+            futures = {pool.submit(_run, d, rt, re_, k): d for d, rt, re_, k in targets}
             done = 0
             for fut in as_completed(futures):
-                display, verdicts, index, root_entry = fut.result()
-                extracted[display] = (verdicts, index, root_entry)
                 done += 1
+                # 패키지 하나의 예외가 빌드 전체를 죽이면 산출물(jsonl·stats)이 아예 안 나온다 —
+                # 실패는 그 패키지만 격리하고 사유를 남긴 뒤 나머지를 계속 처리한다.
+                try:
+                    display, verdicts, index, root_entry = fut.result()
+                except Exception as exc:  # noqa: BLE001 — best-effort 격리
+                    display = futures[fut]
+                    failed_packages[display] = f"{type(exc).__name__}: {exc}"
+                    logger.exception("패키지 추출 실패 (건너뜀): %s", display)
+                    with lock:
+                        ex_stats["worker_failed"] = ex_stats.get("worker_failed", 0) + 1
+                        ex_stats.setdefault("worker_failed_packages", []).append(display)
+                else:
+                    extracted[display] = (verdicts, index, root_entry)
                 if done % 10 == 0:
                     print(f"  추출 {done}/{len(targets)}", flush=True)
 
@@ -202,9 +222,25 @@ def build_documents_llm(dump_dir: str | Path, registry: dict, chunk_size: int, c
                 stats["package_release"] += 1
 
         if display not in extracted:
-            # 문서 없는 패키지 — 개요만(기존과 동일한 최소 행).
             if pkg.get("subtree_root"):
-                continue  # 루트 노드를 못 찾은 경우 — 조용히 스킵(위 targets에서 제외됨)
+                # 서브트리는 있는데 추출이 없다 = 루트 미발견 또는 워커 실패. 조용히 건너뛰면
+                # 패키지가 코퍼스에서 사라진 사실조차 안 남으므로, 사유를 실은 개요 행을 남긴다.
+                reason = failed_packages.get(display, "extraction_missing")
+                rag_docs.append({
+                    "id": _doc_id("pkg2", display),
+                    "source_type": "package_overview",
+                    "package_name": display, "action_name": None, "locale": "en-US",
+                    "title": f"{display} 패키지",
+                    "url": (rel_doc or {}).get("pretty_url", ""),
+                    "content": (f"패키지: {display}\n액션 추출 실패 — 이 패키지의 액션 목록은 "
+                                f"이번 빌드에서 만들어지지 않았습니다(사유: {reason})."),
+                    "metadata": {"has_doc_pages": True, "kind": pkg["kind"],
+                                 "platform": pkg.get("platform"), "schema_source": "llm_agent",
+                                 "extraction_failed": True, "failure_reason": reason},
+                })
+                stats["package_overview"] += 1
+                stats.setdefault("extraction_failed_packages", []).append(f"{display}({reason})")
+                continue
             if versions or pkg.get("sources"):
                 rag_docs.append({
                     "id": _doc_id("pkg2", display),
@@ -284,7 +320,10 @@ def build_documents_llm(dump_dir: str | Path, registry: dict, chunk_size: int, c
                 content += _KO_BODY_HEAD + ko_body
 
             row = {
-                "id": _doc_id("action2", display, name),
+                # id 접두는 소스타입과 맞춘다 — 트리거 행이 action2 id를 달면 트리거 트리
+                # 방출분(trigger2)과 규칙이 갈려 소비처가 같은 트리거를 둘로 본다.
+                "id": _doc_id("trigger2" if source_type == "trigger_schema" else "action2",
+                              display, name),
                 "source_type": source_type,
                 "package_name": display, "action_name": name,
                 "locale": "ko-KR" if ko else "en-US",

@@ -323,6 +323,17 @@ def cmd_build_llm(args: argparse.Namespace) -> None:
         sys.exit("package_registry.json이 없습니다. 먼저 registry를 실행하세요.")
     registry = json.loads(registry_path.read_text(encoding="utf-8"))
 
+    # 덤프 오입력/부분 생성/스키마 변경은 흔한 운영 실수다 — 그대로 읽으면 FileNotFoundError·
+    # JSONDecodeError·KeyError traceback으로 죽어 원인을 알기 어렵다(validate와 같은 정책).
+    dump = Path(args.dump_dir)
+    toc_path = dump / "toc_en-US.json"
+    if not toc_path.exists():
+        sys.exit(f"{toc_path}이 없습니다 — crawl-khub를 먼저 실행하거나 --dump-dir을 확인하세요.")
+    try:
+        json.loads(toc_path.read_text(encoding="utf-8"))["toc"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        sys.exit(f"{toc_path} 읽기/파싱 실패({type(exc).__name__}): {exc} — 덤프가 온전한지 확인하세요.")
+
     rag_docs, stats = build_documents_llm(
         args.dump_dir, registry, chunk_size=config.CHUNK_SIZE, chunk_overlap=config.CHUNK_OVERLAP,
         model=args.model,
