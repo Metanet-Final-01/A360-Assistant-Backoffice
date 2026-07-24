@@ -1,0 +1,194 @@
+name: ops-deploy
+
+on:
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: CloudFormation environment
+        required: true
+        default: dev
+        type: choice
+        options:
+          - dev
+      deploy_stack:
+        description: Deploy CloudFormation stack after image push
+        required: true
+        type: boolean
+        default: true
+      image_tag:
+        description: Optional image tag. Defaults to the short commit SHA.
+        required: false
+        type: string
+      push_dev_tag:
+        description: Also push the dev tag.
+        required: true
+        type: boolean
+        default: true
+      instance_type:
+        description: EC2 instance type for the Ops Auto Scaling Group
+        required: true
+        default: t3.medium
+        type: string
+      min_size:
+        description: Min Ops instance count
+        required: true
+        default: "1"
+        type: string
+      desired_capacity:
+        description: Desired Ops instance count
+        required: true
+        default: "1"
+        type: string
+      max_size:
+        description: Max Ops instance count
+        required: true
+        default: "2"
+        type: string
+      client_vpn_cidr:
+        description: Client VPN CIDR allowed to reach the internal Ops ALB
+        required: true
+        default: 10.250.0.0/22
+        type: string
+  push:
+    branches:
+      - dev
+
+permissions:
+  contents: read
+  packages: write
+  id-token: write
+
+env:
+  AWS_REGION: ap-northeast-2
+
+jobs:
+  meta:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.resolve.outputs.environment }}
+      image_prefix: ${{ steps.resolve.outputs.image_prefix }}
+      image_tag: ${{ steps.resolve.outputs.image_tag }}
+      push_dev_tag: ${{ steps.resolve.outputs.push_dev_tag }}
+    steps:
+      - id: resolve
+        shell: bash
+        run: |
+          environment="${{ inputs.environment || 'dev' }}"
+          image_tag="${{ inputs.image_tag }}"
+          if [ -z "$image_tag" ]; then
+            image_tag="${GITHUB_SHA::12}"
+          fi
+
+          owner="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          image_prefix="ghcr.io/${owner}/a360-assistant-backoffice"
+
+          push_dev_tag="${{ inputs.push_dev_tag }}"
+          if [ "${{ github.event_name }}" = "push" ] || [ -z "$push_dev_tag" ]; then
+            push_dev_tag="true"
+          fi
+
+          echo "environment=${environment}" >> "$GITHUB_OUTPUT"
+          echo "image_prefix=${image_prefix}" >> "$GITHUB_OUTPUT"
+          echo "image_tag=${image_tag}" >> "$GITHUB_OUTPUT"
+          echo "push_dev_tag=${push_dev_tag}" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: meta
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ops-backend
+            dockerfile: ops-server/backend/Dockerfile
+            context: .
+          - name: ops-ui
+            dockerfile: ops-server/frontend/Dockerfile
+            context: .
+          - name: rag-server
+            dockerfile: rag-server/Dockerfile
+            context: .
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: |
+            ${{ needs.meta.outputs.image_prefix }}/${{ matrix.name }}:${{ needs.meta.outputs.image_tag }}
+            ${{ needs.meta.outputs.push_dev_tag == 'true' && format('{0}/{1}:dev', needs.meta.outputs.image_prefix, matrix.name) || '' }}
+
+  deploy:
+    needs:
+      - meta
+      - build
+    if: (github.event_name == 'push' && vars.OPS_AUTO_DEPLOY == 'true') || (github.event_name == 'workflow_dispatch' && inputs.deploy_stack == true)
+    runs-on: ubuntu-latest
+    environment: ops-deploy-${{ needs.meta.outputs.environment }}
+    env:
+      STACK_NAME: a360-assistant-${{ needs.meta.outputs.environment }}-ops
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Validate deployment configuration
+        env:
+          AWS_DEPLOY_ROLE_ARN: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          GHCR_TOKEN_SECRET_ARN: ${{ secrets.GHCR_TOKEN_SECRET_ARN }}
+          OPS_RUNTIME_SECRET_ARN: ${{ secrets.OPS_RUNTIME_SECRET_ARN }}
+          A360_BACKEND_URL: ${{ secrets.A360_BACKEND_URL }}
+        run: |
+          if [ -z "$AWS_DEPLOY_ROLE_ARN" ]; then
+            echo "AWS_DEPLOY_ROLE_ARN is missing from the selected GitHub Environment." >&2
+            exit 1
+          fi
+          if [ -z "$GHCR_TOKEN_SECRET_ARN" ]; then
+            echo "GHCR_TOKEN_SECRET_ARN is empty; stack deploy will skip GHCR token injection."
+          fi
+          if [ -z "$OPS_RUNTIME_SECRET_ARN" ]; then
+            echo "OPS_RUNTIME_SECRET_ARN is empty; stack deploy will skip extra runtime env injection."
+          fi
+          if [ -z "$A360_BACKEND_URL" ]; then
+            echo "A360_BACKEND_URL is empty; stack deploy will skip backend URL injection."
+          fi
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_DEPLOY_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Deploy CloudFormation
+        run: |
+          aws cloudformation deploy \
+            --stack-name "${STACK_NAME}" \
+            --region "${AWS_REGION}" \
+            --template-file infra/cloudformation/ops-stack.yml \
+            --capabilities CAPABILITY_NAMED_IAM \
+            --parameter-overrides \
+              Environment="${{ needs.meta.outputs.environment }}" \
+              OpsBackendImageUri="${{ needs.meta.outputs.image_prefix }}/ops-backend:${{ needs.meta.outputs.image_tag }}" \
+              OpsUiImageUri="${{ needs.meta.outputs.image_prefix }}/ops-ui:${{ needs.meta.outputs.image_tag }}" \
+              RagServerImageUri="${{ needs.meta.outputs.image_prefix }}/rag-server:${{ needs.meta.outputs.image_tag }}" \
+              InstanceType="${{ inputs.instance_type || 't3.medium' }}" \
+              MinSize="${{ inputs.min_size || '1' }}" \
+              DesiredCapacity="${{ inputs.desired_capacity || '1' }}" \
+              MaxSize="${{ inputs.max_size || '2' }}" \
+              ClientVpnCidr="${{ inputs.client_vpn_cidr || '10.250.0.0/22' }}" \
+              GhcrUsername="${{ secrets.GHCR_USERNAME }}" \
+              GhcrTokenSecretArn="${{ secrets.GHCR_TOKEN_SECRET_ARN }}" \
+              OpsRuntimeSecretArn="${{ secrets.OPS_RUNTIME_SECRET_ARN }}" \
+              RagServiceTokenSecretArn="${{ secrets.RAG_SERVICE_TOKEN_SECRET_ARN }}" \
+              A360BackendUrl="${{ secrets.A360_BACKEND_URL }}"

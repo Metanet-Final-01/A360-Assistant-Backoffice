@@ -49,3 +49,28 @@ def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():
     assert "Scheme: internal" in template
     assert "CidrIp: !Ref ClientVpnCidr" in template
     assert "Scheme: internet-facing" not in template
+
+
+def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
+    workflow = (ROOT / ".github/workflows/ops-deploy.yml").read_text(encoding="utf-8")
+    tests_workflow = (ROOT / ".github/workflows/tests.yml").read_text(encoding="utf-8")
+
+    assert "push:" in workflow
+    assert "branches:" in workflow
+    assert "- dev" in workflow
+    assert 'image_tag="${GITHUB_SHA::12}"' in workflow
+    assert "ops-backend:${{ needs.meta.outputs.image_tag }}" in workflow
+    assert "ops-ui:${{ needs.meta.outputs.image_tag }}" in workflow
+    assert "rag-server:${{ needs.meta.outputs.image_tag }}" in workflow
+    assert "aws cloudformation deploy" in workflow
+    assert "environment: ops-deploy-${{ needs.meta.outputs.environment }}" in workflow
+    assert "OPS_AUTO_DEPLOY" in workflow
+    assert "AWS_DEPLOY_ROLE_ARN" in workflow
+    assert "GHCR_TOKEN_SECRET_ARN" in workflow
+    assert "OPS_RUNTIME_SECRET_ARN" in workflow
+    assert "A360_BACKEND_URL" in workflow
+    assert "GHCR_TOKEN_SECRET_ARN is empty" in workflow
+    assert "OPS_RUNTIME_SECRET_ARN is empty" in workflow
+    assert "A360_BACKEND_URL is empty" in workflow
+    assert "infra-contract" in tests_workflow
+    assert "python -m pytest tests/ -q" in tests_workflow
