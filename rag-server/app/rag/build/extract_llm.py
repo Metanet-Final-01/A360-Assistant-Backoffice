@@ -287,7 +287,8 @@ def _fit_node(node: dict, budget: int) -> dict:
     return node
 
 
-def _split_children(root: dict, max_chars: int, stats: dict | None = None) -> list[dict]:
+def _split_children(root: dict, max_chars: int, stats: dict | None = None,
+                    lock: threading.Lock | None = None) -> list[dict]:
     """입력이 예산 초과면 루트의 직계 자식을 예산 이하로 그리디 패킹해 N개 청크로 나눈다(맵-리듀스 map).
 
     노드 하나를 중간에서 자르지 않는다(파라미터 표 절단 방지). 현재 코퍼스는 이 경로를 안 탄다(폴백).
@@ -298,7 +299,14 @@ def _split_children(root: dict, max_chars: int, stats: dict | None = None) -> li
     """
 
     def _bump(key: str) -> None:
-        if stats is not None:
+        # 공유 stats는 여러 패키지 워커가 동시에 갱신한다 — read-modify-write(+=)를 락 없이
+        # 하면 증가가 유실돼 진단 근거가 왜곡된다(table_llm과 같은 정책).
+        if stats is None:
+            return
+        if lock is None:
+            stats[key] = stats.get(key, 0) + 1
+            return
+        with lock:
             stats[key] = stats.get(key, 0) + 1
 
     kids = root.get("nodes") or []
@@ -489,7 +497,7 @@ def extract_package(pkg_display: str, root_toc: dict, bodies_en: dict, *, model:
             stats["map_reduced"] += 1
             stats.setdefault("map_reduced_packages", []).append(f"{pkg_display}({len(payload_str)}자)")
         merged: dict[tuple[str, str], ExtractedAction] = {}
-        for ch in _split_children(payload, _MAX_INPUT_CHARS, stats):
+        for ch in _split_children(payload, _MAX_INPUT_CHARS, stats, lock):
             chunk_accepted, chunk_ids = _extract_one(ch, index, pkg_display, model, stats, lock, kind=kind)
             returned_ids |= chunk_ids  # 완결 회계는 청크 합집합 기준
             for ea in chunk_accepted:
