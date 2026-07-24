@@ -308,6 +308,50 @@ def cmd_build_v2(args: argparse.Namespace) -> None:
         print(f"  {k}: {v}")
 
 
+def cmd_build_llm(args: argparse.Namespace) -> None:
+    """[재설계] 등기부+덤프 → rag_documents.jsonl. action_schema를 패키지 단위 LLM 구조화
+    추출(app/rag/build/merge_llm.py)로 생성한다 — 규칙 파싱 대체 경로.
+
+    build-v2(규칙 계층)와 나란히 존재한다. overview/release/doc_page는 같은 방식이되 doc_page는
+    ko·en 양 언어 각 1행. 트리거는 'Build automations > Triggers' 트리를 따로 순회해 수집한다.
+    이후 기존 validate·ingest를 그대로 사용한다.
+    """
+    from .build.merge_llm import build_documents_llm
+
+    registry_path = config.DATA_DIR / "package_registry.json"
+    if not registry_path.exists():
+        sys.exit("package_registry.json이 없습니다. 먼저 registry를 실행하세요.")
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+
+    # 덤프 오입력/부분 생성/스키마 변경은 흔한 운영 실수다 — 그대로 읽으면 FileNotFoundError·
+    # JSONDecodeError·KeyError traceback으로 죽어 원인을 알기 어렵다(validate와 같은 정책).
+    dump = Path(args.dump_dir)
+    toc_path = dump / "toc_en-US.json"
+    if not toc_path.exists():
+        sys.exit(f"{toc_path}이 없습니다 — crawl-khub를 먼저 실행하거나 --dump-dir을 확인하세요.")
+    try:
+        json.loads(toc_path.read_text(encoding="utf-8"))["toc"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        sys.exit(f"{toc_path} 읽기/파싱 실패({type(exc).__name__}): {exc} — 덤프가 온전한지 확인하세요.")
+
+    rag_docs, stats = build_documents_llm(
+        args.dump_dir, registry, chunk_size=config.CHUNK_SIZE, chunk_overlap=config.CHUNK_OVERLAP,
+        model=args.model,
+    )
+    config.RAG_DOCUMENTS_JSONL.parent.mkdir(parents=True, exist_ok=True)
+    with open(config.RAG_DOCUMENTS_JSONL, "w", encoding="utf-8") as f:
+        for doc in rag_docs:
+            f.write(json.dumps(doc, ensure_ascii=False) + "\n")
+    stats_path = config.DATA_DIR / "build_stats.json"
+    stats_path.write_text(json.dumps(stats, ensure_ascii=False, indent=1), encoding="utf-8")
+
+    print(f"RAG 문서(청크) {len(rag_docs)}개 → {config.RAG_DOCUMENTS_JSONL}")
+    print(f"빌드 통계 → {stats_path}")
+    print(f"  사용 모델: {args.model or config.AGENT_PARSE_MODEL}")
+    for k, v in stats.items():
+        print(f"  {k}: {v}")
+
+
 def _mask_secrets(target: str) -> str:
     """접속 문자열의 비밀번호를 가린다. 이 stdout은 /rag/ingest/status로 그대로 반환되므로
     유출 경로다 — 비밀번호에 '@'가 들어 있어도(`u:pa@ss@host`) 남지 않도록, userinfo의
@@ -558,6 +602,15 @@ def main() -> None:
     p_build2.add_argument("--score-dl", action="store_true", help="dl 규칙 결과를 골드로 LLM 추출 정합 채점(행 수정 없음)")
     p_build2.add_argument("--model", default=None, help="보강용 챗 모델 (기본: AGENT_PARSE_MODEL)")
     p_build2.set_defaults(func=cmd_build_v2)
+
+    p_buildllm = sub.add_parser(
+        "build-llm",
+        help="[재설계] 등기부+덤프 → rag_documents.jsonl. action_schema를 패키지 단위 LLM 구조화 "
+             "추출로 생성(규칙 파싱 대체). doc_page는 ko·en 양 언어, 트리거는 별도 트리 순회",
+    )
+    p_buildllm.add_argument("--dump-dir", required=True, help="khub-dump 디렉터리")
+    p_buildllm.add_argument("--model", default=None, help="추출 챗 모델 (기본: AGENT_PARSE_MODEL)")
+    p_buildllm.set_defaults(func=cmd_build_llm)
 
     p_validate = sub.add_parser(
         "validate",
