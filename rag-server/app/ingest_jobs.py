@@ -19,43 +19,28 @@ STORE_DIR = Path(os.getenv("RAG_JOB_STORE_DIR", REPO_ROOT / "data" / "rag_ingest
 DB_PATH = STORE_DIR / "jobs.sqlite3"
 LOG_DIR = STORE_DIR / "logs"
 
+# 파이프라인은 khub 웹크롤 정본 v2 하나뿐이다(팀 결정: 웹크롤 전용). 과거 옵션 1~3(JAR/GitHub)
+# 스크립트는 제거됐다 — run_option4_full_v2가 _run_steps로 5단계를 순차 실행하고, 한 단계라도
+# 실패하면 거기서 멈춘다(validate가 실패하면 ingest에 도달하지 않는다).
+V2_PIPELINE = REPO_ROOT / "app" / "rag" / "scripts" / "run_option4_full_v2.py"
+
+# mode는 **하위호환용으로만 받는다** — 어떤 값이 와도 v2 한 갈래를 돈다. ops 프론트가 아직
+# standard/extended/agent_parse를 보내고 있어(ops-server/frontend/views/rag_ingest.py) 값 자체는
+# 계속 수용하고 잡 기록에도 남긴다. ops가 모드 선택 UI를 걷어내면 이 별칭들도 함께 사라진다.
 MODES = ("standard", "extended", "agent_parse")
 MODE_TO_OPTION = {"standard": 1, "extended": 2, "agent_parse": 3}
 OPTION_TO_MODE = {value: key for key, value in MODE_TO_OPTION.items()}
 
-STAGES = {
-    "standard": [
-        ("crawl", "Crawl documents"),
-        ("crawl-en", "Crawl English documents"),
-        ("build-action-tree", "Build action tree"),
-        ("build", "Build documents"),
-        ("ingest", "Load pgvector/OpenSearch"),
-    ],
-    "extended": [
-        ("crawl", "Crawl documents"),
-        ("crawl-en", "Crawl English documents"),
-        ("build-action-tree", "Build action tree"),
-        ("export-naive-leaf-actions", "Extract naive leaf actions"),
-        ("build", "Build documents"),
-        ("ingest", "Load pgvector/OpenSearch"),
-    ],
-    "agent_parse": [
-        ("crawl", "Crawl documents"),
-        ("crawl-en", "Crawl English documents"),
-        ("build-action-tree", "Build action tree"),
-        ("export-for-agent", "Create agent input"),
-        ("parse-docs-agent", "Parse documents with LLM"),
-        ("export-naive-leaf-actions", "Extract naive leaf actions"),
-        ("build", "Build documents"),
-        ("ingest", "Load pgvector/OpenSearch"),
-    ],
-}
-
-OPTION_SCRIPTS = {
-    1: REPO_ROOT / "app" / "rag" / "scripts" / "run_option1_jar_only.py",
-    2: REPO_ROOT / "app" / "rag" / "scripts" / "run_option2_with_naive_actions.py",
-    3: REPO_ROOT / "app" / "rag" / "scripts" / "run_option3_with_doc_agent.py",
-}
+# v2 5단계 — run_option4_full_v2.py의 steps와 순서·키가 일치해야 진행률이 맞는다.
+_V2_STAGES = [
+    ("crawl-khub", "Crawl khub dump"),
+    ("registry", "Build package registry"),
+    ("build-v2", "Build documents (v2)"),
+    ("validate", "Quality gate"),
+    ("ingest", "Load pgvector/OpenSearch"),
+]
+# 모드가 무엇이든 같은 단계를 밟는다(파이프라인이 하나뿐이므로).
+STAGES = {mode: _V2_STAGES for mode in MODES}
 
 TERMINAL_STATUSES = {"SUCCEEDED", "FAILED", "CANCELED", "INTERRUPTED"}
 RUNNING_STATUSES = {"QUEUED", "RUNNING", "CANCEL_REQUESTED"}
@@ -208,8 +193,10 @@ def _get_job_raw(job_id: str) -> dict[str, Any] | None:
 def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_limit: int | None = None) -> dict[str, Any]:
     if mode not in MODES:
         raise ValueError("mode must be standard, extended, or agent_parse")
-    if mode == "agent_parse" and not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError("OPENAI_API_KEY is required for Agent Parse mode.")
+    # v2는 모드와 무관하게 build-v2에서 LLM을 쓴다(--llm-tables·--judge·--enrich) — 예전처럼
+    # agent_parse일 때만 검사하면 키 없이 시작해 빌드 중간에 죽는다. 시작 전에 막는다.
+    if not os.getenv("OPENAI_API_KEY"):
+        raise RuntimeError("OPENAI_API_KEY is required for the v2 ingest pipeline.")
 
     with _lock:
         job_id = str(uuid.uuid4())
@@ -244,8 +231,8 @@ def _run_job(job_id: str) -> None:
     job = _get_job_raw(job_id)
     if not job:
         return
-    option = MODE_TO_OPTION[job["mode"]]
-    args = [sys.executable, str(OPTION_SCRIPTS[option])]
+    # mode와 무관하게 v2 정본 파이프라인 하나를 돈다(위 MODES 주석 참고).
+    args = [sys.executable, str(V2_PIPELINE)]
     if job["clean"]:
         args.append("--clean")
 
@@ -330,21 +317,14 @@ def _observe_stage(job_id: str, mode: str, line: str) -> None:
 
 
 def _stage_from_command(mode: str, command: str) -> str | None:
-    mapping = {
-        "crawl --locale en-US": "crawl-en",
-        "build-action-tree": "build-action-tree",
-        "export-naive-leaf-actions": "export-naive-leaf-actions",
-        "export-for-agent": "export-for-agent",
-        "parse-docs-agent": "parse-docs-agent",
-        "build --include-naive-leaf-actions": "build",
-        "build": "build",
-        "ingest --clean": "ingest",
-        "ingest": "ingest",
-        "crawl": "crawl",
-    }
-    stage = mapping.get(command)
-    if stage and any(item[0] == stage for item in STAGES.get(mode, [])):
-        return stage
+    """`=== [i/N] <명령 …> ===` 로그 한 줄에서 단계 키를 뽑는다.
+
+    v2 명령은 인자를 달고 나온다(`build-v2 --dump-dir <경로> --llm-tables …`)라서 명령 전체를
+    키로 하는 정확일치 표는 쓸 수 없다 — **첫 토큰(하위 명령)** 으로만 판정한다.
+    """
+    head = command.strip().split()[0] if command.strip() else ""
+    if head and any(item[0] == head for item in STAGES.get(mode, [])):
+        return head
     return None
 
 

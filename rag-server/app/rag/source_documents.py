@@ -8,8 +8,6 @@ from typing import Any
 import psycopg
 
 from app.rag import config
-from app.rag.build.merge import build_rag_documents, load_docs
-from app.rag.pipeline import _load_source_inputs
 
 
 _lock = threading.RLock()
@@ -18,38 +16,14 @@ _SCHEMA_SOURCE_TYPES = {"action_schema", "package_overview"}
 
 @lru_cache(maxsize=1)
 def _documents() -> tuple[dict[str, Any], ...]:
+    """근거 문서 풀 — 적재된 `rag_documents`를 원본으로 삼는다.
+
+    예전에는 v1 로컬 산출물(packages.json·docs.jsonl·bots.jsonl)로 메모리에서 먼저 조립하고,
+    비었을 때만 DB로 폴백했다. v2 웹크롤 전용화로 그 산출물들이 더 이상 생성되지 않아
+    (파이프라인이 khub 덤프 → rag_documents로 바로 간다) 그 경로는 항상 0건이 되는 죽은
+    코드였고, 근거가 되던 `pipeline._load_source_inputs`도 함께 제거됐다. 그래서 DB 한 갈래만 남긴다.
+    """
     with _lock:
-        packages, docs, bots = _load_source_inputs("all")
-        pre_chunk_docs = build_rag_documents(packages, docs, locale="ko", bots=bots, chunk_size=None)
-        raw_docs_by_url = {d.get("url"): d for d in load_docs(config.DOCS_JSONL) if d.get("url")}
-        rows: list[dict[str, Any]] = []
-        for doc in pre_chunk_docs:
-            content = doc.get("content") or ""
-            if not content.strip():
-                continue
-            metadata = doc.get("metadata") or {}
-            breadcrumbs = metadata.get("breadcrumbs")
-            raw = raw_docs_by_url.get(doc.get("url")) if doc.get("source_type") == "doc_page" else None
-            rows.append(
-                {
-                    "id": doc["id"],
-                    "source_type": doc.get("source_type"),
-                    "title": doc.get("title") or "",
-                    "content": content,
-                    "package_name": doc.get("package_name"),
-                    "action_name": doc.get("action_name"),
-                    "parent_menu_id": raw.get("parent_menu_id") if raw else None,
-                    "menu_id": raw.get("menu_id") if raw else None,
-                    "depth": len(breadcrumbs) if breadcrumbs else None,
-                    "path_titles": breadcrumbs,
-                    "url": doc.get("url"),
-                    "schema_source": metadata.get("schema_source")
-                    if doc.get("source_type") in _SCHEMA_SOURCE_TYPES
-                    else None,
-                }
-            )
-        if rows:
-            return tuple(rows)
         return _documents_from_database()
 
 

@@ -9,7 +9,7 @@
 달아 내보낸다 — merge.py가 이 값을 그대로 action_schema metadata에 실어 JAR("jar")과 구분한다.
 """
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 SCHEMA_SOURCE = "llm_agent"
 
@@ -24,6 +24,14 @@ class ParsedParameter(BaseModel):
     required: bool = False
     default: object | None = None
     options: list[str] | None = None
+
+    @field_validator("required", mode="before")
+    @classmethod
+    def _null_required_is_false(cls, v):
+        """LLM이 required를 명시적 null로 주는 경우(gpt-5-mini 관찰) False로 강제한다.
+        기본값 False는 '키 부재'에만 적용돼 null이 오면 bool 검증이 깨졌다 — 스키마 JSON은
+        bool 그대로라 판별기 캐시 키(_PROMPT_HASH)는 불변, 교정 재시도만 사라진다."""
+        return False if v is None else v
 
     def to_dict(self) -> dict:
         d: dict = {

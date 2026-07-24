@@ -29,35 +29,35 @@
     "Universal web trigger": ["Universal web trigger"]
   },
 
-  "non_action_leaf_markers": [
-    "support matrix",
-    "supported controls",
-    "Example for",
-    "Examples of",
-    "Configuring SharePoint app",
+  "_comment_hard_markers": "P1 실측(2026-07-21): hard 마커가 막던 34건 중 32건(94%)을 LLM 판별기(judge_actions)가 독립적으로 똑같이 폐기 — 순수 중복이라 26종 삭제했다. 판별기가 놓쳐 카탈로그에 새는 2건만 남긴다: 'asana-update-comment-action'(제목이 URL 슬러그), 'output example'(예제 문서 'Merge output example'·'Join type output examples'). judge가 이 둘까지 잡게 개선되면 P3 골든셋 확립 후 0으로 뺀다. 이 마커는 액션 방출만 막고 doc_page 적재는 막지 않는다.",
 
-    "attributes list",
-    "Add LDAPS server certificate",
-    "Comparing Advanced Classifier",
-    "bring your own key",
-    "Set up rules for classifying",
+  "non_action_leaf_markers": [
     "asana-update-comment-action",
-    "output example",
-    "Custom datetime formats",
-    "Email server settings",
-    "CSV operations",
-    "use case",
-    "Permissions for application",
-    "Frequently used",
-    "dictionary variable for PDF properties",
-    "Create a PDF using Python",
-    "actions supported",
-    "best practices",
-    "field types",
-    "How send key works",
-    "Guidelines for",
-    "Runtime options",
-    "Set up Narada",
-    "Structured Output from"
-  ]
+    "output example"
+  ],
+
+  "_comment_soft_markers": "위 마커는 무조건 제외지만, 아래 마커는 '정규화된 액션명이 공식 액션 테이블에 없을 때만' 제외한다. khub 예제 문서 중에는 제목만 예제형이고 실제로는 실존 액션 문서인 것이 있다(Datetime 'Example of using the Assign action' → Assign). 무조건 차단하면 그 액션이 카탈로그에서 사라진다.",
+
+  "non_action_leaf_markers_unless_table_confirmed": [
+    "example of",
+    "how subject filter works",
+    "configuring azure openai",
+    "configuring the log to server",
+    "configuring workday launch eib"
+  ],
+
+  "_comment_session_overrides": "세션 여닫기 보정(2026-07-20 실측 불균형 10패키지). openers/closers는 Control Room 실명 기준으로 **각각 다른 액션**에 적는다 — 소비처(백엔드 derive_session_registry)가 액션 1건당 session_role 하나만 읽어서, 겸용 문서 한 행에 두 역할을 담으면 짝이 영영 안 맞는다. 전용 문서가 없어도 (a) 패키지 개요의 공식 액션 테이블에 있거나 (b) 겸용 문서('Connect and Disconnect')를 쪼갠 구성 액션이면 빌드가 파라미터 미상 행으로 세워준다. 근거가 둘 다 없으면 빌드 통계 session_declared_missing에 나오고, 그 패키지는 짝이 안 맞아 session_role이 아예 안 붙는다(session_role_dropped_unbalanced).",
+
+  "session_overrides": {
+    "Active Directory": {"uses_session": true, "openers": ["Connect"], "closers": ["Disconnect"]},
+    "Apple Mail": {"uses_session": true, "openers": ["Connect"], "closers": ["Disconnect"]},
+    "Microsoft Outlook (macOS)": {"uses_session": true, "openers": ["Connect"], "closers": ["Disconnect"]},
+    "Email": {"uses_session": true, "openers": ["Connect"], "closers": ["Disconnect"]},
+    "Microsoft 365 Calendar": {"uses_session": true, "openers": ["Connect"], "closers": ["Disconnect"]},
+    "Microsoft 365 OneDrive": {"uses_session": true, "openers": ["Connect"], "closers": ["Disconnect"]},
+    "Microsoft 365 Outlook": {"uses_session": true, "openers": ["Connect"], "closers": ["Disconnect"]},
+    "Pipeline Accelerator": {"uses_session": true, "openers": ["Start Pipeline Accelerator session"], "closers": ["End Session"]},
+    "SAP BAPI": {"uses_session": true, "openers": ["Connect"], "closers": ["Disconnect"]},
+    "Workday": {"uses_session": false}
+  }
 }
