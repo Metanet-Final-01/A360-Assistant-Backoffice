@@ -54,6 +54,10 @@ Parameters:
     Type: String
     Default: ""
     Description: Optional Secret ARN containing RAG_SERVICE_TOKEN.
+  OpsRuntimeSecretArn:
+    Type: String
+    Default: ""
+    Description: Optional Secret ARN containing extra runtime env vars for ops-backend and rag-server.
   A360BackendUrl:
     Type: String
     Default: ""
@@ -68,6 +72,7 @@ Parameters:
 
 Conditions:
   HasRagTokenSecret: !Not [!Equals [!Ref RagServiceTokenSecretArn, ""]]
+  HasOpsRuntimeSecret: !Not [!Equals [!Ref OpsRuntimeSecretArn, ""]]
   HasBackendUrl: !Not [!Equals [!Ref A360BackendUrl, ""]]
   HasGhcrToken: !Not [!Equals [!Ref GhcrTokenSecretArn, ""]]
 
@@ -211,6 +216,7 @@ Resources:
                   - Fn::ImportValue:
                       Fn::Sub: "${ProjectName}-${Environment}-RagIngestSecretArn"
                   - !If [HasRagTokenSecret, !Ref RagServiceTokenSecretArn, !Ref AWS::NoValue]
+                  - !If [HasOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref AWS::NoValue]
                   - !If [HasGhcrToken, !Ref GhcrTokenSecretArn, !Ref AWS::NoValue]
 
   OpsInstanceProfile:
@@ -264,6 +270,7 @@ Resources:
               aws secretsmanager get-secret-value --secret-id '${RagIngestSecretArn}' --query SecretString --output text > /opt/a360/rag_ingest.json
               ${ReadGhcrSecret}
               ${ReadRagTokenSecret}
+              ${ReadOpsRuntimeSecret}
 
               OPS_DB_USER=$(jq -r '.username' /opt/a360/ops_reader.json)
               OPS_DB_PASSWORD=$(jq -r '.password' /opt/a360/ops_reader.json)
@@ -285,6 +292,7 @@ Resources:
 
               docker run -d --restart unless-stopped --name rag-server --network a360 \
                 -p ${RagServerPort}:${RagServerPort} \
+                --env-file /opt/a360/runtime.env \
                 -e RAG_DATABASE_URL="$RAG_DSN" \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
                 --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${RagLogGroup} \
@@ -292,6 +300,7 @@ Resources:
 
               docker run -d --restart unless-stopped --name ops-backend --network a360 \
                 -p ${OpsBackendPort}:${OpsBackendPort} \
+                --env-file /opt/a360/runtime.env \
                 -e A360_OBSERVABILITY_DATABASE_URL="$OBS_DSN" \
                 -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
@@ -359,6 +368,16 @@ Resources:
                 - HasRagTokenSecret
                 - !Sub "aws secretsmanager get-secret-value --secret-id '${RagServiceTokenSecretArn}' --query SecretString --output text > /opt/a360/rag_service_token"
                 - "touch /opt/a360/rag_service_token"
+              ReadOpsRuntimeSecret: !If
+                - HasOpsRuntimeSecret
+                - !Sub |
+                  secret_string=$(aws secretsmanager get-secret-value --secret-id '${OpsRuntimeSecretArn}' --query SecretString --output text)
+                  if printf '%s' "$secret_string" | jq -e 'type == "object"' >/dev/null 2>&1; then
+                    printf '%s' "$secret_string" | jq -r 'to_entries[] | select(.value != null) | "\(.key)=\(.value|tostring)"' > /opt/a360/runtime.env
+                  else
+                    printf '%s\n' "$secret_string" > /opt/a360/runtime.env
+                  fi
+                - "touch /opt/a360/runtime.env"
               BackendUrlEnv: !If
                 - HasBackendUrl
                 - !Sub "-e A360_BACKEND_URL='${A360BackendUrl}'"

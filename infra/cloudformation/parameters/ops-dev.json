@@ -5,5 +5,6 @@
   { "ParameterKey": "OpsBackendImageUri", "ParameterValue": "ghcr.io/Metanet-Final-01/a360-assistant-backoffice/ops-backend:TODO_COMMIT_SHA" },
   { "ParameterKey": "OpsUiImageUri", "ParameterValue": "ghcr.io/Metanet-Final-01/a360-assistant-backoffice/ops-ui:TODO_COMMIT_SHA" },
   { "ParameterKey": "RagServerImageUri", "ParameterValue": "ghcr.io/Metanet-Final-01/a360-assistant-backoffice/rag-server:TODO_COMMIT_SHA" },
+  { "ParameterKey": "OpsRuntimeSecretArn", "ParameterValue": "" },
   { "ParameterKey": "A360BackendUrl", "ParameterValue": "TODO_BACKEND_URL" }
 ]
