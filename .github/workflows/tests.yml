@@ -31,6 +31,10 @@ jobs:
             install: pip install -r rag-server/requirements-dev.txt
             workdir: rag-server
             test: pytest -q
+          - name: infra-contract
+            install: pip install pytest
+            workdir: .
+            test: python -m pytest tests/ -q
     name: pytest (${{ matrix.name }})
     steps:
       - uses: actions/checkout@v4
