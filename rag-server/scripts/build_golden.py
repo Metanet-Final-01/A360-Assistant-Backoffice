@@ -36,7 +36,7 @@ from pydantic import BaseModel, Field  # noqa: E402
 
 from app.rag import config  # noqa: E402
 from app.rag.agents.structured import chat_json  # noqa: E402
-from app.rag.build.merge_v2 import _load_bodies, _plain_text, _soup  # noqa: E402
+from app.rag.build.common import _load_bodies, _plain_text, _soup  # noqa: E402
 from app.rag.build.registry import subtree_nodes, walk_toc  # noqa: E402
 
 _OVERVIEW_LIMIT = 15000  # 개요 원문 상한 — 액션 표는 보통 앞부분. 최대 27K(Recorder)라 넉넉히.

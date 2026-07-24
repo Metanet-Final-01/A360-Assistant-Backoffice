@@ -1,22 +1,21 @@
-"""docs.automationanywhere.com 공식 문서 크롤러.
+"""docs.automationanywhere.com 공식 문서 khub API 저수준 클라이언트.
 
-find_map()으로 문서 맵(예: "Automation 360" 한국어판)을 찾고, get_menu()/flatten_menu()로
-사이트 메뉴(좌측 사이드바 목차)를 breadcrumb 붙은 평평한 토픽 목록으로 바꾼 뒤,
-crawl_topics()가 토픽 본문을 받아 JSONL로 저장한다(재시작 시 이미 받은 content_id는 건너뜀).
+이 문서 사이트는 Fluid Topics CMS로 서비스되어 HTML 스크레이핑 없이 /api/khub/* JSON API로
+맵/메뉴/본문을 바로 받는다. 이 모듈은 그 API 호출부만 담는다:
+- list_maps()          문서 맵 목록
+- get_menu(map_id)     맵의 사이드바 목차(ToC) 트리
+- fetch_topic_html()   토픽 본문 HTML
 
-구현 참고: 이 문서 사이트는 Fluid Topics라는 CMS 플랫폼으로 서비스되고 있어, HTML
-스크레이핑 없이 그 /api/khub/* JSON API로 맵/메뉴/본문을 바로 받아올 수 있다.
+v2 덤프 생성기(sources/khub_dump.py, `crawl-khub` 서브커맨드)가 이 헬퍼들로 toc_*.json +
+bodies_*.jsonl[html]을 만든다. (원래 여기 있던 v1 크롤러 find_map/flatten_menu/crawl_topics·
+html_to_text는 build-llm 일원화로 khub_dump에 대체되어 제거됐다 — refactor/remove-build-v2.)
 """
 
-import json
 import time
 
 import httpx
-from bs4 import BeautifulSoup
 
 from ..config import DOCS_BASE_URL
-from .doc_structure import extract_doc_structure
-from .html_structurizer import html_to_structured_json
 
 
 def _client() -> httpx.Client:
@@ -48,23 +47,6 @@ def list_maps() -> list[dict]:
         return resp.json()
 
 
-def find_map(locale: str = "ko-KR", title: str = "Automation 360") -> dict:
-    for m in list_maps():
-        metadata = {x["key"]: x["values"] for x in m.get("metadata", [])}
-        if m.get("title") == title and metadata.get("ft:locale") == [locale]:
-            return m
-    raise ValueError(f"map not found: title={title!r} locale={locale!r}")
-
-
-def list_maps_for_locale(locale: str) -> list[dict]:
-    result = []
-    for m in list_maps():
-        metadata = {x["key"]: x["values"] for x in m.get("metadata", [])}
-        if metadata.get("ft:locale") == [locale]:
-            result.append(m)
-    return result
-
-
 def get_menu(map_id: str) -> list[dict]:
     """문서 사이트 좌측 사이드바 메뉴(목차) 트리를 그대로 받아온다."""
     with _client() as client:
@@ -73,94 +55,6 @@ def get_menu(map_id: str) -> list[dict]:
         return data if isinstance(data, list) else data.get("toc", [])
 
 
-def flatten_menu(menu: list[dict], *, map_id: str | None = None, map_title: str | None = None) -> list[dict]:
-    """메뉴 트리를 breadcrumbs가 붙은 평평한 토픽 리스트로 변환.
-
-    `parent_menu_id`를 같이 남긴다 — 메뉴의 `children`이 사이트 사이드바와 정확히
-    일치하는 진짜 부모-자식 계층이라는 게 실측 확인됐다(2026-07-10,
-    app/rag/_investigation_notes/HTML_STRUCTURE_INSIGHTS.md 참고). 본문 안 하이퍼링크로
-    계층을 재구성하는 것보다 이게 근본적으로 더 정확하고
-    (순환 자체가 구조적으로 불가능), 트리거처럼 다른 브랜치에 있는 것만 별도로 다룬다.
-    """
-    topics: list[dict] = []
-
-    def walk(nodes: list[dict], ancestors: list[str], parent_menu_id: str | None) -> None:
-        for node in nodes:
-            title = node.get("title", "")
-            menu_id = node.get("tocId")
-            entry = {
-                "content_id": node.get("contentId"),
-                "menu_id": menu_id,
-                "parent_menu_id": parent_menu_id,
-                "map_id": map_id,
-                "map_title": map_title,
-                "title": title,
-                "breadcrumbs": ancestors,
-                "pretty_url": node.get("prettyUrl", ""),
-            }
-            if entry["content_id"]:
-                topics.append(entry)
-            walk(node.get("children", []), ancestors + [title], menu_id)
-
-    walk(menu, [], None)
-    return topics
-
-
 def fetch_topic_html(client: httpx.Client, map_id: str, content_id: str) -> str:
     resp = _get_with_retry(client, f"/api/khub/maps/{map_id}/topics/{content_id}/content")
     return resp.text
-
-
-def html_to_text(html: str) -> str:
-    soup = BeautifulSoup(html, "html.parser")
-    text = soup.get_text(separator="\n")
-    lines = [line.strip() for line in text.splitlines()]
-    return "\n".join(line for line in lines if line)
-
-
-def crawl_topics(
-    map_id: str,
-    topics: list[dict],
-    out_path,
-    delay_seconds: float = 0.2,
-    on_progress=None,
-    locale: str | None = None,
-) -> int:
-    """토픽 본문을 받아 JSONL로 저장. 이미 저장된 content_id는 건너뛴다(재시작 안전).
-
-    locale을 주면 레코드에 "locale" 필드로 같이 남긴다 — 다국어 크롤(예: ko-KR/en-US를
-    같은 파일에 합칠 때)에서 레코드가 어느 언어인지 파일 구분 없이도 알 수 있게 한다.
-    """
-    out_path.parent.mkdir(parents=True, exist_ok=True)
-    done: set[str] = set()
-    if out_path.exists():
-        with open(out_path, encoding="utf-8") as f:
-            for line in f:
-                try:
-                    done.add(json.loads(line)["content_id"])
-                except (json.JSONDecodeError, KeyError):
-                    continue
-
-    written = 0
-    with _client() as client, open(out_path, "a", encoding="utf-8") as f:
-        for i, topic in enumerate(topics):
-            if topic["content_id"] in done:
-                continue
-            topic_map_id = topic.get("map_id") or map_id
-            html = fetch_topic_html(client, topic_map_id, topic["content_id"])
-            record = {
-                **topic,
-                "url": DOCS_BASE_URL + topic["pretty_url"] if topic["pretty_url"] else "",
-                "text": html_to_text(html),
-                "structure": extract_doc_structure(html),
-                # 향후 LLM 기반 파싱 Agent가 raw HTML 대신 저렴하게 소비할 압축 표현
-                # (CSS/JS/이미지 데이터 제거, tag/class/data-tocid만 남김).
-                "structured_html": html_to_structured_json(html),
-                "locale": locale,
-            }
-            f.write(json.dumps(record, ensure_ascii=False) + "\n")
-            written += 1
-            if on_progress:
-                on_progress(i + 1, len(topics), topic["title"])
-            time.sleep(delay_seconds)
-    return written

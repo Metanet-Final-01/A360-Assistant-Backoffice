@@ -265,7 +265,7 @@ def build_registry(dump_dir: str | Path) -> dict:
     # **문서 트리 노드를 확정적으로 지목**한다(실측 2026-07-21: 자식 135건 중 133건 98%).
     # 이름 매칭(norm_key)은 표기가 갈리면 조용히 실패한다 — 릴리스노트 'IQ Bot - Document
     # Automation Bridge' vs 문서트리 'IQ Bot - DA Bridge'가 실제로 그랬고, 액션 2개가 통째로
-    # 유실됐다. 링크는 그 실패가 원리적으로 없다(doc_structure.py:11-16이 이미 실측해둔 사실).
+    # 유실됐다. 링크(data-tocid)는 그 표기 불일치 실패가 원리적으로 없다.
     rel = next(e for e in flat_en if e["title"] == "Package updates overview")
     for child in rel["children"]:
         t = child.get("title", "")
