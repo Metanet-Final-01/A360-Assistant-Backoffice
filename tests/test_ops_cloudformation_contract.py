@@ -27,3 +27,21 @@ def test_ops_stack_uses_network_stack_ops_subnet_export():
 
     assert "${ProjectName}-${Environment}-PrivateOpsSubnetIds" in template
     assert "PrivateBackofficeSubnetIds" not in template
+
+
+def test_ops_runtime_secret_is_injected_into_backend_and_rag_server():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+
+    assert "OpsRuntimeSecretArn" in template
+    assert "HasOpsRuntimeSecret" in template
+    assert "ReadOpsRuntimeSecret" in template
+    assert "--env-file /opt/a360/runtime.env" in template
+    assert "!If [HasOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref AWS::NoValue]" in template
+
+
+def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+
+    assert "Scheme: internal" in template
+    assert "CidrIp: !Ref ClientVpnCidr" in template
+    assert "Scheme: internet-facing" not in template
