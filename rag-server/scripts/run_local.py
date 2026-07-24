@@ -13,6 +13,9 @@
 import os
 import sys
 
+# .env의 RAG_DATABASE_URL(네온)을 무력화하고, config 로드 뒤 DATABASE_*로 명시적 로컬 DSN을
+# 만들어 다시 주입한다 — 폴백 제거(RPA-262)에 맞춘 방식. OBSERVABILITY는 빈 값이면 관측 기록을
+# 건너뛰므로(앱/RAG DB로 안 씀) 빈 채로 둔다 = 로컬은 사용량 기록 없음.
 os.environ["RAG_DATABASE_URL"] = ""
 os.environ["OBSERVABILITY_DATABASE_URL"] = ""
 # OpenSearch도 .env는 Bonsai(팀 공유)를 보므로 로컬 컨테이너로 강제 — 공유 색인 오염 방지
@@ -22,12 +25,21 @@ os.environ["OPENSEARCH_PASSWORD"] = ""
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-from app.rag import config  # noqa: E402  (env 고정 후 임포트)
+from app.rag import config  # noqa: E402  (env 고정 후 임포트 → load_dotenv가 DATABASE_* 채움)
+
+# 명시적 로컬 DSN 주입 — 예전 폴백과 동일한 실효 DSN(같은 기본값·같은 .env DATABASE_* 반영).
+os.environ["RAG_DATABASE_URL"] = (
+    f"host={os.getenv('DATABASE_HOST') or '127.0.0.1'} "
+    f"port={os.getenv('DATABASE_PORT') or '5432'} "
+    f"dbname={os.getenv('DATABASE_NAME') or 'a360'} "
+    f"user={os.getenv('DATABASE_USERNAME') or 'a360_admin'} "
+    f"password={os.getenv('DATABASE_PASSWORD') or 'a360_local_password'}"
+)
 
 dsn = config.database_dsn()
 if "127.0.0.1" not in dsn and "localhost" not in dsn:
     sys.exit(f"[중단] 로컬 러너인데 실효 DSN이 로컬이 아닙니다: {dsn}")
-print(f"[run_local] DB 폴백 확인: 로컬 ({dsn.split('password=')[0].strip()})")
+print(f"[run_local] 로컬 DB 확인 ({dsn.split('password=')[0].strip()})")
 
 sys.argv = ["pipeline", *sys.argv[1:]]
 from app.rag.pipeline import main  # noqa: E402

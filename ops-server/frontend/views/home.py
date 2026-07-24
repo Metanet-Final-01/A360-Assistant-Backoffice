@@ -1,3 +1,5 @@
+from concurrent.futures import ThreadPoolExecutor
+
 import altair as alt
 import pandas as pd
 import requests
@@ -18,15 +20,26 @@ def render() -> None:
         st.error(f"모니터링 백엔드({OPS_BACKEND_URL})에 연결할 수 없습니다 — 서버가 켜져 있는지 확인하세요.")
         return
 
-    runs = _safe_get(OPS_BACKEND_URL, "/eval/runs") or []
-    datasets = _safe_get(OPS_BACKEND_URL, "/eval/datasets") or []
+    # 아래 5개 요청은 서로 의존성이 없다 — 순차로 부르면(예전 방식) 각자 최대 5초 타임아웃이
+    # 그대로 누적돼 백엔드 하나만 느려져도 최초 화면 렌더가 수 초씩 밀린다. 병렬로 쏘고
+    # 가장 느린 하나의 시간만큼만 기다리게 한다. 워커 수가 요청 수(5개)보다 적으면 하나가
+    # 큐잉되어 최악의 경우 대기 시간이 두 배(웨이브 2회)가 되므로 요청 수만큼 워커를 둔다.
+    with ThreadPoolExecutor(max_workers=5) as pool:
+        f_runs = pool.submit(_safe_get, OPS_BACKEND_URL, "/eval/runs")
+        f_datasets = pool.submit(_safe_get, OPS_BACKEND_URL, "/eval/datasets")
+        f_rag_status = pool.submit(_safe_get, RAG_SERVER_URL, "/rag/ingest/status")
+        f_obs_status = pool.submit(_safe_get, OPS_BACKEND_URL, "/observability/status")
+        f_rag_logs = pool.submit(_safe_get, OPS_BACKEND_URL, "/observability/rag-logs")
+
+        runs = f_runs.result() or []
+        datasets = f_datasets.result() or []
+        rag_status = f_rag_status.result() or {}
+        obs_status = f_obs_status.result() or {}
+        # `or []`로 뭉개지 않는다 — 조회 실패(예: 관측 DB 미구성 503)와 "로그가 없음"은
+        # 다른 상태다. 실패를 빈 데이터로 바꾸면 미구성·장애가 '표시할 로그 없음'으로 보여
+        # 아무도 눈치채지 못한다(직접 조회로 503을 드러내기로 한 결정과 정면으로 어긋난다).
+        rag_logs = f_rag_logs.result()
     labels = sorted({r["agent_label"] for r in runs if r.get("agent_label")})
-    rag_status = _safe_get(RAG_SERVER_URL, "/rag/ingest/status") or {}
-    obs_status = _safe_get(OPS_BACKEND_URL, "/observability/status") or {}
-    # `or []`로 뭉개지 않는다 — 조회 실패(예: 관측 DB 미구성 503)와 "로그가 없음"은
-    # 다른 상태다. 실패를 빈 데이터로 바꾸면 미구성·장애가 '표시할 로그 없음'으로 보여
-    # 아무도 눈치채지 못한다(직접 조회로 503을 드러내기로 한 결정과 정면으로 어긋난다).
-    rag_logs = _safe_get(OPS_BACKEND_URL, "/observability/rag-logs")
 
     # 차트(그래프 전용 카드)와 2x2 지표 카드를 거의 1:1 너비로 나란히 둔다 — 기존엔
     # 차트:지표 = 3:2였고 차트+지표+백엔드 상태가 카드 하나를 같이 썼는데, 지표 카드가
@@ -113,18 +126,18 @@ def _render_backend_health_banner(health: dict) -> None:
     last_ok = _fmt_ts((health or {}).get("last_ok_at"))
 
     if status == "healthy":
-        st.success(f"🟢 백엔드 UP (healthy) · 확인 {checked_at}")
+        st.success(f"🟢 서비스 백엔드 UP (healthy) · 확인 {checked_at}")
     elif status == "degraded":
-        st.warning(f"🟡 백엔드 UP·성능저하 (degraded — 관측 DB 등 일부 이상) · 확인 {checked_at}")
+        st.warning(f"🟡 서비스 백엔드 UP·성능저하 (degraded — 관측 DB 등 일부 이상) · 확인 {checked_at}")
     elif status in ("unhealthy", "unreachable"):
-        st.error(f"🔴 백엔드 DOWN ({status}) · 마지막 정상 {last_ok} · 확인 {checked_at}")
+        st.error(f"🔴 서비스 백엔드 DOWN ({status}) · 마지막 정상 {last_ok} · 확인 {checked_at}")
     else:
-        st.info("⚪ 백엔드 상태 미확인 — 아래 버튼으로 확인하세요.")
+        st.info("⚪ 서비스 백엔드 상태 미확인 — 아래 버튼으로 확인하세요.")
 
-    if st.button("백엔드 상태 새로고침", key="probe_backend_health", type="primary"):
+    if st.button("서비스 백엔드 상태 새로고침", key="probe_backend_health", type="primary"):
         result = _safe_get(OPS_BACKEND_URL, "/observability/backend-health?probe=true")
         if result is None:
-            st.error("백엔드 상태 프로브 요청에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
+            st.error("서비스 백엔드 상태 프로브 요청에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
         else:
             st.rerun()
 

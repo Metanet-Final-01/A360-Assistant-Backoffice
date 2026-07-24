@@ -15,6 +15,7 @@ import re
 import uuid
 from typing import Literal
 
+import httpx
 from fastapi import BackgroundTasks, FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
@@ -52,6 +53,40 @@ from app.scheduler.schema import RagIngestScheduleRequest, ScheduleApplyResult
 
 app = FastAPI(title="A360 Assistant Monitoring Server")
 
+_RAG_SERVER_URL = os.getenv("RAG_SERVER_URL", "http://127.0.0.1:8200").rstrip("/")
+_RAG_SERVICE_TOKEN = os.getenv("RAG_SERVICE_TOKEN", "")
+
+
+class RagIngestJobRequest(BaseModel):
+    mode: Literal["standard", "extended", "agent_parse"] = "standard"
+    clean: bool = False
+    requested_by: str = "ops"
+
+
+def _rag_headers() -> dict[str, str]:
+    return {"Authorization": f"Bearer {_RAG_SERVICE_TOKEN}"} if _RAG_SERVICE_TOKEN else {}
+
+
+async def _rag_request(method: str, path: str, **kwargs) -> httpx.Response:
+    try:
+        async with httpx.AsyncClient(timeout=kwargs.pop("timeout", 30.0)) as client:
+            response = await client.request(
+                method,
+                f"{_RAG_SERVER_URL}{path}",
+                headers=_rag_headers(),
+                **kwargs,
+            )
+    except httpx.RequestError as exc:
+        raise HTTPException(502, f"RAG Server request failed: {exc}") from exc
+    if response.status_code >= 400:
+        detail: object
+        try:
+            detail = response.json()
+        except ValueError:
+            detail = response.text
+        raise HTTPException(response.status_code, detail)
+    return response
+
 # 임의의 웹 페이지가 PATCH/POST 같은 변경 API를 호출하지 못하도록, 실제 Streamlit
 # 프론트 origin만 허용한다(CodeRabbit #42 지적). 로컬 개발 기본값은 Streamlit
 # 기본 포트(8501) — 배포 환경은 OPS_FRONTEND_ORIGINS(콤마 구분)로 재정의한다.
@@ -78,6 +113,70 @@ def health() -> dict:
 @app.get("/")
 def root() -> dict:
     return {"message": "A360 Assistant Monitoring Server가 살아있습니다."}
+
+
+@app.get("/ops/rag/ingest/capabilities")
+async def ops_rag_ingest_capabilities() -> dict:
+    response = await _rag_request("GET", "/rag/ingest/capabilities")
+    return response.json()
+
+
+@app.get("/ops/rag/ingest/health")
+async def ops_rag_ingest_health() -> dict:
+    response = await _rag_request("GET", "/health")
+    return response.json()
+
+
+@app.post("/ops/rag/ingest/jobs")
+async def create_ops_rag_ingest_job(req: RagIngestJobRequest) -> dict:
+    response = await _rag_request("POST", "/rag/ingest/jobs", json=req.model_dump())
+    return response.json()
+
+
+@app.get("/ops/rag/ingest/jobs")
+async def list_ops_rag_ingest_jobs(limit: int = Query(20, ge=1, le=100)) -> list[dict]:
+    response = await _rag_request("GET", "/rag/ingest/jobs", params={"limit": limit})
+    return response.json()
+
+
+@app.get("/ops/rag/ingest/jobs/{job_id}")
+async def get_ops_rag_ingest_job(job_id: str) -> dict:
+    response = await _rag_request("GET", f"/rag/ingest/jobs/{job_id}")
+    return response.json()
+
+
+@app.get("/ops/rag/ingest/jobs/{job_id}/events/poll")
+async def poll_ops_rag_ingest_job_events(
+    job_id: str, after_id: int = Query(0, ge=0), limit: int = Query(200, ge=1, le=1000)
+) -> dict:
+    response = await _rag_request(
+        "GET",
+        f"/rag/ingest/jobs/{job_id}/events/poll",
+        params={"after_id": after_id, "limit": limit},
+    )
+    return response.json()
+
+
+@app.post("/ops/rag/ingest/jobs/{job_id}/cancel")
+async def cancel_ops_rag_ingest_job(job_id: str) -> dict:
+    response = await _rag_request("POST", f"/rag/ingest/jobs/{job_id}/cancel")
+    return response.json()
+
+
+@app.get("/ops/rag/ingest/jobs/{job_id}/logs")
+async def get_ops_rag_ingest_job_log(job_id: str, tail: int = Query(400, ge=1, le=5000)) -> Response:
+    response = await _rag_request("GET", f"/rag/ingest/jobs/{job_id}/logs", params={"tail": tail})
+    return Response(content=response.text, media_type="text/plain")
+
+
+@app.get("/ops/rag/ingest/jobs/{job_id}/logs/download")
+async def download_ops_rag_ingest_job_log(job_id: str) -> Response:
+    response = await _rag_request("GET", f"/rag/ingest/jobs/{job_id}/logs/download", timeout=60.0)
+    headers = {}
+    content_disposition = response.headers.get("content-disposition")
+    if content_disposition:
+        headers["Content-Disposition"] = content_disposition
+    return Response(content=response.content, media_type="text/plain", headers=headers)
 
 
 @app.post("/schedules/rag-ingest", response_model=ScheduleApplyResult)
@@ -267,7 +366,7 @@ def workflow_cases() -> list:
     try:
         return workflow_runner.load_cases()
     except workflow_runner.WorkflowGoldsetError as e:
-        raise HTTPException(500, str(e)) from e
+        raise HTTPException(503, str(e)) from e
 
 
 @app.post("/eval/workflow/cases")
@@ -421,11 +520,18 @@ def post_ragas_validation_log(req: RagasValidationLogRequest) -> dict:
 
 
 @app.get("/eval/ragas/source-documents")
-def ragas_source_documents_search(q: str = "", source_type: str | None = None) -> list[dict]:
+def ragas_source_documents_search(
+    q: str = "",
+    source_type: str | None = None,
+    limit: int = Query(default=100, ge=1, le=500),
+    schema_source: Literal["jar", "llm_agent"] | None = None,
+) -> list[dict]:
     """골드셋 작성 화면의 문서 브라우저 — 로컬 source_documents 테이블 조회
     (scripts/ragas_eval/datasets/build_source_documents.py로 미리 채워둬야 함)."""
     try:
-        return ragas_source_documents.search(query=q, source_type=source_type)
+        return ragas_source_documents.search(
+            query=q, source_type=source_type, limit=limit, schema_source=schema_source,
+        )
     except ragas_source_documents.SourceDocumentsUnavailableError as e:
         raise HTTPException(503, str(e)) from e
 
@@ -436,6 +542,7 @@ def ragas_source_documents_random(
     limit: int = Query(default=5, ge=1, le=100),
     exclude_used: bool = True,
     min_content_length: int = Query(default=0, ge=0),
+    schema_source: Literal["jar", "llm_agent"] | None = None,
 ) -> list[dict]:
     """골드셋 작성용 랜덤 문서 추출. exclude_used=True면 이미 골드셋에 근거로 쓰인
     문서(reference_doc_ids + reference_contexts의 source_document_id)는 제외한다 —
@@ -455,7 +562,7 @@ def ragas_source_documents_random(
     try:
         return ragas_source_documents.random_sample(
             source_type=source_type, limit=limit, exclude_ids=exclude_ids,
-            min_content_length=min_content_length,
+            min_content_length=min_content_length, schema_source=schema_source,
         )
     except ragas_source_documents.SourceDocumentsUnavailableError as e:
         raise HTTPException(503, str(e)) from e

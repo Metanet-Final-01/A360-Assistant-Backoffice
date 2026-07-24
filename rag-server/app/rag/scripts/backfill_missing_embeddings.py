@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import argparse
 import json
-import os
 import sys
 import time
 from collections import Counter
@@ -206,7 +205,7 @@ def main() -> int:
         summary = summarize_missing(conn, where_sql, params, args.sample_limit)
         print(json.dumps({
             "mode": "apply" if args.apply else "dry-run",
-            "connection_source": "RAG_DATABASE_URL" if os.getenv("RAG_DATABASE_URL") else "DATABASE_* fallback",
+            "connection_source": "RAG_DATABASE_URL",  # 폴백 제거(RPA-262) — 이제 유일 소스
             **db_info,
             "embedding_provider": config.EMBEDDING_PROVIDER,
             "embedding_model": config.EMBEDDING_MODEL,

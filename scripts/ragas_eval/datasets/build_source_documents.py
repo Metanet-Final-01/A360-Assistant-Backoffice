@@ -30,9 +30,7 @@ os.chdir(_RAG_SERVER_ROOT)
 import psycopg  # noqa: E402
 from psycopg import sql  # noqa: E402
 
-from app.rag import config  # noqa: E402
-from app.rag.build.merge import build_rag_documents, load_docs  # noqa: E402
-from app.rag.pipeline import _load_source_inputs  # noqa: E402
+from app.rag import source_documents as rag_source_documents  # noqa: E402
 
 from local_dsn import local_dsn  # noqa: E402
 
@@ -61,45 +59,20 @@ def build() -> int:
             cur.execute(_DDL)
         conn.commit()
 
-    print("pre-chunk 원본 로드 중 (에이전트 재실행 없음)...")
-    packages, docs, bots = _load_source_inputs("all")
-    pre_chunk_docs = build_rag_documents(packages, docs, locale="ko", bots=bots, chunk_size=None)
-
-    # doc_page의 menu_id/parent_menu_id는 build_rag_documents 결과에 안 남아있어서
-    # (merge.py가 breadcrumbs만 metadata에 남김), 원본 docs.jsonl에서 url로 다시 조회.
-    raw_docs_by_url = {d.get("url"): d for d in load_docs(config.DOCS_JSONL) if d.get("url")}
-
-    rows = []
-    for d in pre_chunk_docs:
-        content = d.get("content") or ""
-        if not content.strip():
-            continue
-        source_type = d.get("source_type")
-        breadcrumbs = (d.get("metadata") or {}).get("breadcrumbs")
-        menu_id = parent_menu_id = None
-        depth = None
-        if source_type == "doc_page":
-            raw = raw_docs_by_url.get(d.get("url"))
-            if raw is not None:
-                menu_id = raw.get("menu_id")
-                parent_menu_id = raw.get("parent_menu_id")
-            if breadcrumbs:
-                depth = len(breadcrumbs)
-        rows.append(
-            {
-                "id": d["id"],
-                "source_type": source_type,
-                "title": d.get("title") or "",
-                "content": content,
-                "package_name": d.get("package_name"),
-                "action_name": d.get("action_name"),
-                "parent_menu_id": parent_menu_id,
-                "menu_id": menu_id,
-                "depth": depth,
-                "path_titles": breadcrumbs,
-                "url": d.get("url"),
-            }
-        )
+    # 적재된 rag_documents에서 원본 문서 풀을 만든다(청크는 parent_id로 재조립됨).
+    # 예전에는 v1 로컬 산출물(packages.json·docs.jsonl)로 메모리에서 조립했는데, v2 웹크롤
+    # 전용화로 그 산출물이 더 이상 생성되지 않고 근거 함수(pipeline._load_source_inputs)도
+    # 제거됐다. rag-server의 근거 문서 풀과 같은 소스를 쓰도록 통일한다.
+    print("적재된 rag_documents에서 원본 문서 풀 로드 중...")
+    _COLUMNS = (
+        "id", "source_type", "title", "content", "package_name", "action_name",
+        "parent_menu_id", "menu_id", "depth", "path_titles", "url",
+    )
+    rows = [
+        {key: doc.get(key) for key in _COLUMNS}
+        for doc in rag_source_documents._documents_from_database()
+        if (doc.get("content") or "").strip()
+    ]
 
     insert_sql = sql.SQL(
         "INSERT INTO source_documents "

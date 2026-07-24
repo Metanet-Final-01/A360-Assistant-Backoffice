@@ -1,0 +1,21 @@
+# 빌드 컨텍스트에서 제외 — 이미지 크기·빌드 속도·시크릿 유출 방지 (RPA-259)
+**/.git
+**/.venv
+**/venv
+**/__pycache__
+**/*.pyc
+**/.pytest_cache
+**/.env
+**/.env.*
+!**/.env.example
+**/node_modules
+# 로컬 산출물·로그 — 컨테이너는 볼륨으로 새로 받는다
+ops-server/backend/data/
+rag-server/data/
+rag-server/app/rag/logs/
+**/*.jsonl
+# 문서·테스트 산출물
+**/.codex/
+**/.claude/
+**/*.md
+!**/README.md

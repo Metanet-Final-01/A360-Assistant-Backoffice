@@ -1,0 +1,508 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Description: A360 Assistant Ops stack - private Ops/RAG EC2 Auto Scaling deployment behind an internal ALB.
+
+Parameters:
+  ProjectName:
+    Type: String
+    Default: a360-assistant
+  Environment:
+    Type: String
+    Default: dev
+  Owner:
+    Type: String
+    Default: team1
+  OpsBackendImageUri:
+    Type: String
+    Description: Immutable image URI for ops-server/backend. Use a Git commit SHA tag, not latest.
+  OpsUiImageUri:
+    Type: String
+    Description: Immutable image URI for ops-server/frontend Streamlit. Use a Git commit SHA tag, not latest.
+  RagServerImageUri:
+    Type: String
+    Description: Immutable image URI for rag-server. Use a Git commit SHA tag, not latest.
+  InstanceType:
+    Type: String
+    Default: t3.medium
+  MinSize:
+    Type: Number
+    Default: 1
+  DesiredCapacity:
+    Type: Number
+    Default: 1
+  MaxSize:
+    Type: Number
+    Default: 2
+  OpsBackendPort:
+    Type: Number
+    Default: 8100
+  OpsUiPort:
+    Type: Number
+    Default: 8501
+  RagServerPort:
+    Type: Number
+    Default: 8200
+  InternalAlbListenerPort:
+    Type: Number
+    Default: 80
+  ClientVpnCidr:
+    Type: String
+    Default: 10.250.0.0/22
+  LogRetentionDays:
+    Type: Number
+    Default: 14
+  RagServiceTokenSecretArn:
+    Type: String
+    Default: ""
+    Description: Optional Secret ARN containing RAG_SERVICE_TOKEN.
+  A360BackendUrl:
+    Type: String
+    Default: ""
+    Description: Optional main A360 backend URL that Ops Backend probes/admin-calls.
+  GhcrUsername:
+    Type: String
+    Default: ""
+  GhcrTokenSecretArn:
+    Type: String
+    Default: ""
+    Description: Optional Secret ARN for GHCR token. Leave empty for public images or ECR.
+
+Conditions:
+  HasRagTokenSecret: !Not [!Equals [!Ref RagServiceTokenSecretArn, ""]]
+  HasBackendUrl: !Not [!Equals [!Ref A360BackendUrl, ""]]
+  HasGhcrToken: !Not [!Equals [!Ref GhcrTokenSecretArn, ""]]
+
+Resources:
+  InternalAlbSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Internal ALB access from Client VPN only
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref InternalAlbListenerPort
+          ToPort: !Ref InternalAlbListenerPort
+          CidrIp: !Ref ClientVpnCidr
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  OpsInstanceSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Ops EC2 container host
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: !Ref OpsUiPort
+          ToPort: !Ref OpsUiPort
+          SourceSecurityGroupId: !Ref InternalAlbSecurityGroup
+        - IpProtocol: tcp
+          FromPort: !Ref OpsBackendPort
+          ToPort: !Ref OpsBackendPort
+          SourceSecurityGroupId: !Ref InternalAlbSecurityGroup
+      SecurityGroupEgress:
+        - IpProtocol: -1
+          CidrIp: 0.0.0.0/0
+
+  ObservabilityDbIngressFromOps:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-ObservabilityDbSecurityGroupId"
+      IpProtocol: tcp
+      FromPort: 5432
+      ToPort: 5432
+      SourceSecurityGroupId: !Ref OpsInstanceSecurityGroup
+
+  RagDbIngressFromOps:
+    Type: AWS::EC2::SecurityGroupIngress
+    Properties:
+      GroupId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-RagDbSecurityGroupId"
+      IpProtocol: tcp
+      FromPort: 5432
+      ToPort: 5432
+      SourceSecurityGroupId: !Ref OpsInstanceSecurityGroup
+
+  OpsBackendLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/a360/${Environment}/ops-api"
+      RetentionInDays: !Ref LogRetentionDays
+
+  OpsUiLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/a360/${Environment}/ops-ui"
+      RetentionInDays: !Ref LogRetentionDays
+
+  RagServerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/a360/${Environment}/rag-server"
+      RetentionInDays: !Ref LogRetentionDays
+
+  OpsInstanceRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+      Policies:
+        - PolicyName: ops-runtime-access
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource:
+                  - !Sub "${OpsBackendLogGroup.Arn}:*"
+                  - !Sub "${OpsUiLogGroup.Arn}:*"
+                  - !Sub "${RagServerLogGroup.Arn}:*"
+              - Effect: Allow
+                Action:
+                  - cloudformation:SignalResource
+                Resource: !Ref AWS::StackId
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:ListBucket
+                Resource:
+                  - Fn::Sub:
+                      - "arn:${AWS::Partition}:s3:::${BucketName}"
+                      - BucketName:
+                          Fn::ImportValue:
+                            Fn::Sub: "${ProjectName}-${Environment}-ArtifactBucketName"
+                  - Fn::Sub:
+                      - "arn:${AWS::Partition}:s3:::${BucketName}/*"
+                      - BucketName:
+                          Fn::ImportValue:
+                            Fn::Sub: "${ProjectName}-${Environment}-ArtifactBucketName"
+              - Effect: Allow
+                Action:
+                  - sqs:ReceiveMessage
+                  - sqs:DeleteMessage
+                  - sqs:GetQueueAttributes
+                  - sqs:ChangeMessageVisibility
+                Resource:
+                  Fn::ImportValue:
+                    Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+              - Effect: Allow
+                Action:
+                  - secretsmanager:GetSecretValue
+                Resource:
+                  - Fn::ImportValue:
+                      Fn::Sub: "${ProjectName}-${Environment}-OpsReaderSecretArn"
+                  - Fn::ImportValue:
+                      Fn::Sub: "${ProjectName}-${Environment}-RagIngestSecretArn"
+                  - !If [HasRagTokenSecret, !Ref RagServiceTokenSecretArn, !Ref AWS::NoValue]
+                  - !If [HasGhcrToken, !Ref GhcrTokenSecretArn, !Ref AWS::NoValue]
+
+  OpsInstanceProfile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles: [!Ref OpsInstanceRole]
+
+  OpsLaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Metadata:
+      Comment: Runs ops-backend, ops-ui, and rag-server containers on a private EC2 host.
+    Properties:
+      LaunchTemplateData:
+        IamInstanceProfile:
+          Arn: !GetAtt OpsInstanceProfile.Arn
+        ImageId: "{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64}}"
+        InstanceType: !Ref InstanceType
+        MetadataOptions:
+          HttpEndpoint: enabled
+          HttpTokens: required
+        Monitoring:
+          Enabled: true
+        NetworkInterfaces:
+          - AssociatePublicIpAddress: false
+            DeviceIndex: 0
+            Groups: [!Ref OpsInstanceSecurityGroup]
+        BlockDeviceMappings:
+          - DeviceName: /dev/xvda
+            Ebs:
+              VolumeSize: 30
+              VolumeType: gp3
+              Encrypted: true
+        UserData:
+          Fn::Base64: !Sub
+            - |
+              #!/bin/bash
+              set -euo pipefail
+              exec > >(tee -a /var/log/a360-ops-bootstrap.log /var/log/cloud-init-output.log) 2>&1
+              dnf install -y docker awscli jq aws-cfn-bootstrap
+              IMDS_TOKEN=$(curl -fsS -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" || true)
+              INSTANCE_ID=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/instance-id || echo unknown-instance)
+              upload_bootstrap_logs() {
+                aws s3 cp /var/log/a360-ops-bootstrap.log "s3://${ArtifactBucketName}/ops-bootstrap-logs/${AWS::StackName}/$INSTANCE_ID/a360-ops-bootstrap.log" || true
+                aws s3 cp /var/log/cloud-init-output.log "s3://${ArtifactBucketName}/ops-bootstrap-logs/${AWS::StackName}/$INSTANCE_ID/cloud-init-output.log" || true
+              }
+              trap 'upload_bootstrap_logs; /opt/aws/bin/cfn-signal --success false --stack ${AWS::StackName} --resource OpsAutoScalingGroup --region ${AWS::Region}' ERR
+              systemctl enable --now docker
+
+              mkdir -p /opt/a360
+              aws secretsmanager get-secret-value --secret-id '${OpsReaderSecretArn}' --query SecretString --output text > /opt/a360/ops_reader.json
+              aws secretsmanager get-secret-value --secret-id '${RagIngestSecretArn}' --query SecretString --output text > /opt/a360/rag_ingest.json
+              ${ReadGhcrSecret}
+              ${ReadRagTokenSecret}
+
+              OPS_DB_USER=$(jq -r '.username' /opt/a360/ops_reader.json)
+              OPS_DB_PASSWORD=$(jq -r '.password' /opt/a360/ops_reader.json)
+              RAG_DB_USER=$(jq -r '.username' /opt/a360/rag_ingest.json)
+              RAG_DB_PASSWORD=$(jq -r '.password' /opt/a360/rag_ingest.json)
+              OBS_DSN="postgresql://$OPS_DB_USER:$OPS_DB_PASSWORD@${ObservabilityDbEndpoint}:5432/${ObservabilityDbName}?sslmode=require"
+              RAG_DSN="postgresql://$RAG_DB_USER:$RAG_DB_PASSWORD@${RagDbEndpoint}:5432/${RagDbName}?sslmode=require"
+
+              GHCR_USERNAME='${GhcrUsername}'
+              if [ -s /opt/a360/ghcr_token ]; then
+                if [ -z "$GHCR_USERNAME" ]; then
+                  GHCR_USERNAME=token
+                fi
+                cat /opt/a360/ghcr_token | docker login ghcr.io -u "$GHCR_USERNAME" --password-stdin
+              fi
+
+              docker network create a360 || true
+              docker rm -f rag-server ops-backend ops-ui || true
+
+              docker run -d --restart unless-stopped --name rag-server --network a360 \
+                -p ${RagServerPort}:${RagServerPort} \
+                -e RAG_DATABASE_URL="$RAG_DSN" \
+                -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
+                --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${RagLogGroup} \
+                ${RagServerImageUri}
+
+              docker run -d --restart unless-stopped --name ops-backend --network a360 \
+                -p ${OpsBackendPort}:${OpsBackendPort} \
+                -e A360_OBSERVABILITY_DATABASE_URL="$OBS_DSN" \
+                -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
+                -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
+                ${BackendUrlEnv} \
+                --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${OpsApiLogGroup} \
+                ${OpsBackendImageUri}
+
+              docker run -d --restart unless-stopped --name ops-ui --network a360 \
+                -p ${OpsUiPort}:${OpsUiPort} \
+                -e OPS_BACKEND_URL="http://ops-backend:${OpsBackendPort}" \
+                -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
+                --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${OpsUiLogGroup} \
+                ${OpsUiImageUri}
+
+              check_url() {
+                local name="$1"
+                local url="$2"
+                for attempt in $(seq 1 60); do
+                  if curl -fsS --max-time 5 "$url" >/dev/null; then
+                    echo "$name healthy"
+                    return 0
+                  fi
+                  echo "waiting for $name ($attempt/60)"
+                  sleep 5
+                done
+                echo "$name health check failed" >&2
+                return 1
+              }
+
+              check_url rag-server "http://localhost:${RagServerPort}/health"
+              check_url ops-backend "http://localhost:${OpsBackendPort}/health"
+              check_url ops-ui "http://localhost:${OpsUiPort}/_stcore/health"
+
+              /opt/aws/bin/cfn-signal --success true \
+                --stack ${AWS::StackName} \
+                --resource OpsAutoScalingGroup \
+                --region ${AWS::Region}
+              upload_bootstrap_logs
+            - OpsReaderSecretArn:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-OpsReaderSecretArn"
+              RagIngestSecretArn:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-RagIngestSecretArn"
+              ObservabilityDbEndpoint:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-ObservabilityDbEndpoint"
+              ObservabilityDbName:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-ObservabilityDbName"
+              RagDbEndpoint:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-RagDbEndpoint"
+              RagDbName:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-RagDbName"
+              ArtifactBucketName:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-ArtifactBucketName"
+              ReadGhcrSecret: !If
+                - HasGhcrToken
+                - !Sub "aws secretsmanager get-secret-value --secret-id '${GhcrTokenSecretArn}' --query SecretString --output text > /opt/a360/ghcr_token"
+                - "touch /opt/a360/ghcr_token"
+              ReadRagTokenSecret: !If
+                - HasRagTokenSecret
+                - !Sub "aws secretsmanager get-secret-value --secret-id '${RagServiceTokenSecretArn}' --query SecretString --output text > /opt/a360/rag_service_token"
+                - "touch /opt/a360/rag_service_token"
+              BackendUrlEnv: !If
+                - HasBackendUrl
+                - !Sub "-e A360_BACKEND_URL='${A360BackendUrl}'"
+                - ""
+              OpsApiLogGroup: !Ref OpsBackendLogGroup
+              OpsUiLogGroup: !Ref OpsUiLogGroup
+              RagLogGroup: !Ref RagServerLogGroup
+
+  InternalAlb:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Scheme: internal
+      Type: application
+      SecurityGroups: [!Ref InternalAlbSecurityGroup]
+      Subnets:
+        Fn::Split:
+          - ","
+          - Fn::ImportValue:
+              Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
+
+  OpsUiTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+      Protocol: HTTP
+      Port: !Ref OpsUiPort
+      TargetType: instance
+      HealthCheckPath: /_stcore/health
+      Matcher:
+        HttpCode: 200-399
+
+  OpsBackendTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      VpcId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+      Protocol: HTTP
+      Port: !Ref OpsBackendPort
+      TargetType: instance
+      HealthCheckPath: /health
+      Matcher:
+        HttpCode: 200-399
+
+  InternalAlbListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref InternalAlb
+      Port: !Ref InternalAlbListenerPort
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref OpsUiTargetGroup
+
+  OpsBackendListenerRule:
+    Type: AWS::ElasticLoadBalancingV2::ListenerRule
+    Properties:
+      ListenerArn: !Ref InternalAlbListener
+      Priority: 10
+      Conditions:
+        - Field: path-pattern
+          Values:
+            - /health
+            - /ops/*
+            - /eval/*
+            - /observability/*
+      Actions:
+        - Type: forward
+          TargetGroupArn: !Ref OpsBackendTargetGroup
+
+  OpsAutoScalingGroup:
+    Type: AWS::AutoScaling::AutoScalingGroup
+    CreationPolicy:
+      ResourceSignal:
+        Count: !Ref DesiredCapacity
+        Timeout: PT15M
+    UpdatePolicy:
+      AutoScalingRollingUpdate:
+        MinInstancesInService: 1
+        MaxBatchSize: 1
+        PauseTime: PT15M
+        WaitOnResourceSignals: true
+    Properties:
+      MinSize: !Ref MinSize
+      DesiredCapacity: !Ref DesiredCapacity
+      MaxSize: !Ref MaxSize
+      VPCZoneIdentifier:
+        Fn::Split:
+          - ","
+          - Fn::ImportValue:
+              Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
+      HealthCheckType: ELB
+      HealthCheckGracePeriod: 180
+      TargetGroupARNs:
+        - !Ref OpsUiTargetGroup
+        - !Ref OpsBackendTargetGroup
+      LaunchTemplate:
+        LaunchTemplateId: !Ref OpsLaunchTemplate
+        Version: !GetAtt OpsLaunchTemplate.LatestVersionNumber
+      Tags:
+        - Key: Name
+          Value: !Sub "${ProjectName}-${Environment}-ops"
+          PropagateAtLaunch: true
+        - Key: Project
+          Value: !Ref ProjectName
+          PropagateAtLaunch: true
+        - Key: Environment
+          Value: !Ref Environment
+          PropagateAtLaunch: true
+        - Key: Owner
+          Value: !Ref Owner
+          PropagateAtLaunch: true
+
+  RagScheduleRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: scheduler.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: send-rag-job
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action: sqs:SendMessage
+                Resource:
+                  Fn::ImportValue:
+                    Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+
+Outputs:
+  InternalAlbDnsName:
+    Value: !GetAtt InternalAlb.DNSName
+  OpsInstanceSecurityGroupId:
+    Value: !Ref OpsInstanceSecurityGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-OpsInstanceSecurityGroupId"
+  InternalAlbSecurityGroupId:
+    Value: !Ref InternalAlbSecurityGroup
+  OpsAutoScalingGroupName:
+    Value: !Ref OpsAutoScalingGroup

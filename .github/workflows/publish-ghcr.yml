@@ -1,0 +1,74 @@
+name: Publish GHCR Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Optional image tag. Defaults to the short commit SHA.
+        required: false
+        type: string
+      push_dev_tag:
+        description: Also push the dev tag.
+        required: false
+        default: true
+        type: boolean
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: ops-backend
+            dockerfile: ops-server/backend/Dockerfile
+            context: .
+          - name: ops-ui
+            dockerfile: ops-server/frontend/Dockerfile
+            context: .
+          - name: rag-server
+            dockerfile: rag-server/Dockerfile
+            context: .
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Resolve image tag
+        id: tag
+        shell: bash
+        run: |
+          if [ -n "${{ inputs.image_tag }}" ]; then
+            echo "value=${{ inputs.image_tag }}" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Resolve image prefix
+        id: image
+        shell: bash
+        run: |
+          owner="$(echo '${{ github.repository_owner }}' | tr '[:upper:]' '[:lower:]')"
+          echo "prefix=ghcr.io/${owner}/a360-assistant-backoffice" >> "$GITHUB_OUTPUT"
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: ${{ matrix.context }}
+          file: ${{ matrix.dockerfile }}
+          push: true
+          tags: |
+            ${{ steps.image.outputs.prefix }}/${{ matrix.name }}:${{ steps.tag.outputs.value }}
+            ${{ inputs.push_dev_tag && format('{0}/{1}:dev', steps.image.outputs.prefix, matrix.name) || '' }}

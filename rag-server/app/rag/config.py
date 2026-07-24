@@ -107,31 +107,29 @@ AGENT_PARSE_BATCH_SIZE = int(os.getenv("AGENT_PARSE_BATCH_SIZE", "6"))
 # gpt-5.4-mini 200K TPM 기준, 배치당 ~15~25K 토큰이라 3이면 순간 폭주가 한도 아래로 유지된다
 # (초과분은 OPENAI_MAX_RETRIES 백오프가 흡수). 한도가 오르면 올려도 된다.
 AGENT_PARSE_WORKERS = int(os.getenv("AGENT_PARSE_WORKERS", "3"))
-# 관측 전용 DB(llm_usage 기록 대상) — 미설정 시 앱 DB(database_dsn)로 폴백.
-# 백엔드 RPA-90(관측 로그를 팀 공유 DB로 분리)과 동일 계약.
+# 관측 전용 DB(llm_usage 기록 대상). 미설정 시 앱/RAG DB로 폴백하지 않는다 — 관측 기록은
+# best-effort로 건너뛴다(app/core/llm.py _observability_dsn). 백엔드 RPA-260과 동일 계약.
 OBSERVABILITY_DATABASE_URL = os.getenv("OBSERVABILITY_DATABASE_URL", "").strip()
+
+
+class RagDatabaseConfigurationError(RuntimeError):
+    """RAG 전용 DB 설정이 없어 서비스 DB 격리를 보장할 수 없음."""
 
 
 def database_dsn() -> str:
     """RAG 저장소(pgvector) 접속 문자열.
 
-    RAG_DATABASE_URL이 있으면 그걸 우선한다 — RAG 코퍼스를 앱 DB(users/sessions)와 분리된
-    전용 공유 DB(Neon 등)에 둘 수 있게 한다(A360-Assistant-Backend RPA-132와 동일 계약 —
-    ADR 2026-07-13로 RAG 코퍼스를 팀 공유 DB로 쓰기로 했는데, DATABASE_*를 그 공유 DB로
-    돌리면 앱 DB까지 같이 공유돼버리는 문제가 있어 분리함). 미설정/빈값이면 기존
-    DATABASE_*(앱 DB와 동일)로 폴백 — 로컬 단독 개발 무변경.
+    RAG_DATABASE_URL만 사용한다. 미설정/빈값이면 기동을 거부해 RAG 코퍼스가 앱 DB(users/
+    sessions)에 조용히 섞이는 구성을 막는다(백엔드 RPA-260과 동일 계약, RDS 3분리). 예전에는
+    DATABASE_*로 폴백했으나, 그 폴백이 2026-07-18 로컬 ingest의 공유 DB 오염 같은 조용한
+    사고의 뿌리였다. 배포는 docker-compose/Secret이 URL을 명시 주입하고, 로컬 러너
+    (scripts/run_local*.py)는 명시적 로컬 DSN을 주입한다 — 폴백 없이도 전부 도는 구조.
     """
-    url = os.getenv("RAG_DATABASE_URL")
-    if url:
-        # RAG store는 raw psycopg라 libpq URL(postgresql://)만 받는다 — SQLAlchemy용
-        # 'postgresql+psycopg://' 접두사를 그대로 넘기면 psycopg가 스킴을 못 읽는다.
-        # 관측 URL 형식을 복붙해도 동작하도록 드라이버 접미사(+psycopg 등)를 방어적으로 벗긴다.
-        return _PG_DRIVER_SUFFIX.sub(r"\1://", url, count=1)
-    # os.getenv(key, default)는 .env에 키가 "빈 값"으로라도 존재하면 default를 안 쓴다 —
-    # `or`로 빈 문자열도 default로 폴백되게 한다 (DATABASE_HOST= 처럼 빈 채로 커밋된 .env.example 대응).
-    host = os.getenv("DATABASE_HOST") or "127.0.0.1"
-    port = os.getenv("DATABASE_PORT") or "5432"
-    name = os.getenv("DATABASE_NAME") or "a360"
-    user = os.getenv("DATABASE_USERNAME") or "a360_admin"
-    password = os.getenv("DATABASE_PASSWORD") or "a360_local_password"
-    return f"host={host} port={port} dbname={name} user={user} password={password}"
+    url = (os.getenv("RAG_DATABASE_URL") or "").strip()
+    if not url:
+        raise RagDatabaseConfigurationError("RAG_DATABASE_URL is required")
+    # RAG store는 raw psycopg라 libpq URL(postgresql://)만 받는다 — SQLAlchemy용
+    # 'postgresql+psycopg://' 접두사를 그대로 넘기면 psycopg가 스킴을 못 읽는다.
+    # 관측 URL 형식을 복붙해도 동작하도록 드라이버 접미사(+psycopg 등)를 방어적으로 벗긴다.
+    # (libpq 키워드 포맷 'host=... '이 오면 매칭 안 돼 그대로 통과 — 로컬 러너 경로.)
+    return _PG_DRIVER_SUFFIX.sub(r"\1://", url, count=1)
