@@ -35,7 +35,7 @@ OPTION_TO_MODE = {value: key for key, value in MODE_TO_OPTION.items()}
 _V2_STAGES = [
     ("crawl-khub", "Crawl khub dump"),
     ("registry", "Build package registry"),
-    ("build-v2", "Build documents (v2)"),
+    ("build-llm", "Build documents (LLM extraction)"),
     ("validate", "Quality gate"),
     ("ingest", "Load pgvector/OpenSearch"),
 ]
@@ -193,7 +193,7 @@ def _get_job_raw(job_id: str) -> dict[str, Any] | None:
 def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_limit: int | None = None) -> dict[str, Any]:
     if mode not in MODES:
         raise ValueError("mode must be standard, extended, or agent_parse")
-    # v2는 모드와 무관하게 build-v2에서 LLM을 쓴다(--llm-tables·--judge·--enrich) — 예전처럼
+    # v2는 모드와 무관하게 build-llm에서 LLM을 쓴다(패키지 단위 구조화 추출 + 임베딩) — 예전처럼
     # agent_parse일 때만 검사하면 키 없이 시작해 빌드 중간에 죽는다. 시작 전에 막는다.
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY is required for the v2 ingest pipeline.")
@@ -319,7 +319,7 @@ def _observe_stage(job_id: str, mode: str, line: str) -> None:
 def _stage_from_command(mode: str, command: str) -> str | None:
     """`=== [i/N] <명령 …> ===` 로그 한 줄에서 단계 키를 뽑는다.
 
-    v2 명령은 인자를 달고 나온다(`build-v2 --dump-dir <경로> --llm-tables …`)라서 명령 전체를
+    v2 명령은 인자를 달고 나온다(`build-llm --dump-dir <경로> …`)라서 명령 전체를
     키로 하는 정확일치 표는 쓸 수 없다 — **첫 토큰(하위 명령)** 으로만 판정한다.
     """
     head = command.strip().split()[0] if command.strip() else ""

@@ -7,7 +7,7 @@
 (배경: 2026-07-18 네온 --clean 사고 — 회의록/2026-07-18-네온-clean-사고-보고.md)
 
 사용: .venv\\Scripts\\python.exe scripts\\run_local.py <subcommand> [args...]
-예:   .venv\\Scripts\\python.exe scripts\\run_local.py build-v2 --dump-dir ..\\khub-dump --enrich
+예:   .venv\\Scripts\\python.exe scripts\\run_local.py build-llm --dump-dir ..\\khub-dump --model gpt-5-mini
       .venv\\Scripts\\python.exe scripts\\run_local.py ingest --clean --skip-opensearch
 """
 import os

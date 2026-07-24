@@ -4,7 +4,7 @@
 표기("<패키지>의 <라벨> 작업")를 벗겨 짧은 라벨을 만들어야 매칭이 성립한다.
 """
 
-from app.rag.build.merge_v2 import action_label_ko
+from app.rag.build.common import action_label_ko
 
 
 def test_strips_package_prefix_and_action_suffix():

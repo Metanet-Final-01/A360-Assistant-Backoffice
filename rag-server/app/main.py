@@ -1,7 +1,7 @@
 """RAG 적재 서버 진입점 (화면 없음, API만).
 
 모니터링 서버(ops-server)가 주기적으로, 또는 사람이 프론트 버튼으로 잡을 만들면
-crawl-khub→registry→build-v2→validate→pgvector/OpenSearch 적재 파이프라인을 백그라운드로
+crawl-khub→registry→build-llm→validate→pgvector/OpenSearch 적재 파이프라인을 백그라운드로
 실행한다. 적재 대상 DB는 A360-Assistant-Backend와 동일 인스턴스라 여기서 적재한 게
 실서비스에 그대로 반영된다.
 
@@ -157,8 +157,8 @@ def download_rag_ingest_job_log(job_id: str):
 def trigger_rag_ingest(option: int | None = None, clean: bool = False) -> dict:
     """RAG 수집 파이프라인 실행 — khub 웹크롤 정본 v2 (A360-Assistant-Backend와 같은 DB에 적재).
 
-    crawl-khub → registry → build-v2(트리우선 등기) → validate(품질 게이트) → ingest.
-    build-v2가 LLM을 쓰므로 OPENAI_API_KEY가 필요하다.
+    crawl-khub → registry → build-llm(패키지 단위 LLM 구조화 추출) → validate(품질 게이트) → ingest.
+    build-llm과 임베딩이 LLM/OpenAI를 쓰므로 OPENAI_API_KEY가 필요하다.
 
     option: **하위호환용 — 받되 무시한다.** 파이프라인은 v2 하나뿐이라 옵션 1~3(JAR 기반)은
             제거됐다. 값을 검증해 400을 내면 옛 스케줄러/스크립트가 깨지므로, 어떤 값이 와도

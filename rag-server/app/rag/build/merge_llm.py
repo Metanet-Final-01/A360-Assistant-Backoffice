@@ -1,12 +1,12 @@
-"""v2-LLM 문서 빌더 — action_schema를 패키지 단위 LLM 구조화 추출로 생성한다(재설계).
+"""v2 문서 빌더 — 등기부(package_registry) + khub 덤프에서 rag_documents를 만드는 **정본 빌더**.
 
-build_documents_v2(규칙 계층)와 **나란히** 존재하는 대체 경로다. 교체하는 것은 딱 하나 —
-action_schema/trigger_schema 행을 만드는 로직(extract_llm)이다. package_overview·package_release·
-doc_page는 기존과 같은 방식으로 방출하되, 계획서 결정에 따라 **doc_page는 ko·en 양 언어를
-각각 별도 행으로** 싣는다(기존은 ko 우선·en 폴백 문서당 1행).
+action_schema/trigger_schema는 패키지 단위 LLM 구조화 추출(extract_llm)로 생성한다. 규칙 파싱
+빌더(build_documents_v2)는 이 경로로 일원화되면서 제거됐다(refactor/remove-build-v2). 공용
+헬퍼(_doc_id·_plain_text·_soup·_release_versions·action_label_ko 등)만 common에서 가져온다.
 
-기존 build_documents_v2는 그대로 두어(=규칙 베이스라인) 신·구 결과를 같은 덤프에서 비교할 수
-있게 한다. crawl/registry/ingest/embed/opensearch는 무변경 재사용.
+산출 source_type: package_overview / action_schema / trigger_schema / package_release / doc_page.
+doc_page는 **ko·en 양 언어를 각각 별도 행으로** 싣는다. 트리거는 'Build automations > Triggers'
+트리를 따로 순회해 수집한다. crawl/registry/ingest/embed/opensearch는 무변경 재사용.
 
 흐름은 2단이다: (A) subtree 보유 패키지의 LLM 추출을 스레드풀로 **병렬** 수행(벽시계 단축),
 (B) 등기부 순서대로 release/overview/action 행을 **순차** 조립(순서·중복 결정성 확보).
@@ -22,7 +22,7 @@ from pathlib import Path
 from .. import config
 from .extract_llm import _write_cache, extract_package
 from .merge import _split_document, chunk_params_for
-from .merge_v2 import (
+from .common import (
     _doc_id,
     _doc_uid,
     _load_bodies,
@@ -101,7 +101,7 @@ def build_documents_llm(dump_dir: str | Path, registry: dict, chunk_size: int, c
     # ko 본문을 붙일 때의 content 상한 — 청킹 입력이라 넘기면 액션 한 건이 여러 청크로
     # 흩어진다. ⚠️ 호출자가 넘긴 chunk_size가 아니라 **action_schema에 실제로 적용될** 폭을
     # 써야 한다(config.CHUNK_PARAMS_BY_SOURCE_TYPE로 타입별 분리 — 현재 1500). 호출자 값
-    # (1200)을 그대로 쓰면 예산이 300자 좁아져 ko 본문이 근거 없이 잘린다(merge_v2와 동일).
+    # (1200)을 그대로 쓰면 예산이 300자 좁아져 ko 본문이 근거 없이 잘린다.
     content_limit = chunk_params_for("action_schema", chunk_size or 1200, chunk_overlap)[0]
 
     toc_en = json.loads((dump / "toc_en-US.json").read_text(encoding="utf-8"))["toc"]
@@ -474,7 +474,7 @@ def build_documents_llm(dump_dir: str | Path, registry: dict, chunk_size: int, c
 
     _write_cache(cache_path, cache)
 
-    # id 중복 검사(같은 정규화 이름 등) — 나중 것에 salt를 붙여 살린다(merge_v2와 동일 정책).
+    # id 중복 검사(같은 정규화 이름 등) — 나중 것에 salt(doc_uid/title)를 붙여 유일해질 때까지 재해시한다.
     seen: dict[str, dict] = {}
     for d in rag_docs:
         if d["id"] in seen:

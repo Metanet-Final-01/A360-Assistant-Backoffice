@@ -1,12 +1,12 @@
-"""khub(Fluid Topics) v2 덤프 생성 — build-v2가 소비하는 toc_*.json + bodies_*.jsonl[html].
+"""khub(Fluid Topics) v2 덤프 생성 — build-llm이 소비하는 toc_*.json + bodies_*.jsonl[html].
 
-기존 docs_crawler(v1 docs.jsonl)와 **별개**다: 이건 registry/build-v2 계층이 쓰는 원문 덤프를
+기존 docs_crawler(v1 docs.jsonl)와 **별개**다: 이건 registry/build-llm 계층이 쓰는 원문 덤프를
 만든다 — raw html 포함, 주 맵('Automation 360') **전수** + 보조 맵(Control Room APIs 등) 전부.
 세션 스크래치패드에만 있던 크롤러 2종(주 맵 전수 + 보조 맵)을 하나로 합쳐 리포에 편입한 것(P5).
 
 산출(dump_dir):
   toc_{locale}.json            주 맵 목차 {map_id, title, toc}
-  toc_{locale}__{slug}.json    보조 맵 목차 (build-v2가 toc_{locale}__*.json 글롭으로 읽음)
+  toc_{locale}__{slug}.json    보조 맵 목차 (build-llm이 toc_{locale}__*.json 글롭으로 읽음)
   bodies_{locale}.jsonl        모든 토픽 본문 — {content_id, toc_id, title, breadcrumbs,
                                pretty_url, map_id, map_title, html}. _load_bodies가 content_id로 인덱싱.
 
@@ -151,7 +151,7 @@ def crawl_khub_dump(dump_dir, locales=DEFAULT_LOCALES, primary_title=PRIMARY_TIT
             for m in aux:
                 atoc = dc.get_menu(m["id"])
                 # 한글 등 비ASCII 제목은 슬러그가 빈값이 된다 — map_id로 폴백해 파일명 충돌을 막는다
-                # (build-v2가 toc_{locale}__*.json을 글롭으로 읽으므로 파일명이 유일해야 함).
+                # (build-llm이 toc_{locale}__*.json을 글롭으로 읽으므로 파일명이 유일해야 함).
                 slug = _slugify(m["title"]) or m["id"][:12]
                 _save_toc(m["id"], m["title"], atoc, f"toc_{locale}__{slug}.json")
                 atopics = _dedup(_flatten_toc(atoc))
