@@ -176,7 +176,7 @@ jobs:
 
       - name: Deploy CloudFormation
         run: |
-          aws cloudformation deploy \
+          if ! aws cloudformation deploy \
             --stack-name "${STACK_NAME}" \
             --region "${AWS_REGION}" \
             --template-file infra/cloudformation/ops-stack.yml \
@@ -196,4 +196,11 @@ jobs:
               GhcrTokenSecretArn="${{ secrets.GHCR_TOKEN_SECRET_ARN }}" \
               OpsRuntimeSecretArn="${{ secrets.OPS_RUNTIME_SECRET_ARN }}" \
               RagServiceTokenSecretArn="${{ secrets.RAG_SERVICE_TOKEN_SECRET_ARN }}" \
-              A360BackendUrl="${{ secrets.A360_BACKEND_URL }}"
+              A360BackendUrl="${{ secrets.A360_BACKEND_URL }}"; then
+            aws cloudformation describe-stack-events \
+              --stack-name "${STACK_NAME}" \
+              --region "${AWS_REGION}" \
+              --query "StackEvents[0:20].[Timestamp,LogicalResourceId,ResourceStatus,ResourceStatusReason]" \
+              --output table || true
+            exit 1
+          fi
