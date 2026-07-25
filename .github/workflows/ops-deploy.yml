@@ -27,7 +27,7 @@ on:
       instance_type:
         description: EC2 instance type for the Ops Auto Scaling Group
         required: true
-        default: t3.medium
+        default: t3.small
         type: string
       min_size:
         description: Min Ops instance count
@@ -42,7 +42,7 @@ on:
       max_size:
         description: Max Ops instance count
         required: true
-        default: "2"
+        default: "1"
         type: string
       client_vpn_cidr:
         description: Client VPN CIDR allowed to reach the internal Ops ALB
@@ -150,6 +150,7 @@ jobs:
           GHCR_TOKEN_SECRET_ARN: ${{ secrets.GHCR_TOKEN_SECRET_ARN }}
           OPS_RUNTIME_SECRET_ARN: ${{ secrets.OPS_RUNTIME_SECRET_ARN }}
           A360_BACKEND_URL: ${{ secrets.A360_BACKEND_URL }}
+          CLIENT_VPN_SECURITY_GROUP_ID: ${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}
         run: |
           if [ -z "$AWS_DEPLOY_ROLE_ARN" ]; then
             echo "AWS_DEPLOY_ROLE_ARN is missing from the selected GitHub Environment." >&2
@@ -163,6 +164,9 @@ jobs:
           fi
           if [ -z "$A360_BACKEND_URL" ]; then
             echo "A360_BACKEND_URL is empty; stack deploy will skip backend URL injection."
+          fi
+          if [ -z "$CLIENT_VPN_SECURITY_GROUP_ID" ]; then
+            echo "CLIENT_VPN_SECURITY_GROUP_ID is empty; internal ALB will rely on ClientVpnCidr only."
           fi
 
       - uses: aws-actions/configure-aws-credentials@v4
@@ -182,11 +186,12 @@ jobs:
               OpsBackendImageUri="${{ needs.meta.outputs.image_prefix }}/ops-backend:${{ needs.meta.outputs.image_tag }}" \
               OpsUiImageUri="${{ needs.meta.outputs.image_prefix }}/ops-ui:${{ needs.meta.outputs.image_tag }}" \
               RagServerImageUri="${{ needs.meta.outputs.image_prefix }}/rag-server:${{ needs.meta.outputs.image_tag }}" \
-              InstanceType="${{ inputs.instance_type || 't3.medium' }}" \
+              InstanceType="${{ inputs.instance_type || 't3.small' }}" \
               MinSize="${{ inputs.min_size || '1' }}" \
               DesiredCapacity="${{ inputs.desired_capacity || '1' }}" \
-              MaxSize="${{ inputs.max_size || '2' }}" \
+              MaxSize="${{ inputs.max_size || '1' }}" \
               ClientVpnCidr="${{ inputs.client_vpn_cidr || '10.250.0.0/22' }}" \
+              ClientVpnSecurityGroupId="${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}" \
               GhcrUsername="${{ secrets.GHCR_USERNAME }}" \
               GhcrTokenSecretArn="${{ secrets.GHCR_TOKEN_SECRET_ARN }}" \
               OpsRuntimeSecretArn="${{ secrets.OPS_RUNTIME_SECRET_ARN }}" \

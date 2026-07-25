@@ -22,7 +22,7 @@ Parameters:
     Description: Immutable image URI for rag-server. Use a Git commit SHA tag, not latest.
   InstanceType:
     Type: String
-    Default: t3.medium
+    Default: t3.small
   MinSize:
     Type: Number
     Default: 1
@@ -31,7 +31,7 @@ Parameters:
     Default: 1
   MaxSize:
     Type: Number
-    Default: 2
+    Default: 1
   OpsBackendPort:
     Type: Number
     Default: 8100
@@ -47,6 +47,10 @@ Parameters:
   ClientVpnCidr:
     Type: String
     Default: 10.250.0.0/22
+  ClientVpnSecurityGroupId:
+    Type: String
+    Default: ""
+    Description: Optional Client VPN endpoint security group ID. When set, the internal ALB accepts traffic from this SG as well as ClientVpnCidr.
   LogRetentionDays:
     Type: Number
     Default: 14
@@ -75,6 +79,7 @@ Conditions:
   HasExternalOpsRuntimeSecret: !Not [!Equals [!Ref OpsRuntimeSecretArn, ""]]
   HasBackendUrl: !Not [!Equals [!Ref A360BackendUrl, ""]]
   HasExternalGhcrTokenSecret: !Not [!Equals [!Ref GhcrTokenSecretArn, ""]]
+  HasClientVpnSecurityGroup: !Not [!Equals [!Ref ClientVpnSecurityGroupId, ""]]
   CreateGhcrTokenSecret: !Equals [!Ref GhcrTokenSecretArn, ""]
   CreateOpsRuntimeSecret: !Equals [!Ref OpsRuntimeSecretArn, ""]
   CreateRagServiceTokenSecret: !Equals [!Ref RagServiceTokenSecretArn, ""]
@@ -174,6 +179,17 @@ Resources:
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
+
+  InternalAlbIngressFromClientVpnSecurityGroup:
+    Type: AWS::EC2::SecurityGroupIngress
+    Condition: HasClientVpnSecurityGroup
+    Properties:
+      GroupId: !Ref InternalAlbSecurityGroup
+      IpProtocol: tcp
+      FromPort: !Ref InternalAlbListenerPort
+      ToPort: !Ref InternalAlbListenerPort
+      SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId
+      Description: Allow Client VPN endpoint security group to reach the internal Ops ALB.
 
   ObservabilityDbIngressFromOps:
     Type: AWS::EC2::SecurityGroupIngress
@@ -539,8 +555,8 @@ Resources:
           - ","
           - Fn::ImportValue:
               Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
-      HealthCheckType: ELB
-      HealthCheckGracePeriod: 180
+      HealthCheckType: EC2
+      HealthCheckGracePeriod: 600
       TargetGroupARNs:
         - !Ref OpsUiTargetGroup
         - !Ref OpsBackendTargetGroup

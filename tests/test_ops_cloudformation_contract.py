@@ -67,7 +67,22 @@ def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():
 
     assert "Scheme: internal" in template
     assert "CidrIp: !Ref ClientVpnCidr" in template
+    assert "ClientVpnSecurityGroupId" in template
+    assert "InternalAlbIngressFromClientVpnSecurityGroup" in template
+    assert "SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId" in template
     assert "Scheme: internet-facing" not in template
+
+
+def test_ops_asg_uses_single_admin_instance_defaults_and_ec2_health():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+    workflow = (ROOT / ".github/workflows/ops-deploy.yml").read_text(encoding="utf-8")
+
+    assert "Default: t3.small" in template
+    assert "HealthCheckType: EC2" in template
+    assert "HealthCheckGracePeriod: 600" in template
+    assert "default: t3.small" in workflow
+    assert 'InstanceType="${{ inputs.instance_type || \'t3.small\' }}"' in workflow
+    assert 'MaxSize="${{ inputs.max_size || \'1\' }}"' in workflow
 
 
 def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
@@ -88,8 +103,10 @@ def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
     assert "GHCR_TOKEN_SECRET_ARN" in workflow
     assert "OPS_RUNTIME_SECRET_ARN" in workflow
     assert "A360_BACKEND_URL" in workflow
+    assert "CLIENT_VPN_SECURITY_GROUP_ID" in workflow
     assert "GHCR_TOKEN_SECRET_ARN is empty" in workflow
     assert "OPS_RUNTIME_SECRET_ARN is empty" in workflow
     assert "A360_BACKEND_URL is empty" in workflow
+    assert "ClientVpnSecurityGroupId=\"${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}\"" in workflow
     assert "infra-contract" in tests_workflow
     assert "python -m pytest tests/ -q" in tests_workflow
