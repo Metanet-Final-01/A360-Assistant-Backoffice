@@ -80,6 +80,8 @@ def test_ops_asg_uses_single_admin_instance_defaults_and_ec2_health():
     assert "Default: t3.small" in template
     assert "HealthCheckType: EC2" in template
     assert "HealthCheckGracePeriod: 600" in template
+    assert "MinInstancesInService: 0" in template
+    assert "MaxBatchSize: 1" in template
     assert "default: t3.small" in workflow
     assert 'InstanceType="${{ inputs.instance_type || \'t3.small\' }}"' in workflow
     assert 'MaxSize="${{ inputs.max_size || \'1\' }}"' in workflow
@@ -97,6 +99,7 @@ def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
     assert "ops-ui:${{ needs.meta.outputs.image_tag }}" in workflow
     assert "rag-server:${{ needs.meta.outputs.image_tag }}" in workflow
     assert "aws cloudformation deploy" in workflow
+    assert "aws cloudformation describe-stack-events" in workflow
     assert "environment: ops-deploy-${{ needs.meta.outputs.environment }}" in workflow
     assert "OPS_AUTO_DEPLOY" in workflow
     assert "AWS_DEPLOY_ROLE_ARN" in workflow
