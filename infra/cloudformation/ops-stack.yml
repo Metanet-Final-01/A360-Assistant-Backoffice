@@ -413,6 +413,7 @@ Resources:
                 -p ${RagServerPort}:${RagServerPort} \
                 --env-file /opt/a360/runtime.env \
                 -e RAG_DATABASE_URL="$RAG_DSN" \
+                -e REDIS_URL="${RedisUrl}" \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
                 --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${RagLogGroup} \
                 ${RagServerImageUri}
@@ -423,6 +424,7 @@ Resources:
                 -p ${OpsBackendPort}:${OpsBackendPort} \
                 --env-file /opt/a360/runtime.env \
                 -e A360_OBSERVABILITY_DATABASE_URL="$OBS_DSN" \
+                -e REDIS_URL="${RedisUrl}" \
                 -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
                 -e RAG_SCHEDULER_PROVIDER="eventbridge-sqs" \
@@ -483,6 +485,9 @@ Resources:
               RagDbName:
                 Fn::ImportValue:
                   Fn::Sub: "${ProjectName}-${Environment}-RagDbName"
+              RedisUrl:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-RedisUrl"
               ArtifactBucketName:
                 Fn::ImportValue:
                   Fn::Sub: "${ProjectName}-${Environment}-ArtifactBucketName"
@@ -532,6 +537,7 @@ Resources:
                     docker run -d --restart unless-stopped --name rag-worker --network a360 \
                       --env-file /opt/a360/runtime.env \
                       -e AWS_REGION="${AWS::Region}" \
+                      -e REDIS_URL="${RedisUrl}" \
                       -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
                       -e RAG_INGEST_SQS_QUEUE_URL="${RagJobQueueUrl}" \
                       -e RAG_INGEST_SQS_QUEUE_ARN="${RagJobQueueArn}" \
@@ -545,6 +551,9 @@ Resources:
                     RagJobQueueArn:
                       Fn::ImportValue:
                         Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+                    RedisUrl:
+                      Fn::ImportValue:
+                        Fn::Sub: "${ProjectName}-${Environment}-RedisUrl"
                     RagWorkerLogGroupName: !Sub "/a360/${Environment}/rag-worker"
                 - ""
 
