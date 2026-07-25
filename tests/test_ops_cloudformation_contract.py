@@ -34,13 +34,32 @@ def test_ops_runtime_secret_is_injected_into_backend_and_rag_server():
     params = (ROOT / "infra/cloudformation/parameters/ops-dev.json").read_text(encoding="utf-8")
 
     assert "OpsRuntimeSecretArn" in template
-    assert "HasOpsRuntimeSecret" in template
+    assert "OpsRuntimeSecret:" in template
+    assert "CreateOpsRuntimeSecret" in template
+    assert "HasExternalOpsRuntimeSecret" in template
     assert "ReadOpsRuntimeSecret" in template
     assert "type == \"object\"" in template
     assert "secret_string" in template
     assert "--env-file /opt/a360/runtime.env" in template
-    assert "!If [HasOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref AWS::NoValue]" in template
+    assert "!If [HasExternalOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref OpsRuntimeSecret]" in template
     assert '"ParameterKey": "OpsRuntimeSecretArn", "ParameterValue": ""' in params
+
+
+def test_ops_stack_owns_ops_specific_secret_shells():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+
+    assert "OpsGhcrReadTokenSecret:" in template
+    assert "RagServiceTokenSecret:" in template
+    assert "CreateGhcrTokenSecret" in template
+    assert "CreateRagServiceTokenSecret" in template
+    assert "${ProjectName}/${Environment}/ops-ghcr-read-token" in template
+    assert "SecretString: REPLACE_ME" in template
+    assert '$(cat /opt/a360/ghcr_token)" != "REPLACE_ME"' in template
+    assert "${ProjectName}/${Environment}/ops-runtime" in template
+    assert "${ProjectName}/${Environment}/rag-service-token" in template
+    assert "OpsGhcrReadTokenSecretArn:" in template
+    assert "OpsRuntimeSecretArn:" in template
+    assert "RagServiceTokenSecretArn:" in template
 
 
 def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():

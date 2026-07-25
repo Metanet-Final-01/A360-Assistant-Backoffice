@@ -68,15 +68,77 @@ Parameters:
   GhcrTokenSecretArn:
     Type: String
     Default: ""
-    Description: Optional Secret ARN for GHCR token. Leave empty for public images or ECR.
+    Description: Optional existing Secret ARN for GHCR token. Leave empty to let this stack create a retained secret shell.
 
 Conditions:
-  HasRagTokenSecret: !Not [!Equals [!Ref RagServiceTokenSecretArn, ""]]
-  HasOpsRuntimeSecret: !Not [!Equals [!Ref OpsRuntimeSecretArn, ""]]
+  HasExternalRagTokenSecret: !Not [!Equals [!Ref RagServiceTokenSecretArn, ""]]
+  HasExternalOpsRuntimeSecret: !Not [!Equals [!Ref OpsRuntimeSecretArn, ""]]
   HasBackendUrl: !Not [!Equals [!Ref A360BackendUrl, ""]]
-  HasGhcrToken: !Not [!Equals [!Ref GhcrTokenSecretArn, ""]]
+  HasExternalGhcrTokenSecret: !Not [!Equals [!Ref GhcrTokenSecretArn, ""]]
+  CreateGhcrTokenSecret: !Equals [!Ref GhcrTokenSecretArn, ""]
+  CreateOpsRuntimeSecret: !Equals [!Ref OpsRuntimeSecretArn, ""]
+  CreateRagServiceTokenSecret: !Equals [!Ref RagServiceTokenSecretArn, ""]
 
 Resources:
+  OpsGhcrReadTokenSecret:
+    Type: AWS::SecretsManager::Secret
+    Condition: CreateGhcrTokenSecret
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub ${ProjectName}/${Environment}/ops-ghcr-read-token
+      Description: GHCR read token for private Ops container image pulls. Put the token value after stack creation.
+      SecretString: REPLACE_ME
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Service
+          Value: ops
+
+  OpsRuntimeSecret:
+    Type: AWS::SecretsManager::Secret
+    Condition: CreateOpsRuntimeSecret
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub ${ProjectName}/${Environment}/ops-runtime
+      Description: Extra runtime environment variables for Ops backend and RAG server. Update the JSON value after stack creation.
+      SecretString: "{}"
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Service
+          Value: ops
+
+  RagServiceTokenSecret:
+    Type: AWS::SecretsManager::Secret
+    Condition: CreateRagServiceTokenSecret
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Sub ${ProjectName}/${Environment}/rag-service-token
+      Description: Shared bearer token used between Ops backend and rag-server. Put the token value after stack creation.
+      GenerateSecretString:
+        PasswordLength: 48
+        ExcludePunctuation: true
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Service
+          Value: ops
+
   InternalAlbSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
@@ -215,9 +277,9 @@ Resources:
                       Fn::Sub: "${ProjectName}-${Environment}-OpsReaderSecretArn"
                   - Fn::ImportValue:
                       Fn::Sub: "${ProjectName}-${Environment}-RagIngestSecretArn"
-                  - !If [HasRagTokenSecret, !Ref RagServiceTokenSecretArn, !Ref AWS::NoValue]
-                  - !If [HasOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref AWS::NoValue]
-                  - !If [HasGhcrToken, !Ref GhcrTokenSecretArn, !Ref AWS::NoValue]
+                  - !If [HasExternalRagTokenSecret, !Ref RagServiceTokenSecretArn, !Ref RagServiceTokenSecret]
+                  - !If [HasExternalOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref OpsRuntimeSecret]
+                  - !If [HasExternalGhcrTokenSecret, !Ref GhcrTokenSecretArn, !Ref OpsGhcrReadTokenSecret]
 
   OpsInstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -280,7 +342,7 @@ Resources:
               RAG_DSN="postgresql://$RAG_DB_USER:$RAG_DB_PASSWORD@${RagDbEndpoint}:5432/${RagDbName}?sslmode=require"
 
               GHCR_USERNAME='${GhcrUsername}'
-              if [ -s /opt/a360/ghcr_token ]; then
+              if [ -s /opt/a360/ghcr_token ] && [ "$(cat /opt/a360/ghcr_token)" != "REPLACE_ME" ]; then
                 if [ -z "$GHCR_USERNAME" ]; then
                   GHCR_USERNAME=token
                 fi
@@ -361,15 +423,15 @@ Resources:
                 Fn::ImportValue:
                   Fn::Sub: "${ProjectName}-${Environment}-ArtifactBucketName"
               ReadGhcrSecret: !If
-                - HasGhcrToken
+                - HasExternalGhcrTokenSecret
                 - !Sub "aws secretsmanager get-secret-value --secret-id '${GhcrTokenSecretArn}' --query SecretString --output text > /opt/a360/ghcr_token"
-                - "touch /opt/a360/ghcr_token"
+                - !Sub "aws secretsmanager get-secret-value --secret-id '${OpsGhcrReadTokenSecret}' --query SecretString --output text > /opt/a360/ghcr_token"
               ReadRagTokenSecret: !If
-                - HasRagTokenSecret
+                - HasExternalRagTokenSecret
                 - !Sub "aws secretsmanager get-secret-value --secret-id '${RagServiceTokenSecretArn}' --query SecretString --output text > /opt/a360/rag_service_token"
-                - "touch /opt/a360/rag_service_token"
+                - !Sub "aws secretsmanager get-secret-value --secret-id '${RagServiceTokenSecret}' --query SecretString --output text > /opt/a360/rag_service_token"
               ReadOpsRuntimeSecret: !If
-                - HasOpsRuntimeSecret
+                - HasExternalOpsRuntimeSecret
                 - !Sub |
                   secret_string=$(aws secretsmanager get-secret-value --secret-id '${OpsRuntimeSecretArn}' --query SecretString --output text)
                   if printf '%s' "$secret_string" | jq -e 'type == "object"' >/dev/null 2>&1; then
@@ -377,7 +439,13 @@ Resources:
                   else
                     printf '%s\n' "$secret_string" > /opt/a360/runtime.env
                   fi
-                - "touch /opt/a360/runtime.env"
+                - !Sub |
+                  secret_string=$(aws secretsmanager get-secret-value --secret-id '${OpsRuntimeSecret}' --query SecretString --output text)
+                  if printf '%s' "$secret_string" | jq -e 'type == "object"' >/dev/null 2>&1; then
+                    printf '%s' "$secret_string" | jq -r 'to_entries[] | select(.value != null) | "\(.key)=\(.value|tostring)"' > /opt/a360/runtime.env
+                  else
+                    printf '%s\n' "$secret_string" > /opt/a360/runtime.env
+                  fi
               BackendUrlEnv: !If
                 - HasBackendUrl
                 - !Sub "-e A360_BACKEND_URL='${A360BackendUrl}'"
@@ -517,6 +585,21 @@ Resources:
 Outputs:
   InternalAlbDnsName:
     Value: !GetAtt InternalAlb.DNSName
+  OpsGhcrReadTokenSecretArn:
+    Description: GHCR read token secret ARN used by Ops EC2 image pulls.
+    Value: !If [HasExternalGhcrTokenSecret, !Ref GhcrTokenSecretArn, !Ref OpsGhcrReadTokenSecret]
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-OpsGhcrReadTokenSecretArn"
+  OpsRuntimeSecretArn:
+    Description: Extra runtime environment secret ARN used by Ops backend and RAG server.
+    Value: !If [HasExternalOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref OpsRuntimeSecret]
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-OpsRuntimeSecretArn"
+  RagServiceTokenSecretArn:
+    Description: Shared RAG service bearer token secret ARN.
+    Value: !If [HasExternalRagTokenSecret, !Ref RagServiceTokenSecretArn, !Ref RagServiceTokenSecret]
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-RagServiceTokenSecretArn"
   OpsInstanceSecurityGroupId:
     Value: !Ref OpsInstanceSecurityGroup
     Export:
