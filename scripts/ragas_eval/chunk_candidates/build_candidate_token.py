@@ -11,7 +11,7 @@ if sys.stdout.encoding and sys.stdout.encoding.lower() != "utf-8":
     sys.stdout.reconfigure(encoding="utf-8")
     sys.stderr.reconfigure(encoding="utf-8")
 
-_RAG_SERVER_ROOT = Path(r"c:/Users/KDH/Documents/VisualStudio Code/A360-Assistant/A360-Assistant-Ops/rag-server")
+_RAG_SERVER_ROOT = Path(__file__).resolve().parents[3] / "rag-server"
 sys.path.insert(0, str(_RAG_SERVER_ROOT))
 os.chdir(_RAG_SERVER_ROOT)
 

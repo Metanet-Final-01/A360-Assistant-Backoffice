@@ -200,6 +200,37 @@ holm_significant=False.** tok256 vs tok250(2ⁿ 가설의 또 다른 쌍)과 tok
 직접 통제할 수 있다는 운영상 이점** 쪽에 둬야 한다 — 이 결론은 사용자가 최종 보고서
 문구로 확정함(대화 기록 참고).
 
+## 6.6. 청크 길이 심층 EDA (2026-07-25, 사용자+GPT 10개 지적사항 대응)
+
+`local_llm_experiment/deep_chunk_eda.py` 실행 → `docs/ragas_eval_data_2026-07-23/
+deep_chunk_eda_2026-07-25.xlsx`(4개 시트). 다룬 것:
+
+- **chunks_per_doc**: 후보별 total_chunks/문서당 청크수 분포. 예상대로 cs1200(9,570청크)과
+  tok900(9,346청크)은 실제 크기가 비슷한 만큼 총 청크수도 거의 같음(2.3% 차이) — 인덱스
+  크기·임베딩 비용도 사실상 동등하다는 뜻.
+- **split_vs_unsplit**: unsplit(원문 그대로 1청크)과 split_chunks(실제 분할된 청크)를 분리해
+  mean/median/p10~p99/std 계산. 섞인 평균이 왜곡됐던 문제 해소.
+- **문서별_chars_per_token**: 문서 단위(전체 corpus 평균 아님)로 chars/token 비율 분포 계산 —
+  코퍼스 전체는 candidate 무관하게 mean=1.5/p10=1.2/p90=1.9로 안정적이지만, **카테고리별로는
+  크게 다름**: `action_schema-jar`는 mean=2.1·std=0.7(범위 1.4~3.0)로 가장 변동 크고,
+  `doc_page`는 mean=1.4·std=0.3으로 상대적으로 안정적 — jar 문서가 영어/코드성 토큰이
+  많아 char/token 비율 변동이 큰 것으로 추정.
+- **검색된청크_근사분포(gold129)**: `eval_runs.jsonl`의 `raw.retrieved_parent_ids`를 이용해
+  골드셋 129건 실행에서 실제 검색된 문서들의 청크 길이 근사 분포(⚠️ 어느 chunk_index가
+  검색됐는지는 로그에 없어 해당 문서의 평균 청크 길이로 근사 — 정확한 값 아님, 한계로 명시).
+  tok150→tok2048로 갈수록 검색된 청크의 평균 토큰수가 108.9→686.9로 선형에 가깝게 증가.
+
+**이번에 안 한 것(범위 밖, 후속 필요 시)**: 경계 절단 품질(문장/JSON/스키마 필드 중간 절단
+비율), ECDF/박스플롯 시각화, gold evidence가 청크 경계에서 분리됐는지 여부, 원문(청킹 전)
+길이 분포를 별도 탭으로 완전히 분리(현재는 unsplit 그룹이 사실상 원문 근사치 역할).
+
+**버그 수정**: `scripts/ragas_eval/chunk_candidates/build_candidate_token.py`의
+`_RAG_SERVER_ROOT`가 원본 작성자 컴퓨터 절대경로(`c:/Users/KDH/...`)로 하드코딩돼 있어서
+다른 컴퓨터에서 실행하면 즉시 깨짐 — `build_candidate.py`와 같은 상대경로 패턴으로 수정함.
+단, **이 컴퓨터엔 `rag-server/data/`(docs.jsonl 등 원본 크롤링 코퍼스)가 없어서 새 후보를
+처음부터 빌드하는 건 여전히 불가능**(tok500 시도 시 "0개 청크"로 조용히 실패 확인) —
+원본 코퍼스 파일을 가져와야 새 chunk_size 후보를 만들 수 있음.
+
 ## 7. 진행 상황 — RAGAS 평가 완료, 다음은 비교/분석 단계
 
 **(2026-07-25) 계획했던 14개 후보(tok 9개 + char ov0 5개) RAGAS 평가 전부 완료.** 위
