@@ -220,9 +220,20 @@ deep_chunk_eda_2026-07-25.xlsx`(4개 시트). 다룬 것:
   검색됐는지는 로그에 없어 해당 문서의 평균 청크 길이로 근사 — 정확한 값 아님, 한계로 명시).
   tok150→tok2048로 갈수록 검색된 청크의 평균 토큰수가 108.9→686.9로 선형에 가깝게 증가.
 
+**추가(같은 날, 사용자 지시로 전부 진행):**
+- `gold_boundary_check.py` → `gold_boundary_check_2026-07-25.xlsx`: 골드셋 179개 근거
+  스니펫이 각 후보에서 청크 하나에 온전히 들어있는지 직접 문자열 매칭으로 확인.
+  tok128/150: 67.6% intact → tok1500/2048: 100% intact. cs300/cs1500의
+  parent_doc_not_in_table=1은 앞서 규명한 93건 결측과 일치.
+- `raw_doc_length.py` → `raw_document_length_2026-07-25.xlsx`: tok2048(overlap=0) 청크를
+  parent_id별로 이어붙여 **원문(청킹 전) 길이를 카테고리별로 정확히 재구성**(90.4%는
+  애초에 1청크라 오차 없음, 나머지 9.6%만 합산 근사). doc_page median=807토큰,
+  action_schema-jar median=216.5토큰, package_overview-jar median=71토큰 — 카테고리 간
+  차이가 명확히 드러남. **doc_page의 44.6%가 900토큰 초과, 12.9%는 2048토큰도 초과**
+  (tok900 unsplit%=55.4%와 정합적).
+
 **이번에 안 한 것(범위 밖, 후속 필요 시)**: 경계 절단 품질(문장/JSON/스키마 필드 중간 절단
-비율), ECDF/박스플롯 시각화, gold evidence가 청크 경계에서 분리됐는지 여부, 원문(청킹 전)
-길이 분포를 별도 탭으로 완전히 분리(현재는 unsplit 그룹이 사실상 원문 근사치 역할).
+비율 — gold snippet 경계 체크로 일부 대체됨), ECDF/박스플롯 시각화(차트).
 
 **추가(같은 날): 순수 검색(retrieval-only) 지표 — 이미 저장돼 있었음.** `run_local_model_combo.py`
 가 매 케이스마다 `hit_at_1/3/5`, `reciprocal_rank`(MRR), `evidence_coverage`를 이미
