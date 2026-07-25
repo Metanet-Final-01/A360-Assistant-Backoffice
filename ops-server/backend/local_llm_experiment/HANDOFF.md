@@ -178,6 +178,13 @@ p<0.05였던 것(`cs600_ov0 vs tok512`의 answer_correctness, diff=-0.048, p=0.0
 더 높음)도 **Holm 보정 후엔 유의성 소멸**(20개 검정 중 하나가 우연히 낮은 p를 보일
 확률이 이미 20×0.05=1이라 예상 범위 내). **최종: 20/20 전부 holm_significant=False.**
 
+**추가(2026-07-25, 같은 날 재확인): `tok1000 vs tok1024`("2ⁿ 가설", 2.3% 차이뿐인
+가장 타이트한 쌍)도 같은 방식으로 5개 지표 전부 paired 검정 — 전부 CI가 0 포함,
+p=0.11~0.80, 역시 유의하지 않음.** 총 5쌍×5지표=25개 검정 중 **25/25 전부
+holm_significant=False.** tok256 vs tok250(2ⁿ 가설의 또 다른 쌍)과 tok500 vs tok512는
+이번 세션 로컬 데이터에 케이스별 원본이 없어(tok256은 다른 컴퓨터 산출물, tok500은
+애초에 안 만듦) 아직 검정 못 함 — 필요하면 tok500부터 새로 만들어야 함.
+
 재현 스크립트: `local_llm_experiment/paired_stats.py` (콘솔 출력용) — 결과 엑셀은
 `docs/ragas_eval_data_2026-07-23/paired_significance_test_2026-07-25.xlsx`.
 
