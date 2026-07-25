@@ -224,6 +224,16 @@ deep_chunk_eda_2026-07-25.xlsx`(4개 시트). 다룬 것:
 비율), ECDF/박스플롯 시각화, gold evidence가 청크 경계에서 분리됐는지 여부, 원문(청킹 전)
 길이 분포를 별도 탭으로 완전히 분리(현재는 unsplit 그룹이 사실상 원문 근사치 역할).
 
+**추가(같은 날): 순수 검색(retrieval-only) 지표 — 이미 저장돼 있었음.** `run_local_model_combo.py`
+가 매 케이스마다 `hit_at_1/3/5`, `reciprocal_rank`(MRR), `evidence_coverage`를 이미
+`metrics` 리스트에 저장하고 있었다(재검색 불필요, `raw`가 아니라 `metrics`에 있어서
+처음엔 놓쳤음). `deep_chunk_eda_2026-07-25.xlsx`의 `검색전용지표(Hit@K_MRR_evidence)`
+시트 참고. **핵심 발견: hit@1/MRR은 작은 청크가 유리(tok150 hit@1=0.403/MRR=0.510)한데
+evidence_coverage는 큰 청크가 유리(tok2048 0.744)해서 방향이 반대다.** RAGAS 생성
+지표(faithfulness/context_recall)는 evidence_coverage 쪽 경향을 따라감 — "1등으로
+정확히 찍는 것"보다 "필요한 근거가 top-5 안에 어떻게든 포함되는 것"이 생성 품질에
+더 중요하다는 뜻으로 해석됨.
+
 **버그 수정**: `scripts/ragas_eval/chunk_candidates/build_candidate_token.py`의
 `_RAG_SERVER_ROOT`가 원본 작성자 컴퓨터 절대경로(`c:/Users/KDH/...`)로 하드코딩돼 있어서
 다른 컴퓨터에서 실행하면 즉시 깨짐 — `build_candidate.py`와 같은 상대경로 패턴으로 수정함.
