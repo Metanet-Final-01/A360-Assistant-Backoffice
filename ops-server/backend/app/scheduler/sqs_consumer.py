@@ -51,6 +51,7 @@ class SqsRagIngestConsumer:
         region_name: str | None = None,
         sqs_client: Any | None = None,
         http_client: httpx.Client | None = None,
+        service_token: str | None = None,
         status_timeout_seconds: float = DEFAULT_STATUS_TIMEOUT_SECONDS,
         status_poll_seconds: float = DEFAULT_STATUS_POLL_SECONDS,
         message_visibility_seconds: int = DEFAULT_MESSAGE_VISIBILITY_SECONDS,
@@ -60,6 +61,7 @@ class SqsRagIngestConsumer:
         self.region_name = region_name or os.getenv("AWS_REGION") or os.getenv("AWS_DEFAULT_REGION") or "ap-northeast-2"
         self.sqs_client = sqs_client or self._make_sqs_client()
         self.http_client = http_client or httpx.Client(timeout=30.0)
+        self.service_token = service_token if service_token is not None else os.getenv("RAG_SERVICE_TOKEN", "")
         self.status_timeout_seconds = status_timeout_seconds
         self.status_poll_seconds = status_poll_seconds
         self.message_visibility_seconds = message_visibility_seconds
@@ -82,6 +84,7 @@ class SqsRagIngestConsumer:
         rag_response = self.http_client.post(
             f"{self.rag_server_url}/rag/ingest",
             params={"option": ingest_message.option, "clean": ingest_message.clean},
+            headers=self.auth_headers(),
         )
         rag_response.raise_for_status()
         rag_body = response_body(rag_response)
@@ -99,7 +102,10 @@ class SqsRagIngestConsumer:
     def wait_for_successful_run(self, run_id: str, *, receipt_handle: str | None = None) -> dict:
         deadline = time.monotonic() + self.status_timeout_seconds
         while True:
-            status_response = self.http_client.get(f"{self.rag_server_url}/rag/ingest/status")
+            status_response = self.http_client.get(
+                f"{self.rag_server_url}/rag/ingest/status",
+                headers=self.auth_headers(),
+            )
             status_response.raise_for_status()
             status_body = response_body(status_response)
             if not isinstance(status_body, dict):
@@ -117,6 +123,11 @@ class SqsRagIngestConsumer:
                     VisibilityTimeout=self.message_visibility_seconds,
                 )
             time.sleep(self.status_poll_seconds)
+
+    def auth_headers(self) -> dict[str, str]:
+        if not self.service_token:
+            return {}
+        return {"Authorization": f"Bearer {self.service_token}"}
 
     def poll_once(self, *, wait_time_seconds: int = 10, max_number_of_messages: int = 1) -> list[dict]:
         response = self.sqs_client.receive_message(

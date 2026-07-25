@@ -41,6 +41,28 @@ Parameters:
   RagServerPort:
     Type: Number
     Default: 8200
+  EnableRagWorker:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+    Description: Run a separate SQS consumer container for scheduled RAG ingest jobs.
+  EnableDefaultRagIngestSchedule:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+    Description: Create a default EventBridge Scheduler schedule that sends RAG ingest jobs to SQS.
+  RagIngestScheduleExpression:
+    Type: String
+    Default: cron(30 8 ? * * *)
+    Description: Default scheduled RAG ingest time in RagIngestScheduleTimezone.
+  RagIngestScheduleTimezone:
+    Type: String
+    Default: Asia/Seoul
+  RagIngestClean:
+    Type: String
+    Default: "false"
+    AllowedValues: ["true", "false"]
+    Description: Whether the scheduled ingest should clean existing RAG corpus before ingest.
   InternalAlbListenerPort:
     Type: Number
     Default: 80
@@ -83,6 +105,8 @@ Conditions:
   CreateGhcrTokenSecret: !Equals [!Ref GhcrTokenSecretArn, ""]
   CreateOpsRuntimeSecret: !Equals [!Ref OpsRuntimeSecretArn, ""]
   CreateRagServiceTokenSecret: !Equals [!Ref RagServiceTokenSecretArn, ""]
+  RunsRagWorker: !Equals [!Ref EnableRagWorker, "true"]
+  CreatesDefaultRagIngestSchedule: !Equals [!Ref EnableDefaultRagIngestSchedule, "true"]
 
 Resources:
   OpsGhcrReadTokenSecret:
@@ -256,6 +280,7 @@ Resources:
                   - !Sub "${OpsBackendLogGroup.Arn}:*"
                   - !Sub "${OpsUiLogGroup.Arn}:*"
                   - !Sub "${RagServerLogGroup.Arn}:*"
+                  - !Sub "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/a360/${Environment}/rag-worker:*"
               - Effect: Allow
                 Action:
                   - cloudformation:SignalResource
@@ -285,6 +310,22 @@ Resources:
                 Resource:
                   Fn::ImportValue:
                     Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+              - Effect: Allow
+                Action:
+                  - scheduler:CreateSchedule
+                  - scheduler:UpdateSchedule
+                  - scheduler:DeleteSchedule
+                  - scheduler:GetSchedule
+                  - scheduler:ListSchedules
+                Resource:
+                  - !Sub "arn:${AWS::Partition}:scheduler:${AWS::Region}:${AWS::AccountId}:schedule/${ProjectName}-${Environment}-rag-ingest/*"
+              - Effect: Allow
+                Action:
+                  - iam:PassRole
+                Resource: !GetAtt RagScheduleRole.Arn
+                Condition:
+                  StringEquals:
+                    iam:PassedToService: scheduler.amazonaws.com
               - Effect: Allow
                 Action:
                   - secretsmanager:GetSecretValue
@@ -366,7 +407,7 @@ Resources:
               fi
 
               docker network create a360 || true
-              docker rm -f rag-server ops-backend ops-ui || true
+              docker rm -f rag-server rag-worker ops-backend ops-ui || true
 
               docker run -d --restart unless-stopped --name rag-server --network a360 \
                 -p ${RagServerPort}:${RagServerPort} \
@@ -376,12 +417,19 @@ Resources:
                 --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${RagLogGroup} \
                 ${RagServerImageUri}
 
+              ${RunRagWorkerContainer}
+
               docker run -d --restart unless-stopped --name ops-backend --network a360 \
                 -p ${OpsBackendPort}:${OpsBackendPort} \
                 --env-file /opt/a360/runtime.env \
                 -e A360_OBSERVABILITY_DATABASE_URL="$OBS_DSN" \
                 -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
+                -e RAG_SCHEDULER_PROVIDER="eventbridge-sqs" \
+                -e RAG_SCHEDULER_GROUP="${ProjectName}-${Environment}-rag-ingest" \
+                -e RAG_SCHEDULER_ROLE_ARN="${RagScheduleRoleArn}" \
+                -e RAG_INGEST_SQS_QUEUE_URL="${RagJobQueueUrl}" \
+                -e RAG_INGEST_SQS_QUEUE_ARN="${RagJobQueueArn}" \
                 ${BackendUrlEnv} \
                 --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${OpsApiLogGroup} \
                 ${OpsBackendImageUri}
@@ -469,6 +517,36 @@ Resources:
               OpsApiLogGroup: !Ref OpsBackendLogGroup
               OpsUiLogGroup: !Ref OpsUiLogGroup
               RagLogGroup: !Ref RagServerLogGroup
+              RagWorkerLogGroupName: !Sub "/a360/${Environment}/rag-worker"
+              RagScheduleRoleArn: !GetAtt RagScheduleRole.Arn
+              RagJobQueueUrl:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueUrl"
+              RagJobQueueArn:
+                Fn::ImportValue:
+                  Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+              RunRagWorkerContainer: !If
+                - RunsRagWorker
+                - !Sub
+                  - |
+                    docker run -d --restart unless-stopped --name rag-worker --network a360 \
+                      --env-file /opt/a360/runtime.env \
+                      -e AWS_REGION="${AWS::Region}" \
+                      -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
+                      -e RAG_INGEST_SQS_QUEUE_URL="${RagJobQueueUrl}" \
+                      -e RAG_INGEST_SQS_QUEUE_ARN="${RagJobQueueArn}" \
+                      -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
+                      --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${RagWorkerLogGroupName} \
+                      ${OpsBackendImageUri} \
+                      python -m app.scheduler.sqs_consumer
+                  - RagJobQueueUrl:
+                      Fn::ImportValue:
+                        Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueUrl"
+                    RagJobQueueArn:
+                      Fn::ImportValue:
+                        Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+                    RagWorkerLogGroupName: !Sub "/a360/${Environment}/rag-worker"
+                - ""
 
   InternalAlb:
     Type: AWS::ElasticLoadBalancingV2::LoadBalancer
@@ -598,6 +676,47 @@ Resources:
                   Fn::ImportValue:
                     Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
 
+  RagSchedulerGroup:
+    Type: AWS::Scheduler::ScheduleGroup
+    Properties:
+      Name: !Sub "${ProjectName}-${Environment}-rag-ingest"
+      Tags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+
+  DefaultRagIngestSchedule:
+    Type: AWS::Scheduler::Schedule
+    Condition: CreatesDefaultRagIngestSchedule
+    Properties:
+      Name: !Sub "${ProjectName}-${Environment}-rag-ingest-daily"
+      GroupName: !Ref RagSchedulerGroup
+      ScheduleExpression: !Ref RagIngestScheduleExpression
+      ScheduleExpressionTimezone: !Ref RagIngestScheduleTimezone
+      FlexibleTimeWindow:
+        Mode: "OFF"
+      State: ENABLED
+      Target:
+        Arn:
+          Fn::ImportValue:
+            Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+        RoleArn: !GetAtt RagScheduleRole.Arn
+        Input: !Sub |
+          {
+            "type": "rag_ingest",
+            "schedule_id": "${ProjectName}-${Environment}-rag-ingest-daily",
+            "option": 3,
+            "clean": ${RagIngestClean},
+            "requested_by": "eventbridge-scheduler",
+            "source": "cloudformation-default"
+          }
+        RetryPolicy:
+          MaximumEventAgeInSeconds: 3600
+          MaximumRetryAttempts: 2
+
 Outputs:
   InternalAlbDnsName:
     Value: !GetAtt InternalAlb.DNSName
@@ -624,3 +743,19 @@ Outputs:
     Value: !Ref InternalAlbSecurityGroup
   OpsAutoScalingGroupName:
     Value: !Ref OpsAutoScalingGroup
+  RagScheduleRoleArn:
+    Description: EventBridge Scheduler execution role used for RAG ingest schedules.
+    Value: !GetAtt RagScheduleRole.Arn
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-RagScheduleRoleArn"
+  RagSchedulerGroupName:
+    Description: EventBridge Scheduler group for RAG ingest jobs.
+    Value: !Ref RagSchedulerGroup
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-RagSchedulerGroupName"
+  DefaultRagIngestScheduleName:
+    Condition: CreatesDefaultRagIngestSchedule
+    Description: Default EventBridge Scheduler schedule for RAG ingest jobs.
+    Value: !Ref DefaultRagIngestSchedule
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-DefaultRagIngestScheduleName"

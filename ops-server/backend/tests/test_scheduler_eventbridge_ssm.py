@@ -1,12 +1,29 @@
 import json
+from pathlib import Path
 
 import httpx
+import yaml
 
 from app.scheduler.eventbridge_sqs import EventBridgeSqsSchedulerProvider
 from app.scheduler.eventbridge_ssm import EventBridgeSsmSchedulerProvider
 from app.scheduler.local_provider import LocalSchedulerProvider
 from app.scheduler.schema import RagIngestScheduleRequest
 from app.scheduler.sqs_consumer import SqsRagIngestConsumer
+
+
+class CfnLoader(yaml.SafeLoader):
+    pass
+
+
+def _cfn_multi_constructor(loader, _tag_prefix, node):
+    if isinstance(node, yaml.ScalarNode):
+        return loader.construct_scalar(node)
+    if isinstance(node, yaml.SequenceNode):
+        return loader.construct_sequence(node)
+    return loader.construct_mapping(node)
+
+
+CfnLoader.add_multi_constructor("!", _cfn_multi_constructor)
 
 
 def _request() -> RagIngestScheduleRequest:
@@ -80,6 +97,23 @@ def test_eventbridge_sqs_builds_scheduler_payload():
     }
 
 
+def test_ops_stack_defines_default_rag_ingest_schedule():
+    template_path = Path(__file__).resolve().parents[3] / "infra" / "cloudformation" / "ops-stack.yml"
+    template = yaml.load(template_path.read_text(encoding="utf-8"), Loader=CfnLoader)
+
+    schedule = template["Resources"]["DefaultRagIngestSchedule"]
+    target_input = schedule["Properties"]["Target"]["Input"]
+
+    assert schedule["Condition"] == "CreatesDefaultRagIngestSchedule"
+    assert template["Parameters"]["EnableDefaultRagIngestSchedule"]["Default"] == "true"
+    assert template["Parameters"]["RagIngestScheduleExpression"]["Default"] == "cron(30 8 ? * * *)"
+    assert template["Parameters"]["RagIngestScheduleTimezone"]["Default"] == "Asia/Seoul"
+    assert '"type": "rag_ingest"' in target_input
+    assert '"schedule_id": "${ProjectName}-${Environment}-rag-ingest-daily"' in target_input
+    assert '"option": 3' in target_input
+    assert '"clean": ${RagIngestClean}' in target_input
+
+
 def test_sqs_consumer_processes_message_and_deletes_it():
     class FakeSqs:
         def __init__(self):
@@ -104,6 +138,7 @@ def test_sqs_consumer_processes_message_and_deletes_it():
         assert request.url.path == "/rag/ingest"
         assert request.url.params["option"] == "2"
         assert request.url.params["clean"] == "true"
+        assert request.headers["authorization"] == "Bearer test-rag-token"
         return httpx.Response(200, json={"accepted": True})
 
     sqs = FakeSqs()
@@ -112,6 +147,7 @@ def test_sqs_consumer_processes_message_and_deletes_it():
         rag_server_url="http://127.0.0.1:8200",
         sqs_client=sqs,
         http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+        service_token="test-rag-token",
     )
 
     result = consumer.poll_once(wait_time_seconds=0)

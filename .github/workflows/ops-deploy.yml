@@ -49,6 +49,40 @@ on:
         required: true
         default: 10.250.0.0/22
         type: string
+      enable_rag_worker:
+        description: Run the separate SQS RAG ingest worker container
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      enable_default_rag_ingest_schedule:
+        description: Create the default EventBridge Scheduler to enqueue RAG ingest jobs
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      rag_ingest_schedule_expression:
+        description: Default RAG ingest schedule expression
+        required: true
+        default: "cron(30 8 ? * * *)"
+        type: string
+      rag_ingest_schedule_timezone:
+        description: Default RAG ingest schedule timezone
+        required: true
+        default: Asia/Seoul
+        type: string
+      rag_ingest_clean:
+        description: Run scheduled RAG ingest with clean=true
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "false"
+          - "true"
   push:
     branches:
       - dev
@@ -190,6 +224,11 @@ jobs:
               MinSize="${{ inputs.min_size || '1' }}" \
               DesiredCapacity="${{ inputs.desired_capacity || '1' }}" \
               MaxSize="${{ inputs.max_size || '1' }}" \
+              EnableRagWorker="${{ inputs.enable_rag_worker || 'true' }}" \
+              EnableDefaultRagIngestSchedule="${{ inputs.enable_default_rag_ingest_schedule || 'true' }}" \
+              RagIngestScheduleExpression="${{ inputs.rag_ingest_schedule_expression || 'cron(30 8 ? * * *)' }}" \
+              RagIngestScheduleTimezone="${{ inputs.rag_ingest_schedule_timezone || 'Asia/Seoul' }}" \
+              RagIngestClean="${{ inputs.rag_ingest_clean || 'false' }}" \
               ClientVpnCidr="${{ inputs.client_vpn_cidr || '10.250.0.0/22' }}" \
               ClientVpnSecurityGroupId="${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}" \
               GhcrUsername="${{ secrets.GHCR_USERNAME }}" \
