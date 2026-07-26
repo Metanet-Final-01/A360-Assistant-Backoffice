@@ -1,6 +1,15 @@
 {
   "equivalence_groups": [
     {
+      "canonical": "Email.emailConnectAction",
+      "members": [
+        "Email.emailConnect",
+        "Email.emailConnectAction",
+        "Microsoft 365 Outlook.ms365OutlookConnect"
+      ],
+      "_rationale": "Email.emailDisconnectAction/Email.emailSaveAttachmentAction 그룹은 이미 Email.*<->Microsoft 365 Outlook.* 짝을 인정하는데, 그 세션의 시작(Connect) 쪽 짝만 빠져 있었다(action_equivalence_reviewed_pairs.json에는 Email.emailConnect가 다른 후보들과 잘못 묶여서 반려된 기록만 있고, Outlook 짝과 비교된 적이 없음). v1/v2/v3 실제 예측 비교에서 매번 Email 대신 Microsoft 365 Outlook 계열을 쓰는 게 확인되어(0374, 0167 등) 이미 있는 두 규칙과 대칭을 맞춰 추가. macOS 전용 'Microsoft Outlook (macOS).macMsOutlookConnectDisconnect'(connect+disconnect 결합형)는 의미가 달라(액션 하나가 두 역할을 겸함) 포함하지 않음 — 별도 검토 필요."
+    },
+    {
       "canonical": "String.stringPackageAssignAction",
       "members": [
         "String.assign",
@@ -86,7 +95,8 @@
       "canonical": "Email.cloudUsingSendAction",
       "members": [
         "Email.sendMail",
-        "Email.cloudUsingSendAction"
+        "Email.cloudUsingSendAction",
+        "Microsoft 365 Outlook.ms365OutlookSend"
       ]
     },
     {
@@ -211,7 +221,8 @@
       "canonical": "Browser.browserPackageCloseAction",
       "members": [
         "Browser.browserPackageCloseAction",
-        "WebAutomation.EndSessionWebAutomation"
+        "WebAutomation.EndSessionWebAutomation",
+        "Browser.close"
       ]
     },
     {
@@ -283,7 +294,8 @@
       "canonical": "Excel advanced.excelAdvancedGetWorksheetAsDataTable",
       "members": [
         "Excel advanced.excelAdvancedGetWorksheetAsDataTable",
-        "Microsoft 365 Excel package in Automation 360.getWorksheetAsDataTableIn"
+        "Microsoft 365 Excel package in Automation 360.getWorksheetAsDataTableIn",
+        "Excel_MS.getWorksheetAsDataTable"
       ]
     },
     {
@@ -312,6 +324,27 @@
       "members": [
         "JSONHandler.Query",
         "JSON utilities.jsonGetNodeValue"
+      ]
+    },
+    {
+      "canonical": "REST Web Services.cloudUsingPostAction",
+      "members": [
+        "Rest.restPost",
+        "REST Web Services.cloudUsingPostAction"
+      ]
+    },
+    {
+      "canonical": "XML.xmlEndSession",
+      "members": [
+        "XML.endSession",
+        "XML.xmlEndSession"
+      ]
+    },
+    {
+      "canonical": "XML.xmlGetMultipleNode",
+      "members": [
+        "XML.getMultipleNode",
+        "XML.xmlGetMultipleNode"
       ]
     }
   ]
