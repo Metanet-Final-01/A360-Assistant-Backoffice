@@ -255,6 +255,13 @@ Resources:
       LogGroupName: !Sub "/a360/${Environment}/rag-server"
       RetentionInDays: !Ref LogRetentionDays
 
+  RagWorkerLogGroup:
+    Type: AWS::Logs::LogGroup
+    Condition: RunsRagWorker
+    Properties:
+      LogGroupName: !Sub "/a360/${Environment}/rag-worker"
+      RetentionInDays: !Ref LogRetentionDays
+
   OpsInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -280,7 +287,10 @@ Resources:
                   - !Sub "${OpsBackendLogGroup.Arn}:*"
                   - !Sub "${OpsUiLogGroup.Arn}:*"
                   - !Sub "${RagServerLogGroup.Arn}:*"
-                  - !Sub "arn:${AWS::Partition}:logs:${AWS::Region}:${AWS::AccountId}:log-group:/a360/${Environment}/rag-worker:*"
+                  - !If
+                    - RunsRagWorker
+                    - !Sub "${RagWorkerLogGroup.Arn}:*"
+                    - !Ref AWS::NoValue
               - Effect: Allow
                 Action:
                   - cloudformation:SignalResource
@@ -385,18 +395,25 @@ Resources:
               systemctl enable --now docker
 
               mkdir -p /opt/a360
+              chmod 700 /opt/a360
+              umask 077
               aws secretsmanager get-secret-value --secret-id '${OpsReaderSecretArn}' --query SecretString --output text > /opt/a360/ops_reader.json
               aws secretsmanager get-secret-value --secret-id '${RagIngestSecretArn}' --query SecretString --output text > /opt/a360/rag_ingest.json
               ${ReadGhcrSecret}
               ${ReadRagTokenSecret}
               ${ReadOpsRuntimeSecret}
+              chmod 600 /opt/a360/ops_reader.json /opt/a360/rag_ingest.json /opt/a360/ghcr_token /opt/a360/rag_service_token /opt/a360/runtime.env 2>/dev/null || true
 
               OPS_DB_USER=$(jq -r '.username' /opt/a360/ops_reader.json)
               OPS_DB_PASSWORD=$(jq -r '.password' /opt/a360/ops_reader.json)
               RAG_DB_USER=$(jq -r '.username' /opt/a360/rag_ingest.json)
               RAG_DB_PASSWORD=$(jq -r '.password' /opt/a360/rag_ingest.json)
-              OBS_DSN="postgresql://$OPS_DB_USER:$OPS_DB_PASSWORD@${ObservabilityDbEndpoint}:5432/${ObservabilityDbName}?sslmode=require"
-              RAG_DSN="postgresql://$RAG_DB_USER:$RAG_DB_PASSWORD@${RagDbEndpoint}:5432/${RagDbName}?sslmode=require"
+              OPS_DB_USER_ENC=$(jq -rn --arg v "$OPS_DB_USER" '$v|@uri')
+              OPS_DB_PASSWORD_ENC=$(jq -rn --arg v "$OPS_DB_PASSWORD" '$v|@uri')
+              RAG_DB_USER_ENC=$(jq -rn --arg v "$RAG_DB_USER" '$v|@uri')
+              RAG_DB_PASSWORD_ENC=$(jq -rn --arg v "$RAG_DB_PASSWORD" '$v|@uri')
+              OBS_DSN="postgresql://$OPS_DB_USER_ENC:$OPS_DB_PASSWORD_ENC@${ObservabilityDbEndpoint}:5432/${ObservabilityDbName}?sslmode=require"
+              RAG_DSN="postgresql://$RAG_DB_USER_ENC:$RAG_DB_PASSWORD_ENC@${RagDbEndpoint}:5432/${RagDbName}?sslmode=require"
 
               GHCR_USERNAME='${GhcrUsername}'
               if [ -s /opt/a360/ghcr_token ] && [ "$(cat /opt/a360/ghcr_token)" != "REPLACE_ME" ]; then
@@ -413,7 +430,7 @@ Resources:
                 -p ${RagServerPort}:${RagServerPort} \
                 --env-file /opt/a360/runtime.env \
                 -e RAG_DATABASE_URL="$RAG_DSN" \
-                -e REDIS_URL="${RedisUrl}" \
+                -e REDIS_URL='${RedisUrl}' \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
                 --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${RagLogGroup} \
                 ${RagServerImageUri}
@@ -424,7 +441,7 @@ Resources:
                 -p ${OpsBackendPort}:${OpsBackendPort} \
                 --env-file /opt/a360/runtime.env \
                 -e A360_OBSERVABILITY_DATABASE_URL="$OBS_DSN" \
-                -e REDIS_URL="${RedisUrl}" \
+                -e REDIS_URL='${RedisUrl}' \
                 -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
                 -e RAG_SCHEDULER_PROVIDER="eventbridge-sqs" \
@@ -522,7 +539,6 @@ Resources:
               OpsApiLogGroup: !Ref OpsBackendLogGroup
               OpsUiLogGroup: !Ref OpsUiLogGroup
               RagLogGroup: !Ref RagServerLogGroup
-              RagWorkerLogGroupName: !Sub "/a360/${Environment}/rag-worker"
               RagScheduleRoleArn: !GetAtt RagScheduleRole.Arn
               RagJobQueueUrl:
                 Fn::ImportValue:
@@ -535,9 +551,10 @@ Resources:
                 - !Sub
                   - |
                     docker run -d --restart unless-stopped --name rag-worker --network a360 \
+                      --no-healthcheck \
                       --env-file /opt/a360/runtime.env \
                       -e AWS_REGION="${AWS::Region}" \
-                      -e REDIS_URL="${RedisUrl}" \
+                      -e REDIS_URL='${RedisUrl}' \
                       -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
                       -e RAG_INGEST_SQS_QUEUE_URL="${RagJobQueueUrl}" \
                       -e RAG_INGEST_SQS_QUEUE_ARN="${RagJobQueueArn}" \
@@ -554,7 +571,7 @@ Resources:
                     RedisUrl:
                       Fn::ImportValue:
                         Fn::Sub: "${ProjectName}-${Environment}-RedisUrl"
-                    RagWorkerLogGroupName: !Sub "/a360/${Environment}/rag-worker"
+                    RagWorkerLogGroupName: !Ref RagWorkerLogGroup
                 - ""
 
   InternalAlb:

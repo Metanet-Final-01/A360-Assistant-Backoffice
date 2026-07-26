@@ -42,11 +42,17 @@ jobs:
       - name: Resolve image tag
         id: tag
         shell: bash
+        env:
+          IMAGE_TAG_INPUT: ${{ inputs.image_tag }}
         run: |
-          if [ -n "${{ inputs.image_tag }}" ]; then
-            echo "value=${{ inputs.image_tag }}" >> "$GITHUB_OUTPUT"
+          if [ -n "$IMAGE_TAG_INPUT" ]; then
+            if ! [[ "$IMAGE_TAG_INPUT" =~ ^[A-Za-z0-9_][A-Za-z0-9_.-]{0,127}$ ]]; then
+              echo "image_tag must be a valid Docker tag (alnum/._- , max 128 chars)." >&2
+              exit 1
+            fi
+            printf 'value=%s\n' "$IMAGE_TAG_INPUT" >> "$GITHUB_OUTPUT"
           else
-            echo "value=${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
+            printf 'value=%s\n' "${GITHUB_SHA::12}" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Resolve image prefix
