@@ -118,6 +118,7 @@ def test_sqs_consumer_processes_message_and_deletes_it():
     class FakeSqs:
         def __init__(self):
             self.deleted = []
+            self.visibility_changes = []
 
         def receive_message(self, **kwargs):
             return {
@@ -131,15 +132,25 @@ def test_sqs_consumer_processes_message_and_deletes_it():
         def delete_message(self, **kwargs):
             self.deleted.append(kwargs)
 
+        def change_message_visibility(self, **kwargs):
+            self.visibility_changes.append(kwargs)
+
     calls = []
 
     def handler(request: httpx.Request) -> httpx.Response:
         calls.append(request)
-        assert request.url.path == "/rag/ingest"
-        assert request.url.params["option"] == "2"
-        assert request.url.params["clean"] == "true"
         assert request.headers["authorization"] == "Bearer test-rag-token"
-        return httpx.Response(200, json={"accepted": True})
+        if request.method == "POST":
+            assert request.url.path == "/rag/ingest/jobs"
+            assert json.loads(request.content) == {
+                "mode": "extended",
+                "clean": True,
+                "requested_by": "eventbridge-sqs",
+            }
+            return httpx.Response(200, json={"job_id": "job-1", "status": "QUEUED"})
+        assert request.method == "GET"
+        assert request.url.path == "/rag/ingest/jobs/job-1"
+        return httpx.Response(200, json={"job_id": "job-1", "status": "SUCCEEDED"})
 
     sqs = FakeSqs()
     consumer = SqsRagIngestConsumer(
@@ -153,9 +164,142 @@ def test_sqs_consumer_processes_message_and_deletes_it():
     result = consumer.poll_once(wait_time_seconds=0)
 
     assert result[0]["status"] == "processed"
-    assert result[0]["rag_response"] == {"accepted": True}
-    assert len(calls) == 1
+    assert result[0]["rag_response"] == {"job_id": "job-1", "status": "QUEUED"}
+    assert result[0]["rag_job"] == {"job_id": "job-1", "status": "SUCCEEDED"}
+    assert [call.url.path for call in calls] == ["/rag/ingest/jobs", "/rag/ingest/jobs/job-1"]
     assert sqs.deleted == [{
         "QueueUrl": "https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
         "ReceiptHandle": "rh-1",
+    }]
+
+
+def test_sqs_consumer_keeps_message_when_rag_job_fails():
+    class FakeSqs:
+        def __init__(self):
+            self.deleted = []
+
+        def receive_message(self, **kwargs):
+            return {
+                "Messages": [{
+                    "MessageId": "m-1",
+                    "ReceiptHandle": "rh-1",
+                    "Body": json.dumps({"type": "rag_ingest", "schedule_id": "test", "option": 3, "clean": False}),
+                }]
+            }
+
+        def delete_message(self, **kwargs):
+            self.deleted.append(kwargs)
+
+        def change_message_visibility(self, **kwargs):
+            pass
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.method == "POST":
+            return httpx.Response(200, json={"job_id": "job-fail", "status": "QUEUED"})
+        return httpx.Response(200, json={"job_id": "job-fail", "status": "FAILED", "error_message": "boom"})
+
+    sqs = FakeSqs()
+    consumer = SqsRagIngestConsumer(
+        queue_url="https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        rag_server_url="http://127.0.0.1:8200",
+        sqs_client=sqs,
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+        status_poll_seconds=0,
+    )
+
+    result = consumer.poll_once(wait_time_seconds=0)
+
+    assert result[0]["status"] == "failed"
+    assert "RAG ingest failed for job_id=job-fail" in result[0]["error"]
+    assert sqs.deleted == []
+
+
+def test_sqs_consumer_waits_for_existing_job_on_conflict_then_deletes_message():
+    class FakeSqs:
+        def __init__(self):
+            self.deleted = []
+            self.visibility_changes = []
+
+        def receive_message(self, **kwargs):
+            return {
+                "Messages": [{
+                    "MessageId": "m-1",
+                    "ReceiptHandle": "rh-1",
+                    "Body": json.dumps({"type": "rag_ingest", "schedule_id": "test", "option": 3, "clean": False}),
+                }]
+            }
+
+        def delete_message(self, **kwargs):
+            self.deleted.append(kwargs)
+
+        def change_message_visibility(self, **kwargs):
+            self.visibility_changes.append(kwargs)
+
+    calls = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(request)
+        if request.method == "POST":
+            return httpx.Response(
+                409,
+                json={"detail": {"message": "A RAG ingest job is already running.", "job_id": "job-existing"}},
+            )
+        return httpx.Response(200, json={"job_id": "job-existing", "status": "SUCCEEDED"})
+
+    sqs = FakeSqs()
+    consumer = SqsRagIngestConsumer(
+        queue_url="https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        rag_server_url="http://127.0.0.1:8200",
+        sqs_client=sqs,
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+        status_poll_seconds=0,
+    )
+
+    result = consumer.poll_once(wait_time_seconds=0)
+
+    assert result[0]["status"] == "processed_conflict"
+    assert result[0]["rag_job"] == {"job_id": "job-existing", "status": "SUCCEEDED"}
+    assert [call.url.path for call in calls] == ["/rag/ingest/jobs", "/rag/ingest/jobs/job-existing"]
+    assert sqs.deleted == [{
+        "QueueUrl": "https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        "ReceiptHandle": "rh-1",
+    }]
+
+
+def test_sqs_consumer_extends_visibility_while_rag_job_is_running():
+    class FakeSqs:
+        def __init__(self):
+            self.visibility_changes = []
+
+        def delete_message(self, **kwargs):
+            pass
+
+        def change_message_visibility(self, **kwargs):
+            self.visibility_changes.append(kwargs)
+
+    statuses = iter([
+        {"job_id": "job-1", "status": "RUNNING"},
+        {"job_id": "job-1", "status": "SUCCEEDED"},
+    ])
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        return httpx.Response(200, json=next(statuses))
+
+    sqs = FakeSqs()
+    consumer = SqsRagIngestConsumer(
+        queue_url="https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        sqs_client=sqs,
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+        status_poll_seconds=0,
+        message_visibility_seconds=900,
+    )
+
+    assert consumer.wait_for_successful_job("job-1", receipt_handle="rh-1") == {
+        "job_id": "job-1",
+        "status": "SUCCEEDED",
+    }
+    assert sqs.visibility_changes == [{
+        "QueueUrl": "https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        "ReceiptHandle": "rh-1",
+        "VisibilityTimeout": 900,
     }]

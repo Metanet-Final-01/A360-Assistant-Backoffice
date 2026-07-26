@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 
@@ -40,9 +41,14 @@ def test_ops_runtime_secret_is_injected_into_backend_and_rag_server():
     assert "ReadOpsRuntimeSecret" in template
     assert "type == \"object\"" in template
     assert "secret_string" in template
+    assert "Ops runtime secret values must not contain CR/LF" in template
+    assert 'test("\\\\r|\\\\n")' in template
     assert "--env-file /opt/a360/runtime.env" in template
     assert "!If [HasExternalOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref OpsRuntimeSecret]" in template
-    assert '"ParameterKey": "OpsRuntimeSecretArn", "ParameterValue": ""' in params
+    ops_runtime_param = next(
+        entry for entry in json.loads(params) if entry["ParameterKey"] == "OpsRuntimeSecretArn"
+    )
+    assert ops_runtime_param["ParameterValue"] == ""
 
 
 def test_ops_stack_owns_ops_specific_secret_shells():

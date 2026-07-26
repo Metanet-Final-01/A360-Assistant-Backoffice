@@ -14,6 +14,13 @@ DEFAULT_RAG_SERVER_URL = "http://127.0.0.1:8200"
 DEFAULT_STATUS_TIMEOUT_SECONDS = 3600.0
 DEFAULT_STATUS_POLL_SECONDS = 10.0
 DEFAULT_MESSAGE_VISIBILITY_SECONDS = 300
+OPTION_TO_JOB_MODE = {
+    1: "standard",
+    2: "extended",
+    3: "agent_parse",
+}
+SUCCESS_JOB_STATUS = "SUCCEEDED"
+FAILED_JOB_STATUSES = {"FAILED", "CANCELED", "INTERRUPTED"}
 
 
 @dataclass(frozen=True)
@@ -82,40 +89,70 @@ class SqsRagIngestConsumer:
     def handle_message(self, message: dict) -> dict:
         ingest_message = RagIngestMessage.from_body(message["Body"])
         rag_response = self.http_client.post(
-            f"{self.rag_server_url}/rag/ingest",
-            params={"option": ingest_message.option, "clean": ingest_message.clean},
+            f"{self.rag_server_url}/rag/ingest/jobs",
+            json={
+                "mode": OPTION_TO_JOB_MODE[ingest_message.option],
+                "clean": ingest_message.clean,
+                "requested_by": "eventbridge-sqs",
+            },
             headers=self.auth_headers(),
         )
-        rag_response.raise_for_status()
+        try:
+            rag_response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code != 409:
+                raise
+            rag_body = response_body(exc.response)
+            job_id = extract_job_id(rag_body)
+            if not job_id:
+                raise RuntimeError("RAG ingest conflict response did not include job_id") from exc
+            rag_job = self.wait_for_successful_job(str(job_id), receipt_handle=message["ReceiptHandle"])
+            self.sqs_client.delete_message(QueueUrl=self.queue_url, ReceiptHandle=message["ReceiptHandle"])
+            return {
+                "status": "processed_conflict",
+                "message_id": message.get("MessageId"),
+                "schedule_id": ingest_message.schedule_id,
+                "rag_response": rag_body,
+                "rag_job": rag_job,
+            }
         rag_body = response_body(rag_response)
-        run_id = rag_body.get("run_id") if isinstance(rag_body, dict) else None
-        if run_id:
-            self.wait_for_successful_run(str(run_id), receipt_handle=message["ReceiptHandle"])
+        job_id = extract_job_id(rag_body)
+        if not job_id:
+            raise RuntimeError("RAG ingest response did not include job_id")
+        rag_job = self.wait_for_successful_job(str(job_id), receipt_handle=message["ReceiptHandle"])
         self.sqs_client.delete_message(QueueUrl=self.queue_url, ReceiptHandle=message["ReceiptHandle"])
         return {
             "status": "processed",
             "message_id": message.get("MessageId"),
             "schedule_id": ingest_message.schedule_id,
             "rag_response": rag_body,
+            "rag_job": rag_job,
         }
 
     def wait_for_successful_run(self, run_id: str, *, receipt_handle: str | None = None) -> dict:
+        return self.wait_for_successful_job(run_id, receipt_handle=receipt_handle)
+
+    def wait_for_successful_job(self, job_id: str, *, receipt_handle: str | None = None) -> dict:
         deadline = time.monotonic() + self.status_timeout_seconds
         while True:
             status_response = self.http_client.get(
-                f"{self.rag_server_url}/rag/ingest/status",
+                f"{self.rag_server_url}/rag/ingest/jobs/{job_id}",
                 headers=self.auth_headers(),
             )
             status_response.raise_for_status()
             status_body = response_body(status_response)
             if not isinstance(status_body, dict):
                 raise RuntimeError("Unexpected RAG ingest status response")
-            if status_body.get("run_id") == run_id and status_body.get("running") is False:
-                if status_body.get("returncode") == 0:
-                    return status_body
-                raise RuntimeError(f"RAG ingest failed for run_id={run_id}: {status_body.get('error')}")
+            status = str(status_body.get("status") or "").upper()
+            if status == SUCCESS_JOB_STATUS:
+                return status_body
+            if status in FAILED_JOB_STATUSES:
+                raise RuntimeError(
+                    f"RAG ingest failed for job_id={job_id}: "
+                    f"{status_body.get('error_message') or status_body.get('error') or status}"
+                )
             if time.monotonic() >= deadline:
-                raise TimeoutError(f"Timed out waiting for RAG ingest run_id={run_id}")
+                raise TimeoutError(f"Timed out waiting for RAG ingest job_id={job_id}")
             if receipt_handle:
                 self.sqs_client.change_message_visibility(
                     QueueUrl=self.queue_url,
@@ -160,6 +197,18 @@ def response_body(response: httpx.Response) -> dict | str:
         return response.json()
     except ValueError:
         return response.text
+
+
+def extract_job_id(body: dict | str) -> str | None:
+    if not isinstance(body, dict):
+        return None
+    job_id = body.get("job_id")
+    if job_id:
+        return str(job_id)
+    detail = body.get("detail")
+    if isinstance(detail, dict) and detail.get("job_id"):
+        return str(detail["job_id"])
+    return None
 
 
 def main() -> None:
