@@ -107,3 +107,19 @@ cd backend ; $env:A360_OBSERVABILITY_DATABASE_URL="<읽기 전용 롤 DSN>" ; py
 `ops-server/backend/data/ingest/`로 복사(또는 공유 볼륨)해 둔다. 파일이 없으면
 해당 엔드포인트가 "먼저 RAG 적재를 돌리라"는 에러를 명확히 낸다 — 나머지 eval 기능
 (데이터셋·결과·A/B·xlsx)은 이 파일과 무관하게 동작한다.
+
+## BFCL Evaluation Scope
+
+The BFCL-inspired function-calling evaluator is kept as an experimental
+prototype. Its bundled cases are smoke-test fixtures, not a validated production
+gold dataset.
+
+Main deployments keep BFCL disabled by default:
+
+```text
+ENABLE_BFCL_EVAL=false
+```
+
+When disabled, the Ops UI hides the BFCL tab and `/eval/bfcl/*` endpoints return
+404. Re-enable it only in an experiment branch or a controlled evaluation
+environment with a reviewed gold dataset.

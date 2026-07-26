@@ -274,6 +274,7 @@ Resources:
             Action: sts:AssumeRole
       ManagedPolicyArns:
         - arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore
+        - arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy
       Policies:
         - PolicyName: ops-runtime-access
           PolicyDocument:
@@ -384,6 +385,29 @@ Resources:
               #!/bin/bash
               set -euo pipefail
               exec > >(tee -a /var/log/a360-ops-bootstrap.log /var/log/cloud-init-output.log) 2>&1
+              dnf install -y amazon-cloudwatch-agent
+              mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
+              cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<'CWEOF'
+              {
+                "agent": { "run_as_user": "root", "force_flush_interval": 5 },
+                "metrics": {
+                  "append_dimensions": {
+                    "AutoScalingGroupName": "${!aws:AutoScalingGroupName}",
+                    "InstanceId": "${!aws:InstanceId}"
+                  },
+                  "metrics_collected": {
+                    "mem": {
+                      "measurement": ["mem_used_percent"],
+                      "metrics_collection_interval": 60
+                    }
+                  }
+                }
+              }
+              CWEOF
+              /opt/aws/amazon-cloudwatch-agent/bin/amazon-cloudwatch-agent-ctl \
+                -a fetch-config -m ec2 \
+                -c file:/opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json -s
+
               dnf install -y docker awscli jq aws-cfn-bootstrap
               IMDS_TOKEN=$(curl -fsS -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" || true)
               INSTANCE_ID=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/instance-id || echo unknown-instance)
@@ -394,8 +418,9 @@ Resources:
               trap 'upload_bootstrap_logs; /opt/aws/bin/cfn-signal --success false --stack ${AWS::StackName} --resource OpsAutoScalingGroup --region ${AWS::Region}' ERR
               systemctl enable --now docker
 
-              mkdir -p /opt/a360
+              mkdir -p /opt/a360 /opt/a360/rag-server-data /opt/a360/rag-server-logs
               chmod 700 /opt/a360
+              chown -R 1000:1000 /opt/a360/rag-server-data /opt/a360/rag-server-logs
               umask 077
               aws secretsmanager get-secret-value --secret-id '${OpsReaderSecretArn}' --query SecretString --output text > /opt/a360/ops_reader.json
               aws secretsmanager get-secret-value --secret-id '${RagIngestSecretArn}' --query SecretString --output text > /opt/a360/rag_ingest.json
@@ -428,7 +453,17 @@ Resources:
 
               docker run -d --restart unless-stopped --name rag-server --network a360 \
                 -p ${RagServerPort}:${RagServerPort} \
+                -v /opt/a360/rag-server-data:/app/data \
+                -v /opt/a360/rag-server-logs:/app/app/rag/logs \
                 --env-file /opt/a360/runtime.env \
+                -e INGEST_DATA_DIR=/app/data/ingest \
+                -e RAG_LOG_DIR=/app/app/rag/logs \
+                -e CHUNK_SIZE=1200 \
+                -e CHUNK_OVERLAP=120 \
+                -e CHUNK_SIZE_DOC_PAGE=1200 \
+                -e CHUNK_OVERLAP_DOC_PAGE=120 \
+                -e CHUNK_SIZE_ACTION_SCHEMA=1200 \
+                -e CHUNK_OVERLAP_ACTION_SCHEMA=120 \
                 -e RAG_DATABASE_URL="$RAG_DSN" \
                 -e REDIS_URL='${RedisUrl}' \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \

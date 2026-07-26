@@ -85,7 +85,7 @@ on:
           - "true"
   push:
     branches:
-      - dev
+      - main
 
 permissions:
   contents: read

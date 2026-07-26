@@ -25,7 +25,7 @@ LOG_DIR = Path(os.getenv("RAG_LOG_DIR") or "app/rag/logs")
 # 아래 CHUNK_PARAMS_BY_SOURCE_TYPE에 없는 소스 타입이 이 값을 쓴다(package_overview 등).
 # 필요시 .env에서 CHUNK_SIZE/CHUNK_OVERLAP로 조정한다.
 CHUNK_SIZE = int(os.getenv("CHUNK_SIZE", "1200"))
-CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "200"))
+CHUNK_OVERLAP = int(os.getenv("CHUNK_OVERLAP", "120"))
 
 # 소스 타입별 청킹 기본값 — 텍스트 성격이 달라 한 값으로 맞추면 한쪽이 손해다.
 #   doc_page      1200 / 10%(120) — 크롤링한 산문. 문단 경계가 촘촘해 겹침이 적어도
@@ -41,8 +41,8 @@ CHUNK_PARAMS_BY_SOURCE_TYPE = {
         int(os.getenv("CHUNK_OVERLAP_DOC_PAGE", "120")),
     ),
     "action_schema": (
-        int(os.getenv("CHUNK_SIZE_ACTION_SCHEMA", "1500")),
-        int(os.getenv("CHUNK_OVERLAP_ACTION_SCHEMA", "300")),
+        int(os.getenv("CHUNK_SIZE_ACTION_SCHEMA", "1200")),
+        int(os.getenv("CHUNK_OVERLAP_ACTION_SCHEMA", "120")),
     ),
 }
 
