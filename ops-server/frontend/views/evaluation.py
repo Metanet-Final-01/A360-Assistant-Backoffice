@@ -1,4 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor
+import json
+import os
 
 import pandas as pd
 import requests
@@ -18,6 +20,7 @@ FIXED_METRICS = (
 # 요청마다 새 TCP 연결을 맺지 않고 재사용한다(keep-alive) — 로컬 벤치마크로
 # 확인한 최적화 조합(세션 재사용 + 병렬 호출) 중 하나. docs/local/PERF_OPS_EVAL_PAGE.md 참고.
 _SESSION = requests.Session()
+_ENABLE_BFCL_EVAL = (os.getenv("ENABLE_BFCL_EVAL") or "").strip().lower() == "true"
 
 # render() 최초 진입 시 이 4개를 병렬로 미리 채워 둔다 — 순차 요청 대비 벤치마크상
 # 유의미하게 빠르다. execution/status는 "새로고침 눌러야 최신"이 의도된 동작이라
@@ -95,6 +98,18 @@ def render() -> None:
     # BFCL/RAGAS/Workflow(pm4py·WorFBench) 3개를 평가 "종류"별 1급 탭으로 명확히 분리
     # (RPA-126) — 각 탭이 그 평가의 실행·기본 골드셋·결과를 전부 담는다. 전체 결과를
     # 소스 무관하게 가로질러 보는 화면은 별도 탭("전체 결과 비교")으로 남겨둔다.
+    if not _ENABLE_BFCL_EVAL:
+        tab_ragas, tab_workflow, tab_all = st.tabs(
+            ["RAG Quality (RAGAS)", "Workflow (pm4py/WorFBench)", "All Results"]
+        )
+        with tab_ragas:
+            _render_ragas_tab(runs)
+        with tab_workflow:
+            _render_workflow_tab(datasets)
+        with tab_all:
+            _render_results_tab(runs)
+        return
+
     tab_bfcl, tab_ragas, tab_workflow, tab_all = st.tabs(
         ["액션 호출(BFCL)", "RAG 품질(RAGAS)", "Workflow(pm4py·WorFBench)", "전체 결과 비교"]
     )
@@ -135,26 +150,52 @@ def _render_workflow_live_execution() -> None:
     with card("workflow_live_execution"):
         section_header(
             "Workflow 정확도 평가 실행 — 라이브(pm4py·WorFBench)",
-            "실제 커뮤니티 봇 기반 골드셋(17개, a360-eval-sandbox/Metadata/goldset_from_bots.json)으로 "
+            "470개 원본 Bot Store 봇을 RAG 카탈로그 전체 커버리지·실제 TaskBot.runTask "
+            "호출그래프 기준 메인/서브워크플로우 판정으로 엄격 검증한 골드셋(13개, "
+            "a360-eval-sandbox/Metadata/goldset_from_bots_a360_13.json, 근거는 PROVENANCE.md)으로 "
             "Backend Agent에 실제 요청을 보내 예측을 만들고, pm4py/WorFBench로 바로 채점합니다.",
         )
         try:
             cases_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/workflow/cases", timeout=5)
             cases_resp.raise_for_status()
-            n_cases = len(cases_resp.json())
+            cases = cases_resp.json()
         except (requests.RequestException, ValueError) as exc:
             st.warning(f"골드셋을 불러오지 못했습니다: {exc}")
-            n_cases = 0
-        st.caption(f"골드셋 케이스 {n_cases}개")
+            cases = []
+        col_caption, col_download = st.columns([3, 1])
+        with col_caption:
+            st.caption(f"골드셋 케이스 {len(cases)}개")
+        with col_download:
+            st.download_button(
+                "골드셋 다운로드(JSON)",
+                data=json.dumps(cases, ensure_ascii=False, indent=2),
+                file_name="goldset_from_bots_a360_13.json",
+                mime="application/json",
+                disabled=not cases,
+                key="workflow_goldset_download",
+                help="RAG 평가 등 다른 실험에서 그대로 재사용할 수 있도록, 지금 화면이 쓰는 "
+                     "확정 골드셋(13개) 원본을 그대로 내려받습니다.",
+            )
 
         with st.form("workflow_live_execution_form"):
             agent_label = st.text_input("결과 버전(agent_label)", value="workflow-live", key="workflow_live_agent_label")
+            agent_version = st.selectbox(
+                "에이전트 버전",
+                options=["(Backend 기본값)", "v1", "v2", "v3"],
+                key="workflow_live_agent_version",
+                help="Backend의 app/agent/{v1,v2,v3}를 그대로 지정. 비워두면(기본값) Backend가 "
+                     "자기 기본 버전(env AGENT_VERSION, 없으면 v2)을 씀 — 예전엔 이 필드를 아예 "
+                     "안 보내서 항상 기본 버전으로만 평가되고 있었다.",
+            )
             start = st.form_submit_button("Workflow 평가 시작(라이브)", type="primary")
         if start:
             try:
+                payload = {"agent_label": agent_label.strip() or "workflow-live"}
+                if agent_version != "(Backend 기본값)":
+                    payload["agent_version"] = agent_version
                 resp = _SESSION.post(
                     f"{OPS_BACKEND_URL}/eval/workflow/execution",
-                    json={"agent_label": agent_label.strip() or "workflow-live"}, timeout=5,
+                    json=payload, timeout=5,
                 )
                 if resp.status_code == 200:
                     st.success("Workflow 평가를 시작했습니다 — 케이스마다 실제 Agent 턴을 태우고 pm4py/WorFBench 채점까지 하므로 시간이 걸립니다.")
