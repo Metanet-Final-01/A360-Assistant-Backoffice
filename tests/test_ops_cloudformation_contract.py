@@ -68,6 +68,14 @@ def test_ops_stack_owns_ops_specific_secret_shells():
     assert "RagServiceTokenSecretArn:" in template
 
 
+def test_rag_worker_log_group_uses_cloudformation_owned_name():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+
+    assert "RagWorkerLogGroup:" in template
+    assert "/a360/${Environment}/rag-worker-cfn" in template
+    assert 'awslogs-group=${RagWorkerLogGroupName}' in template
+
+
 def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():
     template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
 

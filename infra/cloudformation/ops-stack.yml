@@ -259,7 +259,7 @@ Resources:
     Type: AWS::Logs::LogGroup
     Condition: RunsRagWorker
     Properties:
-      LogGroupName: !Sub "/a360/${Environment}/rag-worker"
+      LogGroupName: !Sub "/a360/${Environment}/rag-worker-cfn"
       RetentionInDays: !Ref LogRetentionDays
 
   OpsInstanceRole:
