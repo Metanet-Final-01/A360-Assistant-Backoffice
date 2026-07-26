@@ -214,6 +214,58 @@ def test_sqs_consumer_keeps_message_when_rag_job_fails():
     assert sqs.deleted == []
 
 
+def test_sqs_consumer_waits_for_existing_job_on_conflict_then_deletes_message():
+    class FakeSqs:
+        def __init__(self):
+            self.deleted = []
+            self.visibility_changes = []
+
+        def receive_message(self, **kwargs):
+            return {
+                "Messages": [{
+                    "MessageId": "m-1",
+                    "ReceiptHandle": "rh-1",
+                    "Body": json.dumps({"type": "rag_ingest", "schedule_id": "test", "option": 3, "clean": False}),
+                }]
+            }
+
+        def delete_message(self, **kwargs):
+            self.deleted.append(kwargs)
+
+        def change_message_visibility(self, **kwargs):
+            self.visibility_changes.append(kwargs)
+
+    calls = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        calls.append(request)
+        if request.method == "POST":
+            return httpx.Response(
+                409,
+                json={"detail": {"message": "A RAG ingest job is already running.", "job_id": "job-existing"}},
+            )
+        return httpx.Response(200, json={"job_id": "job-existing", "status": "SUCCEEDED"})
+
+    sqs = FakeSqs()
+    consumer = SqsRagIngestConsumer(
+        queue_url="https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        rag_server_url="http://127.0.0.1:8200",
+        sqs_client=sqs,
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+        status_poll_seconds=0,
+    )
+
+    result = consumer.poll_once(wait_time_seconds=0)
+
+    assert result[0]["status"] == "processed_conflict"
+    assert result[0]["rag_job"] == {"job_id": "job-existing", "status": "SUCCEEDED"}
+    assert [call.url.path for call in calls] == ["/rag/ingest/jobs", "/rag/ingest/jobs/job-existing"]
+    assert sqs.deleted == [{
+        "QueueUrl": "https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        "ReceiptHandle": "rh-1",
+    }]
+
+
 def test_sqs_consumer_extends_visibility_while_rag_job_is_running():
     class FakeSqs:
         def __init__(self):

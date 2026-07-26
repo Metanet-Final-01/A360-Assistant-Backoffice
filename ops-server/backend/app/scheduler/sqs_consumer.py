@@ -97,9 +97,26 @@ class SqsRagIngestConsumer:
             },
             headers=self.auth_headers(),
         )
-        rag_response.raise_for_status()
+        try:
+            rag_response.raise_for_status()
+        except httpx.HTTPStatusError as exc:
+            if exc.response.status_code != 409:
+                raise
+            rag_body = response_body(exc.response)
+            job_id = extract_job_id(rag_body)
+            if not job_id:
+                raise RuntimeError("RAG ingest conflict response did not include job_id") from exc
+            rag_job = self.wait_for_successful_job(str(job_id), receipt_handle=message["ReceiptHandle"])
+            self.sqs_client.delete_message(QueueUrl=self.queue_url, ReceiptHandle=message["ReceiptHandle"])
+            return {
+                "status": "processed_conflict",
+                "message_id": message.get("MessageId"),
+                "schedule_id": ingest_message.schedule_id,
+                "rag_response": rag_body,
+                "rag_job": rag_job,
+            }
         rag_body = response_body(rag_response)
-        job_id = rag_body.get("job_id") if isinstance(rag_body, dict) else None
+        job_id = extract_job_id(rag_body)
         if not job_id:
             raise RuntimeError("RAG ingest response did not include job_id")
         rag_job = self.wait_for_successful_job(str(job_id), receipt_handle=message["ReceiptHandle"])
@@ -180,6 +197,18 @@ def response_body(response: httpx.Response) -> dict | str:
         return response.json()
     except ValueError:
         return response.text
+
+
+def extract_job_id(body: dict | str) -> str | None:
+    if not isinstance(body, dict):
+        return None
+    job_id = body.get("job_id")
+    if job_id:
+        return str(job_id)
+    detail = body.get("detail")
+    if isinstance(detail, dict) and detail.get("job_id"):
+        return str(detail["job_id"])
+    return None
 
 
 def main() -> None:
