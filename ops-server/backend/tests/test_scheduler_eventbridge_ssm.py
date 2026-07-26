@@ -1,4 +1,5 @@
 import json
+import logging
 from pathlib import Path
 
 import httpx
@@ -303,3 +304,30 @@ def test_sqs_consumer_extends_visibility_while_rag_job_is_running():
         "ReceiptHandle": "rh-1",
         "VisibilityTimeout": 900,
     }]
+
+
+def test_sqs_consumer_logs_worker_results(caplog):
+    caplog.set_level(logging.INFO, logger="rag-worker")
+
+    class FakeSqs:
+        def __init__(self):
+            self.calls = 0
+
+        def receive_message(self, **kwargs):
+            self.calls += 1
+            if self.calls > 1:
+                raise SystemExit
+            return {"Messages": []}
+
+    consumer = SqsRagIngestConsumer(
+        queue_url="https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        sqs_client=FakeSqs(),
+        http_client=httpx.Client(transport=httpx.MockTransport(lambda request: httpx.Response(500))),
+    )
+
+    try:
+        consumer.run_forever(idle_sleep_seconds=0)
+    except SystemExit:
+        pass
+
+    assert "starting rag ingest SQS worker" in caplog.text

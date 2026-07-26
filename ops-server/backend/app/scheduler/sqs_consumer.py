@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import logging
 import os
 import time
 from dataclasses import dataclass
@@ -21,6 +22,9 @@ OPTION_TO_JOB_MODE = {
 }
 SUCCESS_JOB_STATUS = "SUCCEEDED"
 FAILED_JOB_STATUSES = {"FAILED", "CANCELED", "INTERRUPTED"}
+
+logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(message)s")
+logger = logging.getLogger("rag-worker")
 
 
 @dataclass(frozen=True)
@@ -88,6 +92,13 @@ class SqsRagIngestConsumer:
 
     def handle_message(self, message: dict) -> dict:
         ingest_message = RagIngestMessage.from_body(message["Body"])
+        logger.info(
+            "received rag ingest message message_id=%s schedule_id=%s option=%s clean=%s",
+            message.get("MessageId"),
+            ingest_message.schedule_id,
+            ingest_message.option,
+            ingest_message.clean,
+        )
         rag_response = self.http_client.post(
             f"{self.rag_server_url}/rag/ingest/jobs",
             json={
@@ -106,8 +117,14 @@ class SqsRagIngestConsumer:
             job_id = extract_job_id(rag_body)
             if not job_id:
                 raise RuntimeError("RAG ingest conflict response did not include job_id") from exc
+            logger.info(
+                "rag ingest already running; waiting existing job message_id=%s job_id=%s",
+                message.get("MessageId"),
+                job_id,
+            )
             rag_job = self.wait_for_successful_job(str(job_id), receipt_handle=message["ReceiptHandle"])
             self.sqs_client.delete_message(QueueUrl=self.queue_url, ReceiptHandle=message["ReceiptHandle"])
+            logger.info("deleted rag ingest message after existing job success message_id=%s job_id=%s", message.get("MessageId"), job_id)
             return {
                 "status": "processed_conflict",
                 "message_id": message.get("MessageId"),
@@ -119,8 +136,10 @@ class SqsRagIngestConsumer:
         job_id = extract_job_id(rag_body)
         if not job_id:
             raise RuntimeError("RAG ingest response did not include job_id")
+        logger.info("created rag ingest job message_id=%s job_id=%s", message.get("MessageId"), job_id)
         rag_job = self.wait_for_successful_job(str(job_id), receipt_handle=message["ReceiptHandle"])
         self.sqs_client.delete_message(QueueUrl=self.queue_url, ReceiptHandle=message["ReceiptHandle"])
+        logger.info("deleted rag ingest message after job success message_id=%s job_id=%s", message.get("MessageId"), job_id)
         return {
             "status": "processed",
             "message_id": message.get("MessageId"),
@@ -145,6 +164,7 @@ class SqsRagIngestConsumer:
                 raise RuntimeError("Unexpected RAG ingest status response")
             status = str(status_body.get("status") or "").upper()
             if status == SUCCESS_JOB_STATUS:
+                logger.info("rag ingest job succeeded job_id=%s", job_id)
                 return status_body
             if status in FAILED_JOB_STATUSES:
                 raise RuntimeError(
@@ -159,6 +179,7 @@ class SqsRagIngestConsumer:
                     ReceiptHandle=receipt_handle,
                     VisibilityTimeout=self.message_visibility_seconds,
                 )
+                logger.info("extended rag ingest message visibility job_id=%s visibility_timeout=%s", job_id, self.message_visibility_seconds)
             time.sleep(self.status_poll_seconds)
 
     def auth_headers(self) -> dict[str, str]:
@@ -173,11 +194,15 @@ class SqsRagIngestConsumer:
             WaitTimeSeconds=wait_time_seconds,
             VisibilityTimeout=300,
         )
+        messages = response.get("Messages", [])
+        if messages:
+            logger.info("received %s SQS message(s) from rag ingest queue", len(messages))
         results = []
-        for message in response.get("Messages", []):
+        for message in messages:
             try:
                 results.append(self.handle_message(message))
             except Exception as exc:
+                logger.exception("failed to process rag ingest message message_id=%s", message.get("MessageId"))
                 results.append({
                     "status": "failed",
                     "message_id": message.get("MessageId"),
@@ -186,8 +211,11 @@ class SqsRagIngestConsumer:
         return results
 
     def run_forever(self, *, wait_time_seconds: int = 10, idle_sleep_seconds: float = 1.0) -> None:
+        logger.info("starting rag ingest SQS worker queue_url=%s rag_server_url=%s", self.queue_url, self.rag_server_url)
         while True:
             results = self.poll_once(wait_time_seconds=wait_time_seconds)
+            for result in results:
+                logger.info("rag ingest worker result %s", json.dumps(result, ensure_ascii=False, default=str))
             if not results:
                 time.sleep(idle_sleep_seconds)
 
