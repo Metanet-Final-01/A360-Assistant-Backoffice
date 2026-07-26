@@ -41,6 +41,8 @@ def test_ops_runtime_secret_is_injected_into_backend_and_rag_server():
     assert "ReadOpsRuntimeSecret" in template
     assert "type == \"object\"" in template
     assert "secret_string" in template
+    assert "Ops runtime secret values must not contain CR/LF" in template
+    assert 'test("\\\\r|\\\\n")' in template
     assert "--env-file /opt/a360/runtime.env" in template
     assert "!If [HasExternalOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref OpsRuntimeSecret]" in template
     ops_runtime_param = next(

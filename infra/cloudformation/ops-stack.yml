@@ -521,6 +521,10 @@ Resources:
                 - !Sub |
                   secret_string=$(aws secretsmanager get-secret-value --secret-id '${OpsRuntimeSecretArn}' --query SecretString --output text)
                   if printf '%s' "$secret_string" | jq -e 'type == "object"' >/dev/null 2>&1; then
+                    if printf '%s' "$secret_string" | jq -e 'to_entries[] | select((.value | tostring | test("\\r|\\n")))' >/dev/null 2>&1; then
+                      echo "Ops runtime secret values must not contain CR/LF characters for docker --env-file." >&2
+                      exit 1
+                    fi
                     printf '%s' "$secret_string" | jq -r 'to_entries[] | select(.value != null) | "\(.key)=\(.value|tostring)"' > /opt/a360/runtime.env
                   else
                     printf '%s\n' "$secret_string" > /opt/a360/runtime.env
@@ -528,6 +532,10 @@ Resources:
                 - !Sub |
                   secret_string=$(aws secretsmanager get-secret-value --secret-id '${OpsRuntimeSecret}' --query SecretString --output text)
                   if printf '%s' "$secret_string" | jq -e 'type == "object"' >/dev/null 2>&1; then
+                    if printf '%s' "$secret_string" | jq -e 'to_entries[] | select((.value | tostring | test("\\r|\\n")))' >/dev/null 2>&1; then
+                      echo "Ops runtime secret values must not contain CR/LF characters for docker --env-file." >&2
+                      exit 1
+                    fi
                     printf '%s' "$secret_string" | jq -r 'to_entries[] | select(.value != null) | "\(.key)=\(.value|tostring)"' > /opt/a360/runtime.env
                   else
                     printf '%s\n' "$secret_string" > /opt/a360/runtime.env
