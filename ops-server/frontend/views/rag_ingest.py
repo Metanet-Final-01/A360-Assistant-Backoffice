@@ -101,26 +101,35 @@ def render() -> None:
     active_job = next((job for job in jobs if job.get("status") in RUNNING_STATUSES), None)
     selected_job_id = active_job["job_id"] if active_job else st.session_state.get("rag_ingest_selected_job_id")
 
-    _render_system_summary(health, health_error, active_job, jobs[:1])
-
     if health_error or cap_error or jobs_error:
+        _render_system_summary(health, health_error, active_job, jobs[:1])
         with card("rag_ingest_errors"):
             for message in (health_error, cap_error, jobs_error):
                 if message:
                     st.error(message)
         return
 
-    mode, clean, can_start = _render_execution_settings(capabilities or {}, active_job)
-    _render_start_controls(mode, clean, can_start, active_job)
+    tab_status, tab_settings, tab_logs, tab_history = st.tabs(["현황", "적재 설정", "실시간 로그", "실행 이력"])
 
-    if selected_job_id:
-        _render_live_area(selected_job_id)
-    else:
-        with card("rag_ingest_progress_empty"):
-            section_header("실시간 진행 상황")
-            st.info("아직 선택된 적재 작업이 없습니다.")
+    with tab_status:
+        _render_system_summary(health, health_error, active_job, jobs[:1])
+        if selected_job_id:
+            _render_progress_area(selected_job_id)
+        else:
+            _render_progress_placeholder()
 
-    _render_history(jobs)
+    with tab_settings:
+        mode, clean, can_start = _render_execution_settings(capabilities or {}, active_job)
+        _render_start_controls(mode, clean, can_start, active_job)
+
+    with tab_logs:
+        if selected_job_id:
+            _render_logs(selected_job_id)
+        else:
+            _render_logs_placeholder()
+
+    with tab_history:
+        _render_history(jobs)
 
 
 def _render_system_summary(health: dict | None, health_error: str | None, active_job: dict | None, latest_jobs: list[dict]) -> None:
@@ -152,7 +161,7 @@ def _render_system_summary(health: dict | None, health_error: str | None, active
 
 
 def _render_execution_settings(capabilities: dict, active_job: dict | None) -> tuple[str, bool, bool]:
-    with card("rag_ingest_settings"):
+    with card("rag_ingest_settings", gap="xsmall"):
         section_header("적재 방식 선택")
         mode = st.radio(
             "기본 적재 모드",
@@ -161,7 +170,7 @@ def _render_execution_settings(capabilities: dict, active_job: dict | None) -> t
             horizontal=True,
             disabled=bool(active_job),
         )
-        mode_cols = st.columns(2)
+        mode_cols = st.columns(2, gap="xsmall")
         for index, value in enumerate(["standard", "extended"]):
             spec = MODE_OPTIONS[value]
             with mode_cols[index]:
@@ -248,7 +257,7 @@ def _render_start_controls(mode: str, clean: bool, can_start: bool, active_job: 
 
 
 @st.fragment(run_every="2s")
-def _render_live_area(job_id: str) -> None:
+def _render_progress_area(job_id: str) -> None:
     job, job_error = _api_get(f"/ops/rag/ingest/jobs/{job_id}")
     if job_error:
         with card("rag_ingest_live_error"):
@@ -285,9 +294,20 @@ def _render_live_area(job_id: str) -> None:
         if job.get("error_message"):
             st.error(f"오류 요약: {job['error_message']} · job_id={job_id}")
 
-    _render_logs(job_id)
+
+def _render_progress_placeholder() -> None:
+    with card("rag_ingest_progress_empty"):
+        section_header("실시간 진행 상황")
+        cols = st.columns(5)
+        cols[0].metric("상태", "-")
+        cols[1].metric("현재 단계", "-")
+        cols[2].metric("단계", "-")
+        cols[3].metric("경과 시간", "-")
+        cols[4].metric("exit code", "-")
+        st.caption("선택된 적재 작업이 없습니다. 작업을 시작하면 여기에 단계별 진행 상황이 표시됩니다.")
 
 
+@st.fragment(run_every="2s")
 def _render_logs(job_id: str) -> None:
     with card("rag_ingest_logs"):
         section_header("실시간 로그")
@@ -302,25 +322,70 @@ def _render_logs(job_id: str) -> None:
             return
         lines = _filter_log_lines(text.splitlines(), level_filter, search)
         st.caption(f"표시 {len(lines)}줄 · 마지막 갱신 {datetime.now().strftime('%H:%M:%S')}")
-        st.code("\n".join(lines) or "(표시할 로그 없음)", language="text")
-        full_log, download_error = _api_bytes(f"/ops/rag/ingest/jobs/{job_id}/logs/download")
-        if download_error:
-            st.warning(download_error)
+        st.code("\n".join(lines) or "(표시할 로그 없음)", language="text", height=400)
+
+        # 이 함수는 2초 fragment라, 예전처럼 매 재실행마다 전체 로그(bytes)를 미리
+        # 내려받아 download_button에 넣어두면 사용자가 누르지 않아도 전체 로그가
+        # 2초마다 반복 전송된다 — 버튼을 눌렀을 때만 받아 세션에 캐싱한다. 브라우저가
+        # OPS_BACKEND_URL을 직접 못 여는 배포(컨테이너 내부 DNS)라 직접 링크 대신
+        # 서버(Streamlit)를 거쳐야 한다. job_id별로 캐시를 쌓지 않고 캐시 슬롯 하나만
+        # 재사용한다 — 여러 작업의 전체 로그를 번갈아 준비하면 세션에 무한정 쌓이는
+        # 것을 막고, 준비 중인 작업이 바뀌면 이전 캐시는 자연히 무효화된다.
+        cache_key, cache_job_key = "rag_full_log_bytes", "rag_full_log_job_id"
+        if st.button("전체 로그 준비", key=f"rag_full_log_prepare_{job_id}"):
+            full_log, download_error = _api_bytes(f"/ops/rag/ingest/jobs/{job_id}/logs/download")
+            if download_error:
+                st.warning(download_error)
+                # 실패 시 이전에 캐시된(다른 시점의) 로그가 남아 있으면 다운로드 버튼이
+                # 계속 활성 상태로 옛 스냅샷을 내려주게 된다 — 실패는 캐시 비움으로 드러낸다.
+                st.session_state.pop(cache_key, None)
+                st.session_state.pop(cache_job_key, None)
+            else:
+                st.session_state[cache_key] = full_log
+                st.session_state[cache_job_key] = job_id
+        cached_log = st.session_state.get(cache_key) if st.session_state.get(cache_job_key) == job_id else None
         st.download_button(
             "전체 로그 다운로드",
-            data=full_log,
+            data=cached_log or b"",
             file_name=f"{job_id}.log",
             mime="text/plain",
             use_container_width=True,
-            disabled=bool(download_error),
+            disabled=cached_log is None,
         )
+
+
+def _render_logs_placeholder() -> None:
+    with card("rag_ingest_logs_empty"):
+        section_header("실시간 로그")
+        controls = st.columns([1, 1, 3])
+        controls[0].selectbox("레벨", ["전체", "INFO", "WARNING", "ERROR"], key="rag_log_level_placeholder", disabled=True)
+        controls[1].number_input(
+            "최근 줄", min_value=100, max_value=5000, value=1200, step=100, key="rag_log_tail_placeholder", disabled=True
+        )
+        controls[2].text_input("검색", key="rag_log_search_placeholder", disabled=True)
+        st.caption("표시 0줄 · 선택된 적재 작업이 없습니다.")
+        st.code("(표시할 로그 없음)", language="text", height=400)
+        st.download_button(
+            "전체 로그 다운로드",
+            data=b"",
+            file_name="ingest.log",
+            mime="text/plain",
+            use_container_width=True,
+            disabled=True,
+        )
+
+
+_HISTORY_COLUMNS = ["실행 시각", "모드", "전체 재구축", "실행자", "결과", "소요 시간", "Agent Parse 제한", "job_id"]
 
 
 def _render_history(jobs: list[dict]) -> None:
     with card("rag_ingest_history"):
         section_header("최근 실행 이력")
         if not jobs:
-            st.info("저장된 실행 이력이 없습니다.")
+            st.dataframe(pd.DataFrame(columns=_HISTORY_COLUMNS), use_container_width=True, hide_index=True)
+            st.selectbox("상세 보기", ["저장된 실행 이력이 없습니다."], disabled=True)
+            with st.expander("작업 상세", expanded=False):
+                st.caption("저장된 실행 이력이 없습니다.")
             return
         rows = [
             {
