@@ -15,6 +15,7 @@ _TIMEOUT = 15
 _STATE_ROWS = "assurance_record_rows"
 _STATE_CURSOR = "assurance_record_cursor"
 _STATE_FILTERS = "assurance_record_filters"
+_STATE_SELECTED_PR = "assurance_selected_pr"
 
 _DECISION_LABELS = {
     "allow_candidate": "허용 후보",
@@ -44,6 +45,17 @@ _CONTROL_REASON_LABELS = {
     "SUBJECT_BOUND": "판정 대상 커밋과 증거가 일치함",
     "EVIDENCE_DIGESTS_VERIFIED": "증거 파일 지문이 검증됨",
 }
+_HUMAN_REVIEW_REASON_LABELS = {
+    "HUMAN_REVIEW_VERIFIED": "현재 커밋에 대한 사람 승인을 확인함",
+    "HUMAN_REVIEW_NOT_SUBMITTED": "이 기록 생성 시점에는 사람 승인이 없었음",
+    "HUMAN_REVIEW_NOT_APPROVED": "사람 리뷰가 승인 상태가 아니었음",
+    "HUMAN_REVIEW_SUBJECT_MISMATCH": "승인 대상 저장소 또는 커밋이 일치하지 않음",
+    "HUMAN_REVIEW_HEAD_MISMATCH": "승인 후 새 커밋이 추가되어 재승인이 필요함",
+    "HUMAN_REVIEW_NOT_INDEPENDENT": "작성자와 승인자가 같아 독립 승인이 아님",
+    "HUMAN_REVIEW_NOT_HUMAN": "사람 계정의 승인이 아님",
+    "HUMAN_REVIEW_TIME_MISSING": "승인 시각 증거가 없음",
+    "HUMAN_REVIEW_DISMISSED": "기존 승인이 취소됨",
+}
 
 
 def _value(options: dict[str, str], label: str) -> str | None:
@@ -52,6 +64,12 @@ def _value(options: dict[str, str], label: str) -> str | None:
 
 def _since(hours: int) -> str:
     return (datetime.now(timezone.utc) - timedelta(hours=hours)).isoformat()
+
+
+def _clear_stale_pr_selection(valid_tokens: set[str] | None = None) -> None:
+    selected = st.session_state.get(_STATE_SELECTED_PR)
+    if valid_tokens is None or (selected is not None and selected not in valid_tokens):
+        st.session_state.pop(_STATE_SELECTED_PR, None)
 
 
 def _safe_message(response: requests.Response) -> str:
@@ -187,6 +205,15 @@ def _status_text(row: dict) -> str:
     return "판단 불가"
 
 
+def _current_status_text(row: dict) -> str:
+    status = _status_text(row)
+    if status == "관찰됨":
+        return "통과 (Observe)"
+    if status in {"판단 불가", "보증 불충족"}:
+        return "검토 필요"
+    return status
+
+
 def _business_persisted_text(row: dict) -> str:
     value = row.get("business_persisted")
     if value is True:
@@ -221,12 +248,19 @@ def _human_review_summary(row: dict) -> dict:
     human_review = _human_review(row)
     review = human_review.get("review")
     review = review if isinstance(review, dict) else {}
+    status = human_review.get("status")
+    reason_code = human_review.get("reason_code")
+    missing_label = "승인 전 기록" if status == "missing" else "-"
     return {
-        "현재 사람 검토 상태": _human_review_text(row),
-        "승인자": review.get("reviewer_login"),
-        "승인 시각": format_kst(review.get("submitted_at")),
-        "승인 대상 커밋": review.get("commit_id"),
-        "상태 사유": human_review.get("reason_code"),
+        "이 기록의 사람 검토 상태": _human_review_text(row),
+        "승인자": review.get("reviewer_login") or missing_label,
+        "승인 시각": (
+            format_kst(review.get("submitted_at"))
+            if review.get("submitted_at")
+            else missing_label
+        ),
+        "승인 대상 커밋": review.get("commit_id") or missing_label,
+        "상태 사유": _HUMAN_REVIEW_REASON_LABELS.get(reason_code, reason_code or "-"),
     }
 
 
@@ -311,6 +345,8 @@ def _timeline_stage(row: dict, previous_head_sha: str | None) -> str:
     head_sha = subject.get("head_sha")
     if previous_head_sha and head_sha and head_sha != previous_head_sha:
         return "새 커밋 검사"
+    if review_status == "missing":
+        return "승인 전 검사"
     return "PR 검사"
 
 
@@ -328,7 +364,12 @@ def _timeline_rows(rows: list[dict]) -> list[dict]:
             "시각": _format_kst(row.get("created_at")),
             "단계": _timeline_stage(row, previous_head_sha),
             "커밋": str(head_sha)[:8] if head_sha else "-",
-            "판정": _status_text(row),
+            "판정": (
+                "승인 전 검토 필요"
+                if human_review.get("status") == "missing"
+                and _status_text(row) in {"판단 불가", "보증 불충족"}
+                else _current_status_text(row)
+            ),
             "사람 검토": _human_review_text(row),
             "승인자": review.get("reviewer_login") or "-",
             "승인 시각": _format_kst(review.get("submitted_at")),
@@ -351,6 +392,46 @@ def _timeline_choices(records: list[dict]) -> list[tuple[str, str, dict]]:
         )
         choices.append((digest, label, row))
     return choices
+
+
+def _latest_change_rows(
+    groups: list[tuple[tuple[str, int], list[dict]]],
+) -> list[dict]:
+    return [records[-1] for _key, records in groups if records]
+
+
+def _pr_summary_rows(
+    groups: list[tuple[tuple[str, int], list[dict]]],
+) -> list[dict]:
+    summaries = []
+    for (repository, pull_request_number), records in groups:
+        latest = records[-1]
+        subject = _change_subject_from_row(latest)
+        review_status = _human_review(latest).get("status")
+        summaries.append({
+            "저장소": repository,
+            "PR": f"#{pull_request_number}",
+            "현재 커밋": str(subject.get("head_sha") or "")[:8] or "-",
+            "현재 상태": _current_status_text(latest),
+            "사람 검토": _human_review_text(latest),
+            "최근 판정 시각": _format_kst(latest.get("created_at")),
+            "감사 기록": len(records),
+            "승인 후속 기록": "있음" if review_status == "approved" else "없음",
+        })
+    return summaries
+
+
+def _pr_choice_label(
+    key: tuple[str, int], records: list[dict]
+) -> str:
+    repository, pull_request_number = key
+    latest = records[-1]
+    subject = _change_subject_from_row(latest)
+    latest_sha = str(subject.get("head_sha") or "")[:8] or "-"
+    return (
+        f"{repository} · PR #{pull_request_number} · "
+        f"{latest_sha} · {_current_status_text(latest)} · {_human_review_text(latest)}"
+    )
 
 
 def _change_control_rows(payload: dict) -> list[dict]:
@@ -417,20 +498,41 @@ def _status_notice(detail: dict) -> tuple[str, str]:
     return "warning", status
 
 
-def _render_summary(rows: list[dict]) -> None:
+def _render_summary(
+    rows: list[dict],
+    change_groups: list[tuple[tuple[str, int], list[dict]]],
+) -> None:
+    latest_change_rows = _latest_change_rows(change_groups)
     metric_strip([
-        ("조회 기록", f"{len(rows)}건"),
-        ("관찰됨", sum(_status_text(row) == "관찰됨" for row in rows)),
-        ("계약 위반", sum(_status_text(row) == "계약 위반" for row in rows)),
+        ("전체 감사 기록", f"{len(rows)}건"),
+        ("조회 PR", f"{len(latest_change_rows)}개"),
         (
-            "판단 불가·불충족",
-            sum(_status_text(row) in {"판단 불가", "보증 불충족"} for row in rows),
+            "현재 관찰 통과",
+            sum(_status_text(row) == "관찰됨" for row in latest_change_rows),
         ),
         (
-            "무결성 이상",
-            sum(_status_text(row) in {"무결성 실패", "무결성 미확인"} for row in rows),
+            "현재 계약 위반",
+            sum(_status_text(row) == "계약 위반" for row in latest_change_rows),
+        ),
+        (
+            "현재 검토 필요",
+            sum(
+                _status_text(row) in {"판단 불가", "보증 불충족"}
+                for row in latest_change_rows
+            ),
+        ),
+        (
+            "현재 무결성 이상",
+            sum(
+                _status_text(row) in {"무결성 실패", "무결성 미확인"}
+                for row in latest_change_rows
+            ),
         ),
     ])
+    st.caption(
+        "현재 상태 수치는 PR마다 가장 최근에 생성된 기록 1건만 계산합니다. "
+        "승인 전 기록을 포함한 모든 과거 판정은 감사 이력에 그대로 보존됩니다."
+    )
 
 
 def _table_rows(rows: list[dict]) -> list[dict]:
@@ -492,12 +594,17 @@ def _render_detail(row: dict) -> None:
         else:
             st.warning("저장된 통제별 판정이 없습니다. 증거 기록을 확인하세요.")
 
-        section_header("사람 검토 상태")
+        section_header("이 기록 생성 시점의 사람 검토")
         review_summary = _human_review_summary(detail)
-        if review_summary["현재 사람 검토 상태"] == "검토 완료":
-            st.success("현재 PR 커밋에 대한 별도 사람 검토가 완료되었습니다.")
-        elif review_summary["현재 사람 검토 상태"] != "해당 없음":
-            st.warning("현재 PR 커밋에는 유효한 사람 승인이 없습니다.")
+        if review_summary["이 기록의 사람 검토 상태"] == "검토 완료":
+            st.success("이 기록은 해당 커밋에 대한 사람 승인을 포함합니다.")
+        elif review_summary["이 기록의 사람 검토 상태"] == "검토 필요":
+            st.info(
+                "이 기록은 승인 전에 생성된 과거 기록입니다. "
+                "같은 PR의 최신 상태와 승인 후속 기록은 위 타임라인에서 확인하세요."
+            )
+        elif review_summary["이 기록의 사람 검토 상태"] != "해당 없음":
+            st.warning("이 기록에는 현재 커밋에 유효한 사람 승인이 없습니다.")
         st.json(review_summary)
 
         st.json({
@@ -535,6 +642,7 @@ def render() -> None:
         st.session_state[_STATE_FILTERS] = filter_key
         st.session_state.pop(_STATE_ROWS, None)
         st.session_state.pop(_STATE_CURSOR, None)
+        _clear_stale_pr_selection()
 
     refresh_col, _ = st.columns([1, 5])
     refresh = refresh_col.button(
@@ -551,44 +659,94 @@ def render() -> None:
         st.info("선택한 조건에 해당하는 검증 판정 기록이 없습니다.")
         return
 
-    _render_summary(rows)
     change_groups, ungrouped_rows = _group_change_records(rows)
+    _render_summary(rows, change_groups)
     with card("assurance_records"):
         section_header("PR별 Change 판정 이력")
         if change_groups:
-            for (repository, pull_request_number), records in change_groups:
-                latest = records[-1]
-                latest_subject = _change_subject_from_row(latest)
-                latest_sha = str(latest_subject.get("head_sha") or "")[:8] or "-"
-                label = (
-                    f"{repository} · PR #{pull_request_number} · {len(records)}건 · "
-                    f"최신 {latest_sha} · {_status_text(latest)}"
+            st.dataframe(
+                pd.DataFrame(_pr_summary_rows(change_groups)),
+                width="stretch",
+                height=min(320, 38 + 35 * len(change_groups)),
+                hide_index=True,
+            )
+            groups_by_token = {
+                f"{key[0]}#{key[1]}": (key, records)
+                for key, records in change_groups
+            }
+            labels_by_token = {
+                token: _pr_choice_label(key, records)
+                for token, (key, records) in groups_by_token.items()
+            }
+            _clear_stale_pr_selection(set(groups_by_token))
+            selected_group_token = st.selectbox(
+                "상세 조회할 PR",
+                list(groups_by_token),
+                format_func=lambda token: labels_by_token[token],
+                key=_STATE_SELECTED_PR,
+            )
+            selected_key, selected_records = groups_by_token[selected_group_token]
+            selected_repository, selected_pr_number = selected_key
+            latest = selected_records[-1]
+            current_subject = _change_subject_from_row(latest)
+            current_review = _human_review_summary(latest)
+
+            section_header(f"PR #{selected_pr_number} 현재 상태")
+            status_level, status_message = _status_notice(latest)
+            getattr(st, status_level)(status_message)
+            st.dataframe(
+                pd.DataFrame([{
+                    "저장소": selected_repository,
+                    "현재 커밋": (
+                        str(current_subject.get("head_sha") or "")[:8] or "-"
+                    ),
+                    "현재 판정": _current_status_text(latest),
+                    "사람 검토": current_review["이 기록의 사람 검토 상태"],
+                    "승인자": current_review["승인자"],
+                    "승인 시각": current_review["승인 시각"],
+                    "최근 판정 시각": _format_kst(latest.get("created_at")),
+                }]),
+                width="stretch",
+                height=74,
+                hide_index=True,
+            )
+
+            with st.expander(
+                f"전체 감사 이력 {len(selected_records)}건 보기",
+                expanded=False,
+            ):
+                st.caption(
+                    "승인 전 검사도 삭제하거나 덮어쓰지 않습니다. "
+                    "승인·새 커밋·재승인 결과가 시간순으로 추가됩니다."
                 )
-                with st.expander(label):
-                    st.dataframe(
-                        pd.DataFrame(_timeline_rows(records)),
-                        width="stretch",
-                        hide_index=True,
-                    )
-                    timeline_choices = _timeline_choices(records)
-                    rows_by_token = {
-                        token: row for token, _label, row in timeline_choices
-                    }
-                    labels_by_token = {
-                        token: label for token, label, _row in timeline_choices
-                    }
-                    selected_token = st.selectbox(
-                        "이 PR의 기록 상세",
-                        [None, *rows_by_token],
-                        format_func=lambda token: (
-                            "선택 안 함"
-                            if token is None
-                            else labels_by_token[token]
-                        ),
-                        key=f"assurance_pr_{repository}_{pull_request_number}",
-                    )
-                    if selected_token is not None:
-                        _render_detail(rows_by_token[selected_token])
+                st.dataframe(
+                    pd.DataFrame(_timeline_rows(selected_records)),
+                    width="stretch",
+                    height=min(300, 38 + 35 * len(selected_records)),
+                    hide_index=True,
+                )
+                timeline_choices = _timeline_choices(selected_records)
+                rows_by_token = {
+                    token: row for token, _label, row in timeline_choices
+                }
+                record_labels = {
+                    token: label for token, label, _row in timeline_choices
+                }
+                selected_token = st.selectbox(
+                    "감사 기록 상세",
+                    [None, *rows_by_token],
+                    format_func=lambda token: (
+                        "선택 안 함"
+                        if token is None
+                        else record_labels[token]
+                    ),
+                    key=(
+                        f"assurance_pr_{selected_repository}_"
+                        f"{selected_pr_number}"
+                    ),
+                )
+                if selected_token is not None:
+                    _render_detail(rows_by_token[selected_token])
         else:
             st.info("PR 정보가 포함된 Change 판정 기록이 없습니다.")
 

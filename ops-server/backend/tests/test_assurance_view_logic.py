@@ -11,12 +11,16 @@ from views.assurance_records import (  # noqa: E402
     _change_group_key,
     _change_control_rows,
     _change_subject,
+    _clear_stale_pr_selection,
+    _current_status_text,
     _fetch,
     _format_kst,
     _group_change_records,
     _get,
     _human_review_summary,
     _human_review_text,
+    _latest_change_rows,
+    _pr_summary_rows,
     _render_detail,
     _status_notice,
     _status_text,
@@ -27,6 +31,22 @@ from views.assurance_records import (  # noqa: E402
 
 
 class AssuranceViewLogicTest(unittest.TestCase):
+    @patch("views.assurance_records.st.session_state", new_callable=dict)
+    def test_stale_pr_selection_is_cleared_when_options_change(self, session_state):
+        session_state["assurance_selected_pr"] = "org/repo#41"
+
+        _clear_stale_pr_selection({"org/repo#42"})
+
+        self.assertNotIn("assurance_selected_pr", session_state)
+
+    @patch("views.assurance_records.st.session_state", new_callable=dict)
+    def test_valid_pr_selection_is_preserved(self, session_state):
+        session_state["assurance_selected_pr"] = "org/repo#42"
+
+        _clear_stale_pr_selection({"org/repo#42"})
+
+        self.assertEqual(session_state["assurance_selected_pr"], "org/repo#42")
+
     def test_record_table_uses_kst_display_time(self):
         rows = _table_rows([{
             "created_at": "2026-07-22T02:16:00+00:00",
@@ -67,6 +87,26 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertEqual(
             _status_text({**base, "decision": "unassured", "assurance_verdict": "refused"}),
             "보증 불충족",
+        )
+
+    def test_current_status_turns_contract_state_into_operator_action(self):
+        base = {"integrity_valid": True}
+
+        self.assertEqual(
+            _current_status_text({
+                **base,
+                "decision": "allow_candidate",
+                "assurance_verdict": "observed",
+            }),
+            "통과 (Observe)",
+        )
+        self.assertEqual(
+            _current_status_text({
+                **base,
+                "decision": "unassured",
+                "assurance_verdict": "refused",
+            }),
+            "검토 필요",
         )
 
     def test_unknown_business_persistence_is_not_false(self):
@@ -114,6 +154,22 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertEqual(
             _human_review_text({"human_review": {"status": "stale"}}),
             "재검토 필요",
+        )
+
+    def test_missing_review_summary_explains_pre_approval_record(self):
+        summary = _human_review_summary({
+            "human_review": {
+                "status": "missing",
+                "reason_code": "HUMAN_REVIEW_NOT_SUBMITTED",
+                "review": None,
+            }
+        })
+
+        self.assertEqual(summary["승인자"], "승인 전 기록")
+        self.assertEqual(summary["승인 시각"], "승인 전 기록")
+        self.assertEqual(
+            summary["상태 사유"],
+            "이 기록 생성 시점에는 사람 승인이 없었음",
         )
 
     def test_human_review_can_be_read_from_detail_payload(self):
@@ -238,7 +294,7 @@ class AssuranceViewLogicTest(unittest.TestCase):
         ])
         self.assertEqual(
             [item["단계"] for item in timeline],
-            ["PR 검사", "사람 승인 반영", "새 커밋 검사"],
+            ["승인 전 검사", "사람 승인 반영", "새 커밋 검사"],
         )
         self.assertEqual(timeline[1]["승인자"], "reviewer")
         self.assertEqual(timeline[0]["시각"], "2026-07-21 09:01:00 KST")
@@ -275,6 +331,45 @@ class AssuranceViewLogicTest(unittest.TestCase):
             {first["receipt_digest"], second["receipt_digest"]},
         )
 
+    def test_pr_summary_uses_only_latest_append_only_record_as_current(self):
+        before = {
+            "harness": "change",
+            "created_at": "2026-07-21T00:01:00Z",
+            "receipt_digest": "sha256:before",
+            "integrity_valid": True,
+            "decision": "unassured",
+            "assurance_verdict": "refused",
+            "change_subject": {
+                "repository": "org/repo",
+                "pull_request_number": 42,
+                "head_sha": "a" * 40,
+            },
+            "human_review": {"status": "missing"},
+        }
+        after = {
+            **before,
+            "created_at": "2026-07-21T00:02:00Z",
+            "receipt_digest": "sha256:after",
+            "decision": "allow_candidate",
+            "assurance_verdict": "observed",
+            "human_review": {
+                "status": "approved",
+                "review": {
+                    "reviewer_login": "reviewer",
+                    "submitted_at": "2026-07-21T00:01:30Z",
+                    "commit_id": "a" * 40,
+                },
+            },
+        }
+        groups = [(("org/repo", 42), [before, after])]
+
+        self.assertEqual(_latest_change_rows(groups), [after])
+        summary = _pr_summary_rows(groups)[0]
+        self.assertEqual(summary["현재 상태"], "통과 (Observe)")
+        self.assertEqual(summary["사람 검토"], "검토 완료")
+        self.assertEqual(summary["감사 기록"], 2)
+        self.assertEqual(summary["승인 후속 기록"], "있음")
+
     def test_change_refusal_explains_observe_is_not_merge_blocking(self):
         level, message = _status_notice({
             "harness": "change",
@@ -307,11 +402,12 @@ class AssuranceViewLogicTest(unittest.TestCase):
     @patch("views.assurance_records.section_header")
     @patch("views.assurance_records.st.json")
     @patch("views.assurance_records.st.dataframe")
+    @patch("views.assurance_records.st.info")
     @patch("views.assurance_records.st.warning")
     @patch("views.assurance_records.st.columns")
     @patch("views.assurance_records._get")
     def test_change_detail_renders_subject_and_control_table(
-        self, get, columns, warning, dataframe, json, section_header
+        self, get, columns, warning, info, dataframe, json, section_header
     ):
         left, right = Mock(), Mock()
         columns.return_value = (left, right)
@@ -350,10 +446,11 @@ class AssuranceViewLogicTest(unittest.TestCase):
         rendered = dataframe.call_args.args[0]
         self.assertEqual(rendered.iloc[0]["통제"], "CH-06")
         self.assertEqual(rendered.iloc[0]["상태"], "추가 검토 필요")
-        self.assertEqual(warning.call_count, 2)
+        self.assertEqual(warning.call_count, 1)
         messages = [call.args[0] for call in warning.call_args_list]
         self.assertTrue(any("병합을 자동 차단하지 않습니다" in message for message in messages))
-        self.assertTrue(any("유효한 사람 승인이 없습니다" in message for message in messages))
+        info.assert_called_once()
+        self.assertIn("승인 전에 생성된 과거 기록", info.call_args.args[0])
 
     @patch("views.assurance_records.st.warning")
     @patch("views.assurance_records.requests.get")
