@@ -8,15 +8,20 @@ sys.path.insert(0, str(FRONTEND_DIR))
 
 from views.assurance_records import (  # noqa: E402
     _business_persisted_text,
+    _change_group_key,
     _change_control_rows,
     _change_subject,
     _fetch,
+    _format_kst,
+    _group_change_records,
     _get,
     _human_review_summary,
     _human_review_text,
     _render_detail,
     _status_notice,
     _status_text,
+    _timeline_choices,
+    _timeline_rows,
 )
 
 
@@ -116,6 +121,144 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertEqual(subject["pull_request_number"], 292)
         self.assertEqual(subject["workflow_name"], "Change Assurance")
         self.assertNotIn("request_id", subject)
+
+    def test_change_records_group_by_repository_and_pr_across_commits(self):
+        rows = [
+            {
+                "harness": "change",
+                "created_at": "2026-07-21T00:02:00Z",
+                "receipt_digest": "sha256:second",
+                "change_subject": {
+                    "repository": "org/repo",
+                    "pull_request_number": 42,
+                    "head_sha": "b" * 40,
+                },
+            },
+            {
+                "harness": "output",
+                "created_at": "2026-07-21T00:03:00Z",
+                "receipt_digest": "sha256:output",
+            },
+            {
+                "harness": "change",
+                "created_at": "2026-07-21T00:01:00Z",
+                "receipt_digest": "sha256:first",
+                "change_subject": {
+                    "repository": "org/repo",
+                    "pull_request_number": 42,
+                    "head_sha": "a" * 40,
+                },
+            },
+        ]
+
+        groups, ungrouped = _group_change_records(rows)
+
+        self.assertEqual(len(groups), 1)
+        self.assertEqual(groups[0][0], ("org/repo", 42))
+        self.assertEqual(
+            [row["receipt_digest"] for row in groups[0][1]],
+            ["sha256:first", "sha256:second"],
+        )
+        self.assertEqual(ungrouped, [rows[1]])
+        self.assertEqual(_change_group_key(rows[0]), ("org/repo", 42))
+
+    def test_timeline_keeps_pre_and_post_approval_records_append_only(self):
+        common = {
+            "harness": "change",
+            "integrity_valid": True,
+            "decision": "unassured",
+            "assurance_verdict": "refused",
+        }
+        rows = [
+            {
+                **common,
+                "created_at": "2026-07-21T00:01:00Z",
+                "receipt_digest": "sha256:before",
+                "change_subject": {
+                    "repository": "org/repo",
+                    "pull_request_number": 42,
+                    "head_sha": "a" * 40,
+                    "source_event": "pull_request",
+                },
+                "human_review": {"status": "missing"},
+            },
+            {
+                **common,
+                "created_at": "2026-07-21T00:02:00Z",
+                "receipt_digest": "sha256:approved",
+                "change_subject": {
+                    "repository": "org/repo",
+                    "pull_request_number": 42,
+                    "head_sha": "a" * 40,
+                    "source_event": "pull_request_review",
+                },
+                "human_review": {
+                    "status": "approved",
+                    "review": {
+                        "reviewer_login": "reviewer",
+                        "submitted_at": "2026-07-21T00:01:30Z",
+                    },
+                },
+            },
+            {
+                **common,
+                "created_at": "2026-07-21T00:03:00Z",
+                "receipt_digest": "sha256:new-head",
+                "change_subject": {
+                    "repository": "org/repo",
+                    "pull_request_number": 42,
+                    "head_sha": "b" * 40,
+                    "source_event": "pull_request",
+                },
+                "human_review": {"status": "missing"},
+            },
+        ]
+
+        timeline = _timeline_rows(rows)
+
+        self.assertEqual([item["기록 지문"] for item in timeline], [
+            "sha256:before",
+            "sha256:approved",
+            "sha256:new-head",
+        ])
+        self.assertEqual(
+            [item["단계"] for item in timeline],
+            ["PR 검사", "사람 승인 반영", "새 커밋 검사"],
+        )
+        self.assertEqual(timeline[1]["승인자"], "reviewer")
+        self.assertEqual(timeline[0]["시각"], "2026-07-21 09:01:00 KST")
+
+    def test_invalid_or_missing_timestamp_is_safe(self):
+        self.assertEqual(_format_kst(None), "-")
+        self.assertEqual(_format_kst("not-a-time"), "not-a-time")
+
+    def test_timeline_choices_do_not_drop_duplicate_display_labels(self):
+        repeated_prefix = "sha256:same-prefix"
+        first = {
+            "harness": "change",
+            "created_at": "2026-07-21T00:01:00Z",
+            "receipt_digest": f"{repeated_prefix}-first",
+            "change_subject": {
+                "repository": "org/repo",
+                "pull_request_number": 42,
+                "head_sha": "a" * 40,
+            },
+            "human_review": {"status": "missing"},
+        }
+        second = {
+            **first,
+            "receipt_digest": f"{repeated_prefix}-second",
+        }
+
+        choices = _timeline_choices([first, second])
+
+        self.assertEqual(len(choices), 2)
+        self.assertNotEqual(choices[0][0], choices[1][0])
+        self.assertEqual(choices[0][1], choices[1][1])
+        self.assertEqual(
+            {token for token, _label, _row in choices},
+            {first["receipt_digest"], second["receipt_digest"]},
+        )
 
     def test_change_refusal_explains_observe_is_not_merge_blocking(self):
         level, message = _status_notice({

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-
 import pandas as pd
 import requests
 import streamlit as st
@@ -15,6 +14,7 @@ _TIMEOUT = 15
 _STATE_ROWS = "assurance_record_rows"
 _STATE_CURSOR = "assurance_record_cursor"
 _STATE_FILTERS = "assurance_record_filters"
+_KST = timezone(timedelta(hours=9))
 
 _DECISION_LABELS = {
     "allow_candidate": "허용 후보",
@@ -230,6 +230,136 @@ def _human_review_summary(row: dict) -> dict:
     }
 
 
+def _format_kst(value: object) -> str:
+    if not isinstance(value, str) or not value.strip():
+        return "-"
+    try:
+        parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
+    except ValueError:
+        return value
+    if parsed.tzinfo is None:
+        parsed = parsed.replace(tzinfo=timezone.utc)
+    return parsed.astimezone(_KST).strftime("%Y-%m-%d %H:%M:%S KST")
+
+
+def _change_subject_from_row(row: dict) -> dict:
+    subject = row.get("change_subject")
+    if isinstance(subject, dict):
+        return subject
+    payload = row.get("receipt_payload")
+    if isinstance(payload, dict):
+        nested = payload.get("subject")
+        if isinstance(nested, dict):
+            return nested
+    return {}
+
+
+def _change_group_key(row: dict) -> tuple[str, int] | None:
+    if row.get("harness") != "change":
+        return None
+    subject = _change_subject_from_row(row)
+    repository = subject.get("repository")
+    pull_request_number = subject.get("pull_request_number")
+    if (
+        not isinstance(repository, str)
+        or not repository.strip()
+        or not isinstance(pull_request_number, int)
+        or isinstance(pull_request_number, bool)
+        or pull_request_number < 1
+    ):
+        return None
+    return repository, pull_request_number
+
+
+def _created_at_sort_key(row: dict) -> tuple[datetime, str]:
+    value = row.get("created_at")
+    try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        parsed = parsed.astimezone(timezone.utc)
+    except (TypeError, ValueError):
+        parsed = datetime.min.replace(tzinfo=timezone.utc)
+    return parsed, str(row.get("receipt_digest") or "")
+
+
+def _group_change_records(
+    rows: list[dict],
+) -> tuple[list[tuple[tuple[str, int], list[dict]]], list[dict]]:
+    grouped: dict[tuple[str, int], list[dict]] = {}
+    ungrouped = []
+    for row in rows:
+        key = _change_group_key(row)
+        if key is None:
+            ungrouped.append(row)
+            continue
+        grouped.setdefault(key, []).append(row)
+    groups = []
+    for key, records in grouped.items():
+        groups.append((key, sorted(records, key=_created_at_sort_key)))
+    groups.sort(
+        key=lambda item: _created_at_sort_key(item[1][-1]),
+        reverse=True,
+    )
+    return groups, ungrouped
+
+
+def _timeline_stage(row: dict, previous_head_sha: str | None) -> str:
+    review_status = _human_review(row).get("status")
+    if review_status == "approved":
+        return "사람 승인 반영"
+    if review_status == "dismissed":
+        return "승인 취소 반영"
+    if review_status == "stale":
+        return "재검토 필요"
+    subject = _change_subject_from_row(row)
+    if subject.get("source_event") == "pull_request_review":
+        return "사람 검토 반영"
+    head_sha = subject.get("head_sha")
+    if previous_head_sha and head_sha and head_sha != previous_head_sha:
+        return "새 커밋 검사"
+    return "PR 검사"
+
+
+def _timeline_rows(rows: list[dict]) -> list[dict]:
+    timeline = []
+    previous_head_sha = None
+    for index, row in enumerate(sorted(rows, key=_created_at_sort_key), start=1):
+        subject = _change_subject_from_row(row)
+        human_review = _human_review(row)
+        review = human_review.get("review")
+        review = review if isinstance(review, dict) else {}
+        head_sha = subject.get("head_sha")
+        timeline.append({
+            "순서": index,
+            "시각": _format_kst(row.get("created_at")),
+            "단계": _timeline_stage(row, previous_head_sha),
+            "커밋": str(head_sha)[:8] if head_sha else "-",
+            "판정": _status_text(row),
+            "사람 검토": _human_review_text(row),
+            "승인자": review.get("reviewer_login") or "-",
+            "승인 시각": _format_kst(review.get("submitted_at")),
+            "기록 지문": row.get("receipt_digest"),
+        })
+        if head_sha:
+            previous_head_sha = str(head_sha)
+    return timeline
+
+
+def _timeline_choices(records: list[dict]) -> list[tuple[str, str, dict]]:
+    choices = []
+    for row in reversed(records):
+        digest = str(row.get("receipt_digest") or "")
+        subject = _change_subject_from_row(row)
+        label = (
+            f"{_format_kst(row.get('created_at'))} · "
+            f"{str(subject.get('head_sha') or '')[:8]} · "
+            f"{_human_review_text(row)} · {digest[:16]}"
+        )
+        choices.append((digest, label, row))
+    return choices
+
+
 def _change_control_rows(payload: dict) -> list[dict]:
     controls = payload.get("controls", [])
     if not isinstance(controls, list):
@@ -263,6 +393,7 @@ def _change_subject(payload: dict) -> dict:
         "workflow_name": provenance.get("workflow_name"),
         "workflow_run_id": subject.get("workflow_run_id"),
         "run_attempt": subject.get("run_attempt"),
+        "source_event": subject.get("source_event"),
         "base_sha": subject.get("base_sha"),
         "head_sha": subject.get("head_sha"),
     }
@@ -428,9 +559,53 @@ def render() -> None:
         return
 
     _render_summary(rows)
+    change_groups, ungrouped_rows = _group_change_records(rows)
     with card("assurance_records"):
-        section_header("검증 판정 이력")
-        st.dataframe(pd.DataFrame(_table_rows(rows)), width="stretch", hide_index=True)
+        section_header("PR별 Change 판정 이력")
+        if change_groups:
+            for (repository, pull_request_number), records in change_groups:
+                latest = records[-1]
+                latest_subject = _change_subject_from_row(latest)
+                latest_sha = str(latest_subject.get("head_sha") or "")[:8] or "-"
+                label = (
+                    f"{repository} · PR #{pull_request_number} · {len(records)}건 · "
+                    f"최신 {latest_sha} · {_status_text(latest)}"
+                )
+                with st.expander(label):
+                    st.dataframe(
+                        pd.DataFrame(_timeline_rows(records)),
+                        width="stretch",
+                        hide_index=True,
+                    )
+                    timeline_choices = _timeline_choices(records)
+                    rows_by_token = {
+                        token: row for token, _label, row in timeline_choices
+                    }
+                    labels_by_token = {
+                        token: label for token, label, _row in timeline_choices
+                    }
+                    selected_token = st.selectbox(
+                        "이 PR의 기록 상세",
+                        [None, *rows_by_token],
+                        format_func=lambda token: (
+                            "선택 안 함"
+                            if token is None
+                            else labels_by_token[token]
+                        ),
+                        key=f"assurance_pr_{repository}_{pull_request_number}",
+                    )
+                    if selected_token is not None:
+                        _render_detail(rows_by_token[selected_token])
+        else:
+            st.info("PR 정보가 포함된 Change 판정 기록이 없습니다.")
+
+        if ungrouped_rows:
+            section_header("Output 및 PR 식별 정보가 없는 기록")
+            st.dataframe(
+                pd.DataFrame(_table_rows(ungrouped_rows)),
+                width="stretch",
+                hide_index=True,
+            )
         if st.session_state.get(_STATE_CURSOR):
             if st.button("다음 기록", icon=":material/expand_more:"):
                 if _fetch(filters, append=True):
@@ -438,9 +613,10 @@ def render() -> None:
 
     choices = {
         f"{row.get('created_at', '-')} · {_status_text(row)} · {str(row.get('receipt_digest', ''))[:20]}…": row
-        for row in rows
+        for row in ungrouped_rows
     }
-    selected = st.selectbox("상세 조회", ["선택 안 함", *choices.keys()])
-    if selected != "선택 안 함":
-        with card("assurance_record_detail"):
-            _render_detail(choices[selected])
+    if choices:
+        selected = st.selectbox("기타 기록 상세 조회", ["선택 안 함", *choices.keys()])
+        if selected != "선택 안 함":
+            with card("assurance_record_detail"):
+                _render_detail(choices[selected])
