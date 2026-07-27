@@ -1,4 +1,5 @@
 import json
+from collections import Counter
 from pathlib import Path
 import re
 import textwrap
@@ -24,7 +25,8 @@ def _cloudwatch_agent_config(template: str) -> dict:
 
 def _resource_block(template: str, logical_id: str) -> str:
     lines = template.splitlines()
-    start = next(i for i, line in enumerate(lines) if line == f"  {logical_id}:")
+    start = next((i for i, line in enumerate(lines) if line == f"  {logical_id}:"), None)
+    assert start is not None, f"Missing resource block: {logical_id}"
     end = len(lines)
     for i in range(start + 1, len(lines)):
         if re.match(r"^  [A-Za-z0-9]+:$", lines[i]):
@@ -108,6 +110,9 @@ def test_ops_jsonl_files_are_tailed_to_cloudwatch_for_firehose_archive():
     template = _ops_template_text()
     config = _cloudwatch_agent_config(template)
     collect_list = config["logs"]["logs_collected"]["files"]["collect_list"]
+    paths = [entry["file_path"] for entry in collect_list]
+    duplicates = sorted(path for path, count in Counter(paths).items() if count > 1)
+    assert not duplicates, f"Duplicate CloudWatch Agent file_path entries: {duplicates}"
     destinations = {entry["file_path"]: entry["log_group_name"] for entry in collect_list}
 
     assert '"logs_collected"' in template
