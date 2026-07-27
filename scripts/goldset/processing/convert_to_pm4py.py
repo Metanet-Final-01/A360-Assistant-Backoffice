@@ -234,9 +234,11 @@ def write_markdown(path: Path, payload: dict) -> None:
         "# PM4Py Conversion Report",
         "",
         "For each `*.goldset.json`, builds a `pm4py.ProcessTree` (SEQUENCE/XOR/LOOP — "
-        "pm4py has no native try/catch/finally operator, so try is composed as "
-        "SEQUENCE(XOR(try, catch), finally) and loop as a ternary LOOP(body, tau, tau) "
-        "— repeat count doesn't matter, only structure) and writes three files next to "
+        "pm4py has no native try/catch/finally operator, so try is modeled as the try "
+        "body followed by optional finally body; catch is intentionally omitted because "
+        "it is exception-handling bookkeeping, not the scored business flow. loop is "
+        "modeled as a ternary LOOP(body, tau, tau) — repeat count doesn't matter, only "
+        "structure) and writes three files next to "
         "it: `*.pnml` (Petri net — what the actual conformance-checking scripts read), "
         "`*.ptml` (the process tree itself, pm4py's own format), and `*.tree.json` "
         "(the same tree as plain readable JSON, no pm4py install required to inspect it).",
