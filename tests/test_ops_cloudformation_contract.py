@@ -80,13 +80,30 @@ def test_ops_jsonl_files_are_tailed_to_cloudwatch_for_firehose_archive():
     template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
 
     assert '"logs_collected"' in template
-    assert '"/opt/a360/rag-server-logs/*.jsonl"' in template
-    assert '"log_group_name": "${RagLogGroup}"' in template
-    assert '"/opt/a360/ops-backend-data/eval_runs.jsonl"' in template
-    assert '"/opt/a360/ops-backend-data/observability_*.jsonl"' in template
-    assert '"log_group_name": "${OpsApiLogGroup}"' in template
+    assert (
+        '"file_path": "/opt/a360/rag-server-logs/*.jsonl",\n'
+        '                          "log_group_name": "${RagLogGroup}"'
+    ) in template
+    assert (
+        '"file_path": "/opt/a360/ops-backend-data/eval_runs.jsonl",\n'
+        '                          "log_group_name": "${OpsApiLogGroup}"'
+    ) in template
+    assert (
+        '"file_path": "/opt/a360/ops-backend-data/observability_*.jsonl",\n'
+        '                          "log_group_name": "${OpsApiLogGroup}"'
+    ) in template
     assert "-v /opt/a360/rag-server-logs:/app/app/rag/logs" in template
     assert "-v /opt/a360/ops-backend-data:/app/data" in template
+
+
+def test_legacy_jsonl_log_groups_are_retained_if_removed_later():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+
+    for logical_id in ("RagAopEventLogGroup", "OpsEvalLogGroup"):
+        start = template.index(f"  {logical_id}:")
+        block = template[start : template.index("\n\n", start)]
+        assert "DeletionPolicy: Retain" in block
+        assert "UpdateReplacePolicy: Retain" in block
 
 
 def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():
