@@ -19,6 +19,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, page_header, section_header
+from components.time_display import to_kst_naive_series
 from config import OPS_BACKEND_URL
 
 _SESSION = requests.Session()
@@ -70,7 +71,7 @@ def render() -> None:
     with card("eda_filter"):
         section_header(f"필터 ({len(df)}건 로드됨)")
         view = _apply_filters(df)
-        st.caption(f"필터 적용 후 {len(view)}건")
+        st.caption(f"필터 적용 후 {len(view)}건 · 시각 컬럼은 한국시간(KST) 기준")
         st.dataframe(view, width="stretch", hide_index=True, height=480)
 
 
@@ -90,7 +91,9 @@ def _load(source_label: str, limit: int) -> pd.DataFrame:
         rows = [{**r.get("raw", {}), "fetched_at": r.get("fetched_at")} for r in rows]
     df = pd.DataFrame(rows)
     for col in df.columns:
-        if col.endswith(("_at", "_day")) or col == "day":
+        if col.endswith("_at") or col == "timestamp":
+            df[col] = to_kst_naive_series(df[col])
+        elif col.endswith("_day") or col == "day":
             df[col] = pd.to_datetime(df[col], errors="coerce")
     return df
 

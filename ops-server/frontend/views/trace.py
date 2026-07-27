@@ -9,6 +9,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, metric_strip, page_header, section_header
+from components.time_display import format_kst
 from config import OPS_BACKEND_URL
 
 
@@ -82,8 +83,12 @@ def render() -> None:
             for e in rag_events:  # RAG 파이프라인 단계(RPA-128) — embed/search/rerank 병목 확인용
                 rows.append({"시각": e.get("created_at"), "종류": "RAG단계",
                              "내용": f'{e.get("event")} · {e.get("status")} ({e.get("duration_ms")}ms)'})
-            df = pd.DataFrame(rows).sort_values("시각", na_position="last") if rows else pd.DataFrame()
+            df = pd.DataFrame(rows) if rows else pd.DataFrame()
             if not df.empty:
+                df["_sort_at"] = pd.to_datetime(df["시각"], errors="coerce", utc=True)
+                df = df.sort_values("_sort_at", na_position="last")
+                df["시각"] = df["시각"].map(format_kst)
+                df = df.drop(columns=["_sort_at"])
                 st.dataframe(df, use_container_width=True, hide_index=True)
 
     _render_turns(turns)

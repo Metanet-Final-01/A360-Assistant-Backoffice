@@ -8,13 +8,13 @@ import requests
 import streamlit as st
 
 from components.layout import card, metric_strip, page_header, section_header
+from components.time_display import format_kst
 from config import OPS_BACKEND_URL
 
 _TIMEOUT = 15
 _STATE_ROWS = "assurance_record_rows"
 _STATE_CURSOR = "assurance_record_cursor"
 _STATE_FILTERS = "assurance_record_filters"
-_KST = timezone(timedelta(hours=9))
 
 _DECISION_LABELS = {
     "allow_candidate": "허용 후보",
@@ -224,22 +224,15 @@ def _human_review_summary(row: dict) -> dict:
     return {
         "현재 사람 검토 상태": _human_review_text(row),
         "승인자": review.get("reviewer_login"),
-        "승인 시각": review.get("submitted_at"),
+        "승인 시각": format_kst(review.get("submitted_at")),
         "승인 대상 커밋": review.get("commit_id"),
         "상태 사유": human_review.get("reason_code"),
     }
 
 
 def _format_kst(value: object) -> str:
-    if not isinstance(value, str) or not value.strip():
-        return "-"
-    try:
-        parsed = datetime.fromisoformat(value.strip().replace("Z", "+00:00"))
-    except ValueError:
-        return value
-    if parsed.tzinfo is None:
-        parsed = parsed.replace(tzinfo=timezone.utc)
-    return parsed.astimezone(_KST).strftime("%Y-%m-%d %H:%M:%S KST")
+    """RPA-323 타임라인의 기존 내부 계약을 공용 KST 변환기로 연결한다."""
+    return format_kst(value)
 
 
 def _change_subject_from_row(row: dict) -> dict:
@@ -443,7 +436,7 @@ def _render_summary(rows: list[dict]) -> None:
 def _table_rows(rows: list[dict]) -> list[dict]:
     return [
         {
-            "시각": row.get("created_at"),
+            "시각": format_kst(row.get("created_at")),
             "상태": _status_text(row),
             "검사 경계": row.get("harness"),
             "판정": _DECISION_LABELS.get(row.get("decision"), row.get("decision")),
@@ -612,7 +605,7 @@ def render() -> None:
                     st.rerun()
 
     choices = {
-        f"{row.get('created_at', '-')} · {_status_text(row)} · {str(row.get('receipt_digest', ''))[:20]}…": row
+        f"{format_kst(row.get('created_at'))} · {_status_text(row)} · {str(row.get('receipt_digest', ''))[:20]}…": row
         for row in ungrouped_rows
     }
     if choices:

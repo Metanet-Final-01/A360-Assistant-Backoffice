@@ -3,6 +3,7 @@ import pandas as pd
 import streamlit as st
 
 from ..layout import card
+from ..time_display import to_kst_naive_series
 from .theme import AMBER, GREEN, RED, STATUS_ORDER, status_class
 
 _LEGEND = "".join(
@@ -33,7 +34,7 @@ def render_volume_chart(df: pd.DataFrame) -> None:
 
         view = df.copy()
         view["status_class"] = view["status_code"].apply(status_class)
-        view["bucket"] = view["started_at"].dt.floor("30s")
+        view["bucket"] = to_kst_naive_series(view["started_at"]).dt.floor("30s")
 
         grouped = view.groupby(["bucket", "status_class"], as_index=False).size()
         grouped = grouped.rename(columns={"size": "count"})
@@ -66,7 +67,7 @@ def render_volume_chart(df: pd.DataFrame) -> None:
                 ),
                 order=alt.Order("status_class:N", sort="ascending"),
                 tooltip=[
-                    alt.Tooltip("bucket:T", title="시각(UTC)", format="%H:%M:%S"),
+                    alt.Tooltip("bucket:T", title="시각(KST)", format="%H:%M:%S"),
                     alt.Tooltip("status_class:N", title="상태"),
                     alt.Tooltip("count:Q", title="건수"),
                 ],

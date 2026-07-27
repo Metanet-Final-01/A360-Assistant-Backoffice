@@ -7,6 +7,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, metric_strip, page_header, section_header
+from components.time_display import format_kst
 from config import OPS_BACKEND_URL
 
 FIXED_METRICS = (
@@ -297,7 +298,7 @@ def _render_runs(runs: list[dict]) -> None:
             "case_id": r["case_id"], "source": r["source"], "버전": r.get("agent_label") or "-",
             "데이터셋": f"{r.get('dataset_id') or '-'}@{r.get('dataset_version') or '-'}",
             "score": r.get("score"), "passed": r.get("passed"),
-            "기록 시각": r["logged_at"][:19].replace("T", " "),
+            "기록 시각": format_kst(r.get("logged_at")),
         } for r in filtered]
         event = st.dataframe(
             pd.DataFrame(rows), width="stretch", hide_index=True, on_select="rerun", selection_mode="multi-row",
