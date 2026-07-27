@@ -20,6 +20,7 @@ from views.assurance_records import (  # noqa: E402
     _render_detail,
     _status_notice,
     _status_text,
+    _timeline_choices,
     _timeline_rows,
 )
 
@@ -230,6 +231,25 @@ class AssuranceViewLogicTest(unittest.TestCase):
     def test_invalid_or_missing_timestamp_is_safe(self):
         self.assertEqual(_format_kst(None), "-")
         self.assertEqual(_format_kst("not-a-time"), "not-a-time")
+
+    def test_timeline_choices_do_not_drop_duplicate_display_labels(self):
+        repeated = {
+            "harness": "change",
+            "created_at": "2026-07-21T00:01:00Z",
+            "receipt_digest": "sha256:same-prefix-but-distinct",
+            "change_subject": {
+                "repository": "org/repo",
+                "pull_request_number": 42,
+                "head_sha": "a" * 40,
+            },
+            "human_review": {"status": "missing"},
+        }
+
+        choices = _timeline_choices([repeated, dict(repeated)])
+
+        self.assertEqual(len(choices), 2)
+        self.assertNotEqual(choices[0][0], choices[1][0])
+        self.assertEqual(choices[0][1], choices[1][1])
 
     def test_change_refusal_explains_observe_is_not_merge_blocking(self):
         level, message = _status_notice({

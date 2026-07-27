@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 from datetime import datetime, timedelta, timezone
-from zoneinfo import ZoneInfo
-
 import pandas as pd
 import requests
 import streamlit as st
@@ -16,7 +14,7 @@ _TIMEOUT = 15
 _STATE_ROWS = "assurance_record_rows"
 _STATE_CURSOR = "assurance_record_cursor"
 _STATE_FILTERS = "assurance_record_filters"
-_KST = ZoneInfo("Asia/Seoul")
+_KST = timezone(timedelta(hours=9))
 
 _DECISION_LABELS = {
     "allow_candidate": "허용 후보",
@@ -348,6 +346,20 @@ def _timeline_rows(rows: list[dict]) -> list[dict]:
     return timeline
 
 
+def _timeline_choices(records: list[dict]) -> list[tuple[str, str, dict]]:
+    choices = []
+    for index, row in enumerate(reversed(records)):
+        digest = str(row.get("receipt_digest") or "")
+        subject = _change_subject_from_row(row)
+        label = (
+            f"{_format_kst(row.get('created_at'))} · "
+            f"{str(subject.get('head_sha') or '')[:8]} · "
+            f"{_human_review_text(row)} · {digest[:16]}"
+        )
+        choices.append((f"{index}:{digest}", label, row))
+    return choices
+
+
 def _change_control_rows(payload: dict) -> list[dict]:
     controls = payload.get("controls", [])
     if not isinstance(controls, list):
@@ -565,22 +577,25 @@ def render() -> None:
                         width="stretch",
                         hide_index=True,
                     )
-                    timeline_choices = {
-                        (
-                            f"{_format_kst(row.get('created_at'))} · "
-                            f"{str(_change_subject_from_row(row).get('head_sha') or '')[:8]} · "
-                            f"{_human_review_text(row)} · "
-                            f"{str(row.get('receipt_digest') or '')[:16]}"
-                        ): row
-                        for row in reversed(records)
+                    timeline_choices = _timeline_choices(records)
+                    rows_by_token = {
+                        token: row for token, _label, row in timeline_choices
                     }
-                    selected = st.selectbox(
+                    labels_by_token = {
+                        token: label for token, label, _row in timeline_choices
+                    }
+                    selected_token = st.selectbox(
                         "이 PR의 기록 상세",
-                        ["선택 안 함", *timeline_choices.keys()],
+                        [None, *rows_by_token],
+                        format_func=lambda token: (
+                            "선택 안 함"
+                            if token is None
+                            else labels_by_token[token]
+                        ),
                         key=f"assurance_pr_{repository}_{pull_request_number}",
                     )
-                    if selected != "선택 안 함":
-                        _render_detail(timeline_choices[selected])
+                    if selected_token is not None:
+                        _render_detail(rows_by_token[selected_token])
         else:
             st.info("PR 정보가 포함된 Change 판정 기록이 없습니다.")
 
