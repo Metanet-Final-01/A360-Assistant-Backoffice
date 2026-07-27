@@ -48,7 +48,7 @@ Parameters:
     Description: Run a separate SQS consumer container for scheduled RAG ingest jobs.
   EnableDefaultRagIngestSchedule:
     Type: String
-    Default: "true"
+    Default: "false"
     AllowedValues: ["true", "false"]
     Description: Create a default EventBridge Scheduler schedule that sends RAG ingest jobs to SQS.
   RagIngestScheduleExpression:
@@ -88,6 +88,12 @@ Parameters:
     Type: String
     Default: ""
     Description: Optional main A360 backend URL that Ops Backend probes/admin-calls.
+  BackendRuntimeSecretName:
+    Type: String
+    Default: a360-assistant/dev/backend-app
+    Description: >-
+      Backend runtime Secret name used as the default source for Ops runtime env
+      values such as OPENAI_API_KEY, VOYAGE_API_KEY, OPENSEARCH_* and OPS_API_KEY.
   GhcrUsername:
     Type: String
     Default: ""
@@ -348,6 +354,7 @@ Resources:
                   - !If [HasExternalRagTokenSecret, !Ref RagServiceTokenSecretArn, !Ref RagServiceTokenSecret]
                   - !If [HasExternalOpsRuntimeSecret, !Ref OpsRuntimeSecretArn, !Ref OpsRuntimeSecret]
                   - !If [HasExternalGhcrTokenSecret, !Ref GhcrTokenSecretArn, !Ref OpsGhcrReadTokenSecret]
+                  - !Sub "arn:${AWS::Partition}:secretsmanager:${AWS::Region}:${AWS::AccountId}:secret:${BackendRuntimeSecretName}-*"
 
   OpsInstanceProfile:
     Type: AWS::IAM::InstanceProfile
@@ -421,12 +428,57 @@ Resources:
               mkdir -p /opt/a360 /opt/a360/rag-server-data /opt/a360/rag-server-logs
               chmod 700 /opt/a360
               chown -R 1000:1000 /opt/a360/rag-server-data /opt/a360/rag-server-logs
+              restore_rag_artifacts() {
+                local bucket="${ArtifactBucketName}"
+                local latest_key="rag-ingest-artifacts/latest/rag-server-data.tar.gz"
+                local restore_key=""
+                if [ -s /opt/a360/rag-server-data/ingest/rag_documents.jsonl ]; then
+                  echo "RAG artifacts already present; skip S3 restore"
+                  return 0
+                fi
+                if aws s3api head-object --bucket "$bucket" --key "$latest_key" >/dev/null 2>&1; then
+                  restore_key="$latest_key"
+                else
+                  restore_key=$(aws s3api list-objects-v2 \
+                    --bucket "$bucket" \
+                    --prefix "rag-ingest-artifacts/manual-backup/" \
+                    --query "sort_by(Contents[?ends_with(Key, '.tar.gz')], &LastModified)[-1].Key" \
+                    --output text 2>/dev/null || true)
+                  if [ "$restore_key" = "None" ]; then
+                    restore_key=""
+                  fi
+                fi
+                if [ -z "$restore_key" ]; then
+                  echo "No RAG artifact archive found in S3; cold boot keeps empty ingest data"
+                  return 0
+                fi
+                echo "Restoring RAG artifacts from s3://$bucket/$restore_key"
+                rm -rf /tmp/a360-rag-restore
+                mkdir -p /tmp/a360-rag-restore
+                aws s3 cp "s3://$bucket/$restore_key" /tmp/a360-rag-restore/rag-server-data.tar.gz
+                tar -xzf /tmp/a360-rag-restore/rag-server-data.tar.gz -C /tmp/a360-rag-restore
+                if [ -d /tmp/a360-rag-restore/rag-server-data ]; then
+                  cp -a /tmp/a360-rag-restore/rag-server-data/. /opt/a360/rag-server-data/
+                elif [ -d /tmp/a360-rag-restore/rag-server-data-backup ]; then
+                  cp -a /tmp/a360-rag-restore/rag-server-data-backup/. /opt/a360/rag-server-data/
+                elif [ -d /tmp/a360-rag-restore/data ]; then
+                  cp -a /tmp/a360-rag-restore/data/. /opt/a360/rag-server-data/
+                else
+                  echo "RAG artifact archive has unsupported root layout" >&2
+                  return 1
+                fi
+                chown -R 1000:1000 /opt/a360/rag-server-data
+                echo "RAG artifact restore complete"
+              }
+              restore_rag_artifacts
               umask 077
               aws secretsmanager get-secret-value --secret-id '${OpsReaderSecretArn}' --query SecretString --output text > /opt/a360/ops_reader.json
               aws secretsmanager get-secret-value --secret-id '${RagIngestSecretArn}' --query SecretString --output text > /opt/a360/rag_ingest.json
               ${ReadGhcrSecret}
               ${ReadRagTokenSecret}
+              ${ReadBackendRuntimeSecret}
               ${ReadOpsRuntimeSecret}
+              cat /opt/a360/runtime.backend.env /opt/a360/runtime.override.env > /opt/a360/runtime.env
               chmod 600 /opt/a360/ops_reader.json /opt/a360/rag_ingest.json /opt/a360/ghcr_token /opt/a360/rag_service_token /opt/a360/runtime.env 2>/dev/null || true
 
               OPS_DB_USER=$(jq -r '.username' /opt/a360/ops_reader.json)
@@ -457,6 +509,8 @@ Resources:
                 -v /opt/a360/rag-server-logs:/app/app/rag/logs \
                 --env-file /opt/a360/runtime.env \
                 -e INGEST_DATA_DIR=/app/data/ingest \
+                -e RAG_ARTIFACT_BUCKET="${ArtifactBucketName}" \
+                -e RAG_ARTIFACT_PREFIX="rag-ingest-artifacts" \
                 -e RAG_LOG_DIR=/app/app/rag/logs \
                 -e CHUNK_SIZE=1200 \
                 -e CHUNK_OVERLAP=120 \
@@ -551,6 +605,28 @@ Resources:
                 - HasExternalRagTokenSecret
                 - !Sub "aws secretsmanager get-secret-value --secret-id '${RagServiceTokenSecretArn}' --query SecretString --output text > /opt/a360/rag_service_token"
                 - !Sub "aws secretsmanager get-secret-value --secret-id '${RagServiceTokenSecret}' --query SecretString --output text > /opt/a360/rag_service_token"
+              ReadBackendRuntimeSecret: !Sub |
+                : > /opt/a360/runtime.backend.env
+                backend_secret_string=$(aws secretsmanager get-secret-value --secret-id '${BackendRuntimeSecretName}' --query SecretString --output text 2>/dev/null || true)
+                if [ -n "$backend_secret_string" ] && printf '%s' "$backend_secret_string" | jq -e 'type == "object"' >/dev/null 2>&1; then
+                  if printf '%s' "$backend_secret_string" | jq -e 'to_entries[] | select((.value | tostring | test("\\r|\\n")))' >/dev/null 2>&1; then
+                    echo "Backend runtime secret values must not contain CR/LF characters for docker --env-file." >&2
+                    exit 1
+                  fi
+                  printf '%s' "$backend_secret_string" | jq -r '
+                    {
+                      OPENAI_API_KEY,
+                      VOYAGE_API_KEY,
+                      OPENSEARCH_HOST,
+                      OPENSEARCH_USERNAME,
+                      OPENSEARCH_PASSWORD,
+                      A360_BACKEND_OPS_API_KEY: .OPS_API_KEY
+                    }
+                    | to_entries[]
+                    | select(.value != null and (.value | tostring) != "")
+                    | "\(.key)=\(.value|tostring)"
+                  ' > /opt/a360/runtime.backend.env
+                fi
               ReadOpsRuntimeSecret: !If
                 - HasExternalOpsRuntimeSecret
                 - !Sub |
@@ -560,9 +636,9 @@ Resources:
                       echo "Ops runtime secret values must not contain CR/LF characters for docker --env-file." >&2
                       exit 1
                     fi
-                    printf '%s' "$secret_string" | jq -r 'to_entries[] | select(.value != null) | "\(.key)=\(.value|tostring)"' > /opt/a360/runtime.env
+                    printf '%s' "$secret_string" | jq -r 'to_entries[] | select(.value != null) | "\(.key)=\(.value|tostring)"' > /opt/a360/runtime.override.env
                   else
-                    printf '%s\n' "$secret_string" > /opt/a360/runtime.env
+                    printf '%s\n' "$secret_string" > /opt/a360/runtime.override.env
                   fi
                 - !Sub |
                   secret_string=$(aws secretsmanager get-secret-value --secret-id '${OpsRuntimeSecret}' --query SecretString --output text)
@@ -571,9 +647,9 @@ Resources:
                       echo "Ops runtime secret values must not contain CR/LF characters for docker --env-file." >&2
                       exit 1
                     fi
-                    printf '%s' "$secret_string" | jq -r 'to_entries[] | select(.value != null) | "\(.key)=\(.value|tostring)"' > /opt/a360/runtime.env
+                    printf '%s' "$secret_string" | jq -r 'to_entries[] | select(.value != null) | "\(.key)=\(.value|tostring)"' > /opt/a360/runtime.override.env
                   else
-                    printf '%s\n' "$secret_string" > /opt/a360/runtime.env
+                    printf '%s\n' "$secret_string" > /opt/a360/runtime.override.env
                   fi
               BackendUrlEnv: !If
                 - HasBackendUrl

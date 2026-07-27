@@ -60,7 +60,7 @@ on:
       enable_default_rag_ingest_schedule:
         description: Create the default EventBridge Scheduler to enqueue RAG ingest jobs
         required: true
-        default: "true"
+        default: "false"
         type: choice
         options:
           - "true"
@@ -226,7 +226,7 @@ jobs:
               DesiredCapacity="${{ inputs.desired_capacity || '1' }}" \
               MaxSize="${{ inputs.max_size || '1' }}" \
               EnableRagWorker="${{ inputs.enable_rag_worker || 'true' }}" \
-              EnableDefaultRagIngestSchedule="${{ inputs.enable_default_rag_ingest_schedule || 'true' }}" \
+              EnableDefaultRagIngestSchedule="${{ inputs.enable_default_rag_ingest_schedule || 'false' }}" \
               RagIngestScheduleExpression="${{ inputs.rag_ingest_schedule_expression || 'cron(30 8 ? * * *)' }}" \
               RagIngestScheduleTimezone="${{ inputs.rag_ingest_schedule_timezone || 'Asia/Seoul' }}" \
               RagIngestClean="${{ inputs.rag_ingest_clean || 'false' }}" \
