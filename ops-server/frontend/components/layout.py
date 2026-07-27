@@ -46,7 +46,6 @@ def apply_global_styles() -> None:
             font-size: 1.5rem;
             font-weight: 800;
             margin-top: 3px;
-            font-family: "Consolas", "SFMono-Regular", Menlo, monospace;
             font-variant-numeric: tabular-nums;
         }
         .metric-grid {
@@ -327,7 +326,9 @@ def metric_grid(items: list[tuple[str, object]]) -> None:
     st.markdown(f'<div class="metric-grid">{blocks}</div>', unsafe_allow_html=True)
 
 
-def card(key: str):
+def card(key: str, gap: str | int | None = "small"):
     """섹션을 흰 카드처럼 감싸는 컨테이너. 옅은 회색 페이지 배경 위에서 카드가 또렷하게 보이도록
-    apply_global_styles()의 그림자 스타일과 짝을 이룬다. 사용법: with card("rag_ingest"): ..."""
-    return st.container(border=True, key=f"card_{key}")
+    apply_global_styles()의 그림자 스타일과 짝을 이룬다. 사용법: with card("rag_ingest"): ...
+    gap은 카드 내부 요소 사이 세로 여백(기본 st.container와 동일한 "small")으로, 요소가
+    많아 답답한 카드에서만 "xsmall" 등으로 줄여 쓴다."""
+    return st.container(border=True, key=f"card_{key}", gap=gap)
