@@ -16,4 +16,4 @@ opensearch-py==2.7.1
 openai==2.44.0
 langchain-core==1.4.8
 pydantic==2.13.4
-boto3
+boto3==1.40.18
