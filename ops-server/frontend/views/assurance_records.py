@@ -448,16 +448,17 @@ def _pr_summary_rows(
 ) -> list[dict]:
     summaries = []
     for (repository, pull_request_number), records in groups:
-        latest = _current_change_record(records)
-        subject = _change_subject_from_row(latest)
-        review_status = _human_review(latest).get("status")
+        current = _current_change_record(records)
+        latest_audit = records[-1]
+        subject = _change_subject_from_row(current)
+        review_status = _human_review(current).get("status")
         summaries.append({
             "저장소": repository,
             "PR": f"#{pull_request_number}",
             "현재 커밋": str(subject.get("head_sha") or "")[:8] or "-",
-            "현재 상태": _current_status_text(latest),
-            "사람 검토": _human_review_text(latest),
-            "최근 판정 시각": _format_kst(latest.get("created_at")),
+            "현재 상태": _current_status_text(current),
+            "사람 검토": _human_review_text(current),
+            "최근 판정 시각": _format_kst(latest_audit.get("created_at")),
             "감사 기록": len(records),
             "승인 후속 기록": "있음" if review_status == "approved" else "없음",
         })
@@ -732,9 +733,10 @@ def render() -> None:
             )
             selected_key, selected_records = groups_by_token[selected_group_token]
             selected_repository, selected_pr_number = selected_key
-            latest = _current_change_record(selected_records)
-            current_subject = _change_subject_from_row(latest)
-            current_review = _human_review_summary(latest)
+            current = _current_change_record(selected_records)
+            latest_audit = selected_records[-1]
+            current_subject = _change_subject_from_row(current)
+            current_review = _human_review_summary(current)
 
             current_tab, timeline_tab, raw_tab = st.tabs([
                 "현재 상태",
@@ -743,7 +745,7 @@ def render() -> None:
             ])
             with current_tab:
                 section_header(f"PR #{selected_pr_number} 현재 상태")
-                status_level, status_message = _status_notice(latest)
+                status_level, status_message = _status_notice(current)
                 getattr(st, status_level)(status_message)
                 st.dataframe(
                     pd.DataFrame([{
@@ -751,11 +753,13 @@ def render() -> None:
                         "현재 커밋": (
                             str(current_subject.get("head_sha") or "")[:8] or "-"
                         ),
-                        "현재 판정": _current_status_text(latest),
+                        "현재 판정": _current_status_text(current),
                         "사람 검토": current_review["이 기록의 사람 검토 상태"],
                         "승인자": current_review["승인자"],
                         "승인 시각": current_review["승인 시각"],
-                        "최근 판정 시각": _format_kst(latest.get("created_at")),
+                        "최근 판정 시각": _format_kst(
+                            latest_audit.get("created_at")
+                        ),
                     }]),
                     width="stretch",
                     height=74,

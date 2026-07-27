@@ -243,9 +243,17 @@ class AssuranceViewLogicTest(unittest.TestCase):
         }
 
         current = _current_change_record([approved, plain_rerun])
+        summary = _pr_summary_rows([
+            (("org/repo", 42), [approved, plain_rerun])
+        ])[0]
 
         self.assertEqual(current["receipt_digest"], "sha256:approved")
         self.assertEqual(_human_review_summary(current)["승인자"], "reviewer")
+        self.assertEqual(summary["사람 검토"], "검토 완료")
+        self.assertEqual(
+            summary["최근 판정 시각"],
+            "2026-07-21 09:03:00 KST",
+        )
 
     def test_current_record_does_not_carry_approval_to_new_head(self):
         old_head = "a" * 40
