@@ -269,6 +269,22 @@ Resources:
       LogGroupName: !Sub "/a360/${Environment}/rag-worker-cfn"
       RetentionInDays: !Ref LogRetentionDays
 
+  RagAopEventLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub "/a360/${Environment}/rag-aop-events"
+      RetentionInDays: !Ref LogRetentionDays
+
+  OpsEvalLogGroup:
+    Type: AWS::Logs::LogGroup
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      LogGroupName: !Sub "/a360/${Environment}/ops-eval"
+      RetentionInDays: !Ref LogRetentionDays
+
   OpsInstanceRole:
     Type: AWS::IAM::Role
     Properties:
