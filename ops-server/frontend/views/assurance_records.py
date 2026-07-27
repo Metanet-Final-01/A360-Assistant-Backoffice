@@ -15,6 +15,7 @@ _TIMEOUT = 15
 _STATE_ROWS = "assurance_record_rows"
 _STATE_CURSOR = "assurance_record_cursor"
 _STATE_FILTERS = "assurance_record_filters"
+_STATE_SELECTED_PR = "assurance_selected_pr"
 
 _DECISION_LABELS = {
     "allow_candidate": "허용 후보",
@@ -63,6 +64,12 @@ def _value(options: dict[str, str], label: str) -> str | None:
 
 def _since(hours: int) -> str:
     return (datetime.now(timezone.utc) - timedelta(hours=hours)).isoformat()
+
+
+def _clear_stale_pr_selection(valid_tokens: set[str] | None = None) -> None:
+    selected = st.session_state.get(_STATE_SELECTED_PR)
+    if valid_tokens is None or (selected is not None and selected not in valid_tokens):
+        st.session_state.pop(_STATE_SELECTED_PR, None)
 
 
 def _safe_message(response: requests.Response) -> str:
@@ -635,6 +642,7 @@ def render() -> None:
         st.session_state[_STATE_FILTERS] = filter_key
         st.session_state.pop(_STATE_ROWS, None)
         st.session_state.pop(_STATE_CURSOR, None)
+        _clear_stale_pr_selection()
 
     refresh_col, _ = st.columns([1, 5])
     refresh = refresh_col.button(
@@ -670,11 +678,12 @@ def render() -> None:
                 token: _pr_choice_label(key, records)
                 for token, (key, records) in groups_by_token.items()
             }
+            _clear_stale_pr_selection(set(groups_by_token))
             selected_group_token = st.selectbox(
                 "상세 조회할 PR",
                 list(groups_by_token),
                 format_func=lambda token: labels_by_token[token],
-                key="assurance_selected_pr",
+                key=_STATE_SELECTED_PR,
             )
             selected_key, selected_records = groups_by_token[selected_group_token]
             selected_repository, selected_pr_number = selected_key

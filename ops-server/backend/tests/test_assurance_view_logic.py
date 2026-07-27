@@ -11,6 +11,7 @@ from views.assurance_records import (  # noqa: E402
     _change_group_key,
     _change_control_rows,
     _change_subject,
+    _clear_stale_pr_selection,
     _current_status_text,
     _fetch,
     _format_kst,
@@ -30,6 +31,22 @@ from views.assurance_records import (  # noqa: E402
 
 
 class AssuranceViewLogicTest(unittest.TestCase):
+    @patch("views.assurance_records.st.session_state", new_callable=dict)
+    def test_stale_pr_selection_is_cleared_when_options_change(self, session_state):
+        session_state["assurance_selected_pr"] = "org/repo#41"
+
+        _clear_stale_pr_selection({"org/repo#42"})
+
+        self.assertNotIn("assurance_selected_pr", session_state)
+
+    @patch("views.assurance_records.st.session_state", new_callable=dict)
+    def test_valid_pr_selection_is_preserved(self, session_state):
+        session_state["assurance_selected_pr"] = "org/repo#42"
+
+        _clear_stale_pr_selection({"org/repo#42"})
+
+        self.assertEqual(session_state["assurance_selected_pr"], "org/repo#42")
+
     def test_record_table_uses_kst_display_time(self):
         rows = _table_rows([{
             "created_at": "2026-07-22T02:16:00+00:00",
