@@ -76,6 +76,21 @@ def test_rag_worker_log_group_uses_cloudformation_owned_name():
     assert 'awslogs-group=${RagWorkerLogGroupName}' in template
 
 
+def test_ops_jsonl_files_are_tailed_to_cloudwatch_for_firehose_archive():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+
+    assert "RagAopEventLogGroup:" in template
+    assert "OpsEvalLogGroup:" in template
+    assert "/a360/${Environment}/rag-aop-events" in template
+    assert "/a360/${Environment}/ops-eval" in template
+    assert '"logs_collected"' in template
+    assert '"/opt/a360/rag-server-logs/*.jsonl"' in template
+    assert '"/opt/a360/ops-backend-data/eval_runs.jsonl"' in template
+    assert '"/opt/a360/ops-backend-data/observability_*.jsonl"' in template
+    assert "-v /opt/a360/rag-server-logs:/app/app/rag/logs" in template
+    assert "-v /opt/a360/ops-backend-data:/app/data" in template
+
+
 def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():
     template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
 

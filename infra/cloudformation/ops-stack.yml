@@ -269,6 +269,18 @@ Resources:
       LogGroupName: !Sub "/a360/${Environment}/rag-worker-cfn"
       RetentionInDays: !Ref LogRetentionDays
 
+  RagAopEventLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/a360/${Environment}/rag-aop-events"
+      RetentionInDays: !Ref LogRetentionDays
+
+  OpsEvalLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub "/a360/${Environment}/ops-eval"
+      RetentionInDays: !Ref LogRetentionDays
+
   OpsInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -399,6 +411,9 @@ Resources:
               set -euo pipefail
               exec > >(tee -a /var/log/a360-ops-bootstrap.log /var/log/cloud-init-output.log) 2>&1
               dnf install -y amazon-cloudwatch-agent
+              mkdir -p /opt/a360 /opt/a360/rag-server-data /opt/a360/rag-server-logs /opt/a360/ops-backend-data
+              chmod 700 /opt/a360
+              chown -R 1000:1000 /opt/a360/rag-server-data /opt/a360/rag-server-logs /opt/a360/ops-backend-data
               mkdir -p /opt/aws/amazon-cloudwatch-agent/etc
               cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent.json <<'CWEOF'
               {
@@ -412,6 +427,32 @@ Resources:
                     "mem": {
                       "measurement": ["mem_used_percent"],
                       "metrics_collection_interval": 60
+                    }
+                  }
+                },
+                "logs": {
+                  "logs_collected": {
+                    "files": {
+                      "collect_list": [
+                        {
+                          "file_path": "/opt/a360/rag-server-logs/*.jsonl",
+                          "log_group_name": "${RagAopLogGroup}",
+                          "log_stream_name": "{instance_id}/rag-aop-events",
+                          "timezone": "UTC"
+                        },
+                        {
+                          "file_path": "/opt/a360/ops-backend-data/eval_runs.jsonl",
+                          "log_group_name": "${OpsEvalLogGroup}",
+                          "log_stream_name": "{instance_id}/ops-eval-runs",
+                          "timezone": "UTC"
+                        },
+                        {
+                          "file_path": "/opt/a360/ops-backend-data/observability_*.jsonl",
+                          "log_group_name": "${OpsEvalLogGroup}",
+                          "log_stream_name": "{instance_id}/ops-observability-snapshots",
+                          "timezone": "UTC"
+                        }
+                      ]
                     }
                   }
                 }
@@ -431,9 +472,6 @@ Resources:
               trap 'upload_bootstrap_logs; /opt/aws/bin/cfn-signal --success false --stack ${AWS::StackName} --resource OpsAutoScalingGroup --region ${AWS::Region}' ERR
               systemctl enable --now docker
 
-              mkdir -p /opt/a360 /opt/a360/rag-server-data /opt/a360/rag-server-logs
-              chmod 700 /opt/a360
-              chown -R 1000:1000 /opt/a360/rag-server-data /opt/a360/rag-server-logs
               restore_rag_artifacts() {
                 local bucket="${ArtifactBucketName}"
                 local latest_key="rag-ingest-artifacts/latest/rag-server-data.tar.gz"
@@ -542,6 +580,7 @@ Resources:
 
               docker run -d --restart unless-stopped --name ops-backend --network a360 \
                 -p ${OpsBackendPort}:${OpsBackendPort} \
+                -v /opt/a360/ops-backend-data:/app/data \
                 --env-file /opt/a360/runtime.env \
                 -e A360_OBSERVABILITY_DATABASE_URL="$OBS_DSN" \
                 -e REDIS_URL='${RedisUrl}' \
@@ -677,6 +716,8 @@ Resources:
               OpsApiLogGroup: !Ref OpsBackendLogGroup
               OpsUiLogGroup: !Ref OpsUiLogGroup
               RagLogGroup: !Ref RagServerLogGroup
+              RagAopLogGroup: !Ref RagAopEventLogGroup
+              OpsEvalLogGroup: !Ref OpsEvalLogGroup
               RagScheduleRoleArn: !GetAtt RagScheduleRole.Arn
               RagJobQueueUrl:
                 Fn::ImportValue:
@@ -907,6 +948,12 @@ Outputs:
     Value: !Ref InternalAlbSecurityGroup
   OpsAutoScalingGroupName:
     Value: !Ref OpsAutoScalingGroup
+  RagAopEventLogGroupName:
+    Description: CloudWatch log group receiving RAG AOP JSONL files tailed from Ops EC2.
+    Value: !Ref RagAopEventLogGroup
+  OpsEvalLogGroupName:
+    Description: CloudWatch log group receiving Ops evaluation and local observability JSONL files.
+    Value: !Ref OpsEvalLogGroup
   RagScheduleRoleArn:
     Description: EventBridge Scheduler execution role used for RAG ingest schedules.
     Value: !GetAtt RagScheduleRole.Arn
