@@ -328,15 +328,22 @@ def _render_logs(job_id: str) -> None:
         # 내려받아 download_button에 넣어두면 사용자가 누르지 않아도 전체 로그가
         # 2초마다 반복 전송된다 — 버튼을 눌렀을 때만 받아 세션에 캐싱한다. 브라우저가
         # OPS_BACKEND_URL을 직접 못 여는 배포(컨테이너 내부 DNS)라 직접 링크 대신
-        # 서버(Streamlit)를 거쳐야 한다.
-        cache_key = f"rag_full_log_bytes_{job_id}"
+        # 서버(Streamlit)를 거쳐야 한다. job_id별로 캐시를 쌓지 않고 캐시 슬롯 하나만
+        # 재사용한다 — 여러 작업의 전체 로그를 번갈아 준비하면 세션에 무한정 쌓이는
+        # 것을 막고, 준비 중인 작업이 바뀌면 이전 캐시는 자연히 무효화된다.
+        cache_key, cache_job_key = "rag_full_log_bytes", "rag_full_log_job_id"
         if st.button("전체 로그 준비", key=f"rag_full_log_prepare_{job_id}"):
             full_log, download_error = _api_bytes(f"/ops/rag/ingest/jobs/{job_id}/logs/download")
             if download_error:
                 st.warning(download_error)
+                # 실패 시 이전에 캐시된(다른 시점의) 로그가 남아 있으면 다운로드 버튼이
+                # 계속 활성 상태로 옛 스냅샷을 내려주게 된다 — 실패는 캐시 비움으로 드러낸다.
+                st.session_state.pop(cache_key, None)
+                st.session_state.pop(cache_job_key, None)
             else:
                 st.session_state[cache_key] = full_log
-        cached_log = st.session_state.get(cache_key)
+                st.session_state[cache_job_key] = job_id
+        cached_log = st.session_state.get(cache_key) if st.session_state.get(cache_job_key) == job_id else None
         st.download_button(
             "전체 로그 다운로드",
             data=cached_log or b"",
