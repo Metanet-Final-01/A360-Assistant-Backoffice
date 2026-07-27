@@ -323,16 +323,27 @@ def _render_logs(job_id: str) -> None:
         lines = _filter_log_lines(text.splitlines(), level_filter, search)
         st.caption(f"표시 {len(lines)}줄 · 마지막 갱신 {datetime.now().strftime('%H:%M:%S')}")
         st.code("\n".join(lines) or "(표시할 로그 없음)", language="text", height=400)
-        full_log, download_error = _api_bytes(f"/ops/rag/ingest/jobs/{job_id}/logs/download")
-        if download_error:
-            st.warning(download_error)
+
+        # 이 함수는 2초 fragment라, 예전처럼 매 재실행마다 전체 로그(bytes)를 미리
+        # 내려받아 download_button에 넣어두면 사용자가 누르지 않아도 전체 로그가
+        # 2초마다 반복 전송된다 — 버튼을 눌렀을 때만 받아 세션에 캐싱한다. 브라우저가
+        # OPS_BACKEND_URL을 직접 못 여는 배포(컨테이너 내부 DNS)라 직접 링크 대신
+        # 서버(Streamlit)를 거쳐야 한다.
+        cache_key = f"rag_full_log_bytes_{job_id}"
+        if st.button("전체 로그 준비", key=f"rag_full_log_prepare_{job_id}"):
+            full_log, download_error = _api_bytes(f"/ops/rag/ingest/jobs/{job_id}/logs/download")
+            if download_error:
+                st.warning(download_error)
+            else:
+                st.session_state[cache_key] = full_log
+        cached_log = st.session_state.get(cache_key)
         st.download_button(
             "전체 로그 다운로드",
-            data=full_log,
+            data=cached_log or b"",
             file_name=f"{job_id}.log",
             mime="text/plain",
             use_container_width=True,
-            disabled=bool(download_error),
+            disabled=cached_log is None,
         )
 
 
