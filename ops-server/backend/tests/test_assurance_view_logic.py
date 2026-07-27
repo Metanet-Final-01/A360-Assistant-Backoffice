@@ -11,7 +11,7 @@ from views.assurance_records import (  # noqa: E402
     _change_group_key,
     _change_control_rows,
     _change_subject,
-    _clear_stale_pr_selection,
+    _current_change_record,
     _current_status_text,
     _fetch,
     _format_kst,
@@ -21,6 +21,7 @@ from views.assurance_records import (  # noqa: E402
     _human_review_text,
     _latest_change_rows,
     _pr_summary_rows,
+    _reconcile_pr_selection,
     _render_detail,
     _status_notice,
     _status_text,
@@ -32,20 +33,31 @@ from views.assurance_records import (  # noqa: E402
 
 class AssuranceViewLogicTest(unittest.TestCase):
     @patch("views.assurance_records.st.session_state", new_callable=dict)
-    def test_stale_pr_selection_is_cleared_when_options_change(self, session_state):
+    def test_stale_pr_selection_moves_to_first_valid_option(self, session_state):
         session_state["assurance_selected_pr"] = "org/repo#41"
 
-        _clear_stale_pr_selection({"org/repo#42"})
+        selected = _reconcile_pr_selection(["org/repo#42", "org/repo#43"])
 
-        self.assertNotIn("assurance_selected_pr", session_state)
+        self.assertEqual(selected, "org/repo#42")
+        self.assertEqual(session_state["assurance_selected_pr"], "org/repo#42")
 
     @patch("views.assurance_records.st.session_state", new_callable=dict)
     def test_valid_pr_selection_is_preserved(self, session_state):
         session_state["assurance_selected_pr"] = "org/repo#42"
 
-        _clear_stale_pr_selection({"org/repo#42"})
+        selected = _reconcile_pr_selection(["org/repo#42"])
 
+        self.assertEqual(selected, "org/repo#42")
         self.assertEqual(session_state["assurance_selected_pr"], "org/repo#42")
+
+    @patch("views.assurance_records.st.session_state", new_callable=dict)
+    def test_pr_selection_is_removed_when_no_options_remain(self, session_state):
+        session_state["assurance_selected_pr"] = "org/repo#42"
+
+        selected = _reconcile_pr_selection([])
+
+        self.assertIsNone(selected)
+        self.assertNotIn("assurance_selected_pr", session_state)
 
     def test_record_table_uses_kst_display_time(self):
         rows = _table_rows([{
@@ -158,6 +170,9 @@ class AssuranceViewLogicTest(unittest.TestCase):
 
     def test_missing_review_summary_explains_pre_approval_record(self):
         summary = _human_review_summary({
+            "integrity_valid": True,
+            "decision": "unassured",
+            "assurance_verdict": "refused",
             "human_review": {
                 "status": "missing",
                 "reason_code": "HUMAN_REVIEW_NOT_SUBMITTED",
@@ -171,6 +186,115 @@ class AssuranceViewLogicTest(unittest.TestCase):
             summary["상태 사유"],
             "이 기록 생성 시점에는 사람 승인이 없었음",
         )
+
+    def test_missing_review_is_not_required_for_observed_candidate(self):
+        row = {
+            "integrity_valid": True,
+            "decision": "allow_candidate",
+            "assurance_verdict": "observed",
+            "human_review": {
+                "status": "missing",
+                "reason_code": "HUMAN_REVIEW_NOT_SUBMITTED",
+                "review": None,
+            },
+        }
+
+        self.assertEqual(_human_review_text(row), "검토 불필요")
+        summary = _human_review_summary(row)
+        self.assertEqual(summary["승인자"], "-")
+        self.assertEqual(
+            summary["상태 사유"],
+            "보호 대상 변경이 없어 별도 승인 증거가 필요하지 않음",
+        )
+
+    def test_current_record_keeps_same_head_approval_after_plain_rerun(self):
+        head_sha = "a" * 40
+        common = {
+            "harness": "change",
+            "integrity_valid": True,
+            "change_subject": {
+                "repository": "org/repo",
+                "pull_request_number": 42,
+                "head_sha": head_sha,
+            },
+        }
+        approved = {
+            **common,
+            "created_at": "2026-07-21T00:02:00Z",
+            "receipt_digest": "sha256:approved",
+            "decision": "allow_candidate",
+            "assurance_verdict": "observed",
+            "human_review": {
+                "status": "approved",
+                "review": {
+                    "reviewer_login": "reviewer",
+                    "submitted_at": "2026-07-21T00:01:00Z",
+                    "commit_id": head_sha,
+                },
+            },
+        }
+        plain_rerun = {
+            **common,
+            "created_at": "2026-07-21T00:03:00Z",
+            "receipt_digest": "sha256:rerun",
+            "decision": "unassured",
+            "assurance_verdict": "refused",
+            "human_review": {"status": "missing", "review": None},
+        }
+
+        current = _current_change_record([approved, plain_rerun])
+        summary = _pr_summary_rows([
+            (("org/repo", 42), [approved, plain_rerun])
+        ])[0]
+
+        self.assertEqual(current["receipt_digest"], "sha256:approved")
+        self.assertEqual(_human_review_summary(current)["승인자"], "reviewer")
+        self.assertEqual(summary["사람 검토"], "검토 완료")
+        self.assertEqual(
+            summary["최근 판정 시각"],
+            "2026-07-21 09:03:00 KST",
+        )
+
+    def test_current_record_does_not_carry_approval_to_new_head(self):
+        old_head = "a" * 40
+        new_head = "b" * 40
+        approved = {
+            "harness": "change",
+            "created_at": "2026-07-21T00:02:00Z",
+            "receipt_digest": "sha256:approved",
+            "change_subject": {"head_sha": old_head},
+            "human_review": {"status": "approved"},
+        }
+        new_commit = {
+            "harness": "change",
+            "created_at": "2026-07-21T00:03:00Z",
+            "receipt_digest": "sha256:new-head",
+            "change_subject": {"head_sha": new_head},
+            "human_review": {"status": "missing"},
+        }
+
+        current = _current_change_record([approved, new_commit])
+
+        self.assertEqual(current["receipt_digest"], "sha256:new-head")
+
+    def test_current_record_honors_dismissal_after_approval(self):
+        head_sha = "a" * 40
+        approved = {
+            "created_at": "2026-07-21T00:02:00Z",
+            "receipt_digest": "sha256:approved",
+            "change_subject": {"head_sha": head_sha},
+            "human_review": {"status": "approved"},
+        }
+        dismissed = {
+            "created_at": "2026-07-21T00:03:00Z",
+            "receipt_digest": "sha256:dismissed",
+            "change_subject": {"head_sha": head_sha},
+            "human_review": {"status": "dismissed"},
+        }
+
+        current = _current_change_record([approved, dismissed])
+
+        self.assertEqual(current["receipt_digest"], "sha256:dismissed")
 
     def test_human_review_can_be_read_from_detail_payload(self):
         detail = {"receipt_payload": {"human_review": {"status": "dismissed"}}}
