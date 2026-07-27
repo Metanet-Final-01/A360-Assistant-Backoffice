@@ -197,8 +197,6 @@ def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_li
     # agent_parse일 때만 검사하면 키 없이 시작해 빌드 중간에 죽는다. 시작 전에 막는다.
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY is required for the v2 ingest pipeline.")
-    _guard_against_cold_rebuild(clean=clean, requested_by=requested_by)
-
     with _lock:
         job_id = str(uuid.uuid4())
         now = _utcnow()
@@ -212,6 +210,10 @@ def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_li
             if active:
                 conn.rollback()
                 raise ConflictError(active["job_id"])
+            conn.rollback()
+        _restore_artifacts_before_ingest(clean=clean, requested_by=requested_by)
+        with _connect() as conn:
+            conn.execute("begin immediate")
             conn.execute(
                 """
                 insert into jobs (
@@ -228,34 +230,25 @@ def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_li
         return get_job(job_id) or {"job_id": job_id, "status": "QUEUED"}
 
 
-def _guard_against_cold_rebuild(clean: bool, requested_by: str) -> None:
+def _restore_artifacts_before_ingest(clean: bool, requested_by: str) -> dict[str, Any] | None:
     if clean or os.getenv("RAG_ALLOW_COLD_REBUILD", "").lower() == "true":
-        return
+        return {"ok": True, "restored": False, "reason": "explicit-rebuild"}
     if _local_rag_documents_exists():
-        return
-    if _s3_latest_artifact_exists():
-        raise RuntimeError(
-            "Refusing RAG ingest cold rebuild: local /app/data/ingest/rag_documents.jsonl "
-            "is missing while S3 has a restorable latest RAG artifact. "
-            "Restore S3 artifacts before ingest, run with clean=true intentionally, "
-            "or set RAG_ALLOW_COLD_REBUILD=true for an explicit rebuild. "
-            f"requested_by={requested_by}"
-        )
+        return {"ok": True, "restored": False, "reason": "local-present"}
+    try:
+        from app import artifacts
+
+        result = artifacts.restore_latest_if_missing()
+        print(f"RAG artifact restore before ingest: {json.dumps(result, ensure_ascii=False)} requested_by={requested_by}")
+        return result
+    except Exception as exc:
+        print(f"RAG artifact restore before ingest skipped: {type(exc).__name__} requested_by={requested_by}")
+        return {"ok": False, "restored": False, "reason": type(exc).__name__}
 
 
 def _local_rag_documents_exists() -> bool:
     ingest_dir = Path(os.getenv("INGEST_DATA_DIR", REPO_ROOT / "data" / "ingest"))
     return (ingest_dir / "rag_documents.jsonl").is_file()
-
-
-def _s3_latest_artifact_exists() -> bool:
-    try:
-        from app import artifacts
-
-        return artifacts.latest_exists()
-    except Exception as exc:
-        print(f"skip cold rebuild guard S3 artifact check: {exc}")
-        return False
 
 
 def _run_job(job_id: str) -> None:
@@ -327,9 +320,9 @@ def _run_job(job_id: str) -> None:
         _update_job(job_id, status="CANCELED", finished_at=_utcnow(), exit_code=exit_code)
         _add_event(job_id, "canceled", {"status": "CANCELED", "exit_code": exit_code})
     elif exit_code == 0:
+        _upload_artifacts(job_id)
         _update_job(job_id, status="SUCCEEDED", finished_at=_utcnow(), exit_code=0)
         _add_event(job_id, "completed", {"status": "SUCCEEDED", "exit_code": 0})
-        _upload_artifacts(job_id)
     else:
         message = f"Pipeline exited with code {exit_code}."
         _update_job(job_id, status="FAILED", finished_at=_utcnow(), exit_code=exit_code, error_message=message)
