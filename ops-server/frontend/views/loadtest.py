@@ -14,6 +14,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, metric_strip, page_header, section_header
+from components.time_display import to_kst_naive_series
 from config import OPS_BACKEND_URL
 
 _SESSION = requests.Session()
@@ -69,7 +70,7 @@ def _render_history() -> None:
             return
 
         df = pd.DataFrame(runs)
-        df["created_at"] = pd.to_datetime(df["created_at"])
+        df["created_at"] = to_kst_naive_series(df["created_at"])
         df = df.sort_values("created_at")
 
         labels = sorted(df["label"].unique().tolist())
@@ -96,7 +97,7 @@ def _render_history() -> None:
             alt.Chart(long_df)
             .mark_line(point=True)
             .encode(
-                x=alt.X("created_at:T", title="실행 시각"),
+                x=alt.X("created_at:T", title="실행 시각(KST)"),
                 y=alt.Y("ms:Q", title="지연시간(ms)"),
                 color=alt.Color("지표:N"),
                 strokeDash=alt.StrokeDash("label:N"),
@@ -110,7 +111,7 @@ def _render_history() -> None:
             alt.Chart(view)
             .mark_bar()
             .encode(
-                x=alt.X("created_at:T", title="실행 시각"),
+                x=alt.X("created_at:T", title="실행 시각(KST)"),
                 y=alt.Y("throughput_rps:Q", title="처리량(req/s)"),
                 color=alt.Color("label:N"),
                 tooltip=["created_at:T", "label:N", "throughput_rps:Q", "error_rate:Q", "peak_vus:Q"],
@@ -119,8 +120,12 @@ def _render_history() -> None:
         )
         st.altair_chart(throughput_chart, width="stretch")
 
+        display_view = view.copy()
+        display_view["created_at"] = (
+            display_view["created_at"].dt.strftime("%Y-%m-%d %H:%M:%S") + " KST"
+        )
         st.dataframe(
-            view[["created_at", "label", "method", "target_url", "peak_vus", "avg_ms", "p50_ms", "p95_ms", "max_ms", "throughput_rps", "error_rate"]]
+            display_view[["created_at", "label", "method", "target_url", "peak_vus", "avg_ms", "p50_ms", "p95_ms", "max_ms", "throughput_rps", "error_rate"]]
             .sort_values("created_at", ascending=False),
             width="stretch", hide_index=True,
         )

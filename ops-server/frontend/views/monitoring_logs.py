@@ -9,6 +9,7 @@ from components.monitoring.mock_data import generate_mock_logs
 from components.monitoring.status_panel import render_latency_stats, render_status_distribution
 from components.monitoring.styles import inject_dashboard_styles
 from components.monitoring.volume_chart import render_volume_chart
+from components.time_display import format_kst_columns
 from config import OPS_BACKEND_URL
 
 # 이 화면들은 관측 DB를 **직접** 읽는다(읽기 전용 롤). 예전엔 백엔드 admin API를 거쳐서
@@ -114,7 +115,8 @@ def _render_audit_logs() -> None:
         view = view[view["user_id"] == user_filter]
     if only_errors:
         view = view[view["status_code"] >= 400]
-    st.dataframe(view[["created_at", "user_id", "method", "path", "status_code", "latency_ms"]], width="stretch", hide_index=True)
+    display = format_kst_columns(view, ["created_at"])
+    st.dataframe(display[["created_at", "user_id", "method", "path", "status_code", "latency_ms"]], width="stretch", hide_index=True)
 
 
 
@@ -200,7 +202,8 @@ def _render_turn_events() -> None:
         return
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}건")
-    st.dataframe(df[["created_at", "session_id", "seq", "kind", "stage", "message", "elapsed_ms"]], width="stretch", hide_index=True)
+    display = format_kst_columns(df, ["created_at"])
+    st.dataframe(display[["created_at", "session_id", "seq", "kind", "stage", "message", "elapsed_ms"]], width="stretch", hide_index=True)
 
 
 
@@ -217,7 +220,8 @@ def _render_rag_events() -> None:
         return
     df = pd.DataFrame(rows)
     st.caption(f"{len(df)}건 (event별: {', '.join(f'{k} {v}건' for k, v in df['event'].value_counts().items())})")
-    st.dataframe(df[["created_at", "request_id", "event", "function", "status", "duration_ms"]], width="stretch", hide_index=True)
+    display = format_kst_columns(df, ["created_at"])
+    st.dataframe(display[["created_at", "request_id", "event", "function", "status", "duration_ms"]], width="stretch", hide_index=True)
 
 
 

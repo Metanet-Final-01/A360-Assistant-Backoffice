@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any
 
 import pandas as pd
@@ -8,6 +8,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, metric_strip, page_header, section_header
+from components.time_display import format_kst
 from config import OPS_BACKEND_URL
 
 
@@ -321,7 +322,8 @@ def _render_logs(job_id: str) -> None:
             st.error(error)
             return
         lines = _filter_log_lines(text.splitlines(), level_filter, search)
-        st.caption(f"표시 {len(lines)}줄 · 마지막 갱신 {datetime.now().strftime('%H:%M:%S')}")
+        refreshed_at = format_kst(datetime.now(timezone.utc)).split()[1]
+        st.caption(f"표시 {len(lines)}줄 · 마지막 갱신 {refreshed_at} KST")
         st.code("\n".join(lines) or "(표시할 로그 없음)", language="text", height=400)
 
         # 이 함수는 2초 fragment라, 예전처럼 매 재실행마다 전체 로그(bytes)를 미리
@@ -389,7 +391,9 @@ def _render_history(jobs: list[dict]) -> None:
             return
         rows = [
             {
-                "실행 시각": job.get("started_at") or job.get("created_at"),
+                "실행 시각": format_kst(
+                    job.get("started_at") or job.get("created_at")
+                ),
                 "모드": _mode_title(job.get("mode")),
                 "전체 재구축": "예" if job.get("clean") else "아니오",
                 "실행자": job.get("requested_by") or "-",

@@ -6,6 +6,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, metric_grid, page_header, section_header
+from components.time_display import format_kst, to_kst_naive_series
 from config import OPS_BACKEND_URL, RAG_SERVER_URL
 
 
@@ -69,7 +70,7 @@ def render() -> None:
             default=None,
         )
         st.caption(
-            f"RAG 요청 로그 최신 기록: {latest[:19].replace('T', ' ') if latest else '없음'}"
+            f"RAG 요청 로그 최신 기록: {format_kst(latest, fallback='없음')}"
             " (관측 DB 직접 조회)"
         )
 
@@ -97,14 +98,19 @@ def _render_recent_logs_chart(rag_logs: list[dict] | None) -> None:
         st.info("표시할 RAG 요청 로그가 없습니다 — 관측 DB에 http_request 이벤트가 있는지 확인하세요.")
         return
 
-    df = pd.DataFrame(rows).sort_values("started_at").tail(50)
+    df = pd.DataFrame(rows)
+    df["started_at"] = to_kst_naive_series(df["started_at"])
+    df = df.sort_values("started_at").tail(50)
     chart = (
         alt.Chart(df)
         .mark_line(point=True, color="#1f6f8b", strokeWidth=2)
         .encode(
-            x=alt.X("started_at:T", title="시각"),
+            x=alt.X("started_at:T", title="시각(KST)"),
             y=alt.Y("duration_ms:Q", title="응답시간(ms)"),
-            tooltip=["started_at", "duration_ms"],
+            tooltip=[
+                alt.Tooltip("started_at:T", title="시각(KST)"),
+                alt.Tooltip("duration_ms:Q", title="응답시간(ms)"),
+            ],
         )
         .properties(height=300)
     )
@@ -112,7 +118,7 @@ def _render_recent_logs_chart(rag_logs: list[dict] | None) -> None:
 
 
 def _fmt_ts(ts: str | None) -> str:
-    return ts[:19].replace("T", " ") if ts else "-"
+    return format_kst(ts)
 
 
 def _render_backend_health_banner(health: dict) -> None:

@@ -16,6 +16,7 @@ import requests
 import streamlit as st
 
 from components.layout import card, page_header, section_header
+from components.time_display import format_kst
 from config import OPS_BACKEND_URL
 
 _TIMEOUT = 15
@@ -86,7 +87,7 @@ def _source_badge(data: dict, keys: tuple[str, ...], refresh_key: str) -> None:
         if data.get("source") == "db":
             st.caption(
                 f"🟢 **적용 중: 여기서 바꾼 값** · 마지막 변경 `{data.get('updated_by') or '?'}` "
-                f"· {data.get('updated_at') or '시각 미상'}"
+                f"· {format_kst(data.get('updated_at'), fallback='시각 미상')}"
             )
         else:
             st.caption("⚪ **적용 중: 백엔드 .env 기본값** — 아직 여기서 바꾼 적이 없습니다.")

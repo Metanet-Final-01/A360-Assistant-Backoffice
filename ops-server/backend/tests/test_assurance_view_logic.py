@@ -20,12 +20,23 @@ from views.assurance_records import (  # noqa: E402
     _render_detail,
     _status_notice,
     _status_text,
+    _table_rows,
     _timeline_choices,
     _timeline_rows,
 )
 
 
 class AssuranceViewLogicTest(unittest.TestCase):
+    def test_record_table_uses_kst_display_time(self):
+        rows = _table_rows([{
+            "created_at": "2026-07-22T02:16:00+00:00",
+            "integrity_valid": True,
+            "decision": "allow_candidate",
+            "assurance_verdict": "observed",
+        }])
+
+        self.assertEqual(rows[0]["시각"], "2026-07-22 11:16:00 KST")
+
     def test_integrity_failure_has_highest_priority(self):
         row = {
             "integrity_valid": False,
@@ -96,6 +107,10 @@ class AssuranceViewLogicTest(unittest.TestCase):
         }
         self.assertEqual(_human_review_text(approved), "검토 완료")
         self.assertEqual(_human_review_summary(approved)["승인자"], "reviewer")
+        self.assertEqual(
+            _human_review_summary(approved)["승인 시각"],
+            "2026-07-21 17:00:00 KST",
+        )
         self.assertEqual(
             _human_review_text({"human_review": {"status": "stale"}}),
             "재검토 필요",

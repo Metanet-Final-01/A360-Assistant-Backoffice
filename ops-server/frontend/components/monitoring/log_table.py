@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 
 from ..layout import card
+from ..time_display import format_kst
 from .theme import AMBER, GREEN, RED, STATUS_ORDER, status_class
 
 _COUNT_MIN, _COUNT_MAX, _COUNT_STEP = 10, 500, 10
@@ -92,10 +93,10 @@ def render_table(df: pd.DataFrame) -> None:
         return
 
     display_df = df.copy()
-    display_df["started_at"] = display_df["started_at"].dt.strftime("%Y-%m-%d %H:%M:%S") + " UTC"
+    display_df["started_at"] = display_df["started_at"].map(format_kst)
     display_df["워크플로우"] = display_df["워크플로우"].map({True: "✓", False: ""})
 
-    st.caption(f"최근 {len(df)}건 · 시각은 UTC 기준")
+    st.caption(f"최근 {len(df)}건 · 시각은 한국시간(KST) 기준")
     st.dataframe(
         display_df.style.apply(_status_badge_style, axis=1),
         width="stretch",
