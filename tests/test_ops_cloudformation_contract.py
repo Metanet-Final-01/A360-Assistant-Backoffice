@@ -1,8 +1,36 @@
 import json
 from pathlib import Path
+import re
+import textwrap
 
 
 ROOT = Path(__file__).resolve().parents[1]
+
+
+def _ops_template_text() -> str:
+    return (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+
+
+def _cloudwatch_agent_config(template: str) -> dict:
+    match = re.search(
+        r"cat > /opt/aws/amazon-cloudwatch-agent/etc/amazon-cloudwatch-agent\.json <<'CWEOF'\n"
+        r"(?P<body>.*?)\n\s+CWEOF",
+        template,
+        flags=re.DOTALL,
+    )
+    assert match is not None
+    return json.loads(textwrap.dedent(match.group("body")))
+
+
+def _resource_block(template: str, logical_id: str) -> str:
+    lines = template.splitlines()
+    start = next(i for i, line in enumerate(lines) if line == f"  {logical_id}:")
+    end = len(lines)
+    for i in range(start + 1, len(lines)):
+        if re.match(r"^  [A-Za-z0-9]+:$", lines[i]):
+            end = i
+            break
+    return "\n".join(lines[start:end])
 
 
 def test_ops_userdata_avoids_al2023_curl_conflict_and_preserves_logs():
@@ -77,31 +105,24 @@ def test_rag_worker_log_group_uses_cloudformation_owned_name():
 
 
 def test_ops_jsonl_files_are_tailed_to_cloudwatch_for_firehose_archive():
-    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+    template = _ops_template_text()
+    config = _cloudwatch_agent_config(template)
+    collect_list = config["logs"]["logs_collected"]["files"]["collect_list"]
+    destinations = {entry["file_path"]: entry["log_group_name"] for entry in collect_list}
 
     assert '"logs_collected"' in template
-    assert (
-        '"file_path": "/opt/a360/rag-server-logs/*.jsonl",\n'
-        '                          "log_group_name": "${RagLogGroup}"'
-    ) in template
-    assert (
-        '"file_path": "/opt/a360/ops-backend-data/eval_runs.jsonl",\n'
-        '                          "log_group_name": "${OpsApiLogGroup}"'
-    ) in template
-    assert (
-        '"file_path": "/opt/a360/ops-backend-data/observability_*.jsonl",\n'
-        '                          "log_group_name": "${OpsApiLogGroup}"'
-    ) in template
+    assert destinations["/opt/a360/rag-server-logs/*.jsonl"] == "${RagLogGroup}"
+    assert destinations["/opt/a360/ops-backend-data/eval_runs.jsonl"] == "${OpsApiLogGroup}"
+    assert destinations["/opt/a360/ops-backend-data/observability_*.jsonl"] == "${OpsApiLogGroup}"
     assert "-v /opt/a360/rag-server-logs:/app/app/rag/logs" in template
     assert "-v /opt/a360/ops-backend-data:/app/data" in template
 
 
 def test_legacy_jsonl_log_groups_are_retained_if_removed_later():
-    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+    template = _ops_template_text()
 
     for logical_id in ("RagAopEventLogGroup", "OpsEvalLogGroup"):
-        start = template.index(f"  {logical_id}:")
-        block = template[start : template.index("\n\n", start)]
+        block = _resource_block(template, logical_id)
         assert "DeletionPolicy: Retain" in block
         assert "UpdateReplacePolicy: Retain" in block
 
