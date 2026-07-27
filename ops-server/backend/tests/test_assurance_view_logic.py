@@ -233,10 +233,11 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertEqual(_format_kst("not-a-time"), "not-a-time")
 
     def test_timeline_choices_do_not_drop_duplicate_display_labels(self):
-        repeated = {
+        repeated_prefix = "sha256:same-prefix"
+        first = {
             "harness": "change",
             "created_at": "2026-07-21T00:01:00Z",
-            "receipt_digest": "sha256:same-prefix-but-distinct",
+            "receipt_digest": f"{repeated_prefix}-first",
             "change_subject": {
                 "repository": "org/repo",
                 "pull_request_number": 42,
@@ -244,12 +245,20 @@ class AssuranceViewLogicTest(unittest.TestCase):
             },
             "human_review": {"status": "missing"},
         }
+        second = {
+            **first,
+            "receipt_digest": f"{repeated_prefix}-second",
+        }
 
-        choices = _timeline_choices([repeated, dict(repeated)])
+        choices = _timeline_choices([first, second])
 
         self.assertEqual(len(choices), 2)
         self.assertNotEqual(choices[0][0], choices[1][0])
         self.assertEqual(choices[0][1], choices[1][1])
+        self.assertEqual(
+            {token for token, _label, _row in choices},
+            {first["receipt_digest"], second["receipt_digest"]},
+        )
 
     def test_change_refusal_explains_observe_is_not_merge_blocking(self):
         level, message = _status_notice({

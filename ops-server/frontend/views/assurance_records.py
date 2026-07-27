@@ -348,7 +348,7 @@ def _timeline_rows(rows: list[dict]) -> list[dict]:
 
 def _timeline_choices(records: list[dict]) -> list[tuple[str, str, dict]]:
     choices = []
-    for index, row in enumerate(reversed(records)):
+    for row in reversed(records):
         digest = str(row.get("receipt_digest") or "")
         subject = _change_subject_from_row(row)
         label = (
@@ -356,7 +356,7 @@ def _timeline_choices(records: list[dict]) -> list[tuple[str, str, dict]]:
             f"{str(subject.get('head_sha') or '')[:8]} · "
             f"{_human_review_text(row)} · {digest[:16]}"
         )
-        choices.append((f"{index}:{digest}", label, row))
+        choices.append((digest, label, row))
     return choices
 
 
