@@ -1,0 +1,40 @@
+# PR 변경 파일 경로 → 영역 라벨 매핑 (.github/workflows/pr-labeler.yml이 사용)
+# 여러 영역을 건드리면 라벨이 여러 개 붙는다 (의도된 동작 — PR 분리를 고민할 신호)
+# 라벨 형식은 백엔드 리포와 통일한다 (한글 이름, 접두사 없음).
+
+모니터링:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "ops-server/**"
+
+RAG:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "rag-server/**"
+
+관측:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "ops-server/backend/app/observability/**"
+
+평가:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "ops-server/backend/app/eval/**"
+
+프론트:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "ops-server/frontend/**"
+
+CI:
+  - changed-files:
+      - any-glob-to-any-file:
+          - ".github/workflows/**"
+          - ".github/labeler.yml"
+
+문서:
+  - changed-files:
+      - any-glob-to-any-file:
+          - "docs/**"
+          - "*.md"

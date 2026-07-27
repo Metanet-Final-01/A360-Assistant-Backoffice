@@ -1,0 +1,37 @@
+# Ops Backend (FastAPI :8100) 전용 의존성 — Streamlit UI(altair 등)는 제외한다 (RPA-259).
+#
+# 왜 분리하나: 통합 ops-server/requirements.txt는 UI(streamlit·altair)와 백엔드를 한 파일에
+# 담아, Ops Backend 이미지에 쓰지도 않는 streamlit이 들어갔다. 컨테이너를 나누면서 백엔드
+# 이미지는 이 파일만 설치한다. UI는 ops-server/frontend/requirements.txt를 쓴다.
+# (검증: 백엔드 코드는 streamlit·altair를 import하지 않는다.)
+
+# ── FastAPI (observability 조회, eval, 스케줄러) ──
+fastapi
+uvicorn[standard]
+httpx
+python-dotenv
+boto3
+# 파일 업로드 라우트(UploadFile=File(...): 워크플로/RAGAS/BFCL 케이스 업로드)에 필수.
+# 통합 requirements엔 미선언이라 로컬은 전이 의존성으로 우연히 있었고, 깨끗한 컨테이너에서
+# ensure_multipart_is_installed()가 기동 시 터졌다 — 명시 선언한다 (RPA-259).
+python-multipart
+
+# ── HTTP·데이터 정리 (eval 결과, 관측 응답 가공) ──
+requests
+pandas
+
+# ── 평가(eval) 결과 정리·조회 ──
+pydantic
+pyyaml
+openpyxl
+
+# ── 관측 RDS 직접 조회 + RAGAS 원본 문서 조회 ──
+psycopg[binary]
+
+# ── RAG 검색 품질 평가(RAGAS) — 버전 조합은 통합 requirements의 주석 참고 (2026-07-13 재검증) ──
+ragas==0.2.15
+langchain-community==0.3.19
+langchain==0.3.30
+langchain-core==0.3.86
+langchain-openai==0.3.35
+openai==2.45.0

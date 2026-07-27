@@ -5,408 +5,406 @@ A360-Assistant-Backend가 실시간 에이전트 추천에 계속 쓰는 코드�
 DB(pgvector/OpenSearch)는 백엔드와 동일한 인스턴스를 공유한다 — 여기서 적재한 게
 바로 실제 서비스에 반영된다.
 
+파이프라인은 khub 웹크롤 정본 v2 하나뿐이다(팀 결정: 웹크롤 전용). 과거 JAR/GitHub 기반
+레거시 명령(crawl v1·build·parse-jars·bots·export-* 등)은 제거됐다. 순서대로 실행한다:
+
 사용 예:
-  python -m app.rag.pipeline crawl --contains "Google Sheets"   # 문서 크롤링 (필터)
-  python -m app.rag.pipeline crawl                               # 명령 패널(패키지 문서) 전체
-  python -m app.rag.pipeline parse-jars path/to/export.zip jars_dir/
-  python -m app.rag.pipeline bots                                # Control Room 봇 목록+JSON 수집
-  python -m app.rag.pipeline export-packages --file-ids 123 456  # BLM export → JAR 스키마 자동 추출
-  python -m app.rag.pipeline build-action-tree                    # 패키지 판별+메뉴 계층 전체를 package_action_tree.json으로 저장 (JAR 유무 무관)
-  python -m app.rag.pipeline export-for-agent --packages Database  # JAR 없는 패키지 문서(구조화 HTML 포함) -> 향후 파싱 Agent용 산출물 (--packages 생략 시 발견된 전체 미커버 패키지)
-  python -m app.rag.pipeline export-naive-leaf-actions             # 리프=액션 필터링 없이 전부 나열 (파라미터 없음, 빠른 훑어보기용)
-  python -m app.rag.pipeline build                               # 문서+스키마+봇 → rag_documents.jsonl (청킹 포함)
-  python -m app.rag.pipeline build --include-naive-leaf-actions   # 위와 동일 + JAR 없는 패키지 리프를 action_candidate로 포함
-  python -m app.rag.pipeline eda                                  # 문서 길이 분포 분석 (청크 크기 결정용)
-  python -m app.rag.pipeline ingest [--skip-embedding]           # pgvector 적재
+  python -m app.rag.pipeline crawl-khub --dump-dir <dump>                    # ① khub 원문 덤프(toc+bodies[html])
+  python -m app.rag.pipeline registry  --dump-dir <dump>                     # ② 패키지 등기부(트리 우선 서브트리 해석)
+  python -m app.rag.pipeline build-llm --dump-dir <dump> --model gpt-5-mini  # ③ 등기부+덤프 → rag_documents.jsonl(LLM 구조화 추출)
+  python -m app.rag.pipeline validate  --dump-dir <dump>                     # ④ 품질 게이트(위반 시 종료 1로 적재 차단)
+  python -m app.rag.pipeline ingest [--clean]                               # ⑤ 임베딩 → pgvector + OpenSearch 적재
+
+  # 전체 오케스트레이션은 app/rag/scripts/run_option4_full_v2.py (POST /rag/ingest가 이걸 실행).
 """
 
 import argparse
 import json
+import os
+import re
 import sys
 from pathlib import Path
-from typing import TYPE_CHECKING
 
 from . import config
 
-if TYPE_CHECKING:
-    from .build.doc_action_tree import PackageActionTree
 
 
-def cmd_crawl(args: argparse.Namespace) -> None:
-    from .sources import docs_crawler as dc
+def cmd_crawl_khub(args: argparse.Namespace) -> None:
+    """khub v2 덤프 생성(toc_*.json + bodies_*.jsonl[html], 주 맵 전수 + 보조 맵) — v2 [크롤] 단계.
 
-    m = dc.find_map(locale=args.locale, title="Automation 360")
-    print(f"map: {m['title']} ({args.locale}) id={m['id']}")
-    menu = dc.get_menu(m["id"])
-    topics = dc.flatten_menu(menu)
-
-    if args.url_filter:
-        topics = [t for t in topics if args.url_filter in t["pretty_url"]]
-    if args.contains:
-        needle = args.contains.lower()
-        topics = [
-            t
-            for t in topics
-            if needle in t["title"].lower()
-            or any(needle in b.lower() for b in t["breadcrumbs"])
-        ]
-    print(f"대상 토픽: {len(topics)}개")
-
-    def progress(i, total, title):
-        print(f"  [{i}/{total}] {title}")
-
-    out_path = config.docs_jsonl_for_locale(args.locale)
-    written = dc.crawl_topics(m["id"], topics, out_path, on_progress=progress, locale=args.locale)
-    print(f"저장: {written}개 신규 → {out_path}")
-
-
-def _merge_into_packages_json(new_packages: list[dict]) -> dict[str, dict]:
-    """새로 파싱한 패키지들을 기존 packages.json과 합친다. 같은 package_name이 이미
-    있으면 버전을 비교해 더 높은 쪽만 채택한다(select_better_version) — 방금 파싱한
-    쪽을 무조건 최신으로 보고 덮어쓰면, 이미 더 높은 버전이 packages.json에 있었는데
-    이번 실행이 낮은 버전만 발견한 경우 오히려 퇴보한다.
+    기존 crawl(v1 docs.jsonl)과 달리 registry/build-llm이 소비하는 원문 덤프를 만든다.
+    이미 html이 있는 content_id는 건너뛴다(이어받기). run_option4_full_v2가 첫 단계로 부른다.
     """
-    from .sources.jar_parser import select_better_version
+    from .sources.khub_dump import crawl_khub_dump
 
-    existing: dict[str, dict] = {}
-    if config.PACKAGES_JSON.exists():
-        for pkg in json.loads(config.PACKAGES_JSON.read_text(encoding="utf-8")):
-            existing[pkg["package_name"]] = pkg
-    for pkg in new_packages:
-        name = pkg["package_name"]
-        existing[name] = pkg if name not in existing else select_better_version(existing[name], pkg)
-    return existing
+    locales = [s.strip() for s in args.locales.split(",") if s.strip()]
 
+    def _prog(map_title: str, i: int, total: int, ok: int, fail: int) -> None:
+        print(f"  [{map_title}] {i}/{total} (성공 {ok} / 실패 {fail})", flush=True)
 
-def cmd_parse_jars(args: argparse.Namespace) -> None:
-    from .sources.jar_parser import parse_packages
-
-    packages = parse_packages([Path(p) for p in args.paths], preferred_locale=args.jar_locale)
-    config.PACKAGES_JSON.parent.mkdir(parents=True, exist_ok=True)
-
-    existing = _merge_into_packages_json(packages)
-    config.PACKAGES_JSON.write_text(
-        json.dumps(list(existing.values()), ensure_ascii=False, indent=2), encoding="utf-8"
-    )
-    for pkg in packages:
-        print(f"  {pkg['package_name']} v{pkg['package_version']}: 액션 {len(pkg['actions'])}개")
-    print(f"저장: 패키지 총 {len(existing)}개 → {config.PACKAGES_JSON}")
+    print(f"[crawl-khub] {', '.join(locales)} → {args.dump_dir}"
+          + (f" (limit {args.limit})" if args.limit else ""), flush=True)
+    stats = crawl_khub_dump(args.dump_dir, locales=locales, delay=args.delay,
+                            limit=args.limit, on_progress=_prog)
+    print("[crawl-khub] 완료:", json.dumps(stats, ensure_ascii=False))
+    for locale, s in stats.items():
+        if s["failed"]:
+            print(f"  ⚠️ {locale}: 실패 {s['failed']}건 (재실행하면 이어받는다)")
 
 
-def cmd_harvest_github(args: argparse.Namespace) -> None:
-    import os
+def cmd_registry(args: argparse.Namespace) -> None:
+    """khub 덤프에서 패키지 등기부(package_registry.json) 생성 — v2 파이프라인 [A·B] 단계.
 
-    from .sources.github_harvest import harvest
-    from .sources.jar_parser import parse_packages
+    전략: final-etc-files/회의록/2026-07-18-khub-실측-저장전략.md §2.2 (3소스 합집합).
+    """
+    from .build.registry import build_registry
 
-    token = os.getenv("GITHUB_TOKEN") or None
-    stats = harvest(token=token, max_repos=args.max_repos)
-    print(
-        f"수집 완료: 저장소 {stats['repos']}개, 패키지 JAR {stats['jars']}개, "
-        f"봇 {stats['bots']}개 (zip {stats['zips']}개)"
-    )
-
-    # 받은 JAR을 즉시 파싱해 packages.json에 병합
-    jar_dir = Path(stats["jar_dir"])
-    if any(jar_dir.glob("*.jar")):
-        packages = parse_packages([jar_dir], preferred_locale=args.jar_locale)
-        existing = _merge_into_packages_json(packages)
-        config.PACKAGES_JSON.write_text(
-            json.dumps(list(existing.values()), ensure_ascii=False, indent=2), encoding="utf-8"
-        )
-        print(f"패키지 스키마: 총 {len(existing)}개 → {config.PACKAGES_JSON}")
+    result = build_registry(args.dump_dir)
+    out = config.DATA_DIR / "package_registry.json"
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(json.dumps(result, ensure_ascii=False, indent=1), encoding="utf-8")
+    rep = result["report"]
+    print(f"등기부 저장 → {out}")
+    print(f"  패키지 총 {rep['total']}개 (문서 서브트리 보유 {rep['with_doc_pages']}개)")
+    print(f"  릴리스노트에만 있고 문서 없음({len(rep['release_only(no_doc_pages)'])}): "
+          f"{', '.join(rep['release_only(no_doc_pages)'])}")
+    print(f"  문서에만 있고 릴리스노트 없음({len(rep['doc_only(not_in_release_notes)'])}): "
+          f"{', '.join(rep['doc_only(not_in_release_notes)'])}")
 
 
-def cmd_bots(args: argparse.Namespace) -> None:
-    from .sources.control_room import ControlRoomClient
+def cmd_validate(args: argparse.Namespace) -> None:
+    """빌드 산출물 품질 게이트 — 위반이 있으면 **종료 코드 1**로 적재를 막는다.
 
-    client = ControlRoomClient()
+    왜 필요한가(실측): `IQ Bot - Document Automation Bridge`는 매 빌드마다 `release_only`
+    목록에 **이름째 출력**됐다. 못 본 게 아니라, 진짜로 문서가 없는 8건과 나란히 놓여
+    구분할 수 없었고 아무 조치도 강제되지 않았다. 그래서 여기서는 (a) 항목마다 판정 근거를
+    붙이고 (b) 결과를 종료 코드로 낸다 — 새 정보를 만드는 게 아니라 이미 있는 신호에
+    판정을 붙이는 단계다.
+
+    run_steps가 "한 단계라도 실패하면 멈춘다"이므로, 이 단계가 실패하면 ingest에 도달하지 않는다.
+    """
+    from .build.registry import walk_toc
+
+    registry_path = config.DATA_DIR / "package_registry.json"
+    if not registry_path.exists() or not config.RAG_DOCUMENTS_JSONL.exists():
+        sys.exit("package_registry.json / rag_documents.jsonl이 없습니다. registry·build-llm을 먼저 실행하세요.")
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
+    docs = [json.loads(line) for line in open(config.RAG_DOCUMENTS_JSONL, encoding="utf-8")]
+
+    dump = Path(args.dump_dir)
+    # 게이트 단계는 traceback이 아니라 명확한 실패 메시지 + 종료코드로 끝나야 한다 — 덤프
+    # 오입력/부분 생성/스키마 변경 시 toc를 그대로 읽으면 FileNotFoundError·JSONDecodeError·
+    # KeyError로 죽어 운영 디버깅이 어렵다(Qodo 리뷰). 존재·파싱을 먼저 검증한다.
+    toc_path = dump / "toc_en-US.json"
+    if not toc_path.exists():
+        sys.exit(f"{toc_path}이 없습니다 — crawl-khub를 먼저 실행하거나 --dump-dir을 확인하세요.")
     try:
-        bots = client.list_bots(workspace=args.workspace)
-        print(f"Task Bot {len(bots)}개 발견")
-        config.BOTS_JSONL.parent.mkdir(parents=True, exist_ok=True)
-        with open(config.BOTS_JSONL, "w", encoding="utf-8") as f:
-            for i, bot in enumerate(bots):
-                record = {
-                    "file_id": bot.get("id"),
-                    "name": bot.get("name"),
-                    "path": bot.get("path"),
-                    "workspace": args.workspace,
-                }
+        toc = json.loads(toc_path.read_text(encoding="utf-8"))["toc"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        sys.exit(f"{toc_path} 읽기/파싱 실패({type(exc).__name__}): {exc} — 덤프가 온전한지 확인하세요.")
+    flat = walk_toc(toc)
+    bodies_have = set()
+    for locale in ("en-US", "ko-KR"):
+        fp = dump / f"bodies_{locale}.jsonl"
+        if not fp.exists():
+            continue
+        with open(fp, encoding="utf-8") as f:
+            for line in f:
                 try:
-                    record["json"] = client.get_bot_json(bot["id"])
-                except Exception as e:  # 권한 없는 봇 등은 건너뜀
-                    print(f"  [skip] {bot.get('name')}: {e}")
+                    d = json.loads(line)
+                except json.JSONDecodeError:
                     continue
-                f.write(json.dumps(record, ensure_ascii=False) + "\n")
-                print(f"  [{i+1}/{len(bots)}] {bot.get('name')}")
-        print(f"저장 → {config.BOTS_JSONL}")
-    finally:
-        client.close()
+                if d.get("html"):
+                    bodies_have.add(d["content_id"])
 
+    by_cid = {e["content_id"]: e for e in flat if e["content_id"]}
+    by_type: dict[str, int] = {}
+    for d in docs:
+        by_type[d["source_type"]] = by_type.get(d["source_type"], 0) + 1
+    acts_by_pkg: dict[str, int] = {}
+    for d in docs:
+        if d["source_type"] in ("action_schema", "trigger_schema") and d.get("package_name"):
+            acts_by_pkg[d["package_name"]] = acts_by_pkg.get(d["package_name"], 0) + 1
 
-def cmd_export_packages(args: argparse.Namespace) -> None:
-    from .sources.control_room import ControlRoomClient
-    from .sources.jar_parser import parse_packages
-
-    client = ControlRoomClient()
-    try:
-        print(f"BLM export 요청 (fileIds={args.file_ids}, 패키지 포함)...")
-        zip_bytes = client.export_with_packages([int(x) for x in args.file_ids])
-    finally:
-        client.close()
-
-    config.EXPORTS_DIR.mkdir(parents=True, exist_ok=True)
-    zip_path = config.EXPORTS_DIR / "package-export.zip"
-    zip_path.write_bytes(zip_bytes)
-    print(f"다운로드 완료 ({len(zip_bytes)} bytes) → {zip_path}")
-
-    args.paths = [str(zip_path)]
-    args.jar_locale = getattr(args, "jar_locale", "ko_KR")
-    cmd_parse_jars(args)
-
-
-def _load_source_inputs(source: str) -> tuple[list[dict], list[dict], list[dict]]:
-    """--source 선택에 따라 (packages, docs, bots) 중 해당 소스만 채워서 반환한다.
-
-    "docs"(공식문서, Fluid Topics)와 "github"(패키지 JAR + 공개 봇)는 서로 독립적으로
-    build/ingest할 수 있다 — 같은 rag_documents 테이블에 upsert되므로 나중에 합쳐도
-    검색은 항상 통합된 하나의 인덱스로 유지된다.
-    """
-    from .build.merge import load_bots, load_docs
-
-    docs = load_docs(config.DOCS_JSONL) if source in ("all", "docs") else []
-    bots = load_bots(config.BOTS_JSONL) if source in ("all", "github") else []
-    packages = (
-        json.loads(config.PACKAGES_JSON.read_text(encoding="utf-8"))
-        if source in ("all", "github") and config.PACKAGES_JSON.exists()
-        else []
-    )
-    return packages, docs, bots
-
-
-def _discover_packages(docs: list[dict], en_docs: list[dict]) -> dict[str, "PackageActionTree"]:
-    """루트 패키지("~패키지" 제목 + 메뉴 자식)마다 doc_action_tree로 전체 트리(사이트 메뉴의
-    `parent_menu_id` 기반, 어느 깊이에 있든 모든 리프 문서 + 카테고리 경유 문서)를 만들고,
-    진짜 영어 package_name으로 키를 바꾼다.
-
-    영어 package_name은 en-US 크롤 결과에서 pretty_url로 페어링한 개요 페이지 제목
-    ("Database package")에서 뽑는다 — 한국어 제목("데이터베이스 패키지")에서 뽑으면
-    완전히 번역되는 패키지명이 bots.jsonl의 실제 표기와 안 맞는 문제가 있었다(실측
-    확인된 버그). en 페어링에 실패하면(en 크롤이 없거나 누락) 한국어 제목에서라도
-    접미어("패키지")를 떼어 폴백한다 — 부정확할 수 있지만 완전히 못 찾는 것보단 낫다.
-
-    반환: {canonical_package_name: PackageActionTree}.
-    """
-    from .build.doc_action_match import canonical_package_name, pair_by_pretty_url
-    from .build.doc_action_tree import build_all_trees
-
-    trees = build_all_trees(docs)
-    # 사이트 메뉴는 진짜 트리(노드마다 부모가 정확히 하나)라 이전 버전(본문 링크 기반)과 달리
-    # 같은 리프를 두 루트가 동시에 주장하는 경우가 구조적으로 있을 수 없다 — 그래서
-    # 여기엔 그런 충돌을 정리하는 단계가 없다.
-
-    root_docs = [t.root_doc for t in trees]
-    ko_to_en = pair_by_pretty_url(root_docs, en_docs)
-
-    result: dict[str, PackageActionTree] = {}
-    for tree in trees:
-        en_doc = ko_to_en.get(tree.root_doc["content_id"])
-        pkg_name = canonical_package_name(en_doc["title"] if en_doc else tree.root_doc["title"])
-        if pkg_name:
-            result[pkg_name] = tree
-    return result
-
-
-def _fuzzy_find(name: str, candidates) -> str | None:
-    """공백 무시 + 접두 포함으로 느슨하게 name과 일치하는 candidates 중 하나를 찾는다.
-    정확히 1개로 안 좁혀지면(모호하거나 전혀 없으면) None — 애매하면 추측으로 메우지
-    않는다.
-
-    문서 사이트 개요 페이지 제목에서 뽑은 이름과 bots.jsonl의 실제 packageName 표기가
-    다른 실측 사례들을 잡기 위한 것 — 대소문자 차이가 아니라 아예 다른 문자열이라
-    단순 소문자 비교로는 못 잡는다:
-    - "Python"(실제 이름) <-> "Python Script"(개요 페이지 제목에서 뽑은 이름)
-    - "DataTable"(실제 이름, 공백 없음) <-> "Data Table"(개요 페이지 제목, 공백 있음)
-    양방향(실제 이름 -> 발견된 이름 교정, 발견된 이름 -> 실제 이름 교정)에 똑같이 쓴다.
-    """
-    if name in candidates:
-        return name
-    target_norm = name.lower().replace(" ", "")
-    matches = [
-        c for c in candidates
-        if (c_norm := c.lower().replace(" ", "")).startswith(target_norm) or target_norm.startswith(c_norm)
-    ]
-    return matches[0] if len(matches) == 1 else None
-
-
-def _find_package_tree(pkg_name: str, discovered: dict[str, "PackageActionTree"]) -> "PackageActionTree | None":
-    match = _fuzzy_find(pkg_name, discovered)
-    return discovered[match] if match else None
-
-
-def _write_tree_report(trees_by_package: dict[str, "PackageActionTree"]) -> None:
-    """실행마다 트리 규모를 사이드카 파일로 남긴다 — 조용히 누락되는 게 없도록, 매번
-    눈에 보이게 한다."""
-    report = {
-        pkg_name: {"leaf_count": len(tree.leaves), "category_count": len(tree.category_docs)}
-        for pkg_name, tree in trees_by_package.items()
+    # 빌드가 남긴 통계 — build_stats.json은 정보성으로만 읽는다(없어도 검사는 돈다).
+    stats_path = config.DATA_DIR / "build_stats.json"
+    build_stats = {}
+    if stats_path.exists():
+        try:
+            build_stats = json.loads(stats_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            build_stats = {}
+    # "액션 0건"이 설명된 0건인지 판단하는 근거 — build-llm은 subtree 보유 패키지마다
+    # package_overview를 **반드시** 방출한다(성공 시 metadata.actions_extracted=[…], 추출
+    # 실패 시 extraction_failed=True + failure_reason). 그 개요 행으로 '설명된 0건'과
+    # '조용한 누락'을 가른다. 규칙 빌더(build-v2)의 judge.dropped_titles/
+    # skipped_non_action_titles는 더 이상 생성되지 않아 판정 근거에서 뺐다.
+    overview_by_pkg = {
+        d.get("package_name"): d
+        for d in docs
+        if d["source_type"] == "package_overview" and d.get("package_name")
     }
-    config.DOC_ACTION_TREE_REPORT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    config.DOC_ACTION_TREE_REPORT_JSON.write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")
+
+    failures: list[str] = []
+    print("=" * 78)
+    print("빌드 산출물 검증")
+    print("=" * 78)
+    if not build_stats:
+        print("⚠️ build_stats.json 없음 — 정보성 통계 없이 검사합니다(build-llm을 다시 실행하면 생성됩니다)")
+    print(f"청크 {len(docs)}개 / source_type: " + ", ".join(f"{k} {v}" for k, v in sorted(by_type.items())))
+
+    # C1 — 등기된 패키지의 서브트리 본문 확보율
+    print("\n[C1] 등기 패키지 서브트리 본문 확보")
+    gaps = []
+    for pkg in registry["packages"]:
+        sr = pkg.get("subtree_root")
+        if not sr:
+            continue
+        root = by_cid.get(sr["content_id"])
+        if not root:
+            gaps.append((pkg["display_en"], 0, 0, "TOC에 루트 노드 없음"))
+            continue
+        from .build.registry import subtree_nodes
+
+        sub = [n for n in subtree_nodes(root, sr["path"]) if n["content_id"]]
+        have = sum(1 for n in sub if n["content_id"] in bodies_have)
+        if have < len(sub):
+            gaps.append((pkg["display_en"], have, len(sub), "본문 일부 미수집"))
+    if gaps:
+        for name, have, total, why in gaps:
+            print(f"   ❌ {name:42s} 본문 {have}/{total}  {why}")
+        failures.append(f"C1 서브트리 본문 결손 {len(gaps)}개")
+    else:
+        print("   ✅ 결손 없음")
+
+    # C2 — 액션 0건 패키지: 항목마다 근거를 붙인다(정상/위음성 구분이 목적)
+    print("\n[C2] 액션 0건 패키지 (근거 포함)")
+    print(f"   {'패키지':42s} {'TOC':>4} {'본문':>4} {'등기':>4} {'액션':>4}  판정")
+    zero_bad = []
+    for pkg in registry["packages"]:
+        name = pkg["display_en"]
+        if acts_by_pkg.get(name):
+            continue
+        sr = pkg.get("subtree_root")
+        if sr and by_cid.get(sr["content_id"]):
+            from .build.registry import subtree_nodes
+
+            sub = [n for n in subtree_nodes(by_cid[sr["content_id"]], sr["path"]) if n["content_id"]]
+            n_toc = len(sub)
+            n_body = sum(1 for n in sub if n["content_id"] in bodies_have)
+        else:
+            n_toc = n_body = 0
+        registered = "O" if sr else "X"
+        if n_body > 0:
+            # 문서가 있는데 액션이 0건 — build-llm의 package_overview 행으로 '설명된 0건'과
+            # '조용한 누락'을 가른다. 개요 행이 아예 없으면 코퍼스에서 통째로 빠진 것이고,
+            # extraction_failed면 추출이 완료되지 못한 실질 공백이라 둘 다 게이트에서 막는다.
+            # LLM이 subtree를 보고 액션 0건으로 판정한 경우(예: UI Agents처럼 가이드 문서만
+            # 있는 패키지)는 정상 — 개요 행이 그 판정을 기록한다.
+            ov = overview_by_pkg.get(name)
+            if ov is None:
+                verdict = "❌ 문서가 있는데 액션 0건 + 개요 행 없음 (조용한 누락)"
+                zero_bad.append(name)
+            elif ov.get("metadata", {}).get("extraction_failed"):
+                reason = ov["metadata"].get("failure_reason", "?")
+                verdict = f"❌ 추출 실패 (사유: {reason})"
+                zero_bad.append(f"{name}(추출실패:{reason})")
+            else:
+                verdict = "✓ LLM이 액션 0건으로 판정 (개요 행 존재)"
+        elif pkg["kind"] == "trigger":
+            verdict = "✓ 트리거(별도 경로)"
+        else:
+            verdict = "✓ 원본에 문서 없음"
+        print(f"   {name:42s} {n_toc:>4} {n_body:>4} {registered:>4} {0:>4}  {verdict}")
+    if zero_bad:
+        failures.append(f"C2 문서가 있는데 액션 0건 {len(zero_bad)}개: {', '.join(zero_bad)}")
+
+    # C3 — 단일 소스로만 등기된 항목 (다른 소스와 대조되지 않은 이름)
+    print("\n[C3] 단일 소스 등기 (교차검증 없음)")
+    singles = [p for p in registry["packages"] if len(p.get("sources") or []) == 1 and not p.get("subtree_root")]
+    for p in singles:
+        print(f"   ⚠️ {p['display_en']:42s} sources={p['sources']} kind={p['kind']}")
+    print("   " + ("✅ 없음" if not singles else f"{len(singles)}건 — 이름이 한 소스에만 존재한다"))
+
+    # C4 — 복합 액션명 잔존
+    print("\n[C4] 복합 액션명 잔존")
+    compound = [d for d in docs if d.get("metadata", {}).get("compound_action_title")
+                and d.get("chunk_index", 0) == 0]
+    seen_c = sorted({(d["package_name"], d["action_name"]) for d in compound})
+    for pkg, act in seen_c[:10]:
+        print(f"   ⚠️ {pkg} / {act}")
+    print(f"   겸용 제목 {len(seen_c)}건 (분해된 구성 액션은 별도 행으로 존재)")
+
+    # C5 — doc_page 규모
+    print("\n[C5] doc_page(원문) 적재 규모")
+    n_doc = by_type.get("doc_page", 0)
+    print(f"   doc_page {n_doc}청크")
+    if n_doc < args.min_doc_pages:
+        failures.append(f"C5 doc_page {n_doc}청크 < 하한 {args.min_doc_pages}")
+        print(f"   ❌ 하한 {args.min_doc_pages} 미달")
+    else:
+        print("   ✅ 하한 통과")
+
+    # C6 — 임베딩 입력 정합
+    print("\n[C6] 기본 정합")
+    ids = [d["id"] for d in docs]
+    dup = len(ids) - len(set(ids))
+    empty = sum(1 for d in docs if not (d.get("content") or "").strip())
+    print(f"   id 중복 {dup} / 빈 content {empty}")
+    if dup or empty:
+        failures.append(f"C6 id 중복 {dup}, 빈 content {empty}")
+
+    print("\n" + "=" * 78)
+    if failures:
+        print("검증 실패:")
+        for f in failures:
+            print(f"  ❌ {f}")
+        print("=" * 78)
+        sys.exit(1)
+    print("✅ 검증 통과 — 적재를 진행해도 됩니다")
+    print("=" * 78)
 
 
-def cmd_export_for_agent(args: argparse.Namespace) -> None:
-    """JAR 스키마가 없는 패키지들을, 확정적으로 풀리는 부분(패키지 판별 + 메뉴 계층)까지만
-    정리해서 향후 LLM 기반 파싱 Agent(팀원이 별도 개발)가 바로 쓸 수 있는 형태로 내보낸다.
+def cmd_build_llm(args: argparse.Namespace) -> None:
+    """등기부+덤프 → rag_documents.jsonl. action_schema를 패키지 단위 LLM 구조화 추출
+    (app/rag/build/merge_llm.py)로 생성하는 **정본 빌드 단계**다.
 
-    "이 리프가 진짜 액션인지 참고자료/사용예시일 뿐인지"는 규칙 기반으로 안 풀린다고
-    확인됐다(app/rag/_investigation_notes/HTML_STRUCTURE_INSIGHTS.md) — 그 판단은 여기서 안 하고, 각 리프의
-    `structured_html`(CSS/JS/이미지 데이터 제거된 압축 구조, docs_crawler.py가 크롤링
-    시점에 이미 계산해둠)을 그대로 실어서 Agent에게 넘긴다.
+    산출 source_type: package_overview / action_schema / trigger_schema / package_release /
+    doc_page(ko·en 각 1행). 트리거는 'Build automations > Triggers' 트리를 따로 순회해 수집한다.
+    이후 기존 validate·ingest를 그대로 사용한다.
     """
-    from .build.merge import load_docs
+    from .build.merge_llm import build_documents_llm
 
-    docs = load_docs(config.DOCS_JSONL)
-    en_docs = load_docs(config.docs_jsonl_for_locale("en-US"))
-    packages_covered: set[str] = set()
-    if config.PACKAGES_JSON.exists():
-        packages_covered = {
-            p["package_name"] for p in json.loads(config.PACKAGES_JSON.read_text(encoding="utf-8"))
-        }
+    registry_path = config.DATA_DIR / "package_registry.json"
+    if not registry_path.exists():
+        sys.exit("package_registry.json이 없습니다. 먼저 registry를 실행하세요.")
+    registry = json.loads(registry_path.read_text(encoding="utf-8"))
 
-    discovered = _discover_packages(docs, en_docs)
-    _write_tree_report(discovered)
+    # 덤프 오입력/부분 생성/스키마 변경은 흔한 운영 실수다 — 그대로 읽으면 FileNotFoundError·
+    # JSONDecodeError·KeyError traceback으로 죽어 원인을 알기 어렵다(validate와 같은 정책).
+    dump = Path(args.dump_dir)
+    toc_path = dump / "toc_en-US.json"
+    if not toc_path.exists():
+        sys.exit(f"{toc_path}이 없습니다 — crawl-khub를 먼저 실행하거나 --dump-dir을 확인하세요.")
+    try:
+        json.loads(toc_path.read_text(encoding="utf-8"))["toc"]
+    except (OSError, json.JSONDecodeError, KeyError, TypeError) as exc:
+        sys.exit(f"{toc_path} 읽기/파싱 실패({type(exc).__name__}): {exc} — 덤프가 온전한지 확인하세요.")
 
-    targets = list(args.packages) if args.packages else sorted(set(discovered) - packages_covered)
-
-    config.AGENT_HANDOFF_JSONL.parent.mkdir(parents=True, exist_ok=True)
-    written = 0
-    with open(config.AGENT_HANDOFF_JSONL, "w", encoding="utf-8") as f:
-        for pkg_name in targets:
-            if pkg_name in packages_covered:
-                print(f"  [skip] {pkg_name}: packages.json에 이미 JAR 스키마 있음")
-                continue
-            tree = _find_package_tree(pkg_name, discovered)
-            if tree is None:
-                print(f"  [skip] {pkg_name}: 트리를 못 찾음 (먼저 crawl 필요)")
-                continue
-            for leaf in tree.leaves:
-                record = {
-                    "package_name": pkg_name,
-                    "depth": leaf.depth,
-                    "path_titles": leaf.path_titles,
-                    "title": leaf.doc.get("title"),
-                    "url": leaf.doc.get("url"),
-                    "menu_id": leaf.doc.get("menu_id"),
-                    "structured_html": leaf.doc.get("structured_html"),
-                }
-                f.write(json.dumps(record, ensure_ascii=False) + "\n")
-                written += 1
-            print(f"  [{pkg_name}] 리프 {len(tree.leaves)}개 (카테고리 경유 {len(tree.category_docs)}개)")
-
-    print(f"저장 → {config.AGENT_HANDOFF_JSONL} ({written}개 리프)")
-
-
-def cmd_build_action_tree(args: argparse.Namespace) -> None:
-    """패키지 판별 + 메뉴 계층(루트/카테고리/리프)을 JAR 유무와 무관하게 전체 패키지에
-    대해 정리해 `package_action_tree.json`으로 남긴다. crawl 직후 한 번 실행해 두면
-    이후 export-for-agent/export-naive-leaf-actions/build가 다시 계산할 필요 없이
-    이 결과를 참고할 수 있다.
-    """
-    from .build.doc_action_tree import tree_to_dict
-    from .build.merge import load_docs
-
-    docs = load_docs(config.DOCS_JSONL)
-    en_docs = load_docs(config.docs_jsonl_for_locale("en-US"))
-    discovered = _discover_packages(docs, en_docs)
-    _write_tree_report(discovered)
-
-    tree_json = {pkg_name: tree_to_dict(tree) for pkg_name, tree in discovered.items()}
-    config.PACKAGE_ACTION_TREE_JSON.parent.mkdir(parents=True, exist_ok=True)
-    config.PACKAGE_ACTION_TREE_JSON.write_text(
-        json.dumps(tree_json, ensure_ascii=False, indent=2), encoding="utf-8"
+    rag_docs, stats = build_documents_llm(
+        args.dump_dir, registry, chunk_size=config.CHUNK_SIZE, chunk_overlap=config.CHUNK_OVERLAP,
+        model=args.model,
     )
-    print(f"패키지 {len(tree_json)}개 → {config.PACKAGE_ACTION_TREE_JSON}")
-
-
-def cmd_export_naive_leaf_actions(args: argparse.Namespace) -> None:
-    """리프=진짜 액션 여부를 필터링하지 않고, 모든 리프를 액션 후보로 그대로 나열한다
-    (파라미터 스키마 없음 — action_schema로 안 씀). Agent가 준비되기 전 빠른 훑어보기용.
-    """
-    from .build.merge import load_docs
-    from .build.naive_leaf_actions import leaves_as_naive_actions
-
-    docs = load_docs(config.DOCS_JSONL)
-    en_docs = load_docs(config.docs_jsonl_for_locale("en-US"))
-    packages_covered: set[str] = set()
-    if config.PACKAGES_JSON.exists():
-        packages_covered = {
-            p["package_name"] for p in json.loads(config.PACKAGES_JSON.read_text(encoding="utf-8"))
-        }
-
-    discovered = _discover_packages(docs, en_docs)
-    targets = list(args.packages) if args.packages else sorted(set(discovered) - packages_covered)
-
-    config.NAIVE_LEAF_ACTIONS_JSONL.parent.mkdir(parents=True, exist_ok=True)
-    written = 0
-    with open(config.NAIVE_LEAF_ACTIONS_JSONL, "w", encoding="utf-8") as f:
-        for pkg_name in targets:
-            if pkg_name in packages_covered:
-                print(f"  [skip] {pkg_name}: packages.json에 이미 JAR 스키마 있음")
-                continue
-            tree = _find_package_tree(pkg_name, discovered)
-            if tree is None:
-                print(f"  [skip] {pkg_name}: 트리를 못 찾음 (먼저 crawl 필요)")
-                continue
-            for record in leaves_as_naive_actions(pkg_name, tree):
-                f.write(json.dumps(record, ensure_ascii=False) + "\n")
-                written += 1
-            print(f"  [{pkg_name}] {len(tree.leaves)}개")
-
-    print(f"저장 → {config.NAIVE_LEAF_ACTIONS_JSONL} ({written}개)")
-
-
-def cmd_build(args: argparse.Namespace) -> None:
-    from .build.merge import build_rag_documents
-
-    packages, docs, bots = _load_source_inputs(args.source)
-
-    naive_leaf_actions = None
-    if args.include_naive_leaf_actions:
-        if not config.NAIVE_LEAF_ACTIONS_JSONL.exists():
-            sys.exit(
-                f"{config.NAIVE_LEAF_ACTIONS_JSONL}이 없습니다. "
-                "먼저 export-naive-leaf-actions를 실행하세요."
-            )
-        with open(config.NAIVE_LEAF_ACTIONS_JSONL, encoding="utf-8") as f:
-            naive_leaf_actions = [json.loads(line) for line in f]
-
-    rag_docs = build_rag_documents(
-        packages,
-        docs,
-        locale=args.locale,
-        bots=bots,
-        naive_leaf_actions=naive_leaf_actions,
-        chunk_size=config.CHUNK_SIZE,
-        chunk_overlap=config.CHUNK_OVERLAP,
-    )
-
     config.RAG_DOCUMENTS_JSONL.parent.mkdir(parents=True, exist_ok=True)
     with open(config.RAG_DOCUMENTS_JSONL, "w", encoding="utf-8") as f:
         for doc in rag_docs:
             f.write(json.dumps(doc, ensure_ascii=False) + "\n")
+    stats_path = config.DATA_DIR / "build_stats.json"
+    stats_path.write_text(json.dumps(stats, ensure_ascii=False, indent=1), encoding="utf-8")
 
-    by_type: dict[str, int] = {}
-    for doc in rag_docs:
-        by_type[doc["source_type"]] = by_type.get(doc["source_type"], 0) + 1
-    print(f"RAG 문서 {len(rag_docs)}개 → {config.RAG_DOCUMENTS_JSONL}")
-    for source_type, count in sorted(by_type.items()):
-        print(f"  {source_type}: {count}")
+    print(f"RAG 문서(청크) {len(rag_docs)}개 → {config.RAG_DOCUMENTS_JSONL}")
+    print(f"빌드 통계 → {stats_path}")
+    print(f"  사용 모델: {args.model or config.AGENT_PARSE_MODEL}")
+    for k, v in stats.items():
+        print(f"  {k}: {v}")
+
+
+def _mask_secrets(target: str) -> str:
+    """접속 문자열의 비밀번호를 가린다. 이 stdout은 /rag/ingest/status로 그대로 반환되므로
+    유출 경로다 — 비밀번호에 '@'가 들어 있어도(`u:pa@ss@host`) 남지 않도록, userinfo의
+    마지막 '@'까지 통째로 마스킹한다(`[^/]*`가 greedy라 host 직전 '@'에서 끊긴다)."""
+    masked = re.sub(r"(://[^/@]*?:)[^/]*@", r"\1***@", target)  # URL 포맷(user:pass@host)
+    return re.sub(r"password=\S+", "password=***", masked)  # key=value 폴백 포맷
+
+
+# 코퍼스 "세대 교체" 감지 임계값 — 근거는 실측 시나리오다: v1 코퍼스(8,355행/패키지 130) 위에
+# v2 산출물(1,453행/패키지 119)을 비-clean 적재하면 id/parent_id 산식이 통째로 바뀌어 겹치는
+# parent가 거의 없다. delete_orphans는 "이번 빌드에 등장한 parent_id"만 훑으므로 옛 행을 한 건도
+# 못 지우고, 그 행들은 유효한 임베딩을 단 채 검색에 계속 잡힌다(M3). 반대로 정상적인 부분 재적재
+# (--source docs/github)는 산식이 같아 빌드 parent의 대부분이 이미 DB에 있다 — 그래서 "겹침이
+# 절반도 안 되면" 세대 교체로 본다. 두 번째 임계는 "빌드가 기존 코퍼스의 절반도 못 덮는" 경우로,
+# 빌드에서 제외되어 조용히 잔존하는 문서(비-액션 12건 같은)를 잡기 위한 보조 신호다.
+_OVERLAP_WARN_RATIO = 0.5
+_STALE_WARN_RATIO = 0.5
+
+
+def _warn_if_corpus_superseded(conn, documents: list[dict], parent_ids: list[str]) -> None:
+    """비-clean 적재에서 기존 코퍼스가 이번 빌드로 대체되지 않는 상황을 감지해 크게 경고한다.
+
+    삭제 범위를 넓히지는 않는다 — 부분 재적재(--source docs/github)에서 남의 소스를 지워버리는
+    사고를 막기 위한 delete_orphans의 범위 한정은 의도된 설계다. 대신 그 한정 때문에 못 지우는
+    경우를 조용히 지나가지 않게 한다."""
+    from .store import db
+
+    if not parent_ids:
+        return
+    try:
+        stats = db.corpus_overlap_stats(conn, parent_ids)
+    except Exception as exc:  # 경고용 조회 실패가 적재 자체를 막지는 않게 한다
+        print(f"[경고] 기존 코퍼스 통계 조회 실패 (검사 건너뜀): {exc}")
+        return
+
+    total_rows, total_parents = stats["total_rows"], stats["total_parents"]
+    if not total_rows or not total_parents:
+        return  # 빈 코퍼스에 처음 적재 — 비교 대상이 없다
+    unseen = stats["unseen_parents"]
+    overlap_ratio = (total_parents - unseen) / len(parent_ids)
+    stale_ratio = unseen / total_parents
+
+    # 비율 임계는 "세대 교체" 같은 큰 사고를 잡는 신호일 뿐이다. 정작 조용히 남는 유령 행은
+    # unseen이 1개만 돼도 생긴다 — delete_orphans가 '이번 빌드의 parent_id'만 훑으므로
+    # 빌드에서 빠진 parent의 행은 **한 건도** 못 지운다(2026-07-20 감사 M3·비-액션 12건).
+    # 실측: 겹침 0.977 / unseen 12개(37행)여도 옛 임계(0.5)로는 아무 경고가 안 떴다.
+    # 그래서 unseen > 0이면 무조건 알리고, 비율이 임계를 넘으면 문구만 격상한다.
+    if unseen <= 0:
+        return
+    superseded = overlap_ratio < _OVERLAP_WARN_RATIO or stale_ratio >= _STALE_WARN_RATIO
+
+    bar = "=" * 78
+    print(bar)
+    if superseded:
+        print("[경고] 기존 코퍼스가 이번 빌드로 대체되지 않습니다 — `--clean`이 필요할 수 있습니다.")
+    else:
+        print(f"[경고] 이번 빌드에 없는 옛 parent {unseen}개가 DB에 남습니다 — 지워지지 않습니다.")
+    print(f"  DB 기존   : {total_rows}행 / parent {total_parents}개")
+    print(f"  이번 빌드 : {len(documents)}행 / parent {len(parent_ids)}개")
+    print(f"  빌드 parent 중 DB에 이미 있는 것 : {total_parents - unseen}개 ({overlap_ratio:.0%})")
+    print(f"  DB에만 있고 빌드에 없는 parent   : {unseen}개 ({stale_ratio:.0%})")
+    print("  → id/parent_id 산식이 바뀌었거나(v1→v2) 빌드에서 제외된 문서가 있으면, 옛 행은")
+    print("     지워지지 않고 유효한 임베딩을 단 채 검색에 계속 잡힙니다.")
+    print("     delete_orphans는 '이번 빌드에 등장한 parent_id'만 훑으므로 이들을 못 지웁니다.")
+    print("  → 전체 교체가 의도라면 `ingest --clean`으로 다시 실행하세요.")
+    print(bar)
 
 
 def cmd_ingest(args: argparse.Namespace) -> None:
     from .store import db
+
+    # ── 공유 DB 보호 게이트 (2026-07-18 사고 재발 방지) ──────────────────────────
+    # rag-server/.env가 RAG_DATABASE_URL(네온 등 원격)을 갖고 있으면 로컬 의도의 ingest가
+    # 조용히 팀 공유 DB로 가버린다(실제 발생: --clean이 팀 코퍼스를 truncate). 접속 대상을
+    # 항상 출력하고, 원격 DSN에 대한 --clean은 명시 환경변수 없이는 거부한다.
+    dsn = config.database_dsn()
+    is_remote = "127.0.0.1" not in dsn and "localhost" not in dsn and "host=db" not in dsn
+    target = _mask_secrets(dsn)
+    print(f"[ingest] 접속 대상: {target}  ({'원격/공유' if is_remote else '로컬'})")
+    if args.clean and is_remote and os.getenv("RAG_ALLOW_REMOTE_CLEAN") != "1":
+        sys.exit(
+            "[중단] 원격/공유 DB에 --clean을 실행하려 합니다. 의도한 것이라면 "
+            "RAG_ALLOW_REMOTE_CLEAN=1 환경변수를 설정하고 다시 실행하세요."
+        )
+
+    # OpenSearch도 같은 게이트를 건다 — --clean의 delete_index()는 Postgres 가드와 무관하게
+    # 무조건 실행돼서, DSN만 로컬로 바꿔놓고 돌리면 공유 색인이 통째로 날아간다(M11).
+    if not args.skip_opensearch:
+        os_host = config.OPENSEARCH_HOST
+        os_is_remote = not any(h in os_host for h in ("127.0.0.1", "localhost", "://opensearch"))
+        print(f"[ingest] OpenSearch 대상: {_mask_secrets(os_host)}  ({'원격/공유' if os_is_remote else '로컬'})")
+        if args.clean and os_is_remote and os.getenv("RAG_ALLOW_REMOTE_CLEAN") != "1":
+            sys.exit(
+                "[중단] 원격/공유 OpenSearch에 --clean(색인 삭제)을 실행하려 합니다. 의도한 것이라면 "
+                "RAG_ALLOW_REMOTE_CLEAN=1 환경변수를 설정하고 다시 실행하세요."
+            )
 
     if not config.RAG_DOCUMENTS_JSONL.exists():
         sys.exit("rag_documents.jsonl이 없습니다. 먼저 build를 실행하세요.")
@@ -414,53 +412,102 @@ def cmd_ingest(args: argparse.Namespace) -> None:
         json.loads(line) for line in open(config.RAG_DOCUMENTS_JSONL, encoding="utf-8")
     ]
 
-    embeddings = None
-    if not args.skip_embedding:
-        from .retrieval.embed import embed_texts
-
-        print(f"임베딩 생성 중 ({config.EMBEDDING_PROVIDER}/{config.EMBEDDING_MODEL}, {len(documents)}개)...")
-        embeddings = embed_texts(
-            [d["content"] for d in documents],
-            on_progress=lambda done, total: print(f"  {done}/{total}"),
-        )
+    # 빈 산출물 + --clean 가드: --clean은 "PG TRUNCATE + OpenSearch 색인 삭제"인데 넣을 문서가
+    # 0개면 두 저장소를 비우고 아무것도 채우지 않는 셈이다. 여기서 한쪽만 조용히 건너뛰면 더
+    # 나쁘다 — PG는 8천 행이 남고 색인만 사라져 BM25가 전멸한 채 두 저장소가 발산한다.
+    # 0건은 정상 상황이 아니라 build 실패일 가능성이 훨씬 높으므로, 어느 쪽도 건드리지 않고
+    # 여기서 중단한다(연결 전에 판단하므로 트랜잭션도 열리지 않는다).
+    if not documents:
+        if args.clean:
+            sys.exit(
+                "[중단] rag_documents.jsonl이 비어 있습니다(0건). --clean은 기존 코퍼스(pgvector + "
+                "OpenSearch)를 전부 지우고 0건을 적재하게 되므로 실행하지 않았습니다. "
+                "build가 정상적으로 문서를 생성했는지 먼저 확인하세요."
+            )
+        print("[경고] rag_documents.jsonl이 비어 있습니다(0건) — 적재/색인할 문서가 없습니다. build 결과를 확인하세요.")
 
     conn = db.connect()
+    orphan_ids: list[str] = []
     try:
         db.ensure_schema(conn)
         if args.clean:
+            to_embed = documents
+        else:
+            # 재크롤링/재적재해도 upsert가 id로 덮어써서 row 중복은 안 생기지만, 내용이
+            # 하나도 안 바뀐 문서까지 매번 재임베딩하는 건 순수 비용 낭비였다 — content_hash가
+            # 저장된 것과 같은 문서는 임베딩만 건너뛴다. title/url/metadata는 content가 같아도
+            # 바뀔 수 있으므로 DB upsert와 OpenSearch 색인은 전체 문서 기준으로 수행한다.
+            existing_hashes = db.get_content_hashes(conn, [d["id"] for d in documents])
+            conn.commit()
+            to_embed = [d for d in documents if existing_hashes.get(d["id"]) != db.content_hash(d["content"])]
+            skipped = len(documents) - len(to_embed)
+            if skipped:
+                print(f"내용이 안 바뀐 문서 {skipped}개는 재임베딩만 건너뜁니다 (전체 {len(documents)}개 중).")
+    finally:
+        conn.close()
+
+    embeddings = None
+    if to_embed and not args.skip_embedding:
+        from .retrieval.embed import embed_texts
+
+        print(f"임베딩 생성 중 ({config.EMBEDDING_PROVIDER}/{config.EMBEDDING_MODEL}, {len(to_embed)}개)...")
+        new_embeddings = embed_texts(
+            [d["content"] for d in to_embed],
+            on_progress=lambda done, total: print(f"  {done}/{total}"),
+        )
+        embeddings_by_id = {doc["id"]: emb for doc, emb in zip(to_embed, new_embeddings)}
+        embeddings = [embeddings_by_id.get(doc["id"]) for doc in documents]
+
+    # 임베딩 생성(수 분 소요 가능) 동안 커넥션을 열어두면 Neon pooler가 유휴 SSL 연결을
+    # 끊어(SSLError: connection has been closed unexpectedly) upsert 시점에 죽는다 —
+    # 임베딩이 끝난 뒤 새 커넥션으로 붙는다(RPA-213).
+    conn = db.connect()
+    try:
+        # ── 파괴적 작업: 임베딩이 끝난 뒤에 한다 ──────────────────────────────────
+        # --clean은 clear_all(TRUNCATE+커밋)로 초기화한다. 비-clean은 이번 빌드에 없는
+        # 고아 row만 지운다 — 문서가 사라지거나 청크 수가 줄면 옛 청크가 유효한 임베딩을
+        # 단 채 검색에 계속 잡히기 때문(M1/M3).
+        if args.clean:
             print("--clean: 기존 rag_documents 전체 삭제")
             db.clear_all(conn)
-        count = db.upsert_documents(conn, documents, embeddings)
+        elif documents:
+            parent_ids = sorted({p for p in (d.get("parent_id", d["id"]) for d in documents) if p})
+            _warn_if_corpus_superseded(conn, documents, parent_ids)
+            orphan_ids = db.delete_orphans(conn, [d["id"] for d in documents], parent_ids)
+            if orphan_ids:
+                print(f"이번 빌드에 없는 고아 row {len(orphan_ids)}개 삭제")
+        count = db.upsert_documents(conn, documents, embeddings) if documents else 0
         print(f"pgvector 적재 완료: {count}개")
     finally:
         conn.close()
 
-    if not args.skip_opensearch:
-        from .store import opensearch_client
+    if args.skip_opensearch:
+        # 고아는 pgvector에서 이미 커밋돼 사라졌다 — 여기서 id를 그냥 버리면 어떤 문서가
+        # 색인에만 남았는지 영영 알 수 없다. 지울 수 없으니 최소한 남긴다.
+        if orphan_ids:
+            print(
+                f"[경고] --skip-opensearch: pgvector에서 지운 고아 {len(orphan_ids)}개가 OpenSearch "
+                "색인에 그대로 남습니다 (BM25에만 옛 문서가 잡힘). --skip-opensearch 없이 다시 "
+                f"적재하거나 아래 id를 수동 삭제하세요: {orphan_ids[:20]}"
+            )
+        return
 
-        os_client = opensearch_client.connect()
-        if args.clean:
-            print("--clean: 기존 OpenSearch 색인 삭제")
-            opensearch_client.delete_index(os_client)
-        opensearch_client.ensure_index(os_client)
-        os_count = opensearch_client.bulk_index(os_client, documents)
-        print(f"OpenSearch 색인 완료: {os_count}개")
+    from .store import opensearch_client
 
-
-def cmd_eda(args: argparse.Namespace) -> None:
-    from .build.eda import compute_length_stats, print_report
-    from .build.merge import build_rag_documents
-
-    packages, docs, bots = _load_source_inputs(args.source)
-    # chunk_size=None: 청킹 전 원본 길이를 분석해야 청크 크기를 순환 오류 없이 정할 수 있다
-    rag_docs = build_rag_documents(packages, docs, locale=args.locale, bots=bots, chunk_size=None)
-
-    stats = compute_length_stats(rag_docs)
-    print_report(stats)
-
-    config.EDA_REPORT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    config.EDA_REPORT_JSON.write_text(json.dumps(stats, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"\n리포트 저장: {config.EDA_REPORT_JSON}")
+    os_client = opensearch_client.connect()
+    if args.clean:
+        print("--clean: 기존 OpenSearch 색인 삭제")
+        opensearch_client.delete_index(os_client)
+    opensearch_client.ensure_index(os_client)
+    # pgvector에서 지운 고아를 색인에서도 지운다 — 안 지우면 BM25에만 옛 문서가 살아남는다.
+    # 색인(bulk_index)보다 먼저 지운다: bulk_index가 끝내 실패하면 예외로 빠져나가는데,
+    # 뒤에 두면 그때 삭제가 아예 실행되지 않아 PG에 없는 행이 색인에 영구히 남는다.
+    # 고아 id는 정의상 이번 documents의 id와 겹치지 않으므로 방금 넣을 문서를 지울 위험은 없다.
+    if orphan_ids:
+        deleted = opensearch_client.delete_by_ids(os_client, orphan_ids)
+        print(f"OpenSearch 고아 삭제: {deleted}개")
+    os_count = opensearch_client.bulk_index(os_client, documents) if documents else 0
+    print(f"OpenSearch 색인 완료: {os_count}개")
 
 
 def main() -> None:
@@ -476,71 +523,40 @@ def main() -> None:
     parser = argparse.ArgumentParser(prog="python -m app.rag.pipeline")
     sub = parser.add_subparsers(dest="command", required=True)
 
-    p_crawl = sub.add_parser("crawl", help="Fluid Topics API로 문서 크롤링")
-    p_crawl.add_argument("--locale", default="ko-KR")
-    p_crawl.add_argument("--url-filter", default="cloud-commands-panel", help="prettyUrl 부분 일치 필터")
-    p_crawl.add_argument("--contains", default=None, help="제목/breadcrumb 부분 일치 필터")
-    p_crawl.set_defaults(func=cmd_crawl)
+    p_crawlk = sub.add_parser("crawl-khub",
+                              help="[v2] khub 원문 덤프 생성 (toc_*.json + bodies_*.jsonl[html], 주+보조맵)")
+    p_crawlk.add_argument("--dump-dir", required=True, help="덤프 출력 디렉터리")
+    p_crawlk.add_argument("--locales", default="ko-KR,en-US", help="쉼표 구분 로케일 (기본 ko-KR,en-US)")
+    p_crawlk.add_argument("--delay", type=float, default=0.12, help="요청 간 지연(초)")
+    p_crawlk.add_argument("--limit", type=int, default=0, help="맵마다 앞 N개만 (0=전체, 스모크용)")
+    p_crawlk.set_defaults(func=cmd_crawl_khub)
 
-    p_jars = sub.add_parser("parse-jars", help="패키지 JAR/BLM export zip에서 액션 스키마 추출")
-    p_jars.add_argument("paths", nargs="+", help=".jar, .zip, 또는 jar 디렉터리")
-    p_jars.add_argument("--jar-locale", default="ko_KR", help="라벨 로케일 (기본 ko_KR, 없으면 en_US)")
-    p_jars.set_defaults(func=cmd_parse_jars)
-
-    p_gh = sub.add_parser("harvest-github", help="AA 공개 GitHub에서 실제 봇+패키지 JAR 수집 (계정 불필요)")
-    p_gh.add_argument("--max-repos", type=int, default=None, help="테스트용 저장소 수 제한")
-    p_gh.add_argument("--jar-locale", default="ko_KR")
-    p_gh.set_defaults(func=cmd_harvest_github)
-
-    p_bots = sub.add_parser("bots", help="Control Room에서 봇 목록+JSON 수집 (CR_URL/CR_USERNAME/CR_API_KEY 필요)")
-    p_bots.add_argument("--workspace", default="public", choices=["public", "private"])
-    p_bots.set_defaults(func=cmd_bots)
-
-    p_export = sub.add_parser("export-packages", help="BLM export(패키지 포함) 후 JAR 스키마 자동 추출")
-    p_export.add_argument("--file-ids", nargs="+", required=True, help="export할 봇 file id")
-    p_export.add_argument("--jar-locale", default="ko_KR")
-    p_export.set_defaults(func=cmd_export_packages)
-
-    p_export_agent = sub.add_parser(
-        "export-for-agent",
-        help="JAR 스키마 없는 패키지의 리프 문서(구조화 HTML 포함)를 향후 파싱 Agent용으로 내보내기",
+    p_registry = sub.add_parser(
+        "registry",
+        help="[v2] khub 덤프(ToC+본문)에서 패키지 등기부(package_registry.json) 생성 — 3소스 합집합",
     )
-    p_export_agent.add_argument(
-        "--packages", nargs="+", default=None,
-        help="대상 패키지명 (기본: 메뉴로 발견된 JAR 미보유 패키지 전체)",
-    )
-    p_export_agent.set_defaults(func=cmd_export_for_agent)
+    p_registry.add_argument("--dump-dir", required=True, help="khub-dump 디렉터리 (toc_*.json, bodies_*.jsonl)")
+    p_registry.set_defaults(func=cmd_registry)
 
-    sub.add_parser(
-        "build-action-tree",
-        help="패키지 판별+메뉴 계층을 JAR 유무와 무관하게 전체 정리해 package_action_tree.json으로 저장",
-    ).set_defaults(func=cmd_build_action_tree)
-
-    p_naive = sub.add_parser(
-        "export-naive-leaf-actions",
-        help="리프=진짜 액션 여부 필터링 없이 전부 액션 후보로 나열 (파라미터 없음, 빠른 훑어보기용)",
+    p_buildllm = sub.add_parser(
+        "build-llm",
+        help="[v2] 등기부+덤프 → rag_documents.jsonl. action_schema를 패키지 단위 LLM 구조화 "
+             "추출로 생성한다(정본 빌드). doc_page는 ko·en 양 언어, 트리거는 별도 트리 순회",
     )
-    p_naive.add_argument("--packages", nargs="+", default=None, help="대상 패키지명 (기본: JAR 미보유 패키지 전체)")
-    p_naive.set_defaults(func=cmd_export_naive_leaf_actions)
+    p_buildllm.add_argument("--dump-dir", required=True, help="khub-dump 디렉터리")
+    p_buildllm.add_argument("--model", default=None, help="추출 챗 모델 (기본: AGENT_PARSE_MODEL)")
+    p_buildllm.set_defaults(func=cmd_build_llm)
 
-    p_build = sub.add_parser("build", help="문서+스키마+봇을 RAG 문서로 병합 (청킹 포함)")
-    p_build.add_argument("--locale", default="ko-KR")
-    p_build.add_argument(
-        "--source",
-        default="all",
-        choices=["all", "docs", "github"],
-        help="all(기본)/docs(공식문서만)/github(패키지+봇만) — docs와 github은 독립적으로 build+ingest 가능 (같은 테이블에 upsert됨)",
+    p_validate = sub.add_parser(
+        "validate",
+        help="[v2] 빌드 산출물 품질 게이트 — 위반 시 종료 코드 1로 적재를 막는다",
     )
-    p_build.add_argument(
-        "--include-naive-leaf-actions", action="store_true",
-        help="export-naive-leaf-actions 산출물(리프=액션 필터링 없는 후보)을 action_candidate로 같이 포함",
+    p_validate.add_argument("--dump-dir", required=True, help="khub-dump 디렉터리")
+    p_validate.add_argument(
+        "--min-doc-pages", type=int, default=1000,
+        help="doc_page 청크 하한 (기본 1000) — 원문 방출이 조용히 죽는 것을 막는다",
     )
-    p_build.set_defaults(func=cmd_build)
-
-    p_eda = sub.add_parser("eda", help="청킹 전 원본 문서의 source_type별 길이 분포 분석 (청크 크기 결정용)")
-    p_eda.add_argument("--locale", default="ko-KR")
-    p_eda.add_argument("--source", default="all", choices=["all", "docs", "github"])
-    p_eda.set_defaults(func=cmd_eda)
+    p_validate.set_defaults(func=cmd_validate)
 
     p_ingest = sub.add_parser("ingest", help="임베딩 생성 후 pgvector + OpenSearch 적재")
     p_ingest.add_argument("--skip-embedding", action="store_true")

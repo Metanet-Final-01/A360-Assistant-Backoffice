@@ -1,0 +1,2616 @@
+[
+  {
+    "id": "bot-01",
+    "source_bot": "RSSFeedReaderBot",
+    "difficulty": "medium",
+    "input": {
+      "task": "RSS 피드 URL을 호출해 XML 응답을 파싱하고, 각 기사 항목(제목·날짜)을 추출해 로그 파일에 기록한다."
+    },
+    "expected": {
+      "packages": [
+        "Datetime",
+        "Dictionary",
+        "LogToFile",
+        "Loop",
+        "Rest",
+        "XML"
+      ],
+      "packages_in_catalog": [
+        "Datetime",
+        "Dictionary",
+        "LogToFile",
+        "Loop",
+        "Rest",
+        "XML"
+      ],
+      "actions": [
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Rest",
+          "action": "restGet",
+          "in_catalog": true
+        },
+        {
+          "package": "Dictionary",
+          "action": "get",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "startSession",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "executeXPath",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "XML",
+          "action": "getSingleNode",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-02",
+    "source_bot": "HugeExcel_ExcelAdvanced",
+    "difficulty": "medium",
+    "input": {
+      "task": "대용량 엑셀 파일을 Excel advanced로 열어 행을 반복하며 조건에 따라 값을 처리한다."
+    },
+    "expected": {
+      "packages": [
+        "Datetime",
+        "Excel_MS",
+        "If",
+        "JavaScript",
+        "List",
+        "Loop",
+        "MessageBox"
+      ],
+      "packages_in_catalog": [
+        "Datetime",
+        "Excel_MS",
+        "If",
+        "List",
+        "Loop",
+        "MessageBox"
+      ],
+      "actions": [
+        {
+          "package": "Datetime",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "OpenSpreadsheet",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.openScript",
+          "in_catalog": false
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.executeFunction",
+          "in_catalog": false
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 0.85,
+    "scoreable": true
+  },
+  {
+    "id": "bot-03",
+    "source_bot": "HugeExcel_ExcelBasic",
+    "difficulty": "medium",
+    "input": {
+      "task": "대용량 .xlsx 파일을 Excel basic으로 읽어 행을 반복 처리한다."
+    },
+    "expected": {
+      "packages": [
+        "Datetime",
+        "Excel",
+        "If",
+        "JavaScript",
+        "List",
+        "Loop",
+        "MessageBox"
+      ],
+      "packages_in_catalog": [
+        "Datetime",
+        "Excel",
+        "If",
+        "List",
+        "Loop",
+        "MessageBox"
+      ],
+      "actions": [
+        {
+          "package": "Datetime",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel",
+          "action": "OpenSpreadsheet",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.openScript",
+          "in_catalog": false
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.executeFunction",
+          "in_catalog": false
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 0.85,
+    "scoreable": true
+  },
+  {
+    "id": "bot-04",
+    "source_bot": "HugeExcel_Database",
+    "difficulty": "medium",
+    "input": {
+      "task": "대용량 데이터를 데이터베이스에 연결해 SQL로 조회·처리한다."
+    },
+    "expected": {
+      "packages": [
+        "Database",
+        "Datetime",
+        "JavaScript",
+        "List",
+        "Loop",
+        "MessageBox"
+      ],
+      "packages_in_catalog": [
+        "Datetime",
+        "List",
+        "Loop",
+        "MessageBox"
+      ],
+      "actions": [
+        {
+          "package": "Datetime",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "Database",
+          "action": "connect",
+          "in_catalog": false
+        },
+        {
+          "package": "Database",
+          "action": "exportToDataTable",
+          "in_catalog": false
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.openScript",
+          "in_catalog": false
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.executeFunction",
+          "in_catalog": false
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 0.69,
+    "scoreable": true
+  },
+  {
+    "id": "bot-05",
+    "source_bot": "Profit Calculation Bot Episode 1",
+    "difficulty": "easy",
+    "input": {
+      "task": "엑셀 시트의 매출·비용 데이터를 행 단위로 반복하며 수익을 계산해 기록한다."
+    },
+    "expected": {
+      "packages": [
+        "Excel_MS",
+        "Loop",
+        "Number"
+      ],
+      "packages_in_catalog": [
+        "Excel_MS",
+        "Loop",
+        "Number"
+      ],
+      "actions": [
+        {
+          "package": "Excel_MS",
+          "action": "OpenSpreadsheet",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "InsertDeleteRowColumn",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "SetCell",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "InsertDeleteRowColumn",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "SetCell",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "getNumberOfRows",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "SetCellFormula",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "SetCellFormula",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "increment",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "HideRowsColumnsInSelection",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "ProtectWorkbook",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "CloseSpreadsheet",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-06",
+    "source_bot": "Imagine - Employee Anniversaries Table Version",
+    "difficulty": "medium",
+    "input": {
+      "task": "엑셀에서 직원 근속 데이터를 읽어 기념일 대상자를 찾아 축하 이메일을 발송한다."
+    },
+    "expected": {
+      "packages": [
+        "Browser",
+        "DataTable",
+        "Datetime",
+        "Email",
+        "Excel_MS",
+        "File",
+        "If",
+        "Loop",
+        "Recorder",
+        "String"
+      ],
+      "packages_in_catalog": [
+        "Browser",
+        "Datetime",
+        "Email",
+        "Excel_MS",
+        "File",
+        "If",
+        "Loop",
+        "Recorder",
+        "String"
+      ],
+      "actions": [
+        {
+          "package": "Browser",
+          "action": "openbrowser",
+          "in_catalog": true
+        },
+        {
+          "package": "Recorder",
+          "action": "capture",
+          "in_catalog": true
+        },
+        {
+          "package": "Browser",
+          "action": "close",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "deleteFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "CreateSpreadsheet",
+          "in_catalog": true
+        },
+        {
+          "package": "DataTable",
+          "action": "deleteRow",
+          "in_catalog": false
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "beforeAfter",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "DataTable",
+          "action": "insertRow",
+          "in_catalog": false
+        },
+        {
+          "package": "Excel_MS",
+          "action": "writeDataTableToWorksheet",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "CloseSpreadsheet",
+          "in_catalog": true
+        },
+        {
+          "package": "Email",
+          "action": "sendMail",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 0.87,
+    "scoreable": true
+  },
+  {
+    "id": "bot-07",
+    "source_bot": "Sales Data Analysis",
+    "difficulty": "medium",
+    "input": {
+      "task": "엑셀 매출 데이터를 읽어 집계·분석하고 결과를 정리한다."
+    },
+    "expected": {
+      "packages": [
+        "Analyze",
+        "Excel",
+        "File",
+        "Folder",
+        "If",
+        "Loop",
+        "Number",
+        "String"
+      ],
+      "packages_in_catalog": [
+        "Analyze",
+        "Excel",
+        "File",
+        "Folder",
+        "If",
+        "Loop",
+        "Number",
+        "String"
+      ],
+      "actions": [
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "downloadTo",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "downloadTo",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel",
+          "action": "OpenSpreadsheet",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "Analyze",
+          "action": "OpenTransaction",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "Analyze",
+          "action": "CloseTransaction",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel",
+          "action": "CloseSpreadsheet",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-08",
+    "source_bot": "LetterGenerator",
+    "difficulty": "medium",
+    "input": {
+      "task": "엑셀의 수신자 목록을 반복하며 MS Word 템플릿으로 편지를 대량 생성해 저장한다."
+    },
+    "expected": {
+      "packages": [
+        "Excel_MS",
+        "File",
+        "Folder",
+        "If",
+        "Loop",
+        "MSWordPackage",
+        "String"
+      ],
+      "packages_in_catalog": [
+        "Excel_MS",
+        "File",
+        "Folder",
+        "If",
+        "Loop",
+        "MSWordPackage",
+        "String"
+      ],
+      "actions": [
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "downloadTo",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "downloadTo",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "OpenSpreadsheet",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "copyFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "Excel_MS",
+          "action": "CloseSpreadsheet",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-09",
+    "source_bot": "GoogleVision_IQBot_Qualifier",
+    "difficulty": "hard",
+    "input": {
+      "task": "PDF 문서를 OCR·IQ Bot으로 인식해 문서 유형을 판별하고 분류한다."
+    },
+    "expected": {
+      "packages": [
+        "Application",
+        "Delay",
+        "ErrorHandler",
+        "File",
+        "Folder",
+        "IQ Bot",
+        "If",
+        "Loop",
+        "OCR",
+        "PDF",
+        "String"
+      ],
+      "packages_in_catalog": [
+        "Application",
+        "Delay",
+        "ErrorHandler",
+        "File",
+        "Folder",
+        "If",
+        "Loop",
+        "PDF",
+        "String"
+      ],
+      "actions": [
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "deleteFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "copyFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "PDF",
+          "action": "extractImage",
+          "in_catalog": true
+        },
+        {
+          "package": "Delay",
+          "action": "delay",
+          "in_catalog": true
+        },
+        {
+          "package": "Application",
+          "action": "runApp",
+          "in_catalog": true
+        },
+        {
+          "package": "Application",
+          "action": "runApp",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "OCR",
+          "action": "captureImagebyPath",
+          "in_catalog": false
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "replace",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "replace",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "renameFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "Delay",
+          "action": "delay",
+          "in_catalog": true
+        },
+        {
+          "package": "Application",
+          "action": "runApp",
+          "in_catalog": true
+        },
+        {
+          "package": "Application",
+          "action": "runApp",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "renameFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "IQ Bot",
+          "action": "IQBotUpload",
+          "in_catalog": false
+        }
+      ]
+    },
+    "catalog_coverage": 0.92,
+    "scoreable": true
+  },
+  {
+    "id": "bot-10",
+    "source_bot": "AA_Latest_Log_Finder",
+    "difficulty": "easy",
+    "input": {
+      "task": "DLL을 호출해 최신 로그 파일을 찾아 메시지로 표시한다."
+    },
+    "expected": {
+      "packages": [
+        "DLL",
+        "MessageBox"
+      ],
+      "packages_in_catalog": [
+        "DLL",
+        "MessageBox"
+      ],
+      "actions": [
+        {
+          "package": "DLL",
+          "action": "Open",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "Close",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-11",
+    "source_bot": "SOAPWebservice_Access_Using_DLL",
+    "difficulty": "easy",
+    "input": {
+      "task": "DLL을 통해 SOAP 웹 서비스를 호출하고 응답을 표시한다."
+    },
+    "expected": {
+      "packages": [
+        "DLL",
+        "MessageBox"
+      ],
+      "packages_in_catalog": [
+        "DLL",
+        "MessageBox"
+      ],
+      "actions": [
+        {
+          "package": "DLL",
+          "action": "Open",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "Close",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-12",
+    "source_bot": "FileandFolderQuickTip",
+    "difficulty": "easy",
+    "input": {
+      "task": "폴더의 파일 속성을 조회하고 브라우저로 결과를 확인한다."
+    },
+    "expected": {
+      "packages": [
+        "Browser",
+        "Folder"
+      ],
+      "packages_in_catalog": [
+        "Browser",
+        "Folder"
+      ],
+      "actions": [
+        {
+          "package": "Browser",
+          "action": "downloadFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "unzipFiles",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-13",
+    "source_bot": "OutlookOperationsSampleBot",
+    "difficulty": "medium",
+    "input": {
+      "task": "Outlook에서 메일 목록을 반복 조회하는 등 아웃룩 작업을 자동화한다."
+    },
+    "expected": {
+      "packages": [
+        "DLL",
+        "ErrorHandler",
+        "Loop",
+        "MessageBox"
+      ],
+      "packages_in_catalog": [
+        "DLL",
+        "ErrorHandler",
+        "Loop",
+        "MessageBox"
+      ],
+      "actions": [
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "Open",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "Loop",
+          "action": "loop.commands.start",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "Close",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "RunCSharpDLL_V1",
+          "in_catalog": true
+        },
+        {
+          "package": "DLL",
+          "action": "Close",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-14",
+    "source_bot": "GeneratePreApprovalLetter",
+    "difficulty": "hard",
+    "input": {
+      "task": "웹에서 대출 신청 정보를 조회하고 MS Word로 사전승인 편지를 생성하는 엔드투엔드 대출 처리."
+    },
+    "expected": {
+      "packages": [
+        "Browser",
+        "Comment",
+        "Datetime",
+        "ErrorHandler",
+        "File",
+        "Folder",
+        "If",
+        "JavaScript",
+        "List",
+        "LogToFile",
+        "MSWordPackage",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "packages_in_catalog": [
+        "Browser",
+        "Comment",
+        "Datetime",
+        "ErrorHandler",
+        "File",
+        "Folder",
+        "If",
+        "List",
+        "LogToFile",
+        "MSWordPackage",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "actions": [
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "TaskBot",
+          "action": "stopTask",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "subtract",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "deleteFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "deleteFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Browser",
+          "action": "downloadFile",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Browser",
+          "action": "downloadFile",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "copyFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.openScript",
+          "in_catalog": false
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "List",
+          "action": "addItem",
+          "in_catalog": true
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.executeFunction",
+          "in_catalog": false
+        },
+        {
+          "package": "JavaScript",
+          "action": "javascript.commands.closeScript",
+          "in_catalog": false
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "toNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "copyFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "MSWordPackage",
+          "action": "ReplaceText",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "createFile",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Screen",
+          "action": "captureDesktop",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 0.96,
+    "scoreable": true
+  },
+  {
+    "id": "bot-15",
+    "source_bot": "EvaluateLoan",
+    "difficulty": "hard",
+    "input": {
+      "task": "웹에서 신청 정보를 조회하고 ML 모델로 대출 승인 여부를 평가하는 엔드투엔드 프로세스."
+    },
+    "expected": {
+      "packages": [
+        "Analyze",
+        "Browser",
+        "Comment",
+        "Datetime",
+        "ErrorHandler",
+        "File",
+        "Folder",
+        "If",
+        "Imagine Loan Approval",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "packages_in_catalog": [
+        "Analyze",
+        "Browser",
+        "Comment",
+        "Datetime",
+        "ErrorHandler",
+        "File",
+        "Folder",
+        "If",
+        "Imagine Loan Approval",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "actions": [
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "TaskBot",
+          "action": "stopTask",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "subtract",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "deleteFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "deleteFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "Analyze",
+          "action": "OpenTransaction",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Browser",
+          "action": "downloadFile",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "Imagine Loan Approval",
+          "action": "loanapproval",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Analyze",
+          "action": "CloseTransaction",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "createFile",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Screen",
+          "action": "captureDesktop",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 1.0,
+    "scoreable": true
+  },
+  {
+    "id": "bot-16",
+    "source_bot": "RebuildModel",
+    "difficulty": "hard",
+    "input": {
+      "task": "Python으로 ML 모델을 재학습하고 웹에 반영하는 엔드투엔드 자동화."
+    },
+    "expected": {
+      "packages": [
+        "Browser",
+        "Comment",
+        "Datetime",
+        "Delay",
+        "Dictionary",
+        "ErrorHandler",
+        "File",
+        "Folder",
+        "If",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Python",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "packages_in_catalog": [
+        "Browser",
+        "Comment",
+        "Datetime",
+        "Delay",
+        "Dictionary",
+        "ErrorHandler",
+        "File",
+        "Folder",
+        "If",
+        "LogToFile",
+        "MessageBox",
+        "Number",
+        "Screen",
+        "String",
+        "TaskBot"
+      ],
+      "actions": [
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "MessageBox",
+          "action": "messageBox",
+          "in_catalog": true
+        },
+        {
+          "package": "TaskBot",
+          "action": "stopTask",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Folder",
+          "action": "createFolder",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "subtract",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "deleteFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "deleteFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "ErrorHandler",
+          "action": "try",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "assignToNumber",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Browser",
+          "action": "downloadFile",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "String",
+          "action": "assign",
+          "in_catalog": true
+        },
+        {
+          "package": "Dictionary",
+          "action": "put",
+          "in_catalog": true
+        },
+        {
+          "package": "Dictionary",
+          "action": "put",
+          "in_catalog": true
+        },
+        {
+          "package": "Python",
+          "action": "python.commands.openScript",
+          "in_catalog": false
+        },
+        {
+          "package": "Python",
+          "action": "python.commands.executeFunction",
+          "in_catalog": false
+        },
+        {
+          "package": "Python",
+          "action": "python.commands.closeScript",
+          "in_catalog": false
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "deleteFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "Delay",
+          "action": "delay",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "renameFiles",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "File",
+          "action": "createFile",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Datetime",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Number",
+          "action": "toString",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "LogToFile",
+          "action": "logToFile",
+          "in_catalog": true
+        },
+        {
+          "package": "Comment",
+          "action": "Comment",
+          "in_catalog": true
+        },
+        {
+          "package": "Screen",
+          "action": "captureDesktop",
+          "in_catalog": true
+        }
+      ]
+    },
+    "catalog_coverage": 0.96,
+    "scoreable": true
+  },
+  {
+    "id": "bot-17",
+    "source_bot": "PreApprovalProcess",
+    "difficulty": "medium",
+    "input": {
+      "task": "워크플로 기반으로 대출 사전승인 단계를 조건 분기하며 진행한다."
+    },
+    "expected": {
+      "packages": [
+        "HBCWorkflow",
+        "If"
+      ],
+      "packages_in_catalog": [
+        "If"
+      ],
+      "actions": [
+        {
+          "package": "HBCWorkflow",
+          "action": "InitialStep",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "schedule",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "BotStep",
+          "in_catalog": false
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "schedule",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "schedule",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "BotStep",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "exit",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "FormStep",
+          "in_catalog": false
+        },
+        {
+          "package": "If",
+          "action": "if",
+          "in_catalog": true
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "schedule",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "schedule",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "exit",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "BotStep",
+          "in_catalog": false
+        },
+        {
+          "package": "HBCWorkflow",
+          "action": "exit",
+          "in_catalog": false
+        }
+      ]
+    },
+    "catalog_coverage": 0.13,
+    "scoreable": false
+  }
+]

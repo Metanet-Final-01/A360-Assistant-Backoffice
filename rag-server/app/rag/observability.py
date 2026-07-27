@@ -13,20 +13,12 @@ import inspect
 import json
 import threading
 import time
-import uuid
 from datetime import datetime, timezone
 
 from . import config
 
 _request_id_var: contextvars.ContextVar[str | None] = contextvars.ContextVar("request_id", default=None)
 _write_lock = threading.Lock()  # 동시 요청(3개 모드 동시 검색 등)이 같은 로그 파일에 겹쳐 쓰지 않도록
-
-
-def new_request_id() -> str:
-    """새 검색 요청의 시작점에서 호출 — 이후 같은 호출 흐름의 모든 로그가 이 id를 공유한다."""
-    request_id = uuid.uuid4().hex[:12]
-    _request_id_var.set(request_id)
-    return request_id
 
 
 def get_request_id() -> str | None:

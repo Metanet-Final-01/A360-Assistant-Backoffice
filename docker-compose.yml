@@ -1,0 +1,77 @@
+# 백오피스 로컬 개발용 — Ops Backend·Streamlit UI·rag-server + postgres 1대(논리 DB 3개) (RPA-259)
+#
+# 배포에서는 RDS 3대로 물리 분리되지만, 로컬은 컨테이너 1대 안에 논리 DB 3개(a360/a360_obs/a360_rag)로
+# 나눈다. 목적은 배포와 같은 3-URL 구조 — OBSERVABILITY_DATABASE_URL / RAG_DATABASE_URL을 명시
+# 주입해 조용한 폴백(미설정 시 앱 DB로 새기)을 로컬에서도 재현 불가하게 한다.
+#
+# 시크릿은 이미지에 넣지 않는다. 여기 값은 로컬 전용 더미다. 실제 값은 각 서비스 .env로 주입한다.
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_DB: a360
+      POSTGRES_USER: a360_admin
+      POSTGRES_PASSWORD: localdev
+    volumes:
+      - ./scripts/local-init-dbs.sql:/docker-entrypoint-initdb.d/10-init-dbs.sql:ro
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U a360_admin -d a360"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  ops-backend:
+    build:
+      context: .
+      dockerfile: ops-server/backend/Dockerfile
+    environment:
+      # 관측 RDS 직접 조회 — 로컬은 a360_obs 논리 DB. (배포는 ops_reader Secret)
+      A360_OBSERVABILITY_DATABASE_URL: postgresql://a360_admin:localdev@db:5432/a360_obs
+      # 설정 쓰기는 백엔드 admin API 경유 — 로컬은 host의 메인 백엔드(:8000)를 가리킨다
+      A360_BACKEND_URL: http://host.docker.internal:8000
+      RAG_SERVER_URL: http://rag-server:8200
+      RAG_SERVICE_TOKEN: ${RAG_SERVICE_TOKEN:-dev-rag-service-token}
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8100:8100"          # 로컬 확인용 노출. 배포에선 UI(Streamlit)에서만 접근
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  ops-ui:
+    build:
+      context: .
+      dockerfile: ops-server/frontend/Dockerfile
+    environment:
+      # UI는 DB에 직접 안 붙는다 — Ops Backend·rag-server HTTP만
+      OPS_BACKEND_URL: http://ops-backend:8100
+      RAG_SERVER_URL: http://rag-server:8200
+    depends_on:
+      - ops-backend
+    ports:
+      - "8501:8501"
+
+  rag-server:
+    build:
+      context: .
+      dockerfile: rag-server/Dockerfile
+    environment:
+      # 적재는 rag_ingest 경계 — 로컬은 a360_rag 논리 DB. (배포는 rag_ingest Secret)
+      RAG_DATABASE_URL: postgresql://a360_admin:localdev@db:5432/a360_rag
+      RAG_SERVICE_TOKEN: ${RAG_SERVICE_TOKEN:-dev-rag-service-token}
+      RAG_JOB_STORE_DIR: /app/data/rag_ingest_jobs
+      # 로컬엔 OpenSearch 컨테이너를 안 띄운다 — 적재의 Bonsai 색인 단계는 이 값이 있어야 동작.
+      # 필요 시 별도로 띄우고 OPENSEARCH_HOST를 주입한다(현재는 미설정 = 검색 반쪽, 의도된 로컬 한계).
+    volumes:
+      - rag_ingest_jobs:/app/data/rag_ingest_jobs
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8200:8200"
+
+volumes:
+  pgdata:
+  rag_ingest_jobs:

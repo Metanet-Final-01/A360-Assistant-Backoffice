@@ -28,3 +28,21 @@ ops-server/backend/app/eval/workflow/catalog_actions.json
 
 # 로컬 전용 성능/실험 기록 — 리포에 올리지 않는 개인 참고 문서
 docs/local/
+
+# Goldset evaluation generated data/artifacts. Keep source scripts, READMEs, and
+# curated rule files in git; regenerate bulky datasets, logs, reports, and
+# reviewer export bundles locally.
+scripts/goldset/dataset/
+scripts/goldset/eval_inputs/
+scripts/goldset/runner/logs/
+scripts/goldset/evaluation/reports/
+scripts/goldset/evaluation/exports/
+scripts/goldset/evaluation/action_equivalence_candidates/
+scripts/goldset/evaluation/action_equivalence_candidates_agent_gold/
+scripts/goldset/evaluation/action_equivalence_candidates_v2_batch_actual/
+scripts/goldset/evaluation/action_equivalence_candidates_v2_batch_actual_13/
+
+# AI 도구가 만드는 로컬 git worktree — 각자 별도 저장소라 `git add -A`가 gitlink로
+# 잡아넣는다(실제로 한 번 커밋에 섞였다). 작업 산출물은 각 워크트리의 브랜치에 있다.
+.codex/worktrees/
+.claude/worktrees/

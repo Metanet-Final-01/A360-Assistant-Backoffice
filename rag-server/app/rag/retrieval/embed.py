@@ -114,6 +114,27 @@ def post_with_retry(url: str, headers: dict, payload: dict, retries: int = 5) ->
     raise RuntimeError(f"external API failed after {retries} retries: {url} ({detail})")
 
 
+def _ordered_embeddings(data: dict, expected: int, provider: str) -> list[list[float]]:
+    """임베딩 응답을 입력 순서에 정확히 대응시킨다.
+
+    OpenAI/Voyage 응답 요소에 index 필드가 있는 이유가 "배열 순서가 입력과 다를 수 있다"이므로
+    배열 순서를 그대로 믿지 않고 index로 정렬한다. index가 없으면 정렬할 근거가 없어 기존 순서를
+    쓰되, 그 사실이 드러나도록 경고를 남긴다(순서가 밀리면 본문과 벡터가 통째로 어긋난다).
+    """
+    items = list(data.get("data") or [])
+    if len(items) != expected:
+        raise RuntimeError(f"임베딩 응답 개수 불일치 (provider={provider}): 입력 {expected}개, 응답 {len(items)}개")
+    if all("index" in item for item in items):
+        items.sort(key=lambda item: int(item["index"]))
+        if [int(item["index"]) for item in items] != list(range(expected)):
+            raise RuntimeError(f"임베딩 응답 index가 0..{expected - 1}과 다릅니다 (provider={provider})")
+    else:
+        logger.warning(
+            "임베딩 응답에 index 필드가 없어 배열 순서를 그대로 사용합니다 (provider=%s, n=%d)", provider, expected,
+        )
+    return [item["embedding"] for item in items]
+
+
 def _embed_voyage(texts: list[str]) -> list[list[float]]:
     if not config.VOYAGE_API_KEY:
         raise RuntimeError("VOYAGE_API_KEY 환경변수가 필요합니다")
@@ -123,7 +144,7 @@ def _embed_voyage(texts: list[str]) -> list[list[float]]:
         {"model": config.EMBEDDING_MODEL, "input": texts, "input_type": "document"},
     )
     _record_embed_usage(data)
-    return [item["embedding"] for item in data["data"]]
+    return _ordered_embeddings(data, len(texts), "voyage")
 
 
 def _embed_openai(texts: list[str]) -> list[list[float]]:
@@ -135,17 +156,35 @@ def _embed_openai(texts: list[str]) -> list[list[float]]:
         {"model": config.EMBEDDING_MODEL, "input": texts},
     )
     _record_embed_usage(data)
-    return [item["embedding"] for item in data["data"]]
+    return _ordered_embeddings(data, len(texts), "openai")
+
+
+def _truncate_for_embedding(text: str) -> str:
+    """임베딩 입력 상한 적용. 절단되면 DB 본문과 벡터가 달라지므로 조용히 넘기지 않고 경고한다."""
+    if len(text) <= _MAX_CHARS:
+        return text
+    logger.warning(
+        "임베딩 입력을 %d자로 절단했습니다 (원본 %d자) — 벡터가 본문 뒷부분을 반영하지 못합니다",
+        _MAX_CHARS, len(text),
+    )
+    return text[:_MAX_CHARS]
 
 
 def embed_texts(texts: list[str], on_progress=None) -> list[list[float]]:
     embed_fn = _embed_voyage if config.EMBEDDING_PROVIDER == "voyage" else _embed_openai
     vectors: list[list[float]] = []
     for start in range(0, len(texts), _BATCH_SIZE):
-        batch = [t[:_MAX_CHARS] for t in texts[start : start + _BATCH_SIZE]]
-        vectors.extend(embed_fn(batch))
+        batch = [_truncate_for_embedding(t) for t in texts[start : start + _BATCH_SIZE]]
+        batch_vectors = embed_fn(batch)
+        # 배치 단위로도 확인해 한 배치의 밀림이 뒤 배치까지 누적되지 않게 한다
+        if len(batch_vectors) != len(batch):
+            raise RuntimeError(f"임베딩 배치 길이 불일치: 입력 {len(batch)}개, 벡터 {len(batch_vectors)}개 (offset={start})")
+        vectors.extend(batch_vectors)
         if on_progress:
             on_progress(min(start + _BATCH_SIZE, len(texts)), len(texts))
+    # 여기서 막지 않으면 pipeline의 zip이 조용히 잘라 남은 문서가 영구 NULL 임베딩으로 고착된다
+    if len(vectors) != len(texts):
+        raise RuntimeError(f"임베딩 개수 불일치: 입력 {len(texts)}개, 벡터 {len(vectors)}개")
     return vectors
 
 

@@ -1,0 +1,136 @@
+"""사건 추적(상관관계) 뷰 — 한 request_id/session_id를 감사·성능·턴·RAG로 엮어 본다 (대시보드 #5).
+
+"우리가 로그를 쌓는다"를 "한 사건이 시스템을 어떻게 통과했나"로 바꾸는 화면. 관측 데이터를
+사건 단위로 추적할 수 있어야 운영에서 의미가 있다.
+"""
+
+import pandas as pd
+import requests
+import streamlit as st
+
+from components.layout import card, metric_strip, page_header, section_header
+from config import OPS_BACKEND_URL
+
+
+def render() -> None:
+    page_header("사건 추적")
+    st.caption(
+        "request_id로 조회하면 한 요청이 남긴 감사·성능·에이전트 턴·RAG 로그를 한 타임라인으로, "
+        "session_id로 조회하면 그 대화의 모든 턴을 순서대로 보여줍니다. request_id/session_id는 "
+        "사람이 외우기 어려운 값이라, user_id로 먼저 찾아 관련된 요청들을 한 번에 볼 수도 있습니다. "
+        "관측 DB를 직접 조회하므로 별도 수집 단계는 없습니다."
+    )
+
+    with card("trace_input"):
+        key_type = st.radio("조회 축", ["request_id", "session_id", "user_id"], horizontal=True, key="trace_key_type")
+        value = st.text_input(f"{key_type} 입력", key="trace_value", placeholder="예: 5f2a3c309fd1")
+        go = st.button("추적", key="trace_go", type="primary")
+
+    if not (go and value.strip()):
+        st.info("조회 축을 고르고 id를 입력한 뒤 \"추적\"을 누르세요.")
+        return
+
+    params = {key_type: value.strip()}
+    data = _safe_get(OPS_BACKEND_URL, "/observability/trace", params)
+    if data is None:
+        st.error("조회에 실패했습니다 — 모니터링 백엔드가 켜져 있는지 확인하세요.")
+        return
+
+    if key_type == "user_id":
+        matched = data.get("matched_request_ids", [])
+        if not matched:
+            st.warning("이 user_id로 연결된 request_id를 찾지 못했습니다 — user_id가 맞는지 확인하세요.")
+            return
+        st.caption(f"이 user_id의 요청 {len(matched)}건: {', '.join(matched)}")
+
+    audit = data.get("audit_logs", [])
+    metrics = data.get("request_metrics", [])
+    turns = data.get("turn_events", [])
+    rag = data.get("rag_logs", [])
+    rag_events = data.get("rag_events", [])
+    total = len(audit) + len(metrics) + len(turns) + len(rag) + len(rag_events)
+    if total == 0:
+        st.warning("연결된 로그가 없습니다 — id가 맞는지, 해당 기간 로그가 관측 DB에 있는지 확인하세요.")
+        return
+
+    with card("trace_summary"):
+        section_header("연결된 기록")
+        metric_strip([
+            ("감사 로그", f"{len(audit)}건"),
+            ("성능 메트릭", f"{len(metrics)}건"),
+            ("에이전트 턴", f"{len(turns)}건"),
+            ("RAG 로그", f"{len(rag)}건"),
+            ("RAG 파이프라인 단계", f"{len(rag_events)}건"),
+        ])
+
+    if key_type in ("request_id", "user_id"):
+        with card("trace_timeline"):
+            title = "이 요청이 시스템을 통과한 순서" if key_type == "request_id" else "이 user_id의 요청들이 시스템을 통과한 순서(여러 요청 통합)"
+            section_header("통합 타임라인", title)
+            rows = []
+            for r in audit:
+                rows.append({"시각": r.get("created_at"), "종류": "감사", "내용": f'{r.get("method")} {r.get("path")} → {r.get("status_code")} ({r.get("latency_ms")}ms)'})
+            for r in metrics:
+                rows.append({"시각": r.get("created_at"), "종류": "성능", "내용": f'{r.get("method")} {r.get("path")} {r.get("latency_ms")}ms'})
+            # rag_events(event='http_request')를 직접 읽으므로 raw dict가 아니라 정형 컬럼이다.
+            for r in rag:
+                rows.append({"시각": r.get("created_at"), "종류": "RAG",
+                             "내용": f'{r.get("event")} {r.get("function") or ""} ({r.get("duration_ms")}ms)'})
+            for t in turns:  # 에이전트 턴도 통합 타임라인에 포함(CodeRabbit #13)
+                rows.append({"시각": t.get("created_at"), "종류": "턴",
+                             "내용": f'{t.get("stage") or t.get("kind")} · {t.get("message") or ""}'})
+            for e in rag_events:  # RAG 파이프라인 단계(RPA-128) — embed/search/rerank 병목 확인용
+                rows.append({"시각": e.get("created_at"), "종류": "RAG단계",
+                             "내용": f'{e.get("event")} · {e.get("status")} ({e.get("duration_ms")}ms)'})
+            df = pd.DataFrame(rows).sort_values("시각", na_position="last") if rows else pd.DataFrame()
+            if not df.empty:
+                st.dataframe(df, use_container_width=True, hide_index=True)
+
+    _render_turns(turns)
+    _render_rag_events(rag_events)
+
+
+def _render_turns(turns: list) -> None:
+    if not turns:
+        return
+    with card("trace_turns"):
+        section_header("에이전트 턴 타임라인", "노드별 진행·소요(elapsed_ms는 턴 시작부터 누적)")
+        df = pd.DataFrame([
+            {
+                "req": (t.get("request_id") or "")[:8],
+                "seq": t.get("seq"),
+                "kind": t.get("kind"),
+                "stage": t.get("stage"),
+                "elapsed_ms": t.get("elapsed_ms"),
+                "message": t.get("message"),
+                "detail": (t.get("detail") or "")[:200],
+            }
+            for t in turns
+        ])
+        st.dataframe(df, use_container_width=True, hide_index=True)
+
+
+def _render_rag_events(rag_events: list) -> None:
+    if not rag_events:
+        return
+    with card("trace_rag_events"):
+        section_header("RAG 파이프라인 단계", "embed/search/rerank 등 단계별 소요·설정(RPA-128) — duration_ms는 그 단계만의 소요")
+        df = pd.DataFrame([
+            {
+                "event": e.get("event"),
+                "function": e.get("function"),
+                "status": e.get("status"),
+                "duration_ms": e.get("duration_ms"),
+                "detail": (e.get("detail") or "")[:200],
+            }
+            for e in rag_events
+        ])
+        st.dataframe(df, use_container_width=True, hide_index=True)
+
+
+def _safe_get(base_url: str, path: str, params: dict) -> dict | None:
+    try:
+        resp = requests.get(f"{base_url}{path}", params=params, timeout=10)
+        return resp.json() if resp.status_code == 200 else None
+    except requests.RequestException:
+        return None
