@@ -269,18 +269,6 @@ Resources:
       LogGroupName: !Sub "/a360/${Environment}/rag-worker-cfn"
       RetentionInDays: !Ref LogRetentionDays
 
-  RagAopEventLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub "/a360/${Environment}/rag-aop-events"
-      RetentionInDays: !Ref LogRetentionDays
-
-  OpsEvalLogGroup:
-    Type: AWS::Logs::LogGroup
-    Properties:
-      LogGroupName: !Sub "/a360/${Environment}/ops-eval"
-      RetentionInDays: !Ref LogRetentionDays
-
   OpsInstanceRole:
     Type: AWS::IAM::Role
     Properties:
@@ -436,19 +424,19 @@ Resources:
                       "collect_list": [
                         {
                           "file_path": "/opt/a360/rag-server-logs/*.jsonl",
-                          "log_group_name": "${RagAopLogGroup}",
+                          "log_group_name": "${RagLogGroup}",
                           "log_stream_name": "{instance_id}/rag-aop-events",
                           "timezone": "UTC"
                         },
                         {
                           "file_path": "/opt/a360/ops-backend-data/eval_runs.jsonl",
-                          "log_group_name": "${OpsEvalLogGroup}",
+                          "log_group_name": "${OpsApiLogGroup}",
                           "log_stream_name": "{instance_id}/ops-eval-runs",
                           "timezone": "UTC"
                         },
                         {
                           "file_path": "/opt/a360/ops-backend-data/observability_*.jsonl",
-                          "log_group_name": "${OpsEvalLogGroup}",
+                          "log_group_name": "${OpsApiLogGroup}",
                           "log_stream_name": "{instance_id}/ops-observability-snapshots",
                           "timezone": "UTC"
                         }
@@ -716,8 +704,6 @@ Resources:
               OpsApiLogGroup: !Ref OpsBackendLogGroup
               OpsUiLogGroup: !Ref OpsUiLogGroup
               RagLogGroup: !Ref RagServerLogGroup
-              RagAopLogGroup: !Ref RagAopEventLogGroup
-              OpsEvalLogGroup: !Ref OpsEvalLogGroup
               RagScheduleRoleArn: !GetAtt RagScheduleRole.Arn
               RagJobQueueUrl:
                 Fn::ImportValue:
@@ -948,12 +934,6 @@ Outputs:
     Value: !Ref InternalAlbSecurityGroup
   OpsAutoScalingGroupName:
     Value: !Ref OpsAutoScalingGroup
-  RagAopEventLogGroupName:
-    Description: CloudWatch log group receiving RAG AOP JSONL files tailed from Ops EC2.
-    Value: !Ref RagAopEventLogGroup
-  OpsEvalLogGroupName:
-    Description: CloudWatch log group receiving Ops evaluation and local observability JSONL files.
-    Value: !Ref OpsEvalLogGroup
   RagScheduleRoleArn:
     Description: EventBridge Scheduler execution role used for RAG ingest schedules.
     Value: !GetAtt RagScheduleRole.Arn
