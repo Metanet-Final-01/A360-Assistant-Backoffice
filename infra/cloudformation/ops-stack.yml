@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: A360 Assistant Ops stack - private Ops/RAG EC2 Auto Scaling deployment behind an internal ALB.
+Description: A360 Assistant Ops stack - private single-instance Ops/RAG deployment accessed directly through Client VPN.
 
 Parameters:
   ProjectName:
@@ -48,7 +48,7 @@ Parameters:
     Description: Run a separate SQS consumer container for scheduled RAG ingest jobs.
   EnableDefaultRagIngestSchedule:
     Type: String
-    Default: "false"
+    Default: "true"
     AllowedValues: ["true", "false"]
     Description: Create a default EventBridge Scheduler schedule that sends RAG ingest jobs to SQS.
   RagIngestScheduleExpression:
@@ -63,16 +63,26 @@ Parameters:
     Default: "false"
     AllowedValues: ["true", "false"]
     Description: Whether the scheduled ingest should clean existing RAG corpus before ingest.
-  InternalAlbListenerPort:
-    Type: Number
-    Default: 80
   ClientVpnCidr:
     Type: String
     Default: 10.250.0.0/22
   ClientVpnSecurityGroupId:
     Type: String
     Default: ""
-    Description: Optional Client VPN endpoint security group ID. When set, the internal ALB accepts traffic from this SG as well as ClientVpnCidr.
+    Description: Optional Client VPN endpoint security group ID. When set, the Ops EC2 accepts direct UI/API traffic from this SG as well as ClientVpnCidr.
+  EnableOpsPrivateDns:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+    Description: Create a Route53 private DNS name for the single Ops EC2 instance.
+  OpsPrivateHostedZoneName:
+    Type: String
+    Default: dev.a360.internal
+    Description: Route53 private hosted zone name associated with the A360 VPC.
+  OpsPrivateDnsRecordName:
+    Type: String
+    Default: ops.dev.a360.internal
+    Description: Private DNS record that points to the current Ops EC2 private IP.
   LogRetentionDays:
     Type: Number
     Default: 14
@@ -114,6 +124,7 @@ Conditions:
   CreateRagServiceTokenSecret: !Equals [!Ref RagServiceTokenSecretArn, ""]
   RunsRagWorker: !Equals [!Ref EnableRagWorker, "true"]
   CreatesDefaultRagIngestSchedule: !Equals [!Ref EnableDefaultRagIngestSchedule, "true"]
+  CreatesOpsPrivateDns: !Equals [!Ref EnableOpsPrivateDns, "true"]
 
 Resources:
   OpsGhcrReadTokenSecret:
@@ -175,26 +186,10 @@ Resources:
         - Key: Service
           Value: ops
 
-  InternalAlbSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Internal ALB access from Client VPN only
-      VpcId:
-        Fn::ImportValue:
-          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: !Ref InternalAlbListenerPort
-          ToPort: !Ref InternalAlbListenerPort
-          CidrIp: !Ref ClientVpnCidr
-      SecurityGroupEgress:
-        - IpProtocol: -1
-          CidrIp: 0.0.0.0/0
-
   OpsInstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Ops EC2 container host
+      GroupDescription: Ops EC2 container host accessed directly through Client VPN
       VpcId:
         Fn::ImportValue:
           Fn::Sub: "${ProjectName}-${Environment}-VpcId"
@@ -202,25 +197,60 @@ Resources:
         - IpProtocol: tcp
           FromPort: !Ref OpsUiPort
           ToPort: !Ref OpsUiPort
-          SourceSecurityGroupId: !Ref InternalAlbSecurityGroup
+          CidrIp: !Ref ClientVpnCidr
         - IpProtocol: tcp
           FromPort: !Ref OpsBackendPort
           ToPort: !Ref OpsBackendPort
-          SourceSecurityGroupId: !Ref InternalAlbSecurityGroup
+          CidrIp: !Ref ClientVpnCidr
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
 
-  InternalAlbIngressFromClientVpnSecurityGroup:
+  OpsUiIngressFromClientVpnSecurityGroup:
     Type: AWS::EC2::SecurityGroupIngress
     Condition: HasClientVpnSecurityGroup
     Properties:
-      GroupId: !Ref InternalAlbSecurityGroup
+      GroupId: !Ref OpsInstanceSecurityGroup
       IpProtocol: tcp
-      FromPort: !Ref InternalAlbListenerPort
-      ToPort: !Ref InternalAlbListenerPort
+      FromPort: !Ref OpsUiPort
+      ToPort: !Ref OpsUiPort
       SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId
-      Description: Allow Client VPN endpoint security group to reach the internal Ops ALB.
+      Description: Allow Client VPN endpoint security group to reach the Ops Streamlit UI directly.
+
+  OpsBackendIngressFromClientVpnSecurityGroup:
+    Type: AWS::EC2::SecurityGroupIngress
+    Condition: HasClientVpnSecurityGroup
+    Properties:
+      GroupId: !Ref OpsInstanceSecurityGroup
+      IpProtocol: tcp
+      FromPort: !Ref OpsBackendPort
+      ToPort: !Ref OpsBackendPort
+      SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId
+      Description: Allow Client VPN endpoint security group to reach the Ops backend API directly.
+
+  OpsPrivateHostedZone:
+    Type: AWS::Route53::HostedZone
+    Condition: CreatesOpsPrivateDns
+    DeletionPolicy: Retain
+    UpdateReplacePolicy: Retain
+    Properties:
+      Name: !Ref OpsPrivateHostedZoneName
+      HostedZoneConfig:
+        Comment: !Sub "Private DNS zone for ${ProjectName} ${Environment} Ops access."
+      VPCs:
+        - VPCId:
+            Fn::ImportValue:
+              Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+          VPCRegion: !Ref AWS::Region
+      HostedZoneTags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Service
+          Value: ops
 
   ObservabilityDbIngressFromOps:
     Type: AWS::EC2::SecurityGroupIngress
@@ -335,6 +365,12 @@ Resources:
                       - BucketName:
                           Fn::ImportValue:
                             Fn::Sub: "${ProjectName}-${Environment}-ArtifactBucketName"
+              - !If
+                - CreatesOpsPrivateDns
+                - Effect: Allow
+                  Action: route53:ChangeResourceRecordSets
+                  Resource: !Sub "arn:${AWS::Partition}:route53:::hostedzone/${OpsPrivateHostedZone}"
+                - !Ref AWS::NoValue
               - Effect: Allow
                 Action:
                   - sqs:ReceiveMessage
@@ -469,12 +505,15 @@ Resources:
               dnf install -y docker awscli jq aws-cfn-bootstrap
               IMDS_TOKEN=$(curl -fsS -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" || true)
               INSTANCE_ID=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/instance-id || echo unknown-instance)
+              PRIVATE_IP=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4 || true)
               upload_bootstrap_logs() {
                 aws s3 cp /var/log/a360-ops-bootstrap.log "s3://${ArtifactBucketName}/ops-bootstrap-logs/${AWS::StackName}/$INSTANCE_ID/a360-ops-bootstrap.log" || true
                 aws s3 cp /var/log/cloud-init-output.log "s3://${ArtifactBucketName}/ops-bootstrap-logs/${AWS::StackName}/$INSTANCE_ID/cloud-init-output.log" || true
               }
               trap 'upload_bootstrap_logs; /opt/aws/bin/cfn-signal --success false --stack ${AWS::StackName} --resource OpsAutoScalingGroup --region ${AWS::Region}' ERR
               systemctl enable --now docker
+
+              ${UpsertOpsPrivateDns}
 
               restore_rag_artifacts() {
                 local bucket="${ArtifactBucketName}"
@@ -567,6 +606,8 @@ Resources:
                 -e INGEST_DATA_DIR=/app/data/ingest \
                 -e RAG_ARTIFACT_BUCKET="${ArtifactBucketName}" \
                 -e RAG_ARTIFACT_PREFIX="rag-ingest-artifacts" \
+                -e RAG_ARTIFACT_RESTORE_WAIT_SECONDS=20 \
+                -e RAG_ARTIFACT_RESTORE_POLL_SECONDS=5 \
                 -e RAG_LOG_DIR=/app/app/rag/logs \
                 -e CHUNK_SIZE=1200 \
                 -e CHUNK_OVERLAP=120 \
@@ -727,6 +768,68 @@ Resources:
               RagJobQueueArn:
                 Fn::ImportValue:
                   Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+              UpsertOpsPrivateDns: !If
+                - CreatesOpsPrivateDns
+                - !Sub |
+                  record_name=""
+                  for attempt in 1 2 3 4 5; do
+                    if [ -n "$PRIVATE_IP" ]; then
+                      break
+                    fi
+                    echo "Waiting for Ops EC2 private IP before Route53 update attempt=$attempt" >&2
+                    sleep $((attempt * 2))
+                    PRIVATE_IP=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4 || true)
+                  done
+                  if [ -z "$PRIVATE_IP" ]; then
+                    echo "Skipping Ops private DNS update because private IP was not available." >&2
+                  else
+                    record_name="${OpsPrivateDnsRecordName}"
+                    zone_name="${OpsPrivateHostedZoneName}"
+                    case "$record_name" in
+                      "$zone_name"|*".$zone_name") ;;
+                      *)
+                        echo "Skipping Ops private DNS update; record $record_name is outside hosted zone $zone_name." >&2
+                        record_name=""
+                        ;;
+                    esac
+                  fi
+                  if [ -n "$record_name" ]; then
+                    echo "Preparing Ops private DNS ${OpsPrivateDnsRecordName} -> $PRIVATE_IP"
+                    cat > /tmp/a360-ops-private-dns.json <<DNSJSON
+                  {
+                    "Comment": "Point ${OpsPrivateDnsRecordName} to $INSTANCE_ID",
+                    "Changes": [
+                      {
+                        "Action": "UPSERT",
+                        "ResourceRecordSet": {
+                          "Name": "${OpsPrivateDnsRecordName}.",
+                          "Type": "A",
+                          "TTL": 60,
+                          "ResourceRecords": [
+                            { "Value": "$PRIVATE_IP" }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                  DNSJSON
+                    dns_updated=false
+                    for attempt in 1 2 3 4 5; do
+                      if aws route53 change-resource-record-sets \
+                        --hosted-zone-id "${OpsPrivateHostedZone}" \
+                        --change-batch file:///tmp/a360-ops-private-dns.json; then
+                        echo "Updated Ops private DNS ${OpsPrivateDnsRecordName} -> $PRIVATE_IP"
+                        dns_updated=true
+                        break
+                      fi
+                      echo "Route53 private DNS update failed attempt=$attempt; retrying." >&2
+                      sleep $((attempt * 3))
+                    done
+                    if [ "$dns_updated" != "true" ]; then
+                      echo "Route53 private DNS update skipped after retries; bootstrap continues." >&2
+                    fi
+                  fi
+                - ""
               RunRagWorkerContainer: !If
                 - RunsRagWorker
                 - !Sub
@@ -755,70 +858,6 @@ Resources:
                     RagWorkerLogGroupName: !Ref RagWorkerLogGroup
                 - ""
 
-  InternalAlb:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    Properties:
-      Scheme: internal
-      Type: application
-      SecurityGroups: [!Ref InternalAlbSecurityGroup]
-      Subnets:
-        Fn::Split:
-          - ","
-          - Fn::ImportValue:
-              Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
-
-  OpsUiTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      VpcId:
-        Fn::ImportValue:
-          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
-      Protocol: HTTP
-      Port: !Ref OpsUiPort
-      TargetType: instance
-      HealthCheckPath: /_stcore/health
-      Matcher:
-        HttpCode: 200-399
-
-  OpsBackendTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      VpcId:
-        Fn::ImportValue:
-          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
-      Protocol: HTTP
-      Port: !Ref OpsBackendPort
-      TargetType: instance
-      HealthCheckPath: /health
-      Matcher:
-        HttpCode: 200-399
-
-  InternalAlbListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      LoadBalancerArn: !Ref InternalAlb
-      Port: !Ref InternalAlbListenerPort
-      Protocol: HTTP
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref OpsUiTargetGroup
-
-  OpsBackendListenerRule:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    Properties:
-      ListenerArn: !Ref InternalAlbListener
-      Priority: 10
-      Conditions:
-        - Field: path-pattern
-          Values:
-            - /health
-            - /ops/*
-            - /eval/*
-            - /observability/*
-      Actions:
-        - Type: forward
-          TargetGroupArn: !Ref OpsBackendTargetGroup
-
   OpsAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     CreationPolicy:
@@ -842,9 +881,6 @@ Resources:
               Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
       HealthCheckType: EC2
       HealthCheckGracePeriod: 600
-      TargetGroupARNs:
-        - !Ref OpsUiTargetGroup
-        - !Ref OpsBackendTargetGroup
       LaunchTemplate:
         LaunchTemplateId: !Ref OpsLaunchTemplate
         Version: !GetAtt OpsLaunchTemplate.LatestVersionNumber
@@ -925,8 +961,6 @@ Resources:
           MaximumRetryAttempts: 2
 
 Outputs:
-  InternalAlbDnsName:
-    Value: !GetAtt InternalAlb.DNSName
   OpsGhcrReadTokenSecretArn:
     Description: GHCR read token secret ARN used by Ops EC2 image pulls.
     Value: !If [HasExternalGhcrTokenSecret, !Ref GhcrTokenSecretArn, !Ref OpsGhcrReadTokenSecret]
@@ -946,10 +980,26 @@ Outputs:
     Value: !Ref OpsInstanceSecurityGroup
     Export:
       Name: !Sub "${ProjectName}-${Environment}-OpsInstanceSecurityGroupId"
-  InternalAlbSecurityGroupId:
-    Value: !Ref InternalAlbSecurityGroup
   OpsAutoScalingGroupName:
     Value: !Ref OpsAutoScalingGroup
+  OpsUiPort:
+    Description: Streamlit UI port reachable on the Ops EC2 private IP through Client VPN.
+    Value: !Ref OpsUiPort
+  OpsBackendPort:
+    Description: Ops backend API port reachable on the Ops EC2 private IP through Client VPN.
+    Value: !Ref OpsBackendPort
+  OpsPrivateDnsName:
+    Condition: CreatesOpsPrivateDns
+    Description: Route53 private DNS name for the Ops Streamlit UI. Use this through Client VPN.
+    Value: !Ref OpsPrivateDnsRecordName
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-OpsPrivateDnsName"
+  OpsPrivateHostedZoneId:
+    Condition: CreatesOpsPrivateDns
+    Description: Route53 private hosted zone ID used for Ops direct access.
+    Value: !Ref OpsPrivateHostedZone
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-OpsPrivateHostedZoneId"
   RagScheduleRoleArn:
     Description: EventBridge Scheduler execution role used for RAG ingest schedules.
     Value: !GetAtt RagScheduleRole.Arn

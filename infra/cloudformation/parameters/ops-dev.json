@@ -6,10 +6,13 @@
   { "ParameterKey": "OpsUiImageUri", "ParameterValue": "ghcr.io/Metanet-Final-01/a360-assistant-backoffice/ops-ui:TODO_COMMIT_SHA" },
   { "ParameterKey": "RagServerImageUri", "ParameterValue": "ghcr.io/Metanet-Final-01/a360-assistant-backoffice/rag-server:TODO_COMMIT_SHA" },
   { "ParameterKey": "EnableRagWorker", "ParameterValue": "true" },
-  { "ParameterKey": "EnableDefaultRagIngestSchedule", "ParameterValue": "false" },
+  { "ParameterKey": "EnableDefaultRagIngestSchedule", "ParameterValue": "true" },
   { "ParameterKey": "RagIngestScheduleExpression", "ParameterValue": "cron(30 8 ? * * *)" },
   { "ParameterKey": "RagIngestScheduleTimezone", "ParameterValue": "Asia/Seoul" },
   { "ParameterKey": "RagIngestClean", "ParameterValue": "false" },
+  { "ParameterKey": "EnableOpsPrivateDns", "ParameterValue": "true" },
+  { "ParameterKey": "OpsPrivateHostedZoneName", "ParameterValue": "dev.a360.internal" },
+  { "ParameterKey": "OpsPrivateDnsRecordName", "ParameterValue": "ops.dev.a360.internal" },
   { "ParameterKey": "OpsRuntimeSecretArn", "ParameterValue": "" },
   { "ParameterKey": "A360BackendUrl", "ParameterValue": "TODO_BACKEND_URL" }
 ]

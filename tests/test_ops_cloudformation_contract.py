@@ -132,15 +132,41 @@ def test_legacy_jsonl_log_groups_are_retained_if_removed_later():
         assert "UpdateReplacePolicy: Retain" in block
 
 
-def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():
+def test_ops_ec2_direct_access_is_limited_to_client_vpn():
     template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
 
-    assert "Scheme: internal" in template
+    assert "AWS::ElasticLoadBalancingV2::LoadBalancer" not in template
+    assert "AWS::ElasticLoadBalancingV2::TargetGroup" not in template
+    assert "AWS::ElasticLoadBalancingV2::Listener" not in template
+    assert "TargetGroupARNs" not in template
     assert "CidrIp: !Ref ClientVpnCidr" in template
     assert "ClientVpnSecurityGroupId" in template
-    assert "InternalAlbIngressFromClientVpnSecurityGroup" in template
+    assert "OpsUiIngressFromClientVpnSecurityGroup" in template
+    assert "OpsBackendIngressFromClientVpnSecurityGroup" in template
     assert "SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId" in template
-    assert "Scheme: internet-facing" not in template
+    assert "InternalAlbDnsName" not in template
+    assert "InternalAlbSecurityGroupId" not in template
+
+
+def test_ops_direct_access_has_route53_private_dns():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+    workflow = (ROOT / ".github/workflows/ops-deploy.yml").read_text(encoding="utf-8")
+
+    assert "EnableOpsPrivateDns" in template
+    assert "Default: dev.a360.internal" in template
+    assert "Default: ops.dev.a360.internal" in template
+    assert "OpsPrivateHostedZone:" in template
+    assert "AWS::Route53::HostedZone" in template
+    assert "DeletionPolicy: Retain" in _resource_block(template, "OpsPrivateHostedZone")
+    assert "UpdateReplacePolicy: Retain" in _resource_block(template, "OpsPrivateHostedZone")
+    assert "VPCRegion: !Ref AWS::Region" in template
+    assert "route53:ChangeResourceRecordSets" in template
+    assert "change-resource-record-sets" in template
+    assert "Skipping Ops private DNS update because private IP was not available." in template
+    assert "Route53 private DNS update skipped after retries; bootstrap continues." in template
+    assert "OpsPrivateDnsName:" in template
+    assert 'EnableOpsPrivateDns="${{ inputs.enable_ops_private_dns || \'true\' }}"' in workflow
+    assert 'OpsPrivateDnsRecordName="${{ inputs.ops_private_dns_record_name || \'ops.dev.a360.internal\' }}"' in workflow
 
 
 def test_ops_asg_uses_single_admin_instance_defaults_and_ec2_health():
@@ -164,6 +190,7 @@ def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
     assert "push:" in workflow
     assert "branches:" in workflow
     assert "- dev" in workflow
+    assert "- main" in workflow
     assert 'image_tag="${GITHUB_SHA::12}"' in workflow
     assert "ops-backend:${{ needs.meta.outputs.image_tag }}" in workflow
     assert "ops-ui:${{ needs.meta.outputs.image_tag }}" in workflow
@@ -181,5 +208,6 @@ def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
     assert "OPS_RUNTIME_SECRET_ARN is empty" in workflow
     assert "A360_BACKEND_URL is empty" in workflow
     assert "ClientVpnSecurityGroupId=\"${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}\"" in workflow
+    assert "EnableDefaultRagIngestSchedule=\"${{ inputs.enable_default_rag_ingest_schedule || 'true' }}\"" in workflow
     assert "infra-contract" in tests_workflow
     assert "python -m pytest tests/ -q" in tests_workflow
