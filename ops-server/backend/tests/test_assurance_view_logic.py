@@ -10,6 +10,7 @@ from views.assurance_records import (  # noqa: E402
     _business_persisted_text,
     _change_group_key,
     _change_control_rows,
+    _change_warning_details,
     _change_subject,
     _current_change_record,
     _current_status_text,
@@ -144,6 +145,79 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertEqual(rows[0]["상태"], "추가 검토 필요")
         self.assertEqual(rows[0]["판정 설명"], "의존성 취약점·라이선스 증거가 부족함")
         self.assertEqual(rows[0]["사유 코드"], "DEPENDENCY_EVIDENCE_INCOMPLETE")
+
+    def test_not_applicable_dependency_control_is_fully_localized(self):
+        rows = _change_control_rows({
+            "controls": [{
+                "control_id": "CH-04",
+                "status": "not_applicable",
+                "reason_code": "DEPENDENCY_CHANGE_NOT_APPLICABLE",
+            }]
+        })
+
+        self.assertEqual(rows[0]["상태"], "검사 대상 아님")
+        self.assertEqual(
+            rows[0]["판정 설명"],
+            "의존성 변경이 없어 검사가 적용되지 않음",
+        )
+
+    def test_warn_status_keeps_decision_and_non_blocking_stage_visible(self):
+        self.assertEqual(
+            _current_status_text({
+                "integrity_valid": True,
+                "decision": "deny",
+                "assurance_verdict": "deny",
+                "rollout_mode": "warn",
+                "enforcement_effect": "warned",
+            }),
+            "경고 (Warn): 계약 위반",
+        )
+        level, message = _status_notice({
+            "harness": "change",
+            "integrity_valid": True,
+            "decision": "deny",
+            "assurance_verdict": "deny",
+            "rollout_mode": "warn",
+            "enforcement_effect": "warned",
+        })
+        self.assertEqual(level, "warning")
+        self.assertIn("병합은 자동 차단하지 않습니다", message)
+
+    def test_nonpassing_control_prefers_backend_explanation(self):
+        details = _change_warning_details({
+            "controls": [{
+                "control_id": "CH-04",
+                "status": "fail",
+                "reason_code": "DEPENDENCY_CLOSURE_DENIED",
+                "reason": "generic reason",
+                "explanation": {
+                    "finding": "dep.license: sample==1.0 라이선스 정책 위반",
+                    "impact": "정책 밖 라이선스를 보증할 수 없습니다.",
+                    "action": "승인된 예외 또는 허용 라이선스를 확인하세요.",
+                },
+                "evidence_uri": "dependency-evidence.json",
+            }]
+        })
+
+        self.assertEqual(len(details), 1)
+        self.assertIn("sample==1.0", details[0]["발견 내용"])
+        self.assertEqual(
+            details[0]["확인/조치"],
+            "승인된 예외 또는 허용 라이선스를 확인하세요.",
+        )
+
+    def test_legacy_nonpassing_control_gets_safe_guidance(self):
+        details = _change_warning_details({
+            "controls": [{
+                "control_id": "CH-06",
+                "status": "unassured",
+                "reason_code": "PROTECTED_ORACLE_REVIEW_REQUIRED",
+                "evidence_uri": "protected-change-evidence.json",
+            }]
+        })
+
+        self.assertIn("최신 HEAD", details[0]["확인/조치"])
+        self.assertIn("판정 기준", details[0]["왜 통과가 아닌가"])
 
     def test_human_review_status_distinguishes_current_and_stale_approval(self):
         approved = {
@@ -524,6 +598,9 @@ class AssuranceViewLogicTest(unittest.TestCase):
         status_text.assert_called_once()
 
     @patch("views.assurance_records.section_header")
+    @patch("views.assurance_records.st.caption")
+    @patch("views.assurance_records.st.markdown")
+    @patch("views.assurance_records.st.expander")
     @patch("views.assurance_records.st.json")
     @patch("views.assurance_records.st.dataframe")
     @patch("views.assurance_records.st.info")
@@ -531,7 +608,17 @@ class AssuranceViewLogicTest(unittest.TestCase):
     @patch("views.assurance_records.st.columns")
     @patch("views.assurance_records._get")
     def test_change_detail_renders_subject_and_control_table(
-        self, get, columns, warning, info, dataframe, json, section_header
+        self,
+        get,
+        columns,
+        warning,
+        info,
+        dataframe,
+        json,
+        expander,
+        markdown,
+        caption,
+        section_header,
     ):
         left, right = Mock(), Mock()
         columns.return_value = (left, right)
@@ -575,6 +662,23 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertTrue(any("병합을 자동 차단하지 않습니다" in message for message in messages))
         info.assert_called_once()
         self.assertIn("승인 전에 생성된 과거 기록", info.call_args.args[0])
+        expander_titles = [call.args[0] for call in expander.call_args_list]
+        self.assertTrue(
+            any(
+                "CH-06" in title and "추가 검토 필요" in title
+                for title in expander_titles
+            )
+        )
+        rendered_markdown = [call.args[0] for call in markdown.call_args_list]
+        for heading in ("**발견 내용**", "**왜 통과가 아닌가**", "**확인/조치**"):
+            self.assertTrue(any(heading in text for text in rendered_markdown))
+        rendered_captions = [call.args[0] for call in caption.call_args_list]
+        self.assertTrue(
+            any(
+                "PROTECTED_ORACLE_REVIEW_REQUIRED" in text
+                for text in rendered_captions
+            )
+        )
 
     @patch("views.assurance_records.st.warning")
     @patch("views.assurance_records.requests.get")

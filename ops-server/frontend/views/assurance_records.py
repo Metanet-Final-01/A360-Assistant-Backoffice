@@ -34,6 +34,7 @@ _CONTROL_STATUS_LABELS = {
     "deny": "거부",
     "unassured": "추가 검토 필요",
     "error": "검사 오류",
+    "not_applicable": "검사 대상 아님",
 }
 _CONTROL_REASON_LABELS = {
     "MANIFEST_DERIVED_FROM_GIT": "변경 목록을 Git 기준으로 생성함",
@@ -45,6 +46,42 @@ _CONTROL_REASON_LABELS = {
     "PROTECTED_ORACLE_UNCHANGED": "보호 대상 파일이 변경되지 않아 별도 리뷰가 필요하지 않음",
     "SUBJECT_BOUND": "판정 대상 커밋과 증거가 일치함",
     "EVIDENCE_DIGESTS_VERIFIED": "증거 파일 지문이 검증됨",
+    "DEPENDENCY_DETECTOR_ERROR": "의존성 검사 도중 오류가 발생함",
+    "DEPENDENCY_CHANGE_NOT_APPLICABLE": "의존성 변경이 없어 검사가 적용되지 않음",
+    "DEPENDENCY_CLOSURE_VERIFIED": "의존성 선언·버전·취약점·라이선스 검증을 통과함",
+    "SUBJECT_BINDING_INCOMPLETE": "판정 대상 커밋과 체크아웃 상태가 일치하지 않음",
+    "EVIDENCE_DIGEST_MISMATCH": "증거 파일이 누락됐거나 지문이 일치하지 않음",
+    "DETECTOR_EXECUTION_ERROR": "신뢰된 판정기를 실행하지 못함",
+}
+_CONTROL_GUIDANCE = {
+    "DEPENDENCY_CLOSURE_DENIED": (
+        "변경된 의존성의 선언·고정 버전·취약점·라이선스·설치 경로 중 하나 이상이 정책을 통과하지 못했습니다.",
+        "증거 위치의 dependency 규칙별 사유를 확인하고 직접 의존성 선언, 정확한 버전 고정 또는 승인 정책을 보완하세요.",
+    ),
+    "DEPENDENCY_EVIDENCE_INCOMPLETE": (
+        "의존성 검사를 끝내는 데 필요한 검토된 취약점·라이선스 증거가 부족합니다.",
+        "대상 패키지 버전에 맞는 검토 증거와 정책 상태를 보완한 뒤 다시 실행하세요.",
+    ),
+    "DEPENDENCY_DETECTOR_ERROR": (
+        "의존성 파일이나 import를 파싱하는 과정에서 검사를 완료하지 못했습니다.",
+        "dependency-evidence.json의 오류 사유와 변경된 manifest 형식을 확인하세요.",
+    ),
+    "PROTECTED_ORACLE_REVIEW_REQUIRED": (
+        "테스트·워크플로·보증 정책 등 판정 기준 자체가 변경됐지만 최신 커밋에 대한 독립 승인이 없습니다.",
+        "PR 작성자와 다른 사람이 최신 HEAD에 Approve 리뷰를 제출하세요.",
+    ),
+    "SUBJECT_BINDING_INCOMPLETE": (
+        "검사한 체크아웃과 PR 최신 커밋 또는 추적 파일 상태가 일치하지 않습니다.",
+        "최신 PR HEAD를 깨끗하게 체크아웃한 상태에서 Change Assurance를 다시 실행하세요.",
+    ),
+    "EVIDENCE_DIGEST_MISMATCH": (
+        "판정이 참조하는 증거 파일이 없거나 SHA-256 지문이 달라 무결성을 확인할 수 없습니다.",
+        "artifact 생성·업로드 과정과 SHA256SUMS를 확인한 뒤 다시 실행하세요.",
+    ),
+    "DETECTOR_EXECUTION_ERROR": (
+        "신뢰된 판정기가 실행을 완료하지 못해 어떤 통제도 통과로 확정할 수 없습니다.",
+        "Actions 로그의 판정기 오류와 detector-error.json을 확인한 뒤 다시 실행하세요.",
+    ),
 }
 _HUMAN_REVIEW_REASON_LABELS = {
     "HUMAN_REVIEW_VERIFIED": "현재 커밋에 대한 사람 승인을 확인함",
@@ -213,8 +250,12 @@ def _status_text(row: dict) -> str:
 
 def _current_status_text(row: dict) -> str:
     status = _status_text(row)
+    mode = row.get("rollout_mode")
+    effect = row.get("enforcement_effect")
     if status == "관찰됨":
-        return "통과 (Observe)"
+        return f"통과 ({'Warn' if mode == 'warn' else 'Observe'})"
+    if mode == "warn" and effect == "warned":
+        return f"경고 (Warn): {status}"
     if status in {"판단 불가", "보증 불충족"}:
         return "검토 필요"
     return status
@@ -500,6 +541,46 @@ def _change_control_rows(payload: dict) -> list[dict]:
     return rows
 
 
+def _change_warning_details(payload: dict) -> list[dict]:
+    controls = payload.get("controls", [])
+    if not isinstance(controls, list):
+        return []
+    details = []
+    for control in controls:
+        if (
+            not isinstance(control, dict)
+            or control.get("status") in {"pass", "not_applicable"}
+        ):
+            continue
+        explanation = control.get("explanation")
+        explanation = explanation if isinstance(explanation, dict) else {}
+        reason_code = control.get("reason_code")
+        fallback_impact, fallback_action = _CONTROL_GUIDANCE.get(
+            reason_code,
+            (
+                "이 통제를 통과하지 못해 현재 변경을 완전히 보증할 수 없습니다.",
+                "원본 사유 코드와 증거 파일을 확인한 뒤 다시 실행하세요.",
+            ),
+        )
+        details.append({
+            "통제": control.get("control_id"),
+            "상태": _CONTROL_STATUS_LABELS.get(
+                control.get("status"), control.get("status")
+            ),
+            "판정 설명": _CONTROL_REASON_LABELS.get(reason_code, reason_code),
+            "발견 내용": (
+                explanation.get("finding")
+                or control.get("reason")
+                or _CONTROL_REASON_LABELS.get(reason_code, reason_code)
+            ),
+            "왜 통과가 아닌가": explanation.get("impact") or fallback_impact,
+            "확인/조치": explanation.get("action") or fallback_action,
+            "사유 코드": reason_code,
+            "증거 위치": control.get("evidence_uri"),
+        })
+    return details
+
+
 def _change_subject(payload: dict) -> dict:
     subject = payload.get("subject")
     subject = subject if isinstance(subject, dict) else {}
@@ -526,6 +607,16 @@ def _status_notice(detail: dict) -> tuple[str, str]:
         return "error", status
     if integrity is not True:
         return "warning", status
+    if (
+        detail.get("harness") == "change"
+        and detail.get("rollout_mode") == "warn"
+        and detail.get("enforcement_effect") == "warned"
+    ):
+        return (
+            "warning",
+            "Change Assurance 경고가 발생했습니다. 통제별 상세 사유와 확인/조치를 확인하세요. "
+            "현재 Warn 단계이므로 PR 병합은 자동 차단하지 않습니다.",
+        )
     if detail.get("harness") == "change" and verdict == "refused":
         mode = detail.get("rollout_mode") or "unknown"
         effect = detail.get("enforcement_effect")
@@ -637,6 +728,23 @@ def _render_detail(row: dict) -> None:
             st.dataframe(pd.DataFrame(control_rows), width="stretch", hide_index=True)
         else:
             st.warning("저장된 통제별 판정이 없습니다. 증거 기록을 확인하세요.")
+        warning_details = _change_warning_details(payload)
+        if warning_details:
+            section_header("비통과 판정 상세")
+            for warning_detail in warning_details:
+                with st.expander(
+                    f"{warning_detail['통제']} · {warning_detail['상태']} · "
+                    f"{warning_detail['판정 설명']}"
+                ):
+                    st.markdown(f"**발견 내용**  \n{warning_detail['발견 내용']}")
+                    st.markdown(
+                        f"**왜 통과가 아닌가**  \n{warning_detail['왜 통과가 아닌가']}"
+                    )
+                    st.markdown(f"**확인/조치**  \n{warning_detail['확인/조치']}")
+                    st.caption(
+                        f"사유 코드: {warning_detail['사유 코드']} · "
+                        f"증거: {warning_detail['증거 위치'] or '-'}"
+                    )
 
         section_header("이 기록 생성 시점의 사람 검토")
         review_summary = _human_review_summary(detail)
