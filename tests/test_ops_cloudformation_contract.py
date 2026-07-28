@@ -140,10 +140,10 @@ def test_ops_ec2_direct_access_is_limited_to_client_vpn():
     assert "AWS::ElasticLoadBalancingV2::Listener" not in template
     assert "TargetGroupARNs" not in template
     assert "CidrIp: !Ref ClientVpnCidr" in template
-    assert "ClientVpnSecurityGroupId" in template
     assert "OpsUiIngressFromClientVpnSecurityGroup" in template
     assert "OpsBackendIngressFromClientVpnSecurityGroup" in template
-    assert "SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId" in template
+    assert "${ProjectName}-${Environment}-ClientVpnSecurityGroupId" in template
+    assert "SourceSecurityGroupId:" in template
     assert "InternalAlbDnsName" not in template
     assert "InternalAlbSecurityGroupId" not in template
 
@@ -203,11 +203,9 @@ def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
     assert "GHCR_TOKEN_SECRET_ARN" in workflow
     assert "OPS_RUNTIME_SECRET_ARN" in workflow
     assert "A360_BACKEND_URL" in workflow
-    assert "CLIENT_VPN_SECURITY_GROUP_ID" in workflow
     assert "GHCR_TOKEN_SECRET_ARN is empty" in workflow
     assert "OPS_RUNTIME_SECRET_ARN is empty" in workflow
     assert "A360_BACKEND_URL is empty" in workflow
-    assert "ClientVpnSecurityGroupId=\"${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}\"" in workflow
     assert "EnableDefaultRagIngestSchedule=\"${{ inputs.enable_default_rag_ingest_schedule || 'true' }}\"" in workflow
     assert "infra-contract" in tests_workflow
     assert "python -m pytest tests/ -q" in tests_workflow

@@ -203,7 +203,6 @@ jobs:
           GHCR_TOKEN_SECRET_ARN: ${{ secrets.GHCR_TOKEN_SECRET_ARN }}
           OPS_RUNTIME_SECRET_ARN: ${{ secrets.OPS_RUNTIME_SECRET_ARN }}
           A360_BACKEND_URL: ${{ secrets.A360_BACKEND_URL }}
-          CLIENT_VPN_SECURITY_GROUP_ID: ${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}
         run: |
           if [ -z "$AWS_DEPLOY_ROLE_ARN" ]; then
             echo "AWS_DEPLOY_ROLE_ARN is missing from the selected GitHub Environment." >&2
@@ -217,9 +216,6 @@ jobs:
           fi
           if [ -z "$A360_BACKEND_URL" ]; then
             echo "A360_BACKEND_URL is empty; stack deploy will skip backend URL injection."
-          fi
-          if [ -z "$CLIENT_VPN_SECURITY_GROUP_ID" ]; then
-            echo "CLIENT_VPN_SECURITY_GROUP_ID is empty; Ops EC2 direct access will rely on ClientVpnCidr only."
           fi
 
       - uses: aws-actions/configure-aws-credentials@v4
@@ -253,7 +249,6 @@ jobs:
               OpsPrivateHostedZoneName="${{ inputs.ops_private_hosted_zone_name || 'dev.a360.internal' }}" \
               OpsPrivateDnsRecordName="${{ inputs.ops_private_dns_record_name || 'ops.dev.a360.internal' }}" \
               ClientVpnCidr="${{ inputs.client_vpn_cidr || '10.250.0.0/22' }}" \
-              ClientVpnSecurityGroupId="${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}" \
               GhcrUsername="${{ secrets.GHCR_USERNAME }}" \
               GhcrTokenSecretArn="${{ secrets.GHCR_TOKEN_SECRET_ARN }}" \
               OpsRuntimeSecretArn="${{ secrets.OPS_RUNTIME_SECRET_ARN }}" \
