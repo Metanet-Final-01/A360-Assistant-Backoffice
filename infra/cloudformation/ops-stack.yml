@@ -48,7 +48,7 @@ Parameters:
     Description: Run a separate SQS consumer container for scheduled RAG ingest jobs.
   EnableDefaultRagIngestSchedule:
     Type: String
-    Default: "false"
+    Default: "true"
     AllowedValues: ["true", "false"]
     Description: Create a default EventBridge Scheduler schedule that sends RAG ingest jobs to SQS.
   RagIngestScheduleExpression:
@@ -559,6 +559,8 @@ Resources:
                 -e INGEST_DATA_DIR=/app/data/ingest \
                 -e RAG_ARTIFACT_BUCKET="${ArtifactBucketName}" \
                 -e RAG_ARTIFACT_PREFIX="rag-ingest-artifacts" \
+                -e RAG_ARTIFACT_RESTORE_WAIT_SECONDS=20 \
+                -e RAG_ARTIFACT_RESTORE_POLL_SECONDS=5 \
                 -e RAG_LOG_DIR=/app/app/rag/logs \
                 -e CHUNK_SIZE=1200 \
                 -e CHUNK_OVERLAP=120 \

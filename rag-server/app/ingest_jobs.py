@@ -235,15 +235,47 @@ def _restore_artifacts_before_ingest(clean: bool, requested_by: str) -> dict[str
         return {"ok": True, "restored": False, "reason": "explicit-rebuild"}
     if _local_rag_documents_exists():
         return {"ok": True, "restored": False, "reason": "local-present"}
-    try:
-        from app import artifacts
+    deadline = time.monotonic() + _artifact_restore_wait_seconds(requested_by)
+    while True:
+        try:
+            from app import artifacts
 
-        result = artifacts.restore_latest_if_missing()
-        print(f"RAG artifact restore before ingest: {json.dumps(result, ensure_ascii=False)} requested_by={requested_by}")
-        return result
-    except Exception as exc:
-        print(f"RAG artifact restore before ingest skipped: {type(exc).__name__} requested_by={requested_by}")
-        return {"ok": False, "restored": False, "reason": type(exc).__name__}
+            result = artifacts.restore_latest_if_missing()
+            print(f"RAG artifact restore before ingest: {json.dumps(result, ensure_ascii=False)} requested_by={requested_by}")
+        except Exception as exc:
+            result = {"ok": False, "restored": False, "reason": type(exc).__name__}
+            print(f"RAG artifact restore before ingest skipped: {type(exc).__name__} requested_by={requested_by}")
+
+        if result.get("ok") or not _requires_artifact_for_ingest(requested_by):
+            return result
+        if result.get("reason") != "artifact-not-found" or time.monotonic() >= deadline:
+            raise RuntimeError(
+                "RAG artifact restore is required before scheduled ingest, "
+                f"but restore failed: {result.get('reason', 'unknown')}"
+            )
+        time.sleep(_artifact_restore_poll_seconds())
+
+
+def _requires_artifact_for_ingest(requested_by: str) -> bool:
+    return requested_by.startswith("eventbridge-")
+
+
+def _artifact_restore_wait_seconds(requested_by: str) -> float:
+    if not _requires_artifact_for_ingest(requested_by):
+        return 0.0
+    value = os.getenv("RAG_ARTIFACT_RESTORE_WAIT_SECONDS", "20")
+    try:
+        return max(0.0, float(value))
+    except ValueError:
+        return 20.0
+
+
+def _artifact_restore_poll_seconds() -> float:
+    value = os.getenv("RAG_ARTIFACT_RESTORE_POLL_SECONDS", "5")
+    try:
+        return max(1.0, float(value))
+    except ValueError:
+        return 5.0
 
 
 def _local_rag_documents_exists() -> bool:

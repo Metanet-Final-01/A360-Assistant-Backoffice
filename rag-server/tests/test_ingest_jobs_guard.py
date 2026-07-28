@@ -21,7 +21,27 @@ def test_restore_runs_when_local_artifact_missing(monkeypatch):
     assert result["restored"] is True
 
 
-def test_restore_allows_first_ingest_when_s3_artifact_is_absent(monkeypatch):
+def test_restore_requires_s3_artifact_for_scheduled_ingest(monkeypatch):
+    monkeypatch.delenv("RAG_ALLOW_COLD_REBUILD", raising=False)
+    monkeypatch.setenv("RAG_ARTIFACT_RESTORE_WAIT_SECONDS", "0")
+    monkeypatch.setattr(ingest_jobs, "_local_rag_documents_exists", lambda: False)
+
+    class Artifacts:
+        @staticmethod
+        def restore_latest_if_missing():
+            return {"ok": False, "restored": False, "reason": "artifact-not-found"}
+
+    monkeypatch.setitem(ingest_jobs.sys.modules, "app.artifacts", Artifacts)
+
+    try:
+        ingest_jobs._restore_artifacts_before_ingest(clean=False, requested_by="eventbridge-sqs")
+    except RuntimeError as exc:
+        assert "artifact restore is required" in str(exc)
+    else:
+        raise AssertionError("scheduled ingest must not cold rebuild without a restorable artifact")
+
+
+def test_restore_allows_manual_first_ingest_when_s3_artifact_is_absent(monkeypatch):
     monkeypatch.delenv("RAG_ALLOW_COLD_REBUILD", raising=False)
     monkeypatch.setattr(ingest_jobs, "_local_rag_documents_exists", lambda: False)
 
@@ -32,7 +52,7 @@ def test_restore_allows_first_ingest_when_s3_artifact_is_absent(monkeypatch):
 
     monkeypatch.setitem(ingest_jobs.sys.modules, "app.artifacts", Artifacts)
 
-    result = ingest_jobs._restore_artifacts_before_ingest(clean=False, requested_by="eventbridge-sqs")
+    result = ingest_jobs._restore_artifacts_before_ingest(clean=False, requested_by="ops")
 
     assert result["restored"] is False
     assert result["reason"] == "artifact-not-found"

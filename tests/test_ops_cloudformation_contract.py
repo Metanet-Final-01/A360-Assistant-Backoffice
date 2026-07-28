@@ -169,6 +169,7 @@ def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
     assert "push:" in workflow
     assert "branches:" in workflow
     assert "- dev" in workflow
+    assert "- main" in workflow
     assert 'image_tag="${GITHUB_SHA::12}"' in workflow
     assert "ops-backend:${{ needs.meta.outputs.image_tag }}" in workflow
     assert "ops-ui:${{ needs.meta.outputs.image_tag }}" in workflow
@@ -186,5 +187,6 @@ def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
     assert "OPS_RUNTIME_SECRET_ARN is empty" in workflow
     assert "A360_BACKEND_URL is empty" in workflow
     assert "ClientVpnSecurityGroupId=\"${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}\"" in workflow
+    assert "EnableDefaultRagIngestSchedule=\"${{ inputs.enable_default_rag_ingest_schedule || 'true' }}\"" in workflow
     assert "infra-contract" in tests_workflow
     assert "python -m pytest tests/ -q" in tests_workflow

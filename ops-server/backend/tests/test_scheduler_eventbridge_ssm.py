@@ -106,7 +106,7 @@ def test_ops_stack_defines_default_rag_ingest_schedule():
     target_input = schedule["Properties"]["Target"]["Input"]
 
     assert schedule["Condition"] == "CreatesDefaultRagIngestSchedule"
-    assert template["Parameters"]["EnableDefaultRagIngestSchedule"]["Default"] == "false"
+    assert template["Parameters"]["EnableDefaultRagIngestSchedule"]["Default"] == "true"
     assert template["Parameters"]["RagIngestScheduleExpression"]["Default"] == "cron(30 8 ? * * *)"
     assert template["Parameters"]["RagIngestScheduleTimezone"]["Default"] == "Asia/Seoul"
     assert '"type": "rag_ingest"' in target_input
