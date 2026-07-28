@@ -70,6 +70,19 @@ Parameters:
     Type: String
     Default: ""
     Description: Optional Client VPN endpoint security group ID. When set, the Ops EC2 accepts direct UI/API traffic from this SG as well as ClientVpnCidr.
+  EnableOpsPrivateDns:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+    Description: Create a Route53 private DNS name for the single Ops EC2 instance.
+  OpsPrivateHostedZoneName:
+    Type: String
+    Default: dev.a360.internal
+    Description: Route53 private hosted zone name associated with the A360 VPC.
+  OpsPrivateDnsRecordName:
+    Type: String
+    Default: ops.dev.a360.internal
+    Description: Private DNS record that points to the current Ops EC2 private IP.
   LogRetentionDays:
     Type: Number
     Default: 14
@@ -111,6 +124,7 @@ Conditions:
   CreateRagServiceTokenSecret: !Equals [!Ref RagServiceTokenSecretArn, ""]
   RunsRagWorker: !Equals [!Ref EnableRagWorker, "true"]
   CreatesDefaultRagIngestSchedule: !Equals [!Ref EnableDefaultRagIngestSchedule, "true"]
+  CreatesOpsPrivateDns: !Equals [!Ref EnableOpsPrivateDns, "true"]
 
 Resources:
   OpsGhcrReadTokenSecret:
@@ -213,6 +227,28 @@ Resources:
       ToPort: !Ref OpsBackendPort
       SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId
       Description: Allow Client VPN endpoint security group to reach the Ops backend API directly.
+
+  OpsPrivateHostedZone:
+    Type: AWS::Route53::HostedZone
+    Condition: CreatesOpsPrivateDns
+    Properties:
+      Name: !Ref OpsPrivateHostedZoneName
+      HostedZoneConfig:
+        Comment: !Sub "Private DNS zone for ${ProjectName} ${Environment} Ops access."
+      VPCs:
+        - VPCId:
+            Fn::ImportValue:
+              Fn::Sub: "${ProjectName}-${Environment}-VpcId"
+          VPCRegion: !Ref AWS::Region
+      HostedZoneTags:
+        - Key: Project
+          Value: !Ref ProjectName
+        - Key: Environment
+          Value: !Ref Environment
+        - Key: Owner
+          Value: !Ref Owner
+        - Key: Service
+          Value: ops
 
   ObservabilityDbIngressFromOps:
     Type: AWS::EC2::SecurityGroupIngress
@@ -327,6 +363,12 @@ Resources:
                       - BucketName:
                           Fn::ImportValue:
                             Fn::Sub: "${ProjectName}-${Environment}-ArtifactBucketName"
+              - !If
+                - CreatesOpsPrivateDns
+                - Effect: Allow
+                  Action: route53:ChangeResourceRecordSets
+                  Resource: !Sub "arn:${AWS::Partition}:route53:::hostedzone/${OpsPrivateHostedZone}"
+                - !Ref AWS::NoValue
               - Effect: Allow
                 Action:
                   - sqs:ReceiveMessage
@@ -461,12 +503,15 @@ Resources:
               dnf install -y docker awscli jq aws-cfn-bootstrap
               IMDS_TOKEN=$(curl -fsS -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600" || true)
               INSTANCE_ID=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/instance-id || echo unknown-instance)
+              PRIVATE_IP=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4 || true)
               upload_bootstrap_logs() {
                 aws s3 cp /var/log/a360-ops-bootstrap.log "s3://${ArtifactBucketName}/ops-bootstrap-logs/${AWS::StackName}/$INSTANCE_ID/a360-ops-bootstrap.log" || true
                 aws s3 cp /var/log/cloud-init-output.log "s3://${ArtifactBucketName}/ops-bootstrap-logs/${AWS::StackName}/$INSTANCE_ID/cloud-init-output.log" || true
               }
               trap 'upload_bootstrap_logs; /opt/aws/bin/cfn-signal --success false --stack ${AWS::StackName} --resource OpsAutoScalingGroup --region ${AWS::Region}' ERR
               systemctl enable --now docker
+
+              ${UpsertOpsPrivateDns}
 
               restore_rag_artifacts() {
                 local bucket="${ArtifactBucketName}"
@@ -721,6 +766,36 @@ Resources:
               RagJobQueueArn:
                 Fn::ImportValue:
                   Fn::Sub: "${ProjectName}-${Environment}-RagJobQueueArn"
+              UpsertOpsPrivateDns: !If
+                - CreatesOpsPrivateDns
+                - !Sub |
+                  if [ -z "$PRIVATE_IP" ]; then
+                    echo "Could not resolve Ops EC2 private IP for Route53 private DNS update." >&2
+                    exit 1
+                  fi
+                  cat > /tmp/a360-ops-private-dns.json <<DNSJSON
+                  {
+                    "Comment": "Point ${OpsPrivateDnsRecordName} to $INSTANCE_ID",
+                    "Changes": [
+                      {
+                        "Action": "UPSERT",
+                        "ResourceRecordSet": {
+                          "Name": "${OpsPrivateDnsRecordName}.",
+                          "Type": "A",
+                          "TTL": 60,
+                          "ResourceRecords": [
+                            { "Value": "$PRIVATE_IP" }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                  DNSJSON
+                  aws route53 change-resource-record-sets \
+                    --hosted-zone-id "${OpsPrivateHostedZone}" \
+                    --change-batch file:///tmp/a360-ops-private-dns.json
+                  echo "Updated Ops private DNS ${OpsPrivateDnsRecordName} -> $PRIVATE_IP"
+                - ""
               RunRagWorkerContainer: !If
                 - RunsRagWorker
                 - !Sub
@@ -879,6 +954,18 @@ Outputs:
   OpsBackendPort:
     Description: Ops backend API port reachable on the Ops EC2 private IP through Client VPN.
     Value: !Ref OpsBackendPort
+  OpsPrivateDnsName:
+    Condition: CreatesOpsPrivateDns
+    Description: Route53 private DNS name for the Ops Streamlit UI. Use this through Client VPN.
+    Value: !Ref OpsPrivateDnsRecordName
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-OpsPrivateDnsName"
+  OpsPrivateHostedZoneId:
+    Condition: CreatesOpsPrivateDns
+    Description: Route53 private hosted zone ID used for Ops direct access.
+    Value: !Ref OpsPrivateHostedZone
+    Export:
+      Name: !Sub "${ProjectName}-${Environment}-OpsPrivateHostedZoneId"
   RagScheduleRoleArn:
     Description: EventBridge Scheduler execution role used for RAG ingest schedules.
     Value: !GetAtt RagScheduleRole.Arn

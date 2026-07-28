@@ -148,6 +148,23 @@ def test_ops_ec2_direct_access_is_limited_to_client_vpn():
     assert "InternalAlbSecurityGroupId" not in template
 
 
+def test_ops_direct_access_has_route53_private_dns():
+    template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
+    workflow = (ROOT / ".github/workflows/ops-deploy.yml").read_text(encoding="utf-8")
+
+    assert "EnableOpsPrivateDns" in template
+    assert "Default: dev.a360.internal" in template
+    assert "Default: ops.dev.a360.internal" in template
+    assert "OpsPrivateHostedZone:" in template
+    assert "AWS::Route53::HostedZone" in template
+    assert "VPCRegion: !Ref AWS::Region" in template
+    assert "route53:ChangeResourceRecordSets" in template
+    assert "change-resource-record-sets" in template
+    assert "OpsPrivateDnsName:" in template
+    assert 'EnableOpsPrivateDns="${{ inputs.enable_ops_private_dns || \'true\' }}"' in workflow
+    assert 'OpsPrivateDnsRecordName="${{ inputs.ops_private_dns_record_name || \'ops.dev.a360.internal\' }}"' in workflow
+
+
 def test_ops_asg_uses_single_admin_instance_defaults_and_ec2_health():
     template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
     workflow = (ROOT / ".github/workflows/ops-deploy.yml").read_text(encoding="utf-8")

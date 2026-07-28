@@ -83,6 +83,24 @@ on:
         options:
           - "false"
           - "true"
+      enable_ops_private_dns:
+        description: Create Route53 private DNS for direct Client VPN Ops access
+        required: true
+        default: "true"
+        type: choice
+        options:
+          - "true"
+          - "false"
+      ops_private_hosted_zone_name:
+        description: Route53 private hosted zone name for Ops direct access
+        required: true
+        default: dev.a360.internal
+        type: string
+      ops_private_dns_record_name:
+        description: Route53 private DNS record for the Ops UI
+        required: true
+        default: ops.dev.a360.internal
+        type: string
   push:
     branches:
       - dev
@@ -231,6 +249,9 @@ jobs:
               RagIngestScheduleExpression="${{ inputs.rag_ingest_schedule_expression || 'cron(30 8 ? * * *)' }}" \
               RagIngestScheduleTimezone="${{ inputs.rag_ingest_schedule_timezone || 'Asia/Seoul' }}" \
               RagIngestClean="${{ inputs.rag_ingest_clean || 'false' }}" \
+              EnableOpsPrivateDns="${{ inputs.enable_ops_private_dns || 'true' }}" \
+              OpsPrivateHostedZoneName="${{ inputs.ops_private_hosted_zone_name || 'dev.a360.internal' }}" \
+              OpsPrivateDnsRecordName="${{ inputs.ops_private_dns_record_name || 'ops.dev.a360.internal' }}" \
               ClientVpnCidr="${{ inputs.client_vpn_cidr || '10.250.0.0/22' }}" \
               ClientVpnSecurityGroupId="${{ vars.CLIENT_VPN_SECURITY_GROUP_ID }}" \
               GhcrUsername="${{ secrets.GHCR_USERNAME }}" \
