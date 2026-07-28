@@ -42,7 +42,7 @@ _V2_STAGES = [
 # 모드가 무엇이든 같은 단계를 밟는다(파이프라인이 하나뿐이므로).
 STAGES = {mode: _V2_STAGES for mode in MODES}
 
-TERMINAL_STATUSES = {"SUCCEEDED", "FAILED", "CANCELED", "INTERRUPTED"}
+TERMINAL_STATUSES = {"SUCCEEDED", "FAILED", "CANCELED", "INTERRUPTED", "SKIPPED"}
 RUNNING_STATUSES = {"QUEUED", "RUNNING", "CANCEL_REQUESTED"}
 
 _lock = threading.RLock()
@@ -211,7 +211,15 @@ def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_li
                 conn.rollback()
                 raise ConflictError(active["job_id"])
             conn.rollback()
-        _restore_artifacts_before_ingest(clean=clean, requested_by=requested_by)
+        restore_result = _restore_artifacts_before_ingest(clean=clean, requested_by=requested_by)
+        if restore_result and restore_result.get("skip"):
+            return _create_skipped_job(
+                mode=mode,
+                clean=clean,
+                requested_by=requested_by,
+                agent_parse_limit=agent_parse_limit,
+                restore_result=restore_result,
+            )
         with _connect() as conn:
             conn.execute("begin immediate")
             conn.execute(
@@ -230,12 +238,39 @@ def create_job(mode: str, clean: bool, requested_by: str = "ops", agent_parse_li
         return get_job(job_id) or {"job_id": job_id, "status": "QUEUED"}
 
 
+def _create_skipped_job(
+    *,
+    mode: str,
+    clean: bool,
+    requested_by: str,
+    agent_parse_limit: int | None,
+    restore_result: dict[str, Any],
+) -> dict[str, Any]:
+    job_id = str(uuid.uuid4())
+    now = _utcnow()
+    reason = restore_result.get("reason") or "artifact-not-found"
+    message = f"Scheduled RAG ingest skipped because no restorable S3 artifact is available: {reason}"
+    with _connect() as conn:
+        conn.execute(
+            """
+            insert into jobs (
+                job_id, mode, clean, status, current_stage, started_at, finished_at, requested_by,
+                agent_parse_limit, exit_code, error_message, created_at, updated_at, canceled_at
+            ) values (?, ?, ?, 'SKIPPED', null, ?, ?, ?, ?, 0, ?, ?, ?, null)
+            """,
+            (job_id, mode, int(clean), now, now, requested_by, agent_parse_limit, message, now, now),
+        )
+    _add_event(job_id, "skipped", {"status": "SKIPPED", "message": message, "restore": restore_result})
+    return get_job(job_id) or {"job_id": job_id, "status": "SKIPPED", "error_message": message}
+
+
 def _restore_artifacts_before_ingest(clean: bool, requested_by: str) -> dict[str, Any] | None:
     if clean or os.getenv("RAG_ALLOW_COLD_REBUILD", "").lower() == "true":
         return {"ok": True, "restored": False, "reason": "explicit-rebuild"}
     if _local_rag_documents_exists():
         return {"ok": True, "restored": False, "reason": "local-present"}
     deadline = time.monotonic() + _artifact_restore_wait_seconds(requested_by)
+    last_result: dict[str, Any] = {}
     while True:
         try:
             from app import artifacts
@@ -243,15 +278,24 @@ def _restore_artifacts_before_ingest(clean: bool, requested_by: str) -> dict[str
             result = artifacts.restore_latest_if_missing()
             print(f"RAG artifact restore before ingest: {json.dumps(result, ensure_ascii=False)} requested_by={requested_by}")
         except Exception as exc:
-            result = {"ok": False, "restored": False, "reason": type(exc).__name__}
+            result = {"ok": False, "restored": False, "reason": type(exc).__name__, "error": str(exc)}
             print(f"RAG artifact restore before ingest skipped: {type(exc).__name__} requested_by={requested_by}")
 
         if result.get("ok") or not _requires_artifact_for_ingest(requested_by):
             return result
-        if result.get("reason") != "artifact-not-found" or time.monotonic() >= deadline:
+        last_result = result
+        reason = str(result.get("reason") or "unknown")
+        if reason in {"artifact-bucket-not-configured", "AccessDenied", "NoSuchBucket"}:
             raise RuntimeError(
                 "RAG artifact restore is required before scheduled ingest, "
-                f"but restore failed: {result.get('reason', 'unknown')}"
+                f"but restore failed permanently: {reason}"
+            )
+        if time.monotonic() >= deadline:
+            if reason == "artifact-not-found":
+                return {**last_result, "skip": True}
+            raise RuntimeError(
+                "RAG artifact restore is required before scheduled ingest, "
+                f"but restore did not succeed before timeout: {reason}; {last_result.get('error', '')}".rstrip()
             )
         time.sleep(_artifact_restore_poll_seconds())
 

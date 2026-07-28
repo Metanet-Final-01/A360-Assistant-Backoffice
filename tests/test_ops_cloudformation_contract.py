@@ -157,9 +157,13 @@ def test_ops_direct_access_has_route53_private_dns():
     assert "Default: ops.dev.a360.internal" in template
     assert "OpsPrivateHostedZone:" in template
     assert "AWS::Route53::HostedZone" in template
+    assert "DeletionPolicy: Retain" in _resource_block(template, "OpsPrivateHostedZone")
+    assert "UpdateReplacePolicy: Retain" in _resource_block(template, "OpsPrivateHostedZone")
     assert "VPCRegion: !Ref AWS::Region" in template
     assert "route53:ChangeResourceRecordSets" in template
     assert "change-resource-record-sets" in template
+    assert "Skipping Ops private DNS update because private IP was not available." in template
+    assert "Route53 private DNS update skipped after retries; bootstrap continues." in template
     assert "OpsPrivateDnsName:" in template
     assert 'EnableOpsPrivateDns="${{ inputs.enable_ops_private_dns || \'true\' }}"' in workflow
     assert 'OpsPrivateDnsRecordName="${{ inputs.ops_private_dns_record_name || \'ops.dev.a360.internal\' }}"' in workflow

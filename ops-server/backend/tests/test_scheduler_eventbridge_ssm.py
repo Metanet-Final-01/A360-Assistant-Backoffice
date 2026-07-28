@@ -215,6 +215,54 @@ def test_sqs_consumer_keeps_message_when_rag_job_fails():
     assert sqs.deleted == []
 
 
+def test_sqs_consumer_deletes_message_when_rag_job_is_skipped():
+    class FakeSqs:
+        def __init__(self):
+            self.deleted = []
+
+        def receive_message(self, **kwargs):
+            return {
+                "Messages": [{
+                    "MessageId": "m-1",
+                    "ReceiptHandle": "rh-1",
+                    "Body": json.dumps({"type": "rag_ingest", "schedule_id": "test", "option": 3, "clean": False}),
+                }]
+            }
+
+        def delete_message(self, **kwargs):
+            self.deleted.append(kwargs)
+
+        def change_message_visibility(self, **kwargs):
+            pass
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.method == "POST":
+            return httpx.Response(200, json={"job_id": "job-skip", "status": "SKIPPED"})
+        return httpx.Response(200, json={
+            "job_id": "job-skip",
+            "status": "SKIPPED",
+            "error_message": "No restorable artifact",
+        })
+
+    sqs = FakeSqs()
+    consumer = SqsRagIngestConsumer(
+        queue_url="https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        rag_server_url="http://127.0.0.1:8200",
+        sqs_client=sqs,
+        http_client=httpx.Client(transport=httpx.MockTransport(handler)),
+        status_poll_seconds=0,
+    )
+
+    result = consumer.poll_once(wait_time_seconds=0)
+
+    assert result[0]["status"] == "processed"
+    assert result[0]["rag_job"]["status"] == "SKIPPED"
+    assert sqs.deleted == [{
+        "QueueUrl": "https://sqs.ap-northeast-2.amazonaws.com/123456789012/a360-rag-ingest",
+        "ReceiptHandle": "rh-1",
+    }]
+
+
 def test_sqs_consumer_waits_for_existing_job_on_conflict_then_deletes_message():
     class FakeSqs:
         def __init__(self):

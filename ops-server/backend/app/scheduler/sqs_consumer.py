@@ -21,6 +21,7 @@ OPTION_TO_JOB_MODE = {
     3: "agent_parse",
 }
 SUCCESS_JOB_STATUS = "SUCCEEDED"
+SKIPPED_JOB_STATUS = "SKIPPED"
 FAILED_JOB_STATUSES = {"FAILED", "CANCELED", "INTERRUPTED"}
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(message)s")
@@ -165,6 +166,9 @@ class SqsRagIngestConsumer:
             status = str(status_body.get("status") or "").upper()
             if status == SUCCESS_JOB_STATUS:
                 logger.info("rag ingest job succeeded job_id=%s", job_id)
+                return status_body
+            if status == SKIPPED_JOB_STATUS:
+                logger.info("rag ingest job skipped job_id=%s reason=%s", job_id, status_body.get("error_message"))
                 return status_body
             if status in FAILED_JOB_STATUSES:
                 raise RuntimeError(
