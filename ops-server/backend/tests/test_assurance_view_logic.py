@@ -598,6 +598,9 @@ class AssuranceViewLogicTest(unittest.TestCase):
         status_text.assert_called_once()
 
     @patch("views.assurance_records.section_header")
+    @patch("views.assurance_records.st.caption")
+    @patch("views.assurance_records.st.markdown")
+    @patch("views.assurance_records.st.expander")
     @patch("views.assurance_records.st.json")
     @patch("views.assurance_records.st.dataframe")
     @patch("views.assurance_records.st.info")
@@ -605,7 +608,17 @@ class AssuranceViewLogicTest(unittest.TestCase):
     @patch("views.assurance_records.st.columns")
     @patch("views.assurance_records._get")
     def test_change_detail_renders_subject_and_control_table(
-        self, get, columns, warning, info, dataframe, json, section_header
+        self,
+        get,
+        columns,
+        warning,
+        info,
+        dataframe,
+        json,
+        expander,
+        markdown,
+        caption,
+        section_header,
     ):
         left, right = Mock(), Mock()
         columns.return_value = (left, right)
@@ -649,6 +662,9 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertTrue(any("병합을 자동 차단하지 않습니다" in message for message in messages))
         info.assert_called_once()
         self.assertIn("승인 전에 생성된 과거 기록", info.call_args.args[0])
+        expander.assert_called_once()
+        self.assertEqual(markdown.call_count, 3)
+        caption.assert_called_once()
 
     @patch("views.assurance_records.st.warning")
     @patch("views.assurance_records.requests.get")
