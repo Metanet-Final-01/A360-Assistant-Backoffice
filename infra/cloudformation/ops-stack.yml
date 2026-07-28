@@ -66,10 +66,6 @@ Parameters:
   ClientVpnCidr:
     Type: String
     Default: 10.250.0.0/22
-  ClientVpnSecurityGroupId:
-    Type: String
-    Default: ""
-    Description: Optional Client VPN endpoint security group ID. When set, the Ops EC2 accepts direct UI/API traffic from this SG as well as ClientVpnCidr.
   EnableOpsPrivateDns:
     Type: String
     Default: "true"
@@ -118,7 +114,6 @@ Conditions:
   HasBackendUrl: !Not [!Equals [!Ref A360BackendUrl, ""]]
   HasBackendRuntimeSecretName: !Not [!Equals [!Ref BackendRuntimeSecretName, ""]]
   HasExternalGhcrTokenSecret: !Not [!Equals [!Ref GhcrTokenSecretArn, ""]]
-  HasClientVpnSecurityGroup: !Not [!Equals [!Ref ClientVpnSecurityGroupId, ""]]
   CreateGhcrTokenSecret: !Equals [!Ref GhcrTokenSecretArn, ""]
   CreateOpsRuntimeSecret: !Equals [!Ref OpsRuntimeSecretArn, ""]
   CreateRagServiceTokenSecret: !Equals [!Ref RagServiceTokenSecretArn, ""]
@@ -208,24 +203,26 @@ Resources:
 
   OpsUiIngressFromClientVpnSecurityGroup:
     Type: AWS::EC2::SecurityGroupIngress
-    Condition: HasClientVpnSecurityGroup
     Properties:
       GroupId: !Ref OpsInstanceSecurityGroup
       IpProtocol: tcp
       FromPort: !Ref OpsUiPort
       ToPort: !Ref OpsUiPort
-      SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId
+      SourceSecurityGroupId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-ClientVpnSecurityGroupId"
       Description: Allow Client VPN endpoint security group to reach the Ops Streamlit UI directly.
 
   OpsBackendIngressFromClientVpnSecurityGroup:
     Type: AWS::EC2::SecurityGroupIngress
-    Condition: HasClientVpnSecurityGroup
     Properties:
       GroupId: !Ref OpsInstanceSecurityGroup
       IpProtocol: tcp
       FromPort: !Ref OpsBackendPort
       ToPort: !Ref OpsBackendPort
-      SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId
+      SourceSecurityGroupId:
+        Fn::ImportValue:
+          Fn::Sub: "${ProjectName}-${Environment}-ClientVpnSecurityGroupId"
       Description: Allow Client VPN endpoint security group to reach the Ops backend API directly.
 
   OpsPrivateHostedZone:
