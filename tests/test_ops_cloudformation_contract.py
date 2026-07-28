@@ -132,15 +132,20 @@ def test_legacy_jsonl_log_groups_are_retained_if_removed_later():
         assert "UpdateReplacePolicy: Retain" in block
 
 
-def test_ops_alb_remains_internal_and_limited_to_client_vpn_cidr():
+def test_ops_ec2_direct_access_is_limited_to_client_vpn():
     template = (ROOT / "infra/cloudformation/ops-stack.yml").read_text(encoding="utf-8")
 
-    assert "Scheme: internal" in template
+    assert "AWS::ElasticLoadBalancingV2::LoadBalancer" not in template
+    assert "AWS::ElasticLoadBalancingV2::TargetGroup" not in template
+    assert "AWS::ElasticLoadBalancingV2::Listener" not in template
+    assert "TargetGroupARNs" not in template
     assert "CidrIp: !Ref ClientVpnCidr" in template
     assert "ClientVpnSecurityGroupId" in template
-    assert "InternalAlbIngressFromClientVpnSecurityGroup" in template
+    assert "OpsUiIngressFromClientVpnSecurityGroup" in template
+    assert "OpsBackendIngressFromClientVpnSecurityGroup" in template
     assert "SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId" in template
-    assert "Scheme: internet-facing" not in template
+    assert "InternalAlbDnsName" not in template
+    assert "InternalAlbSecurityGroupId" not in template
 
 
 def test_ops_asg_uses_single_admin_instance_defaults_and_ec2_health():

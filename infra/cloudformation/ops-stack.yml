@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: A360 Assistant Ops stack - private Ops/RAG EC2 Auto Scaling deployment behind an internal ALB.
+Description: A360 Assistant Ops stack - private single-instance Ops/RAG deployment accessed directly through Client VPN.
 
 Parameters:
   ProjectName:
@@ -63,16 +63,13 @@ Parameters:
     Default: "false"
     AllowedValues: ["true", "false"]
     Description: Whether the scheduled ingest should clean existing RAG corpus before ingest.
-  InternalAlbListenerPort:
-    Type: Number
-    Default: 80
   ClientVpnCidr:
     Type: String
     Default: 10.250.0.0/22
   ClientVpnSecurityGroupId:
     Type: String
     Default: ""
-    Description: Optional Client VPN endpoint security group ID. When set, the internal ALB accepts traffic from this SG as well as ClientVpnCidr.
+    Description: Optional Client VPN endpoint security group ID. When set, the Ops EC2 accepts direct UI/API traffic from this SG as well as ClientVpnCidr.
   LogRetentionDays:
     Type: Number
     Default: 14
@@ -175,26 +172,10 @@ Resources:
         - Key: Service
           Value: ops
 
-  InternalAlbSecurityGroup:
-    Type: AWS::EC2::SecurityGroup
-    Properties:
-      GroupDescription: Internal ALB access from Client VPN only
-      VpcId:
-        Fn::ImportValue:
-          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
-      SecurityGroupIngress:
-        - IpProtocol: tcp
-          FromPort: !Ref InternalAlbListenerPort
-          ToPort: !Ref InternalAlbListenerPort
-          CidrIp: !Ref ClientVpnCidr
-      SecurityGroupEgress:
-        - IpProtocol: -1
-          CidrIp: 0.0.0.0/0
-
   OpsInstanceSecurityGroup:
     Type: AWS::EC2::SecurityGroup
     Properties:
-      GroupDescription: Ops EC2 container host
+      GroupDescription: Ops EC2 container host accessed directly through Client VPN
       VpcId:
         Fn::ImportValue:
           Fn::Sub: "${ProjectName}-${Environment}-VpcId"
@@ -202,25 +183,36 @@ Resources:
         - IpProtocol: tcp
           FromPort: !Ref OpsUiPort
           ToPort: !Ref OpsUiPort
-          SourceSecurityGroupId: !Ref InternalAlbSecurityGroup
+          CidrIp: !Ref ClientVpnCidr
         - IpProtocol: tcp
           FromPort: !Ref OpsBackendPort
           ToPort: !Ref OpsBackendPort
-          SourceSecurityGroupId: !Ref InternalAlbSecurityGroup
+          CidrIp: !Ref ClientVpnCidr
       SecurityGroupEgress:
         - IpProtocol: -1
           CidrIp: 0.0.0.0/0
 
-  InternalAlbIngressFromClientVpnSecurityGroup:
+  OpsUiIngressFromClientVpnSecurityGroup:
     Type: AWS::EC2::SecurityGroupIngress
     Condition: HasClientVpnSecurityGroup
     Properties:
-      GroupId: !Ref InternalAlbSecurityGroup
+      GroupId: !Ref OpsInstanceSecurityGroup
       IpProtocol: tcp
-      FromPort: !Ref InternalAlbListenerPort
-      ToPort: !Ref InternalAlbListenerPort
+      FromPort: !Ref OpsUiPort
+      ToPort: !Ref OpsUiPort
       SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId
-      Description: Allow Client VPN endpoint security group to reach the internal Ops ALB.
+      Description: Allow Client VPN endpoint security group to reach the Ops Streamlit UI directly.
+
+  OpsBackendIngressFromClientVpnSecurityGroup:
+    Type: AWS::EC2::SecurityGroupIngress
+    Condition: HasClientVpnSecurityGroup
+    Properties:
+      GroupId: !Ref OpsInstanceSecurityGroup
+      IpProtocol: tcp
+      FromPort: !Ref OpsBackendPort
+      ToPort: !Ref OpsBackendPort
+      SourceSecurityGroupId: !Ref ClientVpnSecurityGroupId
+      Description: Allow Client VPN endpoint security group to reach the Ops backend API directly.
 
   ObservabilityDbIngressFromOps:
     Type: AWS::EC2::SecurityGroupIngress
@@ -755,70 +747,6 @@ Resources:
                     RagWorkerLogGroupName: !Ref RagWorkerLogGroup
                 - ""
 
-  InternalAlb:
-    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
-    Properties:
-      Scheme: internal
-      Type: application
-      SecurityGroups: [!Ref InternalAlbSecurityGroup]
-      Subnets:
-        Fn::Split:
-          - ","
-          - Fn::ImportValue:
-              Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
-
-  OpsUiTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      VpcId:
-        Fn::ImportValue:
-          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
-      Protocol: HTTP
-      Port: !Ref OpsUiPort
-      TargetType: instance
-      HealthCheckPath: /_stcore/health
-      Matcher:
-        HttpCode: 200-399
-
-  OpsBackendTargetGroup:
-    Type: AWS::ElasticLoadBalancingV2::TargetGroup
-    Properties:
-      VpcId:
-        Fn::ImportValue:
-          Fn::Sub: "${ProjectName}-${Environment}-VpcId"
-      Protocol: HTTP
-      Port: !Ref OpsBackendPort
-      TargetType: instance
-      HealthCheckPath: /health
-      Matcher:
-        HttpCode: 200-399
-
-  InternalAlbListener:
-    Type: AWS::ElasticLoadBalancingV2::Listener
-    Properties:
-      LoadBalancerArn: !Ref InternalAlb
-      Port: !Ref InternalAlbListenerPort
-      Protocol: HTTP
-      DefaultActions:
-        - Type: forward
-          TargetGroupArn: !Ref OpsUiTargetGroup
-
-  OpsBackendListenerRule:
-    Type: AWS::ElasticLoadBalancingV2::ListenerRule
-    Properties:
-      ListenerArn: !Ref InternalAlbListener
-      Priority: 10
-      Conditions:
-        - Field: path-pattern
-          Values:
-            - /health
-            - /ops/*
-            - /eval/*
-            - /observability/*
-      Actions:
-        - Type: forward
-          TargetGroupArn: !Ref OpsBackendTargetGroup
-
   OpsAutoScalingGroup:
     Type: AWS::AutoScaling::AutoScalingGroup
     CreationPolicy:
@@ -842,9 +770,6 @@ Resources:
               Fn::Sub: "${ProjectName}-${Environment}-PrivateOpsSubnetIds"
       HealthCheckType: EC2
       HealthCheckGracePeriod: 600
-      TargetGroupARNs:
-        - !Ref OpsUiTargetGroup
-        - !Ref OpsBackendTargetGroup
       LaunchTemplate:
         LaunchTemplateId: !Ref OpsLaunchTemplate
         Version: !GetAtt OpsLaunchTemplate.LatestVersionNumber
@@ -925,8 +850,6 @@ Resources:
           MaximumRetryAttempts: 2
 
 Outputs:
-  InternalAlbDnsName:
-    Value: !GetAtt InternalAlb.DNSName
   OpsGhcrReadTokenSecretArn:
     Description: GHCR read token secret ARN used by Ops EC2 image pulls.
     Value: !If [HasExternalGhcrTokenSecret, !Ref GhcrTokenSecretArn, !Ref OpsGhcrReadTokenSecret]
@@ -946,10 +869,14 @@ Outputs:
     Value: !Ref OpsInstanceSecurityGroup
     Export:
       Name: !Sub "${ProjectName}-${Environment}-OpsInstanceSecurityGroupId"
-  InternalAlbSecurityGroupId:
-    Value: !Ref InternalAlbSecurityGroup
   OpsAutoScalingGroupName:
     Value: !Ref OpsAutoScalingGroup
+  OpsUiPort:
+    Description: Streamlit UI port reachable on the Ops EC2 private IP through Client VPN.
+    Value: !Ref OpsUiPort
+  OpsBackendPort:
+    Description: Ops backend API port reachable on the Ops EC2 private IP through Client VPN.
+    Value: !Ref OpsBackendPort
   RagScheduleRoleArn:
     Description: EventBridge Scheduler execution role used for RAG ingest schedules.
     Value: !GetAtt RagScheduleRole.Arn

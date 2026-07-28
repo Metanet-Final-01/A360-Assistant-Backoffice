@@ -45,7 +45,7 @@ on:
         default: "1"
         type: string
       client_vpn_cidr:
-        description: Client VPN CIDR allowed to reach the internal Ops ALB
+        description: Client VPN CIDR allowed to reach the Ops EC2 UI/API ports
         required: true
         default: 10.250.0.0/22
         type: string
@@ -200,7 +200,7 @@ jobs:
             echo "A360_BACKEND_URL is empty; stack deploy will skip backend URL injection."
           fi
           if [ -z "$CLIENT_VPN_SECURITY_GROUP_ID" ]; then
-            echo "CLIENT_VPN_SECURITY_GROUP_ID is empty; internal ALB will rely on ClientVpnCidr only."
+            echo "CLIENT_VPN_SECURITY_GROUP_ID is empty; Ops EC2 direct access will rely on ClientVpnCidr only."
           fi
 
       - uses: aws-actions/configure-aws-credentials@v4
