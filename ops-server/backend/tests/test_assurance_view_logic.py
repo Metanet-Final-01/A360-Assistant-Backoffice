@@ -662,9 +662,16 @@ class AssuranceViewLogicTest(unittest.TestCase):
         self.assertTrue(any("병합을 자동 차단하지 않습니다" in message for message in messages))
         info.assert_called_once()
         self.assertIn("승인 전에 생성된 과거 기록", info.call_args.args[0])
-        expander.assert_called_once()
-        self.assertEqual(markdown.call_count, 3)
-        caption.assert_called_once()
+        expander_title = expander.call_args.args[0]
+        self.assertIn("CH-06", expander_title)
+        self.assertIn("추가 검토 필요", expander_title)
+        rendered_markdown = [call.args[0] for call in markdown.call_args_list]
+        for heading in ("**발견 내용**", "**왜 통과가 아닌가**", "**확인/조치**"):
+            self.assertTrue(any(heading in text for text in rendered_markdown))
+        self.assertIn(
+            "PROTECTED_ORACLE_REVIEW_REQUIRED",
+            caption.call_args.args[0],
+        )
 
     @patch("views.assurance_records.st.warning")
     @patch("views.assurance_records.requests.get")
