@@ -1,4 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
+import json
+import os
+from pathlib import Path
 
 import pandas as pd
 import requests
@@ -18,6 +21,7 @@ FIXED_METRICS = (
 # 요청마다 새 TCP 연결을 맺지 않고 재사용한다(keep-alive) — 로컬 벤치마크로
 # 확인한 최적화 조합(세션 재사용 + 병렬 호출) 중 하나. docs/local/PERF_OPS_EVAL_PAGE.md 참고.
 _SESSION = requests.Session()
+_ENABLE_BFCL_EVAL = (os.getenv("ENABLE_BFCL_EVAL") or "").strip().lower() == "true"
 
 # render() 최초 진입 시 이 4개를 병렬로 미리 채워 둔다 — 순차 요청 대비 벤치마크상
 # 유의미하게 빠르다. execution/status는 "새로고침 눌러야 최신"이 의도된 동작이라
@@ -95,6 +99,18 @@ def render() -> None:
     # BFCL/RAGAS/Workflow(pm4py·WorFBench) 3개를 평가 "종류"별 1급 탭으로 명확히 분리
     # (RPA-126) — 각 탭이 그 평가의 실행·기본 골드셋·결과를 전부 담는다. 전체 결과를
     # 소스 무관하게 가로질러 보는 화면은 별도 탭("전체 결과 비교")으로 남겨둔다.
+    if not _ENABLE_BFCL_EVAL:
+        tab_ragas, tab_workflow, tab_all = st.tabs(
+            ["RAG Quality (RAGAS)", "Workflow (pm4py/WorFBench)", "All Results"]
+        )
+        with tab_ragas:
+            _render_ragas_tab(runs)
+        with tab_workflow:
+            _render_workflow_tab(datasets)
+        with tab_all:
+            _render_results_tab(runs)
+        return
+
     tab_bfcl, tab_ragas, tab_workflow, tab_all = st.tabs(
         ["액션 호출(BFCL)", "RAG 품질(RAGAS)", "Workflow(pm4py·WorFBench)", "전체 결과 비교"]
     )
@@ -126,6 +142,7 @@ def _render_workflow_tab(datasets: list[dict]) -> None:
     기존 "예측 파일 직접 지정" 방식도 그대로 남겨둠(과거 예측 파일을 다시 채점하고
     싶을 때 유용)."""
     _render_workflow_live_execution()
+    _render_workflow_candidate_upload()
     _render_evaluation_execution(datasets)
     _render_dataset_registry(datasets)
     _render_format_guide()
@@ -135,26 +152,52 @@ def _render_workflow_live_execution() -> None:
     with card("workflow_live_execution"):
         section_header(
             "Workflow 정확도 평가 실행 — 라이브(pm4py·WorFBench)",
-            "실제 커뮤니티 봇 기반 골드셋(17개, a360-eval-sandbox/Metadata/goldset_from_bots.json)으로 "
+            "470개 원본 Bot Store 봇을 RAG 카탈로그 전체 커버리지·실제 TaskBot.runTask "
+            "호출그래프 기준 메인/서브워크플로우 판정으로 엄격 검증한 골드셋(13개, "
+            "a360-eval-sandbox/Metadata/goldset_from_bots_a360_13.json, 근거는 PROVENANCE.md)으로 "
             "Backend Agent에 실제 요청을 보내 예측을 만들고, pm4py/WorFBench로 바로 채점합니다.",
         )
         try:
             cases_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/workflow/cases", timeout=5)
             cases_resp.raise_for_status()
-            n_cases = len(cases_resp.json())
+            cases = cases_resp.json()
         except (requests.RequestException, ValueError) as exc:
             st.warning(f"골드셋을 불러오지 못했습니다: {exc}")
-            n_cases = 0
-        st.caption(f"골드셋 케이스 {n_cases}개")
+            cases = []
+        col_caption, col_download = st.columns([3, 1])
+        with col_caption:
+            st.caption(f"골드셋 케이스 {len(cases)}개")
+        with col_download:
+            st.download_button(
+                "골드셋 다운로드(JSON)",
+                data=json.dumps(cases, ensure_ascii=False, indent=2),
+                file_name="goldset_from_bots_a360_13.json",
+                mime="application/json",
+                disabled=not cases,
+                key="workflow_goldset_download",
+                help="RAG 평가 등 다른 실험에서 그대로 재사용할 수 있도록, 지금 화면이 쓰는 "
+                     "확정 골드셋(13개) 원본을 그대로 내려받습니다.",
+            )
 
         with st.form("workflow_live_execution_form"):
             agent_label = st.text_input("결과 버전(agent_label)", value="workflow-live", key="workflow_live_agent_label")
+            agent_version = st.selectbox(
+                "에이전트 버전",
+                options=["(Backend 기본값)", "v1", "v2", "v3"],
+                key="workflow_live_agent_version",
+                help="Backend의 app/agent/{v1,v2,v3}를 그대로 지정. 비워두면(기본값) Backend가 "
+                     "자기 기본 버전(env AGENT_VERSION, 없으면 v2)을 씀 — 예전엔 이 필드를 아예 "
+                     "안 보내서 항상 기본 버전으로만 평가되고 있었다.",
+            )
             start = st.form_submit_button("Workflow 평가 시작(라이브)", type="primary")
         if start:
             try:
+                payload = {"agent_label": agent_label.strip() or "workflow-live"}
+                if agent_version != "(Backend 기본값)":
+                    payload["agent_version"] = agent_version
                 resp = _SESSION.post(
                     f"{OPS_BACKEND_URL}/eval/workflow/execution",
-                    json={"agent_label": agent_label.strip() or "workflow-live"}, timeout=5,
+                    json=payload, timeout=5,
                 )
                 if resp.status_code == 200:
                     st.success("Workflow 평가를 시작했습니다 — 케이스마다 실제 Agent 턴을 태우고 pm4py/WorFBench 채점까지 하므로 시간이 걸립니다.")
@@ -182,6 +225,150 @@ def _render_workflow_live_execution() -> None:
         else:
             st.caption("아직 실행한 라이브 Workflow 평가가 없습니다.")
         _render_live_log("/eval/workflow/execution/status", key="workflow_live_log")
+
+
+def _render_workflow_candidate_upload() -> None:
+    """Bot Store zip을 올리면 그 자리에서 분석 리포트(액션 수, same-zip 기준
+    main/sub 판정, DLL/Recorder 같은 opaque 패키지 여부, RAG 카탈로그 커버리지)를
+    보여주고, 관리자가 업무 브리핑을 직접 써서 후보로 등록할 수 있게 한다.
+    확정 13개 골드셋과는 별도 파일(workflow_candidates.json)에 쌓인다 — 확정
+    세트로 옮기는 건 PROVENANCE.md가 요구하는 수동 품질 검토를 거쳐야 하므로
+    의도적으로 자동화하지 않았다."""
+    with card("workflow_candidate_upload"):
+        section_header(
+            "골드셋 후보 업로드(zip)",
+            "Bot Store zip을 올리면 manifest.json 기준으로 워크플로우 파일을 찾아 정규화하고, "
+            "액션 수·같은 zip 안에서의 main/sub 판정·DLL/Recorder/AISense 같은 opaque 패키지 여부· "
+            "RAG 카탈로그 커버리지를 분석합니다. 등록은 확정 13개 골드셋과 분리된 후보 목록에만 "
+            "쌓이며, 확정 세트로 옮기는 건 사람이 직접 검토해서 하는 별도 단계입니다.",
+        )
+
+        uploaded = st.file_uploader("Bot Store zip", type=["zip"], key="workflow_candidate_zip")
+        if uploaded is not None and st.button("분석", key="workflow_candidate_analyze"):
+            try:
+                resp = _SESSION.post(
+                    f"{OPS_BACKEND_URL}/eval/workflow/candidates/analyze-zip",
+                    files={"file": (uploaded.name, uploaded.getvalue(), "application/zip")},
+                    timeout=30,
+                )
+                if resp.status_code == 200:
+                    st.session_state["workflow_candidate_report"] = resp.json()
+                    st.session_state["workflow_candidate_zip_name"] = uploaded.name
+                else:
+                    st.error(resp.json().get("detail", resp.text))
+                    st.session_state.pop("workflow_candidate_report", None)
+            except (requests.RequestException, ValueError) as exc:
+                st.error(f"분석 실패: {exc}")
+
+        report = st.session_state.get("workflow_candidate_report")
+        if not report:
+            st.caption("아직 분석한 zip이 없습니다.")
+            return
+
+        if report.get("parse_errors"):
+            with st.expander(f"파싱 실패 {len(report['parse_errors'])}건", expanded=False):
+                for err in report["parse_errors"]:
+                    st.warning(f"{err.get('filename') or '(파일명 없음)'}: {err['error']}")
+
+        workflows = report.get("workflows") or []
+        if not workflows:
+            st.info("워크플로우 타입 파일을 하나도 정상 분석하지 못했습니다.")
+            return
+
+        options = {
+            f"{w['filename']} ({'main' if w['is_main_workflow_same_zip'] else 'sub'}, "
+            f"액션 {w['action_count']}개)": w
+            for w in workflows
+        }
+        chosen_label = st.selectbox("후보로 등록할 워크플로우", list(options), key="workflow_candidate_choice")
+        chosen = options[chosen_label]
+
+        cols = st.columns(3)
+        cols[0].metric("액션 수", chosen["action_count"])
+        cols[1].metric(
+            "RAG 커버리지",
+            f"{chosen['rag_coverage_pct']}%" if chosen["rag_coverage_pct"] is not None else "카탈로그 없음",
+        )
+        cols[2].metric("판정(same-zip)", "main" if chosen["is_main_workflow_same_zip"] else "sub")
+
+        if chosen["opaque_packages"]:
+            st.warning(
+                f"opaque 패키지 감지: {', '.join(chosen['opaque_packages'])} — 액션 라벨만으로는 "
+                "내부 로직이 안 보입니다(PROVENANCE.md의 DLL-opaque 그룹과 같은 문제). "
+                "등록 자체를 막지는 않지만, 최종 확정 전에 실제 내용을 사람이 읽고 판단해야 합니다."
+            )
+        if chosen["referenced_sub_workflows"]:
+            st.info(f"이 워크플로우가 참조하는 서브워크플로우(같은 zip 안): {', '.join(chosen['referenced_sub_workflows'])}")
+        if chosen["rag_missing_actions"]:
+            with st.expander(f"RAG 카탈로그에 없는 액션 {len(chosen['rag_missing_actions'])}개"):
+                st.code("\n".join(chosen["rag_missing_actions"]), language="text")
+
+        with st.form("workflow_candidate_register_form"):
+            default_id = Path(st.session_state.get("workflow_candidate_zip_name", "candidate")).stem
+            case_id = st.text_input("후보 id", value=default_id, key="workflow_candidate_id")
+            difficulty = st.selectbox("난이도", ["easy", "medium", "hard"], index=1, key="workflow_candidate_difficulty")
+            task_text = st.text_area(
+                "업무 브리핑(정답 액션명을 그대로 노출하지 말고, 실제 업무 목적·시스템·입출력을 서술)",
+                height=200, key="workflow_candidate_task_text",
+            )
+            register = st.form_submit_button("후보로 등록", type="primary")
+        if register:
+            if not task_text.strip():
+                st.error("업무 브리핑을 먼저 작성하세요 — 빈 브리핑은 채점 입력으로 쓸 수 없습니다.")
+            else:
+                packages = sorted({a["package"] for a in chosen["actions"]})
+                packages_in_catalog = sorted({
+                    a["package"] for a in chosen["actions"] if a.get("in_catalog")
+                }) if chosen["rag_catalog_available"] else []
+                payload = {
+                    "id": case_id.strip(),
+                    "source_bot": case_id.strip(),
+                    "difficulty": difficulty,
+                    "input": {"task": task_text.strip()},
+                    "expected": {
+                        "packages": packages,
+                        "packages_in_catalog": packages_in_catalog,
+                        "actions": [
+                            {"package": a["package"], "action": a["action"], "in_catalog": bool(a.get("in_catalog"))}
+                            for a in chosen["actions"]
+                        ],
+                    },
+                    "catalog_coverage": chosen["rag_coverage_pct"],
+                    "scoreable": chosen["action_count"] > 0,
+                }
+                try:
+                    resp = _SESSION.post(f"{OPS_BACKEND_URL}/eval/workflow/candidates", json=payload, timeout=5)
+                    if resp.status_code == 200:
+                        st.success(f"후보로 등록했습니다: {case_id.strip()}")
+                        st.session_state.pop("workflow_candidate_report", None)
+                    else:
+                        st.error(resp.json().get("detail", resp.text))
+                except (requests.RequestException, ValueError) as exc:
+                    st.error(f"등록 실패: {exc}")
+
+        try:
+            candidates_resp = _SESSION.get(f"{OPS_BACKEND_URL}/eval/workflow/candidates", timeout=5)
+            candidates_resp.raise_for_status()
+            candidates = candidates_resp.json()
+        except (requests.RequestException, ValueError) as exc:
+            st.warning(f"등록된 후보 목록을 불러오지 못했습니다: {exc}")
+            return
+        if candidates:
+            with st.expander(f"등록된 후보 {len(candidates)}개(확정 13개 골드셋과 별도)"):
+                for c in candidates:
+                    col_label, col_delete = st.columns([5, 1])
+                    col_label.write(f"`{c['id']}` — 액션 {len(c['expected']['actions'])}개, 난이도 {c['difficulty']}")
+                    if col_delete.button("삭제", key=f"workflow_candidate_delete_{c['id']}"):
+                        try:
+                            del_resp = _SESSION.delete(
+                                f"{OPS_BACKEND_URL}/eval/workflow/candidates/{c['id']}", timeout=5,
+                            )
+                            if del_resp.status_code == 200:
+                                st.rerun()
+                            else:
+                                st.error(del_resp.json().get("detail", del_resp.text))
+                        except (requests.RequestException, ValueError) as exc:
+                            st.error(f"삭제 실패: {exc}")
 
 
 @st.fragment

@@ -7,12 +7,20 @@
 그대로 재사용하고 "예측을 사람이 미리 만들어야 한다"는 부분만 라이브로 바꾼 것 —
 BFCL/RAGAS 러너와 같은 발상.
 
-골드셋: `a360-eval-sandbox/Metadata/goldset_from_bots.json`(17개, 실제 커뮤니티
-봇에서 뽑은 업무). `run_pm4py_conformance.py`/`run_worfbench_conformance.py` 둘 다
+골드셋: `a360-eval-sandbox/Metadata/goldset_from_bots_a360_13.json`(13개,
+470개 원본 Bot Store 봇을 RAG 카탈로그 전체 커버리지·실제 TaskBot.runTask 기반
+메인/서브워크플로우 판정·최소 액션 수 3개 필터로 걸러낸 엄격 검증 세트 —
+`PROVENANCE.md` 참고). 예전 `goldset_from_bots.json`(17개, title-only 셀렉션,
+RAG 커버리지 미검증)은 더 이상 쓰지 않는다.
+`run_pm4py_conformance_a360_13.py`/`run_worfbench_conformance_a360_13.py` 둘 다
 같은 `predictions_from_agent_<label>.json`(source_bot + predicted_actions만 있는
 평평한 리스트) 하나를 입력으로 쓴다 — WorFBench용 노드/엣지 변환은 그 스크립트
 내부에서 함(`to_worfbench_pred_traj` 같은 별도 변환을 여기서 안 해도 됨, 실제
 스크립트 코드로 확인함).
+
+트리거 문구/agent_version: 실제 Assistant-Frontend(`src/stores/pipeline.js`의
+`startRecommend`)가 `/api/sessions/{id}/turn`에 보내는 문구와 요청 필드를 그대로
+맞췄다 — 다른 문구를 쓰면 백엔드가 실제 사용자 흐름과 다른 경로를 탈 수 있다.
 """
 
 import json
@@ -30,9 +38,14 @@ from .reservation import finish_state, reserve_state
 
 logger = logging.getLogger(__name__)
 
-_GOLDSET_PATH = executor.METADATA_DIR / "goldset_from_bots.json"
-_DETAILED_TASKS_PATH = executor.METADATA_DIR / "detailed_task_descriptions.json"
+_GOLDSET_PATH = executor.METADATA_DIR / "goldset_from_bots_a360_13.json"
+_DETAILED_TASKS_PATH = executor.METADATA_DIR / "detailed_task_descriptions_a360_13.json"
+_PM4PY_SCRIPT = "run_pm4py_conformance_a360_13.py"
+_WORFBENCH_SCRIPT = "run_worfbench_conformance_a360_13.py"
+_DATASET_ID = "workflow-live-a360-13"
+_DATASET_VERSION = "a360_13"
 _MAX_LOG_LINES = 200
+_KNOWN_AGENT_VERSIONS = ("v1", "v2", "v3")
 
 state: dict = {
     "running": False, "started_at": None, "finished_at": None,
@@ -74,7 +87,7 @@ def _load_detailed_tasks() -> dict[str, str]:
     return json.loads(_DETAILED_TASKS_PATH.read_text(encoding="utf-8-sig"))
 
 
-_RECOMMEND_TRIGGER = "이 업무를 분석해서 자동화 워크플로우로 추천해줘."
+_RECOMMEND_TRIGGER = "이 업무정의서로 자동화 흐름도 만들어줘"
 
 
 def _flatten_recommendation(recommendation: dict | None) -> list[dict]:
@@ -94,11 +107,17 @@ def _flatten_recommendation(recommendation: dict | None) -> list[dict]:
     return out
 
 
-def _stream_turn(client: httpx.Client, backend_url: str, session_id: str, message: str) -> dict:
+def _stream_turn(
+    client: httpx.Client, backend_url: str, session_id: str, message: str,
+    agent_version: str | None = None,
+) -> dict:
+    body: dict = {"message": message, "operation": "chat"}
+    if agent_version:
+        body["agent_version"] = agent_version
     done_data: dict = {}
     with client.stream(
         "POST", f"{backend_url}/api/sessions/{session_id}/turn",
-        json={"message": message, "operation": "chat"}, timeout=180.0,
+        json=body, timeout=180.0,
     ) as resp:
         resp.raise_for_status()
         for line in resp.iter_lines():
@@ -112,6 +131,7 @@ def _stream_turn(client: httpx.Client, backend_url: str, session_id: str, messag
 
 def generate_predictions(
     backend_url: str | None = None, on_progress: Callable[[str], None] | None = None,
+    agent_version: str | None = None,
 ) -> list[dict]:
     """골드셋 각 봇 업무에 대해 실제 Backend Agent를 호출해 predictions_from_agent
     형식(source_bot/predicted_actions/predicted_action_count)의 예측을 만든다.
@@ -137,7 +157,9 @@ def generate_predictions(
                 )
                 doc.raise_for_status()
 
-                done = _stream_turn(client, backend_url, session_id, _RECOMMEND_TRIGGER)
+                done = _stream_turn(
+                    client, backend_url, session_id, _RECOMMEND_TRIGGER, agent_version,
+                )
                 actions = _flatten_recommendation(done.get("recommendation"))
                 predictions.append({
                     "source_bot": source_bot,
@@ -157,35 +179,40 @@ def generate_predictions(
     return predictions
 
 
-def execute_and_save(agent_label: str) -> None:
+def execute_and_save(agent_label: str, agent_version: str | None = None) -> None:
     """reserve()가 이미 running=True로 바꿔놨다는 전제로 호출된다. 라이브로 예측을
     만들어 predictions_from_agent_<agent_label>.json으로 저장한 뒤, 기존 pm4py/
     WorFBench 채점 스크립트를 그대로 돌린다(executor._run_script — 서브프로세스로
-    a360-eval-sandbox/.venv-verify를 호출, 채점 로직 중복 없음)."""
+    a360-eval-sandbox/.venv-verify를 호출, 채점 로직 중복 없음).
+
+    agent_version이 주어지면(v1/v2/v3) `/turn` 요청에 그대로 실어 보내 그 버전을
+    강제한다 — 생략하면 Backend가 자기 기본 버전(env AGENT_VERSION, 없으면 v2)을
+    쓴다. 이전에는 이 필드를 아예 안 보내서 항상 v2로만 평가되고 있었다."""
     try:
         _append_log(f"골드셋 로드 중... ({_GOLDSET_PATH.name})")
         cases = load_cases()
         state["cases"] = len(cases)
-        _append_log(f"{len(cases)}개 케이스 — 라이브 예측 생성 시작")
+        version_note = f", agent_version={agent_version}" if agent_version else " (Backend 기본 버전)"
+        _append_log(f"{len(cases)}개 케이스 — 라이브 예측 생성 시작{version_note}")
 
-        predictions = generate_predictions(on_progress=_append_log)
+        predictions = generate_predictions(on_progress=_append_log, agent_version=agent_version)
 
         pred_path = executor.METADATA_DIR / f"predictions_from_agent_{agent_label}.json"
         pred_path.write_text(json.dumps(predictions, ensure_ascii=False, indent=2), encoding="utf-8")
         _append_log(f"예측 파일 저장: {pred_path.name}")
 
         _append_log("pm4py 채점 실행 중...")
-        executor._run_script("run_pm4py_conformance.py", agent_label)
+        executor._run_script(_PM4PY_SCRIPT, agent_label)
         _append_log("pm4py 채점 완료")
 
         _append_log("WorFBench 채점 실행 중...")
-        executor._run_script("run_worfbench_conformance.py", agent_label)
+        executor._run_script(_WORFBENCH_SCRIPT, agent_label)
         _append_log("WorFBench 채점 완료")
 
         case_ids = {c["source_bot"] for c in cases}
         evaluation_id = uuid4().hex[:12]
         saved = executor._save_results(
-            agent_label, evaluation_id, "workflow-live", "v1", case_ids, agent_label, None,
+            agent_label, evaluation_id, _DATASET_ID, _DATASET_VERSION, case_ids, agent_label, None,
         )
         _append_log(f"결과 저장 완료 — {saved}건")
         state.update({"saved": saved})

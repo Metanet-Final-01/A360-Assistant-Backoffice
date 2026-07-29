@@ -28,6 +28,7 @@ from app.eval.dataset_store import load_datasets, save_dataset
 from app.eval import executor
 from app.eval import goldset_admin
 from app.eval.workflow_eval import runner as workflow_runner
+from app.eval.workflow_eval import zip_candidate
 from app.eval.workflow_eval.schema import WorkflowCase
 from app.eval.ragas_eval import runner as ragas_runner
 from app.eval.ragas_eval import pass_k as ragas_pass_k
@@ -55,6 +56,12 @@ app = FastAPI(title="A360 Assistant Monitoring Server")
 
 _RAG_SERVER_URL = os.getenv("RAG_SERVER_URL", "http://127.0.0.1:8200").rstrip("/")
 _RAG_SERVICE_TOKEN = os.getenv("RAG_SERVICE_TOKEN", "")
+_ENABLE_BFCL_EVAL = (os.getenv("ENABLE_BFCL_EVAL") or "").strip().lower() == "true"
+
+
+def _require_bfcl_eval_enabled() -> None:
+    if not _ENABLE_BFCL_EVAL:
+        raise HTTPException(404, "BFCL evaluation is disabled for this deployment.")
 
 
 class RagIngestJobRequest(BaseModel):
@@ -351,6 +358,7 @@ def evaluation_execution_status() -> dict:
 
 class ExecuteWorkflowRequest(BaseModel):
     agent_label: str = "workflow-live"
+    agent_version: str | None = None
 
     @field_validator("agent_label")
     @classmethod
@@ -359,10 +367,21 @@ class ExecuteWorkflowRequest(BaseModel):
         executor.validate_prediction_label(label)
         return label
 
+    @field_validator("agent_version")
+    @classmethod
+    def validate_agent_version(cls, value: str | None) -> str | None:
+        value = (value or "").strip() or None
+        if value and value not in workflow_runner._KNOWN_AGENT_VERSIONS:
+            raise ValueError(
+                f"agent_version은 {workflow_runner._KNOWN_AGENT_VERSIONS} 중 하나이거나 비워둬야 합니다"
+            )
+        return value
+
 
 @app.get("/eval/workflow/cases")
 def workflow_cases() -> list:
-    """골드셋 케이스 목록(채점 실행 전 미리보기용) — 실제 커뮤니티 봇 17개."""
+    """골드셋 케이스 목록(채점 실행 전 미리보기·다운로드용) — 470개 원본 Bot Store
+    봇을 RAG 커버리지·실제 호출그래프 기준으로 엄격 검증한 13개(PROVENANCE.md)."""
     try:
         return workflow_runner.load_cases()
     except workflow_runner.WorkflowGoldsetError as e:
@@ -434,8 +453,54 @@ def delete_workflow_input(source_bot: str) -> dict:
 def start_workflow_evaluation(req: ExecuteWorkflowRequest, background_tasks: BackgroundTasks) -> dict:
     if not workflow_runner.reserve():
         raise HTTPException(409, "이미 Workflow 평가가 실행 중입니다")
-    background_tasks.add_task(workflow_runner.execute_and_save, req.agent_label.strip())
+    background_tasks.add_task(
+        workflow_runner.execute_and_save, req.agent_label.strip(), req.agent_version,
+    )
     return {"status": "started"}
+
+
+# --- 골드셋 후보 zip 업로드 ---
+# 확정 13개 골드셋(workflow_runner._GOLDSET_PATH)과 완전히 분리된 별도 파일에
+# 저장한다 — PROVENANCE.md가 요구하는 수동 품질 검토(RAG 콘퍼스 전체 커버리지,
+# 실제 내용을 읽고 판단하는 마지막 패스)를 거치지 않은 채로 조용히 확정 세트에
+# 섞이는 걸 막기 위해서다. 확정 세트로 옮기는 건 이 화면이 자동화하지 않는다 —
+# 그건 사람이 골드셋 파일을 직접 편집해서 하는, 의도적으로 수동인 단계다.
+_WORKFLOW_CANDIDATES_PATH = executor.METADATA_DIR / "workflow_candidates.json"
+
+
+@app.post("/eval/workflow/candidates/analyze-zip")
+async def analyze_workflow_candidate_zip(file: UploadFile = File(...)) -> dict:
+    """Bot Store zip을 업로드받아 그 자리에서 분석 리포트만 돌려준다 — 아무것도
+    저장하지 않는다(순수 분석). 관리자가 리포트를 보고 업무 브리핑을 직접 쓴 뒤
+    /eval/workflow/candidates로 넘겨야 실제 후보로 등록된다."""
+    try:
+        return zip_candidate.analyze_zip(await file.read())
+    except zip_candidate.ZipCandidateError as e:
+        raise HTTPException(400, str(e)) from e
+
+
+@app.get("/eval/workflow/candidates")
+def list_workflow_candidates() -> list:
+    return goldset_admin.read_raw(_WORKFLOW_CANDIDATES_PATH)
+
+
+@app.post("/eval/workflow/candidates")
+def add_workflow_candidate(case: dict) -> dict:
+    """analyze-zip 리포트에서 고른 워크플로우 하나 + 관리자가 직접 쓴 업무 브리핑을
+    합쳐 후보로 저장한다. WorkflowCase와 같은 스키마라 확정 세트로 옮길 때도
+    그대로 재사용할 수 있다."""
+    try:
+        return goldset_admin.append_case(_WORKFLOW_CANDIDATES_PATH, WorkflowCase, case, "id").model_dump()
+    except goldset_admin.GoldsetWriteError as e:
+        raise HTTPException(400, str(e)) from e
+
+
+@app.delete("/eval/workflow/candidates/{case_id}")
+def delete_workflow_candidate(case_id: str) -> dict:
+    deleted = goldset_admin.delete_case(_WORKFLOW_CANDIDATES_PATH, "id", case_id)
+    if not deleted:
+        raise HTTPException(404, f"id={case_id!r} 후보를 찾을 수 없습니다")
+    return {"deleted": True}
 
 
 @app.get("/eval/workflow/execution/status")
@@ -674,6 +739,7 @@ class ExecuteBfclRequest(BaseModel):
 
 @app.get("/eval/bfcl/cases")
 def bfcl_cases() -> list:
+    _require_bfcl_eval_enabled()
     """골드셋 케이스 목록(채점 실행 전 미리보기용)."""
     try:
         return [c.model_dump() for c in bfcl_runner.load_cases()]
@@ -683,6 +749,7 @@ def bfcl_cases() -> list:
 
 @app.post("/eval/bfcl/cases")
 def add_bfcl_case(case: dict) -> dict:
+    _require_bfcl_eval_enabled()
     try:
         return goldset_admin.append_case(bfcl_runner._CASES_PATH, BFCLCase, case, "case_id").model_dump()
     except goldset_admin.GoldsetWriteError as e:
@@ -691,6 +758,7 @@ def add_bfcl_case(case: dict) -> dict:
 
 @app.delete("/eval/bfcl/cases/{case_id}")
 def delete_bfcl_case(case_id: str) -> dict:
+    _require_bfcl_eval_enabled()
     deleted = goldset_admin.delete_case(bfcl_runner._CASES_PATH, "case_id", case_id)
     if not deleted:
         raise HTTPException(404, f"case_id={case_id!r} 케이스를 찾을 수 없습니다")
@@ -699,6 +767,7 @@ def delete_bfcl_case(case_id: str) -> dict:
 
 @app.post("/eval/bfcl/cases/upload")
 async def upload_bfcl_cases(file: UploadFile = File(...)) -> dict:
+    _require_bfcl_eval_enabled()
     try:
         count = goldset_admin.replace_from_upload(bfcl_runner._CASES_PATH, BFCLCase, await file.read())
     except goldset_admin.GoldsetWriteError as e:
@@ -708,6 +777,7 @@ async def upload_bfcl_cases(file: UploadFile = File(...)) -> dict:
 
 @app.post("/eval/bfcl/execution")
 def start_bfcl_evaluation(req: ExecuteBfclRequest, background_tasks: BackgroundTasks) -> dict:
+    _require_bfcl_eval_enabled()
     if not bfcl_runner.reserve():
         raise HTTPException(409, "이미 BFCL 평가가 실행 중입니다")
     background_tasks.add_task(bfcl_runner.execute_and_save, req.agent_label.strip())
@@ -716,6 +786,7 @@ def start_bfcl_evaluation(req: ExecuteBfclRequest, background_tasks: BackgroundT
 
 @app.get("/eval/bfcl/execution/status")
 def bfcl_evaluation_status() -> dict:
+    _require_bfcl_eval_enabled()
     return bfcl_runner.state
 
 
@@ -726,6 +797,7 @@ class ExecutePassKRequest(BaseModel):
 
 @app.post("/eval/bfcl/pass-k/execution")
 def start_bfcl_pass_k(req: ExecutePassKRequest, background_tasks: BackgroundTasks) -> dict:
+    _require_bfcl_eval_enabled()
     if not bfcl_pass_k.reserve():
         raise HTTPException(409, "이미 pass@k 평가가 실행 중입니다")
     background_tasks.add_task(bfcl_pass_k.execute_pass_k_and_save, req.agent_label.strip(), req.n_repeats)
@@ -734,6 +806,7 @@ def start_bfcl_pass_k(req: ExecutePassKRequest, background_tasks: BackgroundTask
 
 @app.get("/eval/bfcl/pass-k/execution/status")
 def bfcl_pass_k_status() -> dict:
+    _require_bfcl_eval_enabled()
     return bfcl_pass_k.state
 
 
