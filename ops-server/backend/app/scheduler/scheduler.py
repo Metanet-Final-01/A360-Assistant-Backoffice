@@ -3,7 +3,7 @@
 Ops owns the schedule UI/API, while the execution engine can be swapped:
 
 - local: JSON-backed dry/local development provider
-- eventbridge-ssm: EventBridge Scheduler -> SSM SendCommand -> EC2 localhost rag-server
+- eventbridge-ssm: EventBridge Scheduler -> SSM SendCommand -> EC2-local RAG ingest server
 """
 
 from __future__ import annotations

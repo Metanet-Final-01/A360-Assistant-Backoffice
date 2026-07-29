@@ -7,7 +7,7 @@ from pydantic import BaseModel, Field, field_validator, model_validator
 
 
 class RagIngestScheduleRequest(BaseModel):
-    """Ops-level schedule definition for periodic rag-server ingest."""
+    """Ops-level schedule definition for periodic RAG ingest server jobs."""
 
     schedule_id: str = Field(..., pattern=r"^[A-Za-z0-9_.-]{1,64}$")
     schedule_expression: str = Field(..., examples=["cron(0 3 * * ? *)", "rate(24 hours)"])
@@ -21,11 +21,11 @@ class RagIngestScheduleRequest(BaseModel):
     # require editing the schedule.
     instance_ids: list[str] = Field(default_factory=list)
     target_tag_key: str | None = "Role"
-    target_tag_value: str | None = "rag-server"
+    target_tag_value: str | None = "rag-ingest-server"
 
     # SQS target. Useful for local integration tests: EventBridge Scheduler sends
     # a message to SQS, and a local/EC2 consumer polls it then calls localhost
-    # rag-server.
+    # RAG ingest server.
     sqs_queue_url: str | None = None
     sqs_queue_arn: str | None = None
 

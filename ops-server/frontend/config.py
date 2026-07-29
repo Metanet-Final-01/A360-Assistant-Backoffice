@@ -9,5 +9,5 @@ import os
 # 주입). 환경변수가 없으면 로컬 개발 기본값(127.0.0.1)을 쓴다 — 로컬 동작은 그대로.
 OPS_BACKEND_URL = os.getenv("OPS_BACKEND_URL", "http://127.0.0.1:8100").rstrip("/")
 
-# RAG 적재 서버 (rag-server) — FastAPI :8200. 'RAG 데이터 적재'는 이쪽으로 트리거한다.
+# RAG 적재 서버 (rag-ingest-server) — FastAPI :8200. 'RAG 데이터 적재'는 이쪽으로 트리거한다.
 RAG_SERVER_URL = os.getenv("RAG_SERVER_URL", "http://127.0.0.1:8200").rstrip("/")

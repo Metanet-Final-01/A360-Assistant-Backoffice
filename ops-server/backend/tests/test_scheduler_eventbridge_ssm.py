@@ -34,7 +34,7 @@ def _request() -> RagIngestScheduleRequest:
         option=3,
         clean=False,
         target_tag_key="Role",
-        target_tag_value="rag-server",
+        target_tag_value="rag-ingest-server",
     )
 
 
@@ -355,7 +355,7 @@ def test_sqs_consumer_extends_visibility_while_rag_job_is_running():
 
 
 def test_sqs_consumer_logs_worker_results(caplog):
-    caplog.set_level(logging.INFO, logger="rag-worker")
+    caplog.set_level(logging.INFO, logger="rag-ingest-worker")
 
     class FakeSqs:
         def __init__(self):

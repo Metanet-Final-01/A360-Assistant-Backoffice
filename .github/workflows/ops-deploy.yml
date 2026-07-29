@@ -158,7 +158,7 @@ jobs:
           - name: ops-ui
             dockerfile: ops-server/frontend/Dockerfile
             context: .
-          - name: rag-server
+          - name: rag-ingest-server
             dockerfile: rag-server/Dockerfile
             context: .
     steps:
@@ -235,7 +235,7 @@ jobs:
               Environment="${{ needs.meta.outputs.environment }}" \
               OpsBackendImageUri="${{ needs.meta.outputs.image_prefix }}/ops-backend:${{ needs.meta.outputs.image_tag }}" \
               OpsUiImageUri="${{ needs.meta.outputs.image_prefix }}/ops-ui:${{ needs.meta.outputs.image_tag }}" \
-              RagServerImageUri="${{ needs.meta.outputs.image_prefix }}/rag-server:${{ needs.meta.outputs.image_tag }}" \
+              RagIngestServerImageUri="${{ needs.meta.outputs.image_prefix }}/rag-ingest-server:${{ needs.meta.outputs.image_tag }}" \
               InstanceType="${{ inputs.instance_type || 't3.small' }}" \
               MinSize="${{ inputs.min_size || '1' }}" \
               DesiredCapacity="${{ inputs.desired_capacity || '1' }}" \

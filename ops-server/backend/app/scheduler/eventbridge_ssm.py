@@ -18,10 +18,10 @@ DEFAULT_RAG_INGEST_URL = "http://127.0.0.1:8200/rag/ingest"
 
 
 class EventBridgeSsmSchedulerProvider:
-    """EventBridge Scheduler provider that triggers EC2-local rag-server via SSM.
+    """EventBridge Scheduler provider that triggers the EC2-local RAG ingest server via SSM.
 
     Scheduler invokes the AWS SDK target `ssm:sendCommand`; SSM then runs curl on
-    the EC2 instance, so rag-server can stay bound to localhost.
+    the EC2 instance, so the RAG ingest server can stay bound to localhost.
     """
 
     provider_name = "eventbridge-ssm"

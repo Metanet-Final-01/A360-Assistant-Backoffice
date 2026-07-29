@@ -1,7 +1,7 @@
 # AGENTS.md — AI 에이전트 작업 가이드
 
 이 리포는 "업무정의서 기반 A360 작업 추천 AI 플랫폼"의 백오피스(운영 도구)다 —
-**rag-server**(RAG 적재 API, FastAPI :8200)와 **ops-server**(모니터링·평가·부하테스트,
+**rag-ingest-server**(RAG 적재 API, FastAPI :8200, 소스 폴더 `rag-server/`)와 **ops-server**(모니터링·평가·부하테스트,
 FastAPI :8100 + Streamlit :8501) 2개 서버로 구성된다 (각각 독립 가상환경/requirements).
 AI 도구(Claude Code, Cursor 등)로 이 리포에서 작업할 때 아래 규칙을 따른다.
 상세 규칙: [docs/CONVENTIONS.md](docs/CONVENTIONS.md), Jira 연동: [docs/JIRA_GITHUB.md](docs/JIRA_GITHUB.md)
@@ -43,7 +43,7 @@ AI 도구(Claude Code, Cursor 등)로 이 리포에서 작업할 때 아래 규�
 - 사용자 확인 없이 커밋·push·PR 생성 — **커밋/PR 직전에 컨벤션 준수 여부를 요약해서 보여주고 진행한다**
 - Jira 키 임의 생성, 컨벤션에 안 맞는 브랜치/커밋을 "일단" 만들기
 - **관측 DB·실서비스 DB에 쓰기 코드 추가** — 백오피스는 실서비스 데이터를 읽기만 한다.
-  적재(쓰기)는 rag-server의 적재 파이프라인 등 명시적으로 그 목적인 코드에만 허용된다.
+  적재(쓰기)는 RAG ingest server의 적재 파이프라인 등 명시적으로 그 목적인 코드에만 허용된다.
 
 ## 담당 영역
 
@@ -58,7 +58,7 @@ AI 도구(Claude Code, Cursor 등)로 이 리포에서 작업할 때 아래 규�
 ## 개발 환경 참고
 
 - Python 3.11+. 서버별로 별도 venv: 각 폴더에서 `pip install -r requirements.txt`
-- **rag-server**: `uvicorn app.main:app --port 8200`
+- **rag-ingest-server**: `uvicorn app.main:app --port 8200`
 - **ops-server**: `.\start.ps1` (백엔드 :8100 + Streamlit :8501 동시 기동)
 - 관측 대상: A360-Assistant-Backend (`:8000`) — 모니터링 기능을 로컬에서 확인하려면 함께 띄운다
 - 부하테스트: k6가 로컬에 설치돼 있어야 함(`ops-server/backend/app/loadtest/scripts/loadtest.js` 참고)

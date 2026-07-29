@@ -17,9 +17,9 @@ from .schema import RagIngestScheduleRecord, RagIngestScheduleRequest, ScheduleA
 class EventBridgeSqsSchedulerProvider:
     """EventBridge Scheduler provider that enqueues RAG ingest requests to SQS.
 
-    This path is mainly useful for local/EC2 integration tests where rag-server
+    This path is mainly useful for local/EC2 integration tests where the RAG ingest server
     stays bound to localhost. EventBridge can reach SQS; a consumer running next
-    to rag-server polls SQS and calls the local HTTP endpoint.
+    to the RAG ingest server polls SQS and calls the local HTTP endpoint.
     """
 
     provider_name = "eventbridge-sqs"

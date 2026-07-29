@@ -143,7 +143,7 @@ def _render_system_summary(health: dict | None, health_error: str | None, active
         execution_status = "대기"
 
     metric_strip([
-        ("RAG Server", server_status),
+        ("RAG Ingest Server", server_status),
         ("실행 상태", execution_status),
         ("현재 job_id", active_job.get("job_id", "-") if active_job else "-"),
     ])
