@@ -1,0 +1,25 @@
+﻿agent_action,agent_count,agent_family,agent_semantics
+Browser.downloadFile,1,browser,
+DLL.Close,1,dll,close
+DLL.Open,2,dll,open
+Data Table.cloudWriteToFileAction,1,datatable,
+Email.sendMail,2,email,send
+Excel_MS.CloseSpreadsheet,3,excel,close
+Excel_MS.GoToCell,1,excel,
+File.createFile,2,file,write
+File.getPath,2,file,read
+Folder.createFolder,3,folder,write
+Loop.For each row in table,2,loop,
+Loop.ForEach,1,loop,
+Message Box.messageBox,2,messagebox,
+MessageBox.messageBox,3,messagebox,
+Microsoft 365 Outlook.Save email,1,microsoft365outlook,
+Microsoft 365 Outlook.ms365OutlookConnect,2,microsoft365outlook,
+Microsoft 365 Outlook.ms365OutlookSend,1,microsoft365outlook,
+Rest.restPost,1,rest,
+Twilio.Send SMS from Twilio,1,twilio,
+WebAutomation.clickelement,7,browser,
+WebAutomation.selectelement,2,browser,
+WebAutomation.sendkeys,3,browser,
+WebAutomation.setvalueelement,7,browser,
+XML.startSession,1,xml,

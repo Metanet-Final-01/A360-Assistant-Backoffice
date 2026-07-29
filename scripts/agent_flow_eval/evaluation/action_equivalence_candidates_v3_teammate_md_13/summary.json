@@ -1,0 +1,25 @@
+{
+  "gold_unique_actions": 63,
+  "agent_unique_actions": 41,
+  "candidate_rows": 23,
+  "accepted_rule_rows": 10,
+  "strong_candidate_rows": 10,
+  "possible_candidate_rows": 3,
+  "unmatched_agent_actions": 26,
+  "agent_sources": [
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__01_0131_currency-rate---oanda\\converted_recommendation\\normalized\\teammate_md_v3__01_0131_currency-rate---oanda__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__02_0137_sendemailusingsmtp-demo\\converted_recommendation\\normalized\\teammate_md_v3__02_0137_sendemailusingsmtp-demo__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__03_0167_outlook-email-notifier\\converted_recommendation\\normalized\\teammate_md_v3__03_0167_outlook-email-notifier__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__04_0176_global-exchange-currency-rate\\converted_recommendation\\normalized\\teammate_md_v3__04_0176_global-exchange-currency-rate__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__05_0224_extracttablesfrompdftocsv\\converted_recommendation\\normalized\\teammate_md_v3__05_0224_extracttablesfrompdftocsv__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__06_0225_extracttablefromwordtocsv\\converted_recommendation\\normalized\\teammate_md_v3__06_0225_extracttablefromwordtocsv__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__07_0245_merge-multiple-csv-files\\converted_recommendation\\normalized\\teammate_md_v3__07_0245_merge-multiple-csv-files__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__08_0302_a2019-get-current-exchange-rate\\converted_recommendation\\normalized\\teammate_md_v3__08_0302_a2019-get-current-exchange-rate__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__09_0338_lettergenerationbot\\converted_recommendation\\normalized\\teammate_md_v3__09_0338_lettergenerationbot__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__10_0374_createprojectinjirausingapi\\converted_recommendation\\normalized\\teammate_md_v3__10_0374_createprojectinjirausingapi__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__11_0393_a2019-twilio-integration\\converted_recommendation\\normalized\\teammate_md_v3__11_0393_a2019-twilio-integration__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__12_0410_a2019-invoicely-assistant\\converted_recommendation\\normalized\\teammate_md_v3__12_0410_a2019-invoicely-assistant__turnRecommend.goldset.json",
+    "C:\\Users\\KDH\\Documents\\VisualStudio Code\\A360-Assistant\\A360-Assistant-Ops-rpa187\\scripts\\agent_flow_eval\\runner\\logs\\teammate_md_v3__13_0419_sendbulkemailswithtemplate\\converted_recommendation\\normalized\\teammate_md_v3__13_0419_sendbulkemailswithtemplate__turnRecommend.goldset.json"
+  ],
+  "note": "Candidate pool is limited to actions present in the agent normalized output and actions present in the 13 gold normalized workflows. RAG DB actions are not used."
+}
