@@ -150,25 +150,27 @@ def convert_step(step: dict, parent: ProcessTree | None) -> tuple[ProcessTree, d
         return node, {"operator": "xor", "label": None, "children": json_children}
 
     if step_type == "try":
-        # finally is mandatory (outside the XOR, always runs); catch is the
-        # exception-path alternative to a fully-completed try body. Neither is an
-        # equal third XOR branch — see session discussion on try/catch/finally
-        # modeling (SEQUENCE(XOR(try, catch), finally)).
+        # pm4py's Process Tree has no try/catch/finally operator (only SEQUENCE/
+        # XOR/PARALLEL/LOOP/OR/INTERLEAVING/PARTIALORDER exist), and encoding catch
+        # as an XOR alternative to the try body (the old code here) lets a trace
+        # satisfy this node with *only* catch's actions and none of try's — not a
+        # real execution, since catch can't fire without try having started.
+        # Exactly modeling every possible exception point would need one XOR
+        # branch per prefix-length of the try body (combinatorial with nesting),
+        # and pm4py still couldn't express *why* a branch was taken (there's no
+        # "on exception" edge semantics). So this matches every other flattener in
+        # this codebase (pm4py_adapter._flatten_action_labels,
+        # worfbench_adapter._canonical_path, convert_to_worfbench.py,
+        # run_eval_case.py's flatten_actions) — all of them already score try body
+        # + finally only and drop catch entirely. catch is exception-handling
+        # bookkeeping, not the scored business flow; keeping pm4py consistent with
+        # them beats a "more complete" model that only this one converter had.
         branches = _branches_by_name(step)
-        has_catch = "catch" in branches
         has_finally = "finally" in branches
 
         outer = ProcessTree(operator=Operator.SEQUENCE, parent=parent) if has_finally else None
         core_parent = outer if outer is not None else parent
-
-        if has_catch:
-            core = ProcessTree(operator=Operator.XOR, parent=core_parent)
-            try_child, try_json = convert_steps(step.get("steps", []) or [], core)
-            catch_child, catch_json = convert_steps(branches["catch"].get("steps", []) or [], core)
-            core.children.extend([try_child, catch_child])
-            core_json = {"operator": "xor", "label": None, "children": [try_json, catch_json]}
-        else:
-            core, core_json = convert_steps(step.get("steps", []) or [], core_parent)
+        core, core_json = convert_steps(step.get("steps", []) or [], core_parent)
 
         if outer is None:
             return core, core_json
@@ -232,9 +234,11 @@ def write_markdown(path: Path, payload: dict) -> None:
         "# PM4Py Conversion Report",
         "",
         "For each `*.goldset.json`, builds a `pm4py.ProcessTree` (SEQUENCE/XOR/LOOP — "
-        "pm4py has no native try/catch/finally operator, so try is composed as "
-        "SEQUENCE(XOR(try, catch), finally) and loop as a ternary LOOP(body, tau, tau) "
-        "— repeat count doesn't matter, only structure) and writes three files next to "
+        "pm4py has no native try/catch/finally operator, so try is modeled as the try "
+        "body followed by optional finally body; catch is intentionally omitted because "
+        "it is exception-handling bookkeeping, not the scored business flow. loop is "
+        "modeled as a ternary LOOP(body, tau, tau) — repeat count doesn't matter, only "
+        "structure) and writes three files next to "
         "it: `*.pnml` (Petri net — what the actual conformance-checking scripts read), "
         "`*.ptml` (the process tree itself, pm4py's own format), and `*.tree.json` "
         "(the same tree as plain readable JSON, no pm4py install required to inspect it).",
