@@ -4,8 +4,8 @@
 - /assurance/*: Backend의 AI 출력 검증 판정 기록을 저장 없이 읽기 전용 중계.
 - /eval/*: 평가 데이터셋·결과 로그·pm4py/WorFBench 변환·A/B 비교·xlsx 내보내기.
 
-RAG 적재 트리거(/rag/ingest)는 여기 없다 — 별도 rag-server가 담당하고, 프론트의 '적재'
-버튼과 (향후) app/scheduler가 rag-server로 직접 요청을 보낸다.
+RAG 적재 트리거(/rag/ingest)는 여기 없다 — 별도 RAG ingest server가 담당하고, 프론트의 '적재'
+버튼과 app/scheduler가 RAG ingest server로 직접 요청을 보낸다.
 """
 
 import asyncio
@@ -83,7 +83,7 @@ async def _rag_request(method: str, path: str, **kwargs) -> httpx.Response:
                 **kwargs,
             )
     except httpx.RequestError as exc:
-        raise HTTPException(502, f"RAG Server request failed: {exc}") from exc
+        raise HTTPException(502, f"RAG ingest server request failed: {exc}") from exc
     if response.status_code >= 400:
         detail: object
         try:

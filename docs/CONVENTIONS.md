@@ -71,7 +71,7 @@ feat(obs): 수집 실패 시 마지막 성공 시각 표시 (RPA-125)
 
 | scope | 영역 |
 |---|---|
-| `rag` | rag-server (적재 파이프라인·API) |
+| `rag` | rag-ingest-server (적재 파이프라인·API, 소스 폴더 `rag-server/`) |
 | `obs` | 관측 — 조회 API(main.py) + 수집기·백엔드 클라이언트(observability/) 전부 |
 | `eval` | 평가 모듈 (데이터셋·채점·변환·A/B, RAGAS 포함) |
 | `load` | 부하테스트 (k6 결과 수집·이력) |

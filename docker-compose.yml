@@ -30,7 +30,7 @@ services:
       A360_OBSERVABILITY_DATABASE_URL: postgresql://a360_admin:localdev@db:5432/a360_obs
       # 설정 쓰기는 백엔드 admin API 경유 — 로컬은 host의 메인 백엔드(:8000)를 가리킨다
       A360_BACKEND_URL: http://host.docker.internal:8000
-      RAG_SERVER_URL: http://rag-server:8200
+      RAG_SERVER_URL: http://rag-ingest-server:8200
       RAG_SERVICE_TOKEN: ${RAG_SERVICE_TOKEN:-dev-rag-service-token}
     depends_on:
       db:
@@ -45,18 +45,22 @@ services:
       context: .
       dockerfile: ops-server/frontend/Dockerfile
     environment:
-      # UI는 DB에 직접 안 붙는다 — Ops Backend·rag-server HTTP만
+      # UI는 DB에 직접 안 붙는다 — Ops Backend·RAG ingest server HTTP만
       OPS_BACKEND_URL: http://ops-backend:8100
-      RAG_SERVER_URL: http://rag-server:8200
+      RAG_SERVER_URL: http://rag-ingest-server:8200
     depends_on:
       - ops-backend
     ports:
       - "8501:8501"
 
-  rag-server:
+  rag-ingest-server:
     build:
       context: .
       dockerfile: rag-server/Dockerfile
+    networks:
+      default:
+        aliases:
+          - rag-server
     environment:
       # 적재는 rag_ingest 경계 — 로컬은 a360_rag 논리 DB. (배포는 rag_ingest Secret)
       RAG_DATABASE_URL: postgresql://a360_admin:localdev@db:5432/a360_rag

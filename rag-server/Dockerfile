@@ -1,4 +1,4 @@
-# rag-server (FastAPI :8200) — A360 문서 수집→빌드→rag_documents/OpenSearch 적재 (RPA-259)
+# rag-ingest-server (FastAPI :8200) — A360 문서 수집→빌드→rag_documents/OpenSearch 적재 (RPA-259)
 #
 # 배포에서 RAG RDS 적재는 이 컨테이너만 한다. `RAG_DATABASE_URL`에는 `rag_ingest` Secret을
 # 주입한다(§4.3 — Backend의 rag_runtime과 분리). RDS 마스터 Secret은 여기 주입하지 않는다.

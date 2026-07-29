@@ -57,7 +57,7 @@ def _rag_get(path: str, params: dict | None = None) -> object:
 
 def _fallback_message() -> str:
     return (
-        "source_documents 테이블에 연결할 수 없고 RAG Server 원본 문서 fallback도 실패했습니다. "
+        "source_documents 테이블에 연결할 수 없고 RAG ingest server 원본 문서 fallback도 실패했습니다. "
         "RAG 데이터 적재를 먼저 실행했는지 확인하세요."
     )
 

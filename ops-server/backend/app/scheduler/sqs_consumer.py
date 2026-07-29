@@ -25,7 +25,7 @@ SKIPPED_JOB_STATUS = "SKIPPED"
 FAILED_JOB_STATUSES = {"FAILED", "CANCELED", "INTERRUPTED"}
 
 logging.basicConfig(level=os.getenv("LOG_LEVEL", "INFO"), format="%(asctime)s %(levelname)s %(message)s")
-logger = logging.getLogger("rag-worker")
+logger = logging.getLogger("rag-ingest-worker")
 
 
 @dataclass(frozen=True)
@@ -53,7 +53,7 @@ class RagIngestMessage:
 
 
 class SqsRagIngestConsumer:
-    """Poll SQS and invoke localhost rag-server for each ingest message."""
+    """Poll SQS and invoke the RAG ingest server for each ingest message."""
 
     def __init__(
         self,
@@ -244,7 +244,7 @@ def extract_job_id(body: dict | str) -> str | None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Poll SQS and trigger localhost rag-server ingest.")
+    parser = argparse.ArgumentParser(description="Poll SQS and trigger RAG ingest server jobs.")
     parser.add_argument("--queue-url", default=os.getenv("RAG_INGEST_SQS_QUEUE_URL"), required=False)
     parser.add_argument("--rag-server-url", default=os.getenv("RAG_SERVER_URL") or DEFAULT_RAG_SERVER_URL)
     parser.add_argument("--send-test", action="store_true")

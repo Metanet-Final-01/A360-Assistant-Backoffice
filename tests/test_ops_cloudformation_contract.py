@@ -194,7 +194,7 @@ def test_ops_deploy_workflow_builds_images_and_deploys_stack_with_same_tag():
     assert 'image_tag="${GITHUB_SHA::12}"' in workflow
     assert "ops-backend:${{ needs.meta.outputs.image_tag }}" in workflow
     assert "ops-ui:${{ needs.meta.outputs.image_tag }}" in workflow
-    assert "rag-server:${{ needs.meta.outputs.image_tag }}" in workflow
+    assert "rag-ingest-server:${{ needs.meta.outputs.image_tag }}" in workflow
     assert "aws cloudformation deploy" in workflow
     assert "aws cloudformation describe-stack-events" in workflow
     assert "environment: ops-deploy-${{ needs.meta.outputs.environment }}" in workflow

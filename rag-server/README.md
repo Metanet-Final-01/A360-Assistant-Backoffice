@@ -1,4 +1,7 @@
-# rag-server (RAG 적재 서버)
+# rag-ingest-server (RAG 적재 서버)
+
+The source directory remains `rag-server/` for compatibility, but the deployed
+container and GHCR image are named `rag-ingest-server`.
 
 RAG 수집·적재 파이프라인을 API로 노출하는 서버. **화면 없음** — 모니터링 서버
 (또는 사람이 프론트 버튼으로)가 `POST /rag/ingest`를 호출하면 크롤→빌드→

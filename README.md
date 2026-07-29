@@ -5,7 +5,7 @@ requirements.txt로 따로 배포한다.
 
 ```
 a360-assistant-backoffice/
-  rag-server/     # RAG 적재 서버 (화면 없음, FastAPI :8200)
+  rag-server/     # RAG 적재 서버 소스. 배포 컨테이너/이미지명은 rag-ingest-server (FastAPI :8200)
                   #   ops-server의 요청(POST /rag/ingest)을 받아 수집·적재 파이프라인 실행
   ops-server/     # 평가+모니터링 운영 도구 서버 (화면 있음)
     backend/      #   FastAPI :8100 — observability(로그 수집/조회) + eval + 스케줄러(stub)
@@ -16,16 +16,16 @@ a360-assistant-backoffice/
 
 | 서버 | 화면 | 역할 |
 |---|---|---|
-| **rag-server** | ✕ | RAG 수집·적재 파이프라인을 API로 노출. ops-server(또는 사람이 프론트 버튼으로)가 `POST /rag/ingest`를 호출하면 크롤→빌드→pgvector/OpenSearch 적재를 백그라운드로 실행. 적재 DB는 `A360-Assistant-Backend`와 동일 인스턴스 → 실서비스에 그대로 반영. |
-| **ops-server** | ○ | ①모니터링: `A360-Assistant-Backend`의 감사·LLM·RAG 요청 로그를 수집·조회. ②평가(eval): 데이터셋·결과·pm4py/WorFBench 변환·A/B 비교·xlsx. ③(예정) 일정 주기마다 rag-server로 적재 요청. |
+| **rag-ingest-server** | ✕ | RAG 수집·적재 파이프라인을 API로 노출. ops-server(또는 사람이 프론트 버튼으로)가 `POST /rag/ingest`를 호출하면 크롤→빌드→pgvector/OpenSearch 적재를 백그라운드로 실행. 적재 DB는 `A360-Assistant-Backend`와 동일 인스턴스 → 실서비스에 그대로 반영. |
+| **ops-server** | ○ | ①모니터링: `A360-Assistant-Backend`의 감사·LLM·RAG 요청 로그를 수집·조회. ②평가(eval): 데이터셋·결과·pm4py/WorFBench 변환·A/B 비교·xlsx. ③일정 주기마다 RAG ingest server로 적재 요청. |
 
-**흐름**: `ops-server`(스케줄러/버튼) ──`POST /rag/ingest`──▶ `rag-server`(파이프라인 실행) ──적재──▶ 공유 DB(pgvector/OpenSearch) ◀──검색── `A360-Assistant-Backend`
+**흐름**: `ops-server`(스케줄러/버튼) ──`POST /rag/ingest`──▶ `rag-ingest-server`(파이프라인 실행) ──적재──▶ 공유 DB(pgvector/OpenSearch) ◀──검색── `A360-Assistant-Backend`
 
 ## 실행
 
 각 서버 폴더의 README를 참고한다.
 
-- **rag-server**: [rag-server/README.md](rag-server/README.md)
+- **rag-ingest-server**: [rag-server/README.md](rag-server/README.md)
   ```bash
   cd rag-server && pip install -r requirements.txt && uvicorn app.main:app --port 8200
   ```
@@ -39,6 +39,6 @@ a360-assistant-backoffice/
 
 ## 서버 간 데이터 참고사항
 
-`ops-server`의 eval WorFBench 변환은 rag-server 적재 산출물
+`ops-server`의 eval WorFBench 변환은 RAG ingest server 적재 산출물
 (`data/ingest/packages.json`)이 필요하다. 자세한 내용은
 [ops-server/README.md](ops-server/README.md) 참고.

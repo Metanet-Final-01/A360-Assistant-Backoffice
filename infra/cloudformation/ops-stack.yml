@@ -1,5 +1,5 @@
 AWSTemplateFormatVersion: "2010-09-09"
-Description: A360 Assistant Ops stack - private single-instance Ops/RAG deployment accessed directly through Client VPN.
+Description: A360 Assistant Ops stack - private single-instance Ops/RAG ingest deployment accessed directly through Client VPN.
 
 Parameters:
   ProjectName:
@@ -17,9 +17,9 @@ Parameters:
   OpsUiImageUri:
     Type: String
     Description: Immutable image URI for ops-server/frontend Streamlit. Use a Git commit SHA tag, not latest.
-  RagServerImageUri:
+  RagIngestServerImageUri:
     Type: String
-    Description: Immutable image URI for rag-server. Use a Git commit SHA tag, not latest.
+    Description: Immutable image URI for rag-ingest-server. Use a Git commit SHA tag, not latest.
   InstanceType:
     Type: String
     Default: t3.small
@@ -89,7 +89,7 @@ Parameters:
   OpsRuntimeSecretArn:
     Type: String
     Default: ""
-    Description: Optional Secret ARN containing extra runtime env vars for ops-backend and rag-server.
+    Description: Optional Secret ARN containing extra runtime env vars for ops-backend and rag-ingest-server.
   A360BackendUrl:
     Type: String
     Default: ""
@@ -148,7 +148,7 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       Name: !Sub ${ProjectName}/${Environment}/ops-runtime
-      Description: Extra runtime environment variables for Ops backend and RAG server. Update the JSON value after stack creation.
+      Description: Extra runtime environment variables for Ops backend and RAG ingest server. Update the JSON value after stack creation.
       SecretString: "{}"
       Tags:
         - Key: Project
@@ -167,7 +167,7 @@ Resources:
     UpdateReplacePolicy: Retain
     Properties:
       Name: !Sub ${ProjectName}/${Environment}/rag-service-token
-      Description: Shared bearer token used between Ops backend and rag-server. Put the token value after stack creation.
+      Description: Shared bearer token used between Ops backend and rag-ingest-server. Put the token value after stack creation.
       GenerateSecretString:
         PasswordLength: 48
         ExcludePunctuation: true
@@ -419,7 +419,7 @@ Resources:
   OpsLaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Metadata:
-      Comment: Runs ops-backend, ops-ui, and rag-server containers on a private EC2 host.
+      Comment: Runs ops-backend, ops-ui, and rag-ingest-server containers on a private EC2 host.
     Properties:
       LaunchTemplateData:
         IamInstanceProfile:
@@ -593,9 +593,11 @@ Resources:
               fi
 
               docker network create a360 || true
-              docker rm -f rag-server rag-worker ops-backend ops-ui || true
+              docker rm -f rag-ingest-server rag-ingest-worker rag-server rag-worker ops-backend ops-ui || true
 
-              docker run -d --restart unless-stopped --name rag-server --network a360 \
+              docker run -d --restart unless-stopped --name rag-ingest-server --network a360 \
+                --network-alias rag-ingest-server \
+                --network-alias rag-server \
                 -p ${RagServerPort}:${RagServerPort} \
                 -v /opt/a360/rag-server-data:/app/data \
                 -v /opt/a360/rag-server-logs:/app/app/rag/logs \
@@ -616,7 +618,7 @@ Resources:
                 -e REDIS_URL='${RedisUrl}' \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
                 --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${RagLogGroup} \
-                ${RagServerImageUri}
+                ${RagIngestServerImageUri}
 
               ${RunRagWorkerContainer}
 
@@ -626,7 +628,7 @@ Resources:
                 --env-file /opt/a360/runtime.env \
                 -e A360_OBSERVABILITY_DATABASE_URL="$OBS_DSN" \
                 -e REDIS_URL='${RedisUrl}' \
-                -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
+                -e RAG_SERVER_URL="http://rag-ingest-server:${RagServerPort}" \
                 -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
                 -e RAG_SCHEDULER_PROVIDER="eventbridge-sqs" \
                 -e RAG_SCHEDULER_GROUP="${ProjectName}-${Environment}-rag-ingest" \
@@ -640,7 +642,7 @@ Resources:
               docker run -d --restart unless-stopped --name ops-ui --network a360 \
                 -p ${OpsUiPort}:${OpsUiPort} \
                 -e OPS_BACKEND_URL="http://ops-backend:${OpsBackendPort}" \
-                -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
+                -e RAG_SERVER_URL="http://rag-ingest-server:${RagServerPort}" \
                 --log-driver awslogs --log-opt awslogs-region=${AWS::Region} --log-opt awslogs-group=${OpsUiLogGroup} \
                 ${OpsUiImageUri}
 
@@ -659,7 +661,7 @@ Resources:
                 return 1
               }
 
-              check_url rag-server "http://localhost:${RagServerPort}/health"
+              check_url rag-ingest-server "http://localhost:${RagServerPort}/health"
               check_url ops-backend "http://localhost:${OpsBackendPort}/health"
               check_url ops-ui "http://localhost:${OpsUiPort}/_stcore/health"
 
@@ -831,12 +833,12 @@ Resources:
                 - RunsRagWorker
                 - !Sub
                   - |
-                    docker run -d --restart unless-stopped --name rag-worker --network a360 \
+                    docker run -d --restart unless-stopped --name rag-ingest-worker --network a360 \
                       --no-healthcheck \
                       --env-file /opt/a360/runtime.env \
                       -e AWS_REGION="${AWS::Region}" \
                       -e REDIS_URL='${RedisUrl}' \
-                      -e RAG_SERVER_URL="http://rag-server:${RagServerPort}" \
+                      -e RAG_SERVER_URL="http://rag-ingest-server:${RagServerPort}" \
                       -e RAG_INGEST_SQS_QUEUE_URL="${RagJobQueueUrl}" \
                       -e RAG_INGEST_SQS_QUEUE_ARN="${RagJobQueueArn}" \
                       -e RAG_SERVICE_TOKEN="$(cat /opt/a360/rag_service_token 2>/dev/null || true)" \
