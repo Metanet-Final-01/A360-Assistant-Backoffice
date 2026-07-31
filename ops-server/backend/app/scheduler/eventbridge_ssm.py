@@ -43,7 +43,11 @@ class EventBridgeSsmSchedulerProvider:
 
     def build_ingest_command(self, request: RagIngestScheduleRequest) -> str:
         clean = "true" if request.clean else "false"
-        return f"curl -fsS -X POST '{self.rag_ingest_url}?option={request.option}&clean={clean}'"
+        return (
+            ': "${RAG_SERVICE_TOKEN:?RAG_SERVICE_TOKEN is required}"; '
+            f"curl -fsS -X POST -H \"Authorization: Bearer $RAG_SERVICE_TOKEN\" "
+            f"'{self.rag_ingest_url}?option={request.option}&clean={clean}'"
+        )
 
     def build_ssm_send_command_input(self, request: RagIngestScheduleRequest) -> dict:
         payload: dict = {

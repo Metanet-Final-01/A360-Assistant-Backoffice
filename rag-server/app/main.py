@@ -13,12 +13,14 @@ SQLite 기반 상태) — 이 모듈은 HTTP 표면만 정의한다.
 """
 
 import asyncio
+import hmac
 import json
+import os
 from contextlib import asynccontextmanager
 from typing import Literal
 
 from fastapi import FastAPI, HTTPException, Query, Request
-from fastapi.responses import FileResponse, PlainTextResponse, StreamingResponse
+from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse, StreamingResponse
 from pydantic import BaseModel, Field
 
 from . import ingest_jobs
@@ -36,6 +38,32 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(title="A360 RAG Ingest Server", lifespan=lifespan)
+
+_PUBLIC_PATHS = {"/", "/health"}
+
+
+@app.middleware("http")
+async def require_rag_service_token(request: Request, call_next):
+    """Protect control and data endpoints without exposing the deployment token.
+
+    The load balancer can keep using the public health check. Every other route
+    handles ingest control, job logs, or source data and requires the shared
+    service token. A missing server-side token is a configuration error, not an
+    unauthenticated fallback.
+    """
+    if request.url.path in _PUBLIC_PATHS:
+        return await call_next(request)
+
+    expected_token = (os.getenv("RAG_SERVICE_TOKEN") or "").strip()
+    if not expected_token:
+        return JSONResponse(status_code=503, content={"detail": "RAG ingest authentication is not configured"})
+
+    authorization = request.headers.get("Authorization", "")
+    scheme, _, provided_token = authorization.partition(" ")
+    if scheme.lower() != "bearer" or not provided_token or not hmac.compare_digest(provided_token, expected_token):
+        return JSONResponse(status_code=401, content={"detail": "RAG ingest authentication failed"})
+
+    return await call_next(request)
 
 
 class CreateIngestJobRequest(BaseModel):

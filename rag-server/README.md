@@ -40,6 +40,10 @@ uvicorn app.main:app --reload --port 8200
 | POST | `/rag/ingest?option=1\|2` | 적재 파이프라인 백그라운드 실행 시작 (옵션 1: JAR 있는 패키지만 / 옵션 2: + JAR 없는 리프 참고용) |
 | GET | `/rag/ingest/status` | 마지막/현재 실행 상태·로그 |
 
+`/health`와 `/`을 제외한 모든 API는 `Authorization: Bearer <RAG_SERVICE_TOKEN>`이 필요하다.
+토큰은 `rag-server`와 `ops-server`에 같은 배포 Secret으로 주입한다. 누락 시 제어 API는
+`503`, 잘못된 토큰은 `401`을 반환하며, SSM 예약 실행은 EC2 런타임 환경변수만 참조한다.
+
 ## CLI (파이프라인 직접 실행)
 
 ```bash

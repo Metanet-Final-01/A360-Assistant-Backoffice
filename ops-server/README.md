@@ -95,7 +95,8 @@ cd backend ; $env:A360_OBSERVABILITY_DATABASE_URL="<읽기 전용 롤 DSN>" ; py
 
 ## RAG ingest server 연동
 
-- **RAG 데이터 적재** 화면의 버튼은 `RAG_SERVER_URL`(:8200)의 `/rag/ingest`를 직접 호출한다.
+- **RAG 데이터 적재** 화면은 Ops Backend를 거쳐 `RAG_SERVER_URL`(:8200)의 적재 API를 호출한다.
+  Ops Backend가 `RAG_SERVICE_TOKEN`을 Bearer 헤더로 전달하므로 Streamlit에는 적재 서비스 키를 두지 않는다.
 - 주기 자동 적재는 EventBridge Scheduler -> SQS -> RAG ingest worker -> RAG ingest server
   흐름으로 실행된다.
 
