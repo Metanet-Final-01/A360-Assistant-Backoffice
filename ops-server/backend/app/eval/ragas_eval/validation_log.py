@@ -18,6 +18,13 @@ _RAG_SERVER_URL = os.getenv("RAG_SERVER_URL", "http://127.0.0.1:8200").rstrip("/
 _TIMEOUT_SECONDS = 5
 
 
+def _rag_service_headers() -> dict[str, str] | None:
+    token = (os.getenv("RAG_SERVICE_TOKEN") or "").strip()
+    if not token:
+        return None
+    return {"Authorization": f"Bearer {token}"}
+
+
 def record_attempt(
     *,
     doc_id: str,
@@ -26,6 +33,11 @@ def record_attempt(
     outcome: str,
     failed_snippets: str | None = None,
 ) -> None:
+    headers = _rag_service_headers()
+    if headers is None:
+        logger.warning("RAGAS 검증 시도 기록을 건너뜁니다: RAG_SERVICE_TOKEN이 설정되지 않았습니다.")
+        return
+
     try:
         response = requests.post(
             f"{_RAG_SERVER_URL}/observability/ragas-validation-attempts",
@@ -36,6 +48,7 @@ def record_attempt(
                 "outcome": outcome,
                 "failed_snippets": failed_snippets,
             },
+            headers=headers,
             timeout=_TIMEOUT_SECONDS,
         )
         response.raise_for_status()

@@ -12,6 +12,7 @@ def test_health_is_public_but_ingest_status_requires_a_token(monkeypatch):
 
     with TestClient(app) as client:
         assert client.get("/health").json() == {"status": "ok"}
+        assert client.get("/health/").json() == {"status": "ok"}
         assert client.get("/rag/ingest/status").status_code == 401
         assert client.get("/rag/ingest/status", headers={"Authorization": "Bearer wrong-token"}).status_code == 401
         response = client.get("/rag/ingest/status", headers={"Authorization": "Bearer test-rag-token"})

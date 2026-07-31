@@ -51,7 +51,8 @@ async def require_rag_service_token(request: Request, call_next):
     service token. A missing server-side token is a configuration error, not an
     unauthenticated fallback.
     """
-    if request.url.path in _PUBLIC_PATHS:
+    path = request.url.path.rstrip("/") or "/"
+    if path in _PUBLIC_PATHS:
         return await call_next(request)
 
     expected_token = (os.getenv("RAG_SERVICE_TOKEN") or "").strip()

@@ -69,9 +69,14 @@ def delete_schedule(schedule_id: str, *, provider_name: str | None = None, dry_r
 
 def trigger_rag_ingest(option: int = INGEST_OPTION, clean: bool = False) -> dict:
     """Manual trigger path used by Ops UI or one-off checks."""
+    token = (os.getenv("RAG_SERVICE_TOKEN") or "").strip()
+    if not token:
+        raise RuntimeError("RAG_SERVICE_TOKEN is required to trigger RAG ingest")
+
     resp = httpx.post(
         f"{RAG_SERVER_URL}/rag/ingest",
         params={"option": option, "clean": clean},
+        headers={"Authorization": f"Bearer {token}"},
         timeout=10.0,
     )
     resp.raise_for_status()
