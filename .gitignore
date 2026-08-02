@@ -58,6 +58,10 @@ scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/gpt_final_cl
 scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/gpt_final_classification/4_미분류_잔여후보/
 scripts/agent_flow_eval/goldset_expansion/exaone_judge_logs_148/
 
+# confirmed_goldset: briefs/gold 원본은 추적, 렌더링된 PDF는 render_md_briefs.py로
+# 재생성 가능한 바이너리 산출물이라 추적 안 함.
+scripts/agent_flow_eval/goldset_expansion/confirmed_goldset/pdfs/
+
 # Legacy local paths from before the scripts/agent_flow_eval split.
 scripts/goldset/dataset/
 scripts/goldset/eval_inputs/

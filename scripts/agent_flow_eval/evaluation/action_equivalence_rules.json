@@ -18,31 +18,11 @@
       "canonical": "Browser.launchWebsite",
       "members": [
         "WebAutomation.openpage",
+        "Browser.Open",
+        "Browser.browser.open",
         "Browser.openbrowser",
         "Browser.launchWebsite",
         "Browser.browserPackageOpenAction"
-      ]
-    },
-    {
-      "canonical": "DLL.dllPackageCloseAction",
-      "members": [
-        "DLL.Close",
-        "DLL.dllPackageCloseAction"
-      ]
-    },
-    {
-      "canonical": "DLL.dllPackageOpenAction",
-      "members": [
-        "DLL.Open",
-        "DLL.dllPackageOpenAction"
-      ]
-    },
-    {
-      "canonical": "DLL.usingRunFunctionAction",
-      "members": [
-        "DLL.RunCSharpDLL_V1",
-        "DLL.Run function",
-        "DLL.usingRunFunctionAction"
       ]
     },
     {
@@ -56,7 +36,8 @@
       "canonical": "Datetime.cloudConvertDatetimeToString",
       "members": [
         "Datetime.toString",
-        "Datetime.cloudConvertDatetimeToString"
+        "Datetime.cloudConvertDatetimeToString",
+        "Locale.datetostring"
       ]
     },
     {
@@ -74,6 +55,20 @@
       ]
     },
     {
+      "canonical": "DataTable.deleteRow",
+      "members": [
+        "DataTable.deleteRow",
+        "Data Table.dataTablePackageDeleteRowAction"
+      ]
+    },
+    {
+      "canonical": "DataTable.insertRow",
+      "members": [
+        "DataTable.insertRow",
+        "Data Table.dataTablePackageInsertRowAction"
+      ]
+    },
+    {
       "canonical": "Email.emailSaveAttachmentAction",
       "members": [
         "Email.saveAttachment",
@@ -86,7 +81,33 @@
       "canonical": "Email.cloudUsingSendAction",
       "members": [
         "Email.sendMail",
-        "Email.cloudUsingSendAction"
+        "Email.cloudUsingSendAction",
+        "Gmail.Send",
+        "Microsoft 365 Outlook.ms365OutlookSend"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedCreateWorkbookAction",
+      "members": [
+        "Excel.CreateSpreadsheet",
+        "Excel_MS.CreateSpreadsheet",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelCreateWorkbook"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedWriteFromDataTableAction",
+      "members": [
+        "Excel.writeDataTableToWorksheet",
+        "Excel_MS.writeDataTableToWorksheet",
+        "Microsoft 365 Excel package in Automation 360.writeFromDataTableIn"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedSaveWorkbookAction",
+      "members": [
+        "Excel.SaveSpreadSheet",
+        "Excel_MS.SaveSpreadSheet",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelSave"
       ]
     },
     {
@@ -195,6 +216,7 @@
     {
       "canonical": "Excel advanced.excelAdvancedPackageCloseAction",
       "members": [
+        "Excel.CloseSpreadsheet",
         "Excel advanced.excelAdvancedPackageCloseAction",
         "Excel_MS.CloseSpreadsheet",
         "Microsoft 365 Excel package in Automation 360.office365ExcelClose"
@@ -241,13 +263,6 @@
       "members": [
         "Number.toString",
         "Number.numberToString"
-      ]
-    },
-    {
-      "canonical": "REST Web Services.cloudUsingGetAction",
-      "members": [
-        "Rest.restGet",
-        "REST Web Services.cloudUsingGetAction"
       ]
     },
     {

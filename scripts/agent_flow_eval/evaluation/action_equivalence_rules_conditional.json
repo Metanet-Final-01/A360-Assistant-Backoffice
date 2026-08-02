@@ -1,0 +1,21 @@
+{
+  "_comment": "action_equivalence_rules.json(순수 package.action alias)과 별도. 여기는 attribute_signature.common_signature()의 operation 값이 조건으로 같아야 동치로 인정하는 규칙만 담는다. 실제 검증된 사례만 등록 - 추측성 대량 생성 금지.",
+  "conditional_equivalence_groups": [
+    {
+      "canonical": "web.click",
+      "members": [
+        {"package": "Recorder", "action": "capture", "when": {"operation": "CLICK"}},
+        {"package": "WebAutomation", "action": "clickelement", "when": {"operation": "CLICK"}}
+      ],
+      "evidence": "금 시세 조회 봇 실제 데이터: gold Recorder.capture(linkAction=CLICK) x2 <-> pred WebAutomation.clickelement x2, 순서/개수/target_text(증권, 국내 금) 모두 대응됨."
+    },
+    {
+      "canonical": "web.extract_table",
+      "members": [
+        {"package": "Recorder", "action": "capture", "when": {"operation": "EXTRACT_TABLE"}},
+        {"package": "WebAutomation", "action": "gettablecontent", "when": {"operation": "EXTRACT_TABLE"}}
+      ],
+      "evidence": "금 시세 조회 봇 실제 데이터: gold Recorder.capture(tableAction=EXTRACTTOCSV) <-> pred WebAutomation.gettablecontent, 웹페이지에서 표 데이터를 읽어오는 동일한 실제 동작."
+    }
+  ]
+}

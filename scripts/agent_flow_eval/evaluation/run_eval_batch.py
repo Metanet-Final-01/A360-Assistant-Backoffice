@@ -8,9 +8,15 @@ from statistics import mean
 from typing import Any
 
 from run_eval_case import resolve_paths, score_normalized, write_markdown
-from adapters.pm4py_adapter import compare_pm4py_artifacts, score_pm4py_conformance
 from adapters.worfbench_adapter import score_worfbench, score_worfbench_f1chain
 from path_utils import ensure_child_path, safe_path_component
+
+# PM4Py(compare_pm4py_artifacts/score_pm4py_conformance)와 core-only 변형들은
+# 재설계(2026-07-30)로 액티브 배치 집계에서 제외됨 - run_eval_case.py 상단 주석 참고.
+# score_normalized()가 이제 action_matching.py/action_chain.py 결과를 포함한다.
+# gold_core_actions(§7)도 case_id 기준으로 evaluate_case()에서 자동 조회해 배치에
+# 일관되게 반영한다(gold_core_actions_path_for() 참고) - 예전에는 run_eval_case.py의
+# --gold-core-actions CLI 인자로만 단건 실행에서 임시로 넘기던 것.
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -23,6 +29,16 @@ def source_case_from_input(path: str | None) -> str | None:
     return name.split("__", 1)[0] if "__" in name else None
 
 
+def source_case_from_run_id(run_id: str | None) -> str | None:
+    if not run_id or "__" not in run_id:
+        return None
+    tail = run_id.rsplit("__", 1)[1]
+    parts = tail.split("_", 1)
+    if len(parts) == 2 and parts[0].isdigit():
+        return parts[1]
+    return tail
+
+
 def load_case_map() -> dict[str, str]:
     mapping: dict[str, str] = {}
     for case_dir in sorted((ROOT / "eval_inputs" / "normalized_workflows_13").iterdir()):
@@ -33,18 +49,24 @@ def load_case_map() -> dict[str, str]:
     return mapping
 
 
+def gold_core_actions_path_for(case_id: str) -> Path | None:
+    """§7 고정 파일 조회 규칙: `gold_core_actions/<case_id>.json`이 있으면 그걸 쓰고,
+    없으면 None(전부 포함, 기존 동작과 동일). run_eval_case.py CLI에서만 쓰던
+    --gold-core-actions를 배치 실행에도 일관되게 적용하기 위함 - 지금은 13개
+    goldset용 파일이 아직 없어서 전부 None으로 떨어지지만, 케이스별 파일이
+    추가되면 배치에서도 자동으로 반영된다."""
+    path = ROOT / "evaluation" / "gold_core_actions" / f"{case_id}.json"
+    return path if path.exists() else None
+
+
 def evaluate_case(case_id: str, run_id: str) -> dict[str, Any]:
     paths = resolve_paths(case_id, run_id)
     paths.report_dir.mkdir(parents=True, exist_ok=True)
     payload = {
         "case_id": case_id,
         "run_id": run_id,
-        "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized),
-        "pm4py": score_pm4py_conformance(paths.gold_normalized, paths.pred_normalized),
-        "core_pm4py": score_pm4py_conformance(paths.gold_normalized, paths.pred_normalized, core_only=True),
-        "pm4py_artifact_check": compare_pm4py_artifacts(paths.gold_pm4py_dir, paths.pred_pm4py_dir),
+        "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized, gold_core_actions_path=gold_core_actions_path_for(case_id)),
         "worfbench": score_worfbench_f1chain(paths.gold_normalized, paths.pred_normalized),
-        "core_worfbench": score_worfbench_f1chain(paths.gold_normalized, paths.pred_normalized, core_only=True),
         "worfbench_diagnostic_artifact_f1": score_worfbench(paths.gold_worfbench, paths.pred_worfbench),
     }
     (paths.report_dir / "evaluation.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
@@ -54,10 +76,9 @@ def evaluate_case(case_id: str, run_id: str) -> dict[str, Any]:
 
 def row_from_payload(payload: dict[str, Any], status: str = "ok", error: str | None = None) -> dict[str, Any]:
     normalized = payload.get("normalized") or {}
-    pm4py = payload.get("pm4py") or {}
-    core_pm4py = payload.get("core_pm4py") or {}
+    action_prf1 = normalized.get("action_prf1") or {}
+    action_chain = normalized.get("action_chain") or {}
     worfbench = payload.get("worfbench") or {}
-    core_worfbench = payload.get("core_worfbench") or {}
     return {
         "case_id": payload.get("case_id"),
         "run_id": payload.get("run_id"),
@@ -65,25 +86,20 @@ def row_from_payload(payload: dict[str, Any], status: str = "ok", error: str | N
         "error": error,
         "gold_actions": normalized.get("gold_action_count"),
         "prediction_actions": normalized.get("prediction_action_count"),
+        "action_precision": action_prf1.get("precision"),
+        "action_recall": action_prf1.get("recall"),
+        "action_f1": action_prf1.get("f1"),
+        "rule_match_count": normalized.get("rule_match_count"),
+        "judge_match_count": normalized.get("judge_match_count"),
+        "action_chain_precision": action_chain.get("precision"),
+        "action_chain_recall": action_chain.get("recall"),
+        "action_chain_f1": action_chain.get("f1"),
         "canonical_action_f1": (normalized.get("canonical_action_multiset") or {}).get("f1"),
         "canonical_sequence_f1": (normalized.get("canonical_action_sequence") or {}).get("f1"),
-        "core_task_action_f1": (normalized.get("core_task_action_multiset") or {}).get("f1"),
-        "core_task_sequence_f1": (normalized.get("core_task_action_sequence") or {}).get("f1"),
-        "package_family_f1": (normalized.get("package_family_multiset") or {}).get("f1"),
-        "pm4py_status": pm4py.get("status"),
-        "pm4py_fitness": pm4py.get("fitness"),
-        "pm4py_precision": pm4py.get("precision"),
-        "core_pm4py_status": core_pm4py.get("status"),
-        "core_pm4py_fitness": core_pm4py.get("fitness"),
-        "core_pm4py_precision": core_pm4py.get("precision"),
-        "worfbench_status": worfbench.get("status"),
-        "worfbench_precision": worfbench.get("precision"),
-        "worfbench_recall": worfbench.get("recall"),
-        "worfbench_f1": worfbench.get("f1_score"),
-        "core_worfbench_status": core_worfbench.get("status"),
-        "core_worfbench_precision": core_worfbench.get("precision"),
-        "core_worfbench_recall": core_worfbench.get("recall"),
-        "core_worfbench_f1": core_worfbench.get("f1_score"),
+        "worfbench_status_external_reference": worfbench.get("status"),
+        "worfbench_precision_external_reference": worfbench.get("precision"),
+        "worfbench_recall_external_reference": worfbench.get("recall"),
+        "worfbench_f1_external_reference": worfbench.get("f1_score"),
         "worfbench_gold_fidelity": worfbench.get("gold_worfbench_fidelity"),
         "worfbench_prediction_fidelity": worfbench.get("prediction_worfbench_fidelity"),
     }
@@ -103,25 +119,20 @@ def write_summary(output_dir: Path, rows: list[dict[str, Any]]) -> None:
         "error",
         "gold_actions",
         "prediction_actions",
+        "action_precision",
+        "action_recall",
+        "action_f1",
+        "rule_match_count",
+        "judge_match_count",
+        "action_chain_precision",
+        "action_chain_recall",
+        "action_chain_f1",
         "canonical_action_f1",
         "canonical_sequence_f1",
-        "core_task_action_f1",
-        "core_task_sequence_f1",
-        "package_family_f1",
-        "pm4py_status",
-        "pm4py_fitness",
-        "pm4py_precision",
-        "core_pm4py_status",
-        "core_pm4py_fitness",
-        "core_pm4py_precision",
-        "worfbench_status",
-        "worfbench_precision",
-        "worfbench_recall",
-        "worfbench_f1",
-        "core_worfbench_status",
-        "core_worfbench_precision",
-        "core_worfbench_recall",
-        "core_worfbench_f1",
+        "worfbench_status_external_reference",
+        "worfbench_precision_external_reference",
+        "worfbench_recall_external_reference",
+        "worfbench_f1_external_reference",
         "worfbench_gold_fidelity",
         "worfbench_prediction_fidelity",
     ]
@@ -136,21 +147,17 @@ def write_summary(output_dir: Path, rows: list[dict[str, Any]]) -> None:
         "case_count": len(rows),
         "ok_count": sum(row.get("status") == "ok" for row in rows),
         "averages": {
+            "action_precision": average(rows, "action_precision"),
+            "action_recall": average(rows, "action_recall"),
+            "action_f1": average(rows, "action_f1"),
+            "action_chain_precision": average(rows, "action_chain_precision"),
+            "action_chain_recall": average(rows, "action_chain_recall"),
+            "action_chain_f1": average(rows, "action_chain_f1"),
             "canonical_action_f1": average(rows, "canonical_action_f1"),
             "canonical_sequence_f1": average(rows, "canonical_sequence_f1"),
-            "core_task_action_f1": average(rows, "core_task_action_f1"),
-            "core_task_sequence_f1": average(rows, "core_task_sequence_f1"),
-            "package_family_f1": average(rows, "package_family_f1"),
-            "pm4py_fitness": average(rows, "pm4py_fitness"),
-            "pm4py_precision": average(rows, "pm4py_precision"),
-            "core_pm4py_fitness": average(rows, "core_pm4py_fitness"),
-            "core_pm4py_precision": average(rows, "core_pm4py_precision"),
-            "worfbench_precision": average(rows, "worfbench_precision"),
-            "worfbench_recall": average(rows, "worfbench_recall"),
-            "worfbench_f1": average(rows, "worfbench_f1"),
-            "core_worfbench_precision": average(rows, "core_worfbench_precision"),
-            "core_worfbench_recall": average(rows, "core_worfbench_recall"),
-            "core_worfbench_f1": average(rows, "core_worfbench_f1"),
+            "worfbench_precision_external_reference": average(rows, "worfbench_precision_external_reference"),
+            "worfbench_recall_external_reference": average(rows, "worfbench_recall_external_reference"),
+            "worfbench_f1_external_reference": average(rows, "worfbench_f1_external_reference"),
         },
         "rows": rows,
     }
@@ -162,14 +169,14 @@ def write_summary(output_dir: Path, rows: list[dict[str, Any]]) -> None:
     lines.extend(
         [
             "",
-            "| case_id | status | pred actions | core task F1 | core PM4Py fitness | core WorFBench F1 |",
+            "| case_id | status | pred actions | Action F1 | Action Chain F1 | WorFEval F1(참고) |",
             "|---|---|---:|---:|---:|---:|",
         ]
     )
     for row in rows:
         lines.append(
             f"| {row.get('case_id')} | {row.get('status')} | {row.get('prediction_actions')} | "
-            f"{row.get('core_task_action_f1')} | {row.get('core_pm4py_fitness')} | {row.get('core_worfbench_f1')} |"
+            f"{row.get('action_f1')} | {row.get('action_chain_f1')} | {row.get('worfbench_f1_external_reference')} |"
         )
     (output_dir / "score_summary.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
 
@@ -188,9 +195,9 @@ def main() -> None:
     output_name = safe_path_component(args.output_name or manifest.get("name") or args.combined_manifest.stem, field="output_name")
     rows: list[dict[str, Any]] = []
     for run in manifest.get("runs") or []:
-        source = source_case_from_input(run.get("input"))
-        case_id = case_map.get(source or "")
         run_id = run.get("run_id")
+        source = source_case_from_input(run.get("input") or run.get("pdf")) or source_case_from_run_id(run_id)
+        case_id = case_map.get(source or "")
         runner_status = run.get("runner_status", run.get("status"))
         if not case_id or not run_id or runner_status != "ok":
             rows.append(

@@ -1,0 +1,1186 @@
+{
+  "source_file": "Automation Anywhere__Bot Store__FileBackup - Persys__FileBackup.json",
+  "steps": [
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "vErrorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "toString",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "packageName": "System",
+                    "type": "VARIABLE",
+                    "variableName": "Date"
+                  }
+                },
+                {
+                  "name": "selectPattern",
+                  "value": {
+                    "string": "CUSTOM",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "patternInput",
+                  "value": {
+                    "string": "yyyyMMdd_HH",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Datetime",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "vTodayDateTime"
+              },
+              "type": "action",
+              "uid": "d1ddc722-8fc9-4946-8cb7-906758efdbbb"
+            },
+            {
+              "action": "logToFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$vLogFilePath$/Logs_$vTodayDateTime$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "$vErrorMessage$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "LogToFile",
+              "type": "action",
+              "uid": "31985a9b-a412-4c14-8fb8-471afe872b78"
+            },
+            {
+              "action": "captureWindow",
+              "attributes": [
+                {
+                  "name": "windowTitle",
+                  "value": {
+                    "type": "WINDOW",
+                    "window": {
+                      "presetType": "DESKTOP",
+                      "type": "WINDOW"
+                    }
+                  }
+                },
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$vErrorSnapshotFilePath$/ErrorScreen_$vTodayDateTime$.jpeg",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwriteFile",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Screen",
+              "type": "action",
+              "uid": "e646bd46-9332-418a-ae74-8fd1d93ce6d1"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "yyyyMMdd",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vTodayDateTime"
+          },
+          "type": "action",
+          "uid": "6b126d84-3393-45db-9cde-6ae546e099c3"
+        },
+        {
+          "action": "OpenSpreadsheet",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "ConfigExcel",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$vConfigExcel_FolderPath$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "EDIT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "loadAddIns",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "28ce0a58-987a-4d67-9635-be241964bd42"
+        },
+        {
+          "action": "GetSingleCell",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "ConfigExcel",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "D2",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vLogFilePath"
+          },
+          "type": "action",
+          "uid": "c33657c7-4ae9-4a68-b063-e79ad4f34e69"
+        },
+        {
+          "action": "GetSingleCell",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "ConfigExcel",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "D3",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vErrorSnapshotFilePath"
+          },
+          "type": "action",
+          "uid": "5c8cb981-8e23-47a0-891d-df87fb0739f8"
+        },
+        {
+          "action": "GetSingleCell",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "ConfigExcel",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "D4",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vSourceFolderPath"
+          },
+          "type": "action",
+          "uid": "caa09653-b83f-4724-a782-550d869c5014"
+        },
+        {
+          "action": "GetSingleCell",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "ConfigExcel",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "D5",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vDestinationFolderPath"
+          },
+          "type": "action",
+          "uid": "803ffeb1-7d93-4a73-9dda-f7d2ab54934f"
+        },
+        {
+          "action": "GetSingleCell",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "ConfigExcel",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "D6",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vDestination_SubFolder_Name"
+          },
+          "type": "action",
+          "uid": "2ea1de61-8121-4401-bcb4-d8bc9d9eafc2"
+        },
+        {
+          "action": "GetSingleCell",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "ConfigExcel",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "activeCell",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "D7",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption",
+              "value": {
+                "string": "READ_CELL_TEXT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "readOption_readCellText_Help",
+              "value": {
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vFileName"
+          },
+          "type": "action",
+          "uid": "880787e1-5879-42c4-b364-746bbe840b8a"
+        },
+        {
+          "action": "CloseSpreadsheet",
+          "attributes": [
+            {
+              "name": "session",
+              "value": {
+                "string": "ConfigExcel",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "ff4b43c3-e450-4f2f-bdc2-29060bac950e"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$vDestinationFolderPath$\\$vDestination_SubFolder_Name$_$vTodayDateTime$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "vDestination_SubFolderPath"
+          },
+          "type": "action",
+          "uid": "fc4257e7-6384-4f65-b373-4306b7cb6ea3"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$vDestination_SubFolderPath$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$vDestination_SubFolderPath$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "e814cb2b-2316-45ec-9c0d-bd8b86aeada1"
+            }
+          ],
+          "type": "if",
+          "uid": "54d4b07c-5095-4114-9aa7-38ed4a30915f"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$vSourceFolderPath$/$vFileName$.*",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "operatorAttribute": {
+                "attributes": [
+                  {
+                    "name": "variable",
+                    "value": {
+                      "expression": "$vFileName$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "operator",
+                    "value": {
+                      "string": "NOTINCLUDE",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "value",
+                    "value": {
+                      "string": ".",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "matchCase",
+                    "value": {
+                      "boolean": true,
+                      "type": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "name": "isIgnoreCarriage",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  }
+                ],
+                "operator": "AND",
+                "value": {
+                  "conditionalName": "stringVariable",
+                  "packageName": "String",
+                  "type": "CONDITIONAL"
+                }
+              },
+              "value": {
+                "conditionalName": "fileExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$vSourceFolderPath$/$vFileName$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "operatorAttribute": {
+                    "attributes": [
+                      {
+                        "name": "variable",
+                        "value": {
+                          "expression": "$vFileName$",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "operator",
+                        "value": {
+                          "string": "INCLUDE",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "value",
+                        "value": {
+                          "string": ".",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "matchCase",
+                        "value": {
+                          "boolean": true,
+                          "type": "BOOLEAN"
+                        }
+                      },
+                      {
+                        "name": "isIgnoreCarriage",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      }
+                    ],
+                    "operator": "AND",
+                    "value": {
+                      "conditionalName": "stringVariable",
+                      "packageName": "String",
+                      "type": "CONDITIONAL"
+                    }
+                  },
+                  "value": {
+                    "conditionalName": "fileExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branch": "elseIf",
+              "steps": [
+                {
+                  "action": "messageBox",
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "string": "Check Point 2",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "timeOut",
+                      "value": {
+                        "number": "2",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "MessageBox",
+                  "type": "action",
+                  "uid": "8917f6c6-285d-4164-8767-826e4859c0ac"
+                },
+                {
+                  "action": "copyFiles",
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$vSourceFolderPath$/$vFileName$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "destinationPath",
+                      "value": {
+                        "expression": "$vDestination_SubFolderPath$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isSize",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isDate",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "File",
+                  "type": "action",
+                  "uid": "78df0506-3da2-4775-a5ed-b3bc3841a7aa"
+                },
+                {
+                  "action": "deleteFiles",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$vSourceFolderPath$/$vFileName$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "isSize",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isDate",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "File",
+                  "type": "action",
+                  "uid": "9c6904e4-fcca-48a6-b88a-80c1e6509be2"
+                }
+              ]
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$vFileName$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "INCLUDE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": ".",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branch": "elseIf",
+              "steps": [
+                {
+                  "action": "messageBox",
+                  "attributes": [
+                    {
+                      "name": "title",
+                      "value": {
+                        "string": "Automation Anywhere Enterprise Client",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "content",
+                      "value": {
+                        "string": "Check Point 3",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "scrollLines",
+                      "value": {
+                        "number": "30",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "closeMsgBox",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "timeOut",
+                      "value": {
+                        "number": "2",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "MessageBox",
+                  "type": "action",
+                  "uid": "c4cd1cf5-2ba5-4cd0-bb40-846a9ec7364e"
+                },
+                {
+                  "action": "copyFiles",
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$vSourceFolderPath$/*$vFileName$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "destinationPath",
+                      "value": {
+                        "expression": "$vDestination_SubFolderPath$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isSize",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isDate",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "File",
+                  "type": "action",
+                  "uid": "5dd836f3-b964-465e-8109-cf100636763d"
+                },
+                {
+                  "action": "deleteFiles",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$vSourceFolderPath$/*$vFileName$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "isSize",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isDate",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "File",
+                  "type": "action",
+                  "uid": "185495f3-f4dc-4914-a907-c4d172df633c"
+                }
+              ]
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "string": "Check Point  1",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "timeOut",
+                  "value": {
+                    "number": "2",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "0db26e9f-aa21-4841-b81a-12cff3fd3566"
+            },
+            {
+              "action": "copyFiles",
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$vSourceFolderPath$/$vFileName$.*",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "destinationPath",
+                  "value": {
+                    "expression": "$vDestination_SubFolderPath$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "68700ed1-34a8-465a-bfaf-2dabc8217011"
+            },
+            {
+              "action": "deleteFiles",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$vSourceFolderPath$/$vFileName$.*",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "27e21bdf-f40a-4efb-8ec1-0cee8c4604a0"
+            }
+          ],
+          "type": "if",
+          "uid": "09c961a1-a371-41c2-b4e4-78cee39eb598"
+        }
+      ],
+      "type": "try",
+      "uid": "952b05a1-d54c-432f-b05c-ea31722d631a"
+    }
+  ],
+  "triggers": []
+}

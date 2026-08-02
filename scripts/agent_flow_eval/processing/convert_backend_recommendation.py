@@ -142,6 +142,15 @@ def convert_recommendation(
     }
 
 
+def count_actions(steps: list[dict[str, Any]]) -> int:
+    return sum(
+        (1 if step.get("type") == "action" else 0)
+        + count_actions(step.get("steps", []) or [])
+        + sum(count_actions(branch.get("steps", []) or []) for branch in step.get("branches", []) or [])
+        for step in steps
+    )
+
+
 def run_processing_script(root: Path, script_name: str, dataset_dir: Path) -> None:
     subprocess.run(
         [sys.executable, str(root / "processing" / script_name), "--dataset-dir", str(dataset_dir)],
@@ -218,7 +227,7 @@ def main() -> None:
     print(json.dumps({
         "normalized": str(normalized_path),
         "steps": len(normalized.get("steps", [])),
-        "actions": sum(len(step.get("steps", []) or []) for step in normalized.get("steps", [])),
+        "actions": count_actions(normalized.get("steps", [])),
         "pm4py": str(output_dir / "pm4py") if args.with_conversions else None,
         "worfbench": str(output_dir / "worfbench") if args.with_conversions else None,
     }, ensure_ascii=False, indent=2))

@@ -1,0 +1,2014 @@
+{
+  "source_file": "Automation Anywhere__Bot Store__Predikly_Bots__09_Archival_of_files_in_folder__ArchivalOfFiles.json",
+  "steps": [
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            },
+            {
+              "name": "continueOnError",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "oNumErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "oStrErrorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "invert",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "expression": "$oBolBotStatus$",
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Boolean",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "oBolBotStatus"
+              },
+              "type": "action",
+              "uid": "3428ffca-fb00-45dd-87bb-fa0c40522120"
+            },
+            {
+              "action": "logToFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "Error Line No. - $oNumErrorLineNumber.Number:toString$ - $oStrErrorMessage$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "LogToFile",
+              "type": "action",
+              "uid": "fd889053-52c4-4944-b646-817095ee2beb"
+            },
+            {
+              "action": "captureDesktop",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrSnapshotsFolder$/$pStrAssignedDate$_$pStrAssignedTime$.jpg",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwriteFile",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Screen",
+              "type": "action",
+              "uid": "f7620eff-bc0d-4edf-97bf-512fcb42977a"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "string": "constant",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "userDefined",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Boolean",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "oBolBotStatus"
+          },
+          "type": "action",
+          "uid": "e67a9221-cec0-4142-876e-4de015aa7aab"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrProjectFolder$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "iStrProjectFolder"
+          },
+          "type": "action",
+          "uid": "2dabfd4e-ac90-460b-ab2a-f342c86acda6"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrInputFolder$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "iStrInputFolder"
+          },
+          "type": "action",
+          "uid": "bb34f27e-05f7-4b50-a3e8-d87f025b4317"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Bot_Name",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrBotName"
+          },
+          "type": "action",
+          "uid": "ddc89b07-3086-4294-85bb-ab94c78bab60"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Predikly",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrVendorName"
+          },
+          "type": "action",
+          "uid": "4f0fec92-498a-4789-82ba-535b0ec6c069"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$pStrBotName$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$pStrNull$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "matchCase",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isIgnoreCarriage",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "name": "condition",
+              "operatorAttribute": {
+                "attributes": [
+                  {
+                    "name": "variable",
+                    "value": {
+                      "expression": "$pStrVendorName$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "operator",
+                    "value": {
+                      "string": "EQ",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "value",
+                    "value": {
+                      "expression": "$pStrNull$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "matchCase",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "name": "isIgnoreCarriage",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  }
+                ],
+                "operator": "OR",
+                "value": {
+                  "conditionalName": "stringVariable",
+                  "packageName": "String",
+                  "type": "CONDITIONAL"
+                }
+              },
+              "value": {
+                "conditionalName": "stringVariable",
+                "packageName": "String",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "string": "Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines.",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "bfcdadda-0118-463d-9e99-9b6bd7179d7d"
+            },
+            {
+              "action": "stopTask",
+              "attributes": [],
+              "disabled": false,
+              "package": "TaskBot",
+              "type": "action",
+              "uid": "45da0f18-0cfc-44f7-8e42-04c497cb183b"
+            }
+          ],
+          "type": "if",
+          "uid": "d120364c-41c0-44a3-a36f-6b22a8a459db"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "yyyyMMdd",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAssignedDate"
+          },
+          "type": "action",
+          "uid": "9eebf356-fae6-4d5b-84f7-05becdaaf3ff"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$System:Hour.Number:toString$$System:Minute.Number:toString$$System:Second.Number:toString$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAssignedTime"
+          },
+          "type": "action",
+          "uid": "7d49eddb-b126-43d5-b2b8-3a5ee2c21750"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrProjectFolder$\\Logs",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogsFolder"
+          },
+          "type": "action",
+          "uid": "7d133da5-c226-4abc-96aa-e823a3a0f3f7"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsFolder$\\$pStrAssignedDate$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogsDateFolder"
+          },
+          "type": "action",
+          "uid": "e4ad6a01-5de5-47e6-8ba3-d91b4b9e519a"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\AuditLog",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAuditLogFolder"
+          },
+          "type": "action",
+          "uid": "5383c9c2-e0b0-4679-a947-e37d77f39172"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrAuditLogFolder$\\$pStrBotName$AuditLog_$pStrAssignedDate$.txt",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAuditLogFile"
+          },
+          "type": "action",
+          "uid": "6126dead-9e24-4a90-a9c9-015ad54b81a4"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\ErrorLog",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrErrorLogFolder"
+          },
+          "type": "action",
+          "uid": "2841d01f-8602-45a5-8fb9-4e17ca8aaf03"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrErrorLogFolder$\\$pStrBotName$ErrorLog_$pStrAssignedDate$.txt",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrErrorLogFile"
+          },
+          "type": "action",
+          "uid": "ca5ab2f5-b749-4f72-ad7e-df0fd99691d1"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\Snapshots",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrSnapshotsFolder"
+          },
+          "type": "action",
+          "uid": "02dbc4b4-e74e-41b2-a269-bcd91bf73bf7"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "f385cce4-5b40-4757-8392-c5a55f7db226"
+            }
+          ],
+          "type": "if",
+          "uid": "0843114f-7c9a-4c81-b834-4d596a609067"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrAuditLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrAuditLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "7a1e9ac4-dc0e-46fc-bde7-5f0769e40dfa"
+            }
+          ],
+          "type": "if",
+          "uid": "f7945470-e260-436c-b225-c7a1a8ed82ea"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrErrorLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrErrorLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "ebccef99-06a1-4fdb-a587-c50f5087efa8"
+            }
+          ],
+          "type": "if",
+          "uid": "60a0d561-9adb-4f6c-a9e0-bff79525328a"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "821db6cf-0bd1-48f0-9d4a-f43a2a7bf254"
+            }
+          ],
+          "type": "if",
+          "uid": "1a7d70e0-1a11-4685-a61f-b377e8028f02"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$pStrAuditLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrAuditLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "cfe1d023-e3af-41f7-9513-d28e3b1c5819"
+            }
+          ],
+          "type": "if",
+          "uid": "ca9f12f5-0495-493b-8d7b-9521a1557b83"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "a5f3eb85-a02d-4be9-b85f-935563c5d025"
+            }
+          ],
+          "type": "if",
+          "uid": "980d1528-945e-4224-8b5c-3ba2a71f63a5"
+        },
+        {
+          "action": "subtract",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "val",
+              "value": {
+                "expression": "$pNumLoggingPeriod$",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "unit",
+              "value": {
+                "string": "DAYS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pdtLogCutoffDate"
+          },
+          "type": "action",
+          "uid": "de60dfdd-3009-4982-85f0-5daf7d762918"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "pdtLogCutoffDate"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "yyyyMMdd",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogCutoffDate"
+          },
+          "type": "action",
+          "uid": "5381ab62-a77a-476d-bb8d-0f200127dc09"
+        },
+        {
+          "attributes": [],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "deleteFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$/*",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "dateValue",
+                  "value": {
+                    "string": "Modified",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "dateRangeValue",
+                  "value": {
+                    "string": "Before",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "beforeDate",
+                  "value": {
+                    "expression": "$pStrLogCutoffDate$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isBeforeDateIncluded",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "d98bd3e5-e511-4f4e-9dc8-1dfa3d88a4db"
+            }
+          ],
+          "type": "try",
+          "uid": "54b82c45-1b54-4eb0-8f26-51964a25b2a0"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "============================================",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "62e290c7-070a-4e7b-8605-fab52cebb83a"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "============================================",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "f1fe80bb-1a39-4bcb-b21d-e4a362f8310e"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution started ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "24eb108f-9f28-44ee-83e1-532d2cb4cdca"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution started ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "91348fb6-8e40-4b7e-93b4-abd4c654e64a"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "Bot has Started execution on $System:Machine$ machine.",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "6091d9c3-4b30-4f15-82f6-eccfc1f0cf58"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrArchieveFolderPath$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "iStrArchieveFolderPath"
+          },
+          "type": "action",
+          "uid": "bc604b10-abec-4d63-a9e8-9c184298a305"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$iStrInputFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [
+            {
+              "attributes": [],
+              "branch": "else",
+              "steps": [
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "$pStrBotName$ - The specified folder does not exist at the specified path $iStrInputFolder$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "53ac2f7f-e45e-4ed9-a22c-0cf94ff56571"
+                }
+              ]
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "logToFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrAuditLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "$pStrBotName$ - The Audit Log folder exist at the specified location.",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "LogToFile",
+              "type": "action",
+              "uid": "82812b78-30a5-4288-9229-bf48effda10d"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$iStrInputFolder$/*.*",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "fileExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "$pStrBotName$ - There are no files in the specified folder path.",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "b1ef79a9-fdd8-400d-baea-2b20592ee768"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$iStrArchieveFolderPath$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "waitTimeout",
+                          "value": {
+                            "number": "0",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "folderDoesNotExists",
+                        "packageName": "Folder",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "createFolder",
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$iStrArchieveFolderPath$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Folder",
+                      "type": "action",
+                      "uid": "868e0347-e38c-42ca-98ab-7ff099c17101"
+                    },
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "$pStrBotName$ - As the Archive folder does not exist, Bot has created Archive folder.",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "4920d9fb-1ee7-4b8c-be9f-b96e13a241e5"
+                    }
+                  ],
+                  "type": "if",
+                  "uid": "2de550a4-498b-46b6-b25a-e980a09772d3"
+                },
+                {
+                  "action": "createFolder",
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$iStrArchieveFolderPath$\\$pStrAssignedDate$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Folder",
+                  "type": "action",
+                  "uid": "64f1a617-951d-49c7-a245-d5ae29f2840f"
+                },
+                {
+                  "action": "assign",
+                  "attributes": [
+                    {
+                      "name": "sourceString",
+                      "value": {
+                        "expression": "$iStrArchieveFolderPath$\\$pStrAssignedDate$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "String",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pStrDateTimeStampFolderPath"
+                  },
+                  "type": "action",
+                  "uid": "dbc1b26a-a2cc-44aa-9dfe-0a8c45ed7023"
+                },
+                {
+                  "attributes": [
+                    {
+                      "name": "loopType",
+                      "value": {
+                        "string": "ITERATOR",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$iStrInputFolder$",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "name": "iterator",
+                      "returnTo": {
+                        "type": "VARIABLE",
+                        "variableName": "pDictFilesInFolder"
+                      },
+                      "value": {
+                        "iteratorName": "loop.iterators.files",
+                        "packageName": "File",
+                        "type": "ITERATOR"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "copyFiles",
+                      "attributes": [
+                        {
+                          "name": "sourceFilePath",
+                          "value": {
+                            "expression": "file://$iStrInputFolder$/$pDictFilesInFolder{name}$.$pDictFilesInFolder{extension}$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "destinationPath",
+                          "value": {
+                            "expression": "$pStrDateTimeStampFolderPath$/$pDictFilesInFolder{name}$.$pDictFilesInFolder{extension}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isOverwrite",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "File",
+                      "type": "action",
+                      "uid": "bb48142d-8489-4ed6-a61c-c861c43fff90"
+                    },
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "$pStrBotName$ - Bot has copied $pDictFilesInFolder{name}$.$pDictFilesInFolder{extension}$ file into $iStrArchieveFolderPath$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "a30eba61-ef08-450d-a113-aea122069fa7"
+                    },
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "$pStrBotName$ - Bot has deleted $pDictFilesInFolder{name}$.$pDictFilesInFolder{extension}$ file from $pStrAuditLogFolder$.",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "33022969-e8ec-4e9f-8dcf-aeb5a5dbacf1"
+                    },
+                    {
+                      "attributes": [],
+                      "branches": [
+                        {
+                          "attributes": [
+                            {
+                              "name": "exceptionType",
+                              "value": {
+                                "exceptionName": "BotException",
+                                "packageName": "ErrorHandler",
+                                "type": "EXCEPTION"
+                              }
+                            }
+                          ],
+                          "branch": "catch",
+                          "steps": [
+                            {
+                              "action": "logToFile",
+                              "attributes": [
+                                {
+                                  "name": "filePath",
+                                  "value": {
+                                    "expression": "file://$pStrAuditLogFile$",
+                                    "type": "FILE"
+                                  }
+                                },
+                                {
+                                  "name": "logContent",
+                                  "value": {
+                                    "expression": "$pStrBotName$ - $pDictFilesInFolder{name}$.$pDictFilesInFolder{extension}$ file is not able to delete",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "appendTimestamp",
+                                  "value": {
+                                    "boolean": true,
+                                    "type": "BOOLEAN"
+                                  }
+                                },
+                                {
+                                  "name": "logOption",
+                                  "value": {
+                                    "string": "APPEND_FILE",
+                                    "type": "STRING"
+                                  }
+                                },
+                                {
+                                  "name": "encodingValue",
+                                  "value": {
+                                    "string": "ANSI",
+                                    "type": "STRING"
+                                  }
+                                }
+                              ],
+                              "disabled": false,
+                              "package": "LogToFile",
+                              "type": "action",
+                              "uid": "36cc9d08-6d3f-4ba0-baaa-ff589aade0c3"
+                            }
+                          ]
+                        }
+                      ],
+                      "disabled": false,
+                      "steps": [
+                        {
+                          "action": "deleteFiles",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$iStrInputFolder$/$pDictFilesInFolder{name}$.$pDictFilesInFolder{extension}$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "isSize",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "isDate",
+                              "value": {
+                                "boolean": false,
+                                "type": "BOOLEAN"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "File",
+                          "type": "action",
+                          "uid": "2aa9d505-4ac7-4a12-aa79-c7d7ec69adb6"
+                        }
+                      ],
+                      "type": "try",
+                      "uid": "6e445efd-de56-43ec-96ca-d831827beb4e"
+                    }
+                  ],
+                  "type": "loop",
+                  "uid": "fb6d335d-9671-4834-ae07-613b3cc9cd4d"
+                }
+              ],
+              "type": "if",
+              "uid": "eff1d4f7-9f96-49e7-b520-3dbf564edeb1"
+            }
+          ],
+          "type": "if",
+          "uid": "298e7142-3018-4f35-a6b1-c0643cc03bd8"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution Ended ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "f3d8b4ec-a771-45df-a45f-6a49a4731343"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution Ended ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "93649254-947a-4724-bbb4-0c25f75127a3"
+        }
+      ],
+      "type": "try",
+      "uid": "c2762a86-ef0d-4b4f-9b92-ca0040250392"
+    }
+  ],
+  "triggers": []
+}

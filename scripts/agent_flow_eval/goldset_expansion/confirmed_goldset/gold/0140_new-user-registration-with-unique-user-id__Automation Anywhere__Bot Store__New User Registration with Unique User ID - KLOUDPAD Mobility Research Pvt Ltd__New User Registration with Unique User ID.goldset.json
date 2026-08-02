@@ -1,0 +1,1598 @@
+{
+  "source_file": "Automation Anywhere__Bot Store__New User Registration with Unique User ID - KLOUDPAD Mobility Research Pvt Ltd__New User Registration with Unique User ID.json",
+  "steps": [
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "string": "C:\\ProgramData\\AutomationAnywhere\\Bots\\New User Registration",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "sApproot"
+      },
+      "type": "action",
+      "uid": "87c94d0f-c1a8-4595-86c6-621f0b009b3a"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$sApproot$\\Logs",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "sLogfolder"
+      },
+      "type": "action",
+      "uid": "3f2e736c-1ff0-49ff-8b76-14c2455713b6"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$sLogfolder$\\Log.csv",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "sRunlogpath"
+      },
+      "type": "action",
+      "uid": "4b6ebe6f-3b34-4c63-a732-a669c2ab6603"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$sApproot$\\Output",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "sOutput"
+      },
+      "type": "action",
+      "uid": "a0354c3c-edeb-437b-b521-f33ca82e0cac"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "$sOutput$\\New User Registration.xlsx",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "sOutputfile"
+      },
+      "type": "action",
+      "uid": "dbb08c8d-e4d4-47bc-8d3f-19d0f5628ad1"
+    },
+    {
+      "action": "toString",
+      "attributes": [
+        {
+          "name": "source",
+          "value": {
+            "packageName": "System",
+            "type": "VARIABLE",
+            "variableName": "Date"
+          }
+        },
+        {
+          "name": "selectPattern",
+          "value": {
+            "string": "PREBUILT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "preBuiltPattern",
+          "value": {
+            "string": "ISO_INSTANT",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Datetime",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "scurrentDate"
+      },
+      "type": "action",
+      "uid": "123291ee-6a2d-4727-a119-8822716d124c"
+    },
+    {
+      "attributes": [
+        {
+          "attributes": [
+            {
+              "name": "folderPath",
+              "value": {
+                "expression": "$sApproot$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "waitTimeout",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "name": "condition",
+          "value": {
+            "conditionalName": "folderDoesNotExists",
+            "packageName": "Folder",
+            "type": "CONDITIONAL"
+          }
+        }
+      ],
+      "branches": [],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "createFolder",
+          "attributes": [
+            {
+              "name": "folderPath",
+              "value": {
+                "expression": "$sApproot$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isOverwrite",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Folder",
+          "type": "action",
+          "uid": "e18d5297-163a-470f-b3bb-9f7e6ded0d70"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sLogfolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sLogfolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "c82aa644-2024-4f99-9775-eabd0b5bc572"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$sRunlogpath$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "fileNotExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "createFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sRunlogpath$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "File",
+                  "type": "action",
+                  "uid": "cfcdb5fb-6a65-4c2f-a6c9-6e585af86827"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sRunlogpath$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "string": "Timestamp,System,TaskName,Error Message,Error Line",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "77cb8e98-8af4-430e-a792-c01c47b7a5c0"
+                }
+              ],
+              "type": "if",
+              "uid": "ee34f337-ef4f-4760-8e87-8d44848c1675"
+            }
+          ],
+          "type": "if",
+          "uid": "451ac859-4890-4cc1-8bbf-6f534e535d5b"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sOutput$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$sOutput$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "d337115b-b923-4eaa-b426-892f57faa5ee"
+            }
+          ],
+          "type": "if",
+          "uid": "d6ba7e47-d1ad-4c9f-aded-d6630197e1f1"
+        }
+      ],
+      "type": "if",
+      "uid": "b5a50fe0-1e3b-4cbd-8e96-7da3bbd36862"
+    },
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "errorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "errorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "expression": "Error: $errorMessage$\nLine Number: $errorLineNumber.Number:toString$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "timeOut",
+                  "value": {
+                    "number": "5",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "1b40a6d2-b1b8-45dc-928a-46455b8df355"
+            }
+          ]
+        },
+        {
+          "attributes": [],
+          "branch": "finally",
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$errorLineNumber$",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "numberVariable",
+                    "packageName": "Number",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$sRunlogpath$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "\"$scurrentDate$\",\"$System:Machine$\",\"$System:AATaskName$\",\"$errorMessage$\",\"$errorLineNumber.Number:toString$\"",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "d3aa8056-d101-4d98-88cc-5f9ab1a842df"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$sRunlogpath$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "\"$scurrentDate$\",\"$System:Machine$\",\"$System:AATaskName$\",All actions are completed",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "26e8e766-1111-46fb-8678-a93ca58fad27"
+                }
+              ],
+              "type": "if",
+              "uid": "2003a776-b0fb-4690-9eec-f608cc0da148"
+            },
+            {
+              "action": "CloseSpreadsheet",
+              "attributes": [
+                {
+                  "name": "isSave",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "session",
+                  "value": {
+                    "sessionName": {
+                      "string": "Default",
+                      "type": "STRING"
+                    },
+                    "type": "SESSION"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Excel_MS",
+              "type": "action",
+              "uid": "15ff9ac4-284b-4bca-b26a-ac02212e39b9"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "randomNumber",
+          "attributes": [
+            {
+              "name": "fromVal",
+              "value": {
+                "number": "10000",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "toVal",
+              "value": {
+                "number": "100000",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "nReferenceID"
+          },
+          "type": "action",
+          "uid": "5db0a34c-1bb6-466f-b96d-e52f03877289"
+        },
+        {
+          "action": "reverse",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$sFirstName$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "srevFirstName"
+          },
+          "type": "action",
+          "uid": "392635e2-4d69-4061-aa04-b830ef3cfd83"
+        },
+        {
+          "action": "subString",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$srevFirstName$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "startIndex",
+              "value": {
+                "number": "1",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "subStringLength",
+              "value": {
+                "number": "2",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "sSubFirstName"
+          },
+          "type": "action",
+          "uid": "02c7802f-c59e-48a8-8cda-4e60d3faa6f4"
+        },
+        {
+          "action": "messageBox",
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Automation Anywhere Enterprise Client",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "content",
+              "value": {
+                "expression": "The reference ID  for $sFirstName$ $sLastName$ : \n$sSubFirstName$$nReferenceID.Number:toString$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "scrollLines",
+              "value": {
+                "number": "30",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "closeMsgBox",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "timeOut",
+              "value": {
+                "number": "5",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "MessageBox",
+          "type": "action",
+          "uid": "7405f275-8eed-46a9-969d-e3a4dd6bdcb4"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$sSubFirstName$$nReferenceID.Number:toString$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "strUserID"
+          },
+          "type": "action",
+          "uid": "3123dd07-d4c8-4e3e-a35c-23a5a5122a25"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$sOutputfile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "downloadTo",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "string": "repository:///Automation%20Anywhere/Bot%20Store/New%20User%20Registration%20with%20Unique%20User%20ID%20-%20KLOUDPAD%20Mobility%20Research%20Pvt%20Ltd/Docs/New%20User%20Registration.xlsx",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "destination",
+                  "value": {
+                    "expression": "file://$sOutputfile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "overwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "5deb6809-2ca8-4002-b784-278596d484a9"
+            }
+          ],
+          "type": "if",
+          "uid": "4c6c5593-1ece-44b3-a2ab-c2a5d35b2ede"
+        },
+        {
+          "action": "OpenSpreadsheet",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$sOutputfile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "EDIT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "loadAddIns",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "string": "Default",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "9c2947da-f7f6-45ac-bfe8-03544921f0aa"
+        },
+        {
+          "action": "GoToCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "SpecificCell",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "cell",
+              "value": {
+                "string": "A1",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "ae0fc1db-9b42-45c7-85e2-629d3fa6b866"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "down",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "54f27fd9-93d0-4724-a6e3-862a6482e4fb"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$sFirstName$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "ed465657-2b18-4bb9-a1bd-b64c623fc415"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "right",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "2e1ae1b5-4d75-4760-a95d-a7f572685623"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$sLastName$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "1f8578b9-7ef0-4c28-9767-a2cd81c341cd"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "right",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "3fc74345-a9f0-4bbc-8da5-587ea3d1aee0"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$sEmailId$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "efb826a3-f421-4498-8acc-48b5cb4136ea"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "right",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "3404bd6e-2b0c-4148-92cc-54d1704dee61"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$sAddress$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "d8f72437-2937-4072-a14d-b0af13fbf856"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "right",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "3127a73a-2123-4522-8876-8470dc150ac8"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$sCity$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "e768f149-0b43-4514-9f72-03d33ba4e6de"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "right",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "cf27eaf5-668b-4d67-bd9e-1e8fd7d95315"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$sState$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "68bf6045-2b1d-43da-816f-185840ba5254"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "right",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "559d37d9-8843-48db-90c5-665aaf7c316e"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$sZipCode$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "f81dd6e1-5d73-401c-94d2-46fd7ab571e0"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "right",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "1e7382c2-f213-48cf-803b-ed2eac76e129"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$nMobileNumber.Number:toString$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "addd4089-7659-4312-a1a8-111fb6ccbbcf"
+        },
+        {
+          "action": "GoToNextEmptyCell",
+          "attributes": [
+            {
+              "name": "startFromActiveCell",
+              "value": {
+                "string": "true",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "towards",
+              "value": {
+                "string": "right",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "949a40e3-8892-49c6-8d36-d6a17ff0538a"
+        },
+        {
+          "action": "SetCell",
+          "attributes": [
+            {
+              "name": "cellOption",
+              "value": {
+                "string": "ACTIVE_CELL",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "expression": "$strUserID$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "Default",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "f6d64acc-4fb0-4cbe-b7c3-37eec40e5628"
+        },
+        {
+          "action": "messageBox",
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Automation Anywhere Enterprise Client",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "content",
+              "value": {
+                "expression": "The New User $sFirstName$ $sLastName$ has been registered",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "scrollLines",
+              "value": {
+                "number": "30",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "closeMsgBox",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "timeOut",
+              "value": {
+                "number": "5",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "MessageBox",
+          "type": "action",
+          "uid": "f6e73150-8991-48be-8cb2-b81832d033fb"
+        }
+      ],
+      "type": "try",
+      "uid": "102a3399-cc20-4d0e-862f-53e764eb75b0"
+    }
+  ],
+  "triggers": []
+}

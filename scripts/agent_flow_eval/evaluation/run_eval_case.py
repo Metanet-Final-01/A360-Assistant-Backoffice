@@ -11,11 +11,27 @@ from typing import Any
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from action_filters import action_label, is_browser_session_lifecycle_action, is_disabled_step
-from adapters.pm4py_adapter import compare_pm4py_artifacts, score_pm4py_conformance
+from action_filters import (
+    action_label,
+    is_control_flow_marker_action,
+    is_disabled_step,
+    is_formatting_only_action,
+    is_session_lifecycle_action,
+)
+from action_chain import compute_action_chain
+from action_matching import NOISE_PACKAGES, flatten_scored_actions, load_action_equivalence_map as load_action_matching_equivalence_map, load_conditional_equivalence_groups, load_gold_core_actions, normalize_action_label, pair_judge_matches, pair_rule_matches
 from adapters.worfbench_adapter import score_worfbench, score_worfbench_f1chain
-from core_task import filter_core_labels
 from path_utils import ensure_child_path, safe_path_component
+
+# PM4Py(score_pm4py_conformance/compare_pm4py_artifacts)는 재설계(2026-07-30,
+# peaceful-watching-possum.md)로 액티브 리포트에서 제외됐다 - 사람이 고른 구현 1개 vs
+# 에이전트가 고른 다른 구현을 비교하는 구조상 안 맞고(정상 구현차이를 전부 deviation으로
+# 잡음). PM4Py 코드 자체(adapters/pm4py_adapter.py)는 남겨뒀다 - 필요해지면 다시 쓸 수
+# 있다. `core_task.py`(CORE_PACKAGE_KEYS 등)와 이 파일의 옛 package_family()/
+# salient_families()는 근거 문서 없는 하드코딩 패키지 분류였음(git log로 도입 커밋에
+# 근거 설명 없음을 확인함) - **파일째 완전히 삭제됨**(남겨두지 않음), 재도입하지 말 것.
+# 대신 action_matching.py(Rule/Judge Match 기반 Action P/R/F1)와 action_chain.py
+# (LIS 기반 Action Chain F1)를 새로 쓴다.
 
 
 @dataclass(frozen=True)
@@ -96,15 +112,16 @@ def load_action_equivalence_map(root: Path) -> dict[str, str]:
         if not canonical:
             continue
         for member in group.get("members", []) or []:
-            if member in mapping and mapping[member] != canonical:
+            key = normalize_action_label(member)
+            if key in mapping and mapping[key] != canonical:
                 raise ValueError(f"Action equivalence member maps to multiple canonicals: {member}")
-            mapping[member] = canonical
-        mapping.setdefault(canonical, canonical)
+            mapping[key] = canonical
+        mapping.setdefault(normalize_action_label(canonical), canonical)
     return mapping
 
 
 def canonicalize_actions(actions: list[str], mapping: dict[str, str]) -> list[str]:
-    return [mapping.get(action, action) for action in actions]
+    return [mapping.get(normalize_action_label(action), action) for action in actions]
 
 
 def flatten_actions(steps: list[dict[str, Any]], excluded: list[str] | None = None) -> list[str]:
@@ -119,7 +136,12 @@ def flatten_actions(steps: list[dict[str, Any]], excluded: list[str] | None = No
             package = step.get("package")
             action = step.get("action")
             label = action_label(package, action)
-            if is_browser_session_lifecycle_action(package, action):
+            if (
+                is_session_lifecycle_action(package, action)
+                or is_control_flow_marker_action(package, action)
+                or is_formatting_only_action(package, action)
+                or package in NOISE_PACKAGES
+            ):
                 if excluded is not None:
                     excluded.append(label)
                 continue
@@ -143,29 +165,10 @@ def flatten_actions(steps: list[dict[str, Any]], excluded: list[str] | None = No
 def packages(actions: list[str]) -> list[str]:
     return [action.split(".", 1)[0] for action in actions]
 
-
-def package_family(package: str) -> str:
-    normalized = package.lower().replace("_", " ").replace("-", " ").strip()
-    if normalized in {"excel ms", "excel advanced"}:
-        return "spreadsheet"
-    if normalized in {"webautomation", "browser"}:
-        return "browser"
-    if normalized in {"errorhandler", "error handler"}:
-        return "error_handler"
-    if normalized in {"logtofile"}:
-        return "logging"
-    if normalized in {"taskbot", "messagebox", "screen"}:
-        return "runtime_ui"
-    return normalized.replace(" ", "_")
-
-
-def package_families(actions: list[str]) -> list[str]:
-    return [package_family(action.split(".", 1)[0]) for action in actions]
-
-
-def salient_families(actions: list[str]) -> list[str]:
-    support = {"string", "folder", "datetime", "file", "delay", "number", "logging", "runtime_ui"}
-    return [family for family in package_families(actions) if family not in support]
+# package_family()/package_families()/salient_families() 삭제됨(2026-07-30) - 근거
+# 문서 없는 하드코딩 패키지 분류였음(git log로 확인, 도입 커밋에 근거 설명 없음).
+# core_task.py의 CORE_PACKAGE_KEYS와도 File/Folder/XML/JSONHandler/Dictionary/List를
+# 놓고 서로 모순됐던 것 - action_matching.py/action_chain.py로 대체.
 
 
 def adjacent_edges(actions: list[str]) -> list[tuple[str, str]]:
@@ -228,7 +231,7 @@ def first_mismatches(gold_actions: list[str], pred_actions: list[str], limit: in
     return rows
 
 
-def score_normalized(gold_path: Path, pred_path: Path) -> dict[str, Any]:
+def score_normalized(gold_path: Path, pred_path: Path, *, gold_core_actions_path: Path | None = None) -> dict[str, Any]:
     gold = load_json(gold_path)
     pred = load_json(pred_path)
     equivalence_map = load_action_equivalence_map(goldset_root())
@@ -238,8 +241,22 @@ def score_normalized(gold_path: Path, pred_path: Path) -> dict[str, Any]:
     pred_actions = flatten_actions(pred.get("steps", []) or [], excluded_prediction_actions)
     gold_canonical_actions = canonicalize_actions(gold_actions, equivalence_map)
     pred_canonical_actions = canonicalize_actions(pred_actions, equivalence_map)
-    gold_core_actions = filter_core_labels(gold_canonical_actions)
-    pred_core_actions = filter_core_labels(pred_canonical_actions)
+
+    # action_matching.py/action_chain.py - Rule/Judge Match 기반 Action P/R/F1 +
+    # Action Chain F1 (재설계 v4, peaceful-watching-possum.md 참고).
+    am_plain_map = load_action_matching_equivalence_map()
+    am_conditional = load_conditional_equivalence_groups()
+    am_include_map = load_gold_core_actions(gold_core_actions_path)
+    scored_gold = flatten_scored_actions(gold.get("steps", []) or [], include_map=am_include_map, plain_map=am_plain_map, conditional_groups=am_conditional)
+    scored_pred = flatten_scored_actions(pred.get("steps", []) or [], include_map=None, plain_map=am_plain_map, conditional_groups=am_conditional)
+    rule_matches, remaining_gold, remaining_pred = pair_rule_matches(scored_gold, scored_pred)
+    judge_matches, judge_log = pair_judge_matches(remaining_gold, remaining_pred)
+    all_matches = rule_matches + judge_matches
+    action_chain = compute_action_chain(scored_gold, scored_pred, all_matches)
+    tp = len(all_matches)
+    action_precision = tp / len(scored_pred) if scored_pred else 0.0
+    action_recall = tp / len(scored_gold) if scored_gold else 0.0
+    action_f1 = (2 * action_precision * action_recall / (action_precision + action_recall)) if (action_precision + action_recall) else 0.0
 
     return {
         "gold_path": str(gold_path),
@@ -247,7 +264,7 @@ def score_normalized(gold_path: Path, pred_path: Path) -> dict[str, Any]:
         "gold_source_file": gold.get("source_file"),
         "prediction_source_file": pred.get("source_file"),
         "preprocessing": {
-            "excluded_rule": "browser_session_lifecycle_action",
+            "excluded_rule": "session_lifecycle_or_control_flow_marker_or_formatting_or_noise_action",
             "excluded_regex": {
                 "package": "^(web\\s*automation|webautomation|browser|recorder)$",
                 "action": "session",
@@ -258,6 +275,7 @@ def score_normalized(gold_path: Path, pred_path: Path) -> dict[str, Any]:
             "excluded_prediction_count": len(excluded_prediction_actions),
             "action_equivalence_rules_path": str(goldset_root() / "evaluation" / "action_equivalence_rules.json"),
             "action_equivalence_member_count": len(equivalence_map),
+            "gold_core_actions_path": str(gold_core_actions_path) if gold_core_actions_path else None,
         },
         "gold_action_count": len(gold_actions),
         "prediction_action_count": len(pred_actions),
@@ -265,11 +283,7 @@ def score_normalized(gold_path: Path, pred_path: Path) -> dict[str, Any]:
         "action_multiset": multiset_score(gold_actions, pred_actions),
         "canonical_action_sequence": sequence_score(gold_canonical_actions, pred_canonical_actions),
         "canonical_action_multiset": multiset_score(gold_canonical_actions, pred_canonical_actions),
-        "core_task_action_sequence": sequence_score(gold_core_actions, pred_core_actions),
-        "core_task_action_multiset": multiset_score(gold_core_actions, pred_core_actions),
         "package_multiset": multiset_score(packages(gold_actions), packages(pred_actions)),
-        "package_family_multiset": multiset_score(package_families(gold_actions), package_families(pred_actions)),
-        "salient_family_multiset": multiset_score(salient_families(gold_actions), salient_families(pred_actions)),
         "adjacent_edge_multiset": multiset_score(adjacent_edges(gold_actions), adjacent_edges(pred_actions)),
         "canonical_adjacent_edge_multiset": multiset_score(adjacent_edges(gold_canonical_actions), adjacent_edges(pred_canonical_actions)),
         "first_mismatches": first_mismatches(gold_actions, pred_actions),
@@ -278,10 +292,14 @@ def score_normalized(gold_path: Path, pred_path: Path) -> dict[str, Any]:
         "gold_canonical_actions_preview": gold_canonical_actions[:20],
         "prediction_actions": pred_actions,
         "prediction_canonical_actions": pred_canonical_actions,
-        "gold_core_task_actions": gold_core_actions,
-        "prediction_core_task_actions": pred_core_actions,
-        "gold_salient_families": salient_families(gold_actions),
-        "prediction_salient_families": salient_families(pred_actions),
+        # 1차 확정 지표(§2, §4 - action_matching.py/action_chain.py)
+        "action_prf1": {"precision": action_precision, "recall": action_recall, "f1": action_f1, "tp": tp, "gold_count": len(scored_gold), "pred_count": len(scored_pred)},
+        "action_chain": action_chain,
+        "rule_match_count": len(rule_matches),
+        "judge_match_count": len(judge_matches),
+        "judge_log": judge_log,
+        "unmatched_gold_uids": [a.uid for a in scored_gold if a.uid not in {m.gold_id for m in all_matches}],
+        "unmatched_pred_uids": [a.uid for a in scored_pred if a.uid not in {m.pred_id for m in all_matches}],
     }
 
 
@@ -296,36 +314,30 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         f"- Gold actions: `{normalized['gold_action_count']}`",
         f"- Prediction actions: `{normalized['prediction_action_count']}`",
         "",
-        "## Scores",
+        "## Scores (1차 확정 지표 - action_matching.py/action_chain.py)",
+        "",
+        f"- **Action Precision/Recall/F1**: `{normalized['action_prf1']['precision']:.4f}` / "
+        f"`{normalized['action_prf1']['recall']:.4f}` / `{normalized['action_prf1']['f1']:.4f}` "
+        f"(rule match `{normalized['rule_match_count']}`, judge match `{normalized['judge_match_count']}`)",
+        f"- **Action Chain Precision/Recall/F1** (액션 선택+상대 순서를 함께 반영, 순서 정확도만은 아님): "
+        f"`{normalized['action_chain']['precision']:.4f}` / `{normalized['action_chain']['recall']:.4f}` / "
+        f"`{normalized['action_chain']['f1']:.4f}`",
+        "",
+        "## 참고 지표 (레거시 - package.action 완전일치/LCS 기반, 구현 차이를 구분 못함)",
         "",
         f"- Action sequence LCS F1: `{normalized['action_sequence']['f1']:.4f}` "
         f"(precision `{normalized['action_sequence']['precision']:.4f}`, recall `{normalized['action_sequence']['recall']:.4f}`)",
         f"- Action multiset F1: `{normalized['action_multiset']['f1']:.4f}`",
         f"- Canonical action sequence LCS F1: `{normalized['canonical_action_sequence']['f1']:.4f}`",
         f"- Canonical action multiset F1: `{normalized['canonical_action_multiset']['f1']:.4f}`",
-        f"- Core task sequence LCS F1: `{normalized['core_task_action_sequence']['f1']:.4f}`",
-        f"- Core task multiset F1: `{normalized['core_task_action_multiset']['f1']:.4f}`",
         f"- Package multiset F1: `{normalized['package_multiset']['f1']:.4f}`",
-        f"- Package family F1: `{normalized['package_family_multiset']['f1']:.4f}`",
-        f"- Salient family F1: `{normalized['salient_family_multiset']['f1']:.4f}`",
         f"- Adjacent edge F1: `{normalized['adjacent_edge_multiset']['f1']:.4f}`",
-        f"- PM4Py fitness: `{payload['pm4py'].get('fitness')}`",
-        f"- PM4Py precision: `{payload['pm4py'].get('precision')}`",
-        f"- Core PM4Py fitness: `{payload['core_pm4py'].get('fitness')}`",
-        f"- Core PM4Py precision: `{payload['core_pm4py'].get('precision')}`",
-        f"- WorFBench precision: `{payload['worfbench'].get('precision')}`",
-        f"- WorFBench recall: `{payload['worfbench'].get('recall')}`",
-        f"- WorFBench F1: `{payload['worfbench'].get('f1_score')}`",
-        f"- Core WorFBench precision: `{payload['core_worfbench'].get('precision')}`",
-        f"- Core WorFBench recall: `{payload['core_worfbench'].get('recall')}`",
-        f"- Core WorFBench F1: `{payload['core_worfbench'].get('f1_score')}`",
         "",
-        "## Diagnostic Artifact Check",
+        "## 외부 벤치마크 비교용 (WorFEval, 원본 라이브러리 그대로 - all-mpnet-base-v2, 임계값 0.6)",
         "",
-        f"- Gold PNML readable: `{payload['pm4py_artifact_check']['gold_pnml'].get('readable_by_pm4py')}`",
-        f"- Prediction PNML readable: `{payload['pm4py_artifact_check']['prediction_pnml'].get('readable_by_pm4py')}`",
-        f"- Tree leaf delta: `{payload['pm4py_artifact_check']['tree_leaf_count_delta']}`",
-        f"- PNML hash equal: `{payload['pm4py_artifact_check']['pnml_hash_equal']}`",
+        f"- WorFEval Chain precision: `{payload['worfbench'].get('precision')}`",
+        f"- WorFEval Chain recall: `{payload['worfbench'].get('recall')}`",
+        f"- WorFEval Chain F1: `{payload['worfbench'].get('f1_score')}`",
         f"- Diagnostic WorFBench node-label F1: `{payload['worfbench_diagnostic_artifact_f1']['node_label_f1']['f1']:.4f}`",
         f"- Diagnostic WorFBench edge F1: `{payload['worfbench_diagnostic_artifact_f1']['edge_f1']['f1']:.4f}`",
         "",
@@ -345,6 +357,7 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Evaluate one backend runner output against one 13-case goldset artifact.")
     parser.add_argument("--case-id", default="03_0131_currency-rate---oanda")
     parser.add_argument("--run-id", default="runner_v2_repeat_20260715_01")
+    parser.add_argument("--gold-core-actions", type=Path, default=None, help="gold_core_actions/<id>.json (§7 - uid별 include/exclude 고정 파일)")
     return parser.parse_args()
 
 
@@ -357,12 +370,11 @@ def main() -> None:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "case_id": paths.case_id,
         "run_id": paths.run_id,
-        "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized),
-        "pm4py": score_pm4py_conformance(paths.gold_normalized, paths.pred_normalized),
-        "core_pm4py": score_pm4py_conformance(paths.gold_normalized, paths.pred_normalized, core_only=True),
-        "pm4py_artifact_check": compare_pm4py_artifacts(paths.gold_pm4py_dir, paths.pred_pm4py_dir),
+        "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized, gold_core_actions_path=args.gold_core_actions),
+        # WorFEval(원본 벤더 라이브러리, all-mpnet-base-v2 임베딩+임계값0.6) - "외부
+        # 벤치마크 비교용"으로만 유지. PM4Py는 재설계로 액티브 리포트에서 완전히 뺌
+        # (adapters/pm4py_adapter.py 자체는 남아있음, 필요해지면 다시 부르면 됨).
         "worfbench": score_worfbench_f1chain(paths.gold_normalized, paths.pred_normalized),
-        "core_worfbench": score_worfbench_f1chain(paths.gold_normalized, paths.pred_normalized, core_only=True),
         "worfbench_diagnostic_artifact_f1": score_worfbench(paths.gold_worfbench, paths.pred_worfbench),
     }
 
@@ -375,25 +387,20 @@ def main() -> None:
             {
                 "json": str(json_path),
                 "markdown": str(md_path),
+                "action_precision": payload["normalized"]["action_prf1"]["precision"],
+                "action_recall": payload["normalized"]["action_prf1"]["recall"],
+                "action_f1": payload["normalized"]["action_prf1"]["f1"],
+                "action_chain_precision": payload["normalized"]["action_chain"]["precision"],
+                "action_chain_recall": payload["normalized"]["action_chain"]["recall"],
+                "action_chain_f1": payload["normalized"]["action_chain"]["f1"],
                 "action_sequence_f1": payload["normalized"]["action_sequence"]["f1"],
                 "action_multiset_f1": payload["normalized"]["action_multiset"]["f1"],
                 "canonical_action_sequence_f1": payload["normalized"]["canonical_action_sequence"]["f1"],
                 "canonical_action_multiset_f1": payload["normalized"]["canonical_action_multiset"]["f1"],
-                "core_task_sequence_f1": payload["normalized"]["core_task_action_sequence"]["f1"],
-                "core_task_action_f1": payload["normalized"]["core_task_action_multiset"]["f1"],
                 "package_multiset_f1": payload["normalized"]["package_multiset"]["f1"],
-                "package_family_f1": payload["normalized"]["package_family_multiset"]["f1"],
-                "salient_family_f1": payload["normalized"]["salient_family_multiset"]["f1"],
-                "pm4py_fitness": payload["pm4py"].get("fitness"),
-                "pm4py_precision": payload["pm4py"].get("precision"),
-                "core_pm4py_fitness": payload["core_pm4py"].get("fitness"),
-                "core_pm4py_precision": payload["core_pm4py"].get("precision"),
-                "worfbench_precision": payload["worfbench"].get("precision"),
-                "worfbench_recall": payload["worfbench"].get("recall"),
-                "worfbench_f1": payload["worfbench"].get("f1_score"),
-                "core_worfbench_precision": payload["core_worfbench"].get("precision"),
-                "core_worfbench_recall": payload["core_worfbench"].get("recall"),
-                "core_worfbench_f1": payload["core_worfbench"].get("f1_score"),
+                "worfbench_precision_external_reference": payload["worfbench"].get("precision"),
+                "worfbench_recall_external_reference": payload["worfbench"].get("recall"),
+                "worfbench_f1_external_reference": payload["worfbench"].get("f1_score"),
             },
             ensure_ascii=False,
             indent=2,

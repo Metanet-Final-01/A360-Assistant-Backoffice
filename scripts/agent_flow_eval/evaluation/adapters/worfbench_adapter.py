@@ -14,9 +14,13 @@ EVALUATION_ROOT = Path(__file__).resolve().parents[1]
 if str(EVALUATION_ROOT) not in sys.path:
     sys.path.insert(0, str(EVALUATION_ROOT))
 
-from action_filters import action_label, is_browser_session_lifecycle_action, is_disabled_step  # noqa: E402
-from core_task import is_core_action  # noqa: E402
+from action_filters import action_label, is_disabled_step, is_formatting_only_action, is_session_lifecycle_action  # noqa: E402
+
+# core_task.py(core_only projection)는 재설계(2026-07-30)로 삭제됨. 이 파일의
+# t_eval_nodes 경로는 이제 "외부 벤치마크 비교용"(WorFEval 원본 재현)으로만 쓰인다 -
+# action_matching.py/action_chain.py가 액티브 지표.
 from adapters.pm4py_adapter import (  # noqa: E402
+    _canonical_label,
     _is_control_flow_marker_action,
     _split_action_label,
     load_action_equivalence_map,
@@ -118,9 +122,9 @@ def _sentence_model():
 
 
 def _canonical_action(package: str | None, action: str | None, mapping: dict[str, str]) -> dict[str, str] | None:
-    if is_browser_session_lifecycle_action(package, action) or _is_control_flow_marker_action(package, action):
+    if is_session_lifecycle_action(package, action) or _is_control_flow_marker_action(package, action) or is_formatting_only_action(package, action):
         return None
-    canonical = mapping.get(action_label(package, action), action_label(package, action))
+    canonical = _canonical_label(package, action, mapping)
     canonical_package, canonical_action = _split_action_label(canonical)
     return {"package": canonical_package, "action": canonical_action}
 
@@ -173,27 +177,15 @@ def _graph_from_actions(actions: list[dict[str, str]]) -> dict[str, Any]:
     return {"nodes": nodes, "edges": edges}
 
 
-def _filter_core_actions(actions: list[dict[str, str]]) -> tuple[list[dict[str, str]], list[str]]:
-    kept: list[dict[str, str]] = []
-    excluded: list[str] = []
-    for action in actions:
-        package = action.get("package")
-        action_name = action.get("action")
-        if is_core_action(package, action_name):
-            kept.append(action)
-        else:
-            excluded.append(action_label(package, action_name))
-    return kept, excluded
-
-
 def score_worfbench_f1chain(
     gold_normalized_path: Path,
     prediction_normalized_path: Path,
     *,
     equivalence_root: Path | None = None,
-    core_only: bool = False,
 ) -> dict[str, Any]:
-    """Run WorFBench's actual `t_eval_nodes` over canonicalized Node/Edges graphs."""
+    """Run WorFBench's actual `t_eval_nodes` over canonicalized Node/Edges graphs.
+    "외부 벤치마크 비교용"(원본 WorFEval 재현) - 액티브 지표는 action_matching.py/
+    action_chain.py를 쓴다."""
     t_eval_nodes, _ = _import_worfbench()
     mapping = load_action_equivalence_map(equivalence_root)
     gold_payload = json.loads(gold_normalized_path.read_text(encoding="utf-8"))
@@ -206,14 +198,8 @@ def score_worfbench_f1chain(
     gold_actions = _canonical_path(gold_payload.get("steps", []) or [], mapping, gold_types, excluded_gold)
     pred_actions = _canonical_path(pred_payload.get("steps", []) or [], mapping, pred_types, excluded_prediction)
 
-    core_excluded_gold: list[str] = []
-    core_excluded_prediction: list[str] = []
-    if core_only:
-        gold_actions, core_excluded_gold = _filter_core_actions(gold_actions)
-        pred_actions, core_excluded_prediction = _filter_core_actions(pred_actions)
-
     result: dict[str, Any] = {
-        "mode": "core_task_worfbench_t_eval_nodes" if core_only else "actual_worfbench_t_eval_nodes",
+        "mode": "actual_worfbench_t_eval_nodes",
         "gold_normalized": str(gold_normalized_path),
         "prediction_normalized": str(prediction_normalized_path),
         "gold_action_count_after_preprocessing": len(gold_actions),
@@ -226,16 +212,6 @@ def score_worfbench_f1chain(
         "excluded_prediction_actions": excluded_prediction,
         "action_equivalence_member_count": len(mapping),
     }
-    if core_only:
-        result.update(
-            {
-                "core_projection": True,
-                "core_excluded_gold_actions": core_excluded_gold,
-                "core_excluded_prediction_actions": core_excluded_prediction,
-                "core_excluded_gold_count": len(core_excluded_gold),
-                "core_excluded_prediction_count": len(core_excluded_prediction),
-            }
-        )
     if not pred_actions:
         result.update({"status": "empty_prediction", "precision": 0.0, "recall": 0.0, "f1_score": 0.0})
         return result

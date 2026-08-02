@@ -14,8 +14,18 @@ EVALUATION_ROOT = Path(__file__).resolve().parents[1]
 if str(EVALUATION_ROOT) not in sys.path:
     sys.path.insert(0, str(EVALUATION_ROOT))
 
-from action_filters import action_label, is_browser_session_lifecycle_action, is_disabled_step  # noqa: E402
-from core_task import project_core_steps  # noqa: E402
+from action_filters import (  # noqa: E402
+    action_label,
+    is_control_flow_marker_action,
+    is_disabled_step,
+    is_formatting_only_action,
+    is_session_lifecycle_action,
+)
+from action_matching import normalize_action_label  # noqa: E402
+
+# core_task.py(core_only projection)는 재설계(2026-07-30)로 삭제됨 - 근거 없는
+# 하드코딩 패키지 분류였음. 이 파일 자체(PM4Py conformance)도 액티브 리포트에서는
+# 빠졌지만(action_matching.py/action_chain.py로 대체) 코드는 남겨뒀다.
 
 
 def default_workspace_root() -> Path:
@@ -103,16 +113,8 @@ def summarize_pnml(path: Path) -> dict[str, Any]:
     return result
 
 
-CONTROL_FLOW_MARKER_PACKAGES = {"if", "loop", "error handler", "errorhandler"}
-CONTROL_FLOW_MARKER_ACTION_RE = ("if", "loop", "try", "catch", "finally", "errorhandler")
-
-
 def _is_control_flow_marker_action(package: str | None, action: str | None) -> bool:
-    package_norm = (package or "").strip().lower()
-    action_norm = (action or "").strip().lower()
-    if package_norm not in CONTROL_FLOW_MARKER_PACKAGES:
-        return False
-    return any(token in action_norm for token in CONTROL_FLOW_MARKER_ACTION_RE)
+    return is_control_flow_marker_action(package, action)
 
 
 def load_action_equivalence_map(root: Path | None = None) -> dict[str, str]:
@@ -123,11 +125,12 @@ def load_action_equivalence_map(root: Path | None = None) -> dict[str, str]:
         canonical = group.get("canonical")
         if not canonical:
             continue
-        mapping.setdefault(canonical, canonical)
+        mapping.setdefault(normalize_action_label(canonical), canonical)
         for member in group.get("members", []) or []:
-            if member in mapping and mapping[member] != canonical:
+            key = normalize_action_label(member)
+            if key in mapping and mapping[key] != canonical:
                 raise ValueError(f"Action equivalence member maps to multiple canonicals: {member}")
-            mapping[member] = canonical
+            mapping[key] = canonical
     return mapping
 
 
@@ -138,7 +141,8 @@ def _split_action_label(label: str) -> tuple[str, str]:
 
 
 def _canonical_label(package: str | None, action: str | None, mapping: dict[str, str]) -> str:
-    return mapping.get(action_label(package, action), action_label(package, action))
+    label = action_label(package, action)
+    return mapping.get(normalize_action_label(label), label)
 
 
 def _transform_step(step: dict[str, Any], mapping: dict[str, str], excluded: list[str]) -> dict[str, Any] | None:
@@ -151,7 +155,7 @@ def _transform_step(step: dict[str, Any], mapping: dict[str, str], excluded: lis
         package = step.get("package")
         action = step.get("action")
         label = action_label(package, action)
-        if is_browser_session_lifecycle_action(package, action) or _is_control_flow_marker_action(package, action):
+        if is_session_lifecycle_action(package, action) or _is_control_flow_marker_action(package, action) or is_formatting_only_action(package, action):
             excluded.append(label)
             return None
         canonical_package, canonical_action = _split_action_label(_canonical_label(package, action, mapping))
@@ -220,7 +224,6 @@ def score_pm4py_conformance(
     prediction_normalized_path: Path,
     *,
     equivalence_root: Path | None = None,
-    core_only: bool = False,
 ) -> dict[str, Any]:
     """Run actual PM4Py alignment fitness/precision on canonicalized artifacts.
 
@@ -239,16 +242,10 @@ def score_pm4py_conformance(
     gold_steps = _transform_steps(gold_payload.get("steps", []) or [], mapping, excluded_gold)
     pred_steps = _transform_steps(pred_payload.get("steps", []) or [], mapping, excluded_prediction)
 
-    core_excluded_gold: list[str] = []
-    core_excluded_prediction: list[str] = []
-    if core_only:
-        gold_steps = project_core_steps(gold_steps, core_excluded_gold)
-        pred_steps = project_core_steps(pred_steps, core_excluded_prediction)
-
     prediction_labels = _flatten_action_labels(pred_steps)
 
     result: dict[str, Any] = {
-        "mode": "core_task_pm4py_alignment_conformance" if core_only else "actual_pm4py_alignment_conformance",
+        "mode": "actual_pm4py_alignment_conformance",
         "gold_normalized": str(gold_normalized_path),
         "prediction_normalized": str(prediction_normalized_path),
         "gold_action_count_after_preprocessing": len(_flatten_action_labels(gold_steps)),
@@ -257,16 +254,6 @@ def score_pm4py_conformance(
         "excluded_prediction_actions": excluded_prediction,
         "action_equivalence_member_count": len(mapping),
     }
-    if core_only:
-        result.update(
-            {
-                "core_projection": True,
-                "core_excluded_gold_actions": core_excluded_gold,
-                "core_excluded_prediction_actions": core_excluded_prediction,
-                "core_excluded_gold_count": len(core_excluded_gold),
-                "core_excluded_prediction_count": len(core_excluded_prediction),
-            }
-        )
 
     if not prediction_labels:
         result.update({"status": "empty_prediction", "fitness": 0.0, "precision": 0.0})

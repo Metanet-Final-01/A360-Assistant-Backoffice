@@ -58,7 +58,8 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    pdfs = sorted(args.pdf_dir.glob("*.pdf"))
+    pdf_dir = args.pdf_dir.resolve()
+    pdfs = sorted(pdf_dir.glob("*.pdf"))
     if args.start_at:
         pdfs = [path for path in pdfs if path.name >= args.start_at]
     if args.limit is not None:
@@ -73,7 +74,7 @@ def main() -> int:
         "run_prefix": run_prefix,
         "base_url": args.base_url,
         "agent_version": args.agent_version,
-        "pdf_dir": str(args.pdf_dir),
+        "pdf_dir": str(pdf_dir),
         "pdf_count": len(pdfs),
         "runs": [],
     }
