@@ -18,8 +18,7 @@ from action_filters import (  # noqa: E402
     action_label,
     is_control_flow_marker_action,
     is_disabled_step,
-    is_formatting_only_action,
-    is_session_lifecycle_action,
+    should_exclude_action,
 )
 from action_matching import normalize_action_label  # noqa: E402
 
@@ -155,7 +154,7 @@ def _transform_step(step: dict[str, Any], mapping: dict[str, str], excluded: lis
         package = step.get("package")
         action = step.get("action")
         label = action_label(package, action)
-        if is_session_lifecycle_action(package, action) or _is_control_flow_marker_action(package, action) or is_formatting_only_action(package, action):
+        if should_exclude_action(package, action):
             excluded.append(label)
             return None
         canonical_package, canonical_action = _split_action_label(_canonical_label(package, action, mapping))

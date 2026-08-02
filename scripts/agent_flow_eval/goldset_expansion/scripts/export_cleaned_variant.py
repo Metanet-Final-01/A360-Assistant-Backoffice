@@ -16,10 +16,11 @@ import zipfile
 from pathlib import Path
 
 sys.stdout.reconfigure(encoding="utf-8", errors="replace")
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
+from action_filters import normalize_steps_for_evaluation  # noqa: E402
 from path_utils import goldset_expansion_dir  # noqa: E402
 
-NOISE_PACKAGES = {"LogToFile", "MessageBox", "Screen"}
 LOW_ACTION_THRESHOLD = 3  # 클린 후 남은 액션이 이보다 적으면 "확인 필요"로 표시
 
 EXPORT_ROOT = goldset_expansion_dir() / "export_main_challenge"
@@ -29,22 +30,7 @@ ZIP_PATH = EXPORT_ROOT / "main_challenge_normalized_pm4py_worfbench.zip"
 
 
 def strip_noise(steps: list[dict]) -> list[dict]:
-    cleaned = []
-    for step in steps:
-        if step.get("type") == "action" and step.get("package") in NOISE_PACKAGES:
-            continue
-        step = dict(step)
-        if "steps" in step:
-            step["steps"] = strip_noise(step.get("steps") or [])
-        if "branches" in step:
-            new_branches = []
-            for b in step.get("branches") or []:
-                b = dict(b)
-                b["steps"] = strip_noise(b.get("steps") or [])
-                new_branches.append(b)
-            step["branches"] = new_branches
-        cleaned.append(step)
-    return cleaned
+    return normalize_steps_for_evaluation(steps)
 
 
 def count_actions(steps: list[dict]) -> int:
@@ -145,7 +131,7 @@ def main() -> None:
     print(f"\n클린 파일 {copied}개 추가 복사 완료")
     print(f"zip 갱신: {ZIP_PATH} ({ZIP_PATH.stat().st_size / 1024:.1f} KB)")
 
-    print(f"\n=== 노이즈(LogToFile/MessageBox/Screen) 제거 전/후 액션 수 ===")
+    print("\n=== 공통 평가 변환 규칙 적용 전/후 액션 수 ===")
     print(f"{'분류':10} {'후보':60} {'제거전':>6} {'제거후':>6} {'제거됨':>6}")
     flagged = []
     for row in sorted(report_rows, key=lambda r: r["after"]):

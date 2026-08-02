@@ -1,5 +1,13 @@
 # 채점 방법론 재설계 — Codex 인수인계 (2026-07-30/31)
 
+## 2026-08-02 정책 정정
+
+- `gold_core_actions/<id>.json`은 Gold에만 적용되는 비대칭 UID 보정이므로 공식 채점에서 사용하지 않는다. `run_eval_batch.py`와 최종 9개 감사의 자동 연결도 제거했다.
+- 공식 제외 규칙은 `action_filters.normalize_steps_for_evaluation()`에 구현하고 Gold와 예측 변환기에 동일하게 적용한다.
+- 현재 공통 제외 대상은 Comment, disabled 하위 트리, Logging/LogToFile, 승인된 session lifecycle, catch 내부 action이다.
+- MessageBox, Screen, Excel 서식, 변수 대입, 경로 조립은 자동 제외하지 않는다.
+- 아래 문서에서 Core Action 자동 연결 또는 UID별 구현 기교 제외를 완료 사항으로 설명한 부분은 과거 설계 기록이며 현재 정책이 아니다.
+
 ## 지금 브랜치/repo 상태부터 (중요, 작업 시작 전에 확인할 것)
 
 - **저장소**: `A360-Assistant-Ops-rpa187` (a360-assistant-backoffice의 워크트리)
@@ -67,25 +75,25 @@ Required Order 자동도출을 폐기했는지 등 세부 결정 이유가 다 �
 ## 새 구조 (한눈에)
 
 ```
-1. Gold Core Action 고정 (gold_core_actions/<id>.json, uid별 include/exclude)
+1. 공통 규칙기반 변환 (Gold와 예측에 동일 적용)
 2. Rule Match (canonical label 완전일치 + 조건부 Action Equivalence, signature-aware 배정)
-3. Judge Match (Rule로 안 잡힌 것만, 임베딩 상호 Top-1 + 최소유사도 사전필터 → gpt-4o-mini 최종판정)
-4. Action P/R/F1 (1차 확정 지표)
-5. Action Chain F1 (확정된 매칭 쌍으로 LIS, LCS-DP로 교차검증)
+3. Judge Match (Rule로 안 잡힌 것만, 임베딩 상호 Top-1 → gpt-4o-mini 최종판정)
+4. Rule-only Action/Chain F1 (재현 가능한 기준선)
+5. Judge-assisted Action/Chain F1 (별도 보조값)
 6. WorFEval Chain F1 (원본 벤더 라이브러리 그대로 - 외부 벤치마크 비교용 정보성 표시만)
 ```
 
-- **`action_matching.py`**: 매칭 엔진 전체. `score_action_matching(gold_steps, pred_steps, gold_core_actions_path=None)`가 진입점.
+- **`action_matching.py`**: 매칭 엔진 전체. `score_action_matching(gold_steps, pred_steps)`가 진입점.
 - **`action_chain.py`**: `compute_action_chain(gold_actions, pred_actions, matches)`. LIS와 LCS가 다르면(매칭이 이미 1:1 확정이라 수학적으로 같아야 정상) `AssertionError` - 실제로 이걸로 uid 중복 버그를 하나 잡았음(§"발견한 버그" 참고).
 - **`critical_attribute/`**: Recorder/WebAutomation처럼 다른 패키지끼리도 비교 가능한 `common_signature()`(operation/target_text 정규화), `compare_common()`, `judge_action_equivalence()`. `README.md`에 상세 설명 있음.
 - **`action_equivalence_rules.json`**(기존, 안 건드림)과 별개로 **`action_equivalence_rules_conditional.json`**(신규) - attribute 조건부 동치 규칙(예: `Recorder.capture(operation=CLICK) ≡ WebAutomation.clickelement`). 실제 검증된 것만 등록, 추측성 대량생성 금지.
-- **`gold_core_actions/gold_price_bot.json`**: 정답 워크플로우 중 "구현 기교"(수동 셀 서식 반복 19개)를 uid로 고정 제외. 다른 goldset에도 필요하면 같은 패턴으로 추가.
+- **`gold_core_actions/`**: 과거 UID별 제외안의 진단 자료. Gold에만 적용되는 비대칭 보정이므로 공식 채점에는 사용하지 않으며, 같은 방식의 파일을 추가하지 않는다.
 - **삭제**: `core_task.py`(근거 없는 하드코딩 CORE_PACKAGE_KEYS 분류, git log로 도입 커밋에 근거 설명 없음을 확인함), `run_eval_case.py`의 `package_family()`/`salient_families()`(마찬가지 이유). **PM4Py는 코드는 남기고 액티브 리포트에서만 뺐음**(`adapters/pm4py_adapter.py` 그대로 존재, `run_eval_case.py`가 안 부를 뿐).
 
 ## 검증 상태
 
 1. **금 시세 조회 봇 케이스**: 사람이 직접 만든 기대표(정답: Excel_MS.CreateSpreadsheet vs 예측: OpenSpreadsheet(filePath=null)은 Unmatched가 맞다, Recorder.capture(CLICK)×2/EXTRACT_TABLE은 Rule Match가 맞다, Gmail 3종은 FN이 맞다 등)와 **100% 일치 확인함**.
-2. **기존 13개 goldset 전체**: `run_eval_batch.py`로 회귀 테스트, 처음엔 `12_0338_lettergenerationbot`에서 LIS≠LCS assertion에 걸림 → 원인 추적해서 **실제 버그 발견**: 하위 워크플로우가 여러 지점에서 inline되면 같은 uid가 flatten된 목록에 중복으로 나타나서(예: `resolve_subtask_coverage.py`가 여러 호출지점에 같은 서브워크플로우를 복사해 넣음) LIS 계산이 잘못된 위치를 가리킴. **수정함**: `ScoredAction.uid`를 항상 `f"{원본uid}#{전역occurrence순번}"`로 유일하게 만듦(include_map 조회는 원본 uid 기준으로 따로 함). 수정 후 13/13 통과.
+2. **기존 13개 goldset 전체**: `run_eval_batch.py`로 회귀 테스트, 처음엔 `12_0338_lettergenerationbot`에서 LIS≠LCS assertion에 걸림 → 원인 추적해서 **실제 버그 발견**: 하위 워크플로우가 여러 지점에서 inline되면 같은 uid가 flatten된 목록에 중복으로 나타나서(예: `resolve_subtask_coverage.py`가 여러 호출지점에 같은 서브워크플로우를 복사해 넣음) LIS 계산이 잘못된 위치를 가리킴. **수정함**: `ScoredAction.uid`를 항상 `f"{원본uid}#{전역occurrence순번}"`로 유일하게 만듦. 수정 후 13/13 통과.
 3. **v1/v2/v3 실제 실행 결과** (같은 PDF, 같은 모델 gpt-5.6-luna): v1 F1=0.091, v2 F1=0.0(액션 0개 생성 - 에이전트가 카탈로그 확신 부족으로 포기), v3 F1=0.242(노이즈 필터 추가 후). **사용자 기대 순서(v1<v2<v3)와 실제 결과(v2<v1<v3)가 안 맞음** - 아직 미해결.
 
 ## 오늘(2026-08-02) 4건 코드리뷰 피드백 반영 결과
@@ -98,19 +106,17 @@ Required Order 자동도출을 폐기했는지 등 세부 결정 이유가 다 �
    판단하므로 별도 유사도 컷오프 없이도 임의 배정 문제는 안 생긴다고 판단.
    `judge_log`에는 여전히 `similarity` 값을 기록하므로, 나중에 실제 분포를
    보고 근거 있는 값이 필요해지면 다시 넣을 수 있음.
-2. **Gold Core Action이 배치 평가에 연결 안 됨** → **연결함**.
-   `run_eval_batch.py`에 `gold_core_actions_path_for(case_id)` 추가 -
-   `gold_core_actions/<case_id>.json`이 있으면 자동으로 `score_normalized()`에
-   넘기고, 없으면 기존과 동일하게 `None`(전부 포함). 지금은 13개 goldset용
-   파일이 아직 없어서 실질 동작 변화는 없지만, 케이스별 파일이 추가되면
-   자동으로 배치에 반영된다.
+2. **Gold Core Action 배치 연결 시도** → **후속 검토에서 철회함**.
+   UID 목록은 Gold에만 적용되어 점수를 임의로 높일 수 있다. 현재
+   `run_eval_batch.py`는 이를 자동 조회하지 않으며, 공통 변환 규칙만 Gold와
+   예측 Workflow 양쪽에 동일하게 적용한다.
 3. **문서/코드 불일치**(`run_eval_case.py:25` 주석이 `core_task.py`를 "남겨뒀다"고
    잘못 기술, `README.md`가 여전히 옛 `core_task`/`core_pm4py`/`core_worfbench`/
    `salient_family`/`package_family`를 현재 지표처럼 설명) → **둘 다 고침**.
    `run_eval_case.py` 주석은 "파일째 완전히 삭제됨"으로 정정. `README.md`는
    "Current score layers" 표, `core_task_*` 설명 문단, "Rule Governance"의
-   "Core-task rules" 절까지 전부 새 `action_matching.py`/`action_chain.py`/
-   `gold_core_actions` 기준으로 다시 씀.
+   "Core-task rules" 절까지 전부 새 `action_matching.py`/`action_chain.py`와
+   공통 변환 규칙 기준으로 다시 씀.
 4. **`action_chain.py`의 `AssertionError`가 배치 전체를 죽일 위험** →
    **코드 변경 없이 이미 안전함을 확인**. `run_eval_batch.py`의 `main()`이
    `evaluate_case()` 호출을 케이스 단위 `try/except Exception`으로 감싸고
@@ -168,9 +174,9 @@ Required Order 자동도출을 폐기했는지 등 세부 결정 이유가 다 �
 1. **v1<v2<v3 순서 검증에는 표본이 더 필요함**(위 §"v2 실행별 비일관성" 참고) -
    지금은 v1=1회, v3=2회, v2=4회 실측 기준. 특히 v2는 분산이 커서 최소
    10회 이상 반복해 평균±표준편차로 비교하는 게 맞아 보임 - 아직 안 함.
-2. **Judge Match 자체의 비결정성**: 노이즈 필터 추가 전후로 v3의 Judge Match가 1건→0건으로 바뀜(CreateSpreadsheet≡office365ExcelCreateWorkbook 매칭이 사라짐) - 노이즈 제거로 "남은 후보 풀"이 바뀌어 상호 Top-1 계산이 달라졌거나, LLM 판정 자체가 흔들렸을 가능성. 원인 미확인.
+2. **Judge Match 자체의 비결정성 확인**: 동일한 9개 입력 재감사에서도 v2 TP가 33→34로 달라졌다. 따라서 최종 감사 보고서는 Rule-only 값을 재현 가능한 기준선으로 두고 Judge-assisted 값을 별도로 기록한다.
 3. **카탈로그 중복 색인 문제**(이전부터 있던 이슈, 미해결): "Microsoft 365 Excel package in Automation 360"(camelCase 액션ID) vs "Microsoft 365 Excel"(사람이 읽는 이름) 두 계열이 RAG 벡터/BM25 공간에서 거의 안 섞임 - v3 미매칭 다수가 이 문제.
-4. **예측 쪽 Core Action 필터 비대칭**: `gold_core_actions`는 정답에만 적용됨(정답의 수동 서식 반복 19개 제외). 예측이 다른 방식으로 서식을 구현하면(office365ExcelCreateTable 등) 그건 그대로 FP로 남음 - GPT 검토가 지적한 비대칭 문제, 아직 해결 안 함(서식 관련 액션을 양쪽에서 어떻게 대칭적으로 다룰지 설계 필요).
+4. **Core Action 비대칭은 공식 경로에서 제거함**: `gold_core_actions` 자동 적용을 철회했다. Excel 서식은 업무정의서에 포함될 수 있으므로 현재 공통 규칙에서는 제거하지 않는다.
 5. **다대일 구현차이 패턴 매칭**: `DataTable.deleteRow×3/insertRow×2 ↔ Excel_MS.SetCellFormula` 같은 케이스는 의도적으로 미해결 상태(Unmatched)로 남겨둠 - 패턴 DSL을 새로 만들 필요가 실제로 반복되면 그때 추가하기로 함.
 
 ## 참고 - GPT 상담 자료 (외부 저장소, 이 repo 아님)

@@ -22,25 +22,19 @@ sys.path.insert(0, str(EVAL_ROOT / "critical_attribute"))
 
 from action_filters import (  # noqa: E402
     action_label,
-    is_control_flow_marker_action,
+    is_ambiguous_generic_action,
     is_disabled_step,
-    is_formatting_only_action,
-    is_session_lifecycle_action,
+    matches_infrastructure_keyword,
+    should_exclude_action,
 )
-from attribute_signature import common_signature  # noqa: E402
-from judge import judge_action_equivalence  # noqa: E402
+from attribute_signature import common_signature, readable_parameters  # noqa: E402
+from judge import judge_action_equivalence, judge_core_business_relevance  # noqa: E402
 
-# 공통 보조 액션(로깅/확인팝업/화면캡처) - 실제 업무 로직이 아니라 어느 구현이든
-# 거의 항상 붙는 부수 작업이라 gold/pred 양쪽 다 채점에서 제외한다. gold_core_actions
-# (§7, uid 단위 수동 제외)는 이번 정답의 "수동 서식 반복" 같은 케이스별 구현기교를
-# 사람이 판단해서 빼는 것이고, 이건 그것과 별개로 "패키지 자체가 거의 항상
-# 부수적"인 범용 규칙 - 매번 사람이 판단할 필요 없이 항상 적용한다.
-# 실제로 발견된 문제: v3 예측이 "Logging"(gold의 "LogToFile"과 다른 이름) 패키지를
-# 썼는데 gold_core_actions는 gold 쪽에만 적용돼서 예측 쪽 Logging/MessageBox가
-# 그대로 FP로 남았음 - 이걸 고치는 것.
-NOISE_PACKAGES = {"LogToFile", "Logging", "MessageBox", "Screen"}
+CONFIRMED_GOLDSET_ROOT = EVAL_ROOT.parent / "goldset_expansion" / "confirmed_goldset"
+CORE_BUSINESS_CACHE_PATH = EVAL_ROOT / "gold_core_actions" / "_llm_classification_cache.json"
 
-
+# Filtering is defined in action_filters.py and applied symmetrically by both
+# converters. This scorer repeats the same check only as a defensive boundary.
 @dataclass
 class ScoredAction:
     uid: str
@@ -48,6 +42,7 @@ class ScoredAction:
     action: str | None
     canonical_label: str
     common: dict = field(default_factory=dict)
+    readable_params: str = ""
 
     @property
     def raw_label(self) -> str:
@@ -116,27 +111,18 @@ def canonicalize_action(
     return plain_map.get(normalized_label, normalized_label)
 
 
-def load_gold_core_actions(path: Path | None) -> dict[str, bool] | None:
-    """§7: uid별 include/exclude 고정 파일. 없으면 None(전부 포함)."""
-    if path is None or not path.exists():
-        return None
-    payload = json.loads(path.read_text(encoding="utf-8"))
-    return {row["uid"]: row["include"] for row in payload.get("core_actions", []) or []}
-
-
 def flatten_scored_actions(
     steps: list[dict[str, Any]],
     *,
-    include_map: dict[str, bool] | None = None,
     plain_map: dict[str, str],
     conditional_groups: list[dict],
     in_catch: bool = False,
     _counter: list[int] | None = None,
+    _branch_groups: list[dict] | None = None,
 ) -> list[ScoredAction]:
-    """steps 트리에서 action 스텝만 뽑아 ScoredAction으로 만든다. disabled/
-    session-lifecycle/control-flow-marker/formatting-only/catch 블록은 항상
-    제외(기존 run_eval_case.py와 동일 원칙). include_map이 주어지면(gold 쪽만) uid가 명시적으로
-    include=False인 것도 제외한다(§7 구현 기교 필터).
+    """steps 트리에서 채점 대상 action을 순서대로 추출한다.
+
+    disabled, 공통 변환 제외 action, catch 내부 action만 대칭적으로 제외한다.
 
     주의 1: `convert_backend_recommendation.py`로 변환된 예측 스텝에는 "uid"
     필드가 아예 없다(원본 AA workflow에만 있는 필드) - uid가 없으면
@@ -151,10 +137,21 @@ def flatten_scored_actions(
     실제 위치(순서)를 구분 못 해서 action_chain.py의 LIS 계산이 잘못된 위치를
     가리키는 버그가 생긴다(실제로 발생: LIS != LCS 교차검증에서 걸림). 그래서
     ScoredAction.uid는 항상 `f"{원본uid 또는 idx}#{전역 occurrence 순번}"`으로
-    유일하게 만들고, gold_core_actions include/exclude 조회만 원본 uid
-    기준으로 한다(사람이 작성한 include/exclude 파일은 원본 uid를 참조하므로)."""
+    유일하게 만든다.
+
+    주의 3: `_branch_groups`가 주어지면 `if` 스텝을 만날 때마다(중첩 depth
+    상관없이) 그 if의 분기(if 자신의 top-level steps + branches의 각 elseIf/
+    else)별로 어떤 uid가 속하는지 기록한다(score_branch_coverage용 사이드채널
+    - 실제 0376 데이터로 확인함: if/elseIf/elseIf 세 분기가 상호배타적인데
+    지금 이 함수의 반환값(`out`)에는 세 분기 액션이 전부 풀려서 하나의 flat
+    리스트로 섞인다 - 그건 그대로 두고, 별도로 "이 uid가 어느 if의 어느
+    분기 소속인지"만 추가로 남긴다). loop/trigger_loop/try는 "여러 대안 중
+    하나"가 아니라 반복/에러처리라서 분기 그룹 대상이 아니다 - 그동안 하던
+    pooling 그대로 유지."""
     if _counter is None:
         _counter = [0]
+    if _branch_groups is None:
+        _branch_groups = []
     out: list[ScoredAction] = []
     for step in steps:
         if is_disabled_step(step):
@@ -162,37 +159,42 @@ def flatten_scored_actions(
         step_type = step.get("type")
         if step_type == "action":
             package, action = step.get("package"), step.get("action")
-            if is_session_lifecycle_action(package, action):
-                continue
-            if is_control_flow_marker_action(package, action):
-                continue
-            if is_formatting_only_action(package, action):
-                continue
-            if package in NOISE_PACKAGES:
+            if should_exclude_action(package, action):
                 continue
             if in_catch:
                 continue
             raw_uid = step.get("uid") or f"idx_{_counter[0]}"
-            if include_map is not None and include_map.get(raw_uid) is False:
-                _counter[0] += 1
-                continue
             unique_uid = f"{raw_uid}#{_counter[0]}"
             _counter[0] += 1
             common = common_signature(step)
             canonical = canonicalize_action(package, action, common, plain_map, conditional_groups)
-            out.append(ScoredAction(uid=unique_uid, package=package, action=action, canonical_label=canonical, common=common))
+            params = readable_parameters(step)
+            out.append(ScoredAction(uid=unique_uid, package=package, action=action, canonical_label=canonical, common=common, readable_params=params))
             continue
         if step_type == "container":
-            out.extend(flatten_scored_actions(step.get("steps", []) or [], include_map=include_map, plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter))
-        elif step_type in {"if", "loop", "trigger_loop"}:
-            out.extend(flatten_scored_actions(step.get("steps", []) or [], include_map=include_map, plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter))
+            out.extend(flatten_scored_actions(step.get("steps", []) or [], plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter, _branch_groups=_branch_groups))
+        elif step_type == "if":
+            branch_records: list[dict] = []
+
+            if_body = flatten_scored_actions(step.get("steps", []) or [], plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter, _branch_groups=_branch_groups)
+            out.extend(if_body)
+            branch_records.append({"branch_name": "if", "uids": [a.uid for a in if_body]})
+
             for branch in step.get("branches", []) or []:
-                out.extend(flatten_scored_actions(branch.get("steps", []) or [], include_map=include_map, plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter))
+                branch_actions = flatten_scored_actions(branch.get("steps", []) or [], plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter, _branch_groups=_branch_groups)
+                out.extend(branch_actions)
+                branch_records.append({"branch_name": str(branch.get("branch") or "branch"), "uids": [a.uid for a in branch_actions]})
+
+            _branch_groups.append({"group_id": f"if#{step.get('uid') or len(_branch_groups)}", "branches": branch_records})
+        elif step_type in {"loop", "trigger_loop"}:
+            out.extend(flatten_scored_actions(step.get("steps", []) or [], plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter, _branch_groups=_branch_groups))
+            for branch in step.get("branches", []) or []:
+                out.extend(flatten_scored_actions(branch.get("steps", []) or [], plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter, _branch_groups=_branch_groups))
         elif step_type == "try":
-            out.extend(flatten_scored_actions(step.get("steps", []) or [], include_map=include_map, plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter))
+            out.extend(flatten_scored_actions(step.get("steps", []) or [], plain_map=plain_map, conditional_groups=conditional_groups, in_catch=in_catch, _counter=_counter, _branch_groups=_branch_groups))
             for branch in step.get("branches", []) or []:
                 branch_in_catch = in_catch or branch.get("branch") == "catch"
-                out.extend(flatten_scored_actions(branch.get("steps", []) or [], include_map=include_map, plain_map=plain_map, conditional_groups=conditional_groups, in_catch=branch_in_catch, _counter=_counter))
+                out.extend(flatten_scored_actions(branch.get("steps", []) or [], plain_map=plain_map, conditional_groups=conditional_groups, in_catch=branch_in_catch, _counter=_counter, _branch_groups=_branch_groups))
         else:
             raise ValueError(f"Unknown step type: {step_type!r}")
     return out
@@ -276,8 +278,16 @@ def pair_judge_matches(
 
     gold_texts = [_embedding_text(a) for a in remaining_gold]
     pred_texts = [_embedding_text(a) for a in remaining_pred]
-    gold_vecs = _embed(gold_texts)
-    pred_vecs = _embed(pred_texts)
+    try:
+        gold_vecs = _embed(gold_texts)
+        pred_vecs = _embed(pred_texts)
+    except Exception as exc:  # Judge is optional; confirmed Rule matches remain usable.
+        return [], [{
+            "status": "unavailable",
+            "stage": "embedding",
+            "error_type": type(exc).__name__,
+            "error": str(exc),
+        }]
 
     sim = [[_cosine(gv, pv) for pv in pred_vecs] for gv in gold_vecs]
 
@@ -292,11 +302,118 @@ def pair_judge_matches(
             continue
         score = sim[i][j]
         p = remaining_pred[j]
-        result = judge_action_equivalence(g.raw_label, g.common, p.raw_label, p.common)
+        try:
+            result = judge_action_equivalence(g.raw_label, g.common, p.raw_label, p.common)
+        except Exception as exc:  # Keep the pair unmatched and make the failure explicit.
+            judge_log.append({
+                "gold_id": g.uid,
+                "pred_id": p.uid,
+                "similarity": score,
+                "status": "unavailable",
+                "stage": "judge",
+                "error_type": type(exc).__name__,
+                "error": str(exc),
+            })
+            continue
         judge_log.append({"gold_id": g.uid, "pred_id": p.uid, "similarity": score, **result})
         if result["verdict"] == "same":
             matches.append(ActionMatch(g.uid, p.uid, "judge", g.canonical_label))
     return matches, judge_log
+
+
+def load_business_definition(case_id: str | None) -> tuple[str | None, str | None]:
+    """confirmed_goldset/briefs/<case_id>_*.md 에서 업무정의서 원문과 과제명을
+    읽는다. case_id가 없거나 파일이 없으면 (None, None) - 핵심업무 분류는
+    그냥 건너뛴다(모든 액션을 핵심업무로 취급, 기존 동작과 동일)."""
+    if not case_id:
+        return None, None
+    matches = list(CONFIRMED_GOLDSET_ROOT.glob(f"briefs/{case_id}_*.md"))
+    if not matches:
+        return None, None
+    text = matches[0].read_text(encoding="utf-8")
+    title_match = None
+    for line in text.splitlines():
+        if line.startswith("과제명:"):
+            title_match = line.split(":", 1)[1].strip()
+            break
+    return text, title_match
+
+
+def _load_classification_cache() -> dict:
+    if not CORE_BUSINESS_CACHE_PATH.exists():
+        return {}
+    return json.loads(CORE_BUSINESS_CACHE_PATH.read_text(encoding="utf-8"))
+
+
+def _save_classification_cache(cache: dict) -> None:
+    CORE_BUSINESS_CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
+    CORE_BUSINESS_CACHE_PATH.write_text(json.dumps(cache, ensure_ascii=False, indent=2, sort_keys=True), encoding="utf-8")
+
+
+def classify_core_business_actions(
+    actions: list[ScoredAction],
+    *,
+    case_id: str | None,
+    business_definition: str | None,
+    case_title: str | None,
+) -> tuple[list[ScoredAction], list[ScoredAction], list[dict]]:
+    """AMBIGUOUS_GENERIC_ACTIONS만 대상으로, (1) 키워드 규칙으로 확실한 것부터
+    무료로 걸러내고 (2) 남은 것만 4o-mini(judge_core_business_relevance)에
+    묻는다. 결과를 케이스 무관 공유 캐시에 저장해 재실행 시 재호출을 피한다.
+
+    business_definition이 없으면(케이스가 confirmed_goldset 밖에 있는 경우,
+    예: 금시세봇 ad-hoc 테스트) 분류 자체를 건너뛰고 전부 핵심업무로 취급한다
+    - 무리해서 맥락 없이 판정하지 않는다.
+
+    주의(2026-08-03) - HANDOFF_CODEX.md가 "공식 채점에서 쓰지 않는다"고 명시한
+    `gold_core_actions/<id>.json` 수동 UID 목록과 이 함수는 **다른 접근**이다.
+    그 파일들은 Gold에만 적용되는 비대칭 보정이라 예측 쪽은 그대로 둔 채 Gold
+    분모만 줄어서 점수를 부당하게 올릴 위험이 있어 반려됐다(공식 경로에서
+    제거 확정). 이 함수는 호출부(action_matching.py의 score_action_matching,
+    run_eval_case.py, audit_final_goldset.py)에서 항상 gold_actions_all과
+    pred_actions_all 양쪽에 대칭적으로 적용되고, 실측으로도 예측 쪽 제외가
+    실제로 발생함을 확인함(예: 0140/0085/0376/0419 예측에서 1개씩 제외) -
+    "Gold만 봐주는" 구조가 아니다. `gold_core_actions/` 디렉터리 자체는 이
+    함수와 무관한 별도의 수동 참고자료로 남아 있을 뿐, 이 함수가 그 파일을
+    읽거나 쓰지 않는다."""
+    if not business_definition:
+        return list(actions), [], []
+
+    cache = _load_classification_cache()
+    cache_dirty = False
+    core: list[ScoredAction] = []
+    excluded: list[ScoredAction] = []
+    log: list[dict] = []
+
+    for a in actions:
+        if not is_ambiguous_generic_action(a.package, a.action):
+            core.append(a)
+            continue
+        if matches_infrastructure_keyword(a.readable_params):
+            excluded.append(a)
+            log.append({"uid": a.uid, "label": a.raw_label, "params": a.readable_params, "verdict": "not_core_business", "source": "rule"})
+            continue
+
+        cache_key = f"{case_id or ''}|{a.raw_label}|{a.readable_params}"
+        cached = cache.get(cache_key)
+        if cached is None:
+            try:
+                result = judge_core_business_relevance(a.raw_label, a.readable_params, business_definition, case_title or "")
+                cached = {"verdict": result["verdict"], "reason": result["reason"]}
+            except Exception as exc:  # LLM 판정 불가 - 핵심업무로 남겨 잘못 빼지 않는다
+                cached = {"verdict": "core_business", "reason": f"classification_unavailable: {type(exc).__name__}"}
+            cache[cache_key] = cached
+            cache_dirty = True
+
+        log.append({"uid": a.uid, "label": a.raw_label, "params": a.readable_params, "verdict": cached["verdict"], "reason": cached.get("reason"), "source": "llm"})
+        if cached["verdict"] == "not_core_business":
+            excluded.append(a)
+        else:
+            core.append(a)
+
+    if cache_dirty:
+        _save_classification_cache(cache)
+    return core, excluded, log
 
 
 def compute_action_prf1(gold_count: int, pred_count: int, tp: int) -> dict:
@@ -306,16 +423,84 @@ def compute_action_prf1(gold_count: int, pred_count: int, tp: int) -> dict:
     return {"precision": precision, "recall": recall, "f1": f1, "tp": tp, "gold_count": gold_count, "pred_count": pred_count}
 
 
-def score_action_matching(
-    gold_steps: list[dict], pred_steps: list[dict], *, gold_core_actions_path: Path | None = None
+def score_branch_coverage(
+    branch_groups: list[dict], matched_gold_uids: set[str], core_gold_uids: set[str]
 ) -> dict:
-    """전체 진입점: canonicalize -> Rule Match -> Judge Match -> Action P/R/F1."""
+    """if/elseIf/else 상호배타적 분기가 flatten 시 한 리스트로 풀리면서 생기는
+    "중복 카운트" 문제(실측: 0376의 if/elseIf/elseIf 3분기, 각 분기 copyFiles+
+    deleteFiles가 거의 동일해서 9개가 다 gold_count에 잡힘)에 대한 진단용
+    별도 지표다. 메인 Action P/R/F1/Action Chain은 그대로 두고(이미 검증된
+    로직), gold의 if 분기 구조 위에 이미 확정된 매칭 결과(rule+judge)를
+    재사용해서 재집계만 한다 - 새 분기-대-분기 매칭 알고리즘은 만들지 않는다
+    (2026-08-03 사용자 결정: "매칭 알고리즘 없이, 액션 매칭 결과 재사용").
+
+    - Branch Coverage: 분기의 핵심 액션이 "전부" 매칭됐는지 all-or-nothing으로
+      판단해 (전부 매칭된 분기 수) / (전체 분기 수)로 집계한다. 절반 이상처럼
+      임의 임계값은 넣지 않는다 - 근거 없는 숫자를 만들지 않기 위함(사용자
+      원칙: 억지로 점수를 만들지 말 것).
+    - Branch Score: 분기별 (매칭된 핵심 액션 수 / 그 분기 핵심 액션 수)의
+      평균이다 - 부분 구현에도 연속적인 점수를 준다.
+
+    핵심업무 분류(classify_core_business_actions)에서 제외된 액션은 애초에
+    분기의 "핵심 액션"이 아니므로 core_gold_uids로 걸러낸다. 분기에 핵심
+    액션이 하나도 없으면(로그/메시지뿐이거나 전부 제외됨) coverage_ratio를
+    None으로 남기고 분모(scoreable_branch_count)에서 제외한다 - 핵심 액션이
+    원래 없는 분기를 강제로 0점 처리하지 않기 위함."""
+    branch_reports: list[dict] = []
+    branch_ratios: list[float] = []
+    fully_covered = 0
+    scoreable_branch_count = 0
+
+    for group in branch_groups:
+        group_branch_reports = []
+        for branch in group["branches"]:
+            core_branch_uids = [u for u in branch["uids"] if u in core_gold_uids]
+            if not core_branch_uids:
+                group_branch_reports.append(
+                    {"branch_name": branch["branch_name"], "core_action_count": 0, "matched_count": 0, "coverage_ratio": None}
+                )
+                continue
+            matched_count = sum(1 for u in core_branch_uids if u in matched_gold_uids)
+            ratio = matched_count / len(core_branch_uids)
+            branch_ratios.append(ratio)
+            scoreable_branch_count += 1
+            if matched_count == len(core_branch_uids):
+                fully_covered += 1
+            group_branch_reports.append(
+                {"branch_name": branch["branch_name"], "core_action_count": len(core_branch_uids), "matched_count": matched_count, "coverage_ratio": ratio}
+            )
+        branch_reports.append({"group_id": group["group_id"], "branches": group_branch_reports})
+
+    return {
+        "applicable": scoreable_branch_count > 0,
+        "group_count": len(branch_groups),
+        "scoreable_branch_count": scoreable_branch_count,
+        "branch_coverage": (fully_covered / scoreable_branch_count) if scoreable_branch_count else None,
+        "branch_score": (sum(branch_ratios) / len(branch_ratios)) if branch_ratios else None,
+        "groups": branch_reports,
+    }
+
+
+def score_action_matching(gold_steps: list[dict], pred_steps: list[dict], *, case_id: str | None = None) -> dict:
+    """전체 진입점: canonicalize -> 핵심업무 분류(규칙+LLM) -> Rule Match ->
+    Judge Match -> Action P/R/F1.
+
+    case_id가 주어지고 confirmed_goldset/briefs/에 해당 업무정의서가 있으면
+    핵심업무 분류를 gold/pred 양쪽에 대칭 적용한다. 없으면 분류를 건너뛰고
+    기존과 동일하게 전부 핵심업무로 취급한다(하위 호환)."""
     plain_map = load_action_equivalence_map()
     conditional_groups = load_conditional_equivalence_groups()
-    include_map = load_gold_core_actions(gold_core_actions_path)
+    gold_branch_groups: list[dict] = []
+    gold_actions_all = flatten_scored_actions(gold_steps, plain_map=plain_map, conditional_groups=conditional_groups, _branch_groups=gold_branch_groups)
+    pred_actions_all = flatten_scored_actions(pred_steps, plain_map=plain_map, conditional_groups=conditional_groups)
 
-    gold_actions = flatten_scored_actions(gold_steps, include_map=include_map, plain_map=plain_map, conditional_groups=conditional_groups)
-    pred_actions = flatten_scored_actions(pred_steps, include_map=None, plain_map=plain_map, conditional_groups=conditional_groups)
+    business_definition, case_title = load_business_definition(case_id)
+    gold_actions, gold_excluded, gold_classification_log = classify_core_business_actions(
+        gold_actions_all, case_id=case_id, business_definition=business_definition, case_title=case_title
+    )
+    pred_actions, pred_excluded, pred_classification_log = classify_core_business_actions(
+        pred_actions_all, case_id=case_id, business_definition=business_definition, case_title=case_title
+    )
 
     rule_matches, remaining_gold, remaining_pred = pair_rule_matches(gold_actions, pred_actions)
     judge_matches, judge_log = pair_judge_matches(remaining_gold, remaining_pred)
@@ -325,6 +510,8 @@ def score_action_matching(
     matched_p = {m.pred_id for m in all_matches}
 
     prf1 = compute_action_prf1(len(gold_actions), len(pred_actions), len(all_matches))
+    core_gold_uids = {a.uid for a in gold_actions}
+    branch_coverage = score_branch_coverage(gold_branch_groups, matched_g, core_gold_uids)
 
     return {
         "action_prf1": prf1,
@@ -336,4 +523,13 @@ def score_action_matching(
         "judge_log": judge_log,
         "gold_actions_by_uid": {a.uid: a.__dict__ for a in gold_actions},
         "pred_actions_by_uid": {a.uid: a.__dict__ for a in pred_actions},
+        "branch_coverage": branch_coverage,
+        "core_business_classification": {
+            "gold_excluded_count": len(gold_excluded),
+            "pred_excluded_count": len(pred_excluded),
+            "gold_excluded": [a.uid for a in gold_excluded],
+            "pred_excluded": [a.uid for a in pred_excluded],
+            "gold_log": gold_classification_log,
+            "pred_log": pred_classification_log,
+        },
     }

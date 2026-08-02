@@ -11,12 +11,8 @@ from run_eval_case import resolve_paths, score_normalized, write_markdown
 from adapters.worfbench_adapter import score_worfbench, score_worfbench_f1chain
 from path_utils import ensure_child_path, safe_path_component
 
-# PM4Py(compare_pm4py_artifacts/score_pm4py_conformance)와 core-only 변형들은
-# 재설계(2026-07-30)로 액티브 배치 집계에서 제외됨 - run_eval_case.py 상단 주석 참고.
-# score_normalized()가 이제 action_matching.py/action_chain.py 결과를 포함한다.
-# gold_core_actions(§7)도 case_id 기준으로 evaluate_case()에서 자동 조회해 배치에
-# 일관되게 반영한다(gold_core_actions_path_for() 참고) - 예전에는 run_eval_case.py의
-# --gold-core-actions CLI 인자로만 단건 실행에서 임시로 넘기던 것.
+# PM4Py artifact conformance remains diagnostic. Official normalized scoring uses
+# the same rule-based conversion policy for Gold and prediction workflows.
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -49,23 +45,13 @@ def load_case_map() -> dict[str, str]:
     return mapping
 
 
-def gold_core_actions_path_for(case_id: str) -> Path | None:
-    """§7 고정 파일 조회 규칙: `gold_core_actions/<case_id>.json`이 있으면 그걸 쓰고,
-    없으면 None(전부 포함, 기존 동작과 동일). run_eval_case.py CLI에서만 쓰던
-    --gold-core-actions를 배치 실행에도 일관되게 적용하기 위함 - 지금은 13개
-    goldset용 파일이 아직 없어서 전부 None으로 떨어지지만, 케이스별 파일이
-    추가되면 배치에서도 자동으로 반영된다."""
-    path = ROOT / "evaluation" / "gold_core_actions" / f"{case_id}.json"
-    return path if path.exists() else None
-
-
 def evaluate_case(case_id: str, run_id: str) -> dict[str, Any]:
     paths = resolve_paths(case_id, run_id)
     paths.report_dir.mkdir(parents=True, exist_ok=True)
     payload = {
         "case_id": case_id,
         "run_id": run_id,
-        "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized, gold_core_actions_path=gold_core_actions_path_for(case_id)),
+        "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized, case_id=case_id),
         "worfbench": score_worfbench_f1chain(paths.gold_normalized, paths.pred_normalized),
         "worfbench_diagnostic_artifact_f1": score_worfbench(paths.gold_worfbench, paths.pred_worfbench),
     }

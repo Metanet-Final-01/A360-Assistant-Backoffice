@@ -9,7 +9,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from action_filters import is_browser_session_lifecycle_action, is_disabled_step
+from action_filters import is_disabled_step, should_exclude_action
 
 CATEGORY_DIRS = (
     "01_task1_similar_single_15",
@@ -72,7 +72,7 @@ def canonical_path(steps: list[dict], found_types: set[str]) -> list[dict]:
             continue
         step_type = step["type"]
         if step_type == "action":
-            if is_browser_session_lifecycle_action(step.get("package"), step.get("action")):
+            if should_exclude_action(step.get("package"), step.get("action")):
                 continue
             actions.append({"package": step["package"], "action": step["action"]})
             continue

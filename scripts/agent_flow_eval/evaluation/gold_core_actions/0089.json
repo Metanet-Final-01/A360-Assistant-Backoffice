@@ -1,0 +1,31 @@
+{
+  "source": "0089_archivaloffiles__ArchivalOfFiles.cleaned.goldset.json",
+  "note": "Unlisted actions are included.",
+  "core_actions": [
+    {"uid": "e67a9221-cec0-4142-876e-4de015aa7aab", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "2dabfd4e-ac90-460b-ab2a-f342c86acda6", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "bb34f27e-05f7-4b50-a3e8-d87f025b4317", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "ddc89b07-3086-4294-85bb-ab94c78bab60", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "4f0fec92-498a-4789-82ba-535b0ec6c069", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "9eebf356-fae6-4d5b-84f7-05becdaaf3ff", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "7d49eddb-b126-43d5-b2b8-3a5ee2c21750", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "7d133da5-c226-4abc-96aa-e823a3a0f3f7", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "e4ad6a01-5de5-47e6-8ba3-d91b4b9e519a", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "5383c9c2-e0b0-4679-a947-e37d77f39172", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "6126dead-9e24-4a90-a9c9-015ad54b81a4", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "2841d01f-8602-45a5-8fb9-4e17ca8aaf03", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "ca5ab2f5-b749-4f72-ad7e-df0fd99691d1", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "02dbc4b4-e74e-41b2-a269-bcd91bf73bf7", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "f385cce4-5b40-4757-8392-c5a55f7db226", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "7a1e9ac4-dc0e-46fc-bde7-5f0769e40dfa", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "ebccef99-06a1-4fdb-a587-c50f5087efa8", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "821db6cf-0bd1-48f0-9d4a-f43a2a7bf254", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "cfe1d023-e3af-41f7-9513-d28e3b1c5819", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "a5f3eb85-a02d-4be9-b85f-935563c5d025", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "de60dfdd-3009-4982-85f0-5daf7d762918", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "5381ab62-a77a-476d-bb8d-0f200127dc09", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "d98bd3e5-e511-4f4e-9dc8-1dfa3d88a4db", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "bc604b10-abec-4d63-a9e8-9c184298a305", "include": false, "reason": "path_assembly_detail"},
+    {"uid": "dbc1b26a-a2cc-44aa-9dfe-0a8c45ed7023", "include": false, "reason": "path_assembly_detail"}
+  ]
+}

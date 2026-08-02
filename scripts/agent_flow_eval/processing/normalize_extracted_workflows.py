@@ -2,9 +2,14 @@ from __future__ import annotations
 
 import argparse
 import json
+import sys
 from dataclasses import asdict, dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from action_filters import normalize_steps_for_evaluation
 
 
 CATEGORY_DIRS = (
@@ -61,6 +66,8 @@ def convert_branch(branch: dict) -> dict:
 def convert_node(node: dict) -> list[dict]:
     package = node.get("packageName")
 
+    if node.get("disabled") is True:
+        return []
     if package in SKIPPED_PACKAGES:
         return []
     if package in TRANSPARENT_PACKAGES:
@@ -128,7 +135,7 @@ def normalize_workflow(raw: dict, source_file: str) -> dict:
     return {
         "source_file": source_file,
         "triggers": raw.get("triggers", []),
-        "steps": convert_nodes(raw.get("nodes", []) or []),
+        "steps": normalize_steps_for_evaluation(convert_nodes(raw.get("nodes", []) or [])),
     }
 
 

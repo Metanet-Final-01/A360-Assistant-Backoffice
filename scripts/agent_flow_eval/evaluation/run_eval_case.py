@@ -13,13 +13,21 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from action_filters import (
     action_label,
-    is_control_flow_marker_action,
     is_disabled_step,
-    is_formatting_only_action,
-    is_session_lifecycle_action,
+    should_exclude_action,
 )
 from action_chain import compute_action_chain
-from action_matching import NOISE_PACKAGES, flatten_scored_actions, load_action_equivalence_map as load_action_matching_equivalence_map, load_conditional_equivalence_groups, load_gold_core_actions, normalize_action_label, pair_judge_matches, pair_rule_matches
+from action_matching import (
+    classify_core_business_actions,
+    flatten_scored_actions,
+    load_action_equivalence_map as load_action_matching_equivalence_map,
+    load_business_definition,
+    load_conditional_equivalence_groups,
+    normalize_action_label,
+    pair_judge_matches,
+    pair_rule_matches,
+    score_branch_coverage,
+)
 from adapters.worfbench_adapter import score_worfbench, score_worfbench_f1chain
 from path_utils import ensure_child_path, safe_path_component
 
@@ -136,12 +144,7 @@ def flatten_actions(steps: list[dict[str, Any]], excluded: list[str] | None = No
             package = step.get("package")
             action = step.get("action")
             label = action_label(package, action)
-            if (
-                is_session_lifecycle_action(package, action)
-                or is_control_flow_marker_action(package, action)
-                or is_formatting_only_action(package, action)
-                or package in NOISE_PACKAGES
-            ):
+            if should_exclude_action(package, action):
                 if excluded is not None:
                     excluded.append(label)
                 continue
@@ -231,7 +234,7 @@ def first_mismatches(gold_actions: list[str], pred_actions: list[str], limit: in
     return rows
 
 
-def score_normalized(gold_path: Path, pred_path: Path, *, gold_core_actions_path: Path | None = None) -> dict[str, Any]:
+def score_normalized(gold_path: Path, pred_path: Path, *, case_id: str | None = None) -> dict[str, Any]:
     gold = load_json(gold_path)
     pred = load_json(pred_path)
     equivalence_map = load_action_equivalence_map(goldset_root())
@@ -242,13 +245,25 @@ def score_normalized(gold_path: Path, pred_path: Path, *, gold_core_actions_path
     gold_canonical_actions = canonicalize_actions(gold_actions, equivalence_map)
     pred_canonical_actions = canonicalize_actions(pred_actions, equivalence_map)
 
-    # action_matching.py/action_chain.py - Rule/Judge Match 기반 Action P/R/F1 +
-    # Action Chain F1 (재설계 v4, peaceful-watching-possum.md 참고).
+    # action_matching.py/action_chain.py - 핵심업무 분류(규칙+LLM) -> Rule/Judge
+    # Match 기반 Action P/R/F1 + Action Chain F1 (재설계 v4, 이후 core-business
+    # 분류 추가 - peaceful-watching-possum.md 및 2026-08-03 후속 참고). 여기서
+    # score_action_matching()을 그대로 호출하지 않고 단계를 풀어서 쓰는 이유는
+    # compute_action_chain()이 실제 ScoredAction/ActionMatch 객체(리스트 순서
+    # 포함)를 그대로 받아야 하는데, score_action_matching()의 반환값은 이미
+    # uid 기준 dict로 직렬화돼 있어 순서 정보가 없어지기 때문이다.
     am_plain_map = load_action_matching_equivalence_map()
     am_conditional = load_conditional_equivalence_groups()
-    am_include_map = load_gold_core_actions(gold_core_actions_path)
-    scored_gold = flatten_scored_actions(gold.get("steps", []) or [], include_map=am_include_map, plain_map=am_plain_map, conditional_groups=am_conditional)
-    scored_pred = flatten_scored_actions(pred.get("steps", []) or [], include_map=None, plain_map=am_plain_map, conditional_groups=am_conditional)
+    gold_branch_groups: list[dict[str, Any]] = []
+    scored_gold_all = flatten_scored_actions(gold.get("steps", []) or [], plain_map=am_plain_map, conditional_groups=am_conditional, _branch_groups=gold_branch_groups)
+    scored_pred_all = flatten_scored_actions(pred.get("steps", []) or [], plain_map=am_plain_map, conditional_groups=am_conditional)
+    business_definition, case_title = load_business_definition(case_id)
+    scored_gold, gold_excluded, gold_classification_log = classify_core_business_actions(
+        scored_gold_all, case_id=case_id, business_definition=business_definition, case_title=case_title
+    )
+    scored_pred, pred_excluded, pred_classification_log = classify_core_business_actions(
+        scored_pred_all, case_id=case_id, business_definition=business_definition, case_title=case_title
+    )
     rule_matches, remaining_gold, remaining_pred = pair_rule_matches(scored_gold, scored_pred)
     judge_matches, judge_log = pair_judge_matches(remaining_gold, remaining_pred)
     all_matches = rule_matches + judge_matches
@@ -257,6 +272,9 @@ def score_normalized(gold_path: Path, pred_path: Path, *, gold_core_actions_path
     action_precision = tp / len(scored_pred) if scored_pred else 0.0
     action_recall = tp / len(scored_gold) if scored_gold else 0.0
     action_f1 = (2 * action_precision * action_recall / (action_precision + action_recall)) if (action_precision + action_recall) else 0.0
+    matched_gold_uids = {m.gold_id for m in all_matches}
+    core_gold_uids = {a.uid for a in scored_gold}
+    branch_coverage = score_branch_coverage(gold_branch_groups, matched_gold_uids, core_gold_uids)
 
     return {
         "gold_path": str(gold_path),
@@ -264,7 +282,7 @@ def score_normalized(gold_path: Path, pred_path: Path, *, gold_core_actions_path
         "gold_source_file": gold.get("source_file"),
         "prediction_source_file": pred.get("source_file"),
         "preprocessing": {
-            "excluded_rule": "session_lifecycle_or_control_flow_marker_or_formatting_or_noise_action",
+            "excluded_rule": "shared_rule_based_converter_policy",
             "excluded_regex": {
                 "package": "^(web\\s*automation|webautomation|browser|recorder)$",
                 "action": "session",
@@ -275,7 +293,6 @@ def score_normalized(gold_path: Path, pred_path: Path, *, gold_core_actions_path
             "excluded_prediction_count": len(excluded_prediction_actions),
             "action_equivalence_rules_path": str(goldset_root() / "evaluation" / "action_equivalence_rules.json"),
             "action_equivalence_member_count": len(equivalence_map),
-            "gold_core_actions_path": str(gold_core_actions_path) if gold_core_actions_path else None,
         },
         "gold_action_count": len(gold_actions),
         "prediction_action_count": len(pred_actions),
@@ -298,8 +315,21 @@ def score_normalized(gold_path: Path, pred_path: Path, *, gold_core_actions_path
         "rule_match_count": len(rule_matches),
         "judge_match_count": len(judge_matches),
         "judge_log": judge_log,
-        "unmatched_gold_uids": [a.uid for a in scored_gold if a.uid not in {m.gold_id for m in all_matches}],
+        "unmatched_gold_uids": [a.uid for a in scored_gold if a.uid not in matched_gold_uids],
         "unmatched_pred_uids": [a.uid for a in scored_pred if a.uid not in {m.pred_id for m in all_matches}],
+        # 진단용 별도 지표(2026-08-03) - if/elseIf/else 상호배타적 분기가
+        # flatten 시 한 리스트로 풀리면서 생기는 중복 카운트를 새 분기 매칭
+        # 알고리즘 없이, 이미 확정된 매칭 결과만 재사용해 재집계. 메인
+        # action_prf1/action_chain 점수에는 반영되지 않는다.
+        "branch_coverage": branch_coverage,
+        "core_business_classification": {
+            "gold_excluded_count": len(gold_excluded),
+            "pred_excluded_count": len(pred_excluded),
+            "gold_excluded": [a.uid for a in gold_excluded],
+            "pred_excluded": [a.uid for a in pred_excluded],
+            "gold_log": gold_classification_log,
+            "pred_log": pred_classification_log,
+        },
     }
 
 
@@ -323,6 +353,22 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         f"`{normalized['action_chain']['precision']:.4f}` / `{normalized['action_chain']['recall']:.4f}` / "
         f"`{normalized['action_chain']['f1']:.4f}`",
         "",
+        "## 분기(if/elseIf/else) 진단 지표 (메인 점수와 별개, 새 분기 매칭 알고리즘 없이 기존 매칭 결과 재사용)",
+        "",
+    ]
+    branch_cov = normalized.get("branch_coverage") or {}
+    if branch_cov.get("applicable"):
+        lines.append(
+            f"- **Branch Coverage** (분기별 all-or-nothing): `{branch_cov['branch_coverage']:.4f}` "
+            f"(`{branch_cov['scoreable_branch_count']}`개 채점가능 분기 중 완전매칭 분기 비율)"
+        )
+        lines.append(f"- **Branch Score** (분기별 부분매칭 평균): `{branch_cov['branch_score']:.4f}`")
+        lines.append(f"- if 그룹 수: `{branch_cov['group_count']}`")
+    else:
+        lines.append("- 해당 없음 (gold에 핵심업무 액션을 포함한 if 분기가 없음)")
+    lines.extend(
+        [
+        "",
         "## 참고 지표 (레거시 - package.action 완전일치/LCS 기반, 구현 차이를 구분 못함)",
         "",
         f"- Action sequence LCS F1: `{normalized['action_sequence']['f1']:.4f}` "
@@ -343,7 +389,8 @@ def write_markdown(path: Path, payload: dict[str, Any]) -> None:
         "",
         "## First Mismatches",
         "",
-    ]
+        ]
+    )
     if normalized["first_mismatches"]:
         for row in normalized["first_mismatches"]:
             lines.append(f"- `{row['index']}` gold=`{row['gold']}` prediction=`{row['prediction']}`")
@@ -357,7 +404,6 @@ def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Evaluate one backend runner output against one 13-case goldset artifact.")
     parser.add_argument("--case-id", default="03_0131_currency-rate---oanda")
     parser.add_argument("--run-id", default="runner_v2_repeat_20260715_01")
-    parser.add_argument("--gold-core-actions", type=Path, default=None, help="gold_core_actions/<id>.json (§7 - uid별 include/exclude 고정 파일)")
     return parser.parse_args()
 
 
@@ -370,7 +416,7 @@ def main() -> None:
         "created_at": datetime.now(timezone.utc).isoformat(),
         "case_id": paths.case_id,
         "run_id": paths.run_id,
-        "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized, gold_core_actions_path=args.gold_core_actions),
+        "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized, case_id=args.case_id),
         # WorFEval(원본 벤더 라이브러리, all-mpnet-base-v2 임베딩+임계값0.6) - "외부
         # 벤치마크 비교용"으로만 유지. PM4Py는 재설계로 액티브 리포트에서 완전히 뺌
         # (adapters/pm4py_adapter.py 자체는 남아있음, 필요해지면 다시 부르면 됨).

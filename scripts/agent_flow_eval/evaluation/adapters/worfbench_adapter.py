@@ -14,7 +14,7 @@ EVALUATION_ROOT = Path(__file__).resolve().parents[1]
 if str(EVALUATION_ROOT) not in sys.path:
     sys.path.insert(0, str(EVALUATION_ROOT))
 
-from action_filters import action_label, is_disabled_step, is_formatting_only_action, is_session_lifecycle_action  # noqa: E402
+from action_filters import action_label, is_disabled_step, should_exclude_action  # noqa: E402
 
 # core_task.py(core_only projection)는 재설계(2026-07-30)로 삭제됨. 이 파일의
 # t_eval_nodes 경로는 이제 "외부 벤치마크 비교용"(WorFEval 원본 재현)으로만 쓰인다 -
@@ -122,7 +122,7 @@ def _sentence_model():
 
 
 def _canonical_action(package: str | None, action: str | None, mapping: dict[str, str]) -> dict[str, str] | None:
-    if is_session_lifecycle_action(package, action) or _is_control_flow_marker_action(package, action) or is_formatting_only_action(package, action):
+    if should_exclude_action(package, action):
         return None
     canonical = _canonical_label(package, action, mapping)
     canonical_package, canonical_action = _split_action_label(canonical)

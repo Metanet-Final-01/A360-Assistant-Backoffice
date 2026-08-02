@@ -152,6 +152,84 @@ def judge_action_equivalence(
     return _ask(prompt)
 
 
+def judge_core_business_relevance(
+    action_label: str,
+    readable_params: str,
+    business_definition: str,
+    case_title: str,
+) -> dict:
+    """이 액션 하나가 이 업무정의서의 핵심업무에 해당하는지 아닌지 판정한다.
+
+    gold_core_actions의 사람이 단 uid별 include/exclude 판단을 검증하거나
+    대체하려고 만든다 - 패키지·액션 이름만으로는 "Folder.createFolder가 로그
+    폴더용인지 이 업무가 요구하는 진짜 폴더인지" 구별이 안 되므로(실제로
+    0089/0098처럼 같은 액션 이름이 케이스 안에서 둘 다로 쓰이는 사례를 실측
+    확인함 - 0098의 Folder.deleteFolder는 대상이 $pStrLogsFolder$면 핵심업무
+    아님, $pStrWTemp$면 핵심업무), 업무정의서 맥락 + 실제 파라미터 값을 같이
+    주고 판단하게 한다.
+
+    같은 함수를 예측(prediction) 쪽 미매칭 액션에도 그대로 적용하면
+    gold_core_actions의 "gold에만 적용되는 비대칭" 문제도 풀린다 - 어느 쪽
+    액션이든 같은 기준(이 업무정의서에 비춰 핵심업무인가)으로 판정하기 때문이다.
+
+    RAG 카탈로그 설명(catalog_description)은 선택 인자다 - search_action_candidates()로
+    실제 카탈로그에서 이 액션의 공식 설명을 찾아 같이 주면, 액션 이름만으로
+    뭘 하는 액션인지 모호한 경우(예: 카탈로그 표기가 실제 패키지명과 다른 경우)에도
+    LLM이 맨땅에 헤딩하지 않는다."""
+    catalog_description = ""
+    try:
+        candidates = search_action_candidates(action_label.replace(".", " "), k=1)
+        if candidates:
+            catalog_description = f"\n[카탈로그 공식 설명] {candidates[0].get('title')}: {(candidates[0].get('content') or '')[:300]}"
+    except Exception:  # noqa: BLE001 - 카탈로그 조회 실패해도 판정 자체는 계속 진행
+        catalog_description = ""
+
+    prompt = f"""당신은 RPA 워크플로우에서 액션이 핵심업무에 해당하는지 판정하는 평가자입니다.
+
+아래 업무정의서로 자동화하려는 업무와, 실제 워크플로우에 있는 액션 하나를 보고,
+이 액션이 "이 업무정의서의 핵심업무"에 해당하는지 아닌지 판정하세요.
+
+핵심업무에 해당하는 예: 실제 계산·판단·데이터 처리, 문서/스프레드시트 조작,
+웹/업무 시스템과의 상호작용, 이 업무정의서가 명시적으로 요구하는 폴더·파일 작업.
+
+핵심업무가 아닌 예: 로그 폴더·로그 파일 준비, 감사 로그 기록, 오류 스냅샷
+캡처, 오래된 로그 정리, 내부 변수·경로 문자열 조립, 루프 진행 카운터 —
+이 업무정의서가 요구한 게 아니라 봇 작성자가 습관적으로 넣는 부분입니다.
+
+중요:
+- 액션 이름만으로 판단하지 말고, 실제 파라미터 값과 이 업무정의서의 목적에
+  비춰 판단하세요. 같은 `Folder.createFolder`라도 로그 폴더 생성이면
+  핵심업무가 아니고, 이 업무정의서가 요구하는 실제 폴더(예: 보관 폴더,
+  백업 폴더)면 핵심업무입니다.
+- 확신이 없으면 "핵심업무"로 판정하세요 — 잘못 빼면 진짜 핵심업무가 채점에서
+  사라지지만, 잘못 포함시키는 건 노이즈가 남는 정도로 그칩니다.
+
+[업무정의서 — {case_title}]
+{business_definition}
+
+[판정할 액션]
+{action_label}
+파라미터: {readable_params}{catalog_description}
+
+아래 형식으로 답하세요:
+판정: (핵심업무/핵심업무아님)
+이유: (한두 문장)
+"""
+    resp = _get_client().chat.completions.create(
+        model=OPENAI_MODEL,
+        messages=[{"role": "user", "content": prompt}],
+        temperature=0,
+    )
+    content = resp.choices[0].message.content
+    m = re.search(r"판정:\s*(핵심업무아님|핵심업무)", content)
+    verdict = {"핵심업무": "core_business", "핵심업무아님": "not_core_business"}.get(
+        m.group(1) if m else "", "core_business"
+    )
+    reason_m = re.search(r"이유:\s*(.+)", content, re.DOTALL)
+    reason = reason_m.group(1).strip() if reason_m else content.strip()
+    return {"verdict": verdict, "reason": reason, "raw": content}
+
+
 def search_action_candidates(query: str, k: int = 5) -> list[dict]:
     """실제 production 검색(app.services.rag.search_actions() - 하이브리드 BM25+
     벡터+RRF+리랭킹)을 그대로 호출해 후보를 가져온다. 로컬 eval-clean 백엔드가

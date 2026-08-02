@@ -1,0 +1,20 @@
+{
+  "source": "0131_currency-rate---oanda__Currency Rate - Oanda.cleaned.goldset.json",
+  "note": "Unlisted actions are included. The first 14 actions are the shared Bot Store logging/retention template.",
+  "core_actions": [
+    {"uid": "cd39079d-7970-486c-8f51-497af66d76b5", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "7cdb7915-39f1-444d-a89c-55b75e81e282", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "73514e70-8a33-4715-8599-784a783adf73", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "bc7ae2ce-9d34-49c2-a640-52383583a39f", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "e6c3cd0f-beb6-4d0c-8e49-bb652d9f5b73", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "2a1ffe07-7a93-46ff-9c5a-914292e7a73f", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "c2265f24-0c4a-4eda-9a17-49b6afb2ae78", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "670a81ea-c3cb-45a1-89f8-63dd685a2975", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "ce71fde6-0655-4c9f-992f-c9e8cb9cd393", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "492c8e5b-1fec-40a1-98ec-bd47cff8c37e", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "d268f370-3182-4164-a28b-7ff908707f08", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "60a43ec8-f2a7-40df-a07c-8cac5b42c6bb", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "78c4f069-4d23-48ac-bdfb-9c60f053fbf0", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "719fd232-7bdb-41d2-8a7f-82144bb55a45", "include": false, "reason": "shared_observability_setup"}
+  ]
+}

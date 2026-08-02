@@ -344,8 +344,8 @@ def main() -> int:
         "frontend_equivalent_flow": [
             "POST /api/documents",
             "POST /api/documents/{id}/parse",
-            "POST /api/sessions/{session_id}/turn analyze",
-            "POST /api/sessions/{session_id}/turn recommend",
+            "POST /api/sessions/{session_id}/turn analyze (may return recommendation)",
+            "POST /api/sessions/{session_id}/turn recommend (only when analyze has no recommendation)",
         ],
     }
 
@@ -427,8 +427,10 @@ def main() -> int:
         raise RunnerError(f"turnAnalyze failed: {analyze_step.error}")
     analyze_data = require_sse_done(analyze_step, manifest_path, summary, steps)
     require(bool(analyze_data.get("analysis_result")), "Analyze done payload did not include analysis_result")
+    recommendation = analyze_data.get("recommendation") or {}
+    recommendation_step_name = "turnAnalyze" if recommendation.get("steps") else None
 
-    if not args.no_recommend:
+    if not args.no_recommend and recommendation_step_name is None:
         recommend_events = log_dir / "04_turn_recommend.events.jsonl"
         recommend_payload = {
             "message": RECOMMEND_MESSAGE,
@@ -459,6 +461,7 @@ def main() -> int:
         recommend_data = require_sse_done(recommend_step, manifest_path, summary, steps)
         recommendation = recommend_data.get("recommendation") or {}
         require(bool(recommendation.get("steps")), "Recommend done payload did not include recommendation.steps")
+        recommendation_step_name = "turnRecommend"
 
     final_manifest = {
         **summary,
@@ -466,6 +469,7 @@ def main() -> int:
         "status": "ok",
         "session_id": session_id,
         "document_id": document_id,
+        "recommendation_step": recommendation_step_name,
         "steps": [asdict(s) for s in steps],
     }
     write_json(manifest_path, final_manifest)

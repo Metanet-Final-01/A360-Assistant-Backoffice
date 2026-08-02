@@ -46,6 +46,30 @@ def _find_attribute(attributes: list[dict], name: str) -> dict | None:
     return None
 
 
+def readable_parameters(step: dict, *, max_chars: int = 300) -> str:
+    """이 스텝의 모든 attribute를 "이름=값" 텍스트로 펼친다 - Recorder/WebAutomation
+    전용인 common_signature()와 달리 어떤 패키지든 그대로 쓸 수 있다.
+
+    judge_core_business_relevance()에 실제 파라미터 값(예: folderPath가
+    $pStrLogsFolder$인지 $pStrWTemp$인지)을 보여주려고 만들었다 - 액션 이름만
+    보면 "이 Folder.deleteFolder가 로그 정리용인지 진짜 업무 폴더 삭제인지"
+    구별이 안 되는데, 실제 대상 경로를 보면 구별된다(0098에서 실제로 확인함).
+    uiObject 같은 base64 blob은 통째로 보여주면 의미가 없어서 건너뛴다."""
+    parts: list[str] = []
+    for attr in step.get("attributes", []) or []:
+        name = attr.get("name")
+        if not name or name == "uiObject":
+            continue
+        value = _unwrap(attr.get("value"))
+        if not isinstance(value, (str, int, float, bool)) or value == "":
+            continue
+        text = str(value)
+        if len(text) > max_chars:
+            text = text[:max_chars] + "…"
+        parts.append(f"{name}={text}")
+    return ", ".join(parts) if parts else "(파라미터 없음)"
+
+
 def decode_ui_object(attributes: list[dict]) -> dict | None:
     """Recorder 스텝의 "uiObject" 속성(base64 blob) -> 실제 대상 객체 정보.
 

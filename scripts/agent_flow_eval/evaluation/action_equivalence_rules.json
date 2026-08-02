@@ -137,6 +137,14 @@
       ]
     },
     {
+      "canonical": "Excel advanced.excelAdvancedPackageGoToCellAction",
+      "members": [
+        "Excel.GoToCell",
+        "Excel_MS.GoToCell",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelGoToCell"
+      ]
+    },
+    {
       "canonical": "File.filePackageCreateAction",
       "members": [
         "File.createFile",

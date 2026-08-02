@@ -1,5 +1,7 @@
 # RPA 워크플로우 채점 재설계 (v4 — 3차 GPT 검토 반영, Judge Match 단순화)
 
+> **2026-08-02 정책 변경:** 이 문서의 Gold Core Action UID 제외안은 공식 채점에서 폐기했다. Gold에만 적용되는 비대칭 보정이기 때문이다. 현재 공식 정책은 Gold와 예측 변환기에 동일한 `normalize_steps_for_evaluation()` 규칙을 적용하며, `gold_core_actions` 파일은 진단 자료로만 보존한다.
+
 ## Context
 
 `run_eval_case.py`의 기존 채점(package.action multiset/LCS + PM4Py + WorFBench)이

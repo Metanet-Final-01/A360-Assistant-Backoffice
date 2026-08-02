@@ -56,7 +56,10 @@ evaluation/
   action_chain.py              LIS/LCS-based Action Chain P/R/F1 (active primary metric)
   action_equivalence_rules.json               human-confirmed plain package.action aliases
   action_equivalence_rules_conditional.json   attribute-conditioned aliases (e.g. Recorder.capture only when operation=CLICK)
-  gold_core_actions/<case-id>.json  per-case uid include/exclude (manual "implementation trick" exclusion, gold side only)
+  gold_core_actions/<case-id>.json  diagnostic-only historical UID annotations; not used by official scoring
+  gold_core_actions/_llm_classification_cache.json  shared cache for classify_core_business_actions() (see below) - different system, same directory
+  audit_final_goldset.py       actual batch scorer for the 9 confirmed-goldset cases (v2/v3 comparison + audit.json/summary.csv/summary.md); run_eval_batch.py below is legacy-13-only
+  export_audit_to_excel.py     turns audit_final_goldset.py's audit.json into a multi-sheet .xlsx (overview, matches, unmatched, judge log, core-business log, branch detail)
   critical_attribute/          Recorder/WebAutomation-style cross-package attribute comparison, feeds action_matching.py
   adapters/
     README.md
@@ -64,6 +67,13 @@ evaluation/
     worfbench_adapter.py       kept, "external benchmark reference" only (see below)
   reports/
 ```
+
+`run_eval_batch.py`/`run_eval_case.py` resolve paths under `eval_inputs/normalized_workflows_13/`
+only - they score the original 13-case regression set. The 9 confirmed-goldset cases
+(`goldset_expansion/confirmed_goldset/`) are scored by `audit_final_goldset.py`, which reads
+Gold from `goldset_expansion/export_main_challenge/deliverable/Main/` (gitignored, regenerable;
+verified byte-identical to `confirmed_goldset/gold/` for the cases checked) and predictions from
+`runner/logs/<run_id>/converted_recommendation/normalized/`.
 
 **`core_task.py` was deleted (2026-07-30)** along with this file's old `package_family()`/
 `salient_families()` — they were an unjustified hardcoded package classification
@@ -91,10 +101,9 @@ Current score layers (as of the 2026-07-30 redesign, see `SCORING_REDESIGN_PLAN.
 for the full rationale):
 
 ```text
-action_prf1          PRIMARY. action_matching.py: Rule Match (canonical label +
-                     attribute-conditioned equivalence) + Judge Match (embedding
-                     mutual-Top-1 candidate -> gpt-4o-mini verdict) -> explicit 1:1
-                     (gold_id, pred_id) pairs -> Precision/Recall/F1.
+action_prf1          Rule Match plus optional Judge Match. Final-goldset audits report
+                     deterministic Rule-only and nondeterministic Judge-assisted
+                     values separately; they must not be presented as one result.
 action_chain         PRIMARY. action_chain.py: LIS over the action_prf1 match pairs
                      sorted by predicted order (cross-checked against an LCS-DP over
                      the same match relation - they must be numerically equal since
@@ -128,18 +137,22 @@ Diagnostic artifact checks are still recorded separately as:
 worfbench_diagnostic_artifact_f1 local Node/Edges multiset F1 over converted artifacts
 ```
 
-Preprocessing before scoring:
+Rule-based conversion applied symmetrically to Gold and prediction:
 
 ```text
-browser_session_lifecycle_action
-  package regex: ^(web\s*automation|webautomation|browser|recorder)$
-  action regex:  session
+Comment
+disabled node and its descendants
+Logging / LogToFile
+approved Browser / Email session lifecycle
+actions inside catch branches
 ```
 
-These actions are excluded from gold and prediction scoring because the newer Browser
-model no longer exposes the legacy WebAutomation session lifecycle as a normal action.
-The rule is package-scoped so unrelated session actions such as `XML.startSession`
-remain scoreable.
+The shared implementation is `action_filters.normalize_steps_for_evaluation()` and
+is called by both raw-Gold and backend-recommendation converters. Scorers retain the
+same checks only for compatibility with older converted artifacts. MessageBox, Screen,
+Excel formatting, variable assignment, and path assembly remain scoreable because they
+can be requested business work. `XML.startSession` and Excel close actions also remain
+scoreable.
 
 After excluded actions are removed, action-equivalence aliases from
 `evaluation/action_equivalence_rules.json` are applied to produce the legacy
@@ -149,15 +162,75 @@ multiset/LCS only - they don't do 1:1 pairing or attribute comparison, which is
 why `action_prf1`/`action_chain` (via `action_matching.py`/`action_chain.py`)
 are the confirmed primary layers instead (see above).
 
-Instead of a separate "core task" package/label projection, the current design
-excludes implementation-detail actions on a per-case, per-uid basis via
-`gold_core_actions/<case-id>.json` (§7 of `SCORING_REDESIGN_PLAN.md`) - a human
-reviews the gold workflow once and marks specific uids `include: false` with a
-reason (e.g. a repeated manual-cell-formatting block), rather than relying on a
-package-wide or label-wide rule. This is gold-side only; there is currently no
-equivalent exemption for predicted actions that happen to implement the same
-excluded detail a different way (tracked as an open gap, see
-`HANDOFF_CODEX.md`).
+`gold_core_actions/<case-id>.json` is not used by official scoring. The files are
+retained only as historical analysis because UID exclusions apply to Gold alone and
+cannot be reproduced symmetrically on predictions. New exclusions must be deterministic
+rules in the shared converter, supported independently of whether they raise a score.
+Likewise, a Judge-only match is not promoted to a converter rule without independent
+package/action evidence.
+
+### Core-business classification (2026-08-03) - a different, symmetric approach
+
+`classify_core_business_actions()` (`action_matching.py`) is **not** the rejected
+`gold_core_actions/` UID-list approach above and does not read or write those files.
+It exists because a handful of `(package, action)` pairs are genuinely ambiguous -
+the exact same action type is boilerplate setup in one occurrence and real business
+work in another (confirmed on real data: `Folder.createFolder` builds a log folder
+in one call and the actual archive folder the business definition asks for in
+another, in the same case). Package/action name alone cannot resolve this.
+
+The design is deliberately narrow and applied **symmetrically to both Gold and
+prediction actions**, only when a case has a matching business definition under
+`goldset_expansion/confirmed_goldset/briefs/<case_id>_*.md` (looked up via
+`load_business_definition()`; cases without one - e.g. the legacy 13-case set -
+skip classification entirely and keep the old all-actions-are-core behavior):
+
+1. Only `(package, action)` pairs in `action_filters.AMBIGUOUS_GENERIC_ACTIONS`
+   are ever considered (`Folder.createFolder/deleteFolder`, `File.createFile`,
+   `String.assign`, `Datetime.subtract/toString/assign`, `Number.assignToNumber`,
+   `Boolean.assign`, `MessageBox.messageBox`). Everything else is always core -
+   no observed case needed a broader list.
+2. Free keyword rule first: if the action's real parameter text matches
+   `log|audit|error|snapshot|observability` (`INFRASTRUCTURE_KEYWORD_RE`), it is
+   excluded without any API call. Verified against all 9 confirmed-goldset cases
+   with zero false positives/negatives before being adopted.
+3. Only the remainder goes to `judge_core_business_relevance()` (gpt-4o-mini,
+   temperature=0), given the actual business-definition text, case title, and the
+   action's real parameter values - not just the action name. Results are cached
+   in `gold_core_actions/_llm_classification_cache.json` keyed by
+   `case_id|raw_label|readable_params`, shared across cases and reruns, so a
+   reproducibility rerun does not re-spend API calls on unchanged inputs.
+
+Cross-checked against the older human-reviewed `gold_core_actions/0089.json` and
+`0098.json` (independent judgment, not consulted by this function): 52 of 52 of
+their exclusions were also excluded by this classifier, plus 2 additional
+`MessageBox` validation-guard exclusions the human review hadn't flagged - no
+case of this classifier keeping something the human review had excluded.
+
+### Branch coverage diagnostic (2026-08-03) - separate metric, does not touch action_prf1/action_chain
+
+`flatten_scored_actions()` still pools every `if`/`elseIf`/`else` branch's actions
+into one flat list exactly as before (unchanged, to avoid perturbing the primary
+metrics) - which means mutually-exclusive branches (e.g. a real 3-way `if/elseIf/
+elseIf` in `0376` where each branch does an equivalent `copyFiles`+`deleteFiles`)
+still inflate Gold's action count in `action_prf1`/`action_chain`, understating
+recall when a prediction correctly implements only one branch. Fixing this
+properly would need a branch-to-branch matching algorithm; per 2026-08-03
+decision, that scope was rejected as unnecessary - `score_branch_coverage()`
+instead reuses the already-computed Rule/Judge match results with no new
+matching logic:
+
+- `flatten_scored_actions(..., _branch_groups=...)` optionally records, for every
+  `if` step found at any depth in Gold's tree, which of the already-assigned
+  action uids belong to which branch (`if`/`elseIf`/`else`) - a side channel that
+  does not change the function's return value.
+- `score_branch_coverage(branch_groups, matched_gold_uids, core_gold_uids)`
+  reports two diagnostic-only numbers, surfaced in `evaluation.md`/`audit.json`
+  alongside but never combined with `action_prf1`: **Branch Coverage** (all-or-
+  nothing per branch - no invented percentage threshold - fully-matched branches
+  / total scoreable branches) and **Branch Score** (continuous, per-branch
+  matched-fraction average). A branch with zero core actions (e.g. a branch that
+  was pure logging) is excluded from both denominators rather than forced to 0.
 
 WorFBench's adapter is called only in its unmodified, external-reference form -
 it does not apply our `action_equivalence_rules.json` aliases, since the point
@@ -169,9 +242,8 @@ as confirmed mappings until promoted into `action_equivalence_rules.json` /
 
 ## Rule Governance
 
-Equivalence rules and gold core-action exclusions are evaluation policy, not
-throwaway scoring glue. They must be updated from observed evaluation results,
-but not in a way that merely chases a higher score for one case.
+Equivalence and conversion rules are evaluation policy, not throwaway scoring glue.
+They must not be changed merely to raise one case's score.
 
 Canonical/equivalence rules (`action_equivalence_rules.json`,
 `action_equivalence_rules_conditional.json`):
@@ -193,16 +265,13 @@ Canonical/equivalence rules (`action_equivalence_rules.json`,
   value.
 - Keep ambiguous pairs as candidates until reviewed. Similar names are not enough.
 
-Gold core-action exclusions (`gold_core_actions/<case-id>.json`):
+Conversion exclusions:
 
-- Written once per case by a human reviewing the gold workflow, not derived from
-  a package- or label-wide rule (there is no `core_task`-style package
-  classification anymore - see above for why that was removed).
-- Exclude only actions that are a genuine implementation detail of one specific
-  gold recording (e.g. a repeated manual cell-formatting block), not actions that
-  are merely low-frequency or unfamiliar.
-- Record a `reason` string per excluded uid so a later reviewer can see why
-  without re-deriving it from the raw workflow.
+- Apply the same deterministic rule to Gold and prediction during conversion.
+- Require a rationale that is independent of the observed score.
+- Do not infer implementation detail from package names such as String, Folder,
+  MessageBox, Screen, or Excel formatting.
+- Keep case-specific UID annotations diagnostic-only.
 
 Review loop:
 

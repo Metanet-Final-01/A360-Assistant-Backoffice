@@ -29,6 +29,9 @@ confirmed_goldset/
   briefs/            9개 업무정의서 .md (사람이 실제 gold 액션 시퀀스를 보고 작성, 파싱 검증됨)
   gold/               9개 정답 goldset.json (실제 채점 기준 원본 워크플로우)
   pdfs/               렌더링된 PDF (gitignore됨 - 아래 명령으로 재생성)
+  evaluation_results/ 압축된 채점 결과(F1/Precision/Recall 표 + 관찰). 원본 실행
+                      로그(runner/logs/, 대용량·재현 가능)는 여기 안 넣는다 -
+                      "최종 판단" 성격의 압축 결과만 커밋 대상.
 ```
 
 ## PDF 재생성

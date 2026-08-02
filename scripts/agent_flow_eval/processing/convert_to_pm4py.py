@@ -29,7 +29,7 @@ def default_pm4py_src() -> Path:
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from action_filters import is_browser_session_lifecycle_action, is_disabled_step  # noqa: E402
+from action_filters import is_disabled_step, should_exclude_action  # noqa: E402
 
 pm4py: Any | None = None
 Operator: Any | None = None
@@ -95,7 +95,7 @@ def convert_steps(steps: list[dict], parent: ProcessTree | None) -> tuple[Proces
         if not is_disabled_step(step)
         and not (
             step.get("type") == "action"
-            and is_browser_session_lifecycle_action(step.get("package"), step.get("action"))
+            and should_exclude_action(step.get("package"), step.get("action"))
         )
     ]
     if not steps:
