@@ -81,6 +81,26 @@ python render_md_briefs.py
 재채점한다. v1은 현재 표본이 1회뿐이라 어차피 추가 실행이 필요하므로, 그때
 함께 처리하는 것이 효율적이다.
 
+**업무정의서의 성격이 다르다**: 나머지 9개는 정답 워크플로우를 보고 사람이
+업무정의서를 작성했지만, `9001`은 반대로 **업무정의서가 먼저 주어지고 그에 맞춰
+봇을 제작**한 사례다. 따라서 정본은 `source_documents/9001_*.pdf`이고,
+`briefs/9001_*.md`는 채점기가 텍스트로 읽기 위한 **전사본**이다. 내용을 고칠
+일이 있으면 PDF를 기준으로 삼는다.
+
+**알려진 미처리 사항 — 채점 전에 반드시 확인할 것**: 이 정답 워크플로우는
+액션 35개 중 **22개(`Excel_MS.SelectRowColumnCellRange` 9회 +
+`Recorder.capture` 8회 + `Keystrokes` 2회 등)가 엑셀 셀에 하나씩 테두리를
+넣는 반복 블록**이다. 업무정의서 Task 3의 "엑셀 표 테두리 설정"이라는 **요구사항
+1건**을 구현한 것인데, 현재 핵심업무 분류기는 이를 걸러내지 못한다 -
+`AMBIGUOUS_GENERIC_ACTIONS` 목록이 Folder/File/String/Datetime 계열만 다루고
+Excel 서식·Recorder 계열은 대상이 아니기 때문이다. 그 결과 분류기는 35개 중
+34개를 핵심업무로 판정한다.
+
+이대로 채점하면 Agent가 만점을 받으려면 셀 서식 반복 22개를 그대로 재현해야
+하므로 Recall 분모가 부당하게 커진다. 이 문제는 재설계 계획서에도
+`(SelectRowColumnCellRange+Recorder.capture)×7 ↔ 단일 서식 액션`이 **다대일
+미해결**로 이미 기록되어 있다. 공식 집합으로 승격할 때 함께 해결해야 한다.
+
 **참고**: 이 봇은 채점기 재설계의 **검증 기준**이었다. PM4Py를 폐기한 실측
 근거(fitness 0.089 / precision 0.0)와 조건부 동치 규칙 2건
 (`Recorder.capture(CLICK) ≡ WebAutomation.clickelement`,
