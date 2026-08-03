@@ -1,0 +1,27 @@
+﻿agent_action,agent_count,agent_family,agent_semantics
+Browser.close,1,browser,close
+Browser.downloadFile,1,browser,
+DLL.Close,4,dll,close
+DLL.Open,4,dll,open
+Email.checkFolder,1,email,
+Email.sendMail,2,email,send
+ErrorHandler.throw,4,error_handler,
+Excel.setSessionVariable,1,excel,
+Excel_MS.CloseSpreadsheet,4,excel,close
+Excel_MS.GoToCell,2,excel,
+Excel_MS.GoToNextEmptyCell,1,excel,
+Excel_MS.setSessionVariable,2,excel,
+File.deleteFiles,1,file,delete
+Folder.createFolder,8,folder,write
+Jira.jiraCreateProject,1,jira,write
+LogToFile.logToFile,1,logtofile,
+MessageBox.messageBox,3,messagebox,
+Microsoft 365 Excel package in Automation 360.office365ExcelReadRow,2,microsoft365excelpackageinautomation360,read
+Microsoft 365 Outlook.ms365OutlookConnect,1,microsoft365outlook,
+Number.increment,1,number,
+Step.step,84,step,
+Twilio.Send SMS from Twilio,1,twilio,
+WebAutomation.clickelement,6,browser,
+WebAutomation.elementloaded,1,browser,
+WebAutomation.pageloaded,2,browser,
+WebAutomation.settextelement,3,browser,

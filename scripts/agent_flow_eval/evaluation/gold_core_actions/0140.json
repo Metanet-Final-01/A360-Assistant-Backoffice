@@ -1,0 +1,17 @@
+{
+  "source": "0140_new-user-registration-with-unique-user-id__New User Registration with Unique User ID.cleaned.goldset.json",
+  "note": "Unlisted actions are included. Generic folders/logs and the bundled template download are not part of the registration task.",
+  "core_actions": [
+    {"uid": "87c94d0f-c1a8-4595-86c6-621f0b009b3a", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "3f2e736c-1ff0-49ff-8b76-14c2455713b6", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "4b6ebe6f-3b34-4c63-a732-a669c2ab6603", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "a0354c3c-edeb-437b-b521-f33ca82e0cac", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "dbb08c8d-e4d4-47bc-8d3f-19d0f5628ad1", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "123291ee-6a2d-4727-a119-8822716d124c", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "e18d5297-163a-470f-b3bb-9f7e6ded0d70", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "c82aa644-2024-4f99-9775-eabd0b5bc572", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "cfcdb5fb-6a65-4c2f-a6c9-6e585af86827", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "d337115b-b923-4eaa-b426-892f57faa5ee", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "5deb6809-2ca8-4002-b784-278596d484a9", "include": false, "reason": "bundled_sample_input_download"}
+  ]
+}

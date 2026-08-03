@@ -1,0 +1,1138 @@
+{
+  "source_file": "Automation Anywhere__Bot Store__GetPreviousWeekday__A360 - GetPreviousWeekday.json",
+  "steps": [
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "string": "GetWeekdayRange",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "str_BotName"
+      },
+      "type": "action",
+      "uid": "d8c19ec1-16e7-4c96-95e1-a37f4fc41fd8"
+    },
+    {
+      "attributes": [
+        {
+          "attributes": [
+            {
+              "name": "variable",
+              "value": {
+                "expression": "$str_LogsFolderPath$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "operator",
+              "value": {
+                "string": "EQ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "value",
+              "value": {
+                "string": "",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "matchCase",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "isIgnoreCarriage",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "name": "condition",
+          "value": {
+            "conditionalName": "stringVariable",
+            "packageName": "String",
+            "type": "CONDITIONAL"
+          }
+        }
+      ],
+      "branches": [],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "C:\\Log",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "str_LogsFolderPath"
+          },
+          "type": "action",
+          "uid": "4f698fad-9aab-4bf7-99ba-3e27e22da53e"
+        }
+      ],
+      "type": "if",
+      "uid": "fc05c1ed-b24f-4b24-ac4b-95217f35d43f"
+    },
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            },
+            {
+              "name": "continueOnError",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "n_ErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "str_ErrorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "toString",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "expression": "$System:Date$",
+                    "type": "DATETIME"
+                  }
+                },
+                {
+                  "name": "selectPattern",
+                  "value": {
+                    "string": "CUSTOM",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "patternInput",
+                  "value": {
+                    "string": "MM-dd-yyyy",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Datetime",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "str_CurrentDate"
+              },
+              "type": "action",
+              "uid": "1436a166-0555-4104-8610-2564c34660f0"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$str_LogsFolderPath$/$str_CurrentDate$_$str_BotName$.txt",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "fileNotExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "createFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$str_LogsFolderPath$/$str_CurrentDate$_$str_BotName$.txt",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "isOverwrite",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "File",
+                  "type": "action",
+                  "uid": "29775f4b-2300-48bb-bbd5-d8cf606e68ba"
+                }
+              ],
+              "type": "if",
+              "uid": "06991509-87a8-4e02-b29b-f9b4d374ca99"
+            },
+            {
+              "action": "logToFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$str_LogsFolderPath$/$str_CurrentDate$_$str_BotName$.txt",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "$System:Machine$, $System:AATaskName$, $n_ErrorLineNumber.Number:toString$, $str_ErrorMessage$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "LogToFile",
+              "type": "action",
+              "uid": "35ae6733-8913-43ec-a046-6cba35f07b95"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "OpenSpreadsheet",
+          "attributes": [
+            {
+              "name": "excelSourceOption",
+              "value": {
+                "string": "desktopfilepath",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "filePath",
+              "value": {
+                "string": "repository:///Automation%20Anywhere/Bot%20Store/GetPreviousWeekday/Holidays.xlsx",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "sheetName",
+              "value": {
+                "string": "Holidays",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "READ_ONLY",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "loadAddIns",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "excludeHiddenSheets",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "return_to": {
+            "sessionName": {
+              "string": "SessionGetHolidays",
+              "type": "STRING"
+            },
+            "sessionTarget": "LOCAL",
+            "type": "SESSION"
+          },
+          "type": "action",
+          "uid": "e8f51d7c-2b8f-4a4c-9431-9eb093fcd028"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "loopSelection",
+                  "value": {
+                    "string": "ALL_ROWS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption",
+                  "value": {
+                    "string": "READ_CELL_TEXT",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "readOption_readCellText_Help",
+                  "value": {
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "session",
+                  "value": {
+                    "sessionName": {
+                      "string": "SessionGetHolidays",
+                      "type": "STRING"
+                    },
+                    "type": "SESSION"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "rec_ExcelRow"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.excel",
+                "packageName": "Excel_MS",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "assign",
+              "attributes": [
+                {
+                  "name": "sourceString",
+                  "value": {
+                    "expression": "$rec_ExcelRow[0].String:trim$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "String",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "str_CellDate"
+              },
+              "type": "action",
+              "uid": "d1cd36ea-1c90-4426-a937-8bd7169a1896"
+            },
+            {
+              "attributes": [],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "name": "exceptionType",
+                      "value": {
+                        "exceptionName": "BotException",
+                        "packageName": "ErrorHandler",
+                        "type": "EXCEPTION"
+                      }
+                    }
+                  ],
+                  "branch": "catch",
+                  "steps": [
+                    {
+                      "attributes": [],
+                      "disabled": false,
+                      "steps": [],
+                      "type": "loop",
+                      "uid": "1b68b572-e254-4bf0-b264-710a5ee82e06"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assign",
+                  "attributes": [
+                    {
+                      "name": "option",
+                      "value": {
+                        "string": "constant",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "source",
+                      "value": {
+                        "expression": "$str_CellDate$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "formatType",
+                      "value": {
+                        "string": "custom",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "customFormat",
+                      "value": {
+                        "string": "MM/dd/yyyy",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Datetime",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "date_CellDate"
+                  },
+                  "type": "action",
+                  "uid": "b0d553dc-2e37-418d-91d6-ff66ffcc350e"
+                }
+              ],
+              "type": "try",
+              "uid": "9f3b2aaf-274c-4f66-9f46-eb993ad5eb85"
+            },
+            {
+              "action": "addItem",
+              "attributes": [
+                {
+                  "name": "sourceList",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "list_Holidays"
+                  }
+                },
+                {
+                  "name": "listItem",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "str_CellDate"
+                  }
+                },
+                {
+                  "name": "itemPosition",
+                  "value": {
+                    "string": "END",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "List",
+              "type": "action",
+              "uid": "05e8b0bf-20ad-4ec5-9338-08f52927c34a"
+            }
+          ],
+          "type": "loop",
+          "uid": "f5643b29-ce8b-471a-9fae-116ba6ccf0b1"
+        },
+        {
+          "action": "CloseSpreadsheet",
+          "attributes": [
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "SessionGetHolidays",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel_MS",
+          "type": "action",
+          "uid": "a5aaf6f3-bc27-416e-998c-25ab42f5f6ff"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "string": "constant",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "userDefined",
+              "value": {
+                "string": "false",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Boolean",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "bool_BreakLoop"
+          },
+          "type": "action",
+          "uid": "0bc54367-b0a2-4df4-8f47-40e8352fe352"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "option",
+              "value": {
+                "string": "variable",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "dateTime",
+              "value": {
+                "expression": "$date_InputDate$",
+                "type": "DATETIME"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "date_PrevWeekday"
+          },
+          "type": "action",
+          "uid": "d6434476-43eb-416b-befa-ac07e400860a"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "WHILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$bool_BreakLoop$",
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "booleanVariable",
+                "packageName": "Boolean",
+                "type": "CONDITIONAL"
+              }
+            },
+            {
+              "name": "checkConditionAtEnd",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "subtract",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "expression": "$date_PrevWeekday$",
+                    "type": "DATETIME"
+                  }
+                },
+                {
+                  "name": "val",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "unit",
+                  "value": {
+                    "string": "DAYS",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Datetime",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "date_PrevWeekday"
+              },
+              "type": "action",
+              "uid": "78eff0a3-4d37-4274-b4ea-643230c86dab"
+            },
+            {
+              "action": "toString",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "expression": "$date_PrevWeekday$",
+                    "type": "DATETIME"
+                  }
+                },
+                {
+                  "name": "selectPattern",
+                  "value": {
+                    "string": "CUSTOM",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "patternInput",
+                  "value": {
+                    "string": "MM/dd/yyyy",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Datetime",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "str_PrevWeekday"
+              },
+              "type": "action",
+              "uid": "09607cfe-f36c-4d23-90a9-0e8985a1ef54"
+            },
+            {
+              "action": "toString",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "expression": "$date_PrevWeekday$",
+                    "type": "DATETIME"
+                  }
+                },
+                {
+                  "name": "selectPattern",
+                  "value": {
+                    "string": "CUSTOM",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "patternInput",
+                  "value": {
+                    "string": "EEE",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Datetime",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "str_DayAsWord"
+              },
+              "type": "action",
+              "uid": "47307942-9f36-4bc6-a7fe-8c5a0836f312"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$str_DayAsWord$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "Sat.",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "operatorAttribute": {
+                    "attributes": [
+                      {
+                        "name": "variable",
+                        "value": {
+                          "expression": "$str_DayAsWord$",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "operator",
+                        "value": {
+                          "string": "EQ",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "value",
+                        "value": {
+                          "string": "Sun.",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "matchCase",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      },
+                      {
+                        "name": "isIgnoreCarriage",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      }
+                    ],
+                    "operator": "OR",
+                    "value": {
+                      "conditionalName": "stringVariable",
+                      "packageName": "String",
+                      "type": "CONDITIONAL"
+                    }
+                  },
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "disabled": false,
+              "steps": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$bool_IncludeWeekendsInOutput$",
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "booleanVariable",
+                        "packageName": "Boolean",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "addItem",
+                      "attributes": [
+                        {
+                          "name": "sourceList",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "list_OutputWeekday"
+                          }
+                        },
+                        {
+                          "name": "listItem",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "str_PrevWeekday"
+                          }
+                        },
+                        {
+                          "name": "itemPosition",
+                          "value": {
+                            "string": "END",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "List",
+                      "type": "action",
+                      "uid": "edeac206-ff4b-4105-9a57-e8ca0250c45a"
+                    }
+                  ],
+                  "type": "if",
+                  "uid": "47a9479d-b864-485e-aea3-9d72c81501db"
+                },
+                {
+                  "attributes": [],
+                  "disabled": false,
+                  "steps": [],
+                  "type": "loop",
+                  "uid": "831eca07-0ba2-49b0-ba32-67d1660f2a83"
+                }
+              ],
+              "type": "if",
+              "uid": "fbdd09d1-8e3a-474b-8113-87021f3c446f"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "list_Holidays"
+                      }
+                    },
+                    {
+                      "name": "subtype",
+                      "value": {
+                        "string": "String",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "stringValue",
+                      "value": {
+                        "expression": "$str_PrevWeekday$",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "listVariable",
+                    "packageName": "List",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "disabled": false,
+              "steps": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$bool_IncludeHolidaysInOutput$",
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "booleanVariable",
+                        "packageName": "Boolean",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "addItem",
+                      "attributes": [
+                        {
+                          "name": "sourceList",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "list_OutputWeekday"
+                          }
+                        },
+                        {
+                          "name": "listItem",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "str_PrevWeekday"
+                          }
+                        },
+                        {
+                          "name": "itemPosition",
+                          "value": {
+                            "string": "END",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "List",
+                      "type": "action",
+                      "uid": "1815af3a-f991-4cff-b15d-1e7d4aa7ccd7"
+                    }
+                  ],
+                  "type": "if",
+                  "uid": "5d469ea3-d28b-41eb-8471-a2f8277d285a"
+                },
+                {
+                  "attributes": [],
+                  "disabled": false,
+                  "steps": [],
+                  "type": "loop",
+                  "uid": "97b99e6f-021d-41e0-921e-e73cbc8a06ea"
+                }
+              ],
+              "type": "if",
+              "uid": "0e54acc2-3b8e-4020-a520-17cfae04bd57"
+            },
+            {
+              "action": "addItem",
+              "attributes": [
+                {
+                  "name": "sourceList",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "list_OutputWeekday"
+                  }
+                },
+                {
+                  "name": "listItem",
+                  "value": {
+                    "type": "VARIABLE",
+                    "variableName": "str_PrevWeekday"
+                  }
+                },
+                {
+                  "name": "itemPosition",
+                  "value": {
+                    "string": "END",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "List",
+              "type": "action",
+              "uid": "dcd391b7-43b6-471f-8d35-e9e49baded95"
+            },
+            {
+              "action": "assign",
+              "attributes": [
+                {
+                  "name": "source",
+                  "value": {
+                    "string": "constant",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "userDefined",
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Boolean",
+              "return_to": {
+                "type": "VARIABLE",
+                "variableName": "bool_BreakLoop"
+              },
+              "type": "action",
+              "uid": "d00cb5e9-fe85-4bd0-831f-b2375ca346ff"
+            },
+            {
+              "attributes": [],
+              "disabled": false,
+              "steps": [],
+              "type": "loop",
+              "uid": "691ad71a-54c7-49d2-9392-b709922578c8"
+            }
+          ],
+          "type": "loop",
+          "uid": "4ed2134c-4754-4979-bc9b-6449fe3f1ead"
+        }
+      ],
+      "type": "try",
+      "uid": "6e5a3a78-137b-415d-bd7e-f1c0b5d5fc50"
+    }
+  ],
+  "triggers": []
+}

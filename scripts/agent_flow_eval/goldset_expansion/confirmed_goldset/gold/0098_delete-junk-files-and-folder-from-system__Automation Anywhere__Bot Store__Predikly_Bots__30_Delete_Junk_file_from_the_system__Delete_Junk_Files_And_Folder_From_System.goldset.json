@@ -1,0 +1,5492 @@
+{
+  "source_file": "Automation Anywhere__Bot Store__Predikly_Bots__30_Delete_Junk_file_from_the_system__Delete_Junk_Files_And_Folder_From_System.json",
+  "steps": [
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            },
+            {
+              "name": "continueOnError",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "oNumErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "oStrErrorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "logToFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "Error Line No. - $oNumErrorLineNumber.Number:toString$ - $oStrErrorMessage$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "LogToFile",
+              "type": "action",
+              "uid": "bcaebcf8-05cd-4aae-a4bc-3d6b6592630f"
+            },
+            {
+              "action": "captureDesktop",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrSnapshotsFolder$/$pStrAssignedDate$_$pStrAssignedTime$.jpg",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwriteFile",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Screen",
+              "type": "action",
+              "uid": "5463bd09-a551-4c80-a07b-2c112057fcb5"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrProjectFolder$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "iStrProjectFolder"
+          },
+          "type": "action",
+          "uid": "b9c8ea06-fd72-4264-b993-c66d6b1a7bae"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrDeviceUFName1$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "iStrDeviceUFName1"
+          },
+          "type": "action",
+          "uid": "a7303751-8f31-4acb-9acc-aa6e3e134c66"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrDeviceUFName2$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "iStrDeviceUFName2"
+          },
+          "type": "action",
+          "uid": "10450a77-6ba9-42e3-bf00-a9304bb346bc"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Bot_Name",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrBotName"
+          },
+          "type": "action",
+          "uid": "aa945f27-9482-4352-9937-22b62adb1e47"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Predikly",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrVendorName"
+          },
+          "type": "action",
+          "uid": "371734d2-c26f-4afc-9039-0352fffae338"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$pStrBotName$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$pStrNull$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "matchCase",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isIgnoreCarriage",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "name": "condition",
+              "operatorAttribute": {
+                "attributes": [
+                  {
+                    "name": "variable",
+                    "value": {
+                      "expression": "$pStrVendorName$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "operator",
+                    "value": {
+                      "string": "EQ",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "value",
+                    "value": {
+                      "expression": "$pStrNull$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "matchCase",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "name": "isIgnoreCarriage",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  }
+                ],
+                "operator": "OR",
+                "value": {
+                  "conditionalName": "stringVariable",
+                  "packageName": "String",
+                  "type": "CONDITIONAL"
+                }
+              },
+              "value": {
+                "conditionalName": "stringVariable",
+                "packageName": "String",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "string": "Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines.",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "c70c0dbb-6d3a-4257-a4db-4e0d72bcbfc3"
+            },
+            {
+              "action": "stopTask",
+              "attributes": [],
+              "disabled": false,
+              "package": "TaskBot",
+              "type": "action",
+              "uid": "328ef7a5-df12-4665-8010-3c54a9fc3349"
+            }
+          ],
+          "type": "if",
+          "uid": "39515494-e3d1-4a6a-8200-81891d740c12"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "yyyyMMdd",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAssignedDate"
+          },
+          "type": "action",
+          "uid": "6685d875-ada9-4a0a-b981-4bd8ade5f784"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$System:Hour.Number:toString$$System:Minute.Number:toString$$System:Second.Number:toString$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAssignedTime"
+          },
+          "type": "action",
+          "uid": "ca75b2cf-8b4d-454d-aba1-d02b71e2b6f3"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrProjectFolder$\\Logs",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogsFolder"
+          },
+          "type": "action",
+          "uid": "035a6fbf-363b-4e46-888f-058d3ee7bc96"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsFolder$\\$pStrAssignedDate$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogsDateFolder"
+          },
+          "type": "action",
+          "uid": "09caa898-9317-45c6-b6a9-eb2aafc7f84e"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\AuditLog",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAuditLogFolder"
+          },
+          "type": "action",
+          "uid": "5da15a6e-a597-49f6-8dec-acad729cd380"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrAuditLogFolder$\\$pStrBotName$AuditLog_$pStrAssignedDate$.txt",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAuditLogFile"
+          },
+          "type": "action",
+          "uid": "88409951-9b04-4b91-bf70-86e95f7bca36"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\ErrorLog",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrErrorLogFolder"
+          },
+          "type": "action",
+          "uid": "ce170a39-7cf4-4afc-88cf-eb5598d13604"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrErrorLogFolder$\\$pStrBotName$ErrorLog_$pStrAssignedDate$.txt",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrErrorLogFile"
+          },
+          "type": "action",
+          "uid": "9a16395d-bcab-4cb5-9dba-e1095452f7d9"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\Snapshots",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrSnapshotsFolder"
+          },
+          "type": "action",
+          "uid": "8bed5710-6f34-43f8-b263-d88849f2f0dc"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "5d9784ac-4ff1-4e72-8619-57b63b79fc2d"
+            }
+          ],
+          "type": "if",
+          "uid": "00a513ee-bda4-4925-9eb1-65562b756511"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrAuditLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrAuditLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "b2f2ef1e-946e-4010-993a-15e099b5c2e9"
+            }
+          ],
+          "type": "if",
+          "uid": "872e0fe0-4cef-40c4-97d1-3b35a5d6004e"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrErrorLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrErrorLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "7192c990-233a-496b-b3ae-72838ff8aaa3"
+            }
+          ],
+          "type": "if",
+          "uid": "5d7252a7-f1ff-4518-a969-b4584b867bdc"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "12d3cfde-cf6c-44fa-809e-5eb5ead233a9"
+            }
+          ],
+          "type": "if",
+          "uid": "89a479a7-6cd0-4eb6-9fe4-ef2eab2904aa"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$pStrAuditLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrAuditLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "9e8235a4-dac0-47df-9805-f09b41e40e05"
+            }
+          ],
+          "type": "if",
+          "uid": "84dcc990-448d-4d3c-80ea-aef9b0c9f39f"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "af871efb-188a-45e1-8a03-7ae67d7eb4aa"
+            }
+          ],
+          "type": "if",
+          "uid": "30dd0281-19a7-4397-afdf-5db0fa6d4854"
+        },
+        {
+          "action": "subtract",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "val",
+              "value": {
+                "expression": "$pNumLoggingPeriod$",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "unit",
+              "value": {
+                "string": "DAYS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pdtLogCutoffDate"
+          },
+          "type": "action",
+          "uid": "ca6a85e7-667d-41ef-91d2-67d6d6be6acc"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "pdtLogCutoffDate"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "yyyyMMdd",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogCutoffDate"
+          },
+          "type": "action",
+          "uid": "39ddf99e-0aea-463c-bdbf-d9825d0cecba"
+        },
+        {
+          "attributes": [],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "deleteFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$/*",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "dateValue",
+                  "value": {
+                    "string": "Modified",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "dateRangeValue",
+                  "value": {
+                    "string": "Before",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "beforeDate",
+                  "value": {
+                    "expression": "$pStrLogCutoffDate$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isBeforeDateIncluded",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "0763fb29-4a8b-49bd-ac48-6636c0cd2691"
+            }
+          ],
+          "type": "try",
+          "uid": "7135c856-b063-4acd-a153-473033b76cad"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "============================================",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "de76ea01-65cd-42eb-b803-7e97e20386eb"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "============================================",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "1403b125-5fbb-4ca0-9c8d-0a51a22aa59f"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution started ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "6f3e6a68-b09e-4e59-b11e-64d5b4fd72d8"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution started ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "541e5b5a-0f3f-4d18-8364-e5d79743214c"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "C:\\Users\\$iStrDeviceUFName2$\\AppData\\Local\\Temp",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrPercentTemp"
+          },
+          "type": "action",
+          "uid": "641f76bf-1771-4acf-b05d-6634cf68bb3a"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "C:\\Users\\$iStrDeviceUFName1$\\Recent",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrRecent"
+          },
+          "type": "action",
+          "uid": "a267cc6d-afa4-4ffa-b618-4637f6cefdc3"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "C:\\Windows\\Prefetch",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrWPrefetch"
+          },
+          "type": "action",
+          "uid": "7add977d-7b97-472d-9a0d-0caf63503732"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "C:\\Windows\\Temp",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrWTemp"
+          },
+          "type": "action",
+          "uid": "1667c71c-6c85-4897-b4bc-a571fc88fa98"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "**********************************************",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "80146958-3f03-485f-b559-21a999071cb3"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Delete Junk Files from %Temp% ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "8cf9988b-1c37-4ae2-b883-5bb67edea9bb"
+        },
+        {
+          "action": "assignToNumber",
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pNumCounter"
+          },
+          "type": "action",
+          "uid": "06e3ca63-49b0-4bcf-aa06-968a6ae4971b"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrPercentTemp$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pDicFilesInFolderPTemp"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.files",
+                "packageName": "File",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$pStrPercentTemp$/*.*",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "operatorAttribute": {
+                    "attributes": [
+                      {
+                        "name": "variable",
+                        "value": {
+                          "expression": "$pDicFilesInFolderPTemp{extension}$",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "operator",
+                        "value": {
+                          "string": "NEQ",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "value",
+                        "value": {
+                          "string": "dll",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "matchCase",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      },
+                      {
+                        "name": "isIgnoreCarriage",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      }
+                    ],
+                    "operator": "AND",
+                    "value": {
+                      "conditionalName": "stringVariable",
+                      "packageName": "String",
+                      "type": "CONDITIONAL"
+                    }
+                  },
+                  "value": {
+                    "conditionalName": "fileExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$pDicFilesInFolderPTemp{extension}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "dll",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branch": "elseIf",
+                  "steps": [
+                    {
+                      "action": "assignToNumber",
+                      "attributes": [
+                        {
+                          "name": "input",
+                          "value": {
+                            "expression": "1+$pNumCounter$",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Number",
+                      "return_to": {
+                        "type": "VARIABLE",
+                        "variableName": "pNumCounter"
+                      },
+                      "type": "action",
+                      "uid": "5b49b488-e349-4190-88f9-969ee5896956"
+                    },
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "***** File-$pNumCounter.Number:toString$) $pStrPercentTemp$/$pDicFilesInFolderPTemp{name}$.$pDicFilesInFolderPTemp{extension}$ (Not deleted because, It is System Application file)",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "3791c542-8dad-4c68-b47f-51e2c1b7e14b"
+                    }
+                  ]
+                },
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "***** Junk files are not present in % Temp% folder",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "a9b15715-9bed-4333-969f-5f8dbec10cd9"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assignToNumber",
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "1+$pNumCounter$",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Number",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pNumCounter"
+                  },
+                  "type": "action",
+                  "uid": "295b0726-8d2e-436e-89d2-f0475358d0b0"
+                },
+                {
+                  "attributes": [],
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "exceptionType",
+                          "value": {
+                            "exceptionName": "BotException",
+                            "packageName": "ErrorHandler",
+                            "type": "EXCEPTION"
+                          }
+                        },
+                        {
+                          "name": "continueOnError",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "branch": "catch",
+                      "returns": {
+                        "errorMessage": {
+                          "type": "VARIABLE",
+                          "variableName": "oStrErrorMessage"
+                        }
+                      },
+                      "steps": [
+                        {
+                          "action": "assignToNumber",
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "1+$pNumCounter$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "Number",
+                          "return_to": {
+                            "type": "VARIABLE",
+                            "variableName": "pNumCounter"
+                          },
+                          "type": "action",
+                          "uid": "f67c87c5-7371-4963-8337-b895322850b3"
+                        },
+                        {
+                          "action": "logToFile",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$pStrAuditLogFile$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "##### File-$pNumCounter.Number:toString$) $pStrPercentTemp$/$pDicFilesInFolderPTemp{name}$.$pDicFilesInFolderPTemp{extension}$ (Not deleted because, because $oStrErrorMessage$)",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "LogToFile",
+                          "type": "action",
+                          "uid": "92a78ea8-072b-475d-9139-2d181a545d32"
+                        },
+                        {
+                          "attributes": [],
+                          "disabled": false,
+                          "steps": [],
+                          "type": "loop",
+                          "uid": "b81f1001-70cc-4193-a56e-d5254e878ba9"
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "deleteFiles",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrPercentTemp$/$pDicFilesInFolderPTemp{name}$.$pDicFilesInFolderPTemp{extension}$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "File",
+                      "type": "action",
+                      "uid": "3c68a4b4-6173-43bd-9546-944b5a1a6734"
+                    }
+                  ],
+                  "type": "try",
+                  "uid": "94776b38-f1d5-4e56-867d-61f25bd75640"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "File-$pNumCounter.Number:toString$) $pStrPercentTemp$/$pDicFilesInFolderPTemp{name}$.$pDicFilesInFolderPTemp{extension}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "075bf40b-8def-4c11-acaa-5fc378fc04e1"
+                }
+              ],
+              "type": "if",
+              "uid": "abb3f388-9ecd-4007-9270-c2cf8ae41acb"
+            }
+          ],
+          "type": "loop",
+          "uid": "fe831ddb-0778-4590-9dbf-088642e0de2d"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "**********************************************",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "7763988d-47fd-4cef-8169-5e7dbd8abf6c"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Delete Junk Folders from %Temp% ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "647d8f70-93d1-4c48-aa6c-d7df8614c327"
+        },
+        {
+          "action": "assignToNumber",
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pNumCounter"
+          },
+          "type": "action",
+          "uid": "5f662dc6-8ccf-48cc-b0c4-84d5b9dd796d"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrPercentTemp$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pStrFolderName"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.folder",
+                "packageName": "Folder",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$pStrPercentTemp$\\*",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "***** Junk folders are not present in % Temp% folder",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "03b412cf-1366-49d7-99ff-b4f1896df72a"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assignToNumber",
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "1+$pNumCounter$",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Number",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pNumCounter"
+                  },
+                  "type": "action",
+                  "uid": "fa47e1bc-39b7-45d7-a852-7fca7cafe12e"
+                },
+                {
+                  "attributes": [],
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "exceptionType",
+                          "value": {
+                            "exceptionName": "BotException",
+                            "packageName": "ErrorHandler",
+                            "type": "EXCEPTION"
+                          }
+                        },
+                        {
+                          "name": "continueOnError",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "branch": "catch",
+                      "returns": {
+                        "errorMessage": {
+                          "type": "VARIABLE",
+                          "variableName": "oStrErrorMessage"
+                        }
+                      },
+                      "steps": [
+                        {
+                          "action": "assignToNumber",
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "1+$pNumCounter$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "Number",
+                          "return_to": {
+                            "type": "VARIABLE",
+                            "variableName": "pNumCounter"
+                          },
+                          "type": "action",
+                          "uid": "fc826f27-11fe-4b3f-863b-421444a7181d"
+                        },
+                        {
+                          "action": "logToFile",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$pStrAuditLogFile$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "#### $pNumCounter.Number:toString$) $pStrFolderName$ Junk folders are not able to delete in % Temp% folder beacuse $oStrErrorMessage$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "LogToFile",
+                          "type": "action",
+                          "uid": "e79817a9-56e7-46a2-bd97-8577e17be0cc"
+                        },
+                        {
+                          "attributes": [],
+                          "disabled": false,
+                          "steps": [],
+                          "type": "loop",
+                          "uid": "5d237953-0e66-4b8b-b6b2-d0bf54e31738"
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "deleteFolder",
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$pStrPercentTemp$\\$pStrFolderName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Folder",
+                      "type": "action",
+                      "uid": "83684688-9afd-4e83-b6ab-d650eeda7eb0"
+                    }
+                  ],
+                  "type": "try",
+                  "uid": "55d6eddd-05e0-40f6-8377-427b0e4a7581"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "Folder-$pNumCounter.Number:toString$) $pStrPercentTemp$\\$pStrFolderName$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "81deae9e-46dc-4a4c-bd8d-7a6bc49f9e8f"
+                }
+              ],
+              "type": "if",
+              "uid": "55e1a269-1031-4876-8b13-2207d7114996"
+            }
+          ],
+          "type": "loop",
+          "uid": "fcf87a32-0b56-4b47-860c-aa2448455b36"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "**********************************************",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "af66214c-2242-4c9e-94fd-dfbffbca635c"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Delete Junk Files from Recent",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "3789aa6b-6220-45a5-b3fa-02fe12f41a5d"
+        },
+        {
+          "action": "assignToNumber",
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pNumCounter"
+          },
+          "type": "action",
+          "uid": "c6695cf5-9592-48e4-861a-d480e8641238"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrRecent$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pDicFilesInFolderRecent"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.files",
+                "packageName": "File",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$pStrRecent$/*.*",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "operatorAttribute": {
+                    "attributes": [
+                      {
+                        "name": "variable",
+                        "value": {
+                          "expression": "$pDicFilesInFolderRecent{extension}$",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "operator",
+                        "value": {
+                          "string": "NEQ",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "value",
+                        "value": {
+                          "string": "dll",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "matchCase",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      },
+                      {
+                        "name": "isIgnoreCarriage",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      }
+                    ],
+                    "operator": "AND",
+                    "value": {
+                      "conditionalName": "stringVariable",
+                      "packageName": "String",
+                      "type": "CONDITIONAL"
+                    }
+                  },
+                  "value": {
+                    "conditionalName": "fileExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$pDicFilesInFolderRecent{extension}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "dll",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branch": "elseIf",
+                  "steps": [
+                    {
+                      "action": "assignToNumber",
+                      "attributes": [
+                        {
+                          "name": "input",
+                          "value": {
+                            "expression": "1+$pNumCounter$",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Number",
+                      "return_to": {
+                        "type": "VARIABLE",
+                        "variableName": "pNumCounter"
+                      },
+                      "type": "action",
+                      "uid": "b0a56bab-55f7-4bee-8076-0a93d45f6168"
+                    },
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "***** File-$pNumCounter.Number:toString$) $pStrRecent$/$pDicFilesInFolderRecent{name}$.$pDicFilesInFolderRecent{extension}$ (Not deleted because, It is System Application file)",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "cf8f6465-771c-4b8b-92ce-2cf860e67a0b"
+                    }
+                  ]
+                },
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "***** Junk files are not present in Recent folder",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "2f40dd1f-494d-495f-aff5-925958138932"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assignToNumber",
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "1+$pNumCounter$",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Number",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pNumCounter"
+                  },
+                  "type": "action",
+                  "uid": "4462e538-1823-4772-92ef-97dd0f5bf2f9"
+                },
+                {
+                  "attributes": [],
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "exceptionType",
+                          "value": {
+                            "exceptionName": "BotException",
+                            "packageName": "ErrorHandler",
+                            "type": "EXCEPTION"
+                          }
+                        },
+                        {
+                          "name": "continueOnError",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "branch": "catch",
+                      "returns": {
+                        "errorMessage": {
+                          "type": "VARIABLE",
+                          "variableName": "oStrErrorMessage"
+                        }
+                      },
+                      "steps": [
+                        {
+                          "action": "assignToNumber",
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "1+$pNumCounter$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "Number",
+                          "return_to": {
+                            "type": "VARIABLE",
+                            "variableName": "pNumCounter"
+                          },
+                          "type": "action",
+                          "uid": "d5a45b35-9433-4006-96b1-a618c857f788"
+                        },
+                        {
+                          "action": "logToFile",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$pStrAuditLogFile$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "##### File-$pNumCounter.Number:toString$) $pStrRecent$/$pDicFilesInFolderRecent{name}$.$pDicFilesInFolderRecent{extension}$ (Not deleted because, because $oStrErrorMessage$)",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "LogToFile",
+                          "type": "action",
+                          "uid": "20ac6686-7565-4062-97a1-f2d03f1219e4"
+                        },
+                        {
+                          "attributes": [],
+                          "disabled": false,
+                          "steps": [],
+                          "type": "loop",
+                          "uid": "a8581925-8445-461d-965a-0377063dace2"
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "deleteFiles",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrRecent$/$pDicFilesInFolderRecent{name}$.$pDicFilesInFolderRecent{extension}$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "File",
+                      "type": "action",
+                      "uid": "4d34a7ce-174a-4698-9766-7b9081bd7703"
+                    }
+                  ],
+                  "type": "try",
+                  "uid": "7cd3e421-f3e4-4f20-97a2-41512e2cfc3d"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "File-$pNumCounter.Number:toString$) $pStrRecent$/$pDicFilesInFolderRecent{name}$.$pDicFilesInFolderRecent{extension}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "da3c7831-e413-4da9-9c74-16084dd71f18"
+                }
+              ],
+              "type": "if",
+              "uid": "6df48031-05b1-468b-9d50-9e5e1689ca3e"
+            }
+          ],
+          "type": "loop",
+          "uid": "30c548bf-e364-4c16-8d8a-17bec341d440"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "**********************************************",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "a242cbad-c604-40e9-8e0f-533bfc42e07a"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Delete Junk Folders from Recent",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "a7fd8677-c819-4b9f-bcbc-1ac92067976e"
+        },
+        {
+          "action": "assignToNumber",
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pNumCounter"
+          },
+          "type": "action",
+          "uid": "0b9efc16-9d7f-43be-a043-d14c5e27517c"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrRecent$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pStrFolderName"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.folder",
+                "packageName": "Folder",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$pStrRecent$\\*",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "***** Junk folders are not present in Recent folder",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "ee7f1ac2-8df4-456c-80e5-7566386c178d"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assignToNumber",
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "1+$pNumCounter$",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Number",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pNumCounter"
+                  },
+                  "type": "action",
+                  "uid": "02215dac-98e5-479d-a864-afefcfffab8a"
+                },
+                {
+                  "attributes": [],
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "exceptionType",
+                          "value": {
+                            "exceptionName": "BotException",
+                            "packageName": "ErrorHandler",
+                            "type": "EXCEPTION"
+                          }
+                        },
+                        {
+                          "name": "continueOnError",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "branch": "catch",
+                      "returns": {
+                        "errorMessage": {
+                          "type": "VARIABLE",
+                          "variableName": "oStrErrorMessage"
+                        }
+                      },
+                      "steps": [
+                        {
+                          "action": "assignToNumber",
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "1+$pNumCounter$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "Number",
+                          "return_to": {
+                            "type": "VARIABLE",
+                            "variableName": "pNumCounter"
+                          },
+                          "type": "action",
+                          "uid": "41e41a16-2ee9-4322-a02b-904dcb2b1734"
+                        },
+                        {
+                          "action": "logToFile",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$pStrAuditLogFile$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "#####  $pNumCounter.Number:toString$) $pStrFolderName$ Junk folders are not able to delete in Recent folder because $oStrErrorMessage$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "LogToFile",
+                          "type": "action",
+                          "uid": "0ee3ff30-0912-4822-9a32-99d078ff5ee0"
+                        },
+                        {
+                          "attributes": [],
+                          "disabled": false,
+                          "steps": [],
+                          "type": "loop",
+                          "uid": "36d002ab-0070-4f6c-90a5-159176ad41c6"
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "deleteFolder",
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$pStrRecent$\\$pStrFolderName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Folder",
+                      "type": "action",
+                      "uid": "eef02992-6ec7-4056-a02e-1f7f1546f94a"
+                    }
+                  ],
+                  "type": "try",
+                  "uid": "a0f0aa9b-53f1-4e15-8a41-4f6956441bc7"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "Folder-$pNumCounter.Number:toString$) $pStrRecent$\\$pStrFolderName$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "00ac1743-2299-40b6-91fb-48b574465e90"
+                }
+              ],
+              "type": "if",
+              "uid": "14f9e387-32f4-4561-9273-cd5b8c4bf97c"
+            }
+          ],
+          "type": "loop",
+          "uid": "bd688da9-cb2e-4cc5-bc3f-186e2b10f526"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "**********************************************",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "baba7f50-919c-4bd6-ad7b-a354e3ab931e"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Delete Junk Files from Windows Prefetch",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "44f545f3-9d00-4b15-8d85-5181f0ec2394"
+        },
+        {
+          "action": "assignToNumber",
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pNumCounter"
+          },
+          "type": "action",
+          "uid": "9ccfc134-0cc3-4521-b2bf-42e310b7fe76"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrWPrefetch$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pDicFilesInFolderWP"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.files",
+                "packageName": "File",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$pStrWPrefetch$/*.*",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "operatorAttribute": {
+                    "attributes": [
+                      {
+                        "name": "variable",
+                        "value": {
+                          "expression": "$pDicFilesInFolderWP{extension}$",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "operator",
+                        "value": {
+                          "string": "NEQ",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "value",
+                        "value": {
+                          "string": "dll",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "matchCase",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      },
+                      {
+                        "name": "isIgnoreCarriage",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      }
+                    ],
+                    "operator": "AND",
+                    "value": {
+                      "conditionalName": "stringVariable",
+                      "packageName": "String",
+                      "type": "CONDITIONAL"
+                    }
+                  },
+                  "value": {
+                    "conditionalName": "fileExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$pDicFilesInFolderWP{extension}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "dll",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branch": "elseIf",
+                  "steps": [
+                    {
+                      "action": "assignToNumber",
+                      "attributes": [
+                        {
+                          "name": "input",
+                          "value": {
+                            "expression": "1+$pNumCounter$",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Number",
+                      "return_to": {
+                        "type": "VARIABLE",
+                        "variableName": "pNumCounter"
+                      },
+                      "type": "action",
+                      "uid": "095f5dc3-2536-4856-9b1f-c48e99f114d1"
+                    },
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "***** File-$pNumCounter.Number:toString$) $pStrWPrefetch$/$pDicFilesInFolderWP{name}$.$pDicFilesInFolderWP{extension}$ (Not deleted because, It is System Application file)",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "9369bb41-ed25-4ae9-8979-3a990a1234ca"
+                    }
+                  ]
+                },
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "***** Junk files are not present in Windows Prefetch folder",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "58e1577f-5461-40b6-a787-10d380591e21"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assignToNumber",
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "1+$pNumCounter$",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Number",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pNumCounter"
+                  },
+                  "type": "action",
+                  "uid": "37f0d357-9514-40a0-878c-8dd18242dea0"
+                },
+                {
+                  "attributes": [],
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "exceptionType",
+                          "value": {
+                            "exceptionName": "BotException",
+                            "packageName": "ErrorHandler",
+                            "type": "EXCEPTION"
+                          }
+                        },
+                        {
+                          "name": "continueOnError",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "branch": "catch",
+                      "returns": {
+                        "errorMessage": {
+                          "type": "VARIABLE",
+                          "variableName": "oStrErrorMessage"
+                        }
+                      },
+                      "steps": [
+                        {
+                          "action": "assignToNumber",
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "1+$pNumCounter$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "Number",
+                          "return_to": {
+                            "type": "VARIABLE",
+                            "variableName": "pNumCounter"
+                          },
+                          "type": "action",
+                          "uid": "a8e9e062-7d99-4a62-bef8-eb918a989cbc"
+                        },
+                        {
+                          "action": "logToFile",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$pStrAuditLogFile$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "##### File-$pNumCounter.Number:toString$) $pStrWPrefetch$/$pDicFilesInFolderWP{name}$.$pDicFilesInFolderWP{extension}$ (Not deleted because, $oStrErrorMessage$)",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "LogToFile",
+                          "type": "action",
+                          "uid": "ee38791a-6874-4259-9597-9175d86f0935"
+                        },
+                        {
+                          "attributes": [],
+                          "disabled": false,
+                          "steps": [],
+                          "type": "loop",
+                          "uid": "6de45e63-54be-4552-aea7-d85b13a70358"
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "deleteFiles",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrWPrefetch$/$pDicFilesInFolderWP{name}$.$pDicFilesInFolderWP{extension}$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "File",
+                      "type": "action",
+                      "uid": "ad5e1702-5b61-4351-9138-5f2cc2a57e1f"
+                    }
+                  ],
+                  "type": "try",
+                  "uid": "1726dc4d-ad4e-4b57-8504-06826600dd7a"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "File-$pNumCounter.Number:toString$) $pStrWPrefetch$/$pDicFilesInFolderWP{name}$.$pDicFilesInFolderWP{extension}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "4e7ef62d-ff0c-48a9-b9da-1167d61b3eac"
+                }
+              ],
+              "type": "if",
+              "uid": "2ce423f7-3e5d-431d-95e4-9f0c33f51959"
+            }
+          ],
+          "type": "loop",
+          "uid": "442f71a0-0393-4758-8a2f-f75a8825e1af"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "**********************************************",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "f19c1876-fda1-4689-8931-2baf6cf73d70"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Delete Junk Folders from Windows Prefetch",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "15cd8f43-2be2-49d6-80e2-f751f26a1340"
+        },
+        {
+          "action": "assignToNumber",
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pNumCounter"
+          },
+          "type": "action",
+          "uid": "a3df25f0-c423-440f-9449-7c40e35028b0"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrWPrefetch$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pStrFolderName"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.folder",
+                "packageName": "Folder",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$pStrWPrefetch$\\*",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "***** Junk folders are not present in Windows Prefetch folder",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "f65d7b6a-2b72-4f65-be97-106f3c060482"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assignToNumber",
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "1+$pNumCounter$",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Number",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pNumCounter"
+                  },
+                  "type": "action",
+                  "uid": "b6365f35-6cba-4a07-aa45-f2e7ea9cbee1"
+                },
+                {
+                  "attributes": [],
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "exceptionType",
+                          "value": {
+                            "exceptionName": "BotException",
+                            "packageName": "ErrorHandler",
+                            "type": "EXCEPTION"
+                          }
+                        },
+                        {
+                          "name": "continueOnError",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "branch": "catch",
+                      "returns": {
+                        "errorMessage": {
+                          "type": "VARIABLE",
+                          "variableName": "oStrErrorMessage"
+                        }
+                      },
+                      "steps": [
+                        {
+                          "action": "assignToNumber",
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "1+$pNumCounter$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "Number",
+                          "return_to": {
+                            "type": "VARIABLE",
+                            "variableName": "pNumCounter"
+                          },
+                          "type": "action",
+                          "uid": "f4eaf09d-5cc3-4998-a5fc-f8b3aad31981"
+                        },
+                        {
+                          "action": "logToFile",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$pStrAuditLogFile$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "##### $pNumCounter.Number:toString$) $pStrFolderName$ Junk folders are not able to delete in Windows Prefetch folder because $oStrErrorMessage$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "LogToFile",
+                          "type": "action",
+                          "uid": "a138b880-c534-4f63-9537-3e30faac7777"
+                        },
+                        {
+                          "attributes": [],
+                          "disabled": false,
+                          "steps": [],
+                          "type": "loop",
+                          "uid": "d689f274-d10e-4f28-896b-f7f0893f7740"
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "deleteFolder",
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$pStrWPrefetch$\\$pStrFolderName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Folder",
+                      "type": "action",
+                      "uid": "5dd411b7-96e3-42a6-ac4a-35bf862740d2"
+                    }
+                  ],
+                  "type": "try",
+                  "uid": "fcc02393-093d-43fc-ae7a-9ea1859beab1"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "Folder-$pNumCounter.Number:toString$) $pStrWPrefetch$\\$pStrFolderName$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "c9caaf3b-e2c2-435f-8c93-9bd34d4d51a9"
+                }
+              ],
+              "type": "if",
+              "uid": "81fa4f32-9805-4e72-9e75-ee8867ebed63"
+            }
+          ],
+          "type": "loop",
+          "uid": "d08fa63b-2ddf-4b9c-bf22-d15f0d1c207c"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "**********************************************",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "27a19fb8-e2be-4793-9159-e269a064b70e"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Delete Junk Files from Windows Temp",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "b56940b3-7e9d-4003-8c85-a37945bd7ea9"
+        },
+        {
+          "action": "assignToNumber",
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pNumCounter"
+          },
+          "type": "action",
+          "uid": "0794c2b9-39fe-423a-9e2e-e5e073bc64a8"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrWTemp$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pDicFilesInFolderWT"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.files",
+                "packageName": "File",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "sourceFilePath",
+                      "value": {
+                        "expression": "file://$pStrWTemp$/*.*",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "operatorAttribute": {
+                    "attributes": [
+                      {
+                        "name": "variable",
+                        "value": {
+                          "expression": "$pDicFilesInFolderWT{extension}$",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "operator",
+                        "value": {
+                          "string": "NEQ",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "value",
+                        "value": {
+                          "string": "dll",
+                          "type": "STRING"
+                        }
+                      },
+                      {
+                        "name": "matchCase",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      },
+                      {
+                        "name": "isIgnoreCarriage",
+                        "value": {
+                          "boolean": false,
+                          "type": "BOOLEAN"
+                        }
+                      }
+                    ],
+                    "operator": "AND",
+                    "value": {
+                      "conditionalName": "stringVariable",
+                      "packageName": "String",
+                      "type": "CONDITIONAL"
+                    }
+                  },
+                  "value": {
+                    "conditionalName": "fileExists",
+                    "packageName": "File",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$pDicFilesInFolderWT{extension}$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "string": "dll",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "matchCase",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isIgnoreCarriage",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "value": {
+                        "conditionalName": "stringVariable",
+                        "packageName": "String",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branch": "elseIf",
+                  "steps": [
+                    {
+                      "action": "assignToNumber",
+                      "attributes": [
+                        {
+                          "name": "input",
+                          "value": {
+                            "expression": "1+$pNumCounter$",
+                            "type": "NUMBER"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Number",
+                      "return_to": {
+                        "type": "VARIABLE",
+                        "variableName": "pNumCounter"
+                      },
+                      "type": "action",
+                      "uid": "c391d8b7-8a0c-4ce3-b2e3-a72e4ec374b5"
+                    },
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "expression": "***** File-$pNumCounter.Number:toString$) $pStrWTemp$/$pDicFilesInFolderWT{name}$.$pDicFilesInFolderWT{extension}$ (Not deleted because, It is System Application file)",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "20cfaa4f-f144-4bf7-9da3-933992313140"
+                    }
+                  ]
+                },
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "***** Junk files are not present in Windows Temp folder ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "a572440c-2379-43fa-a7ac-5815c47b206a"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assignToNumber",
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "1+$pNumCounter$",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Number",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pNumCounter"
+                  },
+                  "type": "action",
+                  "uid": "b0403f02-6e35-4f81-8955-c17d9109a40e"
+                },
+                {
+                  "attributes": [],
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "exceptionType",
+                          "value": {
+                            "exceptionName": "BotException",
+                            "packageName": "ErrorHandler",
+                            "type": "EXCEPTION"
+                          }
+                        },
+                        {
+                          "name": "continueOnError",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "branch": "catch",
+                      "returns": {
+                        "errorMessage": {
+                          "type": "VARIABLE",
+                          "variableName": "oStrErrorMessage"
+                        }
+                      },
+                      "steps": [
+                        {
+                          "action": "assignToNumber",
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "1+$pNumCounter$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "Number",
+                          "return_to": {
+                            "type": "VARIABLE",
+                            "variableName": "pNumCounter"
+                          },
+                          "type": "action",
+                          "uid": "c43c9795-a23b-4c25-8a5d-3268d2a084f1"
+                        },
+                        {
+                          "action": "logToFile",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$pStrAuditLogFile$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "##### File-$pNumCounter.Number:toString$) $pStrWTemp$/$pDicFilesInFolderWT{name}$.$pDicFilesInFolderWT{extension}$ (Not deleted because,$oStrErrorMessage$)",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "LogToFile",
+                          "type": "action",
+                          "uid": "66da39e2-2187-49d4-a0a1-1ba019b40a4d"
+                        },
+                        {
+                          "attributes": [],
+                          "disabled": false,
+                          "steps": [],
+                          "type": "loop",
+                          "uid": "b98da1df-7b11-4dcf-acc3-682b6b586f87"
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "deleteFiles",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrWTemp$/$pDicFilesInFolderWT{name}$.$pDicFilesInFolderWT{extension}$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "File",
+                      "type": "action",
+                      "uid": "564c35e3-dd68-486e-9535-3102aa727196"
+                    }
+                  ],
+                  "type": "try",
+                  "uid": "a8b137c9-faa7-4f68-a995-bc920da74507"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "File-$pNumCounter.Number:toString$) $pStrWTemp$/$pDicFilesInFolderWT{name}$.$pDicFilesInFolderWT{extension}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "583cd9dc-2608-473c-8707-4a4aae68a038"
+                }
+              ],
+              "type": "if",
+              "uid": "70a523a1-9a76-4727-86eb-47db5a109b87"
+            }
+          ],
+          "type": "loop",
+          "uid": "fb6ef97f-81e8-4b1b-9339-d087cf0488f4"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "**********************************************",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "9d5abdff-9d1e-4083-885c-f6a712aed749"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "Delete Junk Folders from Windows Temp",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "fdc58839-dce9-47d1-a1e5-bf295949fe1c"
+        },
+        {
+          "action": "assignToNumber",
+          "attributes": [
+            {
+              "name": "input",
+              "value": {
+                "number": "0",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Number",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pNumCounter"
+          },
+          "type": "action",
+          "uid": "eee99237-ac11-46ea-b2a2-3940883bff6f"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrWTemp$",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pStrFolderName"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.folder",
+                "packageName": "Folder",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "folderPath",
+                      "value": {
+                        "expression": "$pStrWTemp$\\*",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "waitTimeout",
+                      "value": {
+                        "number": "0",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "folderExists",
+                    "packageName": "Folder",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "logToFile",
+                      "attributes": [
+                        {
+                          "name": "filePath",
+                          "value": {
+                            "expression": "file://$pStrAuditLogFile$",
+                            "type": "FILE"
+                          }
+                        },
+                        {
+                          "name": "logContent",
+                          "value": {
+                            "string": "***** Junk folders are not present in Windows Temp folder",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "appendTimestamp",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "logOption",
+                          "value": {
+                            "string": "APPEND_FILE",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "encodingValue",
+                          "value": {
+                            "string": "ANSI",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "LogToFile",
+                      "type": "action",
+                      "uid": "4d15b734-ca67-4c97-8f62-fd9c8f8410e4"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assignToNumber",
+                  "attributes": [
+                    {
+                      "name": "input",
+                      "value": {
+                        "expression": "1+$pNumCounter$",
+                        "type": "NUMBER"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Number",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pNumCounter"
+                  },
+                  "type": "action",
+                  "uid": "c3983e6e-7456-4ef5-821b-6b885c53b758"
+                },
+                {
+                  "attributes": [],
+                  "branches": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "exceptionType",
+                          "value": {
+                            "exceptionName": "BotException",
+                            "packageName": "ErrorHandler",
+                            "type": "EXCEPTION"
+                          }
+                        },
+                        {
+                          "name": "continueOnError",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "branch": "catch",
+                      "returns": {
+                        "errorMessage": {
+                          "type": "VARIABLE",
+                          "variableName": "oStrErrorMessage"
+                        }
+                      },
+                      "steps": [
+                        {
+                          "action": "assignToNumber",
+                          "attributes": [
+                            {
+                              "name": "input",
+                              "value": {
+                                "expression": "1+$pNumCounter$",
+                                "type": "NUMBER"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "Number",
+                          "return_to": {
+                            "type": "VARIABLE",
+                            "variableName": "pNumCounter"
+                          },
+                          "type": "action",
+                          "uid": "4447620f-cf4f-4205-b4f1-5c33ceb1e36a"
+                        },
+                        {
+                          "action": "logToFile",
+                          "attributes": [
+                            {
+                              "name": "filePath",
+                              "value": {
+                                "expression": "file://$pStrAuditLogFile$",
+                                "type": "FILE"
+                              }
+                            },
+                            {
+                              "name": "logContent",
+                              "value": {
+                                "expression": "***** $pNumCounter.Number:toString$) $pStrFolderName$ Junk folders are not able to delete in Windows Temp folder because $oStrErrorMessage$",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "appendTimestamp",
+                              "value": {
+                                "boolean": true,
+                                "type": "BOOLEAN"
+                              }
+                            },
+                            {
+                              "name": "logOption",
+                              "value": {
+                                "string": "APPEND_FILE",
+                                "type": "STRING"
+                              }
+                            },
+                            {
+                              "name": "encodingValue",
+                              "value": {
+                                "string": "ANSI",
+                                "type": "STRING"
+                              }
+                            }
+                          ],
+                          "disabled": false,
+                          "package": "LogToFile",
+                          "type": "action",
+                          "uid": "2a864ff2-f230-41f1-9248-ff34a41f919b"
+                        },
+                        {
+                          "attributes": [],
+                          "disabled": false,
+                          "steps": [],
+                          "type": "loop",
+                          "uid": "023f002d-ab7b-4e93-b4cf-3b6056257a12"
+                        }
+                      ]
+                    }
+                  ],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "deleteFolder",
+                      "attributes": [
+                        {
+                          "name": "folderPath",
+                          "value": {
+                            "expression": "$pStrWTemp$\\$pStrFolderName$",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "isSize",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "isDate",
+                          "value": {
+                            "boolean": false,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Folder",
+                      "type": "action",
+                      "uid": "3edaf7d3-bb26-48fb-a65d-e4c97cdb04ed"
+                    }
+                  ],
+                  "type": "try",
+                  "uid": "cd7eeead-2558-4ed1-b9c8-abd920a7df3a"
+                },
+                {
+                  "attributes": [],
+                  "disabled": false,
+                  "steps": [],
+                  "type": "loop",
+                  "uid": "6eb10664-5b7a-4180-bc4c-fd1c854fef1e"
+                },
+                {
+                  "action": "logToFile",
+                  "attributes": [
+                    {
+                      "name": "filePath",
+                      "value": {
+                        "expression": "file://$pStrAuditLogFile$",
+                        "type": "FILE"
+                      }
+                    },
+                    {
+                      "name": "logContent",
+                      "value": {
+                        "expression": "Folder-$pNumCounter.Number:toString$) $pStrWTemp$\\$pStrFolderName$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "appendTimestamp",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "logOption",
+                      "value": {
+                        "string": "APPEND_FILE",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "encodingValue",
+                      "value": {
+                        "string": "ANSI",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "LogToFile",
+                  "type": "action",
+                  "uid": "ff14ce63-f8c6-4a34-b7d0-63333fa8a249"
+                }
+              ],
+              "type": "if",
+              "uid": "afb2bd8a-a670-4ead-bc44-709dcfafa964"
+            }
+          ],
+          "type": "loop",
+          "uid": "b072312c-e131-41f2-9580-20c4a3529992"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution Ended ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "1d6548f2-fd3e-4618-aad2-41919cc94143"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution Ended ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "d9b467af-ed6e-40f5-b5d0-05aca8cce37c"
+        }
+      ],
+      "type": "try",
+      "uid": "37d2f74b-d76e-41b8-b072-03114df70978"
+    }
+  ],
+  "triggers": []
+}

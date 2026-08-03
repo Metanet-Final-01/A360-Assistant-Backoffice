@@ -1,0 +1,20 @@
+{
+  "source": "0164_read-configuration__Automation Anywhere__Bot Store__ESSPL - Contribution__Read Config__Read Configuration.goldset.json",
+  "note": "Unlisted actions are included. Generic logging/retention setup is excluded; XML session actions remain scoreable.",
+  "core_actions": [
+    {"uid": "f03c02e9-2ee5-4e1f-a182-a3361af15998", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "5832c93f-c076-443e-b791-43fb65ffe1e9", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "524ac1ff-8cde-4686-8c9d-78fbd20a4653", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "b3958fcc-1604-474f-ae37-c3148f85255b", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "8885cd18-18d0-4d17-8dc6-8499fbc4b9ed", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "dc108700-1962-47c7-a14d-c3689c0410de", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "51d0f386-8e54-420c-81bd-70c79c4e01f9", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "d14e1de4-d59b-4647-b128-ea256d1ede35", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "42ee187c-6853-4d5d-bd34-d90634e81ae8", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "35ef7e35-7e72-44c8-bdbd-feabfcbbd67c", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "46134e4c-4a1c-4cdb-b07c-18ec61b3b5b1", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "1d52f65b-1a7e-4830-8b56-850b2d7c3b5f", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "7ddc35fc-22bd-43a8-9a37-097338b072f8", "include": false, "reason": "shared_observability_setup"},
+    {"uid": "20643ccd-9054-43ec-a6a8-e7cb6fcd1145", "include": false, "reason": "shared_observability_setup"}
+  ]
+}

@@ -29,9 +29,40 @@ ops-server/backend/app/eval/workflow/catalog_actions.json
 # 로컬 전용 성능/실험 기록 — 리포에 올리지 않는 개인 참고 문서
 docs/local/
 
-# Goldset evaluation generated data/artifacts. Keep source scripts, READMEs, and
-# curated rule files in git; regenerate bulky datasets, logs, reports, and
-# reviewer export bundles locally.
+# Evaluation generated data/artifacts. Keep source scripts, READMEs, and curated
+# rule files in git; regenerate bulky datasets, logs, reports, and reviewer export
+# bundles locally.
+scripts/agent_flow_eval/dataset/
+scripts/agent_flow_eval/eval_inputs/
+scripts/agent_flow_eval/runner/logs/
+scripts/agent_flow_eval/evaluation/reports/
+scripts/agent_flow_eval/evaluation/exports/
+scripts/agent_flow_eval/evaluation/action_equivalence_candidates/
+scripts/agent_flow_eval/evaluation/action_equivalence_candidates_agent_gold/
+scripts/agent_flow_eval/evaluation/action_equivalence_candidates_v2_batch_actual/
+scripts/agent_flow_eval/evaluation/action_equivalence_candidates_v2_batch_actual_13/
+scripts/ragas_eval/datasets/
+scripts/ragas_eval/reports/
+
+# goldset_expansion: 스크립트/HANDOFF/GPT 판정 원문(xlsx, md)만 추적. 실제 workflow
+# goldset.json 사본, Exaone 프롬프트/응답 로그, 후보 목록 JSON은 로컬 470개 데이터셋 +
+# 로컬 Exaone 서버만 있으면 scripts/의 organize_*.py 재실행으로 그대로 복원 가능.
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/*.json
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/candidates_main_34/
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/candidates_deprioritized_15/
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/candidates_exaone_rejected_99/
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/exaone_judge_logs/
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/gpt_final_classification/1_Main_18/
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/gpt_final_classification/2_Challenge_21/
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/gpt_final_classification/3_제외_41/
+scripts/agent_flow_eval/goldset_expansion/candidate_pool/gpt_bundle/gpt_final_classification/4_미분류_잔여후보/
+scripts/agent_flow_eval/goldset_expansion/exaone_judge_logs_148/
+
+# confirmed_goldset: briefs/gold 원본은 추적, 렌더링된 PDF는 render_md_briefs.py로
+# 재생성 가능한 바이너리 산출물이라 추적 안 함.
+scripts/agent_flow_eval/goldset_expansion/confirmed_goldset/pdfs/
+
+# Legacy local paths from before the scripts/agent_flow_eval split.
 scripts/goldset/dataset/
 scripts/goldset/eval_inputs/
 scripts/goldset/runner/logs/

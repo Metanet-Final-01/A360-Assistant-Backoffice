@@ -1,0 +1,402 @@
+{
+  "equivalence_groups": [
+    {
+      "canonical": "String.stringPackageAssignAction",
+      "members": [
+        "String.assign",
+        "String.stringPackageAssignAction"
+      ]
+    },
+    {
+      "canonical": "Boolean.booleanAssign",
+      "members": [
+        "Boolean.assign",
+        "Boolean.booleanAssign"
+      ]
+    },
+    {
+      "canonical": "Browser.launchWebsite",
+      "members": [
+        "WebAutomation.openpage",
+        "Browser.Open",
+        "Browser.browser.open",
+        "Browser.openbrowser",
+        "Browser.launchWebsite",
+        "Browser.browserPackageOpenAction"
+      ]
+    },
+    {
+      "canonical": "Datetime.usingSubtractAction",
+      "members": [
+        "Datetime.subtract",
+        "Datetime.usingSubtractAction"
+      ]
+    },
+    {
+      "canonical": "Datetime.cloudConvertDatetimeToString",
+      "members": [
+        "Datetime.toString",
+        "Datetime.cloudConvertDatetimeToString",
+        "Locale.datetostring"
+      ]
+    },
+    {
+      "canonical": "Delay.delayDelay",
+      "members": [
+        "Delay.delay",
+        "Delay.delayDelay"
+      ]
+    },
+    {
+      "canonical": "Dictionary.dictionaryPut",
+      "members": [
+        "Dictionary.put",
+        "Dictionary.dictionaryPut"
+      ]
+    },
+    {
+      "canonical": "DataTable.deleteRow",
+      "members": [
+        "DataTable.deleteRow",
+        "Data Table.dataTablePackageDeleteRowAction"
+      ]
+    },
+    {
+      "canonical": "DataTable.insertRow",
+      "members": [
+        "DataTable.insertRow",
+        "Data Table.dataTablePackageInsertRowAction"
+      ]
+    },
+    {
+      "canonical": "Email.emailSaveAttachmentAction",
+      "members": [
+        "Email.saveAttachment",
+        "Email.emailSaveAttachmentAction",
+        "Microsoft 365 Outlook.ms365OutlookSaveAttachments",
+        "Microsoft 365 Outlook.ms365OutlookSaveAllAttachments"
+      ]
+    },
+    {
+      "canonical": "Email.cloudUsingSendAction",
+      "members": [
+        "Email.sendMail",
+        "Email.cloudUsingSendAction",
+        "Gmail.Send",
+        "Microsoft 365 Outlook.ms365OutlookSend"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedCreateWorkbookAction",
+      "members": [
+        "Excel.CreateSpreadsheet",
+        "Excel_MS.CreateSpreadsheet",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelCreateWorkbook"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedWriteFromDataTableAction",
+      "members": [
+        "Excel.writeDataTableToWorksheet",
+        "Excel_MS.writeDataTableToWorksheet",
+        "Microsoft 365 Excel package in Automation 360.writeFromDataTableIn"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedSaveWorkbookAction",
+      "members": [
+        "Excel.SaveSpreadSheet",
+        "Excel_MS.SaveSpreadSheet",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelSave"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageGetMultipleCellsAction",
+      "members": [
+        "Excel.GetMultipleCells",
+        "Excel_MS.GetMultipleCells",
+        "Excel advanced.excelAdvancedPackageGetMultipleCellsAction"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.cloudExcelOpen",
+      "members": [
+        "Excel.OpenSpreadsheet",
+        "Excel advanced.cloudExcelOpen",
+        "Excel_MS.OpenSpreadsheet",
+        "Microsoft 365 Excel package in Automation 360.usingOpenWorkbookAction"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageSetCellAction",
+      "members": [
+        "Excel.SetCell",
+        "Excel advanced.excelAdvancedPackageSetCellAction",
+        "Excel_MS.SetCell",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelSetCell"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageGoToCellAction",
+      "members": [
+        "Excel.GoToCell",
+        "Excel_MS.GoToCell",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelGoToCell"
+      ]
+    },
+    {
+      "canonical": "File.filePackageCreateAction",
+      "members": [
+        "File.createFile",
+        "File.filePackageCreateAction"
+      ]
+    },
+    {
+      "canonical": "File.cloudDeletingFile",
+      "members": [
+        "File.deleteFiles",
+        "File.cloudDeletingFile"
+      ]
+    },
+    {
+      "canonical": "Folder.folderCreate",
+      "members": [
+        "Folder.createFolder",
+        "Folder.folderCreate"
+      ]
+    },
+    {
+      "canonical": "List.listAddItem",
+      "members": [
+        "List.addItem",
+        "List.listAddItem"
+      ]
+    },
+    {
+      "canonical": "Word.mswordFindAndReplaceText",
+      "members": [
+        "MSWordPackage.ReplaceText",
+        "Word.mswordFindAndReplaceText"
+      ]
+    },
+    {
+      "canonical": "Number.numberAssign",
+      "members": [
+        "Number.assignToNumber",
+        "Number.numberAssign"
+      ]
+    },
+    {
+      "canonical": "Number.numberIncrement",
+      "members": [
+        "Number.increment",
+        "Number.numberIncrement"
+      ]
+    },
+    {
+      "canonical": "Screen.screenCaptureDesktop",
+      "members": [
+        "Screen.captureDesktop",
+        "Screen.screenCaptureDesktop"
+      ]
+    },
+    {
+      "canonical": "String.cloudUsingReplaceAction",
+      "members": [
+        "String.replace",
+        "String.cloudUsingReplaceAction"
+      ]
+    },
+    {
+      "canonical": "String.stringPackageToNumberAction",
+      "members": [
+        "String.toNumber",
+        "String.stringPackageToNumberAction"
+      ]
+    },
+    {
+      "canonical": "WebAutomation.getvalueelement",
+      "members": [
+        "WebAutomation.getvalueelement",
+        "WebAutomation.getvalueselement"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageCloseAction",
+      "members": [
+        "Excel.CloseSpreadsheet",
+        "Excel advanced.excelAdvancedPackageCloseAction",
+        "Excel_MS.CloseSpreadsheet",
+        "Microsoft 365 Excel package in Automation 360.office365ExcelClose"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedPackageReadRowAction",
+      "members": [
+        "Excel advanced.excelAdvancedPackageReadRowAction",
+        "Excel_MS.readExcelRow"
+      ]
+    },
+    {
+      "canonical": "Browser.browserPackageCloseAction",
+      "members": [
+        "Browser.browserPackageCloseAction",
+        "WebAutomation.EndSessionWebAutomation",
+        "Browser.close"
+      ]
+    },
+    {
+      "canonical": "Browser.browserPackageDownloadFilesAction",
+      "members": [
+        "Browser.downloadFile",
+        "Browser.browserPackageDownloadFilesAction"
+      ]
+    },
+    {
+      "canonical": "Email.emailDisconnectAction",
+      "members": [
+        "Email.closeEmail",
+        "Email.emailDisconnectAction",
+        "Microsoft 365 Outlook.ms365OutlookDisconnect"
+      ]
+    },
+    {
+      "canonical": "Message box.usingMessageBoxAction",
+      "members": [
+        "MessageBox.messageBox",
+        "Message box.usingMessageBoxAction"
+      ]
+    },
+    {
+      "canonical": "Number.numberToString",
+      "members": [
+        "Number.toString",
+        "Number.numberToString"
+      ]
+    },
+    {
+      "canonical": "Task Bot.taskBotPackageStopAction",
+      "members": [
+        "TaskBot.stopTask",
+        "Task Bot.taskBotPackageStopAction"
+      ]
+    },
+    {
+      "canonical": "XML.xmlStartSession",
+      "members": [
+        "XML.startSession",
+        "XML.xmlStartSession"
+      ]
+    },
+    {
+      "canonical": "XML.xmlGetSingleNode",
+      "members": [
+        "XML.getSingleNode",
+        "XML.xmlGetSingleNode"
+      ]
+    },
+    {
+      "canonical": "Logging.cloudInsertingLogToFileCommand",
+      "members": [
+        "LogToFile.logToFile",
+        "Logging.cloudInsertingLogToFileCommand",
+        "Logging.logToFileLogVariablesToFile"
+      ]
+    },
+    {
+      "canonical": "Excel advanced.excelAdvancedGetWorksheetAsDataTable",
+      "members": [
+        "Excel advanced.excelAdvancedGetWorksheetAsDataTable",
+        "Microsoft 365 Excel package in Automation 360.getWorksheetAsDataTableIn",
+        "Excel_MS.getWorksheetAsDataTable"
+      ]
+    },
+    {
+      "canonical": "CSV/TXT.cloudOpeningCsvTextFile",
+      "members": [
+        "CSV/TXT.cloudOpeningCsvTextFile",
+        "CSV/TXT/cloudOpeningCsvTextFile.CSV/TXT 파일에 대한 열기 작업 사용"
+      ]
+    },
+    {
+      "canonical": "Loop.cloudUsingLoopAction",
+      "members": [
+        "Loop.cloudUsingLoopAction",
+        "Loop.loop.commands.start"
+      ]
+    },
+    {
+      "canonical": "JSON utilities.jsonStartSession",
+      "members": [
+        "JSONHandler.Initialize",
+        "JSON utilities.jsonStartSession"
+      ]
+    },
+    {
+      "canonical": "JSON utilities.jsonGetNodeValue",
+      "members": [
+        "JSONHandler.Query",
+        "JSON utilities.jsonGetNodeValue"
+      ]
+    },
+    {
+      "canonical": "Email.emailConnectAction",
+      "members": [
+        "Email.emailConnect",
+        "Email.emailConnectAction",
+        "Microsoft 365 Outlook.ms365OutlookConnect"
+      ],
+      "_rationale": "Email.emailDisconnectAction/Email.emailSaveAttachmentAction 그룹은 이미 Email.*<->Microsoft 365 Outlook.* 짝을 인정하는데, 그 세션의 시작(Connect) 쪽 짝만 빠져 있었다(action_equivalence_reviewed_pairs.json에는 Email.emailConnect가 다른 후보들과 잘못 묶여서 반려된 기록만 있고, Outlook 짝과 비교된 적이 없음). v1/v2/v3 실제 예측 비교에서 매번 Email 대신 Microsoft 365 Outlook 계열을 쓰는 게 확인되어(0374, 0167 등) 이미 있는 두 규칙과 대칭을 맞춰 추가. macOS 전용 'Microsoft Outlook (macOS).macMsOutlookConnectDisconnect'(connect+disconnect 결합형)는 의미가 달라(액션 하나가 두 역할을 겸함) 포함하지 않음 — 별도 검토 필요."
+    },
+    {
+      "canonical": "DLL.dllPackageCloseAction",
+      "members": [
+        "DLL.Close",
+        "DLL.dllPackageCloseAction"
+      ]
+    },
+    {
+      "canonical": "DLL.dllPackageOpenAction",
+      "members": [
+        "DLL.Open",
+        "DLL.dllPackageOpenAction"
+      ]
+    },
+    {
+      "canonical": "DLL.usingRunFunctionAction",
+      "members": [
+        "DLL.RunCSharpDLL_V1",
+        "DLL.Run function",
+        "DLL.usingRunFunctionAction"
+      ]
+    },
+    {
+      "canonical": "REST Web Services.cloudUsingGetAction",
+      "members": [
+        "Rest.restGet",
+        "REST Web Services.cloudUsingGetAction"
+      ]
+    },
+    {
+      "canonical": "REST Web Services.cloudUsingPostAction",
+      "members": [
+        "Rest.restPost",
+        "REST Web Services.cloudUsingPostAction"
+      ]
+    },
+    {
+      "canonical": "XML.xmlEndSession",
+      "members": [
+        "XML.endSession",
+        "XML.xmlEndSession"
+      ]
+    },
+    {
+      "canonical": "XML.xmlGetMultipleNode",
+      "members": [
+        "XML.getMultipleNode",
+        "XML.xmlGetMultipleNode"
+      ]
+    }
+  ]
+}

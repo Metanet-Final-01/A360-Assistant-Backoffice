@@ -1,0 +1,11 @@
+{
+  "source": "0112_a360---getpreviousweekday__A360 - GetPreviousWeekday.cleaned.goldset.json",
+  "note": "Unlisted actions are included.",
+  "core_actions": [
+    {"uid": "d8c19ec1-16e7-4c96-95e1-a37f4fc41fd8", "include": false, "reason": "bot_name_assignment"},
+    {"uid": "4f698fad-9aab-4bf7-99ba-3e27e22da53e", "include": false, "reason": "log_path_assignment"},
+    {"uid": "d1cd36ea-1c90-4426-a937-8bd7169a1896", "include": false, "reason": "internal_string_assignment"},
+    {"uid": "0bc54367-b0a2-4df4-8f47-40e8352fe352", "include": false, "reason": "internal_state_assignment"},
+    {"uid": "d00cb5e9-fe85-4bd0-831f-b2375ca346ff", "include": false, "reason": "internal_state_assignment"}
+  ]
+}

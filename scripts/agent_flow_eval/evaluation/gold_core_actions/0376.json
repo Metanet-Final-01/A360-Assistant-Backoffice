@@ -1,0 +1,11 @@
+{
+  "source": "0376_filebackup__FileBackup.cleaned.goldset.json",
+  "note": "Unlisted actions are included. One copy/delete pair represents the same operation repeated in three mutually exclusive filename-match branches.",
+  "core_actions": [
+    {"uid": "fc4257e7-6384-4f65-b373-4306b7cb6ea3", "include": false, "reason": "path_assembly_detail"},
+    {"uid": "78df0506-3da2-4775-a5ed-b3bc3841a7aa", "include": false, "reason": "duplicate_operation_in_mutually_exclusive_branch"},
+    {"uid": "9c6904e4-fcca-48a6-b88a-80c1e6509be2", "include": false, "reason": "duplicate_operation_in_mutually_exclusive_branch"},
+    {"uid": "5dd836f3-b964-465e-8109-cf100636763d", "include": false, "reason": "duplicate_operation_in_mutually_exclusive_branch"},
+    {"uid": "185495f3-f4dc-4914-a907-c4d172df633c", "include": false, "reason": "duplicate_operation_in_mutually_exclusive_branch"}
+  ]
+}

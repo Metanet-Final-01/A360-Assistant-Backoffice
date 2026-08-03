@@ -1,0 +1,2480 @@
+{
+  "source_file": "Automation Anywhere__Bot Store__Predikly_Bots__31_Get_next_working_day_based_on_holiday_calendar__GetNextBusinessWorkingDay.json",
+  "steps": [
+    {
+      "attributes": [],
+      "branches": [
+        {
+          "attributes": [
+            {
+              "name": "exceptionType",
+              "value": {
+                "exceptionName": "BotException",
+                "packageName": "ErrorHandler",
+                "type": "EXCEPTION"
+              }
+            },
+            {
+              "name": "continueOnError",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "branch": "catch",
+          "returns": {
+            "errorLineNumber": {
+              "type": "VARIABLE",
+              "variableName": "oNumErrorLineNumber"
+            },
+            "errorMessage": {
+              "type": "VARIABLE",
+              "variableName": "oStrErrorMessage"
+            }
+          },
+          "steps": [
+            {
+              "action": "logToFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "logContent",
+                  "value": {
+                    "expression": "Error Line No. - $oNumErrorLineNumber.Number:toString$ - $oStrErrorMessage$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "appendTimestamp",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "logOption",
+                  "value": {
+                    "string": "APPEND_FILE",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "encodingValue",
+                  "value": {
+                    "string": "ANSI",
+                    "type": "STRING"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "LogToFile",
+              "type": "action",
+              "uid": "7b1e8bfb-3943-4861-95c7-149ce9fdf12b"
+            },
+            {
+              "action": "captureDesktop",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrSnapshotsFolder$/$pStrAssignedDate$_$pStrAssignedTime$.jpg",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwriteFile",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Screen",
+              "type": "action",
+              "uid": "173e9b93-1705-4257-9c6d-e1c43cb4c872"
+            }
+          ]
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrProjectFolder$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "iStrProjectFolder"
+          },
+          "type": "action",
+          "uid": "7b9be708-396a-42e1-992e-18968fc3c496"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Bot_Name",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrBotName"
+          },
+          "type": "action",
+          "uid": "0341e043-c34b-4194-a070-b546571dace1"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "string": "Predikly",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrVendorName"
+          },
+          "type": "action",
+          "uid": "79c8f8ab-4423-4d23-be7c-56bfe5c91000"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "variable",
+                  "value": {
+                    "expression": "$pStrBotName$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "operator",
+                  "value": {
+                    "string": "EQ",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "value",
+                  "value": {
+                    "expression": "$pStrNull$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "matchCase",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isIgnoreCarriage",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "name": "condition",
+              "operatorAttribute": {
+                "attributes": [
+                  {
+                    "name": "variable",
+                    "value": {
+                      "expression": "$pStrVendorName$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "operator",
+                    "value": {
+                      "string": "EQ",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "value",
+                    "value": {
+                      "expression": "$pStrNull$",
+                      "type": "STRING"
+                    }
+                  },
+                  {
+                    "name": "matchCase",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  },
+                  {
+                    "name": "isIgnoreCarriage",
+                    "value": {
+                      "boolean": false,
+                      "type": "BOOLEAN"
+                    }
+                  }
+                ],
+                "operator": "OR",
+                "value": {
+                  "conditionalName": "stringVariable",
+                  "packageName": "String",
+                  "type": "CONDITIONAL"
+                }
+              },
+              "value": {
+                "conditionalName": "stringVariable",
+                "packageName": "String",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "messageBox",
+              "attributes": [
+                {
+                  "name": "title",
+                  "value": {
+                    "string": "Automation Anywhere Enterprise Client",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "content",
+                  "value": {
+                    "string": "Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines.",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "scrollLines",
+                  "value": {
+                    "number": "30",
+                    "type": "NUMBER"
+                  }
+                },
+                {
+                  "name": "closeMsgBox",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "timeOut",
+                  "value": {
+                    "number": "1",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "MessageBox",
+              "type": "action",
+              "uid": "a9f6c2cc-afb6-4f62-b42f-1f8595d13837"
+            },
+            {
+              "action": "stopTask",
+              "attributes": [],
+              "disabled": false,
+              "package": "TaskBot",
+              "type": "action",
+              "uid": "baec1077-fd31-4a19-a031-00ab4fadc28a"
+            }
+          ],
+          "type": "if",
+          "uid": "7302b7de-edcc-406f-9d6f-688266197adb"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "yyyyMMdd",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAssignedDate"
+          },
+          "type": "action",
+          "uid": "ceace116-85cd-4fd0-beb2-5a4119d5bad8"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$System:Hour.Number:toString$$System:Minute.Number:toString$$System:Second.Number:toString$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAssignedTime"
+          },
+          "type": "action",
+          "uid": "42ca08c8-9512-435e-ab84-691e42ca3717"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$iStrProjectFolder$\\Logs",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogsFolder"
+          },
+          "type": "action",
+          "uid": "96582aed-00da-48d8-9066-76732ecc2732"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsFolder$\\$pStrAssignedDate$",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogsDateFolder"
+          },
+          "type": "action",
+          "uid": "242e9eb3-31fb-4fe3-88c5-01e97497097d"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\AuditLog",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAuditLogFolder"
+          },
+          "type": "action",
+          "uid": "a7652114-7f15-4564-bc7b-860d5a26cbe1"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrAuditLogFolder$\\$pStrBotName$AuditLog_$pStrAssignedDate$.txt",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrAuditLogFile"
+          },
+          "type": "action",
+          "uid": "5801e3a2-5a14-4dd4-9f7a-c21a806c225b"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\ErrorLog",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrErrorLogFolder"
+          },
+          "type": "action",
+          "uid": "2730e11a-9d63-47e3-ab6c-b528de8fe8e9"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrErrorLogFolder$\\$pStrBotName$ErrorLog_$pStrAssignedDate$.txt",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrErrorLogFile"
+          },
+          "type": "action",
+          "uid": "b087c4a5-8951-4f3b-94f8-bdbdbf2f131b"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "sourceString",
+              "value": {
+                "expression": "$pStrLogsDateFolder$\\Snapshots",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "String",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrSnapshotsFolder"
+          },
+          "type": "action",
+          "uid": "3360f2c0-b839-4a72-8fb5-488b2b8c180d"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "ab05b5fe-5052-4789-ab93-dcbb41cdef25"
+            }
+          ],
+          "type": "if",
+          "uid": "18769fe3-1ae1-4416-a369-840499ec3522"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrAuditLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrAuditLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "1a2e2e60-44f4-4c2d-b9a3-1ce981bb3f1a"
+            }
+          ],
+          "type": "if",
+          "uid": "f4e7b029-effa-478c-b6ef-2859ce328d4a"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrErrorLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrErrorLogFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "756e1a7c-d85c-470c-b3a5-b763bfee5142"
+            }
+          ],
+          "type": "if",
+          "uid": "7a39ab64-d802-4794-b4ca-5f4cd0813571"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "folderDoesNotExists",
+                "packageName": "Folder",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrSnapshotsFolder$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "79f520f9-7060-4b3c-9472-2dcb01d885c5"
+            }
+          ],
+          "type": "if",
+          "uid": "73ba7bef-7bd7-4558-b1f0-bc9872f9c63d"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$pStrAuditLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrAuditLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "18175346-c79c-4795-9c76-6371d915d7bb"
+            }
+          ],
+          "type": "if",
+          "uid": "5b07dee4-3d5f-424a-bd9a-8aecc4709154"
+        },
+        {
+          "attributes": [
+            {
+              "attributes": [
+                {
+                  "name": "sourceFilePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "waitTimeout",
+                  "value": {
+                    "number": "0",
+                    "type": "NUMBER"
+                  }
+                }
+              ],
+              "name": "condition",
+              "value": {
+                "conditionalName": "fileNotExists",
+                "packageName": "File",
+                "type": "CONDITIONAL"
+              }
+            }
+          ],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "createFile",
+              "attributes": [
+                {
+                  "name": "filePath",
+                  "value": {
+                    "expression": "file://$pStrErrorLogFile$",
+                    "type": "FILE"
+                  }
+                },
+                {
+                  "name": "isOverwrite",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "File",
+              "type": "action",
+              "uid": "6041b995-baeb-4578-a5c0-863ecd573a3d"
+            }
+          ],
+          "type": "if",
+          "uid": "7025990f-609d-4e58-beb2-e217998f6137"
+        },
+        {
+          "action": "subtract",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "val",
+              "value": {
+                "expression": "$pNumLoggingPeriod$",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "unit",
+              "value": {
+                "string": "DAYS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pdtLogCutoffDate"
+          },
+          "type": "action",
+          "uid": "bf8103c0-b37a-4e87-acc9-1235de2b7cda"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "pdtLogCutoffDate"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "yyyyMMdd",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrLogCutoffDate"
+          },
+          "type": "action",
+          "uid": "a8b77784-43dd-493e-bc20-ea2885848857"
+        },
+        {
+          "attributes": [],
+          "branches": [],
+          "disabled": false,
+          "steps": [
+            {
+              "action": "deleteFolder",
+              "attributes": [
+                {
+                  "name": "folderPath",
+                  "value": {
+                    "expression": "$pStrLogsFolder$/*",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isSize",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "isDate",
+                  "value": {
+                    "boolean": true,
+                    "type": "BOOLEAN"
+                  }
+                },
+                {
+                  "name": "dateValue",
+                  "value": {
+                    "string": "Modified",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "dateRangeValue",
+                  "value": {
+                    "string": "Before",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "beforeDate",
+                  "value": {
+                    "expression": "$pStrLogCutoffDate$",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "isBeforeDateIncluded",
+                  "value": {
+                    "boolean": false,
+                    "type": "BOOLEAN"
+                  }
+                }
+              ],
+              "disabled": false,
+              "package": "Folder",
+              "type": "action",
+              "uid": "47d6c1f7-823a-4ca2-ba7c-5749866f20c3"
+            }
+          ],
+          "type": "try",
+          "uid": "b64eb0bc-3d83-40a4-ad1c-97f5eb3763b5"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "============================================",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "6f5f9f45-a849-4d2b-ad0c-d50f4aa461a9"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "string": "============================================",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "5a59e948-85cf-42a7-b851-4e627bce1fd8"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution started ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "447cd985-573d-456c-b137-79164cdec160"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution started ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "a768807e-594b-4213-a3ec-cf88d27cfb65"
+        },
+        {
+          "action": "OpenSpreadsheet",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "string": "repository:///Automation%20Anywhere/Bot%20Store/Predikly_Bots/31_Get_next_working_day_based_on_holiday_calendar/HolidayCalendarList.xlsx",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "containsHeader",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "isSpecificSheet",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "sheetName",
+              "value": {
+                "string": "Sheet1",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "fileAccessMode",
+              "value": {
+                "string": "EDIT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "isSecure",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel",
+          "return_to": {
+            "sessionName": {
+              "string": "ExcelSession",
+              "type": "STRING"
+            },
+            "sessionTarget": "LOCAL",
+            "type": "SESSION"
+          },
+          "type": "action",
+          "uid": "8dd08532-f042-499c-baa2-20db2292ae29"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ - Excel has been open",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "8e2aafde-ddf6-48f2-a4f1-c991dd799a3f"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "packageName": "System",
+                "type": "VARIABLE",
+                "variableName": "Date"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "MM/dd/yyyy",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrSampleString"
+          },
+          "type": "action",
+          "uid": "926d279a-5124-44e6-bcef-102dfcc8ab07"
+        },
+        {
+          "action": "assign",
+          "attributes": [
+            {
+              "name": "option",
+              "value": {
+                "string": "constant",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "source",
+              "value": {
+                "expression": "$pStrSampleString$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "formatType",
+              "value": {
+                "string": "custom",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "customFormat",
+              "value": {
+                "string": "MM/dd/yyyy",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "dtCurrentDateSample"
+          },
+          "type": "action",
+          "uid": "4bc71c27-d52c-422b-92c3-2c182ebbf3a0"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "dtCurrentDateSample"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "MM/dd/yyyy",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrNewNewDate"
+          },
+          "type": "action",
+          "uid": "11fc0c48-ed72-4f6b-83c7-75e185026de0"
+        },
+        {
+          "action": "add",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "dtCurrentDateSample"
+              }
+            },
+            {
+              "name": "val",
+              "value": {
+                "number": "1",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "unit",
+              "value": {
+                "string": "DAYS",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "dtNextDate"
+          },
+          "type": "action",
+          "uid": "6e94f395-7104-4c30-91ff-54a65605e90a"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "dtNextDate"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "EEE",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrWeekDay"
+          },
+          "type": "action",
+          "uid": "8f6531b7-fc27-45d1-9c16-dd63a20c861c"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ - Today is $pStrSampleString$ ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "0d58222a-c5e7-46d8-8466-cddef7921208"
+        },
+        {
+          "attributes": [
+            {
+              "name": "loopType",
+              "value": {
+                "string": "ITERATOR",
+                "type": "STRING"
+              }
+            },
+            {
+              "attributes": [
+                {
+                  "name": "loopSelection",
+                  "value": {
+                    "string": "ALL_ROWS",
+                    "type": "STRING"
+                  }
+                },
+                {
+                  "name": "session",
+                  "value": {
+                    "sessionName": {
+                      "string": "ExcelSession",
+                      "type": "STRING"
+                    },
+                    "type": "SESSION"
+                  }
+                }
+              ],
+              "name": "iterator",
+              "returnTo": {
+                "type": "VARIABLE",
+                "variableName": "pRecExcelRow"
+              },
+              "value": {
+                "iteratorName": "loop.iterators.excel",
+                "packageName": "Excel",
+                "type": "ITERATOR"
+              }
+            }
+          ],
+          "disabled": false,
+          "steps": [
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$pStrWeekDay.String:uppercase$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "SAT",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "assign",
+                      "attributes": [
+                        {
+                          "name": "source",
+                          "value": {
+                            "string": "constant",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "userDefined",
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Boolean",
+                      "return_to": {
+                        "type": "VARIABLE",
+                        "variableName": "oBoolFlag"
+                      },
+                      "type": "action",
+                      "uid": "f4336739-b1a1-4d45-be4e-d002bb036db7"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "add",
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "dtNextDate"
+                      }
+                    },
+                    {
+                      "name": "val",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "unit",
+                      "value": {
+                        "string": "DAYS",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Datetime",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "dtNextDate"
+                  },
+                  "type": "action",
+                  "uid": "8bc1eb9a-d6c4-419f-9bce-11504a67445b"
+                },
+                {
+                  "action": "toString",
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "dtNextDate"
+                      }
+                    },
+                    {
+                      "name": "selectPattern",
+                      "value": {
+                        "string": "CUSTOM",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "patternInput",
+                      "value": {
+                        "string": "EEE",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Datetime",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pStrWeekDay"
+                  },
+                  "type": "action",
+                  "uid": "1be2a7af-b944-4221-8914-b903c273a7a3"
+                }
+              ],
+              "type": "if",
+              "uid": "138ab8be-de49-4d58-a8f1-f08a26c6ab0b"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$pStrWeekDay.String:uppercase$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "SUN",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [
+                {
+                  "attributes": [],
+                  "branch": "else",
+                  "steps": [
+                    {
+                      "action": "assign",
+                      "attributes": [
+                        {
+                          "name": "source",
+                          "value": {
+                            "string": "constant",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "userDefined",
+                          "value": {
+                            "string": "false",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Boolean",
+                      "return_to": {
+                        "type": "VARIABLE",
+                        "variableName": "oBoolFlag"
+                      },
+                      "type": "action",
+                      "uid": "21ca7d9b-60cc-46b4-a5b2-72b6fab8f9a2"
+                    }
+                  ]
+                }
+              ],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "add",
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "dtNextDate"
+                      }
+                    },
+                    {
+                      "name": "val",
+                      "value": {
+                        "number": "1",
+                        "type": "NUMBER"
+                      }
+                    },
+                    {
+                      "name": "unit",
+                      "value": {
+                        "string": "DAYS",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Datetime",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "dtNextDate"
+                  },
+                  "type": "action",
+                  "uid": "ea38ae53-9331-40d5-a7d7-df282c75841c"
+                },
+                {
+                  "action": "toString",
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "type": "VARIABLE",
+                        "variableName": "dtNextDate"
+                      }
+                    },
+                    {
+                      "name": "selectPattern",
+                      "value": {
+                        "string": "CUSTOM",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "patternInput",
+                      "value": {
+                        "string": "EEE",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Datetime",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pStrWeekDay"
+                  },
+                  "type": "action",
+                  "uid": "b5372971-3683-481e-9e38-e8d87ff0f7a0"
+                }
+              ],
+              "type": "if",
+              "uid": "a743898c-e48c-47cf-8e52-0d0e8c7ac19a"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$pRecExcelRow{Date}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "NEQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "string": "",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "matchCase",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "isIgnoreCarriage",
+                      "value": {
+                        "boolean": false,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "stringVariable",
+                    "packageName": "String",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "disabled": false,
+              "steps": [
+                {
+                  "action": "assign",
+                  "attributes": [
+                    {
+                      "name": "option",
+                      "value": {
+                        "string": "constant",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "source",
+                      "value": {
+                        "expression": "$pRecExcelRow{Date}$",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "formatType",
+                      "value": {
+                        "string": "custom",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "customFormat",
+                      "value": {
+                        "string": "MM/dd/yyyy",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Datetime",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "dtExcelHolidayDate"
+                  },
+                  "type": "action",
+                  "uid": "f2046ec2-e923-4df8-9ab2-f42961cec8b7"
+                },
+                {
+                  "action": "assign",
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "string": "constant",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "userDefined",
+                      "value": {
+                        "string": "true",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Boolean",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pboolEmptyCell"
+                  },
+                  "type": "action",
+                  "uid": "14bc4ca5-417b-4d11-b480-6eb1e324c8ee"
+                }
+              ],
+              "type": "if",
+              "uid": "a8046ba4-fcc5-43fa-b224-73d65e68e695"
+            },
+            {
+              "attributes": [
+                {
+                  "attributes": [
+                    {
+                      "name": "variable",
+                      "value": {
+                        "expression": "$pboolEmptyCell$",
+                        "type": "BOOLEAN"
+                      }
+                    },
+                    {
+                      "name": "operator",
+                      "value": {
+                        "string": "EQ",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "value",
+                      "value": {
+                        "boolean": true,
+                        "type": "BOOLEAN"
+                      }
+                    }
+                  ],
+                  "name": "condition",
+                  "value": {
+                    "conditionalName": "booleanVariable",
+                    "packageName": "Boolean",
+                    "type": "CONDITIONAL"
+                  }
+                }
+              ],
+              "branches": [],
+              "disabled": false,
+              "steps": [
+                {
+                  "attributes": [
+                    {
+                      "attributes": [
+                        {
+                          "name": "variable",
+                          "value": {
+                            "expression": "$oBoolFlag$",
+                            "type": "BOOLEAN"
+                          }
+                        },
+                        {
+                          "name": "operator",
+                          "value": {
+                            "string": "EQ",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "value",
+                          "value": {
+                            "boolean": true,
+                            "type": "BOOLEAN"
+                          }
+                        }
+                      ],
+                      "name": "condition",
+                      "operatorAttribute": {
+                        "attributes": [
+                          {
+                            "name": "sourceDateOption",
+                            "value": {
+                              "string": "DATETIME",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "sourceDateTime",
+                            "value": {
+                              "type": "VARIABLE",
+                              "variableName": "dtExcelHolidayDate"
+                            }
+                          },
+                          {
+                            "name": "operator",
+                            "value": {
+                              "string": "EQ",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "destDateOption",
+                            "value": {
+                              "string": "DATETIME",
+                              "type": "STRING"
+                            }
+                          },
+                          {
+                            "name": "destDateTime",
+                            "value": {
+                              "type": "VARIABLE",
+                              "variableName": "dtNextDate"
+                            }
+                          }
+                        ],
+                        "operator": "OR",
+                        "value": {
+                          "conditionalName": "dateVariable",
+                          "packageName": "Datetime",
+                          "type": "CONDITIONAL"
+                        }
+                      },
+                      "value": {
+                        "conditionalName": "booleanVariable",
+                        "packageName": "Boolean",
+                        "type": "CONDITIONAL"
+                      }
+                    }
+                  ],
+                  "branches": [],
+                  "disabled": false,
+                  "steps": [
+                    {
+                      "action": "add",
+                      "attributes": [
+                        {
+                          "name": "source",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "dtNextDate"
+                          }
+                        },
+                        {
+                          "name": "val",
+                          "value": {
+                            "number": "1",
+                            "type": "NUMBER"
+                          }
+                        },
+                        {
+                          "name": "unit",
+                          "value": {
+                            "string": "DAYS",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Datetime",
+                      "return_to": {
+                        "type": "VARIABLE",
+                        "variableName": "dtNextDate"
+                      },
+                      "type": "action",
+                      "uid": "ecfde2cf-56fa-4bfe-9d63-8efa7be7190c"
+                    },
+                    {
+                      "action": "toString",
+                      "attributes": [
+                        {
+                          "name": "source",
+                          "value": {
+                            "type": "VARIABLE",
+                            "variableName": "dtNextDate"
+                          }
+                        },
+                        {
+                          "name": "selectPattern",
+                          "value": {
+                            "string": "CUSTOM",
+                            "type": "STRING"
+                          }
+                        },
+                        {
+                          "name": "patternInput",
+                          "value": {
+                            "string": "EEE",
+                            "type": "STRING"
+                          }
+                        }
+                      ],
+                      "disabled": false,
+                      "package": "Datetime",
+                      "return_to": {
+                        "type": "VARIABLE",
+                        "variableName": "pStrWeekDay"
+                      },
+                      "type": "action",
+                      "uid": "c38b3d3b-cbda-491a-b7b1-941ef587b5cb"
+                    }
+                  ],
+                  "type": "if",
+                  "uid": "09ef6694-e25e-40cb-9e0f-479b305128e1"
+                },
+                {
+                  "action": "assign",
+                  "attributes": [
+                    {
+                      "name": "source",
+                      "value": {
+                        "string": "constant",
+                        "type": "STRING"
+                      }
+                    },
+                    {
+                      "name": "userDefined",
+                      "value": {
+                        "string": "false",
+                        "type": "STRING"
+                      }
+                    }
+                  ],
+                  "disabled": false,
+                  "package": "Boolean",
+                  "return_to": {
+                    "type": "VARIABLE",
+                    "variableName": "pboolEmptyCell"
+                  },
+                  "type": "action",
+                  "uid": "b0078d5a-8924-4eba-a989-8b7baedff884"
+                }
+              ],
+              "type": "if",
+              "uid": "a3a475a4-8877-4425-bc31-2808e46e669c"
+            }
+          ],
+          "type": "loop",
+          "uid": "2ea5e48f-8cbb-4eb3-870d-b4e5a7e22e27"
+        },
+        {
+          "action": "toString",
+          "attributes": [
+            {
+              "name": "source",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "dtNextDate"
+              }
+            },
+            {
+              "name": "selectPattern",
+              "value": {
+                "string": "CUSTOM",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "patternInput",
+              "value": {
+                "string": "MM/dd/yyyy",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Datetime",
+          "return_to": {
+            "type": "VARIABLE",
+            "variableName": "pStrNextDay"
+          },
+          "type": "action",
+          "uid": "5be24ccd-4fd3-449c-8740-377f91b31d59"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ - Next working day is $pStrNextDay$ and it is $pStrWeekDay$",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "d46567b3-7c11-43e2-b336-97b4cd19e76e"
+        },
+        {
+          "action": "messageBox",
+          "attributes": [
+            {
+              "name": "title",
+              "value": {
+                "string": "Automation Anywhere Enterprise Client",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "content",
+              "value": {
+                "expression": "Next working day is $pStrNextDay$ and it is $pStrWeekDay$ ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "scrollLines",
+              "value": {
+                "number": "30",
+                "type": "NUMBER"
+              }
+            },
+            {
+              "name": "closeMsgBox",
+              "value": {
+                "boolean": false,
+                "type": "BOOLEAN"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "MessageBox",
+          "type": "action",
+          "uid": "8eaa98b1-3669-418f-ab25-2707f9e2137b"
+        },
+        {
+          "action": "CloseSpreadsheet",
+          "attributes": [
+            {
+              "name": "isSave",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "session",
+              "value": {
+                "sessionName": {
+                  "string": "ExcelSession",
+                  "type": "STRING"
+                },
+                "type": "SESSION"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "Excel",
+          "type": "action",
+          "uid": "e69838a7-3473-4a22-b933-cb7a22b34fc9"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ - Excel closed",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "c40eba8c-e12d-40b8-ae6b-41b2dcb04a65"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrAuditLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution Ended ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "c2237cd5-b8b3-4e1f-8a61-9a056eb1ca08"
+        },
+        {
+          "action": "logToFile",
+          "attributes": [
+            {
+              "name": "filePath",
+              "value": {
+                "expression": "file://$pStrErrorLogFile$",
+                "type": "FILE"
+              }
+            },
+            {
+              "name": "logContent",
+              "value": {
+                "expression": "$pStrBotName$ Execution Ended ",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "appendTimestamp",
+              "value": {
+                "boolean": true,
+                "type": "BOOLEAN"
+              }
+            },
+            {
+              "name": "logOption",
+              "value": {
+                "string": "APPEND_FILE",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "encodingValue",
+              "value": {
+                "string": "ANSI",
+                "type": "STRING"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "LogToFile",
+          "type": "action",
+          "uid": "b2583788-6fbf-4cf2-852e-bd997a13498e"
+        }
+      ],
+      "type": "try",
+      "uid": "780d1216-17d5-4a12-b006-5f445ba59ebe"
+    }
+  ],
+  "triggers": []
+}
