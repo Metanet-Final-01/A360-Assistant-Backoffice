@@ -58,3 +58,31 @@ python render_md_briefs.py
 3. `gold/`에 해당 gold `.goldset.json`을 복사한다.
 4. `python render_md_briefs.py`로 PDF를 다시 생성한다.
 5. note 파일의 "9 confirmed final" 목록과 개수를 갱신한다.
+
+## 자체 제작 케이스 `9001` (2026-08-04 추가)
+
+`9001_gold-price-lookup-and-send` — Bot Store가 아니라 **직접 제작한 봇**
+("금 시세 조회 후 결과 발송")이다. Bot Store 코퍼스의 4자리 ID(0001~0470)와
+겹치지 않도록 `9001`을 부여했다.
+
+**이 케이스는 공식 9개 채점 집합(`FINAL_CASE_IDS`)에 아직 포함되지 않았다.**
+`gold/`와 `briefs/`에 올려 두어 Agent 개발자가 채점에 사용할 수 있게 한 것이며,
+공식 집합으로 승격하지 않은 이유는 다음과 같다.
+
+- 기존 v1/v2/v3 실행(`runner/logs/gold_price_bot_*`, 2026-08-02)은 확정 9개와
+  **모델과 조건이 다르다** — luna 계열 모델로 돌렸거나 v2/v3만 부분적으로
+  temp0/seed0로 돌린 것이라, 9개(gpt-5.4-mini, temperature=0, seed=0,
+  2026-08-03)와 같은 조건에서 비교할 수 없다.
+- 공식 집합에 넣으면 macro 평균이 바뀌어 이미 배포된 리포트·엑셀·PR·Jira의
+  수치가 전부 무효가 된다.
+
+**승격하려면**: 9개와 동일한 조건으로 v1/v2/v3를 다시 실행한 뒤
+`audit_final_goldset.py`의 `FINAL_CASE_IDS`에 `9001`을 추가하고 전체를
+재채점한다. v1은 현재 표본이 1회뿐이라 어차피 추가 실행이 필요하므로, 그때
+함께 처리하는 것이 효율적이다.
+
+**참고**: 이 봇은 채점기 재설계의 **검증 기준**이었다. PM4Py를 폐기한 실측
+근거(fitness 0.089 / precision 0.0)와 조건부 동치 규칙 2건
+(`Recorder.capture(CLICK) ≡ WebAutomation.clickelement`,
+`Recorder.capture(EXTRACT_TABLE) ≡ WebAutomation.gettablecontent`)이 모두
+이 사례에서 도출되었다.

@@ -1,0 +1,4144 @@
+{
+  "source_file": "Automation Anywhere__Bots__금 시세 조회 후 결과 발송.json",
+  "steps": [
+    {
+      "action": "toString",
+      "attributes": [
+        {
+          "name": "source",
+          "value": {
+            "expression": "$System:Date$",
+            "type": "DATETIME"
+          }
+        },
+        {
+          "name": "selectPattern",
+          "value": {
+            "string": "PREBUILT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "preBuiltPattern",
+          "value": {
+            "string": "ISO_LOCAL_DATE",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Datetime",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "todayStr"
+      },
+      "type": "action",
+      "uid": "a19ad378-1d99-4c82-be5f-1565dabd335b"
+    },
+    {
+      "action": "assign",
+      "attributes": [
+        {
+          "name": "sourceString",
+          "value": {
+            "expression": "C:\\RPA\\gold\\금시세_$todayStr$.xlsm",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "String",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "localFilePath"
+      },
+      "type": "action",
+      "uid": "f34b1d55-89db-4326-9a4e-56020b613ba3"
+    },
+    {
+      "action": "openbrowser",
+      "attributes": [
+        {
+          "name": "openOption",
+          "value": {
+            "string": "NEW_WIN",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "browser",
+          "value": {
+            "string": "EDGE",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "url",
+          "value": {
+            "string": "naver.com",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "timeoutValue",
+          "value": {
+            "number": "240",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "version",
+          "value": {
+            "number": "3810",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Browser",
+      "type": "action",
+      "uid": "978b5356-2a51-4ff5-8e3b-465d785d63a6"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMGNjMmNhYzItYzQ2Ny00OGJhLWIyYzAtZWUwOGIxODJjMjllIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6M30seyJpbmRleCI6M30seyJpbmRleCI6MX0seyJpbmRleCI6NX0seyJpbmRleCI6MX0seyJpbmRleCI6Nn0seyJpbmRleCI6MX1dfSwicm9sZSI6MzEsImluZGV4IjowLCJsZWZ0Ijo5MTksInRvcCI6MzA5LCJ3aWR0aCI6ODAsImhlaWdodCI6ODUsImNsaWNrWCI6NTgsImNsaWNrWSI6MTgsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6OCwicHJvY2Vzc0lEIjoibXNlZGdlIiwid2luSGFuZGxlIjoiIiwib2NyRW5naW5lIjpudWxsLCJpc0FkdmFuY2VkQ2FwdHVyZSI6ZmFsc2UsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiLy9kaXZbQGlkPSdzaG9ydGN1dEFyZWEnXS91bFsxXS9saVs2XS9hWzFdIn0seyJuYW1lIjoiQ1NTIFNlbGVjdG9yIiwidmFsdWUiOiJkaXYjc2hvcnRjdXRBcmVhPnVsPmxpOm50aC1vZi10eXBlKDYpPmEifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiQSJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6Imxpbmtfc2VydmljZSJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiLspp3qtowifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiJodHRwczovL2ZpbmFuY2UubmF2ZXIuY29tLyJ9LHsibmFtZSI6IkhUTUwgVHlwZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBDbGFzc0lkIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEhlaWdodCIsInZhbHVlIjoiODUifSx7Im5hbWUiOiJIVE1MIFdpZHRoIiwidmFsdWUiOiI4MCJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjM4In0seyJuYW1lIjoiSFRNTCBUb3AiLCJ2YWx1ZSI6IjE2MCJ9LHsibmFtZSI6IkhUTUwgTGVmdCIsInZhbHVlIjoiNzI0In0seyJuYW1lIjoiSFRNTCBIYXNGcmFtZSIsInZhbHVlIjoiZmFsc2UifSx7Im5hbWUiOiJIVE1MIEZyYW1lU3JjIiwidmFsdWUiOiJodHRwczovL3d3dy5uYXZlci5jb20vIn0seyJuYW1lIjoiSFRNTCBGcmFtZU5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgRnJhbWVQYXRoIiwidmFsdWUiOiIifSx7Im5hbWUiOiJpbm5lckhUTUwiLCJ2YWx1ZSI6IjxzcGFuIGNsYXNzPVwic2VydmljZV9pY29uIHR5cGVfc3RvY2tcIj48L3NwYW4+PHNwYW4gY2xhc3M9XCJzZXJ2aWNlX25hbWVcIj7spp3qtow8L3NwYW4+In0seyJuYW1lIjoib3V0ZXJIVE1MIiwidmFsdWUiOiI8YSBocmVmPVwiaHR0cHM6Ly9maW5hbmNlLm5hdmVyLmNvbS9cIiBjbGFzcz1cImxpbmtfc2VydmljZVwiIHRhcmdldD1cIl9ibGFua1wiPjxzcGFuIGNsYXNzPVwic2VydmljZV9pY29uIHR5cGVfc3RvY2tcIj48L3NwYW4+PHNwYW4gY2xhc3M9XCJzZXJ2aWNlX25hbWVcIj7spp3qtow8L3NwYW4+PC9hPiJ9LHsibmFtZSI6IklzVmlzaWJsZSIsInZhbHVlIjoidHJ1ZSJ9XSwiYXR0cmlidXRlcyI6W3sibmFtZSI6IlVuaXF1ZUlEIiwidmFsdWUiOiIwY2MyY2FjMi1jNDY3LTQ4YmEtYjJjMC1lZTA4YjE4MmMyOWUifSx7Im5hbWUiOiJJRCIsInZhbHVlIjoiIn0seyJuYW1lIjoiTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IldpbmRvd1RpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJSb2xlIiwidmFsdWUiOiJMaW5rIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiM3wzfDF8NXwxfDZ8MSJ9LHsibmFtZSI6IkluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiTGVmdCIsInZhbHVlIjoiOTE5In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiIzMDkifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiODAifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6Ijg1In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiI1OCJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTgifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw2NSw2Myw4MF0sImVycm9yIjpudWxsLCJicm93c2VyRnJhbWV3b3JrIjoidW5kZWZpbmVkIiwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IjxsaT48YT48c3Bhbj48L3NwYW4+PHNwYW4+PC9zcGFuPjwvYT48L2xpPiIsImNzc1BhdGgiOiJbXCJkaXYjc3BlY2lhbC1sb2dvXCJdIiwiYWR2YW5jZVhwYXRoIjoiW1wiLy9hW0BocmVmPSdodHRwczovL2ZpbmFuY2UubmF2ZXIuY29tLyddXCIsXCIvL2RpdltAaWQ9J3Nob3J0Y3V0QXJlYSddL3VsWzFdL2xpWzZdL2FbMV1cIl0iLCJwcmVjZWRpbmdUZXh0Ijoi64m07IqkIiwiYW5jaG9yVGV4dCI6IiIsImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjp7ImFhX2dlbmFpX3N1cnJvdW5kaW5nQ29udGV4dCI6IntcInZlcnNpb25cIjoxLFwidGFyZ2V0XCI6e1widGFnXCI6XCJhXCIsXCJocmVmXCI6XCJodHRwczovL2ZpbmFuY2UubmF2ZXIuY29tL1wiLFwidGV4dFwiOlwi7Kad6raMXCIsXCJ2aXNpYmxlXCI6dHJ1ZSxcInN0YWJsZUNsYXNzZXNcIjpbXCJsaW5rX3NlcnZpY2VcIl19LFwicHJlY2VkaW5nU2libGluZ3NcIjpbe1wicG9zaXRpb25cIjoxLFwidGFnXCI6XCJsaVwiLFwidGV4dFwiOlwi64m07IqkXCIsXCJ2aXNpYmxlXCI6dHJ1ZSxcInN0YWJsZUNsYXNzZXNcIjpbXCJzaG9ydGN1dF9pdGVtXCJdLFwiZGlzdGFuY2VMZXZlbFwiOjF9LHtcInBvc2l0aW9uXCI6MixcInRhZ1wiOlwibGlcIixcInRleHRcIjpcIuyHvO2VkVwiLFwidmlzaWJsZVwiOnRydWUsXCJzdGFibGVDbGFzc2VzXCI6W1wic2hvcnRjdXRfaXRlbVwiXSxcImRpc3RhbmNlTGV2ZWxcIjoxfSx7XCJwb3NpdGlvblwiOjMsXCJ0YWdcIjpcImxpXCIsXCJ0ZXh0XCI6XCLruJTroZzqt7hcIixcInZpc2libGVcIjp0cnVlLFwic3RhYmxlQ2xhc3Nlc1wiOltcInNob3J0Y3V0X2l0ZW1cIl0sXCJkaXN0YW5jZUxldmVsXCI6MX0se1wicG9zaXRpb25cIjo0LFwidGFnXCI6XCJsaVwiLFwidGV4dFwiOlwi7Lm07Y6YXCIsXCJ2aXNpYmxlXCI6dHJ1ZSxcInN0YWJsZUNsYXNzZXNcIjpbXCJzaG9ydGN1dF9pdGVtXCJdLFwiZGlzdGFuY2VMZXZlbFwiOjF9LHtcInBvc2l0aW9uXCI6NSxcInRhZ1wiOlwibGlcIixcInRleHRcIjpcIuuplOydvFwiLFwidmlzaWJsZVwiOnRydWUsXCJzdGFibGVDbGFzc2VzXCI6W1wic2hvcnRjdXRfaXRlbVwiXSxcImRpc3RhbmNlTGV2ZWxcIjoxfV0sXCJmb2xsb3dpbmdTaWJsaW5nc1wiOlt7XCJwb3NpdGlvblwiOjEsXCJ0YWdcIjpcImxpXCIsXCJ0ZXh0XCI6XCLrtoDrj5nsgrBcIixcInZpc2libGVcIjp0cnVlLFwic3RhYmxlQ2xhc3Nlc1wiOltcInNob3J0Y3V0X2l0ZW1cIl0sXCJkaXN0YW5jZUxldmVsXCI6MSxcImlzRHluYW1pY1wiOmZhbHNlfSx7XCJwb3NpdGlvblwiOjIsXCJ0YWdcIjpcImxpXCIsXCJ0ZXh0XCI6XCLsp4Drj4RcIixcInZpc2libGVcIjp0cnVlLFwic3RhYmxlQ2xhc3Nlc1wiOltcInNob3J0Y3V0X2l0ZW1cIl0sXCJkaXN0YW5jZUxldmVsXCI6MSxcImlzRHluYW1pY1wiOmZhbHNlfSx7XCJwb3NpdGlvblwiOjMsXCJ0YWdcIjpcImxpXCIsXCJ0ZXh0XCI6XCLsm7ntiLBcIixcInZpc2libGVcIjp0cnVlLFwic3RhYmxlQ2xhc3Nlc1wiOltcInNob3J0Y3V0X2l0ZW1cIl0sXCJkaXN0YW5jZUxldmVsXCI6MSxcImlzRHluYW1pY1wiOmZhbHNlfSx7XCJwb3NpdGlvblwiOjQsXCJ0YWdcIjpcImxpXCIsXCJ0ZXh0XCI6XCLsuZjsp4Dsp4FcIixcInZpc2libGVcIjp0cnVlLFwic3RhYmxlQ2xhc3Nlc1wiOltcInNob3J0Y3V0X2l0ZW1cIl0sXCJkaXN0YW5jZUxldmVsXCI6MSxcImlzRHluYW1pY1wiOmZhbHNlfSx7XCJwb3NpdGlvblwiOjUsXCJ0YWdcIjpcImxpXCIsXCJ0ZXh0XCI6XCLrsJTroZzqsIDquLAg7Y687LmoXCIsXCJ2aXNpYmxlXCI6dHJ1ZSxcInN0YWJsZUNsYXNzZXNcIjpbXCJzaG9ydGN1dF9pdGVtXCJdLFwiZGlzdGFuY2VMZXZlbFwiOjEsXCJpc0R5bmFtaWNcIjpmYWxzZX1dLFwic3BhdGlhbE5laWdoYm9yc1wiOntcImxlZnRcIjpbe1widGFnXCI6XCJhXCIsXCJ0ZXh0XCI6XCLsh7ztlZFcIixcImRpc3RhbmNlXCI6NTh9LHtcInRhZ1wiOlwiYVwiLFwidGV4dFwiOlwi67iU66Gc6re4XCIsXCJkaXN0YW5jZVwiOjEyMH0se1widGFnXCI6XCJhXCIsXCJ0ZXh0XCI6XCLsubTtjphcIixcImRpc3RhbmNlXCI6MTgxfSx7XCJ0YWdcIjpcImFcIixcInRleHRcIjpcIuuplOydvFwiLFwiZGlzdGFuY2VcIjoyNDJ9XSxcInJpZ2h0XCI6W3tcInRhZ1wiOlwiYVwiLFwidGV4dFwiOlwi7KeA64+EXCIsXCJkaXN0YW5jZVwiOjU4fSx7XCJ0YWdcIjpcImFcIixcInRleHRcIjpcIuybue2IsFwiLFwiZGlzdGFuY2VcIjoxMjB9LHtcInRhZ1wiOlwiYVwiLFwidGV4dFwiOlwi7LmY7KeA7KeBXCIsXCJkaXN0YW5jZVwiOjE4MX0se1widGFnXCI6XCJhXCIsXCJyb2xlXCI6XCJidXR0b25cIixcImRpc3RhbmNlXCI6MjQyfV19LFwiY29udGFpbmVyQ29udGV4dFwiOlt7XCJ0YWdcIjpcInVsXCIsXCJpZFwiOm51bGwsXCJuYW1lXCI6bnVsbCxcInJvbGVcIjpudWxsLFwiZGF0YUF0dHJpYnV0ZXNcIjpudWxsLFwidHlwZVwiOlwidWxcIixcIml0ZW1JbmRleFwiOjUsXCJjaGlsZEVsZW1lbnRDb3VudFwiOjQ1LFwiY2xhc3Nlc1wiOlwic2hvcnRjdXRfbGlzdFwifV0sXCJwb3NpdGlvbkNvbnRleHRcIjp7XCJudGhPZlR5cGVcIjoxLFwidG90YWxPZlR5cGVcIjoxLFwibnRoVmlzaWJsZU9mVHlwZVwiOjEsXCJ0b3RhbFZpc2libGVPZlR5cGVcIjoxLFwibnRoQ2hpbGRcIjoxLFwidG90YWxDaGlsZHJlblwiOjEsXCJpc0ZpcnN0T2ZUeXBlXCI6dHJ1ZSxcImlzTGFzdE9mVHlwZVwiOnRydWUsXCJzdGFibGVQYXJlbnRTZWxlY3RvclwiOlwiLnNob3J0Y3V0X2l0ZW1cIixcInN0YWJsZUFuY2VzdG9yXCI6XCIjc2hvcnRjdXRBcmVhXCIsXCJwYXRoRnJvbVN0YWJsZUFuY2VzdG9yXCI6XCJ1bCA+IGxpOm50aC1vZi10eXBlKDYpID4gYVwifSxcImZ1bGxBbmNlc3RvckNoYWluXCI6W3tcImRlcHRoXCI6MSxcInRhZ1wiOlwibGlcIixcInN0YWJsZUNsYXNzZXNcIjpbXCJzaG9ydGN1dF9pdGVtXCJdfSx7XCJkZXB0aFwiOjIsXCJ0YWdcIjpcInVsXCIsXCJzdGFibGVDbGFzc2VzXCI6W1wic2hvcnRjdXRfbGlzdFwiXX0se1wiZGVwdGhcIjozLFwidGFnXCI6XCJkaXZcIixcImlkXCI6XCJzaG9ydGN1dEFyZWFcIixcInJvbGVcIjpcIm5hdmlnYXRpb25cIixcImFyaWFMYWJlbFwiOlwi7KO87JqUIOyEnOu5hOyKpFwiLFwic3RhYmxlQ2xhc3Nlc1wiOltcInNob3J0Y3V0X2FyZWFcIixcInR5cGVfcmVjb21tZW5kXCJdfSx7XCJkZXB0aFwiOjQsXCJ0YWdcIjpcImRpdlwiLFwiaWRcIjpcInRvcFNlYXJjaFdyYXBcIixcInN0YWJsZUNsYXNzZXNcIjpbXCJoZWFkZXJfaW5uZXJcIl19LHtcImRlcHRoXCI6NSxcInRhZ1wiOlwiZGl2XCIsXCJpZFwiOlwiaGVhZGVyXCIsXCJyb2xlXCI6XCJiYW5uZXJcIn0se1wiZGVwdGhcIjo2LFwidGFnXCI6XCJkaXZcIixcImlkXCI6XCJ3cmFwXCJ9XSxcImxhYmVsSW5mb1wiOm51bGwsXCJzZWN0aW9uQ29udGV4dFwiOm51bGwsXCJpZnJhbWVJbmZvXCI6bnVsbCxcInJlY29tbWVuZGVkU2VsZWN0b3JzXCI6W3tcInByaW9yaXR5XCI6NCxcInR5cGVcIjpcInNlY3Rpb24tdGl0bGUtYW5jaG9yXCIsXCJzZWxlY3RvclwiOm51bGwsXCJ4cGF0aFwiOlwiLy9kaXZbY29udGFpbnMoQGxzZGF0YSwgXFxcIuyjvOyalCDshJzruYTsiqRcXFwiKSBvciBjb250YWlucyhAYXJpYS1sYWJlbCwgXFxcIuyjvOyalCDshJzruYTsiqRcXFwiKV0vL2Rlc2NlbmRhbnQ6OmFcIixcInN0YWJpbGl0eVwiOlwic2VtaS1zdGFibGVcIixcInJlYXNvblwiOlwiQW5jaG9yIG9uIHNlY3Rpb246IFxcXCLso7zsmpQg7ISc67mE7IqkXFxcIlwifSx7XCJwcmlvcml0eVwiOjQsXCJ0eXBlXCI6XCJyb2xlLWFyaWEtYW5jaG9yXCIsXCJzZWxlY3RvclwiOm51bGwsXCJ4cGF0aFwiOlwiLy8qW0Byb2xlPVxcXCJuYXZpZ2F0aW9uXFxcIl1bQGFyaWEtbGFiZWw9XFxcIuyjvOyalCDshJzruYTsiqRcXFwiXS8vZGVzY2VuZGFudDo6YVwiLFwic3RhYmlsaXR5XCI6XCJzZW1pLXN0YWJsZVwiLFwicmVhc29uXCI6XCJXaXRoaW4gbmF2aWdhdGlvbjogXFxcIuyjvOyalCDshJzruYTsiqRcXFwiXCJ9LHtcInByaW9yaXR5XCI6NCxcInR5cGVcIjpcInRleHQtY29udGVudFwiLFwic2VsZWN0b3JcIjpudWxsLFwieHBhdGhcIjpcIi8vYVtub3JtYWxpemUtc3BhY2UodGV4dCgpKT1cXFwi7Kad6raMXFxcIiBvciBub3JtYWxpemUtc3BhY2UoLik9XFxcIuymneq2jFxcXCJdXCIsXCJzdGFiaWxpdHlcIjpcInNlbWktc3RhYmxlXCIsXCJyZWFzb25cIjpcIlRleHQgY29udGVudDogXFxcIuymneq2jFxcXCJcIn0se1wicHJpb3JpdHlcIjo2LFwidHlwZVwiOlwiY2xhc3NcIixcInNlbGVjdG9yXCI6XCIubGlua19zZXJ2aWNlXCIsXCJ4cGF0aFwiOlwiLy8qW2NvbnRhaW5zKEBjbGFzcywgXFxcImxpbmtfc2VydmljZVxcXCIpXVwiLFwic3RhYmlsaXR5XCI6XCJzZW1pLXN0YWJsZVwiLFwicmVhc29uXCI6XCJTdGFibGUgQ1NTIGNsYXNzOiBsaW5rX3NlcnZpY2VcIn0se1wicHJpb3JpdHlcIjo3LFwidHlwZVwiOlwicG9zaXRpb25cIixcInNlbGVjdG9yXCI6XCIjc2hvcnRjdXRBcmVhID4gdWwgPiBsaTpudGgtb2YtdHlwZSg2KSA+IGFcIixcInhwYXRoXCI6bnVsbCxcInN0YWJpbGl0eVwiOlwiZnJhZ2lsZVwiLFwicmVhc29uXCI6XCJQb3NpdGlvbjogMSBvZiAxIHdpdGhpbiAjc2hvcnRjdXRBcmVhXCJ9XX0ifX19",
+              "browserType": "EDGE",
+              "capture": {
+                "screenshotMetadataPath": "e752e8c9-45b2-4923-87e7-ef66ed44a491.png",
+                "screenshotRectangle": {
+                  "height": 68,
+                  "width": 64,
+                  "x": 735,
+                  "y": 247
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "e875526b-1385-4a11-b85a-afb0ce3c4e84.png",
+                "thumbnailRectangle": {
+                  "height": 57,
+                  "width": 53,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "LINK",
+              "criteria": {
+                "CSS Selector": {
+                  "enabled": true,
+                  "value": {
+                    "string": "div#shortcutArea>ul>li:nth-of-type(6)>a",
+                    "type": "STRING"
+                  }
+                },
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "58",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "18",
+                    "type": "STRING"
+                  }
+                },
+                "DOMXPath": {
+                  "enabled": true,
+                  "value": {
+                    "string": "//div[@id='shortcutArea']/ul[1]/li[6]/a[1]",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Alt": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "link_service",
+                    "type": "STRING"
+                  }
+                },
+                "HTML ClassId": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FrameName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FramePath": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FrameSrc": {
+                  "enabled": true,
+                  "value": {
+                    "string": "https://www.naver.com/",
+                    "type": "STRING"
+                  }
+                },
+                "HTML HasFrame": {
+                  "enabled": true,
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "85",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Href": {
+                  "enabled": true,
+                  "value": {
+                    "string": "https://finance.naver.com/",
+                    "type": "STRING"
+                  }
+                },
+                "HTML ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML InnerText": {
+                  "enabled": true,
+                  "value": {
+                    "string": "증권",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "724",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML SourceIndex": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Tag": {
+                  "enabled": true,
+                  "value": {
+                    "string": "A",
+                    "type": "STRING"
+                  }
+                },
+                "HTML TagIndex": {
+                  "enabled": false,
+                  "value": {
+                    "string": "38",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Title": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "160",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Type": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "80",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "85",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "IsVisible": {
+                  "enabled": false,
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "919",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "3|3|1|5|1|6|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "Link",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "309",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0cc2cac2-c467-48ba-b2c0-ee08b182c29e",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "80",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "innerHTML": {
+                  "enabled": false,
+                  "value": {
+                    "string": "<span class=\"service_icon type_stock\"></span><span class=\"service_name\">증권</span>",
+                    "type": "STRING"
+                  }
+                },
+                "outerHTML": {
+                  "enabled": false,
+                  "value": {
+                    "string": "<a href=\"https://finance.naver.com/\" class=\"link_service\" target=\"_blank\"><span class=\"service_icon type_stock\"></span><span class=\"service_name\">증권</span></a>",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "HTML"
+            },
+            "uiObjectWindow": {
+              "expression": "$Browser2$",
+              "type": "WINDOW"
+            }
+          }
+        },
+        {
+          "name": "linkAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "30",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "b93e3688-8d95-427c-ab7f-985176a59ea2"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMTA2ODY2NzEtNDM2ZC00OWMxLThjOGItNTg0YWZlZmJkOGEwIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6LTR9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjotMX0seyJpbmRleCI6Mn0seyJpbmRleCI6Mn0seyJpbmRleCI6LTF9LHsiaW5kZXgiOi0xfSx7ImluZGV4IjoxfSx7ImluZGV4IjoxfV19LCJyb2xlIjozMSwiaW5kZXgiOjAsImxlZnQiOjY1NSwidG9wIjo2OTcsIndpZHRoIjo5OCwiaGVpZ2h0IjoxNSwiY2xpY2tYIjozMCwiY2xpY2tZIjo0LCJkZXNjcmlwdGlvbiI6IiIsInN0YXRlcyI6IiIsImRlZmF1bHRBY3Rpb24iOiIiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjo2LCJwbGF0Zm9ybVR5cGUiOjEyLCJhcHBsaWNhdGlvblR5cGUiOjgsInByb2Nlc3NJRCI6Im1zZWRnZSIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNBZHZhbmNlZENhcHR1cmUiOmZhbHNlLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpudWxsLCJwcm9wZXJ0aWVzIjpbeyJuYW1lIjoiRE9NWFBhdGgiLCJ2YWx1ZSI6Ii8vZGl2W0BpZD0nY29udGVudCddL2RpdlsyXS9kaXZbMl0vZGl2WzJdL3RhYmxlWzFdL3Rib2R5WzFdL3RyWzJdL3RoWzFdL2FbMV0ifSx7Im5hbWUiOiJDU1MgU2VsZWN0b3IiLCJ2YWx1ZSI6ImRpdiNjb250ZW50PmRpdjpudGgtb2YtdHlwZSgyKT5kaXY6bnRoLW9mLXR5cGUoMik+ZGl2Om50aC1vZi10eXBlKDIpPnRhYmxlPnRib2R5PnRyOm50aC1vZi10eXBlKDIpPnRoPmEifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiQSJ9LHsibmFtZSI6IkhUTUwgQ2xhc3MiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgSW5uZXJUZXh0IiwidmFsdWUiOiLqta3rgrTquIgoMDcuMzEpIn0seyJuYW1lIjoiSFRNTCBTb3VyY2VJbmRleCIsInZhbHVlIjoiMCJ9LHsibmFtZSI6IkhUTUwgSHJlZiIsInZhbHVlIjoiaHR0cHM6Ly9maW5hbmNlLm5hdmVyLmNvbS9tYXJrZXRpbmRleC9nb2xkRGV0YWlsLm5hdmVyIn0seyJuYW1lIjoiSFRNTCBUeXBlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFZhbHVlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIENsYXNzSWQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgSGVpZ2h0IiwidmFsdWUiOiIxNSJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6Ijk4In0seyJuYW1lIjoiSFRNTCBUYWdJbmRleCIsInZhbHVlIjoiMjg2In0seyJuYW1lIjoiSFRNTCBUb3AiLCJ2YWx1ZSI6IjEzNzAifSx7Im5hbWUiOiJIVE1MIExlZnQiLCJ2YWx1ZSI6IjUxMyJ9LHsibmFtZSI6IkhUTUwgSGFzRnJhbWUiLCJ2YWx1ZSI6ImZhbHNlIn0seyJuYW1lIjoiSFRNTCBGcmFtZVNyYyIsInZhbHVlIjoiaHR0cHM6Ly9maW5hbmNlLm5hdmVyLmNvbS8ifSx7Im5hbWUiOiJIVE1MIEZyYW1lTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBGcmFtZVBhdGgiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6ImlubmVySFRNTCIsInZhbHVlIjoiIOq1reuCtOq4iCgwNy4zMSkifSx7Im5hbWUiOiJvdXRlckhUTUwiLCJ2YWx1ZSI6IjxhIGhyZWY9XCIvbWFya2V0aW5kZXgvZ29sZERldGFpbC5uYXZlclwiIG9uY2xpY2s9XCJjbGlja2NyKHRoaXMsICdnb2wubGlzdCcsICdDTURUX0dEJywgJzInLCBldmVudCk7XCI+IOq1reuCtOq4iCgwNy4zMSk8L2E+In0seyJuYW1lIjoiSXNWaXNpYmxlIiwidmFsdWUiOiJ0cnVlIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjEwNjg2NjcxLTQzNmQtNDljMS04YzhiLTU4NGFmZWZiZDhhMCJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiQ2xhc3MiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlBhcmVudCIsInZhbHVlIjoiIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IkxpbmsifSx7Im5hbWUiOiJQYXRoIiwidmFsdWUiOiI0fC00fDF8LTF8LTF8MnwyfC0xfC0xfDF8MSJ9LHsibmFtZSI6IkluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiTGVmdCIsInZhbHVlIjoiNjU1In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiI2OTcifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiOTgifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjE1In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIzMCJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiNCJ9LHsibmFtZSI6IkRlc2NyaXB0aW9uIiwidmFsdWUiOiIifSx7Im5hbWUiOiJTdGF0ZXMiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkRlZmF1bHRBY3Rpb24iLCJ2YWx1ZSI6IiJ9XSwiaXNMaW5rZWQiOmZhbHNlfSwib2JqUGFyZW50IjpudWxsLCJvYmpJdGVtIjpudWxsLCJjaGlsZHJlbiI6W10sIml0ZW1zIjpbXSwic2VhcmNoQ3JpdGVyaWEiOls3LDYxLDY1LDYzLDgwXSwiZXJyb3IiOm51bGwsImJyb3dzZXJGcmFtZXdvcmsiOiJ1bmRlZmluZWQiLCJjYXB0dXJlVmVyc2lvbiI6NTgwMCwiaXNDZWZXaW5Gb3Jtc0FwcGxpY2F0aW9uIjpmYWxzZSwiYWR2YW5jZVByb3BlcnRpZXMiOnsiYW5jZXN0b3JFbGVtZW50IjoiPHRyPjx0aD48YT48L2E+PC90aD48dGQ+PC90ZD48dGQ+PGVtPjxzcGFuPjwvc3Bhbj48L2VtPjwvdGQ+PC90cj4iLCJjc3NQYXRoIjoiW10iLCJhZHZhbmNlWHBhdGgiOiJbXCIvL2FbQGhyZWY9Jy9tYXJrZXRpbmRleC9nb2xkRGV0YWlsLm5hdmVyJ11cIixcIi8vZGl2W0BpZD0nY29udGVudCddL2RpdlsyXS9kaXZbMl0vZGl2WzJdL3RhYmxlWzFdL3Rib2R5WzFdL3RyWzJdL3RoWzFdL2FbMV1cIl0iLCJwcmVjZWRpbmdUZXh0IjoiNTMuNjAiLCJhbmNob3JUZXh0IjoiIiwiYWRkaXRpb25hbFByb3BlcnRpZXMiOnsiYWFfZ2VuYWlfc3Vycm91bmRpbmdDb250ZXh0Ijoie1widmVyc2lvblwiOjEsXCJ0YXJnZXRcIjp7XCJ0YWdcIjpcImFcIixcImhyZWZcIjpcImh0dHBzOi8vZmluYW5jZS5uYXZlci5jb20vbWFya2V0aW5kZXgvZ29sZERldGFpbC5uYXZlclwiLFwidGV4dFwiOlwi6rWt64K06riIKDA3LjMxKVwiLFwidmlzaWJsZVwiOnRydWV9LFwicHJlY2VkaW5nU2libGluZ3NcIjpbe1wicG9zaXRpb25cIjoxLFwidGFnXCI6XCJ0clwiLFwidGV4dFwiOlwi6rWt7KCc6riIKDA3LjMxKSA0LDEwNy4wMCDtlZjrnb0gNTMuNjBcIixcInZpc2libGVcIjp0cnVlLFwic3RhYmxlQ2xhc3Nlc1wiOltcImRvd25cIixcImJvbGRcIl0sXCJkaXN0YW5jZUxldmVsXCI6Mn0se1wicG9zaXRpb25cIjoyLFwidGFnXCI6XCJ0aGVhZFwiLFwidGV4dFwiOlwi6rWs67aEIO2YhOyerOqwgCDsoITsnbzrjIDruYRcIixcInZpc2libGVcIjp0cnVlLFwiZGlzdGFuY2VMZXZlbFwiOjN9LHtcInBvc2l0aW9uXCI6MyxcInRhZ1wiOlwiY29sZ3JvdXBcIixcInZpc2libGVcIjp0cnVlLFwiZGlzdGFuY2VMZXZlbFwiOjN9LHtcInBvc2l0aW9uXCI6NCxcInRhZ1wiOlwiY2FwdGlvblwiLFwidGV4dFwiOlwi6riIIOyLnOyEuOyiheulmOyXkCDrjIDtlZwg7ZiE7J6s6rCALOyghOydvOuMgOu5hOuhnCDqtazrtoTrkJjslrQg7J6I7Iq164uI64ukLlwiLFwidmlzaWJsZVwiOnRydWUsXCJkaXN0YW5jZUxldmVsXCI6M30se1wicG9zaXRpb25cIjo1LFwidGFnXCI6XCJoMlwiLFwidGV4dFwiOlwi6riIIOyLnOyEuFwiLFwidmlzaWJsZVwiOnRydWUsXCJzdGFibGVDbGFzc2VzXCI6W1wiaF9nb2xkXCJdLFwiZGlzdGFuY2VMZXZlbFwiOjR9XSxcImZvbGxvd2luZ1NpYmxpbmdzXCI6W3tcInBvc2l0aW9uXCI6MSxcInRhZ1wiOlwidGRcIixcInRleHRcIjpcIjE4Nyw0MjAuNjNcIixcInZpc2libGVcIjp0cnVlLFwiZGlzdGFuY2VMZXZlbFwiOjEsXCJpc0R5bmFtaWNcIjpmYWxzZX0se1wicG9zaXRpb25cIjoyLFwidGFnXCI6XCJ0ZFwiLFwidGV4dFwiOlwi7ZWY6529IDg0MC43MFwiLFwidmlzaWJsZVwiOnRydWUsXCJkaXN0YW5jZUxldmVsXCI6MSxcImlzRHluYW1pY1wiOmZhbHNlfSx7XCJwb3NpdGlvblwiOjMsXCJ0YWdcIjpcInBcIixcInRleHRcIjpcIuuLqOychHzqta3soJw664us65+sL+2KuOuhnOydtOyYqOyKpCwg6rWt64K0OuybkC9nXCIsXCJ2aXNpYmxlXCI6dHJ1ZSxcInN0YWJsZUNsYXNzZXNcIjpbXCJkZWNfZXhjaGFuZ2UyXCJdLFwiZGlzdGFuY2VMZXZlbFwiOjQsXCJpc0R5bmFtaWNcIjpmYWxzZX0se1wicG9zaXRpb25cIjo0LFwidGFnXCI6XCJhXCIsXCJocmVmXCI6XCJodHRwczovL2ZpbmFuY2UubmF2ZXIuY29tL21hcmtldGluZGV4L2dvbGRNYWluLm5hdmVyXCIsXCJ0ZXh0XCI6XCLquIgg7Iuc7IS4IOuNlOuztOq4sFwiLFwidmlzaWJsZVwiOnRydWUsXCJzdGFibGVDbGFzc2VzXCI6W1wiYnRuX21vcmVcIl0sXCJkaXN0YW5jZUxldmVsXCI6NCxcImlzRHluYW1pY1wiOmZhbHNlfSx7XCJwb3NpdGlvblwiOjUsXCJ0YWdcIjpcImRpdlwiLFwidGV4dFwiOlwi7JuQ7J6Q7J6sIOybkOyekOyerOyiheulmOyXkCDrjIDtlZwg7ZiE7J6s6rCALOyghOydvOuMgOu5hOuhnCDqtazrtoTrkJjslrQg7J6I7Iq164uI64ukLlwiLFwidmlzaWJsZVwiOnRydWUsXCJkaXN0YW5jZUxldmVsXCI6NSxcImlzRHluYW1pY1wiOmZhbHNlfV0sXCJzcGF0aWFsTmVpZ2hib3JzXCI6e1wibGVmdFwiOltdLFwicmlnaHRcIjpbe1widGFnXCI6XCJhXCIsXCJ0ZXh0XCI6XCLrgqkoMDcuMzEpXCIsXCJkaXN0YW5jZVwiOjE3NX1dLFwiYWJvdmVcIjpbe1widGFnXCI6XCJhXCIsXCJ0ZXh0XCI6XCLqta3soJzquIgoMDcuMzEpXCIsXCJkaXN0YW5jZVwiOjEwfSx7XCJ0YWdcIjpcInRoXCIsXCJ0ZXh0XCI6XCLqtazrtoRcIixcImRpc3RhbmNlXCI6Mjh9LHtcInRhZ1wiOlwiY2FwdGlvblwiLFwidGV4dFwiOlwi6riIIOyLnOyEuOyiheulmOyXkCDrjIDtlZwg7ZiE7J6s6rCALOyghOydvOuMgOu5hOuhnCDqtazrtoTrkJjslrQg7J6I7Iq164uI64ukLlwiLFwiZGlzdGFuY2VcIjoyOX0se1widGFnXCI6XCJoMlwiLFwidGV4dFwiOlwi6riIIOyLnOyEuFwiLFwiZGlzdGFuY2VcIjozNn0se1widGFnXCI6XCJhXCIsXCJ0ZXh0XCI6XCLri6zrn6zsnbjrjbHsiqQoMDcuMzEpXCIsXCJkaXN0YW5jZVwiOjExNn1dLFwiYmVsb3dcIjpbe1widGFnXCI6XCJwXCIsXCJ0ZXh0XCI6XCLri6jsnIR86rWt7KCcOuuLrOufrC/tirjroZzsnbTsmKjsiqQsIOq1reuCtDrsm5AvZ1wiLFwiZGlzdGFuY2VcIjoxMH0se1widGFnXCI6XCJhXCIsXCJ0ZXh0XCI6XCLsnbTsmqnslb3qtIBcIixcImRpc3RhbmNlXCI6MjI0fV19LFwiY29udGFpbmVyQ29udGV4dFwiOlt7XCJ0YWdcIjpcInRhYmxlXCIsXCJpZFwiOm51bGwsXCJuYW1lXCI6bnVsbCxcInJvbGVcIjpudWxsLFwiZGF0YUF0dHJpYnV0ZXNcIjpudWxsLFwidHlwZVwiOlwidGFibGVcIixcInJvd0luZGV4XCI6MSxcImNlbGxJbmRleFwiOjAsXCJjaGlsZEVsZW1lbnRDb3VudFwiOjI2LFwiY2xhc3Nlc1wiOlwidGJsX2hvbWVcIixcInRhYmxlSW5kZXhcIjoxMixcInRvdGFsTWF0Y2hpbmdUYWJsZXNcIjoxNixcInByZWNlZGluZ0xhYmVsXCI6XCLquIgg7Iuc7IS4XCJ9XSxcInBvc2l0aW9uQ29udGV4dFwiOntcIm50aE9mVHlwZVwiOjEsXCJ0b3RhbE9mVHlwZVwiOjEsXCJudGhWaXNpYmxlT2ZUeXBlXCI6MSxcInRvdGFsVmlzaWJsZU9mVHlwZVwiOjEsXCJudGhDaGlsZFwiOjEsXCJ0b3RhbENoaWxkcmVuXCI6MSxcImlzRmlyc3RPZlR5cGVcIjp0cnVlLFwiaXNMYXN0T2ZUeXBlXCI6dHJ1ZSxcInN0YWJsZVBhcmVudFNlbGVjdG9yXCI6bnVsbCxcInN0YWJsZUFuY2VzdG9yXCI6XCJ0YWJsZVwiLFwicGF0aEZyb21TdGFibGVBbmNlc3RvclwiOlwidGJvZHkgPiB0cjpudGgtb2YtdHlwZSgyKSA+IHRoID4gYVwifSxcImZ1bGxBbmNlc3RvckNoYWluXCI6W3tcImRlcHRoXCI6MixcInRhZ1wiOlwidHJcIixcInN0YWJsZUNsYXNzZXNcIjpbXCJkb3duXCJdfSx7XCJkZXB0aFwiOjQsXCJ0YWdcIjpcInRhYmxlXCIsXCJzdGFibGVDbGFzc2VzXCI6W1widGJsX2hvbWVcIl19LHtcImRlcHRoXCI6OCxcInRhZ1wiOlwiZGl2XCIsXCJpZFwiOlwiY29udGVudFwifSx7XCJkZXB0aFwiOjksXCJ0YWdcIjpcImRpdlwiLFwiaWRcIjpcImNvbnRhaW5lclwiLFwic3RhYmxlQ2xhc3Nlc1wiOltcImhvbWVcIl19LHtcImRlcHRoXCI6MTAsXCJ0YWdcIjpcImRpdlwiLFwiaWRcIjpcIndyYXBcIn1dLFwibGFiZWxJbmZvXCI6bnVsbCxcInNlY3Rpb25Db250ZXh0XCI6bnVsbCxcImlmcmFtZUluZm9cIjpudWxsLFwicmVjb21tZW5kZWRTZWxlY3RvcnNcIjpbe1wicHJpb3JpdHlcIjo0LFwidHlwZVwiOlwidGV4dC1jb250ZW50XCIsXCJzZWxlY3RvclwiOm51bGwsXCJ4cGF0aFwiOlwiLy9hW25vcm1hbGl6ZS1zcGFjZSh0ZXh0KCkpPVxcXCLqta3rgrTquIgoMDcuMzEpXFxcIiBvciBub3JtYWxpemUtc3BhY2UoLik9XFxcIuq1reuCtOq4iCgwNy4zMSlcXFwiXVwiLFwic3RhYmlsaXR5XCI6XCJzZW1pLXN0YWJsZVwiLFwicmVhc29uXCI6XCJUZXh0IGNvbnRlbnQ6IFxcXCLqta3rgrTquIgoMDcuMzEpXFxcIlwifSx7XCJwcmlvcml0eVwiOjcsXCJ0eXBlXCI6XCJwb3NpdGlvblwiLFwic2VsZWN0b3JcIjpcInRhYmxlID4gdGJvZHkgPiB0cjpudGgtb2YtdHlwZSgyKSA+IHRoID4gYVwiLFwieHBhdGhcIjpudWxsLFwic3RhYmlsaXR5XCI6XCJmcmFnaWxlXCIsXCJyZWFzb25cIjpcIlBvc2l0aW9uOiAxIG9mIDEgd2l0aGluIHRhYmxlXCJ9XX0ifX19",
+              "browserType": "EDGE",
+              "capture": {
+                "screenshotMetadataPath": "e5a8e929-34f5-469f-aae1-5eda0748044a.png",
+                "screenshotRectangle": {
+                  "height": 12,
+                  "width": 78,
+                  "x": 524,
+                  "y": 558
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "024f03d8-16a3-46ef-a4c3-ccfb2f0525b4.png",
+                "thumbnailRectangle": {
+                  "height": 12,
+                  "width": 78,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "LINK",
+              "criteria": {
+                "CSS Selector": {
+                  "enabled": true,
+                  "value": {
+                    "string": "div#content>div:nth-of-type(2)>div:nth-of-type(2)>div:nth-of-type(2)>table>tbody>tr:nth-of-type(2)>th>a",
+                    "type": "STRING"
+                  }
+                },
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "30",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "4",
+                    "type": "STRING"
+                  }
+                },
+                "DOMXPath": {
+                  "enabled": true,
+                  "value": {
+                    "string": "//div[@id='content']/div[2]/div[2]/div[2]/table[1]/tbody[1]/tr[2]/th[1]/a[1]",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Alt": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML ClassId": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FrameName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FramePath": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FrameSrc": {
+                  "enabled": true,
+                  "value": {
+                    "string": "https://finance.naver.com/",
+                    "type": "STRING"
+                  }
+                },
+                "HTML HasFrame": {
+                  "enabled": true,
+                  "value": {
+                    "string": "false",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "15",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Href": {
+                  "enabled": true,
+                  "value": {
+                    "string": "https://finance.naver.com/marketindex/goldDetail.naver",
+                    "type": "STRING"
+                  }
+                },
+                "HTML ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML InnerText": {
+                  "enabled": true,
+                  "value": {
+                    "string": "국내금(07.31)",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "513",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML SourceIndex": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Tag": {
+                  "enabled": true,
+                  "value": {
+                    "string": "A",
+                    "type": "STRING"
+                  }
+                },
+                "HTML TagIndex": {
+                  "enabled": false,
+                  "value": {
+                    "string": "286",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Title": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1370",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Type": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "98",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "15",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "IsVisible": {
+                  "enabled": false,
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "655",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|-4|1|-1|-1|2|2|-1|-1|1|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "Link",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "697",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "10686671-436d-49c1-8c8b-584afefbd8a0",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "98",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "innerHTML": {
+                  "enabled": false,
+                  "value": {
+                    "string": " 국내금(07.31)",
+                    "type": "STRING"
+                  }
+                },
+                "outerHTML": {
+                  "enabled": false,
+                  "value": {
+                    "string": "<a href=\"/marketindex/goldDetail.naver\" onclick=\"clickcr(this, 'gol.list', 'CMDT_GD', '2', event);\"> 국내금(07.31)</a>",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "HTML"
+            },
+            "uiObjectWindow": {
+              "expression": "$Browser3$",
+              "type": "WINDOW"
+            }
+          }
+        },
+        {
+          "name": "linkAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "30",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "27f6d63e-c270-4685-bcfa-40f51d56af2b"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMzU3ODVmODktMTVjMC00ZDNkLWE1OGItNmUxZmNmNWIyYWMzIiwiaWQiOiIiLCJuYW1lIjoiIiwidmFsdWUiOiIiLCJjbGFzcyI6IiIsInBhcmVudCI6IiIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6MX0seyJpbmRleCI6Mn1dfSwicm9sZSI6MTUsImluZGV4IjowLCJsZWZ0IjozNTksInRvcCI6MjgzLCJ3aWR0aCI6ODc2LCJoZWlnaHQiOjQ0NiwiY2xpY2tYIjoyNzAsImNsaWNrWSI6MTEsImRlc2NyaXB0aW9uIjoiIiwic3RhdGVzIjoiIiwiZGVmYXVsdEFjdGlvbiI6IiIsInRlY2hub2xvZ3kiOnsidGVjaFR5cGUiOjYsInBsYXRmb3JtVHlwZSI6MTIsImFwcGxpY2F0aW9uVHlwZSI6OCwicHJvY2Vzc0lEIjoibXNlZGdlIiwid2luSGFuZGxlIjoiIiwib2NyRW5naW5lIjpudWxsLCJpc0FkdmFuY2VkQ2FwdHVyZSI6ZmFsc2UsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOm51bGwsInByb3BlcnRpZXMiOlt7Im5hbWUiOiJET01YUGF0aCIsInZhbHVlIjoiL2h0bWwvYm9keS9kaXZbMV0vdGFibGVbMV0ifSx7Im5hbWUiOiJDU1MgU2VsZWN0b3IiLCJ2YWx1ZSI6Imh0bWw+Ym9keT5kaXY+dGFibGUifSx7Im5hbWUiOiJIVE1MIElEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIE5hbWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQWx0IiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFRhZyIsInZhbHVlIjoiVEFCTEUifSx7Im5hbWUiOiJIVE1MIENsYXNzIiwidmFsdWUiOiJ0YmxfZXhjaGFuZ2UgdG9kYXkifSx7Im5hbWUiOiJIVE1MIElubmVyVGV4dCIsInZhbHVlIjoi7J2867OEIOyLnOyEuFxu64Kg7KecXHTrp6Trp6TquLDspIDsnKhcdOyghOydvOuMgOu5hFx07Iuk66y8IOqxsOuemFx06rOE7KKMIOqxsOuemFx06riw7KSAIOq1reygnCDquIgg7Iuc7IS4XHTquLDspIAg7JuQ64us65+sIO2ZmOycqFxu7IKs7IukIOuVjFx07YyM7IukIOuVjFx07J6F6riIIOyLnFx07ZW07KeAIOyLnFxuMjAyNi4wNy4zMVx0MTg3LDQyMC42M1x0IDg0MC43MFx0MTk2LDc5MS42Nlx0MTc4LDA0OS42MFx0MTg5LDI5NC44M1x0MTg1LDU0Ni40M1x0NCwwNDMuMDFcdDEsNDQyLjAwXG4yMDI2LjA3LjMwXHQxODgsMjYxLjMzXHQgMSw0MTkuMjRcdDE5Nyw2NzQuMzlcdDE3OCw4NDguMjdcdDE5MCwxNDMuOTRcdDE4NiwzNzguNzJcdDQsMTA0LjY5XHQxLDQyNi43MFxuMjAyNi4wNy4yOVx0MTg5LDY4MC41N1x0IDQ0OS44NVx0MTk5LDE2NC41OVx0MTgwLDE5Ni41NVx0MTkxLDU3Ny4zN1x0MTg3LDc4My43N1x0NCwwNzcuNjJcdDEsNDQ3LjAwXG4yMDI2LjA3LjI4XHQxODksMjMwLjcyXHQgMywzNTUuNDZcdDE5OCw2OTIuMjVcdDE3OSw3NjkuMTlcdDE5MSwxMjMuMDJcdDE4NywzMzguNDJcdDQsMDM4LjY0XHQxLDQ1Ny41MFxuMjAyNi4wNy4yN1x0MTkyLDU4Ni4xOFx0IDEsMzkyLjcxXHQyMDIsMjE1LjQ4XHQxODIsOTU2Ljg4XHQxOTQsNTEyLjA0XHQxOTAsNjYwLjMyXHQ0LDA4Mi4yNVx0MSw0NjcuNTBcbjIwMjYuMDcuMjRcdDE5MSwxOTMuNDdcdCAxLDI4OS42MVx0MjAwLDc1My4xNFx0MTgxLDYzMy44MFx0MTkzLDEwNS40MFx0MTg5LDI4MS41NFx0NCwwNjUuMTlcdDEsNDYzLjAwXG4yMDI2LjA3LjIzXHQxOTIsNDgzLjA4XHQgNCw3MzkuNzRcdDIwMiwxMDcuMjNcdDE4Miw4NTguOTNcdDE5NCw0MDcuOTFcdDE5MCw1NTguMjVcdDQsMDUzLjgyXHQxLDQ3Ny4wMFxuMjAyNi4wNy4yMlx0MTk3LDIyMi44Mlx0IDMsMzQ2LjMzXHQyMDcsMDgzLjk2XHQxODcsMzYxLjY4XHQxOTksMTk1LjA0XHQxOTUsMjUwLjYwXHQ0LDE0Ni42Mlx0MSw0NzkuNTBcbjIwMjYuMDcuMjFcdDE5Myw4NzYuNDlcdCAzLDA2OC4wOVx0MjAzLDU3MC4zMVx0MTg0LDE4Mi42N1x0MTk1LDgxNS4yNVx0MTkxLDkzNy43M1x0NCwwNzAuNzZcdDEsNDgxLjUwXG4yMDI2LjA3LjIwXHQxOTAsODA4LjQwXHQgNTc1Ljg0XHQyMDAsMzQ4LjgyXHQxODEsMjY3Ljk4XHQxOTIsNzE2LjQ4XHQxODgsOTAwLjMyXHQ0LDAxMC40MFx0MSwifSx7Im5hbWUiOiJIVE1MIFNvdXJjZUluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiSFRNTCBIcmVmIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIFR5cGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkhUTUwgQ2xhc3NJZCIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBUaXRsZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiSFRNTCBIZWlnaHQiLCJ2YWx1ZSI6IjQ0NiJ9LHsibmFtZSI6IkhUTUwgV2lkdGgiLCJ2YWx1ZSI6Ijg3NiJ9LHsibmFtZSI6IkhUTUwgVGFnSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJIVE1MIFRvcCIsInZhbHVlIjoiMjIifSx7Im5hbWUiOiJIVE1MIExlZnQiLCJ2YWx1ZSI6IjAifSx7Im5hbWUiOiJIVE1MIEhhc0ZyYW1lIiwidmFsdWUiOiJ0cnVlIn0seyJuYW1lIjoiSFRNTCBGcmFtZVNyYyIsInZhbHVlIjoiaHR0cHM6Ly9maW5hbmNlLm5hdmVyLmNvbS9tYXJrZXRpbmRleC9nb2xkRGFpbHlRdW90ZS5uYXZlciJ9LHsibmFtZSI6IkhUTUwgRnJhbWVOYW1lIiwidmFsdWUiOiIifSx7Im5hbWUiOiJIVE1MIEZyYW1lUGF0aCIsInZhbHVlIjoiSUZSQU1FWzZdIn0seyJuYW1lIjoiRnJhbWVET01YUGF0aCIsInZhbHVlIjoiLy9pZnJhbWVbQGlkPSdnb2xkRGFpbHlRdW90ZSddIn0seyJuYW1lIjoiaW5uZXJIVE1MIiwidmFsdWUiOiJcblx0PGNhcHRpb24+7J2867OEIOyLnOyEuDwvY2FwdGlvbj5cblx0PGNvbGdyb3VwPlxuXHQ8Y29sIHdpZHRoPVwiODZcIj5cblx0PGNvbCB3aWR0aD1cIjc3XCI+XG5cdDxjb2wgd2lkdGg9XCI3MVwiPlxuXHQ8Y29sIHdpZHRoPVwiNzZcIj5cblx0PGNvbCB3aWR0aD1cIjc1XCI+XG5cdDxjb2wgd2lkdGg9XCI3NlwiPlxuXHQ8Y29sIHdpZHRoPVwiNzVcIj5cblx0PGNvbCB3aWR0aD1cIjc3XCI+XG5cdDxjb2wgd2lkdGg9XCI3OVwiPlxuXHQ8L2NvbGdyb3VwPlxuXHQ8dGhlYWQ+XG5cdDx0cj5cblx0PHRoIHJvd3NwYW49XCIyXCIgY2xhc3M9XCJ0aF9nb2xkMVwiPjxzcGFuPuuCoOynnDwvc3Bhbj48L3RoPlxuXHQ8dGggcm93c3Bhbj1cIjJcIiBjbGFzcz1cInRoX2dvbGQyXCI+PHNwYW4+66ek66ek6riw7KSA7JyoPC9zcGFuPjwvdGg+XG5cdDx0aCByb3dzcGFuPVwiMlwiIGNsYXNzPVwidGhfZ29sZDNcIj48c3Bhbj7soITsnbzrjIDruYQ8L3NwYW4+PC90aD5cblx0PHRoIGNvbHNwYW49XCIyXCIgY2xhc3M9XCJ0aF9nb2xkNFwiPjxzcGFuPuyLpOusvCDqsbDrnpg8L3NwYW4+PC90aD5cblx0PHRoIGNvbHNwYW49XCIyXCIgY2xhc3M9XCJ0aF9nb2xkNVwiPjxzcGFuPuqzhOyijCDqsbDrnpg8L3NwYW4+PC90aD5cblx0PHRoIHJvd3NwYW49XCIyXCIgY2xhc3M9XCJ0aF9nb2xkNlwiPjxzcGFuPuq4sOykgCDqta3soJwg6riIIOyLnOyEuDwvc3Bhbj48L3RoPlxuXHQ8dGggcm93c3Bhbj1cIjJcIiBjbGFzcz1cInRoX2dvbGQ3XCI+PHNwYW4+6riw7KSAIOybkOuLrOufrCDtmZjsnKg8L3NwYW4+PC90aD5cblx0PC90cj5cblx0PHRyPlxuXHQ8dGggY2xhc3M9XCJ0aF9nb2xkOFwiPjxzcGFuPuyCrOyLpCDrlYw8L3NwYW4+PC90aD5cblx0PHRoIGNsYXNzPVwidGhfZ29sZDlcIj48c3Bhbj7tjIzsi6Qg65WMPC9zcGFuPjwvdGg+XG5cdDx0aCBjbGFzcz1cInRoX2dvbGQxMFwiPjxzcGFuPuyeheq4iCDsi5w8L3NwYW4+PC90aD5cblx0PHRoIGNsYXNzPVwidGhfZ29sZDExXCI+PHNwYW4+7ZW07KeAIOyLnDwvc3Bhbj48L3RoPlxuXHQ8L3RyPlxuXHQ8L3RoZWFkPlxuXHQ8dGJvZHk+XG5cblx0XHRcdFxuXHRcdFxuXHRcdFx0XG5cdFx0XHRcblx0XHRcblx0XHRcblx0XHRcblx0XG5cblx0PHRyIGNsYXNzPVwiZG93blwiPlxuXHQ8dGQgY2xhc3M9XCJkYXRlXCI+MjAyNi4wNy4zMTwvdGQ+XG5cdDx0ZCBjbGFzcz1cIm51bVwiPjE4Nyw0MjAuNjM8L3RkPlxuXHQ8dGQgY2xhc3M9XCJudW1cIj48aW1nIHNyYyJ9LHsibmFtZSI6Im91dGVySFRNTCIsInZhbHVlIjoiPHRhYmxlIGJvcmRlcj1cIjFcIiBjbGFzcz1cInRibF9leGNoYW5nZSB0b2RheVwiIHN1bW1hcnk9XCLsnbzrs4Qg7Iuc7IS4IOumrOyKpO2KuFwiPlxuXHQ8Y2FwdGlvbj7snbzrs4Qg7Iuc7IS4PC9jYXB0aW9uPlxuXHQ8Y29sZ3JvdXA+XG5cdDxjb2wgd2lkdGg9XCI4NlwiPlxuXHQ8Y29sIHdpZHRoPVwiNzdcIj5cblx0PGNvbCB3aWR0aD1cIjcxXCI+XG5cdDxjb2wgd2lkdGg9XCI3NlwiPlxuXHQ8Y29sIHdpZHRoPVwiNzVcIj5cblx0PGNvbCB3aWR0aD1cIjc2XCI+XG5cdDxjb2wgd2lkdGg9XCI3NVwiPlxuXHQ8Y29sIHdpZHRoPVwiNzdcIj5cblx0PGNvbCB3aWR0aD1cIjc5XCI+XG5cdDwvY29sZ3JvdXA+XG5cdDx0aGVhZD5cblx0PHRyPlxuXHQ8dGggcm93c3Bhbj1cIjJcIiBjbGFzcz1cInRoX2dvbGQxXCI+PHNwYW4+64Kg7KecPC9zcGFuPjwvdGg+XG5cdDx0aCByb3dzcGFuPVwiMlwiIGNsYXNzPVwidGhfZ29sZDJcIj48c3Bhbj7rp6Trp6TquLDspIDsnKg8L3NwYW4+PC90aD5cblx0PHRoIHJvd3NwYW49XCIyXCIgY2xhc3M9XCJ0aF9nb2xkM1wiPjxzcGFuPuyghOydvOuMgOu5hDwvc3Bhbj48L3RoPlxuXHQ8dGggY29sc3Bhbj1cIjJcIiBjbGFzcz1cInRoX2dvbGQ0XCI+PHNwYW4+7Iuk66y8IOqxsOuemDwvc3Bhbj48L3RoPlxuXHQ8dGggY29sc3Bhbj1cIjJcIiBjbGFzcz1cInRoX2dvbGQ1XCI+PHNwYW4+6rOE7KKMIOqxsOuemDwvc3Bhbj48L3RoPlxuXHQ8dGggcm93c3Bhbj1cIjJcIiBjbGFzcz1cInRoX2dvbGQ2XCI+PHNwYW4+6riw7KSAIOq1reygnCDquIgg7Iuc7IS4PC9zcGFuPjwvdGg+XG5cdDx0aCByb3dzcGFuPVwiMlwiIGNsYXNzPVwidGhfZ29sZDdcIj48c3Bhbj7quLDspIAg7JuQ64us65+sIO2ZmOycqDwvc3Bhbj48L3RoPlxuXHQ8L3RyPlxuXHQ8dHI+XG5cdDx0aCBjbGFzcz1cInRoX2dvbGQ4XCI+PHNwYW4+7IKs7IukIOuVjDwvc3Bhbj48L3RoPlxuXHQ8dGggY2xhc3M9XCJ0aF9nb2xkOVwiPjxzcGFuPu2MjOyLpCDrlYw8L3NwYW4+PC90aD5cblx0PHRoIGNsYXNzPVwidGhfZ29sZDEwXCI+PHNwYW4+7J6F6riIIOyLnDwvc3Bhbj48L3RoPlxuXHQ8dGggY2xhc3M9XCJ0aF9nb2xkMTFcIj48c3Bhbj7tlbTsp4Ag7IucPC9zcGFuPjwvdGg+XG5cdDwvdHI+XG5cdDwvdGhlYWQ+XG5cdDx0Ym9keT5cblxuXHRcdFx0XG5cdFx0XG5cdFx0XHRcblx0XHRcdFxuXHRcdFxuXHRcdFxuXHRcdFxuXHRcblxuXHQ8dHIgY2xhc3M9XCJkb3duXCI+XG5cdDx0ZCBjbGFzcz1cImRhdGVcIj4yMDI2LjA3LjMxPC90ZD5cblx0PHRkIGNsYXNzPVwibnVtXCI+MTg3LDQyMC42MzwvdGQ+XG5cdDx0ZCBjbGFzcz1cIm51bVwiPjxpbWcgc3JjPVwiaHR0cHM6Ly9zc2wucHN0YXRpYy5uZXQvc3RhdGljL25maW5hbmNlL2ljb19kb3duLmdpZlwiIHdpZHRoPVwiN1wiIGhlaWdodD1cIjZcIiBhbHQ9XCLtlZjrnb1cIj4gODQwLjcwPC90ZD5cblx0PHRkPjE5Niw3OTEuNjY8L3RkPlxuXHQ8dGQ+MTc4LDA0OS42MDwvdGQ+XG5cdDx0ZD4xODksMjk0LjgzPC90ZD5cblx0PHRkPjE4NSw1NDYuNDM8L3RkPlxuXHQ8dGQ+NCwwNDMuMDE8L3RkPlxuXHQ8dGQ+MSw0NDIuMDA8L3RkPlxuXHQ8L3RyPlxuXG5cdFx0XHRcblx0XHRcblx0XHRcdFxuXHRcdFx0XG5cdFx0XG5cdFx0XG5cdFx0XG5cdFxuXG5cdDx0ciBjbGFzcz1cImRvd25cIj5cblx0PHRkIGNsYXNzPVwiZGF0ZVwiPjIwMjYuMDcuMzA8L3RkPlxuXHQ8dGQgY2xhc3M9XCJudW1cIj4xODgsMjYxLjMzPC90ZD5cblx0PHRkIGNsYXNzPVwibnVtXCI+PGltZyBzcmM9XCJodHRwczovL3NzbC5wc3RhdGljLm5ldC9zdGF0aWMvbmZpbmFuY2UvaWNvX2Rvd24uZ2lmXCIgd2lkdGg9XCI3XCIgaGVpZ2h0PVwiNlwiIGFsdD1cIu2VmOudvVwiPiAxLDQxOS4yNDwvdGQ+XG5cdDx0ZD4xOTcsNjc0LjM5PC90ZD5cblx0PHRkPjE3OCw4NDguMjc8L3RkPlxuXHQ8dGQ+MTkwLDE0My45NDwvdGQ+XG5cdDx0ZD4xODYsMzc4LjcyPC90ZD5cblx0PHRkPjQsMTA0LjY5PC90ZD5cblx0PHRkPjEsNDI2LjcwPC90ZD5cblx0PC90cj5cblxuXHRcdFx0XG5cdFx0XG5cdFx0XG5cdFx0XHRcblx0XHRcdFxuXHRcdFxuXHRcdFxuXHRcblxuXHQ8dHIgY2xhc3M9XCJ1cFwiPlxuXHQ8dGQgY2xhc3M9XCJkYXRlXCI+MjAyNi4wNy4yOTwvdGQ+XG5cdDx0ZCBjbGFzcz1cIm51bVwiPjE4OSw2ODAuNTc8L3RkPlxuXHQ8dGQgY2xhc3M9XCJudW1cIj48aW1nIHNyYz1cImh0dHBzOi8vc3NsLnBzdGF0aWMubmV0L3N0YXRpYy9uZmluYW5jZS9pY29fdXAuZ2lmXCIgd2lkdGg9XCI3XCIgaGVpZ2h0PVwiNlwiIGFsdD1cIuyDgeyKuVwiPiA0NDkuODU8L3RkPlxuXHQ8dGQ+MTk5LDE2NC41OTwvdGQ+XG5cdDx0ZD4xODAsMTk2LjU1PC90ZD5cblx0PHRkPjE5MSw1NzcuMzc8L3RkPlxuXHQ8dGQ+MTg3LDc4My43NzwvdGQ+XG5cdDx0ZD40LDA3Ny42MjwvdGQ+XG5cdDx0ZD4xLDQ0Ny4wMDwvdGQ+XG5cdDwvdHI+XG5cblx0XHRcdFxuXHRcdFxuXHRcdFx0XG5cdFx0XHRcblx0XHRcblx0XHRcblx0XHRcblx0XG5cblx0PHRyIGNsYXNzPVwiZG93blwiPlxuXHQ8dGQgY2xhc3M9XCJkYXRlXCI+MjAyNi4wNy4yODwvdGQ+XG5cdDx0ZCBjbGFzcz1cIm51bVwiPjE4OSwyMzAuNzI8L3RkPlxuXHQ8dGQgY2xhc3M9XCJudW1cIj48aW1nIHNyYz1cImh0dHBzOi8vc3NsLnBzdGF0aWMubmV0L3N0YXRpYy9uZmluYW5jZS9pY29fZG93bi5naWZcIiB3aWR0aD1cIjdcIiBoZWlnaHQ9XCI2XCIgYWx0PVwi7ZWY6529XCI+IDMsMzU1LjQ2PC90ZD5cblx0PHRkPjE5OCw2OTIuMjU8L3RkPlxuXHQ8dGQ+MTc5LDc2OS4xOTwvdGQ+XG5cdDx0ZD4xOTEsMTIzLjAyPC90ZD5cblx0PHRkPjE4NywzMzguNDI8L3RkPlxuXHQ8dGQ+NCwwMzguNjQ8L3RkPlxuXHQ8dGQ+MSw0NTcuNTA8L3RkPlxuXHQ8L3RyPlxuXG5cdFx0XHRcblx0XHRcblx0XHRcblx0XHRcdFxuXHRcdFx0XG5cdFx0XG5cdFx0XG5cdFxuXG5cdDx0ciBjbGFzcz1cInVwXCI+XG5cdDx0ZCBjbGFzcz1cImRhdGVcIj4yMDI2LjA3LjI3PC90ZD5cblx0PHRkIGNsYXNzPVwibnVtXCI+MTkyLDU4Ni4xOCJ9LHsibmFtZSI6IklzVmlzaWJsZSIsInZhbHVlIjoidHJ1ZSJ9XSwiYXR0cmlidXRlcyI6W3sibmFtZSI6IlVuaXF1ZUlEIiwidmFsdWUiOiIzNTc4NWY4OS0xNWMwLTRkM2QtYTU4Yi02ZTFmY2Y1YjJhYzMifSx7Im5hbWUiOiJJRCIsInZhbHVlIjoiIn0seyJuYW1lIjoiTmFtZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiVmFsdWUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IldpbmRvd1RpdGxlIiwidmFsdWUiOiIifSx7Im5hbWUiOiJSb2xlIiwidmFsdWUiOiJUYWJsZSJ9LHsibmFtZSI6IlBhdGgiLCJ2YWx1ZSI6IjF8MiJ9LHsibmFtZSI6IkluZGV4IiwidmFsdWUiOiIwIn0seyJuYW1lIjoiTGVmdCIsInZhbHVlIjoiMzU5In0seyJuYW1lIjoiVG9wIiwidmFsdWUiOiIyODMifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiODc2In0seyJuYW1lIjoiSGVpZ2h0IiwidmFsdWUiOiI0NDYifSx7Im5hbWUiOiJDbGlja1giLCJ2YWx1ZSI6IjI3MCJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTEifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiIifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbNyw2MSw3MSw3NCw3OSw4MSw4MF0sImVycm9yIjpudWxsLCJicm93c2VyRnJhbWV3b3JrIjoidW5kZWZpbmVkIiwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IjxkaXY+PGgzPjxzcGFuPjwvc3Bhbj48L2gzPjx0YWJsZT48Y2FwdGlvbj48L2NhcHRpb24+PGNvbGdyb3VwPjxjb2w+PGNvbD48Y29sPjxjb2w+PGNvbD48Y29sPjxjb2w+PGNvbD48Y29sPjwvY29sZ3JvdXA+PHRoZWFkPjx0cj48dGg+PHNwYW4+PC9zcGFuPjwvdGg+PHRoPjxzcGFuPjwvc3Bhbj48L3RoPjx0aD48c3Bhbj48L3NwYW4+PC90aD48dGg+PHNwYW4+PC9zcGFuPjwvdGg+PHRoPjxzcGFuPjwvc3Bhbj48L3RoPjx0aD48c3Bhbj48L3NwYW4+PC90aD48dGg+PHNwYW4+PC9zcGFuPjwvdGg+PC90cj48dHI+PHRoPjxzcGFuPjwvc3Bhbj48L3RoPjx0aD48c3Bhbj48L3NwYW4+PC90aD48dGg+PHNwYW4+PC9zcGFuPjwvdGg+PHRoPjxzcGFuPjwvc3Bhbj48L3RoPjwvdHI+PC90aGVhZD48dGJvZHk+PHRyPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48aW1nPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PC90cj48dHI+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjxpbWc+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48L3RyPjx0cj48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PGltZz48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjwvdHI+PHRyPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48aW1nPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PC90cj48dHI+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjxpbWc+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48L3RyPjx0cj48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PGltZz48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjwvdHI+PHRyPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48aW1nPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PC90cj48dHI+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjxpbWc+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PC90ZD48L3RyPjx0cj48dGQ+PC90ZD48dGQ+PC90ZD48dGQ+PGltZz48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48L3RkPjwvdHI+PHRyPjx0ZD48L3RkPjx0ZD48L3RkPjx0ZD48aW1nPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PHRkPjwvdGQ+PC90cj48L3Rib2R5PjwvdGFibGU+PGRpdj48YT48L2E+PGE+PC9hPjxhPjwvYT48YT48L2E+PGE+PC9hPjxhPjwvYT48YT48L2E+PGE+PC9hPjxhPjwvYT48YT48L2E+PGE+PGltZz48L2E+PC9kaXY+PC9kaXY+IiwiY3NzUGF0aCI6IltdIiwiYWR2YW5jZVhwYXRoIjoiW1wiLy9kaXZbQGNsYXNzPSdzZWN0aW9uX2V4Y2hhbmdlIHNlY3Rpb25fdG9kYXknXS8vdGFibGVbMV1cIixcIi8vaDNbQGNsYXNzPSdoX3RvZGF5J10vZm9sbG93aW5nLXNpYmxpbmc6OnRhYmxlWzFdXCIsXCIvL3RhYmxlW0BjbGFzcz0ndGJsX2V4Y2hhbmdlIHRvZGF5J11cIixcIi8vdGFibGVbQHN1bW1hcnk9J+ydvOuzhCDsi5zshLgg66as7Iqk7Yq4J11cIl0iLCJwcmVjZWRpbmdUZXh0IjoiMTAiLCJhbmNob3JUZXh0IjoiIiwiYWRkaXRpb25hbFByb3BlcnRpZXMiOnsiYWFfZ2VuYWlfc3Vycm91bmRpbmdDb250ZXh0Ijoie1widmVyc2lvblwiOjEsXCJ0YXJnZXRcIjp7XCJ0YWdcIjpcInRhYmxlXCIsXCJ0ZXh0XCI6XCLsnbzrs4Qg7Iuc7IS4IOuCoOynnCDrp6Trp6TquLDspIDsnKgg7KCE7J2864yA67mEIOyLpOusvCDqsbDrnpgg6rOE7KKMIOqxsOuemCDquLDspIAg6rWt7KCcIOq4iCDsi5zshLgg6riw7KSAIOybkOuLrOufrCDtmZjsnKgg7IKs7IukIOuVjCDtjIzsi6RcIixcInZpc2libGVcIjp0cnVlLFwic3RhYmxlQ2xhc3Nlc1wiOltcInRibF9leGNoYW5nZVwiLFwidG9kYXlcIl19LFwicHJlY2VkaW5nU2libGluZ3NcIjpbe1wicG9zaXRpb25cIjoxLFwidGFnXCI6XCJoM1wiLFwidGV4dFwiOlwi7J2867OEIOyLnOyEuFwiLFwidmlzaWJsZVwiOnRydWUsXCJzdGFibGVDbGFzc2VzXCI6W1wiaF90b2RheVwiXX0se1wicG9zaXRpb25cIjoyLFwidGFnXCI6XCJoZWFkXCIsXCJ0ZXh0XCI6XCJOcGF5IOymneq2jFwiLFwidmlzaWJsZVwiOmZhbHNlLFwiZGlzdGFuY2VMZXZlbFwiOjJ9LHtcInBvc2l0aW9uXCI6MyxcInRhZ1wiOlwic2NyaXB0XCIsXCJzcmNcIjpcImh0dHBzOi8vbnRtLnBzdGF0aWMubmV0L3NjcmlwdHMvbnRtX2QxZTQzZDEzM2NlZC5qc1wiLFwidmlzaWJsZVwiOmZhbHNlLFwiZGlzdGFuY2VMZXZlbFwiOjJ9LHtcInBvc2l0aW9uXCI6NCxcInRhZ1wiOlwic2NyaXB0XCIsXCJzcmNcIjpcImh0dHBzOi8vbnRtLnBzdGF0aWMubmV0L2V4L25sb2cuanNcIixcInZpc2libGVcIjpmYWxzZSxcImRpc3RhbmNlTGV2ZWxcIjoyfV0sXCJmb2xsb3dpbmdTaWJsaW5nc1wiOlt7XCJwb3NpdGlvblwiOjEsXCJ0YWdcIjpcImRpdlwiLFwidGV4dFwiOlwiMSAyIDMgNCA1IDYgNyA4IDkgMTAg64uk7J2MXCIsXCJ2aXNpYmxlXCI6dHJ1ZSxcInN0YWJsZUNsYXNzZXNcIjpbXCJwYWdpbmdcIl0sXCJpc0R5bmFtaWNcIjpmYWxzZX0se1wicG9zaXRpb25cIjoyLFwidGFnXCI6XCJzY3JpcHRcIixcInRleHRcIjpcInZhciBpZnJhbWVSZXNpemVIZWxwZXIgPSBqaW5kby4kQ2xhc3MoeyByZXNpemVJZnJhbWU6IGZ1bmN0aW9uKG1pbkZyYW1lU2l6ZSl7IHZhciBpZnJhbWUgPSBqXCIsXCJ2aXNpYmxlXCI6ZmFsc2UsXCJkaXN0YW5jZUxldmVsXCI6MSxcImlzRHluYW1pY1wiOmZhbHNlfSx7XCJwb3NpdGlvblwiOjMsXCJ0YWdcIjpcInNjcmlwdFwiLFwidHlwZVwiOlwidGV4dC9qYXZhc2NyaXB0XCIsXCJ2aXNpYmxlXCI6ZmFsc2UsXCJkaXN0YW5jZUxldmVsXCI6MSxcImlzRHluYW1pY1wiOmZhbHNlfV0sXCJzcGF0aWFsTmVpZ2hib3JzXCI6e1wiYWJvdmVcIjpbe1widGFnXCI6XCJoM1wiLFwidGV4dFwiOlwi7J2867OEIOyLnOyEuFwiLFwiZGlzdGFuY2VcIjowfV0sXCJiZWxvd1wiOltdfSxcImNvbnRhaW5lckNvbnRleHRcIjpbe1widGFnXCI6XCJ0YWJsZVwiLFwiaWRcIjpudWxsLFwibmFtZVwiOm51bGwsXCJyb2xlXCI6bnVsbCxcImRhdGFBdHRyaWJ1dGVzXCI6bnVsbCxcInR5cGVcIjpcInRhYmxlXCIsXCJyb3dJbmRleFwiOm51bGwsXCJjZWxsSW5kZXhcIjpudWxsLFwiY2hpbGRFbGVtZW50Q291bnRcIjoxNDcsXCJjbGFzc2VzXCI6XCJ0YmxfZXhjaGFuZ2VcIixcInByZWNlZGluZ0xhYmVsXCI6XCLsnbzrs4Qg7Iuc7IS4XCJ9XSxcInBvc2l0aW9uQ29udGV4dFwiOntcIm50aE9mVHlwZVwiOjEsXCJ0b3RhbE9mVHlwZVwiOjEsXCJudGhWaXNpYmxlT2ZUeXBlXCI6MSxcInRvdGFsVmlzaWJsZU9mVHlwZVwiOjEsXCJudGhDaGlsZFwiOjIsXCJ0b3RhbENoaWxkcmVuXCI6MyxcImlzRmlyc3RPZlR5cGVcIjp0cnVlLFwiaXNMYXN0T2ZUeXBlXCI6dHJ1ZSxcInN0YWJsZVBhcmVudFNlbGVjdG9yXCI6XCIuc2VjdGlvbl9leGNoYW5nZVwifSxcImZ1bGxBbmNlc3RvckNoYWluXCI6W3tcImRlcHRoXCI6MSxcInRhZ1wiOlwiZGl2XCIsXCJzdGFibGVDbGFzc2VzXCI6W1wic2VjdGlvbl9leGNoYW5nZVwiLFwic2VjdGlvbl90b2RheVwiXX1dLFwibGFiZWxJbmZvXCI6bnVsbCxcInNlY3Rpb25Db250ZXh0XCI6bnVsbCxcImlmcmFtZUluZm9cIjp7XCJpZFwiOlwiZ29sZERhaWx5UXVvdGVcIixcIm5hbWVcIjpudWxsLFwic3JjXCI6XCJodHRwczovL2ZpbmFuY2UubmF2ZXIuY29tL21hcmtldGluZGV4L2dvbGREYWlseVF1b3RlLm5hdmVyXCIsXCJ0aXRsZVwiOlwi7J2867OE7Iuc7IS4XCJ9LFwicmVjb21tZW5kZWRTZWxlY3RvcnNcIjpbe1wicHJpb3JpdHlcIjo2LFwidHlwZVwiOlwiY2xhc3NcIixcInNlbGVjdG9yXCI6XCIudGJsX2V4Y2hhbmdlXCIsXCJ4cGF0aFwiOlwiLy8qW2NvbnRhaW5zKEBjbGFzcywgXFxcInRibF9leGNoYW5nZVxcXCIpXVwiLFwic3RhYmlsaXR5XCI6XCJzZW1pLXN0YWJsZVwiLFwicmVhc29uXCI6XCJTdGFibGUgQ1NTIGNsYXNzOiB0YmxfZXhjaGFuZ2VcIn1dfSJ9fX0=",
+              "browserType": "EDGE",
+              "capture": {
+                "screenshotMetadataPath": "bc121d28-d5ec-491f-a74d-4990d9666187.png",
+                "screenshotRectangle": {
+                  "height": 357,
+                  "width": 701,
+                  "x": 287,
+                  "y": 226
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "2f370f24-8472-4700-abcc-232c9590222e.png",
+                "thumbnailRectangle": {
+                  "height": 109,
+                  "width": 215,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "TABLE",
+              "criteria": {
+                "CSS Selector": {
+                  "enabled": true,
+                  "value": {
+                    "string": "html>body>div>table",
+                    "type": "STRING"
+                  }
+                },
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "270",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "11",
+                    "type": "STRING"
+                  }
+                },
+                "DOMXPath": {
+                  "enabled": true,
+                  "value": {
+                    "string": "/html/body/div[1]/table[1]",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "FrameDOMXPath": {
+                  "enabled": true,
+                  "value": {
+                    "string": "//iframe[@id='goldDailyQuote']",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Alt": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "tbl_exchange today",
+                    "type": "STRING"
+                  }
+                },
+                "HTML ClassId": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FrameName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FramePath": {
+                  "enabled": true,
+                  "value": {
+                    "string": "IFRAME[6]",
+                    "type": "STRING"
+                  }
+                },
+                "HTML FrameSrc": {
+                  "enabled": true,
+                  "value": {
+                    "string": "https://finance.naver.com/marketindex/goldDailyQuote.naver",
+                    "type": "STRING"
+                  }
+                },
+                "HTML HasFrame": {
+                  "enabled": true,
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "446",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Href": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML InnerText": {
+                  "enabled": false,
+                  "value": {
+                    "string": "일별 시세\n날짜\t매매기준율\t전일대비\t실물 거래\t계좌 거래\t기준 국제 금 시세\t기준 원달러 환율\n사실 때\t파실 때\t입금 시\t해지 시\n2026.07.31\t187,420.63\t 840.70\t196,791.66\t178,049.60\t189,294.83\t185,546.43\t4,043.01\t1,442.00\n2026.07.30\t188,261.33\t 1,419.24\t197,674.39\t178,848.27\t190,143.94\t186,378.72\t4,104.69\t1,426.70\n2026.07.29\t189,680.57\t 449.85\t199,164.59\t180,196.55\t191,577.37\t187,783.77\t4,077.62\t1,447.00\n2026.07.28\t189,230.72\t 3,355.46\t198,692.25\t179,769.19\t191,123.02\t187,338.42\t4,038.64\t1,457.50\n2026.07.27\t192,586.18\t 1,392.71\t202,215.48\t182,956.88\t194,512.04\t190,660.32\t4,082.25\t1,467.50\n2026.07.24\t191,193.47\t 1,289.61\t200,753.14\t181,633.80\t193,105.40\t189,281.54\t4,065.19\t1,463.00\n2026.07.23\t192,483.08\t 4,739.74\t202,107.23\t182,858.93\t194,407.91\t190,558.25\t4,053.82\t1,477.00\n2026.07.22\t197,222.82\t 3,346.33\t207,083.96\t187,361.68\t199,195.04\t195,250.60\t4,146.62\t1,479.50\n2026.07.21\t193,876.49\t 3,068.09\t203,570.31\t184,182.67\t195,815.25\t191,937.73\t4,070.76\t1,481.50\n2026.07.20\t190,808.40\t 575.84\t200,348.82\t181,267.98\t192,716.48\t188,900.32\t4,010.40\t1,",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML SourceIndex": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Tag": {
+                  "enabled": true,
+                  "value": {
+                    "string": "TABLE",
+                    "type": "STRING"
+                  }
+                },
+                "HTML TagIndex": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Title": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "22",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Type": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "HTML Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "876",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "446",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "IsVisible": {
+                  "enabled": false,
+                  "value": {
+                    "string": "true",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "359",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "1|2",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "Table",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "283",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "35785f89-15c0-4d3d-a58b-6e1fcf5b2ac3",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "876",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "innerHTML": {
+                  "enabled": false,
+                  "value": {
+                    "string": "\n\t<caption>일별 시세</caption>\n\t<colgroup>\n\t<col width=\"86\">\n\t<col width=\"77\">\n\t<col width=\"71\">\n\t<col width=\"76\">\n\t<col width=\"75\">\n\t<col width=\"76\">\n\t<col width=\"75\">\n\t<col width=\"77\">\n\t<col width=\"79\">\n\t</colgroup>\n\t<thead>\n\t<tr>\n\t<th rowspan=\"2\" class=\"th_gold1\"><span>날짜</span></th>\n\t<th rowspan=\"2\" class=\"th_gold2\"><span>매매기준율</span></th>\n\t<th rowspan=\"2\" class=\"th_gold3\"><span>전일대비</span></th>\n\t<th colspan=\"2\" class=\"th_gold4\"><span>실물 거래</span></th>\n\t<th colspan=\"2\" class=\"th_gold5\"><span>계좌 거래</span></th>\n\t<th rowspan=\"2\" class=\"th_gold6\"><span>기준 국제 금 시세</span></th>\n\t<th rowspan=\"2\" class=\"th_gold7\"><span>기준 원달러 환율</span></th>\n\t</tr>\n\t<tr>\n\t<th class=\"th_gold8\"><span>사실 때</span></th>\n\t<th class=\"th_gold9\"><span>파실 때</span></th>\n\t<th class=\"th_gold10\"><span>입금 시</span></th>\n\t<th class=\"th_gold11\"><span>해지 시</span></th>\n\t</tr>\n\t</thead>\n\t<tbody>\n\n\t\t\t\n\t\t\n\t\t\t\n\t\t\t\n\t\t\n\t\t\n\t\t\n\t\n\n\t<tr class=\"down\">\n\t<td class=\"date\">2026.07.31</td>\n\t<td class=\"num\">187,420.63</td>\n\t<td class=\"num\"><img src",
+                    "type": "STRING"
+                  }
+                },
+                "outerHTML": {
+                  "enabled": false,
+                  "value": {
+                    "string": "<table border=\"1\" class=\"tbl_exchange today\" summary=\"일별 시세 리스트\">\n\t<caption>일별 시세</caption>\n\t<colgroup>\n\t<col width=\"86\">\n\t<col width=\"77\">\n\t<col width=\"71\">\n\t<col width=\"76\">\n\t<col width=\"75\">\n\t<col width=\"76\">\n\t<col width=\"75\">\n\t<col width=\"77\">\n\t<col width=\"79\">\n\t</colgroup>\n\t<thead>\n\t<tr>\n\t<th rowspan=\"2\" class=\"th_gold1\"><span>날짜</span></th>\n\t<th rowspan=\"2\" class=\"th_gold2\"><span>매매기준율</span></th>\n\t<th rowspan=\"2\" class=\"th_gold3\"><span>전일대비</span></th>\n\t<th colspan=\"2\" class=\"th_gold4\"><span>실물 거래</span></th>\n\t<th colspan=\"2\" class=\"th_gold5\"><span>계좌 거래</span></th>\n\t<th rowspan=\"2\" class=\"th_gold6\"><span>기준 국제 금 시세</span></th>\n\t<th rowspan=\"2\" class=\"th_gold7\"><span>기준 원달러 환율</span></th>\n\t</tr>\n\t<tr>\n\t<th class=\"th_gold8\"><span>사실 때</span></th>\n\t<th class=\"th_gold9\"><span>파실 때</span></th>\n\t<th class=\"th_gold10\"><span>입금 시</span></th>\n\t<th class=\"th_gold11\"><span>해지 시</span></th>\n\t</tr>\n\t</thead>\n\t<tbody>\n\n\t\t\t\n\t\t\n\t\t\t\n\t\t\t\n\t\t\n\t\t\n\t\t\n\t\n\n\t<tr class=\"down\">\n\t<td class=\"date\">2026.07.31</td>\n\t<td class=\"num\">187,420.63</td>\n\t<td class=\"num\"><img src=\"https://ssl.pstatic.net/static/nfinance/ico_down.gif\" width=\"7\" height=\"6\" alt=\"하락\"> 840.70</td>\n\t<td>196,791.66</td>\n\t<td>178,049.60</td>\n\t<td>189,294.83</td>\n\t<td>185,546.43</td>\n\t<td>4,043.01</td>\n\t<td>1,442.00</td>\n\t</tr>\n\n\t\t\t\n\t\t\n\t\t\t\n\t\t\t\n\t\t\n\t\t\n\t\t\n\t\n\n\t<tr class=\"down\">\n\t<td class=\"date\">2026.07.30</td>\n\t<td class=\"num\">188,261.33</td>\n\t<td class=\"num\"><img src=\"https://ssl.pstatic.net/static/nfinance/ico_down.gif\" width=\"7\" height=\"6\" alt=\"하락\"> 1,419.24</td>\n\t<td>197,674.39</td>\n\t<td>178,848.27</td>\n\t<td>190,143.94</td>\n\t<td>186,378.72</td>\n\t<td>4,104.69</td>\n\t<td>1,426.70</td>\n\t</tr>\n\n\t\t\t\n\t\t\n\t\t\n\t\t\t\n\t\t\t\n\t\t\n\t\t\n\t\n\n\t<tr class=\"up\">\n\t<td class=\"date\">2026.07.29</td>\n\t<td class=\"num\">189,680.57</td>\n\t<td class=\"num\"><img src=\"https://ssl.pstatic.net/static/nfinance/ico_up.gif\" width=\"7\" height=\"6\" alt=\"상승\"> 449.85</td>\n\t<td>199,164.59</td>\n\t<td>180,196.55</td>\n\t<td>191,577.37</td>\n\t<td>187,783.77</td>\n\t<td>4,077.62</td>\n\t<td>1,447.00</td>\n\t</tr>\n\n\t\t\t\n\t\t\n\t\t\t\n\t\t\t\n\t\t\n\t\t\n\t\t\n\t\n\n\t<tr class=\"down\">\n\t<td class=\"date\">2026.07.28</td>\n\t<td class=\"num\">189,230.72</td>\n\t<td class=\"num\"><img src=\"https://ssl.pstatic.net/static/nfinance/ico_down.gif\" width=\"7\" height=\"6\" alt=\"하락\"> 3,355.46</td>\n\t<td>198,692.25</td>\n\t<td>179,769.19</td>\n\t<td>191,123.02</td>\n\t<td>187,338.42</td>\n\t<td>4,038.64</td>\n\t<td>1,457.50</td>\n\t</tr>\n\n\t\t\t\n\t\t\n\t\t\n\t\t\t\n\t\t\t\n\t\t\n\t\t\n\t\n\n\t<tr class=\"up\">\n\t<td class=\"date\">2026.07.27</td>\n\t<td class=\"num\">192,586.18",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "HTML"
+            },
+            "uiObjectWindow": {
+              "expression": "$Browser3$",
+              "type": "WINDOW"
+            }
+          }
+        },
+        {
+          "name": "tableAction",
+          "value": {
+            "string": "EXTRACTTOCSV",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "30",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "goldTable"
+      },
+      "type": "action",
+      "uid": "51080acb-2a8f-4322-b760-6df97c11b032"
+    },
+    {
+      "attributes": [
+        {
+          "name": "loopType",
+          "value": {
+            "string": "WHILE",
+            "type": "STRING"
+          }
+        },
+        {
+          "attributes": [
+            {
+              "name": "table",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "goldTable"
+              }
+            },
+            {
+              "name": "condition",
+              "value": {
+                "string": "GT",
+                "type": "STRING"
+              }
+            },
+            {
+              "name": "rowCount",
+              "value": {
+                "number": "5",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "name": "condition",
+          "value": {
+            "conditionalName": "tableRowCondition",
+            "packageName": "DataTable",
+            "type": "CONDITIONAL"
+          }
+        },
+        {
+          "name": "checkConditionAtEnd",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "disabled": false,
+      "steps": [
+        {
+          "action": "deleteRow",
+          "attributes": [
+            {
+              "name": "table",
+              "value": {
+                "type": "VARIABLE",
+                "variableName": "goldTable"
+              }
+            },
+            {
+              "name": "inputPosition",
+              "value": {
+                "number": "5",
+                "type": "NUMBER"
+              }
+            }
+          ],
+          "disabled": false,
+          "package": "DataTable",
+          "type": "action",
+          "uid": "d88a7c0e-6b17-4e1f-b4c0-f75650f0dcb0"
+        }
+      ],
+      "type": "loop",
+      "uid": "6743719f-70f0-4c64-8e39-aae121a61922"
+    },
+    {
+      "action": "deleteRow",
+      "attributes": [
+        {
+          "name": "table",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "goldTable"
+          }
+        },
+        {
+          "name": "inputPosition",
+          "value": {
+            "number": "0",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "DataTable",
+      "type": "action",
+      "uid": "bb56e784-e180-487a-8b4b-d5a887243fa2"
+    },
+    {
+      "action": "deleteRow",
+      "attributes": [
+        {
+          "name": "table",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "goldTable"
+          }
+        },
+        {
+          "name": "inputPosition",
+          "value": {
+            "number": "0",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "DataTable",
+      "type": "action",
+      "uid": "f8dcd229-2205-4f6d-8b6a-7919f52b16c5"
+    },
+    {
+      "action": "insertRow",
+      "attributes": [
+        {
+          "name": "table",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "goldTable"
+          }
+        },
+        {
+          "name": "positionSelection",
+          "value": {
+            "string": "specificPosition",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "inputPosition",
+          "value": {
+            "number": "0",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "rowRecord",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "tableHeader1"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "DataTable",
+      "type": "action",
+      "uid": "3ac6d64f-ed1b-4c93-a38e-613720cc98d2"
+    },
+    {
+      "action": "insertRow",
+      "attributes": [
+        {
+          "name": "table",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "goldTable"
+          }
+        },
+        {
+          "name": "positionSelection",
+          "value": {
+            "string": "specificPosition",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "inputPosition",
+          "value": {
+            "number": "1",
+            "type": "NUMBER"
+          }
+        },
+        {
+          "name": "rowRecord",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "tableHeader2"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "DataTable",
+      "type": "action",
+      "uid": "6d10ec66-84d6-4b72-95de-e54817dc4fa4"
+    },
+    {
+      "action": "CreateSpreadsheet",
+      "attributes": [
+        {
+          "name": "filePath",
+          "value": {
+            "expression": "file://$localFilePath$",
+            "type": "FILE"
+          }
+        },
+        {
+          "name": "isOverwrite",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "sheetName",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "setSensitivity",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "excelSession"
+      },
+      "type": "action",
+      "uid": "8beaee64-f54e-47f9-95c9-8a55b01819c1"
+    },
+    {
+      "action": "writeDataTableToWorksheet",
+      "attributes": [
+        {
+          "name": "tableObj",
+          "value": {
+            "type": "VARIABLE",
+            "variableName": "goldTable"
+          }
+        },
+        {
+          "name": "sheetSelection",
+          "value": {
+            "string": "ActiveWorksheet",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "firstCellAddress",
+          "value": {
+            "string": "A1",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "isRetainCellFormat",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "30383280-083f-401d-8405-f7b1bbf7f08b"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "A1:I5",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "3e2c7aaf-33e4-4fe5-86d0-564d102a96cc"
+    },
+    {
+      "action": "Keystrokes",
+      "attributes": [
+        {
+          "name": "windowValue",
+          "value": {
+            "type": "WINDOW",
+            "window": {
+              "presetType": "CURRENTLY_ACTIVE",
+              "type": "WINDOW"
+            }
+          }
+        },
+        {
+          "name": "typeOfInputStringToType",
+          "value": {
+            "string": "VALUE",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "stringToType",
+          "value": {
+            "string": "[ALT DOWN][ALT UP]hba",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delay",
+          "value": {
+            "number": "10",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Keystrokes",
+      "type": "action",
+      "uid": "12738ac3-77cf-4657-97e8-3decf4942de6"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiMGEwNzExMzQtNTZjZS00NWJlLTgyNTItMzJlMjg0NjAxOWFiIiwiaWQiOiIiLCJuYW1lIjoi6rCA7Jq0642wIOunnuy2pCIsInZhbHVlIjoiIiwiY2xhc3MiOiJOZXRVSUhXTkQiLCJwYXJlbnQiOiLrp57stqQiLCJ3aW5kb3dUaXRsZSI6IiIsInBhdGgiOnsib2JqUGF0aCI6W3siaW5kZXgiOjR9LHsiaW5kZXgiOjJ9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjR9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjoxfSx7ImluZGV4IjozfSx7ImluZGV4IjoyfV19LCJyb2xlIjoxLCJpbmRleCI6MiwibGVmdCI6NTI5LCJ0b3AiOjk1LCJ3aWR0aCI6MjgsImhlaWdodCI6MjksImNsaWNrWCI6OCwiY2xpY2tZIjoxOSwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiJGb2N1c2FibGUsUHJlc3NlZCIsImRlZmF1bHRBY3Rpb24iOiLriITrpbTquLAiLCJ0ZWNobm9sb2d5Ijp7InRlY2hUeXBlIjoxLCJwbGF0Zm9ybVR5cGUiOjAsImFwcGxpY2F0aW9uVHlwZSI6MCwicHJvY2Vzc0lEIjoiIiwid2luSGFuZGxlIjoiIiwib2NyRW5naW5lIjpudWxsLCJpc0FkdmFuY2VkQ2FwdHVyZSI6ZmFsc2UsImlzU2lsdmVybGlnaHRUZWNobm9sb2d5IjpmYWxzZX0sImFjdGlvbnMiOlsyNCwwLDEsMiwzXSwicHJvcGVydGllcyI6W3sibmFtZSI6Ik9jY3VycmVuY2UiLCJ2YWx1ZSI6IjAifV0sImF0dHJpYnV0ZXMiOlt7Im5hbWUiOiJVbmlxdWVJRCIsInZhbHVlIjoiMGEwNzExMzQtNTZjZS00NWJlLTgyNTItMzJlMjg0NjAxOWFiIn0seyJuYW1lIjoiSUQiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6Ik5hbWUiLCJ2YWx1ZSI6IuqwgOyatOuNsCDrp57stqQifSx7Im5hbWUiOiJWYWx1ZSIsInZhbHVlIjoiIn0seyJuYW1lIjoiQ2xhc3MiLCJ2YWx1ZSI6Ik5ldFVJSFdORCJ9LHsibmFtZSI6IlBhcmVudCIsInZhbHVlIjoi66ee7LakIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlB1c2hCdXR0b24ifSx7Im5hbWUiOiJQYXRoIiwidmFsdWUiOiI0fDJ8NHwxfDR8MXw0fDF8NHwxfDR8LTJ8MXwzfDIifSx7Im5hbWUiOiJJbmRleCIsInZhbHVlIjoiMiJ9LHsibmFtZSI6IkxlZnQiLCJ2YWx1ZSI6IjUyOSJ9LHsibmFtZSI6IlRvcCIsInZhbHVlIjoiOTUifSx7Im5hbWUiOiJXaWR0aCIsInZhbHVlIjoiMjgifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI5In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiI4In0seyJuYW1lIjoiQ2xpY2tZIiwidmFsdWUiOiIxOSJ9LHsibmFtZSI6IkRlc2NyaXB0aW9uIiwidmFsdWUiOiIifSx7Im5hbWUiOiJTdGF0ZXMiLCJ2YWx1ZSI6IkZvY3VzYWJsZSxQcmVzc2VkIn0seyJuYW1lIjoiRGVmYXVsdEFjdGlvbiIsInZhbHVlIjoi64iE66W06riwIn1dLCJpc0xpbmtlZCI6ZmFsc2V9LCJvYmpQYXJlbnQiOm51bGwsIm9iakl0ZW0iOm51bGwsImNoaWxkcmVuIjpbXSwiaXRlbXMiOltdLCJzZWFyY2hDcml0ZXJpYSI6WzgsNywyXSwiZXJyb3IiOm51bGwsImJyb3dzZXJGcmFtZXdvcmsiOm51bGwsImNhcHR1cmVWZXJzaW9uIjo1ODAwLCJpc0NlZldpbkZvcm1zQXBwbGljYXRpb24iOmZhbHNlLCJhZHZhbmNlUHJvcGVydGllcyI6eyJhbmNlc3RvckVsZW1lbnQiOiIiLCJjc3NQYXRoIjoiIiwiYWR2YW5jZVhwYXRoIjoiIiwicHJlY2VkaW5nVGV4dCI6IiIsImFuY2hvclRleHQiOiIiLCJhZGRpdGlvbmFsUHJvcGVydGllcyI6e319fQ==",
+              "browserType": "UNKNOWN_BROWSER",
+              "capture": {
+                "screenshotMetadataPath": "9cfea1b1-7d56-43ed-a13f-6a0deb704dbb.png",
+                "screenshotRectangle": {
+                  "height": 23,
+                  "width": 22,
+                  "x": 423,
+                  "y": 76
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "411986fd-0ff3-4784-88c4-292136307c74.png",
+                "thumbnailRectangle": {
+                  "height": 23,
+                  "width": 22,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "BUTTON",
+              "criteria": {
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "Class Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "8",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "19",
+                    "type": "STRING"
+                  }
+                },
+                "Default Action": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "29",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "2",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "529",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": true,
+                  "value": {
+                    "string": "가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Occurrence": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|2|4|1|4|1|4|1|4|1|4|-2|1|3|2",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "PushButton",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "Focusable,Pressed",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "95",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0a071134-56ce-45be-8252-32e2846019ab",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "28",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+            },
+            "uiObjectWindow": {
+              "type": "WINDOW",
+              "window": {
+                "presetType": "CURRENTLY_ACTIVE",
+                "type": "WINDOW"
+              }
+            }
+          }
+        },
+        {
+          "name": "buttonAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "15",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "37479213-98fc-46d5-b69b-232ba2197e13"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "A1:A2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "387a85b9-1aa2-4571-b079-25610eb540cc"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNjNhYzIxMTktYTAwYi00ZTQzLWE2OGUtZTg0Njc2Zjc1MDM3IiwiaWQiOiIiLCJuYW1lIjoi67OR7ZWp7ZWY6rOgIOqwgOyatOuNsCDrp57stqQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIiwiY2xhc3MiOiJOZXRVSUhXTkQiLCJwYXJlbnQiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6Mn0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjoxfV19LCJyb2xlIjoyLCJpbmRleCI6MSwibGVmdCI6NjczLCJ0b3AiOjE0Miwid2lkdGgiOjE4MywiaGVpZ2h0IjoyOSwiY2xpY2tYIjozNSwiY2xpY2tZIjoxNiwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoi64iE66W06riwIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjAsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNBZHZhbmNlZENhcHR1cmUiOmZhbHNlLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpbMjQsMCwxLDIsM10sInByb3BlcnRpZXMiOlt7Im5hbWUiOiJPY2N1cnJlbmNlIiwidmFsdWUiOiIwIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjYzYWMyMTE5LWEwMGItNGU0My1hNjhlLWU4NDY3NmY3NTAzNyJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiJOZXRVSUhXTkQifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlNwbGl0QnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiNHwyfDR8MXw0fDF8NHwxfDR8MXw0fC0yfDF8M3wtMnwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI2NzMifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjE0MiJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIxODMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI5In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTYifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiLriITrpbTquLAifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbOCw3LDJdLCJlcnJvciI6bnVsbCwiYnJvd3NlckZyYW1ld29yayI6bnVsbCwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IiIsImNzc1BhdGgiOiIiLCJhZHZhbmNlWHBhdGgiOiIiLCJwcmVjZWRpbmdUZXh0IjoiIiwiYW5jaG9yVGV4dCI6IiIsImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjp7fX19",
+              "browserType": "UNKNOWN_BROWSER",
+              "capture": {
+                "screenshotMetadataPath": "7c6295b2-12f6-4d14-90e5-9d29fe3e7958.png",
+                "screenshotRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 538,
+                  "y": 114
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "3c262cef-99c0-49b3-b73f-26a433a58021.png",
+                "thumbnailRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "BUTTON",
+              "criteria": {
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "Class Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "35",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "16",
+                    "type": "STRING"
+                  }
+                },
+                "Default Action": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "29",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "673",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": true,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Occurrence": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|2|4|1|4|1|4|1|4|1|4|-2|1|3|-2|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "SplitButton",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "142",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "63ac2119-a00b-4e43-a68e-e84676f75037",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "183",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+            },
+            "uiObjectWindow": {
+              "type": "WINDOW",
+              "window": {
+                "presetType": "CURRENTLY_ACTIVE",
+                "type": "WINDOW"
+              }
+            }
+          }
+        },
+        {
+          "name": "buttonAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "15",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "8a49556a-d661-4695-a6f4-a48c29d0c3c2"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "B1:B2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "5a92a8fc-d276-46b7-8345-a873b0cd10cc"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNjNhYzIxMTktYTAwYi00ZTQzLWE2OGUtZTg0Njc2Zjc1MDM3IiwiaWQiOiIiLCJuYW1lIjoi67OR7ZWp7ZWY6rOgIOqwgOyatOuNsCDrp57stqQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIiwiY2xhc3MiOiJOZXRVSUhXTkQiLCJwYXJlbnQiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6Mn0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjoxfV19LCJyb2xlIjoyLCJpbmRleCI6MSwibGVmdCI6NjczLCJ0b3AiOjE0Miwid2lkdGgiOjE4MywiaGVpZ2h0IjoyOSwiY2xpY2tYIjozNSwiY2xpY2tZIjoxNiwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoi64iE66W06riwIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjAsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNBZHZhbmNlZENhcHR1cmUiOmZhbHNlLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpbMjQsMCwxLDIsM10sInByb3BlcnRpZXMiOlt7Im5hbWUiOiJPY2N1cnJlbmNlIiwidmFsdWUiOiIwIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjYzYWMyMTE5LWEwMGItNGU0My1hNjhlLWU4NDY3NmY3NTAzNyJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiJOZXRVSUhXTkQifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlNwbGl0QnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiNHwyfDR8MXw0fDF8NHwxfDR8MXw0fC0yfDF8M3wtMnwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI2NzMifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjE0MiJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIxODMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI5In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTYifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiLriITrpbTquLAifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbOCw3LDJdLCJlcnJvciI6bnVsbCwiYnJvd3NlckZyYW1ld29yayI6bnVsbCwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IiIsImNzc1BhdGgiOiIiLCJhZHZhbmNlWHBhdGgiOiIiLCJwcmVjZWRpbmdUZXh0IjoiIiwiYW5jaG9yVGV4dCI6IiIsImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjp7fX19",
+              "browserType": "UNKNOWN_BROWSER",
+              "capture": {
+                "screenshotMetadataPath": "7c6295b2-12f6-4d14-90e5-9d29fe3e7958.png",
+                "screenshotRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 538,
+                  "y": 114
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "3c262cef-99c0-49b3-b73f-26a433a58021.png",
+                "thumbnailRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "BUTTON",
+              "criteria": {
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "Class Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "35",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "16",
+                    "type": "STRING"
+                  }
+                },
+                "Default Action": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "29",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "673",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": true,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Occurrence": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|2|4|1|4|1|4|1|4|1|4|-2|1|3|-2|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "SplitButton",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "142",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "63ac2119-a00b-4e43-a68e-e84676f75037",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "183",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+            },
+            "uiObjectWindow": {
+              "type": "WINDOW",
+              "window": {
+                "presetType": "CURRENTLY_ACTIVE",
+                "type": "WINDOW"
+              }
+            }
+          }
+        },
+        {
+          "name": "buttonAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "15",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "6dd4ad36-1ed0-471d-8419-e6e161bd0ddc"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "C1:C2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "d8ddda73-edaa-47b8-a87e-f892de06d8f2"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNjNhYzIxMTktYTAwYi00ZTQzLWE2OGUtZTg0Njc2Zjc1MDM3IiwiaWQiOiIiLCJuYW1lIjoi67OR7ZWp7ZWY6rOgIOqwgOyatOuNsCDrp57stqQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIiwiY2xhc3MiOiJOZXRVSUhXTkQiLCJwYXJlbnQiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6Mn0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjoxfV19LCJyb2xlIjoyLCJpbmRleCI6MSwibGVmdCI6NjczLCJ0b3AiOjE0Miwid2lkdGgiOjE4MywiaGVpZ2h0IjoyOSwiY2xpY2tYIjozNSwiY2xpY2tZIjoxNiwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoi64iE66W06riwIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjAsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNBZHZhbmNlZENhcHR1cmUiOmZhbHNlLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpbMjQsMCwxLDIsM10sInByb3BlcnRpZXMiOlt7Im5hbWUiOiJPY2N1cnJlbmNlIiwidmFsdWUiOiIwIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjYzYWMyMTE5LWEwMGItNGU0My1hNjhlLWU4NDY3NmY3NTAzNyJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiJOZXRVSUhXTkQifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlNwbGl0QnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiNHwyfDR8MXw0fDF8NHwxfDR8MXw0fC0yfDF8M3wtMnwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI2NzMifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjE0MiJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIxODMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI5In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTYifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiLriITrpbTquLAifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbOCw3LDJdLCJlcnJvciI6bnVsbCwiYnJvd3NlckZyYW1ld29yayI6bnVsbCwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IiIsImNzc1BhdGgiOiIiLCJhZHZhbmNlWHBhdGgiOiIiLCJwcmVjZWRpbmdUZXh0IjoiIiwiYW5jaG9yVGV4dCI6IiIsImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjp7fX19",
+              "browserType": "UNKNOWN_BROWSER",
+              "capture": {
+                "screenshotMetadataPath": "7c6295b2-12f6-4d14-90e5-9d29fe3e7958.png",
+                "screenshotRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 538,
+                  "y": 114
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "3c262cef-99c0-49b3-b73f-26a433a58021.png",
+                "thumbnailRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "BUTTON",
+              "criteria": {
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "Class Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "35",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "16",
+                    "type": "STRING"
+                  }
+                },
+                "Default Action": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "29",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "673",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": true,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Occurrence": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|2|4|1|4|1|4|1|4|1|4|-2|1|3|-2|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "SplitButton",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "142",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "63ac2119-a00b-4e43-a68e-e84676f75037",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "183",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+            },
+            "uiObjectWindow": {
+              "type": "WINDOW",
+              "window": {
+                "presetType": "CURRENTLY_ACTIVE",
+                "type": "WINDOW"
+              }
+            }
+          }
+        },
+        {
+          "name": "buttonAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "15",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "265d31ec-62f9-4a5e-b083-cc3231203262"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "D1:E1",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "60f2bf47-2875-41c3-beee-eae336ef200b"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNjNhYzIxMTktYTAwYi00ZTQzLWE2OGUtZTg0Njc2Zjc1MDM3IiwiaWQiOiIiLCJuYW1lIjoi67OR7ZWp7ZWY6rOgIOqwgOyatOuNsCDrp57stqQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIiwiY2xhc3MiOiJOZXRVSUhXTkQiLCJwYXJlbnQiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6Mn0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjoxfV19LCJyb2xlIjoyLCJpbmRleCI6MSwibGVmdCI6NjczLCJ0b3AiOjE0Miwid2lkdGgiOjE4MywiaGVpZ2h0IjoyOSwiY2xpY2tYIjozNSwiY2xpY2tZIjoxNiwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoi64iE66W06riwIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjAsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNBZHZhbmNlZENhcHR1cmUiOmZhbHNlLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpbMjQsMCwxLDIsM10sInByb3BlcnRpZXMiOlt7Im5hbWUiOiJPY2N1cnJlbmNlIiwidmFsdWUiOiIwIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjYzYWMyMTE5LWEwMGItNGU0My1hNjhlLWU4NDY3NmY3NTAzNyJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiJOZXRVSUhXTkQifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlNwbGl0QnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiNHwyfDR8MXw0fDF8NHwxfDR8MXw0fC0yfDF8M3wtMnwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI2NzMifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjE0MiJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIxODMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI5In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTYifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiLriITrpbTquLAifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbOCw3LDJdLCJlcnJvciI6bnVsbCwiYnJvd3NlckZyYW1ld29yayI6bnVsbCwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IiIsImNzc1BhdGgiOiIiLCJhZHZhbmNlWHBhdGgiOiIiLCJwcmVjZWRpbmdUZXh0IjoiIiwiYW5jaG9yVGV4dCI6IiIsImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjp7fX19",
+              "browserType": "UNKNOWN_BROWSER",
+              "capture": {
+                "screenshotMetadataPath": "7c6295b2-12f6-4d14-90e5-9d29fe3e7958.png",
+                "screenshotRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 538,
+                  "y": 114
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "3c262cef-99c0-49b3-b73f-26a433a58021.png",
+                "thumbnailRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "BUTTON",
+              "criteria": {
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "Class Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "35",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "16",
+                    "type": "STRING"
+                  }
+                },
+                "Default Action": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "29",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "673",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": true,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Occurrence": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|2|4|1|4|1|4|1|4|1|4|-2|1|3|-2|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "SplitButton",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "142",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "63ac2119-a00b-4e43-a68e-e84676f75037",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "183",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+            },
+            "uiObjectWindow": {
+              "type": "WINDOW",
+              "window": {
+                "presetType": "CURRENTLY_ACTIVE",
+                "type": "WINDOW"
+              }
+            }
+          }
+        },
+        {
+          "name": "buttonAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "15",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "40dcc891-20f5-4aa7-8122-cc54cedcedf3"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "F1:G1",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "22c66ba3-4f21-49ef-b06e-b808923b4bfc"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNjNhYzIxMTktYTAwYi00ZTQzLWE2OGUtZTg0Njc2Zjc1MDM3IiwiaWQiOiIiLCJuYW1lIjoi67OR7ZWp7ZWY6rOgIOqwgOyatOuNsCDrp57stqQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIiwiY2xhc3MiOiJOZXRVSUhXTkQiLCJwYXJlbnQiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6Mn0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjoxfV19LCJyb2xlIjoyLCJpbmRleCI6MSwibGVmdCI6NjczLCJ0b3AiOjE0Miwid2lkdGgiOjE4MywiaGVpZ2h0IjoyOSwiY2xpY2tYIjozNSwiY2xpY2tZIjoxNiwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoi64iE66W06riwIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjAsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNBZHZhbmNlZENhcHR1cmUiOmZhbHNlLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpbMjQsMCwxLDIsM10sInByb3BlcnRpZXMiOlt7Im5hbWUiOiJPY2N1cnJlbmNlIiwidmFsdWUiOiIwIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjYzYWMyMTE5LWEwMGItNGU0My1hNjhlLWU4NDY3NmY3NTAzNyJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiJOZXRVSUhXTkQifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlNwbGl0QnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiNHwyfDR8MXw0fDF8NHwxfDR8MXw0fC0yfDF8M3wtMnwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI2NzMifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjE0MiJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIxODMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI5In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTYifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiLriITrpbTquLAifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbOCw3LDJdLCJlcnJvciI6bnVsbCwiYnJvd3NlckZyYW1ld29yayI6bnVsbCwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IiIsImNzc1BhdGgiOiIiLCJhZHZhbmNlWHBhdGgiOiIiLCJwcmVjZWRpbmdUZXh0IjoiIiwiYW5jaG9yVGV4dCI6IiIsImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjp7fX19",
+              "browserType": "UNKNOWN_BROWSER",
+              "capture": {
+                "screenshotMetadataPath": "7c6295b2-12f6-4d14-90e5-9d29fe3e7958.png",
+                "screenshotRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 538,
+                  "y": 114
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "3c262cef-99c0-49b3-b73f-26a433a58021.png",
+                "thumbnailRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "BUTTON",
+              "criteria": {
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "Class Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "35",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "16",
+                    "type": "STRING"
+                  }
+                },
+                "Default Action": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "29",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "673",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": true,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Occurrence": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|2|4|1|4|1|4|1|4|1|4|-2|1|3|-2|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "SplitButton",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "142",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "63ac2119-a00b-4e43-a68e-e84676f75037",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "183",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+            },
+            "uiObjectWindow": {
+              "type": "WINDOW",
+              "window": {
+                "presetType": "CURRENTLY_ACTIVE",
+                "type": "WINDOW"
+              }
+            }
+          }
+        },
+        {
+          "name": "buttonAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "15",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "9ba80893-2032-4310-9a29-dc7fff2d81f2"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "H1:H2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "fad56a05-d472-4dd0-b4ef-4b1ae119908a"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNjNhYzIxMTktYTAwYi00ZTQzLWE2OGUtZTg0Njc2Zjc1MDM3IiwiaWQiOiIiLCJuYW1lIjoi67OR7ZWp7ZWY6rOgIOqwgOyatOuNsCDrp57stqQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIiwiY2xhc3MiOiJOZXRVSUhXTkQiLCJwYXJlbnQiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6Mn0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjoxfV19LCJyb2xlIjoyLCJpbmRleCI6MSwibGVmdCI6NjczLCJ0b3AiOjE0Miwid2lkdGgiOjE4MywiaGVpZ2h0IjoyOSwiY2xpY2tYIjozNSwiY2xpY2tZIjoxNiwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoi64iE66W06riwIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjAsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNBZHZhbmNlZENhcHR1cmUiOmZhbHNlLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpbMjQsMCwxLDIsM10sInByb3BlcnRpZXMiOlt7Im5hbWUiOiJPY2N1cnJlbmNlIiwidmFsdWUiOiIwIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjYzYWMyMTE5LWEwMGItNGU0My1hNjhlLWU4NDY3NmY3NTAzNyJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiJOZXRVSUhXTkQifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlNwbGl0QnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiNHwyfDR8MXw0fDF8NHwxfDR8MXw0fC0yfDF8M3wtMnwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI2NzMifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjE0MiJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIxODMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI5In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTYifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiLriITrpbTquLAifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbOCw3LDJdLCJlcnJvciI6bnVsbCwiYnJvd3NlckZyYW1ld29yayI6bnVsbCwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IiIsImNzc1BhdGgiOiIiLCJhZHZhbmNlWHBhdGgiOiIiLCJwcmVjZWRpbmdUZXh0IjoiIiwiYW5jaG9yVGV4dCI6IiIsImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjp7fX19",
+              "browserType": "UNKNOWN_BROWSER",
+              "capture": {
+                "screenshotMetadataPath": "7c6295b2-12f6-4d14-90e5-9d29fe3e7958.png",
+                "screenshotRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 538,
+                  "y": 114
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "3c262cef-99c0-49b3-b73f-26a433a58021.png",
+                "thumbnailRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "BUTTON",
+              "criteria": {
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "Class Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "35",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "16",
+                    "type": "STRING"
+                  }
+                },
+                "Default Action": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "29",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "673",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": true,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Occurrence": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|2|4|1|4|1|4|1|4|1|4|-2|1|3|-2|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "SplitButton",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "142",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "63ac2119-a00b-4e43-a68e-e84676f75037",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "183",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+            },
+            "uiObjectWindow": {
+              "type": "WINDOW",
+              "window": {
+                "presetType": "CURRENTLY_ACTIVE",
+                "type": "WINDOW"
+              }
+            }
+          }
+        },
+        {
+          "name": "buttonAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "15",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "775b92a4-0b63-41ec-831a-87de9304740d"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "I1:I2",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "9c720866-2575-4ce3-8c27-557903c5ff92"
+    },
+    {
+      "action": "capture",
+      "attributes": [
+        {
+          "name": "uiObject",
+          "value": {
+            "type": "UIOBJECT",
+            "uiObject": {
+              "blob": "eyJvYmpOb2RlIjp7InVuaXF1ZUlEIjoiNjNhYzIxMTktYTAwYi00ZTQzLWE2OGUtZTg0Njc2Zjc1MDM3IiwiaWQiOiIiLCJuYW1lIjoi67OR7ZWp7ZWY6rOgIOqwgOyatOuNsCDrp57stqQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIiwiY2xhc3MiOiJOZXRVSUhXTkQiLCJwYXJlbnQiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCIsIndpbmRvd1RpdGxlIjoiIiwicGF0aCI6eyJvYmpQYXRoIjpbeyJpbmRleCI6NH0seyJpbmRleCI6Mn0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6MX0seyJpbmRleCI6NH0seyJpbmRleCI6LTJ9LHsiaW5kZXgiOjF9LHsiaW5kZXgiOjN9LHsiaW5kZXgiOi0yfSx7ImluZGV4IjoxfV19LCJyb2xlIjoyLCJpbmRleCI6MSwibGVmdCI6NjczLCJ0b3AiOjE0Miwid2lkdGgiOjE4MywiaGVpZ2h0IjoyOSwiY2xpY2tYIjozNSwiY2xpY2tZIjoxNiwiZGVzY3JpcHRpb24iOiIiLCJzdGF0ZXMiOiIiLCJkZWZhdWx0QWN0aW9uIjoi64iE66W06riwIiwidGVjaG5vbG9neSI6eyJ0ZWNoVHlwZSI6MSwicGxhdGZvcm1UeXBlIjowLCJhcHBsaWNhdGlvblR5cGUiOjAsInByb2Nlc3NJRCI6IiIsIndpbkhhbmRsZSI6IiIsIm9jckVuZ2luZSI6bnVsbCwiaXNBZHZhbmNlZENhcHR1cmUiOmZhbHNlLCJpc1NpbHZlcmxpZ2h0VGVjaG5vbG9neSI6ZmFsc2V9LCJhY3Rpb25zIjpbMjQsMCwxLDIsM10sInByb3BlcnRpZXMiOlt7Im5hbWUiOiJPY2N1cnJlbmNlIiwidmFsdWUiOiIwIn1dLCJhdHRyaWJ1dGVzIjpbeyJuYW1lIjoiVW5pcXVlSUQiLCJ2YWx1ZSI6IjYzYWMyMTE5LWEwMGItNGU0My1hNjhlLWU4NDY3NmY3NTAzNyJ9LHsibmFtZSI6IklEIiwidmFsdWUiOiIifSx7Im5hbWUiOiJOYW1lIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IlZhbHVlIiwidmFsdWUiOiLrs5HtlantlZjqs6Ag6rCA7Jq0642wIOunnuy2pCJ9LHsibmFtZSI6IkNsYXNzIiwidmFsdWUiOiJOZXRVSUhXTkQifSx7Im5hbWUiOiJQYXJlbnQiLCJ2YWx1ZSI6Iuuzke2Vqe2VmOqzoCDqsIDsmrTrjbAg66ee7LakIn0seyJuYW1lIjoiV2luZG93VGl0bGUiLCJ2YWx1ZSI6IiJ9LHsibmFtZSI6IlJvbGUiLCJ2YWx1ZSI6IlNwbGl0QnV0dG9uIn0seyJuYW1lIjoiUGF0aCIsInZhbHVlIjoiNHwyfDR8MXw0fDF8NHwxfDR8MXw0fC0yfDF8M3wtMnwxIn0seyJuYW1lIjoiSW5kZXgiLCJ2YWx1ZSI6IjEifSx7Im5hbWUiOiJMZWZ0IiwidmFsdWUiOiI2NzMifSx7Im5hbWUiOiJUb3AiLCJ2YWx1ZSI6IjE0MiJ9LHsibmFtZSI6IldpZHRoIiwidmFsdWUiOiIxODMifSx7Im5hbWUiOiJIZWlnaHQiLCJ2YWx1ZSI6IjI5In0seyJuYW1lIjoiQ2xpY2tYIiwidmFsdWUiOiIzNSJ9LHsibmFtZSI6IkNsaWNrWSIsInZhbHVlIjoiMTYifSx7Im5hbWUiOiJEZXNjcmlwdGlvbiIsInZhbHVlIjoiIn0seyJuYW1lIjoiU3RhdGVzIiwidmFsdWUiOiIifSx7Im5hbWUiOiJEZWZhdWx0QWN0aW9uIiwidmFsdWUiOiLriITrpbTquLAifV0sImlzTGlua2VkIjpmYWxzZX0sIm9ialBhcmVudCI6bnVsbCwib2JqSXRlbSI6bnVsbCwiY2hpbGRyZW4iOltdLCJpdGVtcyI6W10sInNlYXJjaENyaXRlcmlhIjpbOCw3LDJdLCJlcnJvciI6bnVsbCwiYnJvd3NlckZyYW1ld29yayI6bnVsbCwiY2FwdHVyZVZlcnNpb24iOjU4MDAsImlzQ2VmV2luRm9ybXNBcHBsaWNhdGlvbiI6ZmFsc2UsImFkdmFuY2VQcm9wZXJ0aWVzIjp7ImFuY2VzdG9yRWxlbWVudCI6IiIsImNzc1BhdGgiOiIiLCJhZHZhbmNlWHBhdGgiOiIiLCJwcmVjZWRpbmdUZXh0IjoiIiwiYW5jaG9yVGV4dCI6IiIsImFkZGl0aW9uYWxQcm9wZXJ0aWVzIjp7fX19",
+              "browserType": "UNKNOWN_BROWSER",
+              "capture": {
+                "screenshotMetadataPath": "7c6295b2-12f6-4d14-90e5-9d29fe3e7958.png",
+                "screenshotRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 538,
+                  "y": 114
+                },
+                "securelyRecorded": false,
+                "thumbnailMetadataPath": "3c262cef-99c0-49b3-b73f-26a433a58021.png",
+                "thumbnailRectangle": {
+                  "height": 23,
+                  "width": 146,
+                  "x": 0,
+                  "y": 0
+                }
+              },
+              "controlType": "BUTTON",
+              "criteria": {
+                "Class": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "Class Name": {
+                  "enabled": false,
+                  "value": {
+                    "string": "NetUIHWND",
+                    "type": "STRING"
+                  }
+                },
+                "ClickX": {
+                  "enabled": false,
+                  "value": {
+                    "string": "35",
+                    "type": "STRING"
+                  }
+                },
+                "ClickY": {
+                  "enabled": false,
+                  "value": {
+                    "string": "16",
+                    "type": "STRING"
+                  }
+                },
+                "Default Action": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "DefaultAction": {
+                  "enabled": false,
+                  "value": {
+                    "string": "누르기",
+                    "type": "STRING"
+                  }
+                },
+                "Description": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Height": {
+                  "enabled": false,
+                  "value": {
+                    "string": "29",
+                    "type": "STRING"
+                  }
+                },
+                "ID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Index": {
+                  "enabled": false,
+                  "value": {
+                    "string": "1",
+                    "type": "STRING"
+                  }
+                },
+                "ItemName": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "ItemValue": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Left": {
+                  "enabled": false,
+                  "value": {
+                    "string": "673",
+                    "type": "STRING"
+                  }
+                },
+                "Name": {
+                  "enabled": true,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Occurrence": {
+                  "enabled": false,
+                  "value": {
+                    "string": "0",
+                    "type": "STRING"
+                  }
+                },
+                "Parent": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Path": {
+                  "enabled": true,
+                  "value": {
+                    "string": "4|2|4|1|4|1|4|1|4|1|4|-2|1|3|-2|1",
+                    "type": "STRING"
+                  }
+                },
+                "Role": {
+                  "enabled": false,
+                  "value": {
+                    "string": "SplitButton",
+                    "type": "STRING"
+                  }
+                },
+                "States": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                },
+                "Top": {
+                  "enabled": false,
+                  "value": {
+                    "string": "142",
+                    "type": "STRING"
+                  }
+                },
+                "UniqueID": {
+                  "enabled": false,
+                  "value": {
+                    "string": "63ac2119-a00b-4e43-a68e-e84676f75037",
+                    "type": "STRING"
+                  }
+                },
+                "Value": {
+                  "enabled": false,
+                  "value": {
+                    "string": "병합하고 가운데 맞춤",
+                    "type": "STRING"
+                  }
+                },
+                "Width": {
+                  "enabled": false,
+                  "value": {
+                    "string": "183",
+                    "type": "STRING"
+                  }
+                },
+                "WindowTitle": {
+                  "enabled": false,
+                  "value": {
+                    "string": "",
+                    "type": "STRING"
+                  }
+                }
+              },
+              "isElevated": false,
+              "technologyType": "MS_ACTIVE_ACCESSIBILITY"
+            },
+            "uiObjectWindow": {
+              "type": "WINDOW",
+              "window": {
+                "presetType": "CURRENTLY_ACTIVE",
+                "type": "WINDOW"
+              }
+            }
+          }
+        },
+        {
+          "name": "buttonAction",
+          "value": {
+            "string": "CLICK",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "runInBackground",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "advancedWait",
+          "value": {
+            "string": "BASIC",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "wait",
+          "value": {
+            "number": "15",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Recorder",
+      "type": "action",
+      "uid": "2b583cf7-cf38-472f-b83b-286d9bacc810"
+    },
+    {
+      "action": "SelectRowColumnCellRange",
+      "attributes": [
+        {
+          "name": "selection",
+          "value": {
+            "string": "Cell",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellSelection",
+          "value": {
+            "string": "cellrange",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "cellRange",
+          "value": {
+            "string": "A1:I5",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "0714ba43-6979-4baa-82ed-08b8a9a14123"
+    },
+    {
+      "action": "Keystrokes",
+      "attributes": [
+        {
+          "name": "windowValue",
+          "value": {
+            "type": "WINDOW",
+            "window": {
+              "presetType": "CURRENTLY_ACTIVE",
+              "type": "WINDOW"
+            }
+          }
+        },
+        {
+          "name": "typeOfInputStringToType",
+          "value": {
+            "string": "VALUE",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "stringToType",
+          "value": {
+            "string": "[ALT DOWN][ALT UP]hoi",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "delay",
+          "value": {
+            "number": "100",
+            "type": "NUMBER"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Keystrokes",
+      "type": "action",
+      "uid": "5d7bc127-4a71-419c-86f6-c62b7d98aa93"
+    },
+    {
+      "action": "SaveSpreadSheet",
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        },
+        {
+          "name": "isDisplayErrorEnabled",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "56f29f67-612a-40a4-bfc2-c8a6532ca344"
+    },
+    {
+      "action": "CloseSpreadsheet",
+      "attributes": [
+        {
+          "name": "session",
+          "value": {
+            "expression": "$excelSession$",
+            "type": "SESSION"
+          }
+        },
+        {
+          "name": "isSave",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "isDisplayErrorEnabled",
+          "value": {
+            "boolean": false,
+            "type": "BOOLEAN"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Excel_MS",
+      "type": "action",
+      "uid": "a07e395e-1f43-4e9f-b760-72a216d599ee"
+    },
+    {
+      "action": "Connect",
+      "attributes": [
+        {
+          "name": "oAuthConnection",
+          "value": {
+            "oauthConnection": {
+              "connectionName": "GmailOAuth",
+              "isShared": true
+            },
+            "type": "OAUTHCONNECTION"
+          }
+        },
+        {
+          "name": "username",
+          "value": {
+            "string": "wlffjt2929@gmail.com",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Gmail",
+      "return_to": {
+        "type": "VARIABLE",
+        "variableName": "gmailSession"
+      },
+      "type": "action",
+      "uid": "6e31599e-ac4a-4fd6-aa63-2df1fdc6e480"
+    },
+    {
+      "action": "Send",
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "expression": "$gmailSession$",
+            "type": "SESSION"
+          }
+        },
+        {
+          "name": "toRecipients",
+          "value": {
+            "string": "wlffjt2929@gmail.com",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "ccRecipients",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "bccRecipients",
+          "value": {
+            "string": "",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "subject",
+          "value": {
+            "string": "wlffjt2929@gmail.com",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "attachments",
+          "value": {
+            "list": [
+              {
+                "expression": "file://$localFilePath$",
+                "type": "FILE"
+              }
+            ],
+            "type": "LIST"
+          }
+        },
+        {
+          "name": "raiseErrorIfAttachmentsMissing",
+          "value": {
+            "boolean": true,
+            "type": "BOOLEAN"
+          }
+        },
+        {
+          "name": "bodyFormat",
+          "value": {
+            "string": "PLAINTEXT",
+            "type": "STRING"
+          }
+        },
+        {
+          "name": "message",
+          "value": {
+            "string": "안녕하세요.\n\n최근 3일간의 금 시세 조회 결과를 첨부합니다.\n\n감사합니다.",
+            "type": "STRING"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Gmail",
+      "type": "action",
+      "uid": "004ef143-6fc1-4b22-a699-57b17432b91b"
+    },
+    {
+      "action": "Disconnect",
+      "attributes": [
+        {
+          "name": "sessionName",
+          "value": {
+            "expression": "$gmailSession$",
+            "type": "SESSION"
+          }
+        }
+      ],
+      "disabled": false,
+      "package": "Gmail",
+      "type": "action",
+      "uid": "bf301d58-87a6-4daa-b215-a755bdf6efcf"
+    }
+  ],
+  "triggers": []
+}
