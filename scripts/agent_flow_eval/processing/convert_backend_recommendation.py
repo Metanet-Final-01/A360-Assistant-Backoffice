@@ -286,16 +286,10 @@ def write_conversions(root: Path, normalized_path: Path, output_dir: Path, recor
         workflows_dir.mkdir(parents=True, exist_ok=True)
         shutil.copy2(normalized_path, workflows_dir / normalized_path.name)
 
-        run_processing_script(root, "convert_to_pm4py.py", temp_dir)
         run_processing_script(root, "convert_to_worfbench.py", temp_dir)
 
-        pm4py_dir = output_dir / "pm4py"
         worfbench_dir = output_dir / "worfbench"
-        clean_dir(pm4py_dir)
         clean_dir(worfbench_dir)
-        for pattern in ("*.pnml", "*.ptml", "*.tree.json"):
-            for path in workflows_dir.glob(pattern):
-                shutil.copy2(path, pm4py_dir / path.name)
         for path in workflows_dir.glob("*.worfbench.json"):
             shutil.copy2(path, worfbench_dir / path.name)
     finally:

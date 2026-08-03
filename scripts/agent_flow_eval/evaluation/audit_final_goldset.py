@@ -192,7 +192,16 @@ def score_case(version: str, case_id: str, run_id: str) -> dict[str, Any]:
     # 완전히 별개 경로다. 원본 gold/pred goldset.json(핵심업무 분류 전 원본)을
     # 그대로 넘긴다 - WorFEval은 원본 벤치마크 그대로 재현하는 게 목적이라 우리
     # 핵심업무 분류나 action_equivalence_rules_conditional.json을 적용하지 않는다.
-    worfbench = score_worfbench_f1chain(gold_file, pred_file)
+    #
+    # 방어적으로 try/except로도 감싼다(Qodo 리뷰 지적, 2026-08-03) - 근본 원인은
+    # worfbench_adapter.py의 _import_worfbench()를 자체 try/except 안으로
+    # 옮겨서 고쳤지만, WorFBench는 어디까지나 참고 지표라 이 호출부에서도
+    # 한 번 더 막아 실제 주 지표(action_prf1/action_chain) 산출이 절대
+    # 영향받지 않게 한다.
+    try:
+        worfbench = score_worfbench_f1chain(gold_file, pred_file)
+    except Exception as exc:  # WorFBench는 참고 지표 - 실패해도 감사 전체를 막지 않는다
+        worfbench = {"status": "unavailable", "error": f"{type(exc).__name__}: {exc}"}
 
     return {
         "case_id": case_id,
@@ -567,17 +576,28 @@ def main() -> None:
         }
         for version, runs, recovered in version_runs
     }
-    rows = [
-        score_case(version, case_id, runs[case_id])
-        for version, runs, _ in version_runs
-        for case_id in sorted(runs)
-    ]
+    # 케이스 하나가 실패해도(WorFBench는 이제 자체적으로 방어하지만, 그 외
+    # 예상 못한 오류까지 포함해) 나머지 케이스는 계속 채점하고 audit.json이
+    # 아예 안 만들어지는 걸 막는다 - run_eval_batch.py의 케이스 단위 격리
+    # 원칙과 동일(Qodo 리뷰 지적, 2026-08-03).
+    rows: list[dict[str, Any]] = []
+    scoring_errors: list[dict[str, str]] = []
+    for version, runs, _ in version_runs:
+        for case_id in sorted(runs):
+            try:
+                rows.append(score_case(version, case_id, runs[case_id]))
+            except Exception as exc:
+                scoring_errors.append(
+                    {"version": version, "case_id": case_id, "run_id": runs[case_id], "error": f"{type(exc).__name__}: {exc}"}
+                )
+                print(f"FAIL scoring {version} {case_id}: {exc}")
     output_dir = args.output_dir.resolve()
     output_dir.mkdir(parents=True, exist_ok=True)
     aggregates = aggregate_rows(rows)
     payload = {
         "created_at": datetime.now(timezone.utc).isoformat(),
         "coverage": coverage,
+        "scoring_errors": scoring_errors,
         "aggregates": aggregates,
         "results": rows,
     }

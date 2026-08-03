@@ -20,6 +20,5 @@ PROCESSING_STEPS = (
     ProcessingStep("extract_workflows", "processing/extract_workflows.py"),
     ProcessingStep("normalize_extracted_workflows", "processing/normalize_extracted_workflows.py"),
     ProcessingStep("resolve_subtask_coverage", "processing/resolve_subtask_coverage.py"),
-    ProcessingStep("convert_to_pm4py", "processing/convert_to_pm4py.py"),
     ProcessingStep("convert_to_worfbench", "processing/convert_to_worfbench.py"),
 )

@@ -15,16 +15,47 @@ if str(EVALUATION_ROOT) not in sys.path:
     sys.path.insert(0, str(EVALUATION_ROOT))
 
 from action_filters import action_label, is_disabled_step, should_exclude_action  # noqa: E402
+from action_matching import normalize_action_label  # noqa: E402
 
 # core_task.py(core_only projection)는 재설계(2026-07-30)로 삭제됨. 이 파일의
 # t_eval_nodes 경로는 이제 "외부 벤치마크 비교용"(WorFEval 원본 재현)으로만 쓰인다 -
 # action_matching.py/action_chain.py가 액티브 지표.
-from adapters.pm4py_adapter import (  # noqa: E402
-    _canonical_label,
-    _is_control_flow_marker_action,
-    _split_action_label,
-    load_action_equivalence_map,
-)
+#
+# 아래 3개 함수는 pm4py_adapter.py에서 그대로 옮겨왔다(2026-08-03, PM4Py를 쓰지
+# 않기로 확정하면서 그 파일과 convert_to_pm4py.py를 삭제함 - 원래도 이 유틸
+# 함수들은 PM4Py 자체와 무관한 단순 라벨 정규화 로직이었다). action_matching.py의
+# canonicalize_action()과는 일부러 분리해서 쓴다 - WorFEval은 원본 벤치마크
+# 재현이 목적이라 action_equivalence_rules_conditional.json의 조건부 동치
+# 규칙을 적용하지 않고 순수 plain map만 쓴다(§ score_worfbench_f1chain 문서
+# 참고).
+
+
+def load_action_equivalence_map(root: Path | None = None) -> dict[str, str]:
+    path = (root or GOLDSET_ROOT) / "evaluation" / "action_equivalence_rules.json"
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    mapping: dict[str, str] = {}
+    for group in payload.get("equivalence_groups", []) or []:
+        canonical = group.get("canonical")
+        if not canonical:
+            continue
+        mapping.setdefault(normalize_action_label(canonical), canonical)
+        for member in group.get("members", []) or []:
+            key = normalize_action_label(member)
+            if key in mapping and mapping[key] != canonical:
+                raise ValueError(f"Action equivalence member maps to multiple canonicals: {member}")
+            mapping[key] = canonical
+    return mapping
+
+
+def _split_action_label(label: str) -> tuple[str, str]:
+    if "." not in label:
+        return label, ""
+    return label.split(".", 1)
+
+
+def _canonical_label(package: str | None, action: str | None, mapping: dict[str, str]) -> str:
+    label = action_label(package, action)
+    return mapping.get(normalize_action_label(label), label)
 
 
 EDGE_RE = re.compile(r"\((START|END|\d+),(START|END|\d+)\)")
@@ -185,8 +216,14 @@ def score_worfbench_f1chain(
 ) -> dict[str, Any]:
     """Run WorFBench's actual `t_eval_nodes` over canonicalized Node/Edges graphs.
     "외부 벤치마크 비교용"(원본 WorFEval 재현) - 액티브 지표는 action_matching.py/
-    action_chain.py를 쓴다."""
-    t_eval_nodes, _ = _import_worfbench()
+    action_chain.py를 쓴다.
+
+    _import_worfbench()는 외부 sibling 워크스페이스(a360-eval-sandbox/external/
+    WorFBench)와 sentence_transformers 설치 여부에 의존한다 - 없는 환경에서는
+    RuntimeError/ImportError를 던진다(Qodo 리뷰로 실측 확인: 2026-08-03, 이
+    호출이 try/except 밖에 있어서 호출부 전체가 죽는 문제였음). WorFBench는
+    어디까지나 "외부 참고" 경로라 이게 없다고 Rule-only/Judge-assisted 같은
+    주 지표 산출까지 막으면 안 되므로, 이 함수 안의 try/except로 감싼다."""
     mapping = load_action_equivalence_map(equivalence_root)
     gold_payload = json.loads(gold_normalized_path.read_text(encoding="utf-8"))
     pred_payload = json.loads(prediction_normalized_path.read_text(encoding="utf-8"))
@@ -217,6 +254,7 @@ def score_worfbench_f1chain(
         return result
 
     try:
+        t_eval_nodes, _ = _import_worfbench()
         scores = t_eval_nodes(_graph_from_actions(pred_actions), _graph_from_actions(gold_actions), _sentence_model())
         result.update({"status": "ok", **{key: round(float(value), 4) for key, value in scores.items()}})
     except Exception as exc:  # pragma: no cover - external library boundary

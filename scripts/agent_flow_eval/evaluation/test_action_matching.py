@@ -11,7 +11,7 @@ from action_matching import (
     pair_judge_matches,
     score_branch_coverage,
 )
-from adapters.pm4py_adapter import _canonical_label, load_action_equivalence_map as load_adapter_equivalence_map
+from adapters.worfbench_adapter import _canonical_label, load_action_equivalence_map as load_adapter_equivalence_map
 
 
 class ActionEquivalenceTest(unittest.TestCase):

@@ -9,7 +9,6 @@ Gold/reference side:
 
 ```text
 eval_inputs/normalized_workflows_13/<case>/*.goldset.json
-eval_inputs/pm4py_13/<case>/*
 eval_inputs/worfbench_13/<case>/*
 ```
 
@@ -17,7 +16,6 @@ Prediction/backend side:
 
 ```text
 runner/logs/<run-id>/converted_recommendation/normalized/*.goldset.json
-runner/logs/<run-id>/converted_recommendation/pm4py/*
 runner/logs/<run-id>/converted_recommendation/worfbench/*
 ```
 
@@ -31,20 +29,26 @@ python processing/convert_backend_recommendation.py \
 
 ## External Libraries
 
-Do not copy PM4Py or WorFBench source into this folder. Use adapters that reference the
-external checkouts:
+Do not copy WorFBench source into this folder. Use adapters that reference the
+external checkout:
 
 ```text
-../a360-eval-sandbox/external/pm4py
 ../a360-eval-sandbox/external/WorFBench
 ```
 
 Adapter code belongs here:
 
 ```text
-evaluation/adapters/pm4py_adapter.py
 evaluation/adapters/worfbench_adapter.py
 ```
+
+(`pm4py_adapter.py`/`processing/convert_to_pm4py.py` were deleted 2026-08-03 - PM4Py
+was already excluded from active reporting, and the project confirmed it won't be used
+at all, so the code and its `eval_inputs/pm4py_13/`, `.../converted_recommendation/pm4py/`
+outputs were removed rather than kept unused. The small label-normalization helpers that
+`worfbench_adapter.py` had been importing from `pm4py_adapter.py` (`_canonical_label`,
+`_split_action_label`, `load_action_equivalence_map`) now live directly in
+`worfbench_adapter.py` - they were never PM4Py-specific.)
 
 ## Intended Shape
 
@@ -63,8 +67,8 @@ evaluation/
   critical_attribute/          Recorder/WebAutomation-style cross-package attribute comparison, feeds action_matching.py
   adapters/
     README.md
-    pm4py_adapter.py           kept, no longer called from the active report (see below)
-    worfbench_adapter.py       kept, "external benchmark reference" only (see below)
+    worfbench_adapter.py       "external benchmark reference" only (see below) - also owns the
+                               small label-normalization helpers pm4py_adapter.py used to have
   reports/
 ```
 
@@ -124,12 +128,14 @@ worfbench            EXTERNAL REFERENCE ONLY. actual vendored WorFEval t_eval_no
 
 **Removed (2026-07-30), not just deprioritized:** `core_task`, `package_family`,
 `salient_family`, `core_worfbench`, `core_pm4py`, and active use of `pm4py`/
-`pm4py_artifact_check`. See the "Intended Shape" section above for why. PM4Py's
-adapter code is kept on disk but is no longer called by `run_eval_case.py`'s active
-report - the "sample one implementation vs compare against an allowed process model"
-design PM4Py assumes doesn't fit "compare one human implementation against one agent
-implementation," and it scored a real, correct implementation-difference case at
-fitness 0.089 / precision 0.0 in practice.
+`pm4py_artifact_check`. See the "Intended Shape" section above for why - the "sample
+one implementation vs compare against an allowed process model" design PM4Py assumes
+doesn't fit "compare one human implementation against one agent implementation," and
+it scored a real, correct implementation-difference case at fitness 0.089 / precision
+0.0 in practice. **PM4Py's adapter/converter code itself was deleted outright on
+2026-08-03** (not just excluded from the active report) once the project confirmed
+it wouldn't be revisited - do not reintroduce `pm4py_adapter.py`/`convert_to_pm4py.py`
+without the same evidence bar this project otherwise holds itself to.
 
 Diagnostic artifact checks are still recorded separately as:
 

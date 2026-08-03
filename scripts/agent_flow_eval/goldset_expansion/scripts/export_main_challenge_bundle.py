@@ -1,6 +1,7 @@
 """Main-18 / Challenge-21 (제외 41, 미분류 잔여는 제외)만 골라서 "우리 원본"
-(Test/botstore_deep/full_470_dataset)으로부터 직접 복사 -> pm4py/WorFBench 변환까지
-돌린 뒤, 팀원에게 전달할 짧은 이름의 평평한(flat) 폴더 + zip으로 묶는다.
+(Test/botstore_deep/full_470_dataset)으로부터 직접 복사 -> WorFBench 변환까지
+돌린 뒤, 팀원에게 전달할 짧은 이름의 평평한(flat) 폴더 + zip으로 묶는다(PM4Py는
+2026-08-03 완전히 삭제함 - 안 쓰기로 확정).
 
 원시(raw) Automation Anywhere workflow json도 같이 담는다: extract_workflows.py가
 `workflows/{stem}.json`(원시, 트리형 원본)을 만들고 normalize_extracted_workflows.py가
@@ -97,20 +98,13 @@ def main() -> None:
         for m in raw_missing:
             print(f"  {m}")
 
-    # 2) pm4py / WorFBench 변환 (원본 스크립트를 import해서 CATEGORY_DIRS만 바꿔 재사용)
+    # 2) WorFBench 변환 (원본 스크립트를 import해서 CATEGORY_DIRS만 바꿔 재사용).
+    # PM4Py는 2026-08-03 완전히 삭제함(안 쓰기로 확정) - 여기서도 더 이상 호출하지 않는다.
     processing_dir = goldset_expansion_dir().parent / "processing"
     sys.path.insert(0, str(processing_dir))
-    import convert_to_pm4py as pm4py_conv
     import convert_to_worfbench as worfbench_conv
 
-    pm4py_conv.CATEGORY_DIRS = ("Main", "Challenge")
     worfbench_conv.CATEGORY_DIRS = ("Main", "Challenge")
-
-    pm4py_failed = []
-    for category, bot_dir_rel, goldset_path in pm4py_conv.collect_goldset_files(STAGE_ROOT):
-        r = pm4py_conv.process_goldset_file(category, bot_dir_rel, goldset_path)
-        if r.status != "created":
-            pm4py_failed.append((bot_dir_rel, r.error))
 
     worfbench_failed = []
     for category, bot_dir_rel, goldset_path in worfbench_conv.collect_goldset_files(STAGE_ROOT):
@@ -118,8 +112,8 @@ def main() -> None:
         if r.status != "created":
             worfbench_failed.append((bot_dir_rel, r.error))
 
-    print(f"pm4py 변환 실패: {len(pm4py_failed)}건, WorFBench 변환 실패: {len(worfbench_failed)}건")
-    for bot_dir_rel, err in pm4py_failed + worfbench_failed:
+    print(f"WorFBench 변환 실패: {len(worfbench_failed)}건")
+    for bot_dir_rel, err in worfbench_failed:
         print(f"  {bot_dir_rel}: {err}")
 
     # 3) 짧은 파일들만 평평하게 모아서 최종 전달용 폴더 구성 (bot_dir/workflows 중첩 제거)

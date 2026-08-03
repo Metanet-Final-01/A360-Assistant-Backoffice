@@ -111,7 +111,6 @@ def preserve_multi_source_components(temp_dir: Path, manifest: dict[str, Any]) -
 def copy_case_artifacts(root: Path, temp_dir: Path, manifest: dict[str, Any]) -> None:
     output_roots = {
         "normalized_workflows_13": ("*.goldset.json",),
-        "pm4py_13": ("*.pnml", "*.ptml", "*.tree.json"),
         "worfbench_13": ("*.worfbench.json",),
     }
     for dirname in output_roots:
@@ -240,7 +239,6 @@ def main() -> None:
         create_temp_dataset(root, manifest, temp_dir)
         run_processing_script(root, "normalize_extracted_workflows.py", temp_dir)
         preserve_multi_source_components(temp_dir, manifest)
-        run_processing_script(root, "convert_to_pm4py.py", temp_dir)
         run_processing_script(root, "convert_to_worfbench.py", temp_dir)
         copy_case_artifacts(root, temp_dir, manifest)
         write_comparison_report(root, manifest)
@@ -249,7 +247,6 @@ def main() -> None:
 
     print(json.dumps({
         "normalized": str(root / "eval_inputs" / "normalized_workflows_13"),
-        "pm4py": str(root / "eval_inputs" / "pm4py_13"),
         "worfbench": str(root / "eval_inputs" / "worfbench_13"),
         "comparison": str(root / "eval_inputs" / "comparison_reports"),
     }, ensure_ascii=False, indent=2))

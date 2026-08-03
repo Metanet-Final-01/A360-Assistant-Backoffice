@@ -78,22 +78,17 @@ def main() -> None:
                 "flag": after < LOW_ACTION_THRESHOLD,
             })
 
-    # pm4py / WorFBench 재변환 - CATEGORY_DIRS를 Main/Challenge로 맞추고, *.goldset.json을
+    # WorFBench 재변환 - CATEGORY_DIRS를 Main/Challenge로 맞추고, *.goldset.json을
     # 찾는 glob이 "*.cleaned.goldset.json"도 함께 잡아버리므로(끝이 .goldset.json으로
-    # 같음) 문제없이 그대로 재사용 가능.
+    # 같음) 문제없이 그대로 재사용 가능. PM4Py는 2026-08-03 완전히 삭제함(안 쓰기로
+    # 확정) - 여기서도 더 이상 호출하지 않는다.
     processing_dir = goldset_expansion_dir().parent / "processing"
     sys.path.insert(0, str(processing_dir))
-    import convert_to_pm4py as pm4py_conv
     import convert_to_worfbench as worfbench_conv
 
-    pm4py_conv.CATEGORY_DIRS = ("Main", "Challenge")
     worfbench_conv.CATEGORY_DIRS = ("Main", "Challenge")
 
     failed = []
-    for category, bot_dir_rel, goldset_path in pm4py_conv.collect_goldset_files(STAGE_ROOT):
-        r = pm4py_conv.process_goldset_file(category, bot_dir_rel, goldset_path)
-        if r.status != "created":
-            failed.append((bot_dir_rel, "pm4py", r.error))
     for category, bot_dir_rel, goldset_path in worfbench_conv.collect_goldset_files(STAGE_ROOT):
         r = worfbench_conv.process_goldset_file(category, bot_dir_rel, goldset_path)
         if r.status != "created":

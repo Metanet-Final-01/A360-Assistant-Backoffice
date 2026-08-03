@@ -34,12 +34,14 @@ from path_utils import ensure_child_path, safe_path_component
 # PM4Py(score_pm4py_conformance/compare_pm4py_artifacts)는 재설계(2026-07-30,
 # peaceful-watching-possum.md)로 액티브 리포트에서 제외됐다 - 사람이 고른 구현 1개 vs
 # 에이전트가 고른 다른 구현을 비교하는 구조상 안 맞고(정상 구현차이를 전부 deviation으로
-# 잡음). PM4Py 코드 자체(adapters/pm4py_adapter.py)는 남겨뒀다 - 필요해지면 다시 쓸 수
-# 있다. `core_task.py`(CORE_PACKAGE_KEYS 등)와 이 파일의 옛 package_family()/
-# salient_families()는 근거 문서 없는 하드코딩 패키지 분류였음(git log로 도입 커밋에
-# 근거 설명 없음을 확인함) - **파일째 완전히 삭제됨**(남겨두지 않음), 재도입하지 말 것.
-# 대신 action_matching.py(Rule/Judge Match 기반 Action P/R/F1)와 action_chain.py
-# (LIS 기반 Action Chain F1)를 새로 쓴다.
+# 잡음). **2026-08-03: PM4Py를 아예 안 쓰기로 확정하면서 adapters/pm4py_adapter.py,
+# processing/convert_to_pm4py.py 자체를 삭제함**(더 이상 "필요해지면 다시 쓴다"로
+# 남겨두지 않는다) - 그 파일들이 쓰던 공유 라벨 정규화 유틸(_canonical_label 등)은
+# adapters/worfbench_adapter.py로 옮겼다. `core_task.py`(CORE_PACKAGE_KEYS 등)와
+# 이 파일의 옛 package_family()/salient_families()는 근거 문서 없는 하드코딩 패키지
+# 분류였음(git log로 도입 커밋에 근거 설명 없음을 확인함) - **파일째 완전히 삭제됨**
+# (남겨두지 않음), 재도입하지 말 것. 대신 action_matching.py(Rule/Judge Match 기반
+# Action P/R/F1)와 action_chain.py(LIS 기반 Action Chain F1)를 새로 쓴다.
 
 
 @dataclass(frozen=True)
@@ -49,8 +51,6 @@ class Paths:
     run_id: str
     gold_normalized: Path
     pred_normalized: Path
-    gold_pm4py_dir: Path
-    pred_pm4py_dir: Path
     gold_worfbench: Path
     pred_worfbench: Path
     report_dir: Path
@@ -87,8 +87,6 @@ def resolve_paths(case_id: str, run_id: str) -> Paths:
         run_id=safe_run_id,
         gold_normalized=only_file(gold_norm_dir, "*.goldset.json"),
         pred_normalized=only_file(pred_norm_dir, "*.goldset.json"),
-        gold_pm4py_dir=ensure_child_path(eval_root, eval_root / "pm4py_13" / safe_case_id, field="case_id"),
-        pred_pm4py_dir=pred_run_dir / "converted_recommendation" / "pm4py",
         gold_worfbench=only_file(gold_worf_dir, "*.worfbench.json"),
         pred_worfbench=only_file(pred_worf_dir, "*.worfbench.json"),
         report_dir=report_dir,
@@ -97,8 +95,6 @@ def resolve_paths(case_id: str, run_id: str) -> Paths:
     for path in [
         paths.gold_normalized,
         paths.pred_normalized,
-        paths.gold_pm4py_dir,
-        paths.pred_pm4py_dir,
         paths.gold_worfbench,
         paths.pred_worfbench,
     ]:
@@ -418,8 +414,8 @@ def main() -> None:
         "run_id": paths.run_id,
         "normalized": score_normalized(paths.gold_normalized, paths.pred_normalized, case_id=args.case_id),
         # WorFEval(원본 벤더 라이브러리, all-mpnet-base-v2 임베딩+임계값0.6) - "외부
-        # 벤치마크 비교용"으로만 유지. PM4Py는 재설계로 액티브 리포트에서 완전히 뺌
-        # (adapters/pm4py_adapter.py 자체는 남아있음, 필요해지면 다시 부르면 됨).
+        # 벤치마크 비교용"으로만 유지. PM4Py는 재설계로 액티브 리포트에서 뺐다가
+        # 2026-08-03에 adapters/pm4py_adapter.py 자체를 완전히 삭제함(안 쓰기로 확정).
         "worfbench": score_worfbench_f1chain(paths.gold_normalized, paths.pred_normalized),
         "worfbench_diagnostic_artifact_f1": score_worfbench(paths.gold_worfbench, paths.pred_worfbench),
     }
