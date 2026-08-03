@@ -3,6 +3,7 @@ from __future__ import annotations
 import argparse
 import csv
 import json
+import sys
 from collections import Counter
 from datetime import datetime, timezone
 from pathlib import Path
@@ -420,11 +421,22 @@ def write_markdown(
     rows: list[dict[str, Any]],
     coverage: dict[str, dict[str, list[str]]],
     aggregates: dict[str, dict[str, float | int]],
+    scoring_errors: list[dict[str, str]] | None = None,
 ) -> None:
     lines = [
         "# Final Goldset 9 Evaluation Audit",
         "",
     ]
+    if scoring_errors:
+        lines.extend(
+            [
+                f"## ⚠ Scoring errors ({len(scoring_errors)}건 - 이 감사는 불완전합니다)",
+                "",
+            ]
+        )
+        for err in scoring_errors:
+            lines.append(f"- {err['version']} {err['case_id']} ({err['run_id']}): {err['error']}")
+        lines.append("")
     for version, status in coverage.items():
         missing = ", ".join(status["missing"]) or "none"
         lines.append(
@@ -603,8 +615,19 @@ def main() -> None:
     }
     (output_dir / "audit.json").write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding="utf-8")
     write_csv(output_dir / "summary.csv", rows)
-    write_markdown(output_dir / "summary.md", rows, coverage, aggregates)
+    write_markdown(output_dir / "summary.md", rows, coverage, aggregates, scoring_errors)
     print(output_dir / "summary.md")
+
+    # 케이스 단위 격리(위 for 루프)는 audit.json이 부분적으로라도 나오게 하려는
+    # 것이지, 채점 실패를 성공으로 위장하려는 게 아니다 - Qodo 리뷰 지적
+    # (2026-08-03): 예외를 삼키기만 하고 종료 코드/summary.md 어디에도 실패
+    # 신호가 없으면 자동화 파이프라인이 불완전한 감사를 성공으로 오인할 수
+    # 있다. --allow-partial 없이 실행했는데 채점 실패가 있으면 비정상 종료한다.
+    if scoring_errors and not args.allow_partial:
+        print(f"\n{len(scoring_errors)}건의 케이스 채점 실패 - --allow-partial 없이는 비정상 종료합니다:", file=sys.stderr)
+        for err in scoring_errors:
+            print(f"  {err['version']} {err['case_id']} ({err['run_id']}): {err['error']}", file=sys.stderr)
+        raise SystemExit(1)
 
 
 if __name__ == "__main__":
