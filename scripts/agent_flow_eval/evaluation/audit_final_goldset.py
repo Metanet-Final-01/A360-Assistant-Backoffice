@@ -21,6 +21,7 @@ from action_matching import (
     score_branch_coverage,
 )
 from action_filters import normalize_steps_for_evaluation
+from adapters.worfbench_adapter import score_worfbench_f1chain
 
 
 EVAL_DIR = Path(__file__).resolve().parent
@@ -186,6 +187,13 @@ def score_case(version: str, case_id: str, run_id: str) -> dict[str, Any]:
     core_gold_uids = {a.uid for a in gold_actions}
     branch_coverage = score_branch_coverage(gold_branch_groups, matched_gold, core_gold_uids)
 
+    # 외부 벤치마크 비교용(원본 WorFEval t_eval_nodes, all-mpnet-base-v2 임베딩+
+    # 임계값 0.6, 실제 networkx max-weight-matching) - action_prf1/action_chain과
+    # 완전히 별개 경로다. 원본 gold/pred goldset.json(핵심업무 분류 전 원본)을
+    # 그대로 넘긴다 - WorFEval은 원본 벤치마크 그대로 재현하는 게 목적이라 우리
+    # 핵심업무 분류나 action_equivalence_rules_conditional.json을 적용하지 않는다.
+    worfbench = score_worfbench_f1chain(gold_file, pred_file)
+
     return {
         "case_id": case_id,
         "version": version,
@@ -204,6 +212,7 @@ def score_case(version: str, case_id: str, run_id: str) -> dict[str, Any]:
         # 진단용 별도 지표 - if/elseIf/else 상호배타적 분기 중복 카운트 문제에
         # 대한 대응(0376 실측). 메인 action_prf1/action_chain에는 반영 안 됨.
         "branch_coverage": branch_coverage,
+        "worfbench": worfbench,
         "core_business_classification": {
             "gold_excluded_count": len(gold_excluded),
             "pred_excluded_count": len(pred_excluded),
@@ -258,13 +267,21 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "run_id",
         "gold_count",
         "pred_count",
+        # 규칙기반(Rule Match)만 - LLM 호출 없이 재현 가능한 기준선
         "rule_only_tp",
+        "rule_only_action_precision",
+        "rule_only_action_recall",
         "rule_only_action_f1",
+        "rule_only_chain_precision",
+        "rule_only_chain_recall",
         "rule_only_chain_f1",
+        # Rule Match + Judge Match(LLM 판정 포함) - 실행 간 소폭 변동 가능
         "tp",
         "action_precision",
         "action_recall",
         "action_f1",
+        "chain_precision",
+        "chain_recall",
         "chain_f1",
         "judge_status",
         "unmatched_gold_count",
@@ -274,14 +291,23 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
         "branch_coverage",
         "branch_score",
         "branch_group_count",
+        # 외부 벤치마크 비교용(원본 WorFEval t_eval_nodes, 별도 경로 - 참고용)
+        "worfbench_status_external_reference",
+        "worfbench_precision_external_reference",
+        "worfbench_recall_external_reference",
+        "worfbench_f1_external_reference",
     ]
     with path.open("w", encoding="utf-8-sig", newline="") as handle:
         writer = csv.DictWriter(handle, fieldnames=fields)
         writer.writeheader()
         for row in rows:
             score = row["action_prf1"]
+            rule_score = row["rule_only_action_prf1"]
+            chain = row["action_chain"]
+            rule_chain = row["rule_only_action_chain"]
             branch = row.get("branch_coverage") or {}
             core_cls = row.get("core_business_classification") or {}
+            worfbench = row.get("worfbench") or {}
             writer.writerow(
                 {
                     "case_id": row["case_id"],
@@ -289,14 +315,20 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
                     "run_id": row["run_id"],
                     "gold_count": score["gold_count"],
                     "pred_count": score["pred_count"],
-                    "rule_only_tp": row["rule_only_action_prf1"]["tp"],
-                    "rule_only_action_f1": row["rule_only_action_prf1"]["f1"],
-                    "rule_only_chain_f1": row["rule_only_action_chain"]["f1"],
+                    "rule_only_tp": rule_score["tp"],
+                    "rule_only_action_precision": rule_score["precision"],
+                    "rule_only_action_recall": rule_score["recall"],
+                    "rule_only_action_f1": rule_score["f1"],
+                    "rule_only_chain_precision": rule_chain["precision"],
+                    "rule_only_chain_recall": rule_chain["recall"],
+                    "rule_only_chain_f1": rule_chain["f1"],
                     "tp": score["tp"],
                     "action_precision": score["precision"],
                     "action_recall": score["recall"],
                     "action_f1": score["f1"],
-                    "chain_f1": row["action_chain"]["f1"],
+                    "chain_precision": chain["precision"],
+                    "chain_recall": chain["recall"],
+                    "chain_f1": chain["f1"],
                     "judge_status": judge_status(row),
                     "unmatched_gold_count": len(row["unmatched_gold"]),
                     "unmatched_prediction_count": len(row["unmatched_prediction"]),
@@ -305,6 +337,10 @@ def write_csv(path: Path, rows: list[dict[str, Any]]) -> None:
                     "branch_coverage": branch.get("branch_coverage"),
                     "branch_score": branch.get("branch_score"),
                     "branch_group_count": branch.get("group_count"),
+                    "worfbench_status_external_reference": worfbench.get("status"),
+                    "worfbench_precision_external_reference": worfbench.get("precision"),
+                    "worfbench_recall_external_reference": worfbench.get("recall"),
+                    "worfbench_f1_external_reference": worfbench.get("f1_score"),
                 }
             )
 
@@ -318,22 +354,54 @@ def aggregate_rows(rows: list[dict[str, Any]]) -> dict[str, dict[str, float | in
         tp_total = sum(row["action_prf1"]["tp"] for row in version_rows)
         rule_tp_total = sum(row["rule_only_action_prf1"]["tp"] for row in version_rows)
         count = len(version_rows)
+        worfbench_scores = [
+            row["worfbench"] for row in version_rows if (row.get("worfbench") or {}).get("status") == "ok"
+        ]
         aggregates[version] = {
             "case_count": count,
             "gold_total": gold_total,
             "prediction_total": pred_total,
             "rule_only_tp_total": rule_tp_total,
             "tp_total": tp_total,
+            # Rule Match만(LLM 없이 재현 가능한 기준선) - Precision/Recall/F1 전부
+            "macro_rule_only_action_precision": sum(
+                row["rule_only_action_prf1"]["precision"] for row in version_rows
+            ) / count,
+            "macro_rule_only_action_recall": sum(
+                row["rule_only_action_prf1"]["recall"] for row in version_rows
+            ) / count,
             "macro_rule_only_action_f1": sum(
                 row["rule_only_action_prf1"]["f1"] for row in version_rows
+            ) / count,
+            "macro_rule_only_chain_precision": sum(
+                row["rule_only_action_chain"]["precision"] for row in version_rows
+            ) / count,
+            "macro_rule_only_chain_recall": sum(
+                row["rule_only_action_chain"]["recall"] for row in version_rows
             ) / count,
             "macro_rule_only_chain_f1": sum(
                 row["rule_only_action_chain"]["f1"] for row in version_rows
             ) / count,
             "micro_rule_only_action_f1": 2 * rule_tp_total / (gold_total + pred_total),
+            # Rule Match + Judge Match(LLM 판정 포함, 실행 간 소폭 변동 가능)
+            "macro_action_precision": sum(row["action_prf1"]["precision"] for row in version_rows) / count,
+            "macro_action_recall": sum(row["action_prf1"]["recall"] for row in version_rows) / count,
             "macro_action_f1": sum(row["action_prf1"]["f1"] for row in version_rows) / count,
+            "macro_chain_precision": sum(row["action_chain"]["precision"] for row in version_rows) / count,
+            "macro_chain_recall": sum(row["action_chain"]["recall"] for row in version_rows) / count,
             "macro_chain_f1": sum(row["action_chain"]["f1"] for row in version_rows) / count,
             "micro_action_f1": 2 * tp_total / (gold_total + pred_total),
+            # 외부 벤치마크 비교용(원본 WorFEval) - status가 "ok"인 케이스만 평균
+            "worfbench_ok_case_count": len(worfbench_scores),
+            "macro_worfbench_precision_external_reference": (
+                sum(w["precision"] for w in worfbench_scores) / len(worfbench_scores) if worfbench_scores else None
+            ),
+            "macro_worfbench_recall_external_reference": (
+                sum(w["recall"] for w in worfbench_scores) / len(worfbench_scores) if worfbench_scores else None
+            ),
+            "macro_worfbench_f1_external_reference": (
+                sum(w["f1_score"] for w in worfbench_scores) / len(worfbench_scores) if worfbench_scores else None
+            ),
         }
     return aggregates
 
@@ -361,47 +429,74 @@ def write_markdown(
     lines.extend(
         [
             "",
-            "| Agent | Cases | Gold | Pred | Rule TP | Rule Macro F1 | Rule Chain F1 | Rule Micro F1 |",
-            "|---|---:|---:|---:|---:|---:|---:|---:|",
+            "## Rule-only (LLM 호출 없음, 재현 가능한 기준선)",
+            "",
+            "| Agent | Cases | Gold | Pred | TP | Precision | Recall | F1 | Chain P | Chain R | Chain F1(LIS) | Micro F1 |",
+            "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for version, values in aggregates.items():
         lines.append(
             f"| {version} | {values['case_count']} | {values['gold_total']} | "
             f"{values['prediction_total']} | {values['rule_only_tp_total']} | "
+            f"{values['macro_rule_only_action_precision']:.3f} | {values['macro_rule_only_action_recall']:.3f} | "
             f"{values['macro_rule_only_action_f1']:.3f} | "
+            f"{values['macro_rule_only_chain_precision']:.3f} | {values['macro_rule_only_chain_recall']:.3f} | "
             f"{values['macro_rule_only_chain_f1']:.3f} | "
             f"{values['micro_rule_only_action_f1']:.3f} |"
         )
     lines.extend(
         [
             "",
-            "Judge-assisted values are reported separately because Judge results may vary between runs.",
+            "## Judge-assisted (Rule Match + Judge Match, LLM 판정 포함 - 실행 간 소폭 변동 가능)",
             "",
-            "| Agent | Judge TP | Judge-assisted Macro F1 | Judge-assisted Chain F1 | Judge-assisted Micro F1 |",
-            "|---|---:|---:|---:|---:|",
+            "| Agent | TP | Precision | Recall | F1 | Chain P | Chain R | Chain F1(LIS) | Micro F1 |",
+            "|---|---:|---:|---:|---:|---:|---:|---:|---:|",
         ]
     )
     for version, values in aggregates.items():
         lines.append(
-            f"| {version} | {values['tp_total']} | {values['macro_action_f1']:.3f} | "
+            f"| {version} | {values['tp_total']} | {values['macro_action_precision']:.3f} | "
+            f"{values['macro_action_recall']:.3f} | {values['macro_action_f1']:.3f} | "
+            f"{values['macro_chain_precision']:.3f} | {values['macro_chain_recall']:.3f} | "
             f"{values['macro_chain_f1']:.3f} | {values['micro_action_f1']:.3f} |"
         )
     lines.extend(
         [
             "",
-            "| ID | Agent | Gold | Pred | Rule TP | Rule F1 | Rule Chain | Judge F1 | Judge Chain | Judge |",
-            "|---|---:|---:|---:|---:|---:|---:|---:|---:|---|",
+            "## WorFBench (외부 벤치마크 비교용 - 원본 WorFEval t_eval_nodes, all-mpnet-base-v2 임베딩+임계값 0.6, 별도 경로/참고용)",
+            "",
+            "| Agent | ok 케이스 수 | Precision | Recall | F1 |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
+    def fmt3(value: float | None) -> str:
+        return f"{value:.3f}" if isinstance(value, (int, float)) else "-"
+
+    for version, values in aggregates.items():
+        p = fmt3(values.get("macro_worfbench_precision_external_reference"))
+        r = fmt3(values.get("macro_worfbench_recall_external_reference"))
+        f1 = fmt3(values.get("macro_worfbench_f1_external_reference"))
+        lines.append(f"| {version} | {values.get('worfbench_ok_case_count')} | {p} | {r} | {f1} |")
+    lines.extend(
+        [
+            "",
+            "| ID | Agent | Gold | Pred | Rule P | Rule R | Rule F1 | Rule Chain F1 | Judge P | Judge R | Judge F1 | Judge Chain F1 | WorFBench F1(참고) | Judge |",
+            "|---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|",
         ]
     )
     for row in rows:
         score = row["action_prf1"]
         rule_score = row["rule_only_action_prf1"]
+        worfbench = row.get("worfbench") or {}
+        wf1 = worfbench.get("f1_score")
         lines.append(
             f"| {row['case_id']} | {row['version']} | {score['gold_count']} | {score['pred_count']} | "
-            f"{rule_score['tp']} | {rule_score['f1']:.3f} | "
-            f"{row['rule_only_action_chain']['f1']:.3f} | {score['f1']:.3f} | "
+            f"{rule_score['precision']:.3f} | {rule_score['recall']:.3f} | {rule_score['f1']:.3f} | "
+            f"{row['rule_only_action_chain']['f1']:.3f} | "
+            f"{score['precision']:.3f} | {score['recall']:.3f} | {score['f1']:.3f} | "
             f"{row['action_chain']['f1']:.3f} | "
+            f"{f'{wf1:.3f}' if isinstance(wf1, (int, float)) else '-'} | "
             f"{judge_status(row)} |"
         )
     for row in rows:

@@ -1,407 +1,443 @@
 {
   "0085|Boolean.assign|source=constant, userDefined=false": {
-    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 핵심업무인 공휴일 계산이나 로그 관리와 관련이 없으며, 단순한 변수 할당에 해당합니다.",
+    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 핵심업무인 공휴일 계산이나 결과 안내와 관련된 직접적인 계산이나 데이터 처리와는 관련이 없습니다.",
     "verdict": "not_core_business"
   },
   "0085|Boolean.assign|source=constant, userDefined=true": {
-    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 핵심업무인 공휴일 계산이나 로그 기록과 관련이 없으며, 단순한 변수 할당에 해당합니다.",
+    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 핵심업무인 공휴일 계산이나 결과 안내와 관련된 직접적인 데이터 처리나 판단을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0085|Datetime.assign|(파라미터 없음)": {
-    "reason": "`Datetime.assign` 액션은 날짜 및 시간 변수를 지정하는 작업으로, 공휴일 캘린더 기반 다음 영업일 계산의 핵심업무인 공휴일 확인이나 영업일 계산과는 직접적인 관련이 없으며, 단순히 날짜를 할당하는 작업에 해당합니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.assign` 액션이 날짜 및 시간 값을 지정하는 데 사용되며, 이는 다음 영업일 계산 과정에서 날짜를 조작하고 판단하는 데 필요할 수 있기 때문에 핵심업무에 해당합니다.",
+    "verdict": "core_business"
   },
   "0085|Datetime.assign|option=constant, source=$pRecExcelRow{Date}$, formatType=custom, customFormat=MM/dd/yyyy": {
-    "reason": "`Datetime.assign` 액션은 날짜 형식의 문자열 변수를 지정하는 작업으로, 공휴일 캘린더 기반 다음 영업일 계산의 핵심적인 계산이나 데이터 처리와는 관련이 없으며, 단순히 날짜 형식을 지정하는 작업에 해당합니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.assign` 액션은 공휴일 캘린더 확인 및 다음 영업일 계산 과정에서 날짜 형식을 변환하여 사용될 가능성이 높으며, 이는 업무정의서의 Task 3에서 요구하는 날짜 계산에 직접적으로 관련이 있습니다.",
+    "verdict": "core_business"
   },
   "0085|Datetime.assign|option=constant, source=$pStrSampleString$, formatType=custom, customFormat=MM/dd/yyyy": {
-    "reason": "`Datetime.assign` 액션은 날짜 형식의 문자열 변수를 지정하는 작업으로, 공휴일 캘린더 기반 다음 영업일 계산의 핵심업무와 직접적인 관련이 없으며, 로그나 오류 처리와 같은 부가적인 작업에 해당하지 않습니다.",
+    "reason": "`Datetime.assign` 액션은 날짜 형식의 문자열 변수를 지정하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는 것으로 보입니다. 따라서 로그나 내부 변수 조작에 해당하는 것으로 판단됩니다.",
     "verdict": "not_core_business"
   },
   "0085|Datetime.toString|selectPattern=CUSTOM, patternInput=EEE": {
-    "reason": "`Datetime.toString` 액션은 날짜 시간을 문자열로 변환하는 작업으로, 공휴일 캘린더 기반 다음 영업일 계산의 핵심업무에 해당하는 계산이나 데이터 처리와는 직접적인 관련이 없습니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.toString` 액션이 특정 날짜를 문자열 형식으로 변환하는 데 사용되며, 이는 공휴일 캘린더 확인 및 다음 영업일 계산 과정에서 날짜의 요일을 판단하는 데 필요할 수 있기 때문에 핵심업무에 해당합니다.",
+    "verdict": "core_business"
   },
   "0085|Datetime.toString|selectPattern=CUSTOM, patternInput=MM/dd/yyyy": {
-    "reason": "`Datetime.toString` 액션은 날짜 시간을 문자열로 변환하는 작업으로, 공휴일 계산이나 결과 안내와 같은 핵심업무와 직접적인 관련이 없으며, 단순한 데이터 형식 변환에 해당합니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.toString` 액션이 날짜를 특정 형식으로 변환하는 작업으로, 공휴일 캘린더 기반 다음 영업일 계산에서 날짜를 확인하고 계산하는 과정에 사용될 가능성이 높기 때문에 핵심업무에 해당합니다.",
+    "verdict": "core_business"
   },
   "0085|Datetime.toString|selectPattern=CUSTOM, patternInput=yyyyMMdd": {
-    "reason": "`Datetime.toString` 액션은 날짜 시간을 문자열로 변환하는 작업으로, 공휴일 계산이나 로그 기록과 같은 핵심업무와 직접적인 관련이 없으며, 단순한 데이터 형식 변환에 해당합니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.toString` 액션이 날짜를 특정 형식(yyyyMMdd)으로 변환하는 작업으로, 이는 공휴일 캘린더 확인 및 다음 영업일 계산 과정에서 날짜를 처리하는 데 필요할 수 있으므로 핵심업무에 해당합니다.",
+    "verdict": "core_business"
   },
   "0085|File.createFile|isOverwrite=False": {
-    "reason": "`File.createFile` 액션은 파일을 생성하는 작업으로, 로그 파일이나 감사 로그 파일과 같은 비핵심적인 파일을 생성하는 경우로 해석될 수 있습니다. 업무정의서에서 요구하는 특정한 파일 생성이 아닌 일반적인 파일 생성이므로 핵심업무에 해당하지 않습니다.",
+    "reason": "`File.createFile` 액션은 로그 파일을 생성하는 것으로 보이며, 업무정의서의 Task 1에서 요구하는 감사 로그 파일이나 오류 로그 파일의 생성과는 관련이 없는 것으로 판단됩니다.",
+    "verdict": "not_core_business"
+  },
+  "0085|Folder.createFolder|isOverwrite=False": {
+    "reason": "`Folder.createFolder` 액션은 로그용 하위 폴더를 생성하는 것으로, 업무정의서에서 요구하는 핵심업무가 아닌 감사 로그 및 오류 로그와 같은 로그 폴더를 만드는 작업이기 때문입니다.",
+    "verdict": "not_core_business"
+  },
+  "0085|Folder.deleteFolder|isSize=False, isDate=True": {
+    "reason": "`Folder.deleteFolder` 액션은 로그 폴더를 삭제하는 것으로 보이며, 이는 업무정의서의 Task 1에서 요구하는 \"보관 기간이 지난 이전 로그 폴더 삭제\"와는 관련이 없고, 단순히 로그 관리의 일환으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0085|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines., scrollLines=30, closeMsgBox=True, timeOut=1": {
-    "reason": "메시지 상자를 표시하는 액션은 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 공휴일 계산이나 데이터 처리와는 관련이 없습니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 공휴일 계산이나 데이터 처리와는 관련이 없습니다. 이 액션은 단순히 정보를 전달하는 용도로 사용되며, 업무정의서의 요구사항에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0085|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Next working day is $pStrNextDay$ and it is $pStrWeekDay$ , scrollLines=30, closeMsgBox=False": {
-    "reason": "이 액션은 계산된 다음 영업일을 사용자에게 안내하는 메시지를 표시하는 것으로, 업무정의서의 Task 4에 해당하는 \"계산된 다음 영업일을 화면에 안내한다\"는 핵심업무에 포함됩니다.",
+    "reason": "이 액션은 계산된 다음 영업일을 사용자에게 안내하는 역할을 하며, 업무정의서의 Task 4에 명시된 \"계산된 다음 영업일을 화면에 안내한다\"는 요구사항에 직접적으로 부합합니다.",
     "verdict": "core_business"
   },
   "0085|MessageBox.messageBox|title=다음 영업일 계산 결과, content=확정된 다음 영업일은 $dtNextBusinessDay$ 입니다., scrollLines=5, closeMsgBox=False": {
-    "reason": "이 액션은 계산된 다음 영업일을 사용자에게 안내하는 메시지 상자를 표시하는 것으로, 업무정의서의 Task 4에 해당하는 \"계산된 다음 영업일을 화면에 안내한다\"는 핵심업무에 직접적으로 관련이 있습니다.",
+    "reason": "이 액션은 Task 4의 \"계산된 다음 영업일을 화면에 안내한다\"와 직접적으로 관련이 있으며, 결과를 사용자에게 전달하는 중요한 역할을 수행합니다.",
     "verdict": "core_business"
   },
   "0085|MessageBox.messageBox|title=다음 영업일, scrollLines=30": {
-    "reason": "\"MessageBox.messageBox\" 액션은 계산된 다음 영업일을 사용자에게 안내하는 과정에서 사용되며, 이는 업무정의서의 Task 4에 해당하는 핵심업무입니다.",
+    "reason": "\"다음 영업일\"을 안내하는 메시지 상자를 표시하는 것은 Task 4의 \"계산된 다음 영업일을 화면에 안내한다\"는 업무정의서의 요구사항에 해당하므로 핵심업무로 판단됩니다.",
     "verdict": "core_business"
   },
   "0085|String.assign|sourceString=$System:Hour.Number:toString$$System:Minute.Number:toString$$System:Second.Number:toString$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 공휴일 캘린더 기반 다음 영업일 계산의 핵심업무와 관련된 실제 계산이나 데이터 처리와는 무관합니다.",
+    "reason": "`String.assign` 액션은 현재 시간을 문자열로 변환하여 연결하는 작업으로, 업무정의서의 Task에 명시된 계산이나 판단에 직접적으로 사용되지 않으며, 로그 파일명이나 타임스탬프 표기용으로 사용될 가능성이 높습니다.",
     "verdict": "not_core_business"
   },
   "0085|String.assign|sourceString=$iStrProjectFolder$": {
-    "reason": "`String.assign` 액션은 문자열을 할당하는 작업으로, 업무정의서에서 요구하는 실제 계산이나 데이터 처리와는 관련이 없으며, 로그나 폴더 구성과 같은 핵심업무와도 연결되지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 계산이나 데이터 처리와는 무관합니다. 이 액션은 로그나 내부 변수 조작에 해당할 가능성이 높습니다.",
     "verdict": "not_core_business"
   },
   "0085|String.assign|sourceString=Bot_Name": {
-    "reason": "`String.assign` 액션은 문자열을 할당하는 작업으로, 업무정의서의 핵심업무인 공휴일 계산이나 데이터 처리와는 관련이 없으며, 단순한 변수 조작에 해당합니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 계산이나 데이터 처리와는 무관합니다. 이 액션은 로그나 내부 변수 조작에 사용될 가능성이 높아, 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0085|String.assign|sourceString=Predikly": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 공휴일 계산이나 로그 기록과 관련이 없으며, 단순한 문자열 조작에 해당합니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 계산이나 데이터 처리와는 무관합니다. 이 액션은 로그나 내부 변수 조작에 사용될 가능성이 높아, 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0089|Boolean.assign|source=constant, userDefined=true": {
-    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리나 폴더 생성과 관련이 없으며, 단순한 변수 할당에 해당합니다.",
+    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 핵심업무와 관련된 실제 계산이나 데이터 처리와는 무관하며, 로그 기록이나 오류 처리와 같은 부가적인 작업에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0089|Datetime.toString|selectPattern=CUSTOM, patternInput=yyyyMMdd": {
-    "reason": "`Datetime.toString` 액션은 날짜를 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리와 직접적인 관련이 없으며, 로그 구성이나 파일 처리와 같은 실제 작업을 수행하지 않기 때문입니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.toString` 액션은 오늘 날짜를 특정 형식(yyyyMMdd)으로 변환하여 보관 폴더를 생성하는 데 사용될 가능성이 높으며, 이는 업무정의서의 Task 2에서 요구하는 보관 폴더 생성에 직접적으로 관련이 있습니다.",
+    "verdict": "core_business"
   },
   "0089|File.createFile|filePath=$lstFiles$, isOverwrite=True": {
-    "reason": "`File.createFile` 액션은 로그 파일을 생성하는 것으로 보이며, 이는 업무정의서에서 요구하는 핵심업무가 아닌 로그 구성 작업에 해당합니다.",
+    "reason": "`File.createFile` 액션은 파일을 생성하는 작업으로, 업무정의서의 Task 1에서 요구하는 감사 로그나 오류 로그 파일을 생성하는 것이라면 핵심업무가 아닙니다. 이 액션은 로그 파일을 준비하는 것으로 보이며, 업무정의서의 핵심업무에 해당하지 않습니다.",
+    "verdict": "not_core_business"
+  },
+  "0089|File.createFile|isOverwrite=False": {
+    "reason": "`File.createFile` 액션은 파일을 생성하는 작업으로, 업무정의서의 Task 1에서 요구하는 감사 로그나 오류 로그 파일을 생성하는 것이 아니라면 핵심업무에 해당하지 않습니다. 이 액션이 로그 파일을 생성하는 것이라면, 이는 단순한 로그 준비 작업으로 간주되어 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0089|File.createFile|isOverwrite=True": {
-    "reason": "`File.createFile` 액션은 로그 파일을 생성하는 것으로 보이며, 이는 업무정의서에서 요구하는 핵심업무가 아닌 로그 구성 작업에 해당합니다.",
+    "reason": "`File.createFile` 액션은 파일을 생성하는 작업으로, 업무정의서의 Task 1에서 요구하는 감사 로그나 오류 로그 파일을 생성하는 것이 아니라면 핵심업무에 해당하지 않습니다. 이 액션이 로그 파일을 생성하는 것이라면, 이는 단순히 로그 준비 작업으로 간주되어 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0089|Folder.createFolder|folderPath=$iStrArchieveFolderPath$, isOverwrite=False": {
-    "reason": "`Folder.createFolder` 액션은 보관 폴더를 생성하는 것으로, 업무정의서의 Task 2에서 요구하는 \"보관 폴더가 없으면 만든다\"와 직접적으로 관련이 있습니다.",
+    "reason": "`Folder.createFolder` 액션은 보관 폴더를 생성하는 것으로, 업무정의서의 Task 2에서 요구하는 \"보관 폴더가 없으면 만든다\"는 작업에 해당하므로 핵심업무입니다.",
     "verdict": "core_business"
   },
   "0089|Folder.createFolder|folderPath=$iStrArchieveFolderPath$\\$pStrAssignedDate$, isOverwrite=False": {
-    "reason": "액션 `Folder.createFolder`는 보관 폴더를 생성하는 것으로, 업무정의서의 Task 2에서 요구하는 \"보관 폴더가 없으면 만든다\"에 해당하므로 핵심업무로 판정됩니다.",
+    "reason": "액션 `Folder.createFolder`는 보관 폴더를 생성하는 것으로, 업무정의서의 Task 2에서 명시적으로 요구하는 \"보관 폴더가 없으면 만든다\"는 작업에 해당합니다.",
     "verdict": "core_business"
   },
   "0089|Folder.createFolder|folderPath=<보관 폴더 경로>, isOverwrite=False": {
-    "reason": "액션 `Folder.createFolder`는 보관 폴더를 생성하는 것으로, 업무정의서의 Task 2에서 요구하는 \"보관 폴더가 없으면 만든다\"는 핵심업무에 해당합니다.",
+    "reason": "액션 `Folder.createFolder`는 보관 폴더를 생성하는 것으로, 업무정의서의 Task 2에서 요구하는 \"보관 폴더가 없으면 만든다\"에 해당하므로 핵심업무입니다.",
     "verdict": "core_business"
   },
   "0089|Folder.createFolder|folderPath=<보관 폴더 경로>\\$오늘날짜$, isOverwrite=False": {
-    "reason": "액션 `Folder.createFolder`는 보관 폴더를 생성하는 것으로, 업무정의서의 Task 2에서 요구하는 \"보관 폴더가 없으면 만든다\"는 핵심업무에 해당합니다.",
+    "reason": "이 액션은 보관 폴더를 생성하는 것으로, 업무정의서의 Task 2에서 요구하는 \"보관 폴더가 없으면 만든다\"는 작업에 해당합니다.",
     "verdict": "core_business"
   },
   "0089|Folder.createFolder|isOverwrite=False": {
-    "reason": "`Folder.createFolder` 액션이 로그 폴더를 생성하는 것으로 보이며, 이는 업무정의서에서 요구하는 핵심업무가 아닌 로그 구성 작업에 해당합니다.",
+    "reason": "`Folder.createFolder` 액션이 감사 로그·오류 로그·스냅샷 폴더를 생성하는 것이라면 핵심업무가 아니며, 이는 업무정의서에서 요구하는 작업이 아닌 로그 관련 폴더 생성에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0089|Folder.createFolder|isOverwrite=True": {
-    "reason": "`Folder.createFolder` 액션은 폴더를 생성하는 작업이지만, 로그 폴더를 생성하는 경우로 보이며, 이는 업무정의서에서 요구하는 핵심업무가 아닙니다. 업무정의서의 핵심업무는 보관 폴더와 관련된 작업이므로, 이 액션은 해당 업무의 핵심업무에 해당하지 않습니다.",
+    "reason": "`Folder.createFolder` 액션이 감사 로그·오류 로그·스냅샷 폴더를 생성하는 것이라면 핵심업무가 아니며, 이는 업무정의서의 Task 1에서 요구하는 로그 폴더 생성에 해당합니다.",
+    "verdict": "not_core_business"
+  },
+  "0089|Folder.deleteFolder|isDate=True": {
+    "reason": "`Folder.deleteFolder` 액션은 로그 폴더를 삭제하는 것으로 보이며, 이는 업무정의서의 Task 1에서 요구하는 \"보관 기간이 지난 이전 로그 폴더 삭제\"와 관련이 없고, 단순히 로그 관리의 일환으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0089|Folder.deleteFolder|isSize=False, isDate=False": {
-    "reason": "`Folder.deleteFolder` 액션은 폴더를 삭제하는 작업으로, 업무정의서에서 요구하는 \"보관 기간이 지난 이전 로그 폴더는 삭제한다\"는 명시적인 요구 사항이 없으며, 로그 폴더 삭제는 핵심업무가 아닙니다.",
+    "reason": "`Folder.deleteFolder` 액션은 로그 폴더를 삭제하는 것으로 보이며, 이는 업무정의서의 Task 1에서 요구하는 \"보관 기간이 지난 이전 로그 폴더는 삭제한다\"와 관련이 없고, 단순히 로그 관리의 일환으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0089|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines., scrollLines=30, closeMsgBox=False": {
-    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 파일 보관 처리와 관련이 없으며, 단순한 알림이나 오류 메시지 표시와 같은 보조적인 역할에 해당합니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 파일 보관 처리와 관련된 실제 데이터 처리나 파일 조작과는 무관합니다.",
     "verdict": "not_core_business"
   },
   "0089|String.assign|sourceString=$System:Hour.Number:toString$$System:Minute.Number:toString$$System:Second.Number:toString$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리와 관련이 없으며, 로그 구성이나 파일 처리와 직접적인 연관이 없습니다.",
+    "reason": "`String.assign` 액션은 단순히 시간 정보를 문자열로 변환하여 연결하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리와 관련이 없으며, 로그 기록이나 내부 변수 조작에 해당하는 것으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0089|String.assign|sourceString=$iStrArchieveFolderPath$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 폴더 생성이나 파일 처리와는 관련이 없으며, 로그 파일 준비와 같은 비핵심적인 작업에 해당합니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리와 직접적인 관련이 없으며, 로그 파일이나 내부 변수 조작을 위한 습관적인 부분으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0089|String.assign|sourceString=$iStrArchieveFolderPath$\\$pStrAssignedDate$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 파일 보관 처리나 폴더 생성과 같은 핵심업무와는 관련이 없습니다. 이는 단순한 문자열 조작에 해당하며, 업무의 주요 목적을 수행하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리와 직접적인 관련이 없으며, 단순히 변수 값을 설정하는 데 사용되므로 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0089|String.assign|sourceString=$iStrInputFolder$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리와 관련이 없으며, 단순히 내부 변수나 경로 문자열을 조작하는 데 사용됩니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 직접적인 관련이 없으며, 로그 파일명이나 경로 문자열 조립을 위한 습관적인 부분으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0089|String.assign|sourceString=$iStrProjectFolder$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 폴더 생성이나 파일 처리와 관련이 없으며, 로그 파일 준비나 내부 변수 조작과 같은 비핵심적인 작업에 해당합니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 실제 데이터 처리나 파일 작업과는 직접적인 연관이 없습니다. 이 액션은 로그 파일명이나 경로 문자열 조립과 같은 보조적인 작업으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0089|String.assign|sourceString=Bot_Name": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리와 관련이 없으며, 로그 구성이나 파일 처리와 같은 실제 데이터 처리 작업이 아닙니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 데이터 처리나 파일 작업과는 무관합니다. 이 액션은 로그 기록이나 내부 변수 조작에 사용될 가능성이 높습니다.",
     "verdict": "not_core_business"
   },
   "0089|String.assign|sourceString=Predikly": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 보관 처리와 관련이 없으며, 로그 구성이나 파일 처리와 같은 실제 데이터 처리 작업이 아닙니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 파일 보관 처리나 폴더 생성과 같은 직접적인 작업과는 관련이 없습니다.",
     "verdict": "not_core_business"
   },
   "0098|Datetime.toString|selectPattern=CUSTOM, patternInput=yyyyMMdd": {
-    "reason": "`Datetime.toString` 액션은 날짜를 문자열로 변환하는 작업으로, 업무정의서에서 요구하는 파일 및 폴더 정리와 관련된 핵심업무가 아니기 때문입니다.",
+    "reason": "`Datetime.toString` 액션은 오늘 날짜를 특정 형식(yyyyMMdd)으로 변환하여 감사 로그나 오류 로그 기록에 사용될 가능성이 높으며, 이는 업무정의서의 Task 1에서 요구하는 \"오늘 날짜 기준으로 감사 로그·오류 로그·스냅샷 폴더를 만든다\"와 관련이 있습니다.",
+    "verdict": "core_business"
+  },
+  "0098|File.createFile|isOverwrite=False": {
+    "reason": "`File.createFile` 액션은 로그 파일을 생성하는 것으로 보이며, 업무정의서에서 요구하는 실제 작업(예: 감사 로그, 오류 로그 생성)이 아닌 일반적인 로그 파일 생성으로 판단됩니다.",
+    "verdict": "not_core_business"
+  },
+  "0098|Folder.createFolder|isOverwrite=False": {
+    "reason": "`Folder.createFolder` 액션은 감사 로그·오류 로그·스냅샷 폴더를 생성하는 작업과 관련이 없으며, 로그 폴더를 생성하는 것으로 보이기 때문에 이 업무정의서의 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0098|Folder.createFolder|isOverwrite=True": {
-    "reason": "`Folder.createFolder` 액션은 로그 폴더를 생성하는 것으로 보이며, 이는 업무정의서에서 요구하는 \"감사 로그·오류 로그·스냅샷 폴더\" 생성과는 관련이 없고, 단순히 로그 폴더를 준비하는 작업으로 판단됩니다.",
+    "reason": "`Folder.createFolder` 액션은 감사 로그·오류 로그·스냅샷 폴더를 생성하는 작업에 해당하지 않으며, 로그 폴더를 생성하는 것으로 보이므로 이 업무정의서의 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0098|Folder.deleteFolder|(파라미터 없음)": {
-    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 삭제하는 작업으로, 업무 정의서의 Task 4에서 요구하는 \"폴더 안의 하위 폴더를 한 개씩 삭제한다\"와 직접적으로 관련이 있습니다. 따라서 이 액션은 핵심업무에 해당합니다.",
+    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 과정에서 폴더를 삭제하는 작업으로, 업무정의서의 Task 4에 명시된 \"폴더별 하위 폴더 정리\"와 관련이 있습니다. 따라서 이 액션은 핵심업무에 해당합니다.",
     "verdict": "core_business"
   },
   "0098|Folder.deleteFolder|folderPath=$item$": {
-    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 과정에서 폴더를 삭제하는 작업으로, 업무 정의서의 Task 4에 명시된 \"폴더별 하위 폴더 정리\"와 관련이 있습니다. 따라서 이 액션은 핵심업무에 해당합니다.",
+    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 Task 4의 일환으로, 폴더 안의 하위 폴더를 삭제하는 작업에 해당하므로 핵심업무로 판단됩니다.",
     "verdict": "core_business"
   },
   "0098|Folder.deleteFolder|folderPath=$pStrPercentTemp$\\$pStrFolderName$, isSize=False, isDate=False": {
-    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 삭제하는 작업으로, 업무 정의서의 Task 4인 \"폴더별 하위 폴더 정리\"와 관련이 있으며, 이 업무의 핵심적인 부분에 해당합니다.",
+    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 Task 4에 해당하며, 폴더 안의 하위 폴더를 삭제하는 작업을 수행하므로 핵심업무에 해당합니다.",
     "verdict": "core_business"
   },
   "0098|Folder.deleteFolder|folderPath=$pStrRecent$\\$pStrFolderName$, isSize=False, isDate=False": {
-    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 삭제하는 작업으로, 업무 정의서의 Task 4인 \"폴더별 하위 폴더 정리\"와 관련이 있으며, 이는 시스템 임시 파일·폴더 정리의 핵심적인 부분입니다.",
+    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 Task 4에 해당하며, 폴더 안의 하위 폴더를 삭제하는 작업을 수행하므로 핵심업무에 해당합니다.",
     "verdict": "core_business"
   },
   "0098|Folder.deleteFolder|folderPath=$pStrWPrefetch$\\$pStrFolderName$, isSize=False, isDate=False": {
-    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 삭제하는 작업으로, 업무 정의서의 Task 4에서 요구하는 \"폴더 안의 하위 폴더를 한 개씩 삭제\"하는 과정에 해당합니다. 따라서 이 액션은 핵심업무에 해당합니다.",
+    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 Task 4에 해당하며, 지정된 경로의 폴더를 삭제하는 작업은 업무정의서의 핵심업무에 포함됩니다.",
     "verdict": "core_business"
   },
   "0098|Folder.deleteFolder|folderPath=$pStrWTemp$\\$pStrFolderName$, isSize=False, isDate=False": {
-    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 삭제하는 작업으로, 업무 정의서의 Task 4에서 요구하는 \"폴더 안의 하위 폴더를 한 개씩 삭제한다\"와 직접적으로 관련이 있습니다. 따라서 이 액션은 핵심업무에 해당합니다.",
+    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 Task 4에 해당하며, 폴더 안의 하위 폴더를 삭제하는 작업을 수행하므로 핵심업무에 해당합니다.",
     "verdict": "core_business"
   },
   "0098|Folder.deleteFolder|isSize=False, isDate=False": {
-    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 삭제하는 작업으로, 업무 정의서의 Task 4에서 요구하는 \"폴더 안의 하위 폴더를 한 개씩 삭제한다\"와 직접적으로 관련이 있습니다. 따라서 이 액션은 핵심업무에 해당합니다.",
+    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 Task 4에 해당하며, 폴더 안의 하위 폴더를 삭제하는 작업을 수행하므로 핵심업무에 해당합니다.",
+    "verdict": "core_business"
+  },
+  "0098|Folder.deleteFolder|isSize=False, isDate=True": {
+    "reason": "`Folder.deleteFolder` 액션은 정리 대상 폴더를 처리하는 과정에서 하위 폴더를 삭제하는 작업에 해당하며, 이는 업무정의서의 Task 4에 명시된 \"폴더별 하위 폴더 정리\"와 직접적으로 관련이 있습니다.",
     "verdict": "core_business"
   },
   "0098|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines., scrollLines=30, closeMsgBox=False": {
-    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 파일 및 폴더 정리와 관련이 없으며, 단순한 알림이나 안내를 위한 액션입니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무와 관련된 파일이나 폴더 작업, 데이터 처리와는 무관합니다. 이는 단순한 알림 기능으로, 자동화 과정에서 필수적인 작업이 아닙니다.",
     "verdict": "not_core_business"
   },
   "0098|Number.assignToNumber|input=0": {
-    "reason": "`Number.assignToNumber` 액션은 숫자 변수를 할당하는 작업으로, 업무정의서에서 요구하는 파일 및 폴더 정리와 관련이 없으며, 로그 기록이나 오류 처리와 같은 핵심업무와도 관련이 없습니다.",
+    "reason": "`Number.assignToNumber` 액션은 숫자 변수를 지정하는 것으로, 업무정의서의 핵심업무와 관련된 파일 정리나 로그 기록 작업과는 직접적인 연관이 없습니다.",
     "verdict": "not_core_business"
   },
   "0098|Number.assignToNumber|input=1+$pNumCounter$": {
-    "reason": "`Number.assignToNumber` 액션은 숫자 변수를 할당하는 작업으로, 업무정의서에서 요구하는 파일 및 폴더 정리와 관련이 없으며, 로그 구성이나 오류 처리와도 관련이 없습니다.",
+    "reason": "`Number.assignToNumber` 액션은 숫자 변수를 할당하는 작업으로, 업무정의서의 핵심업무와 관련된 파일이나 폴더 정리 작업과는 직접적인 연관이 없습니다. 이 액션은 로그 기록이나 오류 처리와 같은 부가적인 작업에 사용될 가능성이 높습니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=$System:Hour.Number:toString$$System:Minute.Number:toString$$System:Second.Number:toString$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 시스템 임시 파일·폴더 정리 업무와 관련된 실제 파일이나 폴더 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 시간 정보를 문자열로 변환하여 연결하는 작업으로, 업무정의서의 Task에 명시된 핵심업무와 직접적인 관련이 없으며, 로그 기록이나 내부 변수 조작을 위한 습관적인 부분으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=$iStrDeviceUFName1$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 파일 및 폴더 정리와 관련된 실제 데이터 처리나 시스템 상호작용과는 관련이 없습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 실제 데이터 처리나 판단을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=$iStrDeviceUFName2$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 파일 및 폴더 정리와 관련된 실제 데이터 처리나 시스템 상호작용과는 관련이 없습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 실제 데이터 처리나 판단을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=$iStrProjectFolder$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 파일 및 폴더 정리와 관련된 실제 데이터 처리나 시스템 상호작용과는 관련이 없습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 및 폴더 정리와 관련이 없으며, 로그 파일이나 내부 변수 조작을 위한 습관적인 부분으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=Bot_Name": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 및 폴더 정리와 관련이 없으며, 단순한 문자열 조작에 해당합니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 실제 데이터 처리나 파일 작업과는 무관합니다. 이 액션은 로그 기록이나 내부 변수 조작을 위한 것으로 보이며, 업무정의서에서 요구하는 작업이 아닙니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=C:\\Users\\$iStrDeviceUFName1$\\Recent": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 시스템 임시 파일·폴더 정리 업무의 핵심적인 파일 및 폴더 삭제 작업과는 관련이 없습니다. 이 액션은 단순히 문자열을 처리하는 것이므로, 업무정의서의 요구사항에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 실제 파일이나 폴더 작업을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=C:\\Users\\$iStrDeviceUFName2$\\AppData\\Local\\Temp": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 시스템 임시 파일·폴더 정리 업무의 핵심적인 작업(예: 파일 삭제, 폴더 정리 등)과는 관련이 없습니다. 이 액션은 단순히 문자열을 처리하는 것이므로, 업무정의서의 요구사항에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 단순히 문자열을 지정하는 작업으로, 업무정의서의 핵심업무인 파일 및 폴더 정리와 관련된 직접적인 작업이 아니기 때문입니다. 이 액션은 로그 파일이나 경로 문자열을 조립하는 데 사용될 가능성이 높아, 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=C:\\Windows\\Prefetch": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 시스템 임시 파일·폴더 정리 업무의 핵심적인 작업(예: 파일 삭제, 폴더 정리 등)과는 관련이 없습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 파일이나 폴더 작업을 수행하는 것이 아니기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=C:\\Windows\\Temp": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 시스템 임시 파일·폴더 정리 업무의 핵심적인 작업과는 관련이 없습니다. 이 액션은 로그 파일이나 폴더를 생성하거나 삭제하는 등의 실제 데이터 처리와는 무관합니다.",
+    "reason": "`String.assign` 액션은 단순히 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 파일 및 폴더 정리와 관련된 작업이 아니기 때문입니다. 이 액션은 로그 파일이나 경로 문자열을 조립하는 데 사용될 수 있지만, 업무정의서에서 요구하는 실제 작업과는 관련이 없습니다.",
     "verdict": "not_core_business"
   },
   "0098|String.assign|sourceString=Predikly": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 시스템 임시 파일·폴더 정리와 관련이 없으며, 로그 구성이나 파일 정리와 같은 실제 작업을 수행하지 않기 때문입니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 데이터 처리나 파일 작업과는 무관합니다. 이 액션은 로그 기록이나 오류 처리와 같은 핵심업무의 요구사항을 충족하지 않기 때문에 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0112|Boolean.assign|source=constant, userDefined=false": {
-    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 공휴일 제외 이전 영업일 계산과 관련된 실제 계산이나 데이터 처리와는 무관하며, 업무정의서에서 요구하는 핵심업무에 해당하지 않습니다.",
+    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 Task에 명시된 계산이나 판단에 직접적으로 사용되지 않는다면 핵심업무에 해당하지 않습니다. 이 액션이 어떤 특정한 판단이나 계산에 사용되는지에 대한 정보가 없으므로, 일반적인 부울 값 할당으로 판단됩니다.",
     "verdict": "not_core_business"
   },
   "0112|Boolean.assign|source=constant, userDefined=true": {
-    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 공휴일 제외 이전 영업일 계산과 관련된 실제 데이터 처리나 계산을 수행하는 것이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 Task에 명시된 계산이나 판단과 직접적으로 관련이 없으며, 단순한 변수 할당에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0112|Datetime.assign|option=constant, source=$str_CellDate$, formatType=custom, customFormat=MM/dd/yyyy": {
-    "reason": "`Datetime.assign` 액션은 날짜 형식의 문자열 변수를 지정하는 작업으로, 공휴일 목록을 읽거나 이전 영업일을 계산하는 핵심업무와 직접적인 관련이 없으며, 단순한 데이터 형식 지정에 해당합니다.",
+    "reason": "`Datetime.assign` 액션은 날짜 형식을 지정하는 작업으로, 공휴일 계산의 핵심 로직에 직접적으로 사용되지 않는다면 단순한 형식 변환에 해당하므로 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0112|Datetime.assign|option=today": {
-    "reason": "`Datetime.assign` 액션은 날짜 시간을 지정하는 작업으로, 공휴일 제외 이전 영업일 계산의 핵심적인 계산이나 데이터 처리와는 관련이 없으며, 단순히 날짜 값을 할당하는 작업이기 때문에 핵심업무에 해당하지 않습니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.assign` 액션이 오늘 날짜를 지정하는 데 사용되며, 이는 이전 영업일 계산을 위한 기준 날짜 설정에 필요하므로 핵심업무에 해당합니다.",
+    "verdict": "core_business"
   },
   "0112|Datetime.assign|option=variable, dateTime=$date_InputDate$": {
-    "reason": "`Datetime.assign` 액션은 날짜 및 시간 변수를 지정하는 작업으로, 공휴일 제외 이전 영업일 계산의 핵심적인 계산이나 데이터 처리와는 관련이 없으며, 단순히 변수를 할당하는 작업에 해당합니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.assign` 액션이 `$date_InputDate$`라는 입력 날짜를 변수에 할당하는 것으로, 이는 이전 영업일 계산 과정에서 날짜를 처리하는 데 필요하므로 핵심업무에 해당합니다.",
+    "verdict": "core_business"
   },
   "0112|Datetime.subtract|source=$dCurrentDate$, val=1, unit=DAY": {
-    "reason": "`Datetime.subtract` 액션은 오늘 날짜에서 하루씩 거슬러 올라가는 과정에서 사용되며, 이전 영업일을 계산하는 데 필수적인 날짜 계산 작업이기 때문에 핵심업무에 해당합니다.",
+    "reason": "`Datetime.subtract` 액션은 오늘 날짜에서 하루를 빼는 작업으로, 이전 영업일을 계산하기 위해 날짜를 거슬러 올라가는 과정에서 사용되므로 업무정의서의 Task 2에 해당하는 핵심업무입니다.",
     "verdict": "core_business"
   },
   "0112|Datetime.subtract|source=$dCurrentDate$, val=1, unit=day": {
-    "reason": "`Datetime.subtract` 액션은 오늘 날짜에서 하루씩 거슬러 올라가는 과정에서 사용되며, 이전 영업일을 계산하는 데 필수적인 날짜 계산 작업이기 때문에 핵심업무에 해당합니다.",
+    "reason": "`Datetime.subtract` 액션은 오늘 날짜에서 하루를 빼는 작업으로, 이전 영업일을 계산하기 위해 날짜를 거슬러 올라가는 과정에서 사용되므로 업무정의서의 Task 2와 직접적으로 관련이 있습니다.",
     "verdict": "core_business"
   },
   "0112|Datetime.subtract|source=$date_PrevWeekday$, val=1, unit=DAYS": {
-    "reason": "`Datetime.subtract` 액션은 이전 영업일을 계산하기 위해 날짜에서 하루를 빼는 작업으로, 업무정의서의 Task 2에서 요구하는 주말과 공휴일을 제외한 날짜를 찾기 위한 핵심적인 계산 과정에 해당합니다.",
+    "reason": "`Datetime.subtract` 액션은 이전 영업일을 계산하기 위해 날짜를 하루씩 줄이는 과정에서 사용되며, 이는 업무정의서의 Task 2에서 요구하는 핵심적인 계산 작업에 해당합니다.",
     "verdict": "core_business"
   },
   "0112|Datetime.toString|source=$dCurrentDate$, selectPattern=yyyy-MM-dd": {
-    "reason": "`Datetime.toString` 액션은 날짜를 문자열로 변환하는 작업으로, 이전 영업일 계산 과정에서 날짜를 확인하고 처리하는 데 필요할 수 있으므로 핵심업무에 해당합니다.",
+    "reason": "`Datetime.toString` 액션이 오늘 날짜를 특정 형식(yyyy-MM-dd)으로 변환하는 작업으로, 이전 영업일 계산 과정에서 날짜 형식이 필요할 수 있으며, 이는 업무정의서의 Task 2에서 요구하는 날짜 계산에 직접적으로 사용될 가능성이 높기 때문입니다.",
     "verdict": "core_business"
   },
   "0112|Datetime.toString|source=$date_PrevWeekday$, selectPattern=CUSTOM, patternInput=EEE": {
-    "reason": "`Datetime.toString` 액션은 이전 영업일 계산 과정에서 날짜를 문자열로 변환하는 데 사용되며, 이는 공휴일 제외 이전 영업일을 계산하는 핵심적인 작업에 해당합니다.",
+    "reason": "`Datetime.toString` 액션은 `$date_PrevWeekday$` 값을 문자열로 변환하는데 사용되며, 이는 이전 영업일 계산의 결과를 특정 형식으로 표현하기 위해 필요할 수 있습니다. 업무정의서의 Task 2에서 이전 영업일을 찾는 과정에서 이 결과값이 사용될 가능성이 높아 핵심업무로 판단됩니다.",
     "verdict": "core_business"
   },
   "0112|Datetime.toString|source=$date_PrevWeekday$, selectPattern=CUSTOM, patternInput=MM/dd/yyyy": {
-    "reason": "`Datetime.toString` 액션은 이전 영업일 계산 과정에서 날짜를 문자열 형식으로 변환하는 데 사용되며, 이는 업무정의서의 핵심적인 데이터 처리 작업에 해당합니다.",
+    "reason": "`Datetime.toString` 액션은 `$date_PrevWeekday$` 값을 MM/dd/yyyy 형식으로 변환하여 이전 영업일 계산의 결과를 문자열로 표현하는 데 사용되므로, 업무정의서의 Task 2에서 요구하는 날짜 계산 결과를 처리하는 핵심적인 역할을 합니다.",
     "verdict": "core_business"
   },
   "0112|String.assign|sourceString=$rec_ExcelRow[0].String:trim$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 공휴일 목록을 읽거나 이전 영업일을 계산하는 핵심업무와 직접적인 관련이 없으며, 단순한 데이터 처리 작업에 해당합니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 공휴일 목록을 읽어오는 과정이나 이전 영업일 계산과 관련된 직접적인 데이터 처리나 판단을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0112|String.assign|sourceString=GetWeekdayRange": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 공휴일 제외 이전 영업일 계산의 핵심업무인 데이터 처리나 계산과는 관련이 없습니다. 이 액션은 업무정의서에서 요구하는 실제 작업을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 공휴일 제외 이전 영업일 계산의 핵심업무와 직접적인 관련이 없으며, 로그 파일이나 내부 변수 조작을 위한 습관적인 부분으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0131|Datetime.toString|selectPattern=CUSTOM, patternInput=MM/dd/yy": {
-    "reason": "`Datetime.toString` 액션은 날짜 및 시간 값을 문자열로 변환하는 작업으로, 업무정의서에서 요구하는 환율 조회 및 기록과 관련이 없으며, 단순한 데이터 형식 변환에 해당합니다.",
+    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는 경우로 보입니다. 따라서 이 액션은 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0131|Datetime.toString|selectPattern=PREBUILT, preBuiltPattern=ISO_LOCAL_DATE": {
-    "reason": "`Datetime.toString` 액션은 날짜 및 시간 값을 문자열로 변환하는 작업으로, 업무정의서에서 요구하는 환율 조회 및 기록과 관련이 없으며, 핵심업무에 해당하지 않습니다.",
+    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는다면 핵심업무가 아닙니다. 이 액션이 로그 파일명이나 타임스탬프 표기용으로만 사용된다면 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0131|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines., scrollLines=30, closeMsgBox=False": {
-    "reason": "메시지 상자는 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 환율 조회 및 기록 작업과는 관련이 없습니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 환율 조회 및 기록과는 관련이 없으며, 단순한 알림이나 오류 메시지 표시 용도로 사용됩니다.",
     "verdict": "not_core_business"
   },
   "0131|String.assign|(파라미터 없음)": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 환율 조회 및 기록과 관련된 실제 데이터 처리나 시스템 상호작용과는 관련이 없습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 데이터 처리나 계산을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0140|Datetime.toString|selectPattern=PREBUILT, preBuiltPattern=ISO_INSTANT": {
-    "reason": "`Datetime.toString` 액션은 날짜 및 시간 값을 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 사용자 ID 생성이나 엑셀 기록과는 관련이 없습니다. 이 액션은 로그 파일이나 데이터 처리와 관련된 직접적인 작업이 아니므로 핵심업무에 해당하지 않습니다.",
+    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는다면 핵심업무에 해당하지 않습니다. 이 액션은 로그 파일이나 내부 처리에 사용될 가능성이 높습니다.",
+    "verdict": "not_core_business"
+  },
+  "0140|File.createFile|isOverwrite=False": {
+    "reason": "`File.createFile` 액션은 로그 파일을 생성하는 것으로 보이며, 이는 업무정의서에서 요구하는 핵심업무가 아닌 로그 파일 준비에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0140|Folder.createFolder|folderPath=$sApproot$, isOverwrite=False": {
-    "reason": "`Folder.createFolder` 액션은 폴더를 생성하는 작업이지만, 업무정의서에서 요구하는 작업은 특정한 작업 폴더, 로그 폴더, 결과 폴더를 만드는 것이며, 이 액션이 생성하는 폴더의 경로가 명시되지 않아 해당 업무의 핵심업무에 해당하지 않습니다.",
+    "reason": "`Folder.createFolder` 액션은 폴더를 생성하는 작업으로, 업무정의서의 Task 1에서 요구하는 \"작업 폴더, 로그 폴더, 결과 폴더\"를 만드는 것과 관련이 있지만, 파라미터 값이 `$sApproot$`로 설정되어 있어 특정한 업무 요구사항에 맞지 않으며, 일반적인 로그 폴더 생성으로 해석될 수 있습니다.",
     "verdict": "not_core_business"
   },
   "0140|Folder.createFolder|folderPath=$sOutput$, isOverwrite=False": {
-    "reason": "`Folder.createFolder` 액션은 폴더를 생성하는 작업이지만, 업무정의서에서 요구하는 작업은 특정한 로그 폴더나 작업 폴더의 생성이 아니라, 일반적인 폴더 생성으로 보입니다. 따라서 이 액션은 핵심업무에 해당하지 않습니다.",
-    "verdict": "not_core_business"
+    "reason": "`Folder.createFolder` 액션은 `$sOutput$` 경로에 폴더를 생성하는 것으로, 업무정의서의 Task 1에서 요구하는 \"작업 폴더, 로그 폴더, 결과 폴더\"를 만드는 작업에 해당하므로 핵심업무입니다.",
+    "verdict": "core_business"
   },
   "0140|Folder.createFolder|folderPath=$sResultFolder$, isOverwrite=False": {
-    "reason": "`Folder.createFolder` 액션은 폴더를 생성하는 작업으로, 업무정의서의 Task 1에서 요구하는 \"작업 폴더, 로그 폴더, 결과 폴더\"와 관련이 있지만, 구체적으로 어떤 폴더를 생성하는지에 대한 정보가 없으므로 핵심업무로 판별할 수 없습니다.",
-    "verdict": "not_core_business"
+    "reason": "`Folder.createFolder` 액션은 결과 폴더를 생성하는 것으로, 업무정의서의 Task 1에서 요구하는 \"작업 폴더, 로그 폴더, 결과 폴더가 없으면 각각 만든다\"에 해당하므로 핵심업무입니다.",
+    "verdict": "core_business"
   },
   "0140|Folder.createFolder|folderPath=$sWorkFolder$, isOverwrite=False": {
-    "reason": "`Folder.createFolder` 액션은 작업 폴더를 생성하는 것으로, 업무정의서에서 요구하는 \"작업 폴더, 로그 폴더, 결과 폴더\"와 같은 특정 폴더를 생성하는 것이 아니라 일반적인 폴더 생성으로 보입니다. 따라서 이 액션은 핵심업무에 해당하지 않습니다.",
+    "reason": "이 액션은 작업 폴더를 생성하는 것으로, 업무정의서의 Task 1에서 요구하는 \"작업 폴더, 로그 폴더, 결과 폴더가 없으면 각각 만든다\"에 해당하므로 핵심업무입니다.",
+    "verdict": "core_business"
+  },
+  "0140|Folder.createFolder|isOverwrite=False": {
+    "reason": "`Folder.createFolder` 액션은 로그 폴더를 생성하는 것으로 보이며, 이는 업무정의서의 Task 1에서 요구하는 작업이 아닌 일반적인 로그 파일 준비에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0140|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=The New User $sFirstName$ $sLastName$ has been registered, scrollLines=30, closeMsgBox=True, timeOut=5": {
-    "reason": "메시지 상자를 표시하는 액션은 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 고유 사용자 ID 생성, 엑셀 기록 등과는 직접적인 관련이 없습니다.",
+    "reason": "이 액션은 사용자 등록 완료 메시지를 표시하는 것으로, 업무정의서의 핵심업무인 데이터 처리나 기록 작업과는 관련이 없으며, 단순히 사용자에게 알림을 제공하는 역할만 수행합니다.",
     "verdict": "not_core_business"
   },
   "0140|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=The reference ID  for $sFirstName$ $sLastName$ : \n$sSubFirstName$$nReferenceID.Number:toString$, scrollLines=30, closeMsgBox=True, timeOut=5": {
-    "reason": "메시지 상자를 표시하는 액션은 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 고유 사용자 ID 생성이나 엑셀 기록과는 직접적인 관련이 없습니다.",
+    "reason": "메시지 상자는 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 고유 사용자 ID 생성이나 엑셀 기록과는 직접적인 관련이 없습니다.",
     "verdict": "not_core_business"
   },
   "0140|MessageBox.messageBox|title=Automation Anywhere, content=작업 완료, scrollLines=30, closeMsgBox=True": {
-    "reason": "\"MessageBox.messageBox\" 액션은 작업 완료를 알리는 메시지를 표시하는 것으로, 업무정의서에서 요구하는 데이터 처리나 기록 작업과는 관련이 없으며, 단순한 알림 기능에 해당합니다.",
+    "reason": "`MessageBox.messageBox` 액션은 작업 완료 메시지를 표시하는 것으로, 업무정의서의 핵심업무인 사용자 ID 생성이나 엑셀 기록과는 관련이 없으며, 단순히 사용자에게 알림을 주는 기능에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0140|String.assign|(파라미터 없음)": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 고유 사용자 ID 생성이나 엑셀 기록과 관련된 구체적인 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
-    "verdict": "not_core_business"
+    "reason": "`String.assign` 액션은 고유 사용자 ID를 생성하기 위해 문자열을 조작하는 과정에서 사용될 가능성이 높으며, 이는 업무정의서의 Task 2에 해당하는 고유 사용자 ID 생성 작업과 관련이 있습니다.",
+    "verdict": "core_business"
   },
   "0140|String.assign|sourceString=$sApproot$\\Output": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 고유 사용자 ID 생성이나 엑셀 기록과 관련된 실제 데이터 처리 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 고유 사용자 ID 생성이나 엑셀 기록과 직접적인 관련이 없으며, 로그 파일이나 내부 변수 조작을 위한 습관적인 액션으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0140|String.assign|sourceString=$sOutput$\\New User Registration.xlsx": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 고유 사용자 ID 생성이나 엑셀 기록과 관련된 실제 데이터 처리 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 Task에 명시된 고유 사용자 ID 생성이나 엑셀 기록과 직접적인 관련이 없으며, 로그 파일이나 내부 변수 조작을 위한 습관적인 부분으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0140|String.assign|sourceString=$sSubFirstName$$nReferenceID.Number:toString$": {
-    "reason": "`String.assign` 액션은 고유 사용자 ID를 생성하기 위해 이름 문자열과 참조 번호를 결합하는 과정의 일부로 보이며, 이는 업무정의서의 Task 2에 해당하는 핵심업무입니다.",
+    "reason": "`String.assign` 액션은 고유 사용자 ID를 생성하기 위해 이름 문자열과 참조 번호를 결합하는 과정에서 사용되므로, 업무정의서의 Task 2에 해당하는 핵심업무입니다.",
     "verdict": "core_business"
   },
   "0140|String.assign|sourceString=$sTrimmedName$-$nRefNo$": {
-    "reason": "`String.assign` 액션은 고유 사용자 ID를 생성하기 위해 이름 문자열과 참조 번호를 결합하는 작업으로, 업무정의서의 Task 2에 해당하는 핵심적인 데이터 처리 작업입니다.",
+    "reason": "`String.assign` 액션은 `$sTrimmedName$`과 `$nRefNo$`를 결합하여 고유 사용자 ID를 생성하는 과정의 일환으로 사용되며, 이는 업무정의서의 Task 2에 명시된 고유 사용자 ID 생성 작업에 해당합니다.",
     "verdict": "core_business"
   },
   "0140|String.assign|sourceString=C:\\ProgramData\\AutomationAnywhere\\Bots\\New User Registration": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 고유 사용자 ID 생성이나 엑셀 기록과 관련된 실제 데이터 처리 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 단순히 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 고유 사용자 ID 생성이나 엑셀 기록과는 관련이 없습니다. 이 액션은 로그 파일이나 내부 변수 조작을 위한 것으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0164|Boolean.assign|source=constant, userDefined=true": {
-    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, XML 설정 파일을 읽거나 설정값을 병합하는 업무와 직접적인 관련이 없으며, 업무정의서에서 요구하는 핵심업무에 해당하지 않습니다.",
+    "reason": "`Boolean.assign` 액션은 부울 값을 할당하는 작업으로, 업무정의서의 특정 Task와 직접적으로 연결되지 않으며, 로그나 상태 관리를 위한 습관적인 부분으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0164|Datetime.toString|selectPattern=CUSTOM, patternInput=MM/dd/yy": {
-    "reason": "`Datetime.toString` 액션은 날짜시간 값을 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 XML 설정 파일 읽기 및 설정값 병합과는 관련이 없습니다. 이 액션은 로그 기록이나 설정값 처리와 직접적인 연관이 없으므로 핵심업무에 해당하지 않습니다.",
+    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는 경우로 보입니다. 따라서 로그 파일명이나 타임스탬프 표기용으로 사용될 가능성이 높습니다.",
     "verdict": "not_core_business"
   },
   "0164|Datetime.toString|selectPattern=PREBUILT, preBuiltPattern=ISO_LOCAL_DATE": {
-    "reason": "`Datetime.toString` 액션은 날짜 및 시간 값을 문자열로 변환하는 작업으로, XML 설정 파일을 읽고 설정값을 병합하는 업무와 직접적인 관련이 없으며, 업무정의서에서 요구하는 핵심업무에 해당하지 않습니다.",
+    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는 경우로 보입니다. 따라서 로그 파일명이나 타임스탬프 표기용으로 사용될 가능성이 높아 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0164|Folder.createFolder|isOverwrite=False": {
-    "reason": "\"Folder.createFolder\" 액션은 로그·오류·스냅샷 폴더를 생성하는 것으로 보이며, 이는 업무정의서에서 요구하는 핵심업무가 아닌 로그 정리와 관련된 작업입니다.",
+    "reason": "`Folder.createFolder` 액션은 로그·오류·스냅샷 폴더를 생성하는 것으로 보이며, 이는 업무정의서의 Task 1에서 요구하는 작업이지만, 구체적인 폴더의 용도나 필요성이 명시되지 않았기 때문에 핵심업무로 판단할 수 없습니다.",
     "verdict": "not_core_business"
   },
   "0164|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines., scrollLines=30, closeMsgBox=False": {
-    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 XML 설정 파일 읽기 및 설정값 병합과 관련이 없으며, 단순한 알림이나 경고를 위한 것이기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 XML 설정 파일 읽기 및 설정값 병합과 관련이 없으며, 단순한 알림이나 오류 메시지 표시 용도로 사용됩니다.",
     "verdict": "not_core_business"
   },
   "0164|String.assign|sourceString=$diBotConfig{$stEachKey$}$": {
-    "reason": "`String.assign` 액션은 XML 설정 파일에서 개별 설정값을 읽어와 공통 설정값을 덮어쓰는 과정에서 사용될 수 있으며, 이는 설정값 병합의 핵심적인 부분에 해당합니다.",
+    "reason": "`String.assign` 액션은 개별 설정값을 공통 설정값에 덮어쓰는 과정에서 사용될 가능성이 높으며, 이는 업무정의서의 Task 3에서 요구하는 \"개별 설정값 읽기 및 병합\"에 해당하는 핵심적인 데이터 처리 작업으로 판단됩니다.",
     "verdict": "core_business"
   },
   "0164|String.assign|sourceString=$diCommon{$stEachKey$}$": {
-    "reason": "`String.assign` 액션은 공통 설정값을 읽어오는 과정에서 개별 설정값을 덮어쓰는 데 사용될 수 있으며, 이는 업무정의서의 Task 3에 해당하는 핵심적인 데이터 처리 작업입니다.",
+    "reason": "`String.assign` 액션은 공통 설정값을 읽어오는 과정에서 특정 키에 해당하는 값을 저장하는 데 사용되며, 이는 업무정의서의 Task 2와 Task 3에서 요구하는 설정값 병합 및 저장 작업에 해당합니다.",
     "verdict": "core_business"
   },
   "0164|String.assign|sourceString=Esspl": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, XML 설정 파일을 읽거나 설정값을 병합하는 업무와 직접적인 관련이 없으며, 업무정의서에서 요구하는 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 XML 설정 파일 읽기 및 설정값 병합과 관련이 없으며, 로그 파일이나 내부 변수 조작을 위한 습관적인 부분으로 보입니다.",
     "verdict": "not_core_business"
   },
   "0164|String.assign|sourceString=ReadConfig": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, XML 설정 파일을 읽거나 설정값을 병합하는 핵심업무와는 관련이 없습니다. 이 액션은 단순한 문자열 조작에 해당하며, 업무정의서에서 요구하는 실제 데이터 처리나 설정값 병합과는 무관합니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 Task에 명시된 설정값을 읽거나 병합하는 핵심적인 작업과는 관련이 없습니다. 이 액션은 단순히 문자열을 처리하는 것으로, 로그 기록이나 오류 처리와 같은 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0376|Datetime.toString|(파라미터 없음)": {
-    "reason": "`Datetime.toString` 액션은 날짜 및 시간 값을 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 파일 백업 처리와 관련이 없으며, 설정값 읽기나 오류 처리와도 직접적인 연관이 없습니다.",
+    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는다면 핵심업무가 아닙니다. 이 액션이 로그 파일명이나 타임스탬프 표기용으로만 사용될 가능성이 높습니다.",
     "verdict": "not_core_business"
   },
   "0376|Datetime.toString|selectPattern=CUSTOM, patternInput=yyyyMMdd": {
-    "reason": "`Datetime.toString` 액션은 날짜 시간을 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 파일 백업 처리와 직접적인 관련이 없으며, 설정값을 읽거나 백업 폴더를 준비하는 과정에 포함되지 않기 때문입니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.toString` 액션은 오늘 날짜를 포함한 백업 하위 폴더 경로를 만드는 데 필요한 날짜 형식을 생성하는 데 사용될 수 있으며, 이는 업무정의서의 Task 2에서 요구하는 핵심적인 작업입니다.",
+    "verdict": "core_business"
   },
   "0376|Datetime.toString|source=$sConfigFilePath$, selectPattern=오늘 날짜 문자열": {
-    "reason": "`Datetime.toString` 액션은 날짜 시간을 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 파일 백업 처리와 직접적인 관련이 없으며, 설정값을 읽는 과정에서 필요한 정보가 아닌 단순한 데이터 변환 작업입니다.",
-    "verdict": "not_core_business"
+    "reason": "`Datetime.toString` 액션은 오늘 날짜 문자열을 생성하는 데 사용되며, 이는 백업 폴더 경로를 만드는 데 필요한 날짜 정보를 제공하므로 업무정의서의 Task 2와 관련이 있습니다.",
+    "verdict": "core_business"
   },
   "0376|Folder.createFolder|folderPath=$sBackupFolderPath$, isOverwrite=False": {
     "reason": "액션 `Folder.createFolder`는 백업 하위 폴더 경로를 생성하는 것으로, 업무정의서의 Task 2에서 요구하는 \"폴더가 없으면 만든다\"는 핵심업무에 해당합니다.",
@@ -412,115 +448,119 @@
     "verdict": "core_business"
   },
   "0376|Folder.createFolder|isOverwrite=False": {
-    "reason": "\"Folder.createFolder\" 액션은 백업 하위 폴더 경로를 만드는 작업으로, 업무정의서의 Task 2에서 요구하는 폴더 생성과 관련이 있습니다. 따라서 이 액션은 핵심업무에 해당합니다.",
+    "reason": "\"Folder.createFolder\" 액션은 백업 하위 폴더 경로를 만드는 작업으로, 업무정의서의 Task 2에서 요구하는 폴더 생성과 관련이 있으므로 핵심업무에 해당합니다.",
     "verdict": "core_business"
   },
   "0376|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Check Point  1, scrollLines=30, closeMsgBox=True, timeOut=2": {
-    "reason": "메시지 상자는 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 파일 백업 처리나 설정값 읽기와는 관련이 없습니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 정보를 전달하기 위한 메시지 상자를 표시하는 것으로, 업무정의서의 핵심업무인 파일 백업 처리나 설정값 읽기와는 관련이 없으며, 단순한 안내 메시지에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0376|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Check Point 2, scrollLines=30, closeMsgBox=True, timeOut=2": {
-    "reason": "메시지 상자는 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 파일 백업 처리나 설정값 읽기와는 관련이 없습니다. 이는 단순한 안내 메시지를 표시하는 액션으로, 자동화의 핵심적인 데이터 처리나 파일 작업이 아닙니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 파일 백업 처리나 설정값 읽기와는 관련이 없습니다. 이는 단순한 안내 메시지를 표시하는 것으로, 업무의 핵심적인 데이터 처리나 파일 작업이 아닙니다.",
     "verdict": "not_core_business"
   },
   "0376|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Check Point 3, scrollLines=30, closeMsgBox=True, timeOut=2": {
-    "reason": "메시지 상자는 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 파일 백업 처리나 설정값 읽기와는 관련이 없습니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 정보를 전달하기 위한 메시지 상자를 표시하는 것으로, 업무정의서의 핵심업무인 파일 백업 처리나 설정값 읽기와는 관련이 없으며, 단순한 안내 메시지에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0376|MessageBox.messageBox|title=Automation Anywhere, content=파일 백업 처리를 시작합니다., scrollLines=30, closeMsgBox=True": {
-    "reason": "메시지 상자는 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 파일 백업 처리와 관련된 실제 데이터 처리나 파일 조작을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "메시지 상자는 사용자에게 정보를 전달하는 용도로 사용되며, 업무정의서의 핵심업무인 파일 백업 처리와 관련된 실제 데이터 처리나 파일 조작을 수행하지 않기 때문입니다.",
     "verdict": "not_core_business"
   },
   "0376|String.assign|sourceString=$vDestinationFolderPath$\\$vDestination_SubFolder_Name$_$vTodayDateTime$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 설정 기반 파일 백업의 핵심업무인 파일 백업 처리나 폴더 준비와는 직접적인 관련이 없으며, 단순히 변수 값을 조합하는 작업에 해당합니다.",
-    "verdict": "not_core_business"
+    "reason": "`String.assign` 액션은 백업 하위 폴더 경로를 생성하기 위해 날짜와 폴더 이름을 결합하는 데 사용되며, 이는 업무정의서의 Task 2에서 요구하는 \"오늘 날짜가 포함된 백업 하위 폴더 경로를 만든다\"와 관련이 있습니다.",
+    "verdict": "core_business"
   },
   "0419|Datetime.toString|selectPattern=CUSTOM, patternInput=dd/MM/yy": {
-    "reason": "`Datetime.toString` 액션은 날짜시간 값을 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 이메일 발송이나 수신자 목록 처리와 직접적인 관련이 없으며, 단순한 데이터 형식 변환에 해당합니다.",
+    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는 경우로 보입니다. 따라서 이 액션은 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0419|Datetime.toString|selectPattern=PREBUILT, preBuiltPattern=ISO_LOCAL_DATE": {
-    "reason": "`Datetime.toString` 액션은 날짜시간 값을 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 이메일 발송이나 수신자 목록 처리와 직접적인 관련이 없으며, 단순한 데이터 형식 변환에 해당합니다.",
+    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않는 경우로 보입니다. 따라서 이 액션은 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0419|Datetime.toString|source=현재 날짜/시간, selectPattern=yyyy-MM-dd": {
-    "reason": "`Datetime.toString` 액션은 날짜/시간 값을 문자열로 변환하는 작업으로, 업무정의서의 핵심업무인 이메일 발송이나 수신자 목록 처리와 직접적인 관련이 없으며, 단순한 데이터 변환 작업에 해당합니다.",
+    "reason": "`Datetime.toString` 액션은 현재 날짜/시간을 문자열로 변환하는 작업으로, 업무정의서의 Task에 명시된 판단이나 계산에 직접 사용되지 않으며, 로그 파일명이나 타임스탬프 표기용으로만 쓰일 가능성이 높습니다.",
     "verdict": "not_core_business"
   },
   "0419|Folder.createFolder|folderPath=$sOutputFolder$, isOverwrite=False": {
-    "reason": "`Folder.createFolder` 액션은 새로운 폴더를 생성하는 작업으로, 업무정의서에서 요구하는 특정 폴더 작업(예: 결과가 기록된 파일을 출력 폴더로 옮기거나 입력 폴더의 원본을 삭제하는 작업)과는 관련이 없으며, 단순히 폴더를 생성하는 행위는 핵심업무에 해당하지 않습니다.",
+    "reason": "`Folder.createFolder` 액션은 새로운 폴더를 생성하는 작업으로, 업무정의서의 Task에 명시된 특정 폴더 작업이 아닌 일반적인 폴더 생성으로 보입니다. 따라서 이 액션은 핵심업무에 해당하지 않습니다.",
+    "verdict": "not_core_business"
+  },
+  "0419|Folder.deleteFolder|isSize=False, isDate=False": {
+    "reason": "`Folder.deleteFolder` 액션은 입력 폴더의 원본을 삭제하는 작업으로, 업무정의서에서 명시적으로 요구하는 작업이 아니며, 일반적인 정리 작업에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0419|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=$sInputFileName$ file is required file - please check input file., scrollLines=30, closeMsgBox=False": {
-    "reason": "이 액션은 입력 파일이 없을 경우 사용자에게 안내 메시지를 표시하는 것으로, 업무정의서의 핵심업무인 파일 확인 및 처리와는 직접적인 데이터 처리나 문서 조작이 아닌 단순한 사용자 알림에 해당합니다.",
+    "reason": "이 액션은 입력 파일이 없을 때 사용자에게 알림을 주기 위한 메시지 상자를 표시하는 것으로, 업무정의서의 핵심업무인 파일 확인이나 처리와는 직접적인 관련이 없으며, 단순한 사용자 안내에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0419|MessageBox.messageBox|title=Automation Anywhere Enterprise Client, content=Bot Name and Vendor Name are required values - please provide their values using the value assignments on the preceding lines., scrollLines=30, closeMsgBox=False": {
-    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 이메일 발송이나 데이터 처리와는 관련이 없으며, 단순한 안내 메시지를 보여주는 용도로 사용됩니다.",
+    "reason": "`MessageBox.messageBox` 액션은 사용자에게 메시지를 표시하는 기능으로, 업무정의서의 핵심업무인 이메일 발송이나 데이터 처리와 관련이 없으며, 단순히 안내 메시지를 보여주는 용도로 사용됩니다.",
     "verdict": "not_core_business"
   },
   "0419|MessageBox.messageBox|title=안내, content=수신자 목록 파일이 없습니다., scrollLines=3, closeMsgBox=True": {
-    "reason": "이 액션은 수신자 목록 파일이 없을 때 사용자에게 안내 메시지를 표시하는 것으로, 업무정의서의 핵심업무인 파일 확인이나 데이터 처리와는 관련이 없으며, 단순한 사용자 인터페이스 요소에 해당합니다.",
+    "reason": "이 액션은 수신자 목록 파일이 없을 때 사용자에게 안내 메시지를 표시하는 것으로, 업무정의서의 핵심업무인 파일 확인 및 처리와는 직접적인 데이터 처리나 계산이 아닌 단순한 안내 역할에 해당합니다.",
     "verdict": "not_core_business"
   },
   "0419|Number.assignToNumber|input=2": {
-    "reason": "`Number.assignToNumber` 액션은 숫자 변수를 할당하는 작업으로, 업무정의서에서 요구하는 수신자 목록 처리, 메일 발송, 결과 기록 등과 관련이 없으며, 단순한 변수 할당 작업에 해당합니다.",
+    "reason": "`Number.assignToNumber` 액션은 숫자 변수를 지정하는 것으로, 업무정의서의 핵심업무와 관련된 계산이나 데이터 처리에 직접적으로 사용되지 않으며, 특정한 업무의 요구사항을 충족하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$rEmailConfig[1]$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 수신자 정보 처리나 메일 발송과 관련된 핵심적인 데이터 처리 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무에 해당하는 수신자별 메일 발송 과정에서 직접적으로 사용되는 것이 아니라면, 단순한 문자열 조작으로 판단되어 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$rEmailConfig[2]$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 수신자 목록 처리나 메일 발송과 관련된 실제 데이터 처리 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무에 해당하는 수신자별 메일 발송 과정에서 직접적으로 사용되는 것이 아니라면, 단순한 문자열 조작으로 판단되어 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$rEmailConfig[3]$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 수신자 정보 처리나 메일 발송과 관련된 핵심업무가 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무에 해당하는 수신자별 메일 발송 과정에서 직접적으로 사용되는 것이 아니라면, 단순한 문자열 조작으로 판단되어 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$rEmailConfig[4]$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 수신자 정보 처리나 메일 발송과 관련된 핵심적인 데이터 처리 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무에 해당하는 수신자별 메일 발송 과정에서 직접적으로 사용되는 것이 아니라면, 단순한 문자열 조작으로 판단되어 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$rEmailConfig[5]$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 수신자 목록 처리나 메일 발송과 관련된 핵심적인 데이터 처리 작업이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 수신자별 메일 발송 과정에서 직접적으로 사용되는 것이 아니라면, 단순한 문자열 조작으로 판단되어 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$rEmailConfig[6]$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 수신자 정보 처리나 메일 발송과 관련된 핵심업무가 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무에 해당하는 실제 데이터 처리나 판단과는 관련이 없으며, 로그나 내부 변수 조작에 해당할 가능성이 높습니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$sInputFolder$\\$sInputFileName$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 실제 데이터 처리나 파일 작업과는 관련이 없습니다. 이는 단순히 변수 조작에 해당하며, 핵심업무로 간주되지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 입력 폴더와 파일 이름을 결합하는 과정은 업무정의서의 핵심업무에 해당하지 않으며, 단순히 경로 문자열을 조합하는 작업에 불과합니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$sRootBotDirectory$\\Input": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 수신자 목록 파일 확인이나 메일 발송과 관련된 실제 데이터 처리나 조작이 아니기 때문에 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 입력 폴더의 경로를 설정하는 데 사용되지만, 이는 업무정의서의 핵심업무에 해당하는 직접적인 데이터 처리나 판단 작업이 아니기 때문에 핵심업무가 아닙니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$sRootBotDirectory$\\Output": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 실제 데이터 처리나 파일 작업과는 관련이 없습니다. 이 액션은 단순히 문자열을 다루는 것이므로 핵심업무에 해당하지 않습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 데이터 처리나 판단을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=$tEmailTemplate[0][1]$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 수신자별 메일 발송 과정이나 메일 양식 처리와 관련이 없으며, 단순한 문자열 조작에 해당합니다.",
-    "verdict": "not_core_business"
+    "reason": "`String.assign` 액션은 메일 양식의 치환 표시를 수신자 정보로 바꾸는 과정에서 사용될 가능성이 높으며, 이는 업무정의서의 Task 3에서 요구하는 수신자별 메일 발송의 핵심적인 부분입니다.",
+    "verdict": "core_business"
   },
   "0419|String.assign|sourceString=$tEmailTemplate[1][1]$": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 이메일 발송 과정에서 수신자 정보를 치환하는 작업과는 관련이 없으며, 업무정의서에서 요구하는 핵심업무에 해당하지 않습니다.",
-    "verdict": "not_core_business"
+    "reason": "`String.assign` 액션은 메일 양식의 치환 표시를 수신자 정보로 바꾸는 과정에서 사용될 가능성이 높으며, 이는 업무정의서의 Task 3에서 요구하는 핵심적인 데이터 처리 작업에 해당합니다.",
+    "verdict": "core_business"
   },
   "0419|String.assign|sourceString=EmailConfig.xlsx": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서에서 요구하는 수신자 목록 파일이나 메일 양식 파일을 읽거나 처리하는 것과는 관련이 없습니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 데이터 처리나 판단을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=FPT Software": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 이메일 발송이나 데이터 처리와는 관련이 없으며, 단순한 문자열 조작에 해당합니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 데이터 처리나 판단을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   },
   "0419|String.assign|sourceString=SendBulkEmailsWithTemplate": {
-    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무인 이메일 발송이나 데이터 처리와는 관련이 없습니다. 이 액션은 단순히 문자열을 다루는 것으로, 실제 업무의 핵심적인 작업이 아닙니다.",
+    "reason": "`String.assign` 액션은 문자열을 지정하거나 연결하는 작업으로, 업무정의서의 핵심업무와 관련된 데이터 처리나 판단을 수행하지 않기 때문에 핵심업무에 해당하지 않습니다.",
     "verdict": "not_core_business"
   }
 }
