@@ -40,8 +40,15 @@ AMBIGUOUS_GENERIC_ACTIONS = {
 # AMBIGUOUS_GENERIC_ACTIONS 중 실제 파라미터 값(경로, 조립되는 문자열 등)에 이
 # 키워드가 있으면 사람이 검토한 gold_core_actions 9개 파일 전체에서 100%
 # 예외 없이 "로그/감사/오류 스냅샷 관련 범용 셋업"이었다(실측 확인, 반대
-# 사례 0건). 이 키워드가 없으면 규칙만으로는 판단 못 하고 LLM(judge_core_
-# business_relevance)로 넘어간다.
+# 사례 0건 - 2026-08-04에 제외된 74건을 문맥까지 전수 재확인함). 이 키워드가
+# 없으면 규칙만으로는 판단 못 하고 LLM(judge_core_business_relevance)로 넘어간다.
+#
+# 알려진 한계: 부분문자열 매칭이라 원리상 login/logout/dialog/catalog/blog/
+# logic/terror 같은 단어도 걸린다. 이 규칙은 LLM 앞단에서 무료로 걸러내는
+# 단계라 오탐이 나면 LLM에 물어보지도 않고 조용히 제외된다. 현재 9개 케이스
+# 에서는 오탐이 0건이고, 대안(단어 단위 분리)은 $sRunlogpath$처럼 전부 소문자로
+# 붙은 변수명을 놓쳐 오히려 부정확해져서 지금은 그대로 둔다. 골드셋을 9개 밖으로
+# 확장하면(RPA 봇에서 login은 흔한 핵심업무다) 제외 사유를 한 번 훑어볼 것.
 INFRASTRUCTURE_KEYWORD_RE = re.compile(r"(log|audit|error|snapshot|observability)", re.IGNORECASE)
 
 
