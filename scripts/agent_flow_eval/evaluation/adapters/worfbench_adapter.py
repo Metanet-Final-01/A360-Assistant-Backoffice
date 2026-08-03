@@ -160,7 +160,23 @@ def _canonical_action(package: str | None, action: str | None, mapping: dict[str
     return {"package": canonical_package, "action": canonical_action}
 
 
-def _canonical_path(steps: list[dict[str, Any]], mapping: dict[str, str], found_types: set[str], excluded: list[str]) -> list[dict[str, str]]:
+def _flatten_all_branches(steps: list[dict[str, Any]], mapping: dict[str, str], found_types: set[str], excluded: list[str]) -> list[dict[str, str]]:
+    """스텝 트리를 액션 한 줄로 펼친다. **분기는 하나도 버리지 않는다** -
+    if의 본문과 elseIf/else를 전부, loop/container도 본문과 분기를 전부 넣는다
+    (catch만 제외, try는 본문+finally). 정답 워크플로우가 3개 분기로 3가지
+    경우를 처리한다면 봇도 3가지를 다 만들어야 하므로, 분기를 버리면 정답
+    요구사항 자체가 사라진다.
+
+    이 함수는 2026-08-04까지 `_canonical_path`라는 이름이었는데, "대표 경로
+    하나로 접는다"는 뜻이라 실제 동작과 정반대였다(실측: 9개 케이스 모두
+    메인 채점기의 전체 펼치기 결과와 액션 수가 정확히 일치). 같은 시점에
+    `processing/convert_to_worfbench.py`의 쌍둥이 함수도 같은 규칙으로 맞췄다
+    - 그쪽은 실제로 elseIf/else를 버려서 0376에서 20개 중 6개가 사라지고
+    있었다(그 출력은 어떤 채점기도 쓰지 않아 점수 영향은 없었음).
+
+    루프는 본문을 1회만 넣는다 - 반복 횟수는 실행 시점에 정해지므로 정적
+    워크플로우에서 펼칠 수 없다. 이건 이 함수만의 규칙이 아니라 메인 채점기
+    (`action_matching.flatten_scored_actions`)도 똑같이 하는 전체 공통 규칙이다."""
     actions: list[dict[str, str]] = []
     for step in steps:
         if is_disabled_step(step):
@@ -179,21 +195,21 @@ def _canonical_path(steps: list[dict[str, Any]], mapping: dict[str, str], found_
             found_types.add(step_type)
 
         if step_type in {"container", "loop"}:
-            actions.extend(_canonical_path(step.get("steps", []) or [], mapping, found_types, excluded))
+            actions.extend(_flatten_all_branches(step.get("steps", []) or [], mapping, found_types, excluded))
             for branch in step.get("branches", []) or []:
-                actions.extend(_canonical_path(branch.get("steps", []) or [], mapping, found_types, excluded))
+                actions.extend(_flatten_all_branches(branch.get("steps", []) or [], mapping, found_types, excluded))
         elif step_type == "if":
-            actions.extend(_canonical_path(step.get("steps", []) or [], mapping, found_types, excluded))
+            actions.extend(_flatten_all_branches(step.get("steps", []) or [], mapping, found_types, excluded))
             for branch in step.get("branches", []) or []:
-                actions.extend(_canonical_path(branch.get("steps", []) or [], mapping, found_types, excluded))
+                actions.extend(_flatten_all_branches(branch.get("steps", []) or [], mapping, found_types, excluded))
         elif step_type == "trigger_loop":
             for branch in step.get("branches", []) or []:
-                actions.extend(_canonical_path(branch.get("steps", []) or [], mapping, found_types, excluded))
+                actions.extend(_flatten_all_branches(branch.get("steps", []) or [], mapping, found_types, excluded))
         elif step_type == "try":
-            actions.extend(_canonical_path(step.get("steps", []) or [], mapping, found_types, excluded))
+            actions.extend(_flatten_all_branches(step.get("steps", []) or [], mapping, found_types, excluded))
             for branch in step.get("branches", []) or []:
                 if branch.get("branch") == "finally":
-                    actions.extend(_canonical_path(branch.get("steps", []) or [], mapping, found_types, excluded))
+                    actions.extend(_flatten_all_branches(branch.get("steps", []) or [], mapping, found_types, excluded))
         else:
             raise ValueError(f"Unknown normalized step type for WorFBench: {step_type!r}")
     return actions
@@ -232,8 +248,8 @@ def score_worfbench_f1chain(
     pred_types: set[str] = set()
     excluded_gold: list[str] = []
     excluded_prediction: list[str] = []
-    gold_actions = _canonical_path(gold_payload.get("steps", []) or [], mapping, gold_types, excluded_gold)
-    pred_actions = _canonical_path(pred_payload.get("steps", []) or [], mapping, pred_types, excluded_prediction)
+    gold_actions = _flatten_all_branches(gold_payload.get("steps", []) or [], mapping, gold_types, excluded_gold)
+    pred_actions = _flatten_all_branches(pred_payload.get("steps", []) or [], mapping, pred_types, excluded_prediction)
 
     result: dict[str, Any] = {
         "mode": "actual_worfbench_t_eval_nodes",

@@ -56,16 +56,27 @@ def default_dataset_dir() -> Path:
     return Path(__file__).resolve().parents[1] / "dataset"
 
 
-def canonical_path(steps: list[dict], found_types: set[str]) -> list[dict]:
-    """Collapse every branch point to ONE representative path, applying the same
-    rule to whatever will later be compared against it (see session discussion —
-    "if -> then-branch only, loop -> body once, try -> try+finally only, catch/
-    elseIf/else dropped"). This is a DIAGNOSTIC approximation, not a faithful
-    replacement for WorFBench's DAG-only f1chain: it exists to (a) let f1chain run
-    at all on workflows it cannot natively represent, and (b) measure how much that
-    approximation actually costs — not to be reported as an authoritative score.
-    Every dropped/approximated node type is recorded in found_types so the caller
-    can tag worfbench_fidelity=exact only when nothing was actually approximated."""
+def flatten_all_branches(steps: list[dict], found_types: set[str]) -> list[dict]:
+    """스텝 트리를 액션 한 줄로 펼친다. **분기는 하나도 버리지 않는다** -
+    if의 본문과 elseIf/else를 전부 넣는다(catch만 제외, try는 본문+finally).
+
+    2026-08-04 수정: 원래 이 함수는 `canonical_path`라는 이름으로 "대표 경로
+    하나만 남긴다"(if는 then 분기만, trigger_loop는 첫 분기만)를 했는데,
+    그러면 정답 워크플로우의 요구사항이 실제로 사라졌다 - 실측하면 0376에서
+    20개 중 6개, 0098에서 4개가 없어졌다. 정답이 3개 분기로 3가지 경우를
+    처리한다면 봇도 3가지를 다 만들어야 하므로 분기를 버리면 안 된다.
+
+    같은 시점에 `evaluation/adapters/worfbench_adapter.py`의 쌍둥이 함수와
+    규칙을 통일했다. 그쪽은 원래부터 전부 펼치고 있었는데 이름만
+    `_canonical_path`라 정반대로 읽혔다 - 거의 같은 이름의 함수 둘이 서로
+    다르게 동작하던 상태를 없앤 것이다. **이 함수의 출력물은 어떤 채점기도
+    입력으로 쓰지 않으므로(채점은 goldset.json을 직접 읽는다) 이 수정으로
+    바뀌는 점수는 없다.**
+
+    루프는 본문을 1회만 넣는다 - 반복 횟수는 실행 시점에 정해져서 정적
+    워크플로우에서는 펼칠 수 없다. 메인 채점기도 똑같이 하는 공통 규칙이다.
+    found_types에는 등장한 제어 구조를 기록해서, 호출부가 이 근사(루프 1회,
+    catch 제외)가 실제로 일어났는지 표시할 수 있게 한다."""
     actions: list[dict] = []
     for step in steps:
         if is_disabled_step(step):
@@ -80,21 +91,18 @@ def canonical_path(steps: list[dict], found_types: set[str]) -> list[dict]:
         if step_type in CONTROL_TYPES:
             found_types.add(step_type)
 
-        if step_type == "if":
-            actions.extend(canonical_path(step.get("steps", []) or [], found_types))
-        elif step_type == "loop":
-            actions.extend(canonical_path(step.get("steps", []) or [], found_types))
+        if step_type in {"if", "loop", "container"}:
+            actions.extend(flatten_all_branches(step.get("steps", []) or [], found_types))
+            for b in step.get("branches", []) or []:
+                actions.extend(flatten_all_branches(b.get("steps", []) or [], found_types))
         elif step_type == "trigger_loop":
-            branches = step.get("branches", []) or []
-            if branches:
-                actions.extend(canonical_path(branches[0].get("steps", []) or [], found_types))
+            for b in step.get("branches", []) or []:
+                actions.extend(flatten_all_branches(b.get("steps", []) or [], found_types))
         elif step_type == "try":
-            actions.extend(canonical_path(step.get("steps", []) or [], found_types))
+            actions.extend(flatten_all_branches(step.get("steps", []) or [], found_types))
             for b in step.get("branches", []) or []:
                 if b.get("branch") == "finally":
-                    actions.extend(canonical_path(b.get("steps", []) or [], found_types))
-        elif step_type == "container":
-            actions.extend(canonical_path(step.get("steps", []) or [], found_types))
+                    actions.extend(flatten_all_branches(b.get("steps", []) or [], found_types))
         else:
             raise ValueError(f"unknown goldset step type: {step_type!r}")
     return actions
@@ -112,7 +120,7 @@ def build_node_edges(actions: list[dict]) -> str:
 def convert_goldset_file(goldset_path: Path, record_id: str) -> tuple[dict, int, str, list[str]]:
     goldset = json.loads(goldset_path.read_text(encoding="utf-8"))
     found_types: set[str] = set()
-    actions = canonical_path(goldset.get("steps", []) or [], found_types)
+    actions = flatten_all_branches(goldset.get("steps", []) or [], found_types)
 
     fidelity = "exact" if not found_types else "approximated"
     record = {
