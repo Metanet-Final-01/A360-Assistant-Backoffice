@@ -46,9 +46,21 @@
 **`run_eval_batch.py`가 아니다** - 그건 `eval_inputs/normalized_workflows_13/`
 기준 레거시 13개 케이스 전용이고, 9개 확정 케이스와는 디렉터리 구조 자체가
 다르다(`resolve_paths()`가 `normalized_workflows_13/<case_id>`를 찾는데, 9개
-케이스 gold는 `goldset_expansion/export_main_challenge/deliverable/Main/`에
-있다 - `MAIN_GOLD_DIR` 상수 참고). 이걸 헷갈려서 시간 많이 썼으니 다음 사람은
-그러지 말 것.
+케이스 gold는 `goldset_expansion/confirmed_goldset/gold/`에 있다 - `GOLD_DIR`
+상수 참고). 이걸 헷갈려서 시간 많이 썼으니 다음 사람은 그러지 말 것.
+
+**2026-08-03 추가 수정**: 원래 `gold_path()`는 이 `confirmed_goldset/gold/`가
+아니라 `export_main_challenge/deliverable/Main/`(0164는 별도로
+`candidate_pool/.../3_제외_41`)이라는 **git에 전혀 추적되지 않는 로컬 전용
+경로**를 읽고 있었다 - 그래서 새로 clone하면 애초에 채점 자체가 안 됐다(9개
+전부 byte-identical하다는 걸 확인한 뒤에야 발견함). 지금은 `GOLD_DIR` 하나로
+통합해서 git-tracked인 `confirmed_goldset/gold/`만 읽는다. 이 폴더의 파일명도
+같은 날 짧게 줄었다(반복되는 "Automation Anywhere__Bot Store__" 마켓플레이스
+태그 제거 + 중복된 봇이름 세그먼트 축약) - 원래 이름이 저장소 경로까지 합치면
+Windows `MAX_PATH`(260자)를 넘어서 Windows에서 `git pull`/`clone`이 실패했기
+때문(우회하려면 `git config core.longpaths true`가 먼저 필요했음). 리네임 전후로
+저장된 v2/v3 manifest를 다시 채점해서 18개 행 전부 점수가 byte 단위로 동일한 것을
+확인했다(mismatch 0).
 
 `audit_final_goldset.py`의 CLI는 v2/v3만 받는다(`--v2-manifest`/
 `--v3-manifest`). v1이나 추가 재현성 샘플을 채점하려면 `score_case(version,

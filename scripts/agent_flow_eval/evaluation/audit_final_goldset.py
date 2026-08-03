@@ -28,21 +28,7 @@ from adapters.worfbench_adapter import score_worfbench_f1chain
 EVAL_DIR = Path(__file__).resolve().parent
 AGENT_FLOW_ROOT = EVAL_DIR.parent
 RUN_LOGS = AGENT_FLOW_ROOT / "runner" / "logs"
-MAIN_GOLD_DIR = (
-    AGENT_FLOW_ROOT
-    / "goldset_expansion"
-    / "export_main_challenge"
-    / "deliverable"
-    / "Main"
-)
-EXCLUDED_GOLD_DIR = (
-    AGENT_FLOW_ROOT
-    / "goldset_expansion"
-    / "candidate_pool"
-    / "gpt_bundle"
-    / "gpt_final_classification"
-    / "3_제외_41"
-)
+GOLD_DIR = AGENT_FLOW_ROOT / "goldset_expansion" / "confirmed_goldset" / "gold"
 FINAL_CASE_IDS = {"0085", "0089", "0098", "0112", "0131", "0140", "0164", "0376", "0419"}
 
 
@@ -100,16 +86,7 @@ def parse_run_overrides(values: list[str]) -> dict[str, str]:
 
 
 def gold_path(case_id: str) -> Path:
-    if case_id == "0164":
-        return only_file(EXCLUDED_GOLD_DIR, "0164*.goldset.json")
-    matches = [
-        path
-        for path in sorted(MAIN_GOLD_DIR.glob(f"{case_id}*.goldset.json"))
-        if ".cleaned." not in path.name
-    ]
-    if len(matches) != 1:
-        raise FileNotFoundError(f"Expected one original Gold for {case_id}, found {len(matches)}")
-    return matches[0]
+    return only_file(GOLD_DIR, f"{case_id}_*.goldset.json")
 
 
 def prediction_path(run_id: str) -> Path:

@@ -75,9 +75,21 @@ evaluation/
 `run_eval_batch.py`/`run_eval_case.py` resolve paths under `eval_inputs/normalized_workflows_13/`
 only - they score the original 13-case regression set. The 9 confirmed-goldset cases
 (`goldset_expansion/confirmed_goldset/`) are scored by `audit_final_goldset.py`, which reads
-Gold from `goldset_expansion/export_main_challenge/deliverable/Main/` (gitignored, regenerable;
-verified byte-identical to `confirmed_goldset/gold/` for the cases checked) and predictions from
+Gold from `goldset_expansion/confirmed_goldset/gold/` (git-tracked, `GOLD_DIR` constant,
+matched by case-ID prefix glob) and predictions from
 `runner/logs/<run_id>/converted_recommendation/normalized/`.
+
+**2026-08-03 fix**: `audit_final_goldset.py` used to read Gold from two untracked, local-only
+directories (`export_main_challenge/deliverable/Main/` and a `candidate_pool/.../3_제외_41`
+special case for `0164`) - neither was ever committed, so a fresh clone couldn't score anything.
+Both were consolidated into the single tracked `confirmed_goldset/gold/` directory (content
+verified byte-identical for all 9 cases before switching). The 9 filenames in that directory were
+also shortened (dropped the repeated `Automation Anywhere__Bot Store__` marketplace tag and
+collapsed duplicated bot-name segments) because their original length plus the repo path exceeded
+Windows' 260-character `MAX_PATH`, which broke `git pull`/`clone` for Windows checkouts unless
+`git config core.longpaths true` was set first. Rescored the stored v2/v3 manifests after the
+change and confirmed every per-case score and aggregate was byte-identical to the pre-change
+result (0 mismatches across 18 rows).
 
 **`core_task.py` was deleted (2026-07-30)** along with this file's old `package_family()`/
 `salient_families()` — they were an unjustified hardcoded package classification
