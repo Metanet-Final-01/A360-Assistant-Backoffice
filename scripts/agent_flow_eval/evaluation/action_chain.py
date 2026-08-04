@@ -15,8 +15,13 @@
 from __future__ import annotations
 
 import bisect
+import itertools
 
 from action_matching import ActionMatch, ScoredAction
+
+# 분기 블록 순열이 조합 폭발하면 조용히 오래 도는 대신 즉시 드러나게 한다.
+# 실측(2026-08-04, 확정 9개): 최대 6가지(0376의 3갈래 if) - 여유가 충분하다.
+MAX_GOLD_ORDERS = 5000
 
 
 def _lis_length(sequence: list[int]) -> int:
@@ -47,8 +52,87 @@ def _lcs_length_over_match_relation(
     return dp[n][m]
 
 
+def _build_order_items(gold_actions: list[ScoredAction], branch_groups: list[dict]) -> list[tuple]:
+    """정답 액션 목록을 "순서가 고정된 액션"과 "순서를 바꿔도 되는 분기 블록"의
+    중첩 구조로 만든다.
+
+    `flatten_scored_actions`는 if의 본문과 elseIf/else를 **연속으로** 이어붙이므로,
+    한 if 그룹에 속한 액션들은 평탄화된 목록에서 하나의 연속 구간을 차지한다.
+    중첩된 if의 액션은 바깥 갈래의 uid 목록에 포함되므로 구간끼리는 포함 관계만
+    있고 부분적으로 겹치지 않는다 - 그래서 구간을 재귀적으로 쪼갤 수 있다.
+
+    핵심업무 분류로 액션이 빠질 수 있으므로 남아 있는 액션만 대상으로 하고,
+    실제 액션이 남은 갈래가 2개 미만인 그룹은 순서에 영향을 주지 못하므로
+    아예 제외한다(빈 갈래를 순열에 넣으면 경우의 수만 늘고 결과는 같다)."""
+    index_of = {action.uid: i for i, action in enumerate(gold_actions)}
+
+    groups: list[dict] = []
+    for group in branch_groups:
+        branches = []
+        for branch in group["branches"]:
+            indexes = sorted(index_of[uid] for uid in branch["uids"] if uid in index_of)
+            if indexes:
+                branches.append(indexes)
+        if len(branches) >= 2:
+            flat = [i for branch in branches for i in branch]
+            groups.append({"start": min(flat), "end": max(flat), "branches": branches})
+
+    # 시작이 같으면 바깥쪽(끝이 더 먼 것)을 먼저 잡아야 중첩이 올바르게 풀린다.
+    groups.sort(key=lambda g: (g["start"], -g["end"]))
+
+    def build(low: int, high: int) -> list[tuple]:
+        items: list[tuple] = []
+        position = low
+        while position < high:
+            group = next(
+                (g for g in groups if g["start"] == position and g["end"] < high), None
+            )
+            if group is None:
+                items.append(("action", position))
+                position += 1
+                continue
+            items.append(
+                ("branches", [build(branch[0], branch[-1] + 1) for branch in group["branches"]])
+            )
+            position = group["end"] + 1
+        return items
+
+    return build(0, len(gold_actions))
+
+
+def _generate_gold_orders(items: list[tuple]) -> list[list[int]]:
+    """제어흐름상 허용되는 정답 순서를 전부 만든다.
+
+    갈래 **내부** 순서는 그대로 두고, 상호배타적인 갈래 **블록끼리만** 자리를
+    바꾼다. `if/elseIf/else`는 실행 시 하나만 살아남으므로 블록 사이에는 실제
+    선후관계가 없는데, 평탄화하면 파서가 정한 순서 하나가 정답인 것처럼 굳어져
+    가짜 제약이 생긴다. 서로 다른 갈래의 액션을 뒤섞는 것은 허용하지 않는다 -
+    A360의 분기는 병렬 실행이 아니라 택일이기 때문이다."""
+    orders: list[list[int]] = [[]]
+    for kind, payload in items:
+        if kind == "action":
+            options: list[list[int]] = [[payload]]
+        else:
+            options = []
+            for permutation in itertools.permutations(payload):
+                per_branch = [_generate_gold_orders(branch) for branch in permutation]
+                for combination in itertools.product(*per_branch):
+                    options.append([index for part in combination for index in part])
+        orders = [order + option for order in orders for option in options]
+        if len(orders) > MAX_GOLD_ORDERS:
+            raise ValueError(
+                f"분기 블록 순열이 {MAX_GOLD_ORDERS}가지를 넘었다 - 조합 폭발이므로 "
+                "상한/가지치기 설계를 먼저 정할 것."
+            )
+    return orders
+
+
 def compute_action_chain(
-    gold_actions: list[ScoredAction], pred_actions: list[ScoredAction], matches: list[ActionMatch]
+    gold_actions: list[ScoredAction],
+    pred_actions: list[ScoredAction],
+    matches: list[ActionMatch],
+    *,
+    gold_branch_groups: list[dict] | None = None,
 ) -> dict:
     pred_order = {a.uid: i for i, a in enumerate(pred_actions)}
     gold_order = {a.uid: i for i, a in enumerate(gold_actions)}
@@ -77,7 +161,18 @@ def compute_action_chain(
             "상태에서는 두 값이 같아야 정상. action_matching.py의 매칭 로직을 확인할 것."
         )
 
+    # 분기 블록 순열별로 LIS를 구해 최댓값을 쓴다(2026-08-04). 평탄화가 만든
+    # 가짜 선후관계(else 본문이 if 본문보다 뒤여야 한다)를 제거하기 위한 것으로,
+    # WorFBench 논문이 정답 그래프의 위상정렬을 열거해 최댓값을 쓰는 것과 같은
+    # 목적이다. 매칭은 순열 생성 **전에** 이미 확정돼 있으므로, 순열마다 대응
+    # 관계까지 유리하게 다시 고르는 일은 생기지 않는다.
+    gold_orders = _generate_gold_orders(_build_order_items(gold_actions, gold_branch_groups or []))
     chain_tp = lis_len
+    for order in gold_orders:
+        position_of = {canonical_index: position for position, canonical_index in enumerate(order)}
+        reordered = [position_of[index] for index in gold_index_seq]
+        chain_tp = max(chain_tp, _lis_length(reordered))
+
     precision = chain_tp / len(pred_actions) if pred_actions else 0.0
     recall = chain_tp / len(gold_actions) if gold_actions else 0.0
     f1 = (2 * precision * recall / (precision + recall)) if (precision + recall) else 0.0
@@ -89,5 +184,7 @@ def compute_action_chain(
         "f1": f1,
         "lis_length": lis_len,
         "lcs_length_crosscheck": lcs_len,
-        "note": "Action Chain F1은 순서 정확도가 아니라 액션 선택+상대 순서를 함께 반영한 지표",
+        "gold_order_count": len(gold_orders),
+        "branch_permutation_gain": chain_tp - lis_len,
+        "note": "Action Chain F1은 순서 정확도가 아니라 액션 선택+상대 순서를 함께 반영한 지표. 상호배타적 분기 블록의 순서는 가짜 제약이라 순열 전체에서 최댓값을 쓴다.",
     }

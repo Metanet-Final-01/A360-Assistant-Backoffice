@@ -192,10 +192,10 @@ def score_case(version: str, case_id: str, run_id: str) -> dict[str, Any]:
             len(gold_actions), len(pred_actions), len(rule_matches)
         ),
         "rule_only_action_chain": compute_action_chain(
-            gold_actions, pred_actions, rule_matches
+            gold_actions, pred_actions, rule_matches, gold_branch_groups=gold_branch_groups
         ),
         "action_prf1": compute_action_prf1(len(gold_actions), len(pred_actions), len(matches)),
-        "action_chain": compute_action_chain(gold_actions, pred_actions, matches),
+        "action_chain": compute_action_chain(gold_actions, pred_actions, matches, gold_branch_groups=gold_branch_groups),
         # 진단용 별도 지표 - if/elseIf/else 상호배타적 분기 중복 카운트 문제에
         # 대한 대응(0376 실측). 메인 action_prf1/action_chain에는 반영 안 됨.
         "branch_coverage": branch_coverage,
