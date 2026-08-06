@@ -79,6 +79,15 @@ Parameters:
     Type: String
     Default: ops.dev.a360.internal
     Description: Private DNS record that points to the current Ops EC2 private IP.
+  ExistingOpsPrivateHostedZoneId:
+    Type: String
+    Default: ""
+    Description: >-
+      Optional existing Route53 private hosted zone ID. When set (and
+      EnableOpsPrivateDns is false, so this stack does not create its own
+      zone), the Ops EC2 instance still self-registers its private IP into
+      this existing zone on every boot, instead of requiring a manual DNS
+      fix after every instance replacement.
   LogRetentionDays:
     Type: Number
     Default: 14
@@ -120,6 +129,8 @@ Conditions:
   RunsRagWorker: !Equals [!Ref EnableRagWorker, "true"]
   CreatesDefaultRagIngestSchedule: !Equals [!Ref EnableDefaultRagIngestSchedule, "true"]
   CreatesOpsPrivateDns: !Equals [!Ref EnableOpsPrivateDns, "true"]
+  UseExistingOpsPrivateHostedZone: !Not [!Equals [!Ref ExistingOpsPrivateHostedZoneId, ""]]
+  RegistersOpsPrivateDns: !Or [CreatesOpsPrivateDns, UseExistingOpsPrivateHostedZone]
 
 Resources:
   OpsGhcrReadTokenSecret:
@@ -367,7 +378,12 @@ Resources:
                 - Effect: Allow
                   Action: route53:ChangeResourceRecordSets
                   Resource: !Sub "arn:${AWS::Partition}:route53:::hostedzone/${OpsPrivateHostedZone}"
-                - !Ref AWS::NoValue
+                - !If
+                  - UseExistingOpsPrivateHostedZone
+                  - Effect: Allow
+                    Action: route53:ChangeResourceRecordSets
+                    Resource: !Sub "arn:${AWS::Partition}:route53:::hostedzone/${ExistingOpsPrivateHostedZoneId}"
+                  - !Ref AWS::NoValue
               - Effect: Allow
                 Action:
                   - sqs:ReceiveMessage
@@ -828,7 +844,68 @@ Resources:
                       echo "Route53 private DNS update skipped after retries; bootstrap continues." >&2
                     fi
                   fi
-                - ""
+                - !If
+                  - UseExistingOpsPrivateHostedZone
+                  - !Sub |
+                    record_name=""
+                    for attempt in 1 2 3 4 5; do
+                      if [ -n "$PRIVATE_IP" ]; then
+                        break
+                      fi
+                      echo "Waiting for Ops EC2 private IP before Route53 update attempt=$attempt" >&2
+                      sleep $((attempt * 2))
+                      PRIVATE_IP=$(curl -fsS -H "X-aws-ec2-metadata-token: $IMDS_TOKEN" http://169.254.169.254/latest/meta-data/local-ipv4 || true)
+                    done
+                    if [ -z "$PRIVATE_IP" ]; then
+                      echo "Skipping Ops private DNS update because private IP was not available." >&2
+                    else
+                      record_name="${OpsPrivateDnsRecordName}"
+                      zone_name="${OpsPrivateHostedZoneName}"
+                      case "$record_name" in
+                        "$zone_name"|*".$zone_name") ;;
+                        *)
+                          echo "Skipping Ops private DNS update; record $record_name is outside hosted zone $zone_name." >&2
+                          record_name=""
+                          ;;
+                      esac
+                    fi
+                    if [ -n "$record_name" ]; then
+                      echo "Preparing Ops private DNS ${OpsPrivateDnsRecordName} -> $PRIVATE_IP"
+                      cat > /tmp/a360-ops-private-dns.json <<DNSJSON
+                    {
+                      "Comment": "Point ${OpsPrivateDnsRecordName} to $INSTANCE_ID",
+                      "Changes": [
+                        {
+                          "Action": "UPSERT",
+                          "ResourceRecordSet": {
+                            "Name": "${OpsPrivateDnsRecordName}.",
+                            "Type": "A",
+                            "TTL": 60,
+                            "ResourceRecords": [
+                              { "Value": "$PRIVATE_IP" }
+                            ]
+                          }
+                        }
+                      ]
+                    }
+                    DNSJSON
+                      dns_updated=false
+                      for attempt in 1 2 3 4 5; do
+                        if aws route53 change-resource-record-sets \
+                          --hosted-zone-id "${ExistingOpsPrivateHostedZoneId}" \
+                          --change-batch file:///tmp/a360-ops-private-dns.json; then
+                          echo "Updated Ops private DNS ${OpsPrivateDnsRecordName} -> $PRIVATE_IP"
+                          dns_updated=true
+                          break
+                        fi
+                        echo "Route53 private DNS update failed attempt=$attempt; retrying." >&2
+                        sleep $((attempt * 3))
+                      done
+                      if [ "$dns_updated" != "true" ]; then
+                        echo "Route53 private DNS update skipped after retries; bootstrap continues." >&2
+                      fi
+                    fi
+                  - ""
               RunRagWorkerContainer: !If
                 - RunsRagWorker
                 - !Sub
@@ -988,15 +1065,15 @@ Outputs:
     Description: Ops backend API port reachable on the Ops EC2 private IP through Client VPN.
     Value: !Ref OpsBackendPort
   OpsPrivateDnsName:
-    Condition: CreatesOpsPrivateDns
+    Condition: RegistersOpsPrivateDns
     Description: Route53 private DNS name for the Ops Streamlit UI. Use this through Client VPN.
     Value: !Ref OpsPrivateDnsRecordName
     Export:
       Name: !Sub "${ProjectName}-${Environment}-OpsPrivateDnsName"
   OpsPrivateHostedZoneId:
-    Condition: CreatesOpsPrivateDns
+    Condition: RegistersOpsPrivateDns
     Description: Route53 private hosted zone ID used for Ops direct access.
-    Value: !Ref OpsPrivateHostedZone
+    Value: !If [CreatesOpsPrivateDns, !Ref OpsPrivateHostedZone, !Ref ExistingOpsPrivateHostedZoneId]
     Export:
       Name: !Sub "${ProjectName}-${Environment}-OpsPrivateHostedZoneId"
   RagScheduleRoleArn:
