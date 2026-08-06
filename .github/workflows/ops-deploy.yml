@@ -101,6 +101,11 @@ on:
         required: true
         default: ops.dev.a360.internal
         type: string
+      existing_ops_private_hosted_zone_id:
+        description: Existing Route53 private hosted zone ID to self-register DNS into when enable_ops_private_dns is false
+        required: false
+        default: Z0116288P7JNOHLQU5JO
+        type: string
   push:
     branches:
       - dev
@@ -248,6 +253,7 @@ jobs:
               RagIngestClean="${{ inputs.rag_ingest_clean || 'false' }}" \
               EnableOpsPrivateDns="${{ inputs.enable_ops_private_dns || 'true' }}" \
               OpsPrivateHostedZoneName="${{ inputs.ops_private_hosted_zone_name || 'dev.a360.internal' }}" \
+              ExistingOpsPrivateHostedZoneId="${{ inputs.existing_ops_private_hosted_zone_id || 'Z0116288P7JNOHLQU5JO' }}" \
               OpsPrivateDnsRecordName="${{ inputs.ops_private_dns_record_name || 'ops.dev.a360.internal' }}" \
               ClientVpnCidr="${{ inputs.client_vpn_cidr || '10.250.0.0/22' }}" \
               GhcrUsername="${{ secrets.GHCR_USERNAME }}" \
