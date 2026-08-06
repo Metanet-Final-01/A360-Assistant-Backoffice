@@ -130,7 +130,7 @@ Conditions:
   CreatesDefaultRagIngestSchedule: !Equals [!Ref EnableDefaultRagIngestSchedule, "true"]
   CreatesOpsPrivateDns: !Equals [!Ref EnableOpsPrivateDns, "true"]
   UseExistingOpsPrivateHostedZone: !Not [!Equals [!Ref ExistingOpsPrivateHostedZoneId, ""]]
-  RegistersOpsPrivateDns: !Or [CreatesOpsPrivateDns, UseExistingOpsPrivateHostedZone]
+  RegistersOpsPrivateDns: !Or [!Condition CreatesOpsPrivateDns, !Condition UseExistingOpsPrivateHostedZone]
 
 Resources:
   OpsGhcrReadTokenSecret:
