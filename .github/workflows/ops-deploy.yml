@@ -84,9 +84,9 @@ on:
           - "false"
           - "true"
       enable_ops_private_dns:
-        description: Create Route53 private DNS for direct Client VPN Ops access
+        description: Create a NEW Route53 private hosted zone (leave false; an existing zone is already registered via existing_ops_private_hosted_zone_id)
         required: true
-        default: "true"
+        default: "false"
         type: choice
         options:
           - "true"
@@ -251,7 +251,7 @@ jobs:
               RagIngestScheduleExpression="${{ inputs.rag_ingest_schedule_expression || 'cron(30 8 ? * * *)' }}" \
               RagIngestScheduleTimezone="${{ inputs.rag_ingest_schedule_timezone || 'Asia/Seoul' }}" \
               RagIngestClean="${{ inputs.rag_ingest_clean || 'false' }}" \
-              EnableOpsPrivateDns="${{ inputs.enable_ops_private_dns || 'true' }}" \
+              EnableOpsPrivateDns="${{ inputs.enable_ops_private_dns || 'false' }}" \
               OpsPrivateHostedZoneName="${{ inputs.ops_private_hosted_zone_name || 'dev.a360.internal' }}" \
               ExistingOpsPrivateHostedZoneId="${{ inputs.existing_ops_private_hosted_zone_id || 'Z0116288P7JNOHLQU5JO' }}" \
               OpsPrivateDnsRecordName="${{ inputs.ops_private_dns_record_name || 'ops.dev.a360.internal' }}" \
