@@ -53,8 +53,11 @@ def _agent_flow_eval_root() -> Path:
     backend_root = Path(__file__).resolve().parents[3]        # ops-server/backend
     candidates = [
         backend_root / "scripts" / "agent_flow_eval",          # 컨테이너(/app/scripts/...)
-        backend_root.parents[1] / "scripts" / "agent_flow_eval",  # 저장소 루트에서 실행
     ]
+    if len(backend_root.parents) > 1:
+        # 컨테이너에서는 backend_root가 /app이라 parents[1]이 없다.
+        # 저장소 루트에서 직접 실행할 때만 존재하는 fallback이라 길이를 먼저 확인한다.
+        candidates.append(backend_root.parents[1] / "scripts" / "agent_flow_eval")  # 저장소 루트에서 실행
     for candidate in candidates:
         if candidate.is_dir():
             return candidate
