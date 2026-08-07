@@ -82,7 +82,6 @@ def _save_results(
     commit_sha: str | None,
 ) -> int:
     files = {
-        "pm4py": METADATA_DIR / f"pm4py_agent_conformance_results_{prediction_label}.json",
         "worfbench": METADATA_DIR / f"worfbench_openai_results_{prediction_label}.json",
     }
     saved = 0
@@ -92,7 +91,7 @@ def _save_results(
             if case_id not in case_ids:
                 continue
             metrics = metrics_from_raw(source, raw)
-            preferred = "pm4py_fitness" if source == "pm4py" else "worfbench_f1_score"
+            preferred = "worfbench_f1_score"
             score = next((metric.value for metric in metrics if metric.name == preferred), None)
             append_run(EvalRunRecord(
                 evaluation_id=evaluation_id,
@@ -122,7 +121,7 @@ def execute(
 ) -> None:
     state.update(
         running=True,
-        stage="pm4py",
+        stage="worfbench",
         evaluation_id=evaluation_id,
         started_at=datetime.now(timezone.utc).isoformat(),
         finished_at=None,
@@ -133,9 +132,7 @@ def execute(
     )
     try:
         validate_prediction_label(prediction_label)
-        logs = ["[pm4py]\n" + _run_script("run_pm4py_conformance.py", prediction_label)]
-        state.update(stage="worfbench", log="\n".join(logs)[-12000:])
-        logs.append("[WorFBench]\n" + _run_script("run_worfbench_conformance.py", prediction_label))
+        logs = ["[WorFBench]\n" + _run_script("run_worfbench_conformance.py", prediction_label)]
         state.update(stage="saving", log="\n".join(logs)[-12000:])
         saved = _save_results(
             prediction_label, evaluation_id, dataset_id, dataset_version,

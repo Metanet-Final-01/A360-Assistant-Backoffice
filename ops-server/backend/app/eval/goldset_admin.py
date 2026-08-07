@@ -1,4 +1,4 @@
-"""BFCL/RAGAS/Workflow 골드셋이 각자 하드코딩된 JSON 파일을 읽기만 했다 —
+"""RAGAS/Workflow 골드셋이 각자 하드코딩된 JSON 파일을 읽기만 했다 —
 조회는 이미 각 runner.load_cases()로 있었고, 여기서는 추가(수동 입력)와
 업로드(파일 교체) 두 가지 쓰기 동작만 공통으로 구현한다."""
 

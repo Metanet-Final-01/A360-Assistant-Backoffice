@@ -1,6 +1,6 @@
 """RAGAS 기반 RAG 검색 품질 평가용 스키마.
 
-기존 pm4py/worfbench 평가(app/eval/)는 "에이전트가 만든 워크플로우가 정답 액션
+기존 WorFBench 평가(app/eval/)는 "에이전트가 만든 워크플로우가 정답 액션
 시퀀스와 얼마나 맞는가"를 본다 — 이건 RAG 검색 자체("질문에 맞는 문서를 찾아왔는가,
 그 문서로 답을 만들 수 있는가")를 보는 별개 축이라 케이스 형태도 다르다(question/
 ground_truth, workflow 아님).

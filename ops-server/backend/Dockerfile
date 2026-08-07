@@ -20,6 +20,12 @@ RUN pip install --no-cache-dir -r requirements.txt \
 COPY ops-server/backend/ ./
 COPY a360-eval-sandbox/Metadata/ /app/a360-eval-sandbox/Metadata/
 
+# Workflow 채점기(scripts/agent_flow_eval)를 이미지에 포함한다. 채점 로직을 여기로
+# 복제하지 않고 원본을 그대로 복사해 쓰는 방식 — 로컬 CLI 채점과 웹 채점이 같은
+# 코드 한 벌을 쓰게 해서 규칙이 두 갈래로 어긋나는 걸 막는다.
+# (workflow_eval/runner.py의 _agent_flow_eval_root()가 이 경로를 찾는다)
+COPY scripts/agent_flow_eval/ /app/scripts/agent_flow_eval/
+
 # JSONL 사본(log_store)이 쓰는 경로 — read-only fs여도 여기만 쓰기 가능하게 볼륨/tmpfs로 마운트한다.
 # (화면은 관측 RDS 직접 조회로 옮겼으나 collect 엔드포인트가 아직 여기 쓴다 — RPA-256 후속)
 RUN mkdir -p /app/data && chown -R 1000:1000 /app

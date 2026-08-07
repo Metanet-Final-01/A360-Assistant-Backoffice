@@ -2,7 +2,7 @@
 
 - /observability/*: A360-Assistant-Backend의 감사 로그·LLM 사용량·RAG 요청 로그 수집/조회.
 - /assurance/*: Backend의 AI 출력 검증 판정 기록을 저장 없이 읽기 전용 중계.
-- /eval/*: 평가 데이터셋·결과 로그·pm4py/WorFBench 변환·A/B 비교·xlsx 내보내기.
+- /eval/*: 평가 데이터셋·결과 로그·WorFBench 변환·A/B 비교·xlsx 내보내기.
 
 RAG 적재 트리거(/rag/ingest)는 여기 없다 — 별도 RAG ingest server가 담당하고, 프론트의 '적재'
 버튼과 app/scheduler가 RAG ingest server로 직접 요청을 보낸다.
@@ -34,13 +34,10 @@ from app.eval.ragas_eval import pass_k as ragas_pass_k
 from app.eval.ragas_eval import source_documents as ragas_source_documents
 from app.eval.ragas_eval import validation_log as ragas_validation_log
 from app.eval.ragas_eval.schema import RagasCase
-from app.eval.bfcl_eval import runner as bfcl_runner
-from app.eval.bfcl_eval import pass_k as bfcl_pass_k
-from app.eval.bfcl_eval.schema import BFCLCase
 from app.eval.log_schema import EvalRunRecord
 from app.eval.log_store import append_run, get_run, load_runs
 from app.eval.metrics import metrics_from_raw
-from app.eval.workflow.adapters import MissingCatalogError, to_pm4py_predicted_actions, to_worfbench_pred_traj
+from app.eval.workflow.adapters import MissingCatalogError, to_worfbench_pred_traj
 from app.eval.workflow.recommendation import Recommendation
 from app.eval.xlsx_report import build_comparison_xlsx
 from app.loadtest import executor as loadtest_executor
@@ -55,12 +52,6 @@ app = FastAPI(title="A360 Assistant Monitoring Server")
 
 _RAG_SERVER_URL = os.getenv("RAG_SERVER_URL", "http://127.0.0.1:8200").rstrip("/")
 _RAG_SERVICE_TOKEN = os.getenv("RAG_SERVICE_TOKEN", "")
-_ENABLE_BFCL_EVAL = (os.getenv("ENABLE_BFCL_EVAL") or "").strip().lower() == "true"
-
-
-def _require_bfcl_eval_enabled() -> None:
-    if not _ENABLE_BFCL_EVAL:
-        raise HTTPException(404, "BFCL evaluation is disabled for this deployment.")
 
 
 class RagIngestJobRequest(BaseModel):
@@ -223,10 +214,10 @@ def delete_rag_ingest_schedule(schedule_id: str, provider: str | None = None, dr
 
 @app.post("/eval/runs")
 def record_eval_run(record: EvalRunRecord) -> EvalRunRecord:
-    """평가 결과 한 건을 로그에 기록한다. 채점 방법(rule_check/pm4py/수작업 등)은
+    """평가 결과 한 건을 로그에 기록한다. 채점 방법(rule_check/workflow/수작업 등)은
     가리지 않는다 — record.source에 어떤 방법인지만 남기면 된다.
 
-    단, source가 pm4py/worfbench처럼 이미 알려진 채점 엔진이면 raw를 그 채점 엔진의
+    단, source가 workflow/worfbench처럼 이미 알려진 채점 엔진이면 raw를 그 채점 엔진의
     출력 형식(format_schemas.py)으로 엄격 검증한다 — 잘못된 형태로 기록되어 나중에
     비교할 때 조용히 깨지는 걸 막기 위함."""
     errors = validate_format(record.source, record.raw)
@@ -237,7 +228,7 @@ def record_eval_run(record: EvalRunRecord) -> EvalRunRecord:
         if derived:
             score = record.score
             if score is None:
-                preferred = "pm4py_fitness" if record.source == "pm4py" else "worfbench_f1_score"
+                preferred = "workflow_rule_only_f1" if record.source == "workflow" else "worfbench_f1_score"
                 score = next((metric.value for metric in derived if metric.name == preferred), None)
             record = record.model_copy(update={"metrics": derived, "score": score})
     return append_run(record)
@@ -273,7 +264,7 @@ def get_eval_run(run_id: str) -> EvalRunRecord:
 
 @app.get("/eval/format-guide")
 def eval_format_guide() -> dict:
-    """pm4py/WorFBench가 요구하는 입력·출력 형식 안내 + 예시 데이터셋
+    """WorFBench가 요구하는 입력·출력 형식 안내 + 예시 데이터셋
     (app/eval/format_examples/)을 그대로 보여준다."""
     return build_format_guide()
 
@@ -291,12 +282,6 @@ class ExecuteEvaluationRequest(BaseModel):
     dataset_version: str
     agent_label: str
     commit_sha: str | None = None
-
-
-@app.post("/eval/convert/pm4py")
-def convert_to_pm4py(req: ConvertRequest) -> dict:
-    """agent가 만든 추천안(Recommendation)을 pm4py 채점 입력 형식으로 변환한다."""
-    return to_pm4py_predicted_actions(req.recommendation, req.source_bot)
 
 
 @app.post("/eval/convert/worfbench")
@@ -686,83 +671,6 @@ def upload_loadtest_result(req: UploadLoadTestRequest) -> dict:
 @app.get("/loadtest/runs")
 def loadtest_runs(label: str | None = None, limit: int = Query(50, ge=1, le=200)) -> list:
     return load_loadtest_runs(label=label, limit=limit)
-
-
-class ExecuteBfclRequest(BaseModel):
-    agent_label: str = "bfcl-default"
-
-
-@app.get("/eval/bfcl/cases")
-def bfcl_cases() -> list:
-    _require_bfcl_eval_enabled()
-    """골드셋 케이스 목록(채점 실행 전 미리보기용)."""
-    try:
-        return [c.model_dump() for c in bfcl_runner.load_cases()]
-    except bfcl_runner.BFCLGoldsetError as e:
-        raise HTTPException(500, str(e)) from e
-
-
-@app.post("/eval/bfcl/cases")
-def add_bfcl_case(case: dict) -> dict:
-    _require_bfcl_eval_enabled()
-    try:
-        return goldset_admin.append_case(bfcl_runner._CASES_PATH, BFCLCase, case, "case_id").model_dump()
-    except goldset_admin.GoldsetWriteError as e:
-        raise HTTPException(400, str(e)) from e
-
-
-@app.delete("/eval/bfcl/cases/{case_id}")
-def delete_bfcl_case(case_id: str) -> dict:
-    _require_bfcl_eval_enabled()
-    deleted = goldset_admin.delete_case(bfcl_runner._CASES_PATH, "case_id", case_id)
-    if not deleted:
-        raise HTTPException(404, f"case_id={case_id!r} 케이스를 찾을 수 없습니다")
-    return {"deleted": True}
-
-
-@app.post("/eval/bfcl/cases/upload")
-async def upload_bfcl_cases(file: UploadFile = File(...)) -> dict:
-    _require_bfcl_eval_enabled()
-    try:
-        count = goldset_admin.replace_from_upload(bfcl_runner._CASES_PATH, BFCLCase, await file.read())
-    except goldset_admin.GoldsetWriteError as e:
-        raise HTTPException(400, str(e)) from e
-    return {"saved": count}
-
-
-@app.post("/eval/bfcl/execution")
-def start_bfcl_evaluation(req: ExecuteBfclRequest, background_tasks: BackgroundTasks) -> dict:
-    _require_bfcl_eval_enabled()
-    if not bfcl_runner.reserve():
-        raise HTTPException(409, "이미 BFCL 평가가 실행 중입니다")
-    background_tasks.add_task(bfcl_runner.execute_and_save, req.agent_label.strip())
-    return {"status": "started"}
-
-
-@app.get("/eval/bfcl/execution/status")
-def bfcl_evaluation_status() -> dict:
-    _require_bfcl_eval_enabled()
-    return bfcl_runner.state
-
-
-class ExecutePassKRequest(BaseModel):
-    agent_label: str = "bfcl-default"
-    n_repeats: int = Field(default=5, ge=2, le=20)
-
-
-@app.post("/eval/bfcl/pass-k/execution")
-def start_bfcl_pass_k(req: ExecutePassKRequest, background_tasks: BackgroundTasks) -> dict:
-    _require_bfcl_eval_enabled()
-    if not bfcl_pass_k.reserve():
-        raise HTTPException(409, "이미 pass@k 평가가 실행 중입니다")
-    background_tasks.add_task(bfcl_pass_k.execute_pass_k_and_save, req.agent_label.strip(), req.n_repeats)
-    return {"status": "started"}
-
-
-@app.get("/eval/bfcl/pass-k/execution/status")
-def bfcl_pass_k_status() -> dict:
-    _require_bfcl_eval_enabled()
-    return bfcl_pass_k.state
 
 
 def _direct_read(fn, *args, **kwargs):

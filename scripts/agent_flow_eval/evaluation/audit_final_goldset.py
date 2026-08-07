@@ -120,8 +120,19 @@ def control_counts(steps: list[dict[str, Any]]) -> dict[str, int]:
 
 
 def score_case(version: str, case_id: str, run_id: str) -> dict[str, Any]:
-    gold_file = gold_path(case_id)
-    pred_file = prediction_path(run_id)
+    """runner/logs 배치 구조에서 경로를 찾아 채점한다(CLI 경로)."""
+    scored = score_case_files(gold_path(case_id), prediction_path(run_id), case_id)
+    scored["version"] = version
+    scored["run_id"] = run_id
+    return scored
+
+
+def score_case_files(gold_file: Path, pred_file: Path, case_id: str) -> dict[str, Any]:
+    """정답/예측 **파일 경로를 직접 받아** 채점한다.
+
+    ops-server 라이브 러너처럼 runner/logs 배치 구조를 쓰지 않는 호출부가
+    같은 채점 로직을 그대로 쓰게 하려고 분리했다 - 채점 규칙이 두 벌로
+    갈라지지 않게 하는 것이 목적이다."""
     gold = load_json(gold_file)
     pred = load_json(pred_file)
     gold_steps = normalize_steps_for_evaluation(gold.get("steps", []) or [])
@@ -183,8 +194,6 @@ def score_case(version: str, case_id: str, run_id: str) -> dict[str, Any]:
 
     return {
         "case_id": case_id,
-        "version": version,
-        "run_id": run_id,
         "gold_path": str(gold_file),
         "prediction_path": str(pred_file),
         "normalization_policy": "shared_rule_based_converter",

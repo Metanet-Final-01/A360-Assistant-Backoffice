@@ -1,4 +1,4 @@
-"""Workflow(pm4py/WorFBench) 골드셋 케이스 스키마 — goldset_from_bots.json의
+"""Workflow 골드셋 케이스 스키마 — goldset_from_bots.json의
 실측 필드 구조를 그대로 따른다(catalog_coverage/scoreable은 원래 카탈로그 대조
 스크립트가 채우던 값이라, 수동 등록 시엔 신뢰도가 낮음을 명시하는 용도로만 둔다)."""
 

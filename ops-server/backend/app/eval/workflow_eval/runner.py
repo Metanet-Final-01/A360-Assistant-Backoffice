@@ -1,23 +1,24 @@
-"""Workflow(pm4py/WorFBench) 평가 라이브 러너.
+"""Workflow 평가 라이브 러너 — 확정 골드셋 9개를 실제 Backend Agent로 채점한다.
 
-기존 실행기(app/eval/executor.py)는 사람이 미리 만들어둔
-`predictions_from_agent_<label>.json`을 재채점만 했다 — 그 예측 파일 자체를
-여기서 실제 Backend Agent를 호출해 라이브로 만든 뒤, 같은 채점 스크립트
-(`executor._run_script`)로 넘긴다. 채점 로직(pm4py/WorFBench 스크립트, 결과 저장)은
-그대로 재사용하고 "예측을 사람이 미리 만들어야 한다"는 부분만 라이브로 바꾼 것 —
-BFCL/RAGAS 러너와 같은 발상.
+채점 로직은 여기에 두지 않고 `scripts/agent_flow_eval/evaluation/audit_final_goldset.py`
+를 그대로 호출한다. 로컬 CLI 채점과 웹 채점이 **같은 코드 한 벌**을 쓰게 하려는
+것으로, 채점 규칙을 고칠 때 두 곳을 맞추다 어긋나는 일을 막는다(실제로 같은 이름의
+변환 함수가 두 곳에서 다르게 동작하던 문제를 한 번 겪었다).
 
-골드셋: `a360-eval-sandbox/Metadata/goldset_from_bots.json`(17개, 실제 커뮤니티
-봇에서 뽑은 업무). `run_pm4py_conformance.py`/`run_worfbench_conformance.py` 둘 다
-같은 `predictions_from_agent_<label>.json`(source_bot + predicted_actions만 있는
-평평한 리스트) 하나를 입력으로 쓴다 — WorFBench용 노드/엣지 변환은 그 스크립트
-내부에서 함(`to_worfbench_pred_traj` 같은 별도 변환을 여기서 안 해도 됨, 실제
-스크립트 코드로 확인함).
+2026-08-07에 옛 방식을 걷어냈다:
+- 골드셋: `goldset_from_bots.json`(17개) -> `confirmed_goldset/gold`(교차검수 확정 9개)
+- 예측: `{package, action}`만 뽑던 평탄화 -> `convert_backend_recommendation`을 거쳐
+  **제어 구조와 파라미터를 보존**한다. 새 채점기는 파라미터를 봐야 로그성 작업을
+  걸러낼 수 있고, if 분기 구조가 있어야 순서를 제대로 계산한다.
+- 채점: pm4py + WorFBench 서브프로세스 -> `audit_final_goldset.score_case()` 인프로세스.
+  **pm4py는 폐기했다**(실측 fitness 0.089/precision 0.0 — 정상적인 구현 차이를 전부
+  일탈로 잡는 구조라 이 과제에 맞지 않았다).
 """
 
 import json
 import logging
 import os
+import sys
 from collections.abc import Callable
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,14 +26,14 @@ from uuid import uuid4
 
 import httpx
 
-from .. import executor
+from ..log_schema import EvalMetric, EvalRunRecord
+from ..log_store import append_run
 from .reservation import finish_state, reserve_state
 
 logger = logging.getLogger(__name__)
 
-_GOLDSET_PATH = executor.METADATA_DIR / "goldset_from_bots.json"
-_DETAILED_TASKS_PATH = executor.METADATA_DIR / "detailed_task_descriptions.json"
 _MAX_LOG_LINES = 200
+_RECOMMEND_TRIGGER = "이 업무를 분석해서 자동화 워크플로우로 추천해줘."
 
 state: dict = {
     "running": False, "started_at": None, "finished_at": None,
@@ -40,8 +41,55 @@ state: dict = {
 }
 
 
+def _agent_flow_eval_root() -> Path:
+    """채점기가 있는 `scripts/agent_flow_eval`을 찾는다.
+
+    executor.py가 a360-eval-sandbox를 찾는 방식과 같다 — 환경변수를 먼저 보고,
+    없으면 저장소 구조에서 추론한다. 컨테이너에서는 Dockerfile이 이 폴더를
+    `/app/scripts/agent_flow_eval`로 복사하므로 그 경로도 후보에 넣는다."""
+    override = os.getenv("A360_AGENT_FLOW_EVAL")
+    if override:
+        return Path(override).resolve()
+    backend_root = Path(__file__).resolve().parents[3]        # ops-server/backend
+    candidates = [
+        backend_root / "scripts" / "agent_flow_eval",          # 컨테이너(/app/scripts/...)
+        backend_root.parents[1] / "scripts" / "agent_flow_eval",  # 저장소 루트에서 실행
+    ]
+    for candidate in candidates:
+        if candidate.is_dir():
+            return candidate
+    return candidates[0]
+
+
+AGENT_FLOW_EVAL = _agent_flow_eval_root()
+GOLD_DIR = AGENT_FLOW_EVAL / "goldset_expansion" / "confirmed_goldset" / "gold"
+BRIEF_DIR = AGENT_FLOW_EVAL / "goldset_expansion" / "confirmed_goldset" / "briefs"
+
+
+class WorkflowGoldsetError(RuntimeError):
+    """골드셋 파일이 없거나 비어 있음."""
+
+
+def _import_scorer():
+    """채점기 모듈을 import한다. 경로가 없으면 여기서 분명한 메시지로 실패시킨다 —
+    조용히 빈 결과를 내면 "채점이 돌았는데 0점"인지 "안 돌았는지" 구분이 안 된다."""
+    if not GOLD_DIR.is_dir():
+        raise WorkflowGoldsetError(
+            f"채점기 경로를 찾지 못했습니다: {AGENT_FLOW_EVAL}. "
+            "A360_AGENT_FLOW_EVAL 환경변수로 지정하거나 이미지에 포함되었는지 확인하세요."
+        )
+    evaluation_dir = AGENT_FLOW_EVAL / "evaluation"
+    for path in (str(evaluation_dir), str(AGENT_FLOW_EVAL), str(AGENT_FLOW_EVAL / "processing")):
+        if path not in sys.path:
+            sys.path.insert(0, path)
+    import audit_final_goldset  # type: ignore
+    from convert_backend_recommendation import convert_recommendation  # type: ignore
+
+    return audit_final_goldset, convert_recommendation
+
+
 def reserve() -> bool:
-    """BFCL/RAGAS runner와 동일한 원자적 check-and-set."""
+    """RAGAS runner와 동일한 원자적 check-and-set."""
     return reserve_state(state, {
         "running": True, "started_at": datetime.now(timezone.utc).isoformat(),
         "finished_at": None, "saved": 0, "cases": 0, "error": None, "log": [],
@@ -53,45 +101,30 @@ def _append_log(message: str) -> None:
     del state["log"][:-_MAX_LOG_LINES]
 
 
-class WorkflowGoldsetError(RuntimeError):
-    """골드셋 파일이 없거나 비어 있음."""
-
-
 def load_cases() -> list[dict]:
-    if not _GOLDSET_PATH.exists():
-        raise WorkflowGoldsetError(f"골드셋 파일이 없습니다: {_GOLDSET_PATH}")
-    cases = json.loads(_GOLDSET_PATH.read_text(encoding="utf-8"))
+    """확정 골드셋 9개. 각 케이스는 정답 워크플로우 하나와 업무정의서 하나를 갖는다."""
+    if not GOLD_DIR.is_dir():
+        raise WorkflowGoldsetError(f"골드셋 폴더가 없습니다: {GOLD_DIR}")
+    cases = []
+    for gold_path in sorted(GOLD_DIR.glob("*.goldset.json")):
+        case_id = gold_path.name[:4]
+        briefs = sorted(BRIEF_DIR.glob(f"{case_id}_*.md"))
+        cases.append({
+            "case_id": case_id,
+            "gold_file": gold_path.name,
+            "brief_file": briefs[0].name if briefs else None,
+            "title": _brief_title(briefs[0]) if briefs else None,
+        })
     if not cases:
-        raise WorkflowGoldsetError(f"골드셋이 비어 있습니다: {_GOLDSET_PATH}")
+        raise WorkflowGoldsetError(f"골드셋이 비어 있습니다: {GOLD_DIR}")
     return cases
 
 
-def _load_detailed_tasks() -> dict[str, str]:
-    """source_bot -> 상세 업무정의서 원문. 과거 예측 생성 스크립트가 쓴 것과 동일한
-    입력으로 맞춰야 현재-과거 비교가 공정하다(one-liner만 쓰면 부당하게 저평가됨)."""
-    if not _DETAILED_TASKS_PATH.exists():
-        return {}
-    return json.loads(_DETAILED_TASKS_PATH.read_text(encoding="utf-8-sig"))
-
-
-_RECOMMEND_TRIGGER = "이 업무를 분석해서 자동화 워크플로우로 추천해줘."
-
-
-def _flatten_recommendation(recommendation: dict | None) -> list[dict]:
-    """RecommendedAction 트리를 평평하게 순회해 {package, action}만 뽑는다 —
-    predictions_from_agent 형식이 파라미터 없이 이 두 필드만 요구한다."""
-    if not recommendation:
-        return []
-    out: list[dict] = []
-
-    def walk(actions: list[dict]) -> None:
-        for a in actions:
-            out.append({"package": a.get("package"), "action": a.get("action")})
-            walk(a.get("children") or [])
-
-    for step in recommendation.get("steps") or []:
-        walk(step.get("actions") or [])
-    return out
+def _brief_title(brief_path: Path) -> str | None:
+    for line in brief_path.read_text(encoding="utf-8").splitlines():
+        if line.startswith("과제명:"):
+            return line.split(":", 1)[1].strip()
+    return None
 
 
 def _stream_turn(client: httpx.Client, backend_url: str, session_id: str, message: str) -> dict:
@@ -104,94 +137,133 @@ def _stream_turn(client: httpx.Client, backend_url: str, session_id: str, messag
         for line in resp.iter_lines():
             if not line.startswith("data: "):
                 continue
-            evt = json.loads(line[len("data: "):])
-            if evt.get("event") == "done":
-                done_data = evt.get("data") or {}
+            event = json.loads(line[len("data: "):])
+            if event.get("event") == "done":
+                done_data = event.get("data") or {}
     return done_data
 
 
 def generate_predictions(
-    backend_url: str | None = None, on_progress: Callable[[str], None] | None = None,
-) -> list[dict]:
-    """골드셋 각 봇 업무에 대해 실제 Backend Agent를 호출해 predictions_from_agent
-    형식(source_bot/predicted_actions/predicted_action_count)의 예측을 만든다.
-    BFCL 러너와 같은 패턴: 문서로 업무를 등록한 뒤 고정 트리거 문구를 보내야
-    라우터가 recommendation으로 판단하고 백엔드가 결과를 저장한다(실측 확인된 패턴)."""
+    agent_label: str, backend_url: str | None = None,
+    on_progress: Callable[[str], None] | None = None,
+) -> dict[str, Path]:
+    """케이스마다 실제 Backend Agent를 호출해 예측을 만들고, 채점기가 읽는
+    goldset.json 형식으로 변환해 저장한다. 반환값은 case_id -> 예측 파일 경로."""
+    _, convert_recommendation = _import_scorer()
     backend_url = (backend_url or os.getenv("A360_BACKEND_URL") or "http://127.0.0.1:8000").rstrip("/")
+    output_dir = AGENT_FLOW_EVAL / "runner" / "logs" / f"ops_live_{agent_label}"
+    output_dir.mkdir(parents=True, exist_ok=True)
+
     cases = load_cases()
-    detailed_tasks = _load_detailed_tasks()
-    predictions: list[dict] = []
+    predictions: dict[str, Path] = {}
 
     with httpx.Client() as client:
-        for i, case in enumerate(cases, 1):
-            source_bot = str(case.get("source_bot") or f"case_{i}")
+        for index, case in enumerate(cases, 1):
+            case_id = case["case_id"]
             try:
-                task = detailed_tasks.get(source_bot) or case["input"]["task"]
+                brief = (BRIEF_DIR / case["brief_file"]).read_text(encoding="utf-8")
                 session = client.post(f"{backend_url}/api/sessions", json={}, timeout=10.0)
                 session.raise_for_status()
                 session_id = session.json()["session_id"]
 
-                doc = client.post(
+                document = client.post(
                     f"{backend_url}/api/documents/text",
-                    json={"text": task, "session_id": session_id}, timeout=10.0,
+                    json={"text": brief, "session_id": session_id}, timeout=10.0,
                 )
-                doc.raise_for_status()
+                document.raise_for_status()
 
                 done = _stream_turn(client, backend_url, session_id, _RECOMMEND_TRIGGER)
-                actions = _flatten_recommendation(done.get("recommendation"))
-                predictions.append({
-                    "source_bot": source_bot,
-                    "predicted_actions": actions,
-                    "predicted_action_count": len(actions),
-                })
+                recommendation = done.get("recommendation")
+                if not recommendation:
+                    raise RuntimeError("백엔드 응답에 recommendation이 없습니다")
+
+                converted = convert_recommendation(
+                    run_manifest={"runner": "ops-server", "run_id": f"ops_live_{agent_label}",
+                                  "session_id": session_id, "document_id": document.json().get("document_id")},
+                    data=done,
+                    recommendation=recommendation,
+                    source_file=case["gold_file"],
+                    step_name="turnRecommend",
+                )
+                path = output_dir / f"{case_id}.goldset.json"
+                path.write_text(json.dumps(converted, ensure_ascii=False, indent=2), encoding="utf-8")
+                predictions[case_id] = path
                 if on_progress:
-                    on_progress(f"[{i}/{len(cases)}] ✓ {source_bot}: 액션 {len(actions)}개 예측")
-            except Exception as e:  # noqa: BLE001 — 케이스 하나 실패가 전체를 막지 않는다
-                logger.warning("Workflow 케이스 실패: %s", source_bot, exc_info=True)
-                predictions.append({
-                    "source_bot": source_bot, "predicted_actions": [], "predicted_action_count": 0,
-                })
+                    on_progress(f"[{index}/{len(cases)}] ✓ {case_id} 액션 {len(converted.get('steps') or [])}개")
+            except Exception as exc:  # noqa: BLE001 — 케이스 하나 실패가 전체를 막지 않는다
+                logger.warning("Workflow 케이스 실패: %s", case_id, exc_info=True)
                 if on_progress:
-                    on_progress(f"[{i}/{len(cases)}] ⚠ {source_bot} 오류: {e}")
+                    on_progress(f"[{index}/{len(cases)}] ⚠ {case_id} 오류: {exc}")
 
     return predictions
 
 
+def _metrics_from_scores(scored: dict) -> list[EvalMetric]:
+    rule_only = scored.get("rule_only_action_prf1") or {}
+    judge = scored.get("action_prf1") or {}
+    chain = scored.get("action_chain") or {}
+    branch = scored.get("branch_coverage") or {}
+    worfbench = scored.get("worfbench") or {}
+    pairs = [
+        ("workflow_rule_only_precision", rule_only.get("precision")),
+        ("workflow_rule_only_recall", rule_only.get("recall")),
+        ("workflow_rule_only_f1", rule_only.get("f1")),
+        ("workflow_judge_f1", judge.get("f1")),
+        ("workflow_chain_f1", chain.get("f1")),
+        ("workflow_branch_coverage", branch.get("branch_coverage")),
+        ("workflow_branch_score", branch.get("branch_score")),
+    ]
+    if worfbench.get("status") == "ok":
+        pairs.append(("worfbench_f1_score", worfbench.get("f1")))
+    return [EvalMetric(name=name, value=float(value)) for name, value in pairs if value is not None]
+
+
 def execute_and_save(agent_label: str) -> None:
-    """reserve()가 이미 running=True로 바꿔놨다는 전제로 호출된다. 라이브로 예측을
-    만들어 predictions_from_agent_<agent_label>.json으로 저장한 뒤, 기존 pm4py/
-    WorFBench 채점 스크립트를 그대로 돌린다(executor._run_script — 서브프로세스로
-    a360-eval-sandbox/.venv-verify를 호출, 채점 로직 중복 없음)."""
+    """reserve()가 이미 running=True로 바꿔놨다는 전제로 호출된다."""
     try:
-        _append_log(f"골드셋 로드 중... ({_GOLDSET_PATH.name})")
+        audit, _ = _import_scorer()
         cases = load_cases()
         state["cases"] = len(cases)
-        _append_log(f"{len(cases)}개 케이스 — 라이브 예측 생성 시작")
+        _append_log(f"확정 골드셋 {len(cases)}개 — 라이브 예측 생성 시작")
 
-        predictions = generate_predictions(on_progress=_append_log)
+        predictions = generate_predictions(agent_label, on_progress=_append_log)
+        if not predictions:
+            raise RuntimeError("예측이 하나도 생성되지 않았습니다 — 백엔드 응답을 확인하세요")
 
-        pred_path = executor.METADATA_DIR / f"predictions_from_agent_{agent_label}.json"
-        pred_path.write_text(json.dumps(predictions, ensure_ascii=False, indent=2), encoding="utf-8")
-        _append_log(f"예측 파일 저장: {pred_path.name}")
-
-        _append_log("pm4py 채점 실행 중...")
-        executor._run_script("run_pm4py_conformance.py", agent_label)
-        _append_log("pm4py 채점 완료")
-
-        _append_log("WorFBench 채점 실행 중...")
-        executor._run_script("run_worfbench_conformance.py", agent_label)
-        _append_log("WorFBench 채점 완료")
-
-        case_ids = {c["source_bot"] for c in cases}
         evaluation_id = uuid4().hex[:12]
-        saved = executor._save_results(
-            agent_label, evaluation_id, "workflow-live", "v1", case_ids, agent_label, None,
-        )
+        saved = 0
+        for case_id, prediction_path in sorted(predictions.items()):
+            try:
+                scored = audit.score_case_files(
+                    gold_file=audit.gold_path(case_id),
+                    pred_file=prediction_path,
+                    case_id=case_id,
+                )
+                append_run(EvalRunRecord(
+                    evaluation_id=evaluation_id,
+                    dataset_id="confirmed-goldset-9",
+                    dataset_version="2026.08",
+                    case_id=case_id,
+                    source="workflow",
+                    agent_label=agent_label,
+                    commit_sha=None,
+                    config={"scorer": "audit_final_goldset", "prediction": str(prediction_path)},
+                    score=(scored.get("rule_only_action_prf1") or {}).get("f1"),
+                    metrics=_metrics_from_scores(scored),
+                    raw=scored,
+                ))
+                saved += 1
+                rule_f1 = (scored.get("rule_only_action_prf1") or {}).get("f1")
+                _append_log(f"채점 {case_id}: Rule-only F1 {rule_f1:.4f}" if rule_f1 is not None else f"채점 {case_id} 완료")
+            except Exception as exc:  # noqa: BLE001 — 케이스 하나 실패를 전체 실패로 만들지 않는다
+                logger.warning("Workflow 채점 실패: %s", case_id, exc_info=True)
+                _append_log(f"⚠ {case_id} 채점 실패: {exc}")
+
         _append_log(f"결과 저장 완료 — {saved}건")
         state.update({"saved": saved})
-    except Exception as e:  # noqa: BLE001 — 백그라운드 태스크 예외를 상태로 남겨야 프론트가 안다
+    except Exception as exc:  # noqa: BLE001 — 백그라운드 태스크 예외를 상태로 남겨야 프론트가 안다
         logger.exception("Workflow 라이브 평가 실행 실패")
-        state["error"] = str(e)
-        _append_log(f"오류: {e}")
+        state["error"] = str(exc)
+        _append_log(f"오류: {exc}")
     finally:
         finish_state(state)

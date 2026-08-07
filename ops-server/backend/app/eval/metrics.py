@@ -2,9 +2,17 @@ from collections.abc import Iterable
 
 from .log_schema import EvalMetric, EvalRunRecord
 
+# workflow_* 는 scripts/agent_flow_eval의 채점기(audit_final_goldset.py)가 내는 지표다.
+# rule_only_* 가 공식 기준선(LLM 없이 항상 같은 값), judge_* 는 LLM 동치 판정까지 포함한
+# 참고치, chain_* 은 순서까지 반영한 값이다. worfbench_* 는 외부 벤치마크 참고치로만 병기한다.
 FIXED_METRICS = (
-    "pm4py_fitness",
-    "pm4py_precision",
+    "workflow_rule_only_precision",
+    "workflow_rule_only_recall",
+    "workflow_rule_only_f1",
+    "workflow_judge_f1",
+    "workflow_chain_f1",
+    "workflow_branch_coverage",
+    "workflow_branch_score",
     "worfbench_precision",
     "worfbench_recall",
     "worfbench_f1_score",
@@ -15,7 +23,15 @@ def metrics_from_raw(source: str, raw: dict | None) -> list[EvalMetric]:
     if not raw:
         return []
     mapping = {
-        "pm4py": (("pm4py_fitness", "fitness"), ("pm4py_precision", "precision")),
+        "workflow": (
+            ("workflow_rule_only_precision", "rule_only_precision"),
+            ("workflow_rule_only_recall", "rule_only_recall"),
+            ("workflow_rule_only_f1", "rule_only_f1"),
+            ("workflow_judge_f1", "judge_f1"),
+            ("workflow_chain_f1", "chain_f1"),
+            ("workflow_branch_coverage", "branch_coverage"),
+            ("workflow_branch_score", "branch_score"),
+        ),
         "worfbench": (
             ("worfbench_precision", "precision"),
             ("worfbench_recall", "recall"),

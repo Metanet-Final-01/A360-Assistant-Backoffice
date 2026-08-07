@@ -1,4 +1,4 @@
-"""평가 결과 로그 레코드 — 채점 방법(rule_check/pm4py/worfbench/수작업 등)에 무관하게
+"""평가 결과 로그 레코드 — 채점 방법(rule_check/workflow/worfbench/수작업 등)에 무관하게
 같은 형태로 저장·조회·비교할 수 있게 하는 최소 공통 스키마.
 
 지금 단계에서는 어떤 채점 엔진을 최종 채택할지 정해지지 않았다(둘 다 아직 신뢰 검증
@@ -14,7 +14,7 @@ from pydantic import BaseModel, Field, field_validator
 
 
 class EvalMetric(BaseModel):
-    name: str = Field(description="예: pass_rate, pm4py_fitness, worfbench_f1")
+    name: str = Field(description="예: pass_rate, workflow_rule_only_f1, worfbench_f1")
     value: float
     note: str | None = None
 
@@ -26,7 +26,7 @@ class EvalRunRecord(BaseModel):
     dataset_id: str | None = Field(None, description="평가 데이터셋 id")
     dataset_version: str | None = Field(None, description="평가 데이터셋 버전")
     case_id: str = Field(description="평가 케이스 id, 예: web_excel_email_001")
-    source: str = Field(description="채점 방법 이름, 예: rule_check | pm4py | worfbench | manual")
+    source: str = Field(description="채점 방법 이름, 예: rule_check | workflow | worfbench | manual")
     agent_label: str | None = Field(None, description="평가 대상 에이전트/버전, 예: dev, rpa27")
     commit_sha: str | None = Field(None, description="평가 대상 코드 커밋")
     config: dict[str, Any] = Field(default_factory=dict, description="모델·프롬프트·RAG 등 실행 설정")

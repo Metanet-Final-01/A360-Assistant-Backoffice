@@ -314,7 +314,7 @@ def _render_workflow_goldset_tab() -> None:
     _render_dataset_card(
         card_key="workflow_goldset",
         title="Workflow 평가 데이터셋",
-        description="실제 커뮤니티 봇 기반 골드셋 — pm4py/WorFBench 채점의 정답(expected).",
+        description="실제 커뮤니티 봇 기반 골드셋 — 워크플로우 채점의 정답(expected).",
         rows=data,
         id_field="id",
         columns_fn=lambda c: {

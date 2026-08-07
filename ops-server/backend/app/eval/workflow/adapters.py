@@ -1,7 +1,6 @@
-"""agent가 만든 추천안(Recommendation)을 pm4py/WorFBench 채점이 요구하는 입력
+"""agent가 만든 추천안(Recommendation)을 WorFBench 채점이 요구하는 입력
 형식으로 변환한다.
 
-- pm4py: package/action 순서 목록 하나만 있으면 된다 (run_pm4py_conformance.py 참고).
 - WorFBench: "Node: ... Edges: ..." 그래프 형식의 대화 + package.action 메타데이터가
   필요하다 (format_examples/worfbench/pred_traj_example.json 참고). 시스템 프롬프트와
   응답 문법은 그 실제 예시에서 그대로 옮겨왔다 — 임의로 새로 지어내지 않았다.
@@ -10,18 +9,13 @@
 깨진 형식을 만들어내면 여기서 바로 걸린다.
 
 Recommendation은 Loop/If/Step 같은 컨테이너 액션을 children으로 감싸는 트리 구조다.
-pm4py 정답 Petri net은 이 컨테이너들을 제어 구조로만 보고 리프로 취급하지 않지만
-(run_pm4py_conformance.py가 채점 직전에 걸러낸다), WorFBench 골드셋과 여기 변환기는
-컨테이너 액션 자체도 하나의 노드/스텝으로 센다 — goldset_from_bots.json도 동일하게
-컨테이너를 리스트에 포함한다(run_pm4py_conformance.py 모듈 docstring 참고). 그래서
-flatten은 트리를 order 순으로 그냥 죽 펴기만 하고, 어느 쪽이 컨테이너인지는 신경 쓰지
-않는다 — 필터링은 pm4py 채점 스크립트 쪽 책임이다.
+WorFBench 골드셋과 이 변환기는 컨테이너(Loop/If 등)를 리스트에 포함한다 — 필터링은 채점 쪽 책임이다.
 """
 
 import json
 from pathlib import Path
 
-from app.eval.format_schemas import PM4pyPredictedActions, WorfbenchPredTrajEntry
+from app.eval.format_schemas import WorfbenchPredTrajEntry
 from app.eval.workflow.recommendation import Recommendation, RecommendedAction
 from app.eval.workflow.validate_catalog_refs import load_catalog
 
@@ -67,18 +61,6 @@ def flatten_recommendation(rec: Recommendation) -> list[RecommendedAction]:
     for step in rec.steps:
         flat.extend(walk(step.actions))
     return flat
-
-
-def to_pm4py_predicted_actions(rec: Recommendation, source_bot: str) -> dict:
-    """pm4py 채점 입력(predictions_from_agent_*.json의 레코드 한 건과 같은 형식)."""
-    actions = flatten_recommendation(rec)
-    payload = {
-        "source_bot": source_bot,
-        "predicted_actions": [{"package": a.package, "action": a.action} for a in actions],
-        "predicted_action_count": len(actions),
-    }
-    PM4pyPredictedActions.model_validate(payload)
-    return payload
 
 
 def _load_action_catalog() -> dict[str, dict]:
@@ -140,7 +122,7 @@ def to_worfbench_pred_traj(rec: Recommendation, source_bot: str, task_descriptio
     대신한다. 실행 순서를 그대로 선형 체인(1→2→...→n)으로 표현한다 — 분기(If/Else)의
     병렬 브랜치까지 그래프로 표현하려면 A360 트리 구조(recommendation.py 참고)를 추가
     분석해야 하는데, WorFBench 골드셋 자체도 컨테이너 액션을 리스트에 그대로 펴서
-    담아(run_pm4py_conformance.py docstring 참고) 이 프로젝트에서 별도 분기 그래프를
+    담아이 프로젝트에서 별도 분기 그래프를
     만든 적이 없다 — 그 방식을 그대로 따른다.
     """
     actions = flatten_recommendation(rec)

@@ -11,8 +11,6 @@ import sys
 from pathlib import Path
 
 from app.eval.format_schemas import (
-    PM4pyConformanceResult,
-    PM4pyPredictedActions,
     WorfbenchEvalResult,
     WorfbenchPredTrajEntry,
 )
@@ -20,8 +18,6 @@ from app.eval.format_schemas import (
 HERE = Path(__file__).parent
 
 CHECKS = [
-    ("pm4py/predicted_actions_example.json", PM4pyPredictedActions),
-    ("pm4py/conformance_result_example.json", PM4pyConformanceResult),
     ("worfbench/pred_traj_example.json", WorfbenchPredTrajEntry),
     ("worfbench/eval_result_example.json", WorfbenchEvalResult),
 ]

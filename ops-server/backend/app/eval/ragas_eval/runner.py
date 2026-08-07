@@ -1,6 +1,6 @@
 """RAGAS 기반 RAG 검색 품질 평가 실행기.
 
-pm4py/worfbench(app/eval/executor.py)와 달리 서브프로세스가 아니라 인프로세스로
+WorFBench 채점(app/eval/executor.py)과 달리 서브프로세스가 아니라 인프로세스로
 돈다 — a360-eval-sandbox의 별도 .venv-verify가 필요 없고, 순수 Python(HTTP 호출 +
 OpenAI API 호출)만으로 끝나기 때문. 흐름:
 

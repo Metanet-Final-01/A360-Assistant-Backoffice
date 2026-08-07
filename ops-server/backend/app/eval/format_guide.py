@@ -14,21 +14,6 @@ def _read_json(rel_path: str) -> dict:
 
 def build_format_guide() -> dict:
     return {
-        "pm4py": {
-            "summary": (
-                "정답 워크플로우(Petri net, .pnml)와 에이전트가 예측한 액션 순서를 정렬해 "
-                "fitness/precision을 계산합니다. Loop/If/ErrorHandler 컨테이너는 정답 Petri "
-                "net에 리프로 나타나지 않아 채점 전에 걸러집니다."
-            ),
-            "input_example": {
-                "note": "predicted_actions — 에이전트 예측 결과 (필수 필드: source_bot, predicted_actions[].package/.action)",
-                "value": _read_json("pm4py/predicted_actions_example.json"),
-            },
-            "output_example": {
-                "note": "conformance_result — pm4py로 채점한 원본 출력. EvalRunRecord.raw에 그대로 넣으세요.",
-                "value": _read_json("pm4py/conformance_result_example.json"),
-            },
-        },
         "worfbench": {
             "summary": (
                 "에이전트가 만든 서브태스크 그래프('Node: ... Edges: ...')와 정답 그래프를 "
