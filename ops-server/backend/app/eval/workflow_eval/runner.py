@@ -130,11 +130,17 @@ def _brief_title(brief_path: Path) -> str | None:
     return None
 
 
-def _stream_turn(client: httpx.Client, backend_url: str, session_id: str, message: str) -> dict:
+def _stream_turn(
+    client: httpx.Client, backend_url: str, session_id: str, message: str,
+    agent_version: str | None = None,
+) -> dict:
+    payload: dict = {"message": message, "operation": "chat"}
+    if agent_version:
+        payload["agent_version"] = agent_version
     done_data: dict = {}
     with client.stream(
         "POST", f"{backend_url}/api/sessions/{session_id}/turn",
-        json={"message": message, "operation": "chat"}, timeout=180.0,
+        json=payload, timeout=180.0,
     ) as resp:
         resp.raise_for_status()
         for line in resp.iter_lines():
@@ -147,7 +153,7 @@ def _stream_turn(client: httpx.Client, backend_url: str, session_id: str, messag
 
 
 def generate_predictions(
-    agent_label: str, backend_url: str | None = None,
+    agent_label: str, agent_version: str | None = None, backend_url: str | None = None,
     on_progress: Callable[[str], None] | None = None,
 ) -> dict[str, Path]:
     """케이스마다 실제 Backend Agent를 호출해 예측을 만들고, 채점기가 읽는
@@ -175,7 +181,7 @@ def generate_predictions(
                 )
                 document.raise_for_status()
 
-                done = _stream_turn(client, backend_url, session_id, _RECOMMEND_TRIGGER)
+                done = _stream_turn(client, backend_url, session_id, _RECOMMEND_TRIGGER, agent_version)
                 recommendation = done.get("recommendation")
                 if not recommendation:
                     raise RuntimeError("백엔드 응답에 recommendation이 없습니다")
@@ -216,12 +222,15 @@ def _metrics_from_scores(scored: dict) -> list[EvalMetric]:
         ("workflow_branch_coverage", branch.get("branch_coverage")),
         ("workflow_branch_score", branch.get("branch_score")),
     ]
+    # WorFBench는 외부 참고치라 라이브러리(sentence-transformers/torch, 모델 수백MB)를
+    # 이미지에 넣지 않았다 - 없으면 status가 ok가 아니고 이 지표만 빠진다. 주 지표
+    # (rule-only/chain/branch)는 그대로 산출된다(컨테이너 실측 확인, 2026-08-07).
     if worfbench.get("status") == "ok":
         pairs.append(("worfbench_f1_score", worfbench.get("f1")))
     return [EvalMetric(name=name, value=float(value)) for name, value in pairs if value is not None]
 
 
-def execute_and_save(agent_label: str) -> None:
+def execute_and_save(agent_label: str, agent_version: str | None = None) -> None:
     """reserve()가 이미 running=True로 바꿔놨다는 전제로 호출된다."""
     try:
         audit, _ = _import_scorer()
@@ -229,7 +238,7 @@ def execute_and_save(agent_label: str) -> None:
         state["cases"] = len(cases)
         _append_log(f"확정 골드셋 {len(cases)}개 — 라이브 예측 생성 시작")
 
-        predictions = generate_predictions(agent_label, on_progress=_append_log)
+        predictions = generate_predictions(agent_label, agent_version, on_progress=_append_log)
         if not predictions:
             raise RuntimeError("예측이 하나도 생성되지 않았습니다 — 백엔드 응답을 확인하세요")
 
@@ -250,7 +259,8 @@ def execute_and_save(agent_label: str) -> None:
                     source="workflow",
                     agent_label=agent_label,
                     commit_sha=None,
-                    config={"scorer": "audit_final_goldset", "prediction": str(prediction_path)},
+                    config={"scorer": "audit_final_goldset", "prediction": str(prediction_path),
+                            "agent_version": agent_version},
                     score=(scored.get("rule_only_action_prf1") or {}).get("f1"),
                     metrics=_metrics_from_scores(scored),
                     raw=scored,

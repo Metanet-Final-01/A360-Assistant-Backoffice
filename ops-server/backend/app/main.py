@@ -28,7 +28,6 @@ from app.eval.dataset_store import load_datasets, save_dataset
 from app.eval import executor
 from app.eval import goldset_admin
 from app.eval.workflow_eval import runner as workflow_runner
-from app.eval.workflow_eval.schema import WorkflowCase
 from app.eval.ragas_eval import runner as ragas_runner
 from app.eval.ragas_eval import pass_k as ragas_pass_k
 from app.eval.ragas_eval import source_documents as ragas_source_documents
@@ -354,83 +353,22 @@ class ExecuteWorkflowRequest(BaseModel):
     @field_validator("agent_version")
     @classmethod
     def validate_agent_version(cls, value: str | None) -> str | None:
-        value = (value or "").strip() or None
-        if value and value not in workflow_runner._KNOWN_AGENT_VERSIONS:
-            raise ValueError(
-                f"agent_version은 {workflow_runner._KNOWN_AGENT_VERSIONS} 중 하나이거나 비워둬야 합니다"
-            )
-        return value
+        # 러너가 백엔드 기본 에이전트를 그대로 호출하므로 여기서 버전 목록을 고정하지
+        # 않는다 - 백엔드가 모르는 값을 받으면 그쪽에서 거절한다.
+        return (value or "").strip() or None
 
 
 @app.get("/eval/workflow/cases")
 def workflow_cases() -> list:
-    """골드셋 케이스 목록(채점 실행 전 미리보기·다운로드용) — 470개 원본 Bot Store
-    봇을 RAG 커버리지·실제 호출그래프 기준으로 엄격 검증한 13개(PROVENANCE.md)."""
+    """확정 골드셋 케이스 목록(조회 전용).
+
+    골드셋은 저장소의 confirmed_goldset/에서 교차검수로 관리한다 — 화면에서
+    추가·삭제·업로드할 수 있게 두면 채점 기준이 조용히 갈라지므로 쓰기
+    엔드포인트는 두지 않는다(2026-08-07)."""
     try:
         return workflow_runner.load_cases()
     except workflow_runner.WorkflowGoldsetError as e:
         raise HTTPException(503, str(e)) from e
-
-
-@app.post("/eval/workflow/cases")
-def add_workflow_case(case: dict) -> dict:
-    try:
-        return goldset_admin.append_case(workflow_runner._GOLDSET_PATH, WorkflowCase, case, "id").model_dump()
-    except goldset_admin.GoldsetWriteError as e:
-        raise HTTPException(400, str(e)) from e
-
-
-@app.post("/eval/workflow/cases/upload")
-async def upload_workflow_cases(file: UploadFile = File(...)) -> dict:
-    try:
-        count = goldset_admin.replace_from_upload(workflow_runner._GOLDSET_PATH, WorkflowCase, await file.read())
-    except goldset_admin.GoldsetWriteError as e:
-        raise HTTPException(400, str(e)) from e
-    return {"saved": count}
-
-
-@app.delete("/eval/workflow/cases/{case_id}")
-def delete_workflow_case(case_id: str) -> dict:
-    deleted = goldset_admin.delete_case(workflow_runner._GOLDSET_PATH, "id", case_id)
-    if not deleted:
-        raise HTTPException(404, f"id={case_id!r} 케이스를 찾을 수 없습니다")
-    return {"deleted": True}
-
-
-@app.get("/eval/workflow/input-dataset")
-def workflow_input_dataset() -> dict:
-    """Workflow 입력 데이터셋 — source_bot별 상세 업무정의서 원문
-    (detailed_task_descriptions.json, RPA-135에서 라이브 러너가 우선 사용하도록
-    맞춘 바로 그 파일)."""
-    return goldset_admin.read_text_map(workflow_runner._DETAILED_TASKS_PATH)
-
-
-class WorkflowInputCase(BaseModel):
-    source_bot: str = Field(min_length=1)
-    text: str = Field(min_length=1)
-
-
-@app.post("/eval/workflow/input-dataset")
-def upsert_workflow_input(item: WorkflowInputCase) -> dict:
-    goldset_admin.upsert_text(workflow_runner._DETAILED_TASKS_PATH, item.source_bot.strip(), item.text)
-    return {"saved": 1}
-
-
-@app.post("/eval/workflow/input-dataset/upload")
-async def upload_workflow_input_dataset(file: UploadFile = File(...)) -> dict:
-    try:
-        count = goldset_admin.replace_text_map_from_upload(workflow_runner._DETAILED_TASKS_PATH, await file.read())
-    except goldset_admin.GoldsetWriteError as e:
-        raise HTTPException(400, str(e)) from e
-    return {"saved": count}
-
-
-@app.delete("/eval/workflow/input-dataset/{source_bot}")
-def delete_workflow_input(source_bot: str) -> dict:
-    deleted = goldset_admin.delete_text_key(workflow_runner._DETAILED_TASKS_PATH, source_bot)
-    if not deleted:
-        raise HTTPException(404, f"source_bot={source_bot!r}을 찾을 수 없습니다")
-    return {"deleted": True}
 
 
 @app.post("/eval/workflow/execution")

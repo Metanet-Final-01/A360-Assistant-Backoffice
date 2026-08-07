@@ -140,8 +140,13 @@ def _render_bottom_row(
     upload_help: str,
     upload_path: str,
     create_dialog: Callable[[], None],
+    read_only: bool = False,
 ) -> None:
     """삭제(좌) · 페이지네이션(중앙) · 교체+생성(우, 서로 붙여서)을 한 행에 그린다.
+
+    read_only면 페이지네이션만 남기고 편집 버튼(삭제·교체·생성)은 그리지 않는다 —
+    확정 골드셋처럼 저장소에서 교차검수로 관리하는 데이터셋은 화면에서 바꾸면
+    채점 기준이 조용히 갈라진다.
     항상 그려지는 행이라(페이지네이션이 없어도 교체/생성은 남는다) 삭제 버튼이 있고
     없고에 따라 이 행 자체의 높이가 바뀌지 않는다 — 목록이 밀리지 않는다.
     좌우 스페이서 열 비중을 맞춰 페이지네이션이 가운데 오게 하고, 각 액션 버튼은
@@ -177,7 +182,7 @@ def _render_bottom_row(
     with st.container(key=f"{card_key}_bottom_row"):
         cols = st.columns(weights, gap="xxsmall")
 
-        if selected_ids:  # 선택이 없으면 자리만 비워두고 버튼 자체를 그리지 않는다(흐릿하게 두지 않음).
+        if selected_ids and not read_only:  # 선택이 없으면 자리만 비워두고 버튼 자체를 그리지 않는다(흐릿하게 두지 않음).
             if cols[0].button("삭제", key=f"{card_key}_delete_open", type="primary", width="stretch"):
                 _confirm_delete_dialog(selected_ids, delete_prefix, list_cache_key)
 
@@ -203,10 +208,11 @@ def _render_bottom_row(
                 elif selected and selected != current_label:
                     _goto(int(selected))
 
-        if cols[-2].button("교체", key=f"{card_key}_replace_open", width="stretch"):
-            _upload_dialog(upload_help, list_cache_key, upload_path, card_key)
-        if cols[-1].button("생성", key=f"{card_key}_create_open", type="primary", width="stretch"):
-            create_dialog()
+        if not read_only:
+            if cols[-2].button("교체", key=f"{card_key}_replace_open", width="stretch"):
+                _upload_dialog(upload_help, list_cache_key, upload_path, card_key)
+            if cols[-1].button("생성", key=f"{card_key}_create_open", type="primary", width="stretch"):
+                create_dialog()
 
 
 def _render_dataset_card(
@@ -223,6 +229,7 @@ def _render_dataset_card(
     upload_path: str,
     upload_help: str,
     create_dialog: Callable[[], None],
+    read_only: bool = False,
 ) -> None:
     with card(card_key):
         section_header(title, description)
@@ -246,8 +253,10 @@ def _render_dataset_card(
 
         _render_bottom_row(
             card_key, page, total_pages, selected_ids, delete_prefix, list_cache_key,
-            upload_help, upload_path, create_dialog,
+            upload_help, upload_path, create_dialog, read_only,
         )
+        if read_only:
+            st.caption("이 데이터셋은 저장소에서 교차검수로 관리합니다 — 화면에서는 조회만 가능합니다.")
 
 
 @st.dialog("삭제 확인")
@@ -314,20 +323,21 @@ def _render_workflow_goldset_tab() -> None:
     _render_dataset_card(
         card_key="workflow_goldset",
         title="Workflow 평가 데이터셋",
-        description="실제 커뮤니티 봇 기반 골드셋 — 워크플로우 채점의 정답(expected).",
+        description="Claude·Codex 교차검수로 확정한 골드셋 9개 — 워크플로우 채점의 정답.",
         rows=data,
-        id_field="id",
+        id_field="case_id",
         columns_fn=lambda c: {
-            "id": c["id"], "source_bot": c["source_bot"], "difficulty": c.get("difficulty"),
-            "task": c["input"]["task"][:80], "액션 수": len(c["expected"]["actions"]),
+            "case_id": c["case_id"], "과제명": c.get("title") or "-",
+            "정답 파일": c.get("gold_file"), "업무정의서": c.get("brief_file") or "-",
         },
-        empty_columns=["id", "source_bot", "difficulty", "task", "액션 수"],
-        column_widths={"id": "small", "source_bot": "medium", "difficulty": "small", "액션 수": "small", "task": 500},
+        empty_columns=["case_id", "과제명", "정답 파일", "업무정의서"],
+        column_widths={"case_id": "small", "과제명": 320, "정답 파일": 420, "업무정의서": 300},
         delete_prefix="/eval/workflow/cases",
         list_cache_key="/eval/workflow/cases",
         upload_path="/eval/workflow/cases/upload",
-        upload_help="전체 골드셋 배열([...])을 통째로 교체합니다 — WorkflowCase 스키마 검증을 통과해야 저장됩니다.",
+        upload_help="",
         create_dialog=_workflow_goldset_create_dialog,
+        read_only=True,
     )
 
 

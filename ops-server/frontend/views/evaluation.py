@@ -230,6 +230,35 @@ def _render_ragas_tab(runs: list[dict]) -> None:
     _render_ragas_pass_k()
 
 
+# ── 결과 조회 · 비교 ──────────────────────────────────────────────
+
+
+def _fetch_runs() -> list[dict]:
+    if "eval_runs" not in st.session_state:
+        try:
+            response = _SESSION.get(f"{OPS_BACKEND_URL}/eval/runs", timeout=5)
+            response.raise_for_status()
+            st.session_state["eval_runs"] = response.json()
+        except (requests.RequestException, ValueError) as exc:
+            st.error(f"평가 결과를 불러오지 못했습니다: {exc}")
+            st.session_state["eval_runs"] = []
+    return st.session_state["eval_runs"]
+
+
+def _load_runs() -> list[dict]:
+    if st.button("결과 새로고침", type="secondary"):
+        st.session_state.pop("eval_runs", None)
+    return _fetch_runs()
+
+
+def _metrics_of(run: dict) -> dict[str, float]:
+    return {item["name"]: item["value"] for item in run.get("metrics", [])}
+
+
+def _label(run: dict) -> str:
+    return f"{run['case_id']} · {run['source']} · {run.get('agent_label') or '-'} · {(run.get('run_id') or '-')[:8]}"
+
+
 def _render_runs(runs: list[dict]) -> None:
     with card("eval_runs"):
         section_header("결과 로그", "케이스별 원본과 공통 지표를 확인합니다.")

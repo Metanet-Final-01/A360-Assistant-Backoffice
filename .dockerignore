@@ -19,3 +19,6 @@ rag-server/app/rag/logs/
 **/.claude/
 **/*.md
 !**/README.md
+# 업무정의서는 문서가 아니라 채점 입력이다 — 이게 빠지면 핵심업무 분류가 통째로
+# 건너뛰어져 점수가 조용히 달라진다(컨테이너 실측으로 확인, 2026-08-07).
+!scripts/agent_flow_eval/goldset_expansion/confirmed_goldset/briefs/*.md
