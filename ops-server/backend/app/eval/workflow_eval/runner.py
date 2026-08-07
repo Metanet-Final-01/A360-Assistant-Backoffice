@@ -123,6 +123,20 @@ def load_cases() -> list[dict]:
     return cases
 
 
+def load_input_dataset() -> dict[str, str]:
+    """case_id -> 업무정의서 원문. 에이전트에게 실제로 입력되는 텍스트 그대로다.
+
+    옛 파이프라인은 이걸 detailed_task_descriptions.json 하나로 관리했는데, 지금은
+    confirmed_goldset/briefs/의 .md가 정본이다 - 골드셋과 짝을 이뤄 저장소에서
+    교차검수로 관리되므로 화면에서는 조회만 한다."""
+    if not BRIEF_DIR.is_dir():
+        raise WorkflowGoldsetError(f"업무정의서 폴더가 없습니다: {BRIEF_DIR}")
+    return {
+        path.name[:4]: path.read_text(encoding="utf-8")
+        for path in sorted(BRIEF_DIR.glob("*.md"))
+    }
+
+
 def _brief_title(brief_path: Path) -> str | None:
     for line in brief_path.read_text(encoding="utf-8").splitlines():
         if line.startswith("과제명:"):

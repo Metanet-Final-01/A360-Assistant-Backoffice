@@ -371,6 +371,18 @@ def workflow_cases() -> list:
         raise HTTPException(503, str(e)) from e
 
 
+@app.get("/eval/workflow/input-dataset")
+def workflow_input_dataset() -> dict:
+    """case_id별 업무정의서 원문(조회 전용) — 에이전트에게 실제로 넣는 입력이다.
+
+    골드셋과 마찬가지로 저장소의 confirmed_goldset/briefs/에서 관리하므로 쓰기
+    엔드포인트는 두지 않는다(2026-08-07)."""
+    try:
+        return workflow_runner.load_input_dataset()
+    except workflow_runner.WorkflowGoldsetError as e:
+        raise HTTPException(503, str(e)) from e
+
+
 @app.post("/eval/workflow/execution")
 def start_workflow_evaluation(req: ExecuteWorkflowRequest, background_tasks: BackgroundTasks) -> dict:
     if not workflow_runner.reserve():

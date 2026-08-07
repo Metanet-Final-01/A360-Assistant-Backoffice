@@ -400,25 +400,33 @@ def _render_workflow_input_tab() -> None:
     if err:
         st.warning(f"불러오지 못했습니다: {err}")
         return
-    rows = [{"source_bot": k, "text": v} for k, v in data.items()]
+    rows = [{"case_id": k, "text": v} for k, v in data.items()]
     _render_dataset_card(
         card_key="workflow_input",
         title="Workflow 입력 데이터셋",
-        description=(
-            "source_bot별 상세 업무정의서 원문 — Workflow 라이브 러너가 골드셋 한 줄 요약보다 "
-            "우선 사용합니다(RPA-135, 과거 결과와 공정 비교를 위해)."
-        ),
+        description="case_id별 업무정의서 원문 — 평가 시 에이전트에게 실제로 입력되는 텍스트.",
         rows=rows,
-        id_field="source_bot",
-        columns_fn=lambda r: {"source_bot": r["source_bot"], "길이": len(r["text"]), "미리보기": r["text"][:80]},
-        empty_columns=["source_bot", "길이", "미리보기"],
-        column_widths={"source_bot": "medium", "길이": "small", "미리보기": 600},
+        id_field="case_id",
+        columns_fn=lambda r: {
+            "case_id": r["case_id"], "글자 수": len(r["text"]),
+            "과제명": _task_title(r["text"]), "미리보기": " ".join(r["text"][:60].split()),
+        },
+        empty_columns=["case_id", "글자 수", "과제명", "미리보기"],
+        column_widths={"case_id": "small", "글자 수": "small", "과제명": 320, "미리보기": 400},
         delete_prefix="/eval/workflow/input-dataset",
         list_cache_key="/eval/workflow/input-dataset",
-        upload_path="/eval/workflow/input-dataset/upload",
-        upload_help='전체 {"source_bot": "원문"} 객체를 통째로 교체합니다.',
-        create_dialog=lambda: _workflow_input_create_dialog(list(data.keys())),
+        upload_path="",
+        upload_help="",
+        create_dialog=lambda: None,
+        read_only=True,
     )
+
+
+def _task_title(text: str) -> str:
+    for line in text.splitlines():
+        if line.startswith("과제명:"):
+            return line.split(":", 1)[1].strip()
+    return "-"
 
 
 @st.dialog("Workflow 입력 데이터셋 등록/수정")
