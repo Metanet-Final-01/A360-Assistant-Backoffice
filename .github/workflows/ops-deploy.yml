@@ -49,6 +49,14 @@ on:
         required: true
         default: 10.250.0.0/22
         type: string
+      enable_client_vpn_access:
+        description: Add ingress from the Client VPN security group. Leave false while client-vpn-stack is not deployed.
+        required: true
+        default: "false"
+        type: choice
+        options:
+          - "true"
+          - "false"
       enable_rag_worker:
         description: Run the separate SQS RAG ingest worker container
         required: true
@@ -256,6 +264,7 @@ jobs:
               ExistingOpsPrivateHostedZoneId="${{ inputs.existing_ops_private_hosted_zone_id || 'Z0116288P7JNOHLQU5JO' }}" \
               OpsPrivateDnsRecordName="${{ inputs.ops_private_dns_record_name || 'ops.dev.a360.internal' }}" \
               ClientVpnCidr="${{ inputs.client_vpn_cidr || '10.250.0.0/22' }}" \
+              EnableClientVpnAccess="${{ inputs.enable_client_vpn_access || 'false' }}" \
               GhcrUsername="${{ secrets.GHCR_USERNAME }}" \
               GhcrTokenSecretArn="${{ secrets.GHCR_TOKEN_SECRET_ARN }}" \
               OpsRuntimeSecretArn="${{ secrets.OPS_RUNTIME_SECRET_ARN }}" \
