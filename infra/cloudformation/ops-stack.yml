@@ -66,6 +66,16 @@ Parameters:
   ClientVpnCidr:
     Type: String
     Default: 10.250.0.0/22
+  EnableClientVpnAccess:
+    Type: String
+    Default: "true"
+    AllowedValues: ["true", "false"]
+    Description: >-
+      Adds ingress rules that reference the Client VPN endpoint's security
+      group. Set false when client-vpn-stack is not deployed - its
+      ClientVpnSecurityGroupId export does not exist then, and importing it
+      fails the whole stack. The CIDR-based rules on ClientVpnCidr stay
+      either way.
   EnableOpsPrivateDns:
     Type: String
     Default: "true"
@@ -131,6 +141,7 @@ Conditions:
   CreatesOpsPrivateDns: !Equals [!Ref EnableOpsPrivateDns, "true"]
   UseExistingOpsPrivateHostedZone: !Not [!Equals [!Ref ExistingOpsPrivateHostedZoneId, ""]]
   RegistersOpsPrivateDns: !Or [!Condition CreatesOpsPrivateDns, !Condition UseExistingOpsPrivateHostedZone]
+  UsesClientVpnAccess: !Equals [!Ref EnableClientVpnAccess, "true"]
 
 Resources:
   OpsGhcrReadTokenSecret:
@@ -214,6 +225,7 @@ Resources:
 
   OpsUiIngressFromClientVpnSecurityGroup:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UsesClientVpnAccess
     Properties:
       GroupId: !Ref OpsInstanceSecurityGroup
       IpProtocol: tcp
@@ -226,6 +238,7 @@ Resources:
 
   OpsBackendIngressFromClientVpnSecurityGroup:
     Type: AWS::EC2::SecurityGroupIngress
+    Condition: UsesClientVpnAccess
     Properties:
       GroupId: !Ref OpsInstanceSecurityGroup
       IpProtocol: tcp
