@@ -7,7 +7,7 @@ import streamlit as st
 
 from components.layout import card, metric_grid, page_header, section_header
 from components.time_display import format_kst, to_kst_naive_series
-from config import OPS_BACKEND_URL, RAG_SERVER_URL
+from config import OPS_BACKEND_URL
 
 
 def render() -> None:
@@ -28,7 +28,7 @@ def render() -> None:
     with ThreadPoolExecutor(max_workers=5) as pool:
         f_runs = pool.submit(_safe_get, OPS_BACKEND_URL, "/eval/runs")
         f_datasets = pool.submit(_safe_get, OPS_BACKEND_URL, "/eval/datasets")
-        f_rag_status = pool.submit(_safe_get, RAG_SERVER_URL, "/rag/ingest/status")
+        f_rag_status = pool.submit(_safe_get, OPS_BACKEND_URL, "/ops/rag/ingest/status")
         f_obs_status = pool.submit(_safe_get, OPS_BACKEND_URL, "/observability/status")
         f_rag_logs = pool.submit(_safe_get, OPS_BACKEND_URL, "/observability/rag-logs")
 

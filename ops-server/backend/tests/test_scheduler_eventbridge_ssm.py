@@ -53,6 +53,8 @@ def test_eventbridge_ssm_builds_scheduler_payload(monkeypatch):
     assert result.payload["Target"]["Arn"] == "arn:aws:scheduler:::aws-sdk:ssm:sendCommand"
     assert "curl -fsS -X POST" in result.payload["Target"]["Input"]
     assert "option=3&clean=false" in result.payload["Target"]["Input"]
+    assert "Authorization: Bearer $RAG_SERVICE_TOKEN" in result.payload["Target"]["Input"]
+    assert "RAG_SERVICE_TOKEN is required" in result.payload["Target"]["Input"]
     assert "\"Targets\"" in result.payload["Target"]["Input"]
 
 
